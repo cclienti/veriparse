@@ -1,0 +1,16 @@
+### Temp files
+\#*
+*\#
+*~
+.*.swp
+*.log
+
+### Binary files
+*.o
+*.a
+*.so
+*.bin
+
+### CMake build dir
+build*/
+
