@@ -1,0 +1,399 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/wait1.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/wait1.v
+              line: 7
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/wait1.v
+                  line: 7
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 7
+                          name: mem_read
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+                  - Sens:
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 7
+                          name: data_bus
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+                  - Sens:
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 7
+                          name: data_ready
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/wait1.v
+                  line: 7
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/wait1.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/wait1.v
+                              line: 8
+                              name: data
+                              scope:
+                                IdentifierScope: null
+                      line: 8
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 8
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/wait1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+                  - WhileStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/parser/testcases/wait1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/wait1.v
+                              line: 9
+                              name: mem_read
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 2
+                              filename: ../../test/parser/testcases/wait1.v
+                              line: 9
+                              sign: false
+                              size: 1
+                              value: 1
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 9
+                      statement:
+                        Block:
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 9
+                          scope: ''
+                          statements:
+                          - WaitStatement:
+                              cond:
+                                Eq:
+                                  filename: ../../test/parser/testcases/wait1.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/wait1.v
+                                      line: 10
+                                      name: data_ready
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 10
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/wait1.v
+                                      line: 10
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                              filename: ../../test/parser/testcases/wait1.v
+                              line: 10
+                              statement:
+                                Block:
+                                  filename: ../../test/parser/testcases/wait1.v
+                                  line: 10
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../../test/parser/testcases/wait1.v
+                                      ldelay:
+                                        DelayStatement:
+                                          delay:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/parser/testcases/wait1.v
+                                              line: 11
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          filename: ../../test/parser/testcases/wait1.v
+                                          line: 11
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/wait1.v
+                                          line: 11
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/wait1.v
+                                              line: 11
+                                              name: data
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 11
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/wait1.v
+                                          line: 11
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/wait1.v
+                                              line: 11
+                                              name: data_bus
+                                              scope:
+                                                IdentifierScope: null
+                                  - BlockingSubstitution:
+                                      filename: ../../test/parser/testcases/wait1.v
+                                      ldelay:
+                                        DelayStatement:
+                                          delay:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/parser/testcases/wait1.v
+                                              line: 12
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          filename: ../../test/parser/testcases/wait1.v
+                                          line: 12
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/wait1.v
+                                          line: 12
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/wait1.v
+                                              line: 12
+                                              name: data
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 12
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/wait1.v
+                                          line: 12
+                                          var:
+                                            Plus:
+                                              filename: ../../test/parser/testcases/wait1.v
+                                              left:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/wait1.v
+                                                  line: 12
+                                                  name: data_bus
+                                                  scope:
+                                                    IdentifierScope: null
+                                              line: 12
+                                              right:
+                                                IntConstN:
+                                                  base: 10
+                                                  filename: ../../test/parser/testcases/wait1.v
+                                                  line: 12
+                                                  sign: false
+                                                  size: -1
+                                                  value: 1
+          line: 1
+          name: wait0
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/wait1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/wait1.v
+                  line: 1
+                  name: mem_read
+                  sign: false
+              line: 1
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/wait1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 1
+                  name: mem_read
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/wait1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/wait1.v
+                  line: 2
+                  name: data_ready
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/wait1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: data_ready
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/wait1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/wait1.v
+                  line: 3
+                  name: data_bus
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/wait1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: data_bus
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/wait1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/wait1.v
+                  line: 4
+                  name: data
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/wait1.v
+                  line: 4
+                  name: data
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/wait1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/wait1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: ../../test/parser/testcases/wait1.v
+      line: 1
+  filename: ../../test/parser/testcases/wait1.v
+  line: 1
+

@@ -1,0 +1,314 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/generate0.v
+          items:
+          - GenerateStatement:
+              filename: ../../test/parser/testcases/generate0.v
+              items:
+              - Genvar:
+                  filename: ../../test/parser/testcases/generate0.v
+                  line: 4
+                  name: i
+              - ForStatement:
+                  cond:
+                    LessThan:
+                      filename: ../../test/parser/testcases/generate0.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          name: i
+                          scope:
+                            IdentifierScope: null
+                      line: 5
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 10
+                  filename: ../../test/parser/testcases/generate0.v
+                  line: 5
+                  post:
+                    BlockingSubstitution:
+                      filename: ../../test/parser/testcases/generate0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 5
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 5
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          var:
+                            Plus:
+                              filename: ../../test/parser/testcases/generate0.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 5
+                                  name: i
+                                  scope:
+                                    IdentifierScope: null
+                              line: 5
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  pre:
+                    BlockingSubstitution:
+                      filename: ../../test/parser/testcases/generate0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 5
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 5
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                  statement:
+                    Block:
+                      filename: ../../test/parser/testcases/generate0.v
+                      line: 5
+                      scope: gen1
+                      statements:
+                      - Genvar:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 6
+                          name: j
+                      - ForStatement:
+                          cond:
+                            GreaterEq:
+                              filename: ../../test/parser/testcases/generate0.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  name: j
+                                  scope:
+                                    IdentifierScope: null
+                              line: 7
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 7
+                          post:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/generate0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      line: 7
+                                      name: j
+                                      scope:
+                                        IdentifierScope: null
+                              line: 7
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  var:
+                                    Minus:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/generate0.v
+                                          line: 7
+                                          name: j
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 7
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/parser/testcases/generate0.v
+                                          line: 7
+                                          sign: false
+                                          size: -1
+                                          value: 1
+                          pre:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/generate0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      line: 7
+                                      name: j
+                                      scope:
+                                        IdentifierScope: null
+                              line: 7
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      line: 7
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                          statement:
+                            Block:
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 7
+                              scope: gen2
+                              statements:
+                              - Reg:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 8
+                                  name: R
+                                  right:
+                                    Rvalue: null
+                                  sign: false
+                                  widths:
+                                  - Width:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      line: 8
+                                      lsb:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/parser/testcases/generate0.v
+                                          line: 8
+                                          sign: false
+                                          size: -1
+                                          value: 0
+                                      msb:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/generate0.v
+                                          line: 8
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                              - Initial:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 9
+                                  statement:
+                                    Block:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      line: 9
+                                      scope: ''
+                                      statements:
+                                      - BlockingSubstitution:
+                                          filename: ../../test/parser/testcases/generate0.v
+                                          ldelay:
+                                            DelayStatement: null
+                                          left:
+                                            Lvalue:
+                                              filename: ../../test/parser/testcases/generate0.v
+                                              line: 10
+                                              var:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/generate0.v
+                                                  line: 10
+                                                  name: R
+                                                  scope:
+                                                    IdentifierScope: null
+                                          line: 10
+                                          rdelay:
+                                            DelayStatement: null
+                                          right:
+                                            Rvalue:
+                                              filename: ../../test/parser/testcases/generate0.v
+                                              line: 10
+                                              var:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/generate0.v
+                                                  line: 10
+                                                  name: i
+                                                  scope:
+                                                    IdentifierScope: null
+                                      - SingleStatement:
+                                          delay:
+                                            DelayStatement: null
+                                          filename: ../../test/parser/testcases/generate0.v
+                                          line: 11
+                                          scope: ''
+                                          statement:
+                                            SystemCall:
+                                              args:
+                                              - StringConst:
+                                                  filename: ../../test/parser/testcases/generate0.v
+                                                  line: 11
+                                                  value: '%m\n'
+                                              - Identifier:
+                                                  filename: ../../test/parser/testcases/generate0.v
+                                                  line: 11
+                                                  name: R
+                                                  scope:
+                                                    IdentifierScope: null
+                                              filename: ../../test/parser/testcases/generate0.v
+                                              line: 11
+                                              syscall: display
+              line: 3
+          line: 1
+          name: generate0
+      filename: ../../test/parser/testcases/generate0.v
+      line: 1
+  filename: ../../test/parser/testcases/generate0.v
+  line: 1
+

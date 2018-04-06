@@ -1,0 +1,457 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/always0.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/always0.v
+              line: 7
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 7
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 7
+                          name: reset
+                          scope:
+                            IdentifierScope: null
+                      type: NEGEDGE
+                  - Sens:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 7
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/always0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/always0.v
+                              line: 8
+                              name: out
+                              scope:
+                                IdentifierScope: null
+                      line: 8
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 8
+                          var:
+                            Or:
+                              filename: ../../test/parser/testcases/always0.v
+                              left:
+                                Or:
+                                  filename: ../../test/parser/testcases/always0.v
+                                  left:
+                                    Or:
+                                      filename: ../../test/parser/testcases/always0.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/always0.v
+                                          line: 8
+                                          name: in0
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 8
+                                      right:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/always0.v
+                                          line: 8
+                                          name: in1
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 8
+                                  right:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/always0.v
+                                      line: 8
+                                      name: in2
+                                      scope:
+                                        IdentifierScope: null
+                              line: 8
+                              right:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/always0.v
+                                  line: 8
+                                  name: in3
+                                  scope:
+                                    IdentifierScope: null
+          line: 1
+          name: always0
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/always0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 2
+                  name: reset
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/always0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/always0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 3
+                  name: clk
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/always0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/always0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 4
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/always0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/always0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 4
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/always0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in1
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/always0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 4
+                  name: in2
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/always0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in2
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/always0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 4
+                  name: in3
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/always0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in3
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/always0.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 5
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/always0.v
+                  line: 5
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/always0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/always0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: ../../test/parser/testcases/always0.v
+      line: 1
+  filename: ../../test/parser/testcases/always0.v
+  line: 1
+

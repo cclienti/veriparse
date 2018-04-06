@@ -1,0 +1,274 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/function3.v
+          items:
+          - Function:
+              automatic: true
+              filename: ../../test/parser/testcases/function3.v
+              line: 3
+              name: clogb2
+              ports:
+              - Ioport:
+                  filename: ../../test/parser/testcases/function3.v
+                  first:
+                    Input:
+                      filename: ../../test/parser/testcases/function3.v
+                      line: 3
+                      name: value
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/function3.v
+                          line: 3
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 3
+                  second:
+                    Reg:
+                      filename: ../../test/parser/testcases/function3.v
+                      line: 3
+                      name: value
+                      right:
+                        Rvalue: null
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/function3.v
+                          line: 3
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 31
+              - Ioport:
+                  filename: ../../test/parser/testcases/function3.v
+                  first:
+                    Input:
+                      filename: ../../test/parser/testcases/function3.v
+                      line: 3
+                      name: a
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/function3.v
+                          line: 3
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 3
+                  second:
+                    Reg:
+                      filename: ../../test/parser/testcases/function3.v
+                      line: 3
+                      name: a
+                      right:
+                        Rvalue: null
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/function3.v
+                          line: 3
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 31
+              - Ioport:
+                  filename: ../../test/parser/testcases/function3.v
+                  first:
+                    Input:
+                      filename: ../../test/parser/testcases/function3.v
+                      line: 3
+                      name: b
+                      sign: false
+                  line: 3
+                  second: null
+              retsign: true
+              rettype: INTEGER
+              statements:
+              - Block:
+                  filename: ../../test/parser/testcases/function3.v
+                  line: 4
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        GreaterThan:
+                          filename: ../../test/parser/testcases/function3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 5
+                              name: value
+                              scope:
+                                IdentifierScope: null
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/function3.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+                      false_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/function3.v
+                          line: 8
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/parser/testcases/function3.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/function3.v
+                                  line: 9
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/function3.v
+                                      line: 9
+                                      name: clogb2
+                                      scope:
+                                        IdentifierScope: null
+                              line: 9
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/function3.v
+                                  line: 9
+                                  var:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/function3.v
+                                      line: 9
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                      filename: ../../test/parser/testcases/function3.v
+                      line: 5
+                      true_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/function3.v
+                          line: 5
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/parser/testcases/function3.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/function3.v
+                                  line: 6
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/function3.v
+                                      line: 6
+                                      name: clogb2
+                                      scope:
+                                        IdentifierScope: null
+                              line: 6
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/function3.v
+                                  line: 6
+                                  var:
+                                    Plus:
+                                      filename: ../../test/parser/testcases/function3.v
+                                      left:
+                                        FunctionCall:
+                                          args:
+                                          - Srl:
+                                              filename: ../../test/parser/testcases/function3.v
+                                              left:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/function3.v
+                                                  line: 6
+                                                  name: value
+                                                  scope:
+                                                    IdentifierScope: null
+                                              line: 6
+                                              right:
+                                                IntConstN:
+                                                  base: 10
+                                                  filename: ../../test/parser/testcases/function3.v
+                                                  line: 6
+                                                  sign: false
+                                                  size: -1
+                                                  value: 1
+                                          filename: ../../test/parser/testcases/function3.v
+                                          line: 6
+                                          name: clogb2
+                                      line: 6
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/parser/testcases/function3.v
+                                          line: 6
+                                          sign: false
+                                          size: -1
+                                          value: 1
+          line: 1
+          name: function3
+      filename: ../../test/parser/testcases/function3.v
+      line: 1
+  filename: ../../test/parser/testcases/function3.v
+  line: 1

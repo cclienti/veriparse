@@ -1,0 +1,442 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+          items:
+          - Always:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              line: 8
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 8
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 8
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                              line: 9
+                              name: out1
+                              scope:
+                                IdentifierScope: null
+                      line: 9
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 9
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: -218
+          - Always:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              line: 12
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 12
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 12
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 12
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 12
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          left:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                              line: 13
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                  line: 13
+                                  name: out1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 13
+                          right:
+                            IntConstN:
+                              base: 2
+                              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                              line: 13
+                              sign: false
+                              size: 1
+                              value: 1
+                      false_statement: null
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 13
+                      true_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 13
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                  line: 14
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                      line: 14
+                                      name: out2
+                                      scope:
+                                        IdentifierScope: null
+                              line: 14
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                  line: 14
+                                  var:
+                                    Concat:
+                                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                      line: 14
+                                      list:
+                                      - Repeat:
+                                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                          line: 14
+                                          times:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ''
+                                              line: 0
+                                              sign: false
+                                              size: -1
+                                              value: 32
+                                          value:
+                                            Concat:
+                                              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                              line: 14
+                                              list:
+                                              - IntConstN:
+                                                  base: 2
+                                                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                                  line: 14
+                                                  sign: false
+                                                  size: 1
+                                                  value: 0
+                                      - Identifier:
+                                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                                          line: 14
+                                          name: out1
+                                          scope:
+                                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              line: 18
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 18
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 18
+                      sig: null
+                      type: ALL
+              statement:
+                BlockingSubstitution:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 18
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 18
+                          name: out3
+                          scope:
+                            IdentifierScope: null
+                  line: 18
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 18
+                      var:
+                        IntConstN:
+                          base: 2
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 18
+                          sign: false
+                          size: 48
+                          value: 280375465082880
+          line: 1
+          name: constant_folding0
+          params:
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              line: 2
+              name: width
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 32
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 3
+                  name: clock
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: clock
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 4
+                  name: out1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+              line: 4
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 4
+                  name: out1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 5
+                  name: out2
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 63
+              line: 5
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 5
+                  name: out2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 63
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/constant_folding0.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 6
+                  name: out3
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 47
+              line: 6
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                  line: 6
+                  name: out3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/constant_folding0.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 47
+      filename: ../../test/passes/transformations/testcases/constant_folding0.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/constant_folding0.v
+  line: 1
+

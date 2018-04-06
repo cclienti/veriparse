@@ -1,0 +1,899 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: dff.v
+          items:
+          - Always:
+              filename: dff.v
+              line: 6
+              senslist:
+                Senslist:
+                  filename: dff.v
+                  line: 6
+                  list:
+                  - Sens:
+                      filename: dff.v
+                      line: 6
+                      sig:
+                        Identifier:
+                          filename: dff.v
+                          line: 6
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                NonblockingSubstitution:
+                  filename: dff.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: dff.v
+                      line: 6
+                      var:
+                        Identifier:
+                          filename: dff.v
+                          line: 6
+                          name: q
+                          scope:
+                            IdentifierScope: null
+                  line: 6
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: dff.v
+                      line: 6
+                      var:
+                        Identifier:
+                          filename: dff.v
+                          line: 6
+                          name: d
+                          scope:
+                            IdentifierScope: null
+          line: 4
+          name: DFF
+          ports:
+          - Ioport:
+              filename: dff.v
+              first:
+                Output:
+                  filename: dff.v
+                  line: 4
+                  name: q
+                  sign: false
+              line: 4
+              second:
+                Reg:
+                  filename: dff.v
+                  line: 4
+                  name: q
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: dff.v
+              first:
+                Input:
+                  filename: dff.v
+                  line: 5
+                  name: d
+                  sign: false
+              line: 5
+              second:
+                Wire:
+                  filename: dff.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: dff.v
+              first:
+                Input:
+                  filename: dff.v
+                  line: 5
+                  name: clk
+                  sign: false
+              line: 5
+              second:
+                Wire:
+                  filename: dff.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+      - Module:
+          default_nettype: WIRE
+          filename: dffn.v
+          items:
+          - Parameter:
+              filename: dffn.v
+              line: 5
+              name: bits
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: dffn.v
+                  line: 5
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: dffn.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 1
+          - Ioport:
+              filename: dffn.v
+              first:
+                Input:
+                  filename: dffn.v
+                  line: 7
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: dffn.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: dffn.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: dffn.v
+                          left:
+                            Identifier:
+                              filename: dffn.v
+                              line: 7
+                              name: bits
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: dffn.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 7
+              second: null
+          - Ioport:
+              filename: dffn.v
+              first:
+                Output:
+                  filename: dffn.v
+                  line: 8
+                  name: q
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: dffn.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: dffn.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: dffn.v
+                          left:
+                            Identifier:
+                              filename: dffn.v
+                              line: 8
+                              name: bits
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: dffn.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 8
+              second: null
+          - Ioport:
+              filename: dffn.v
+              first:
+                Input:
+                  filename: dffn.v
+                  line: 9
+                  name: clk
+                  sign: false
+              line: 9
+              second: null
+          - Instancelist:
+              filename: dffn.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: dffn.v
+                      line: 11
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: dffn.v
+                          line: 11
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: dffn.v
+                          left:
+                            Identifier:
+                              filename: dffn.v
+                              line: 11
+                              name: bits
+                              scope:
+                                IdentifierScope: null
+                          line: 11
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: dffn.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 1
+                  filename: dffn.v
+                  line: 11
+                  module: DFF
+                  name: dff
+                  portlist:
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: dffn.v
+                          line: 11
+                          name: q
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: dffn.v
+                          line: 11
+                          name: d
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: dffn.v
+                          line: 11
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              line: 11
+              module: DFF
+          line: 4
+          name: dffn
+          ports:
+          - Port:
+              filename: dffn.v
+              line: 4
+              name: q
+              type: ''
+          - Port:
+              filename: dffn.v
+              line: 4
+              name: d
+              type: ''
+          - Port:
+              filename: dffn.v
+              line: 4
+              name: clk
+              type: ''
+      - Module:
+          default_nettype: WIRE
+          filename: vpp_line0.v
+          items:
+          - Parameter:
+              filename: vpp_line0.v
+              line: 5
+              name: M
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: vpp_line0.v
+                  line: 5
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: vpp_line0.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 3
+          - Parameter:
+              filename: vpp_line0.v
+              line: 5
+              name: N
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: vpp_line0.v
+                  line: 5
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: vpp_line0.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 4
+          - Ioport:
+              filename: vpp_line0.v
+              first:
+                Input:
+                  filename: vpp_line0.v
+                  line: 7
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: vpp_line0.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: vpp_line0.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: vpp_line0.v
+                          left:
+                            Identifier:
+                              filename: vpp_line0.v
+                              line: 7
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: vpp_line0.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 7
+              second: null
+          - Ioport:
+              filename: vpp_line0.v
+              first:
+                Input:
+                  filename: vpp_line0.v
+                  line: 7
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: vpp_line0.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: vpp_line0.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: vpp_line0.v
+                          left:
+                            Identifier:
+                              filename: vpp_line0.v
+                              line: 7
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: vpp_line0.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 7
+              second: null
+          - Ioport:
+              filename: vpp_line0.v
+              first:
+                Output:
+                  filename: vpp_line0.v
+                  line: 8
+                  name: out0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: vpp_line0.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: vpp_line0.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: vpp_line0.v
+                          left:
+                            Identifier:
+                              filename: vpp_line0.v
+                              line: 8
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: vpp_line0.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 8
+              second: null
+          - Ioport:
+              filename: vpp_line0.v
+              first:
+                Output:
+                  filename: vpp_line0.v
+                  line: 8
+                  name: out1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: vpp_line0.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: vpp_line0.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: vpp_line0.v
+                          left:
+                            Identifier:
+                              filename: vpp_line0.v
+                              line: 8
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: vpp_line0.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 8
+              second: null
+          - Ioport:
+              filename: vpp_line0.v
+              first:
+                Input:
+                  filename: vpp_line0.v
+                  line: 9
+                  name: clk
+                  sign: false
+              line: 9
+              second: null
+          - Wire:
+              filename: vpp_line0.v
+              ldelay:
+                DelayStatement: null
+              line: 11
+              name: t0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: vpp_line0.v
+                  line: 11
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: vpp_line0.v
+                      line: 11
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    Times:
+                      filename: vpp_line0.v
+                      left:
+                        Identifier:
+                          filename: vpp_line0.v
+                          line: 11
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      line: 11
+                      right:
+                        Minus:
+                          filename: vpp_line0.v
+                          left:
+                            Identifier:
+                              filename: vpp_line0.v
+                              line: 11
+                              name: N
+                              scope:
+                                IdentifierScope: null
+                          line: 11
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: vpp_line0.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 1
+          - Wire:
+              filename: vpp_line0.v
+              ldelay:
+                DelayStatement: null
+              line: 12
+              name: t1
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: vpp_line0.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: vpp_line0.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    Times:
+                      filename: vpp_line0.v
+                      left:
+                        Identifier:
+                          filename: vpp_line0.v
+                          line: 12
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      line: 12
+                      right:
+                        Minus:
+                          filename: vpp_line0.v
+                          left:
+                            Times:
+                              filename: vpp_line0.v
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: vpp_line0.v
+                                  line: 12
+                                  sign: false
+                                  size: -1
+                                  value: 2
+                              line: 12
+                              right:
+                                Identifier:
+                                  filename: vpp_line0.v
+                                  line: 12
+                                  name: N
+                                  scope:
+                                    IdentifierScope: null
+                          line: 12
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: vpp_line0.v
+                              line: 12
+                              sign: false
+                              size: -1
+                              value: 1
+          - Instancelist:
+              filename: vpp_line0.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: vpp_line0.v
+                      line: 19
+                      lsb:
+                        Identifier:
+                          filename: vpp_line0.v
+                          line: 19
+                          name: N
+                          scope:
+                            IdentifierScope: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: vpp_line0.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: vpp_line0.v
+                  line: 19
+                  module: dffn
+                  name: p0
+                  parameterlist:
+                  - ParamArg:
+                      value:
+                        Identifier:
+                          filename: vpp_line0.v
+                          line: 19
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      filename: vpp_line0.v
+                      line: 19
+                      name: ''
+                  portlist:
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: vpp_line0.v
+                          line: 19
+                          list:
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 19
+                              name: out0
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 19
+                              name: t0
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: vpp_line0.v
+                          line: 19
+                          list:
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 19
+                              name: t0
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 19
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: vpp_line0.v
+                          line: 19
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              - Instance:
+                  array:
+                    Length:
+                      filename: vpp_line0.v
+                      line: 20
+                      lsb:
+                        Times:
+                          filename: vpp_line0.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: vpp_line0.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 2
+                          line: 20
+                          right:
+                            Identifier:
+                              filename: vpp_line0.v
+                              line: 20
+                              name: N
+                              scope:
+                                IdentifierScope: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: vpp_line0.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: vpp_line0.v
+                  line: 20
+                  module: dffn
+                  name: p1
+                  parameterlist:
+                  - ParamArg:
+                      value:
+                        Identifier:
+                          filename: vpp_line0.v
+                          line: 19
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      filename: vpp_line0.v
+                      line: 19
+                      name: ''
+                  portlist:
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: vpp_line0.v
+                          line: 20
+                          list:
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 20
+                              name: out1
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 20
+                              name: t1
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: vpp_line0.v
+                          line: 20
+                          list:
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 20
+                              name: t1
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: vpp_line0.v
+                              line: 20
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: vpp_line0.v
+                          line: 20
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              line: 19
+              module: dffn
+              parameterlist:
+              - ParamArg:
+                  value:
+                    Identifier:
+                      filename: vpp_line0.v
+                      line: 19
+                      name: M
+                      scope:
+                        IdentifierScope: null
+                  filename: vpp_line0.v
+                  line: 19
+                  name: ''
+          line: 4
+          name: MxN_pipeline
+          ports:
+          - Port:
+              filename: vpp_line0.v
+              line: 4
+              name: in0
+              type: ''
+          - Port:
+              filename: vpp_line0.v
+              line: 4
+              name: in1
+              type: ''
+          - Port:
+              filename: vpp_line0.v
+              line: 4
+              name: out0
+              type: ''
+          - Port:
+              filename: vpp_line0.v
+              line: 4
+              name: out1
+              type: ''
+          - Port:
+              filename: vpp_line0.v
+              line: 4
+              name: clk
+              type: ''
+      filename: vpp_line0.v
+      line: 4
+  filename: vpp_line0.v
+  line: 4

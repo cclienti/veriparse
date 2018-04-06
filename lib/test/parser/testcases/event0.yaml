@@ -1,0 +1,227 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/event0.v
+          items:
+          - Ioport:
+              filename: ../../test/parser/testcases/event0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/event0.v
+                  line: 2
+                  name: clk
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/event0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Integer:
+              filename: ../../test/parser/testcases/event0.v
+              line: 3
+              name: i
+              right:
+                Rvalue: null
+          - Initial:
+              filename: ../../test/parser/testcases/event0.v
+              line: 5
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/event0.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/event0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/event0.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/event0.v
+                              line: 6
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 6
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/event0.v
+                          line: 6
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/event0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                  - WhileStatement:
+                      cond:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/event0.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 1
+                      filename: ../../test/parser/testcases/event0.v
+                      line: 7
+                      statement:
+                        Block:
+                          filename: ../../test/parser/testcases/event0.v
+                          line: 7
+                          scope: ''
+                          statements:
+                          - EventStatement:
+                              filename: ../../test/parser/testcases/event0.v
+                              line: 8
+                              senslist:
+                                Senslist:
+                                  filename: ../../test/parser/testcases/event0.v
+                                  line: 8
+                                  list:
+                                  - Sens:
+                                      filename: ../../test/parser/testcases/event0.v
+                                      line: 8
+                                      sig:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/event0.v
+                                          line: 8
+                                          name: clock
+                                          scope:
+                                            IdentifierScope: null
+                                      type: POSEDGE
+                              statement:
+                                Block:
+                                  filename: ../../test/parser/testcases/event0.v
+                                  line: 8
+                                  scope: ''
+                                  statements:
+                                  - NonblockingSubstitution:
+                                      filename: ../../test/parser/testcases/event0.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/event0.v
+                                          line: 9
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/event0.v
+                                              line: 9
+                                              name: i
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 9
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/event0.v
+                                          line: 9
+                                          var:
+                                            Plus:
+                                              filename: ../../test/parser/testcases/event0.v
+                                              left:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/event0.v
+                                                  line: 9
+                                                  name: i
+                                                  scope:
+                                                    IdentifierScope: null
+                                              line: 9
+                                              right:
+                                                IntConstN:
+                                                  base: 10
+                                                  filename: ../../test/parser/testcases/event0.v
+                                                  line: 9
+                                                  sign: false
+                                                  size: -1
+                                                  value: 1
+                                  - SingleStatement:
+                                      delay:
+                                        DelayStatement: null
+                                      filename: ../../test/parser/testcases/event0.v
+                                      line: 10
+                                      scope: ''
+                                      statement:
+                                        SystemCall:
+                                          args:
+                                          - StringConst:
+                                              filename: ../../test/parser/testcases/event0.v
+                                              line: 10
+                                              value: clock cycle %d
+                                          - Identifier:
+                                              filename: ../../test/parser/testcases/event0.v
+                                              line: 10
+                                              name: i
+                                              scope:
+                                                IdentifierScope: null
+                                          filename: ../../test/parser/testcases/event0.v
+                                          line: 10
+                                          syscall: display
+                          - IfStatement:
+                              cond:
+                                Eq:
+                                  filename: ../../test/parser/testcases/event0.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/event0.v
+                                      line: 12
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 12
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/event0.v
+                                      line: 12
+                                      sign: false
+                                      size: -1
+                                      value: 256
+                              false_statement: null
+                              filename: ../../test/parser/testcases/event0.v
+                              line: 12
+                              true_statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/parser/testcases/event0.v
+                                  line: 12
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      filename: ../../test/parser/testcases/event0.v
+                                      line: 12
+                                      syscall: finish
+          line: 1
+          name: event0
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/event0.v
+              line: 1
+              name: clk
+              type: ''
+      filename: ../../test/parser/testcases/event0.v
+      line: 1
+  filename: ../../test/parser/testcases/event0.v
+  line: 1
+

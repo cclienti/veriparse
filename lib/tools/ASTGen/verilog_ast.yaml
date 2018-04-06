@@ -1,0 +1,443 @@
+Source:
+  properties:
+  children:
+    description: Description
+
+Description:
+  properties:
+  children:
+    definitions: list(Node)
+
+Pragma:
+  properties:
+    name: "std::string"
+  children:
+    expression: Node
+
+Module:
+  properties:
+    name: "std::string"
+    default_nettype: enum(INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, NONE)
+  children:
+    params: list(Parameter)
+    ports: list(Node)
+    items: list(Node)
+
+Port:
+  properties:
+    name: "std::string"
+  children:
+    widths: list(Width)
+
+Width:
+  properties:
+  children:
+    msb: Node # an expression
+    lsb: Node # an expression
+
+Length:
+  inherit: Width
+
+Identifier:
+  properties:
+    name: "std::string"
+  children:
+    scope: IdentifierScope
+
+Constant:
+  properties:
+  children:
+
+StringConst:
+  inherit: Constant
+  properties:
+    value: "std::string"
+  children:
+
+IntConst:
+  inherit: Constant
+  properties:
+    value: "std::string"
+  children:
+
+IntConstN:
+  inherit: Constant
+  includes: ["gmp.h", "gmpxx.h"]
+  properties:
+    base: int
+    size: int
+    sign: bool
+    value: mpz_class
+  children:
+
+FloatConst:
+  inherit: Constant
+  properties:
+    value: double
+  children:
+
+IODir:
+  properties:
+    name: "std::string"
+    sign: bool
+  children:
+    widths: list(Width)
+
+Input:  {inherit: IODir}
+Output: {inherit: IODir}
+Inout:  {inherit: IODir}
+
+VariableBase:
+  properties:
+    name: "std::string"
+
+Genvar:
+  inherit: VariableBase
+
+Variable:
+  inherit: VariableBase
+  children:
+    lengths: list(Length)
+    right: Rvalue
+
+Net:
+  inherit: Variable
+  properties:
+    sign: bool
+  children:
+    widths: list(Width)
+    ldelay: DelayStatement
+    rdelay: DelayStatement
+
+Integer: {inherit: Variable}
+Real:    {inherit: Variable}
+
+Tri:     {inherit: Net}
+Wire:    {inherit: Net}
+Supply0: {inherit: Net}
+Supply1: {inherit: Net}
+
+Reg:
+  inherit: Variable
+  properties:
+    sign: bool
+  children:
+    widths: list(Width)
+
+Ioport:
+  properties:
+  children:
+    first: IODir
+    second: Variable
+
+Parameter:
+  properties:
+    name: "std::string"
+    sign: bool
+    type: enum(INTEGER, REAL, NONE)
+  children:
+    value: Node
+    widths: list(Width)
+
+Localparam: {inherit: Parameter}
+
+Concat:
+  properties:
+  children:
+    list: list(Node)
+
+Lconcat: {inherit: Concat}
+
+Repeat:
+  properties:
+  children:
+    value: Node
+    times: Node
+
+Indirect:
+  properties:
+  children:
+    var: Node
+
+Partselect:
+  inherit: Indirect
+  properties:
+  children:
+    msb: Node
+    lsb: Node
+
+PartselectIndexed:
+  inherit: Indirect
+  properties:
+  children:
+    index: Node
+    size: Node
+
+PartselectPlusIndexed:  {inherit: PartselectIndexed}
+PartselectMinusIndexed: {inherit: PartselectIndexed}
+
+Pointer:
+  inherit: Indirect
+  properties:
+  children:
+    ptr: Node
+
+Lvalue:
+  properties:
+  children:
+    var: Node
+
+Rvalue:
+  properties:
+  children:
+    var: Node
+
+UnaryOperator:
+  properties:
+  children:
+    right: Node
+
+Uplus:  {inherit: UnaryOperator}
+Uminus: {inherit: UnaryOperator}
+Ulnot:  {inherit: UnaryOperator}
+Unot:   {inherit: UnaryOperator}
+Uand:   {inherit: UnaryOperator}
+Unand:  {inherit: UnaryOperator}
+Uor:    {inherit: UnaryOperator}
+Unor:   {inherit: UnaryOperator}
+Uxor:   {inherit: UnaryOperator}
+Uxnor:  {inherit: UnaryOperator}
+
+Operator:
+  properties:
+  children:
+    left: Node
+    right: Node
+
+Power:       {inherit: Operator}
+Times:       {inherit: Operator}
+Divide:      {inherit: Operator}
+Mod:         {inherit: Operator}
+Plus:        {inherit: Operator}
+Minus:       {inherit: Operator}
+Sll:         {inherit: Operator}
+Srl:         {inherit: Operator}
+Sra:         {inherit: Operator}
+LessThan:    {inherit: Operator}
+GreaterThan: {inherit: Operator}
+LessEq:      {inherit: Operator}
+GreaterEq:   {inherit: Operator}
+Eq:          {inherit: Operator}
+NotEq:       {inherit: Operator}
+Eql:         {inherit: Operator}
+NotEql:      {inherit: Operator}
+And:         {inherit: Operator}
+Xor:         {inherit: Operator}
+Xnor:        {inherit: Operator}
+Or:          {inherit: Operator}
+Land:        {inherit: Operator}
+Lor:         {inherit: Operator}
+
+Cond:
+  inherit: Operator
+  properties:
+  children:
+    cond: Node
+    # left is true
+    # right is false
+
+Always:
+  properties:
+  children:
+    senslist: Senslist
+    statement: Node
+
+Senslist:
+  properties:
+  children:
+    list: list(Sens)
+
+Sens:
+  properties:
+    type: enum(All, Posedge, Negedge, None)
+  children:
+    sig: Node
+
+Assign:
+  properties:
+  children:
+    left: Lvalue
+    right: Rvalue
+    ldelay: DelayStatement
+    rdelay: DelayStatement
+
+BlockingSubstitution:    {inherit: Assign}
+NonblockingSubstitution: {inherit: Assign}
+
+IfStatement:
+  properties:
+  children:
+    cond: Node
+    true_statement: Node
+    false_statement: Node
+
+ForStatement:
+  properties:
+  children:
+    pre: BlockingSubstitution
+    cond: Node
+    post: BlockingSubstitution
+    statement: Node
+
+WhileStatement:
+  properties:
+  children:
+    cond: Node
+    statement: Node
+
+CaseStatement:
+  properties:
+  children:
+    comp: Node
+    caselist: list(Case)
+
+CasexStatement: {inherit: CaseStatement}
+CasezStatement: {inherit: CaseStatement}
+
+Case:
+  properties:
+  children:
+    cond: list(Node)
+    statement: Node
+
+Block:
+  properties:
+    scope: "std::string"
+  children:
+    statements: list(Node)
+
+Initial:
+  properties:
+  children:
+    statement: Node
+
+EventStatement:
+  properties:
+  children:
+    senslist: Senslist
+    statement: Node
+
+WaitStatement:
+  properties:
+  children:
+    cond: Node
+    statement: Node
+
+ForeverStatement:
+  properties:
+  children:
+    statement: Node
+
+DelayStatement:
+  properties:
+  children:
+    delay: Node
+
+Instancelist:
+  properties:
+    module: "std::string"
+  children:
+    parameterlist: list(ParamArg)
+    instances: list(Instance)
+
+Instance:
+  properties:
+    module: "std::string"
+    name: "std::string"
+  children:
+    array: Length
+    parameterlist: list(ParamArg)
+    portlist: list(PortArg)
+
+ParamArg:
+  properties:
+    name: "std::string"
+  children:
+    value: Node
+
+PortArg:
+  properties:
+    name: "std::string"
+  children:
+    value: Node
+
+Function:
+  properties:
+    name: "std::string"
+    automatic: bool
+    rettype: enum(INTEGER, REAL, NONE)
+    retsign: bool
+  children:
+    retwidths: list(Width)
+    ports: list(Node)
+    statements: list(Node)
+
+FunctionCall:
+  properties:
+    name: "std::string"
+  children:
+    args: list(Node)
+
+Task:
+  properties:
+    name: "std::string"
+    automatic: bool
+  children:
+    ports: list(Node)
+    statements: list(Node)
+
+TaskCall:
+  properties:
+    name: "std::string"
+  children:
+    args: list(Node)
+
+GenerateStatement:
+  properties:
+  children:
+    items: list(Node)
+
+SystemCall:
+  properties:
+    syscall: "std::string"
+  children:
+    args: list(Node)
+
+IdentifierScopeLabel:
+  properties:
+    name: "std::string"
+  children:
+    loop: Node
+
+IdentifierScope:
+  properties:
+  children:
+    labellist: list(IdentifierScopeLabel)
+
+Disable:
+  properties:
+    dest: "std::string"
+  children:
+
+ParallelBlock:
+  properties:
+    scope: "std::string"
+  children:
+    statements: list(Node)
+
+SingleStatement:
+  properties:
+    scope: "std::string"
+  children:
+    statement: Node
+    delay: DelayStatement

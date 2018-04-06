@@ -1,0 +1,476 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/case0.v
+          items:
+          - Ioport:
+              filename: ../../test/parser/testcases/case0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 2
+                  name: a
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/case0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: a
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/case0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 2
+                  name: b
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/case0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: b
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/case0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 2
+                  name: c
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/case0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: c
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/case0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 2
+                  name: d
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/case0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/case0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 3
+                  name: sel
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/case0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: sel
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: ../../test/parser/testcases/case0.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 4
+                  name: y
+                  sign: false
+              line: 4
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 4
+                  name: y
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Always:
+              filename: ../../test/parser/testcases/case0.v
+              line: 7
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 7
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 7
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+                  - Sens:
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 7
+                          name: b
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+                  - Sens:
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 7
+                          name: c
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+                  - Sens:
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 7
+                          name: d
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+                  - Sens:
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 7
+                          name: sel
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/case0.v
+                  line: 7
+                  scope: ''
+                  statements:
+                  - CaseStatement:
+                      caselist:
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/case0.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 0
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 9
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/case0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 9
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 9
+                                      name: y
+                                      scope:
+                                        IdentifierScope: null
+                              line: 9
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 9
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 9
+                                      name: a
+                                      scope:
+                                        IdentifierScope: null
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/case0.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 10
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/case0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 10
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 10
+                                      name: y
+                                      scope:
+                                        IdentifierScope: null
+                              line: 10
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 10
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 10
+                                      name: b
+                                      scope:
+                                        IdentifierScope: null
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/case0.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 2
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 11
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/case0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 11
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 11
+                                      name: y
+                                      scope:
+                                        IdentifierScope: null
+                              line: 11
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 11
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 11
+                                      name: c
+                                      scope:
+                                        IdentifierScope: null
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/case0.v
+                              line: 12
+                              sign: false
+                              size: -1
+                              value: 3
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 12
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/case0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 12
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 12
+                                      name: y
+                                      scope:
+                                        IdentifierScope: null
+                              line: 12
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 12
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 12
+                                      name: d
+                                      scope:
+                                        IdentifierScope: null
+                      - Case:
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 13
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: ../../test/parser/testcases/case0.v
+                              line: 13
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: ../../test/parser/testcases/case0.v
+                                      line: 13
+                                      value: Error in SEL
+                                  filename: ../../test/parser/testcases/case0.v
+                                  line: 13
+                                  syscall: display
+                      comp:
+                        Ulnot:
+                          filename: ../../test/parser/testcases/case0.v
+                          line: 8
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/case0.v
+                              line: 8
+                              name: sel
+                              scope:
+                                IdentifierScope: null
+                      filename: ../../test/parser/testcases/case0.v
+                      line: 8
+          line: 1
+          name: case0
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/case0.v
+              line: 1
+              name: a
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/case0.v
+              line: 1
+              name: b
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/case0.v
+              line: 1
+              name: c
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/case0.v
+              line: 1
+              name: d
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/case0.v
+              line: 1
+              name: sel
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/case0.v
+              line: 1
+              name: y
+              type: ''
+      filename: ../../test/parser/testcases/case0.v
+      line: 1
+  filename: ../../test/parser/testcases/case0.v
+  line: 1
+

@@ -1,0 +1,174 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/casez0.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/casez0.v
+              line: 3
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/casez0.v
+                  line: 3
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/casez0.v
+                      line: 3
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 3
+                          name: sel
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                CasezStatement:
+                  caselist:
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 2
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 5
+                          sign: false
+                          size: 1
+                          value: 0
+                      filename: ../../test/parser/testcases/casez0.v
+                      line: 5
+                      statement:
+                        SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 5
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/parser/testcases/casez0.v
+                                  line: 5
+                                  value: 'CASEX  : Logic 0 on sel'
+                              filename: ../../test/parser/testcases/casez0.v
+                              line: 5
+                              syscall: display
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 2
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 6
+                          sign: false
+                          size: 1
+                          value: 1
+                      filename: ../../test/parser/testcases/casez0.v
+                      line: 6
+                      statement:
+                        SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 6
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/parser/testcases/casez0.v
+                                  line: 6
+                                  value: 'CASEX  : Logic 1 on sel'
+                              filename: ../../test/parser/testcases/casez0.v
+                              line: 6
+                              syscall: display
+                  - Case:
+                      cond:
+                      - IntConst:
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 7
+                          value: 1'bx
+                      filename: ../../test/parser/testcases/casez0.v
+                      line: 7
+                      statement:
+                        SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 7
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/parser/testcases/casez0.v
+                                  line: 7
+                                  value: 'CASEX  : Logic x on sel'
+                              filename: ../../test/parser/testcases/casez0.v
+                              line: 7
+                              syscall: display
+                  - Case:
+                      cond:
+                      - IntConst:
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 8
+                          value: 1'bz
+                      filename: ../../test/parser/testcases/casez0.v
+                      line: 8
+                      statement:
+                        SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/parser/testcases/casez0.v
+                          line: 8
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/parser/testcases/casez0.v
+                                  line: 8
+                                  value: 'CASEX  : Logic z on sel'
+                              filename: ../../test/parser/testcases/casez0.v
+                              line: 8
+                              syscall: display
+                  comp:
+                    Identifier:
+                      filename: ../../test/parser/testcases/casez0.v
+                      line: 4
+                      name: sel
+                      scope:
+                        IdentifierScope: null
+                  filename: ../../test/parser/testcases/casez0.v
+                  line: 4
+          line: 1
+          name: case0
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/casez0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/casez0.v
+                  line: 1
+                  name: sel
+                  sign: false
+              line: 1
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/casez0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 1
+                  name: sel
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+      filename: ../../test/parser/testcases/casez0.v
+      line: 1
+  filename: ../../test/parser/testcases/casez0.v
+  line: 1
+

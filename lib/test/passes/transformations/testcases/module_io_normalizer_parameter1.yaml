@@ -1,0 +1,492 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../test/passes/transformations/testcases/parameter1.v
+          items:
+          - Always:
+              filename: ../test/passes/transformations/testcases/parameter1.v
+              line: 11
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 11
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 11
+                      sig:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 11
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 11
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 12
+                          name: reset
+                          scope:
+                            IdentifierScope: null
+                      false_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 15
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/parameter1.v
+                                  line: 16
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/parameter1.v
+                                      line: 16
+                                      name: out
+                                      scope:
+                                        IdentifierScope: null
+                              line: 16
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/parameter1.v
+                                  line: 16
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/parameter1.v
+                                      line: 16
+                                      name: in0
+                                      scope:
+                                        IdentifierScope: null
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 12
+                      true_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 12
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/parameter1.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/parameter1.v
+                                      line: 13
+                                      name: out
+                                      scope:
+                                        IdentifierScope: null
+                              line: 13
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/parameter1.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/parameter1.v
+                                      line: 13
+                                      name: RESET_VALUE
+                                      scope:
+                                        IdentifierScope: null
+          line: 1
+          name: parameter1
+          params:
+          - Parameter:
+              filename: ../test/passes/transformations/testcases/parameter1.v
+              line: 3
+              name: WIDTH
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 8
+          - Parameter:
+              filename: ../test/passes/transformations/testcases/parameter1.v
+              line: 4
+              name: RESET_VALUE
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 4
+                  var:
+                    Uminus:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 4
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+              widths:
+              - Width:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 4
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 4
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+              - Width:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 3
+          ports:
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 6
+                  name: reset
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 6
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 7
+                  name: clk
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 7
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 8
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 8
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 0
+              second:
+                Wire:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 8
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 8
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 9
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 9
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 0
+              second:
+                Reg:
+                  filename: ../test/passes/transformations/testcases/parameter1.v
+                  line: 9
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 9
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/parameter1.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 3
+      filename: ../test/passes/transformations/testcases/parameter1.v
+      line: 1
+  filename: ../test/passes/transformations/testcases/parameter1.v
+  line: 1
+

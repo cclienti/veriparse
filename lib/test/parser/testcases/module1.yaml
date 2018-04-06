@@ -1,0 +1,222 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/module1.v
+          items:
+          - Ioport:
+              filename: ../../test/parser/testcases/module1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/module1.v
+                  line: 3
+                  name: reset
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/module1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/module1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/module1.v
+                  line: 3
+                  name: clk
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/module1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/module1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/module1.v
+                  line: 4
+                  name: in0
+                  sign: true
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/module1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/module1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: true
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/module1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/module1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/module1.v
+                  line: 4
+                  name: in1
+                  sign: true
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/module1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/module1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in1
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: true
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/module1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/module1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/module1.v
+                  line: 5
+                  name: out
+                  sign: false
+              line: 5
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/module1.v
+                  line: 5
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+          line: 2
+          name: module1
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/module1.v
+              line: 2
+              name: reset
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/module1.v
+              line: 2
+              name: clk
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/module1.v
+              line: 2
+              name: in0
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/module1.v
+              line: 2
+              name: in1
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/module1.v
+              line: 2
+              name: out
+              type: ''
+      filename: ../../test/parser/testcases/module1.v
+      line: 2
+  filename: ../../test/parser/testcases/module1.v
+  line: 2
+

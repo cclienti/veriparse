@@ -1,0 +1,490 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/parameter1.v
+          items:
+          - Parameter:
+              filename: ../../test/parser/testcases/parameter1.v
+              line: 3
+              name: WIDTH
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 8
+          - Parameter:
+              filename: ../../test/parser/testcases/parameter1.v
+              line: 4
+              name: RESET_VALUE
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 4
+                  var:
+                    Uminus:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 4
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 4
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 4
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+              - Width:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 3
+          - Ioport:
+              filename: ../../test/parser/testcases/parameter1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 6
+                  name: reset
+                  sign: false
+              line: 6
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 6
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/parameter1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 7
+                  name: clk
+                  sign: false
+              line: 7
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 7
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/parameter1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 8
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 8
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 8
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 8
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 8
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: ../../test/parser/testcases/parameter1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 9
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 9
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 9
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 9
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 9
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/parameter1.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
+                  - Width:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 3
+          - Always:
+              filename: ../../test/parser/testcases/parameter1.v
+              line: 11
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 11
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 11
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 11
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/parameter1.v
+                  line: 11
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Identifier:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 12
+                          name: reset
+                          scope:
+                            IdentifierScope: null
+                      false_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 15
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../../test/parser/testcases/parameter1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/parameter1.v
+                                  line: 16
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/parameter1.v
+                                      line: 16
+                                      name: out
+                                      scope:
+                                        IdentifierScope: null
+                              line: 16
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/parameter1.v
+                                  line: 16
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/parameter1.v
+                                      line: 16
+                                      name: in0
+                                      scope:
+                                        IdentifierScope: null
+                      filename: ../../test/parser/testcases/parameter1.v
+                      line: 12
+                      true_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/parameter1.v
+                          line: 12
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../../test/parser/testcases/parameter1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/parameter1.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/parameter1.v
+                                      line: 13
+                                      name: out
+                                      scope:
+                                        IdentifierScope: null
+                              line: 13
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/parameter1.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/parameter1.v
+                                      line: 13
+                                      name: RESET_VALUE
+                                      scope:
+                                        IdentifierScope: null
+          line: 1
+          name: parameter1
+      filename: ../../test/parser/testcases/parameter1.v
+      line: 1
+  filename: ../../test/parser/testcases/parameter1.v
+  line: 1
+

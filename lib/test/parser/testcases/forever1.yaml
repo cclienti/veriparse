@@ -1,0 +1,174 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/forever1.v
+          items:
+          - Reg:
+              filename: ../../test/parser/testcases/forever1.v
+              line: 3
+              name: clk
+              right:
+                Rvalue: null
+              sign: false
+          - Initial:
+              filename: ../../test/parser/testcases/forever1.v
+              line: 5
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/forever1.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/forever1.v
+                      ldelay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+                          filename: ../../test/parser/testcases/forever1.v
+                          line: 6
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/forever1.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 6
+                              name: clk
+                              scope:
+                                IdentifierScope: null
+                      line: 6
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/forever1.v
+                          line: 6
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                  - ForeverStatement:
+                      filename: ''
+                      line: 0
+                      statement:
+                        BlockingSubstitution:
+                          filename: ../../test/parser/testcases/forever1.v
+                          ldelay:
+                            DelayStatement:
+                              delay:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/forever1.v
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 5
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 7
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 7
+                              var:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/forever1.v
+                                  line: 7
+                                  name: clk
+                                  scope:
+                                    IdentifierScope: null
+                          line: 7
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 7
+                              var:
+                                Ulnot:
+                                  filename: ../../test/parser/testcases/forever1.v
+                                  line: 7
+                                  right:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/forever1.v
+                                      line: 7
+                                      name: clk
+                                      scope:
+                                        IdentifierScope: null
+          - Initial:
+              filename: ../../test/parser/testcases/forever1.v
+              line: 10
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/forever1.v
+                  line: 10
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/parser/testcases/forever1.v
+                      line: 11
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 11
+                              value: Time = %d  clk = %b
+                          - SystemCall:
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 11
+                              syscall: time
+                          - Identifier:
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 11
+                              name: clk
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/parser/testcases/forever1.v
+                          line: 11
+                          syscall: monitor
+                  - SingleStatement:
+                      delay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/forever1.v
+                              line: 12
+                              sign: false
+                              size: -1
+                              value: 100
+                          filename: ../../test/parser/testcases/forever1.v
+                          line: 12
+                      filename: ../../test/parser/testcases/forever1.v
+                      line: 12
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/parser/testcases/forever1.v
+                          line: 12
+                          syscall: finish
+          line: 1
+          name: forever_example
+      filename: ../../test/parser/testcases/forever1.v
+      line: 1
+  filename: ../../test/parser/testcases/forever1.v
+  line: 1
+

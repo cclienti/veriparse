@@ -1,0 +1,369 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/while0.v
+          items:
+          - Integer:
+              filename: ../../test/parser/testcases/while0.v
+              line: 3
+              name: i
+              right:
+                Rvalue: null
+          - Integer:
+              filename: ../../test/parser/testcases/while0.v
+              line: 3
+              name: j
+              right:
+                Rvalue: null
+          - Reg:
+              filename: ../../test/parser/testcases/while0.v
+              lengths:
+              - Length:
+                  filename: ../../test/parser/testcases/while0.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 255
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+              - Length:
+                  filename: ../../test/parser/testcases/while0.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 7
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+              line: 4
+              name: ram
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/while0.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 7
+          - Initial:
+              filename: ../../test/parser/testcases/while0.v
+              line: 6
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/while0.v
+                  line: 6
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/while0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 7
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 7
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 7
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 7
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/while0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 8
+                              name: j
+                              scope:
+                                IdentifierScope: null
+                      line: 8
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 8
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+                  - WhileStatement:
+                      cond:
+                        LessThan:
+                          filename: ../../test/parser/testcases/while0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 9
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 256
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 9
+                      statement:
+                        Block:
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 9
+                          scope: ''
+                          statements:
+                          - WhileStatement:
+                              cond:
+                                LessThan:
+                                  filename: ../../test/parser/testcases/while0.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/while0.v
+                                      line: 10
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 10
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/while0.v
+                                      line: 10
+                                      sign: false
+                                      size: -1
+                                      value: 8
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 10
+                              statement:
+                                Block:
+                                  filename: ../../test/parser/testcases/while0.v
+                                  line: 10
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../../test/parser/testcases/while0.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/while0.v
+                                          line: 11
+                                          var:
+                                            Pointer:
+                                              filename: ../../test/parser/testcases/while0.v
+                                              line: 11
+                                              ptr:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/while0.v
+                                                  line: 11
+                                                  name: j
+                                                  scope:
+                                                    IdentifierScope: null
+                                              var:
+                                                Pointer:
+                                                  filename: ../../test/parser/testcases/while0.v
+                                                  line: 11
+                                                  ptr:
+                                                    Identifier:
+                                                      filename: ../../test/parser/testcases/while0.v
+                                                      line: 11
+                                                      name: i
+                                                      scope:
+                                                        IdentifierScope: null
+                                                  var:
+                                                    Identifier:
+                                                      filename: ../../test/parser/testcases/while0.v
+                                                      line: 11
+                                                      name: ram
+                                                      scope:
+                                                        IdentifierScope: null
+                                      line: 11
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/while0.v
+                                          line: 11
+                                          var:
+                                            Plus:
+                                              filename: ../../test/parser/testcases/while0.v
+                                              left:
+                                                Times:
+                                                  filename: ../../test/parser/testcases/while0.v
+                                                  left:
+                                                    Identifier:
+                                                      filename: ../../test/parser/testcases/while0.v
+                                                      line: 11
+                                                      name: i
+                                                      scope:
+                                                        IdentifierScope: null
+                                                  line: 11
+                                                  right:
+                                                    Identifier:
+                                                      filename: ../../test/parser/testcases/while0.v
+                                                      line: 11
+                                                      name: j
+                                                      scope:
+                                                        IdentifierScope: null
+                                              line: 11
+                                              right:
+                                                IntConstN:
+                                                  base: 10
+                                                  filename: ../../test/parser/testcases/while0.v
+                                                  line: 11
+                                                  sign: false
+                                                  size: -1
+                                                  value: 1
+                                  - SingleStatement:
+                                      delay:
+                                        DelayStatement: null
+                                      filename: ../../test/parser/testcases/while0.v
+                                      line: 12
+                                      scope: ''
+                                      statement:
+                                        SystemCall:
+                                          args:
+                                          - StringConst:
+                                              filename: ../../test/parser/testcases/while0.v
+                                              line: 12
+                                              value: Address = [%g][%g]  Data = %h
+                                          - Identifier:
+                                              filename: ../../test/parser/testcases/while0.v
+                                              line: 12
+                                              name: i
+                                              scope:
+                                                IdentifierScope: null
+                                          - Identifier:
+                                              filename: ../../test/parser/testcases/while0.v
+                                              line: 12
+                                              name: j
+                                              scope:
+                                                IdentifierScope: null
+                                          - Pointer:
+                                              filename: ../../test/parser/testcases/while0.v
+                                              line: 12
+                                              ptr:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/while0.v
+                                                  line: 12
+                                                  name: j
+                                                  scope:
+                                                    IdentifierScope: null
+                                              var:
+                                                Pointer:
+                                                  filename: ../../test/parser/testcases/while0.v
+                                                  line: 12
+                                                  ptr:
+                                                    Identifier:
+                                                      filename: ../../test/parser/testcases/while0.v
+                                                      line: 12
+                                                      name: i
+                                                      scope:
+                                                        IdentifierScope: null
+                                                  var:
+                                                    Identifier:
+                                                      filename: ../../test/parser/testcases/while0.v
+                                                      line: 12
+                                                      name: ram
+                                                      scope:
+                                                        IdentifierScope: null
+                                          filename: ../../test/parser/testcases/while0.v
+                                          line: 12
+                                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 1
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 15
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 15
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 15
+                          syscall: finish
+          line: 1
+          name: while0
+      filename: ../../test/parser/testcases/while0.v
+      line: 1
+  filename: ../../test/parser/testcases/while0.v
+  line: 1
+

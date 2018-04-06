@@ -1,0 +1,253 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/task2.v
+          items:
+          - Task:
+              automatic: true
+              filename: ../../test/parser/testcases/task2.v
+              line: 3
+              name: clogb2
+              statements:
+              - Ioport:
+                  filename: ../../test/parser/testcases/task2.v
+                  first:
+                    Input:
+                      filename: ../../test/parser/testcases/task2.v
+                      line: 4
+                      name: value
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/task2.v
+                          line: 4
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 4
+                  second: null
+              - Ioport:
+                  filename: ../../test/parser/testcases/task2.v
+                  first:
+                    Output:
+                      filename: ../../test/parser/testcases/task2.v
+                      line: 5
+                      name: clog
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/task2.v
+                          line: 5
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 5
+                  second:
+                    Reg:
+                      filename: ../../test/parser/testcases/task2.v
+                      line: 5
+                      name: clog
+                      right:
+                        Rvalue: null
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/task2.v
+                          line: 5
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 31
+              - Block:
+                  filename: ../../test/parser/testcases/task2.v
+                  line: 6
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        GreaterThan:
+                          filename: ../../test/parser/testcases/task2.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 7
+                              name: value
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+                      false_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/task2.v
+                          line: 11
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/parser/testcases/task2.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/task2.v
+                                  line: 12
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/task2.v
+                                      line: 12
+                                      name: clog
+                                      scope:
+                                        IdentifierScope: null
+                              line: 12
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/task2.v
+                                  line: 12
+                                  var:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/task2.v
+                                      line: 12
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                      filename: ../../test/parser/testcases/task2.v
+                      line: 7
+                      true_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/task2.v
+                          line: 7
+                          scope: ''
+                          statements:
+                          - SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: ../../test/parser/testcases/task2.v
+                              line: 8
+                              scope: ''
+                              statement:
+                                TaskCall:
+                                  args:
+                                  - Srl:
+                                      filename: ../../test/parser/testcases/task2.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/task2.v
+                                          line: 8
+                                          name: value
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 8
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/parser/testcases/task2.v
+                                          line: 8
+                                          sign: false
+                                          size: -1
+                                          value: 1
+                                  - Identifier:
+                                      filename: ../../test/parser/testcases/task2.v
+                                      line: 8
+                                      name: clog
+                                      scope:
+                                        IdentifierScope: null
+                                  filename: ../../test/parser/testcases/task2.v
+                                  line: 8
+                                  name: clogb2
+                          - BlockingSubstitution:
+                              filename: ../../test/parser/testcases/task2.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/task2.v
+                                  line: 9
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/task2.v
+                                      line: 9
+                                      name: clog
+                                      scope:
+                                        IdentifierScope: null
+                              line: 9
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/task2.v
+                                  line: 9
+                                  var:
+                                    Plus:
+                                      filename: ../../test/parser/testcases/task2.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/task2.v
+                                          line: 9
+                                          name: clog
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 9
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/parser/testcases/task2.v
+                                          line: 9
+                                          sign: false
+                                          size: -1
+                                          value: 1
+          line: 1
+          name: task2
+      filename: ../../test/parser/testcases/task2.v
+      line: 1
+  filename: ../../test/parser/testcases/task2.v
+  line: 1

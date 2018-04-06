@@ -1,0 +1,315 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/net1.v
+          items:
+          - Tri:
+              filename: ../../test/parser/testcases/net1.v
+              ldelay:
+                DelayStatement: null
+              line: 8
+              name: a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Tri:
+              filename: ../../test/parser/testcases/net1.v
+              ldelay:
+                DelayStatement: null
+              line: 9
+              name: b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: true
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/net1.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/parser/testcases/net1.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/net1.v
+                          line: 9
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 9
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/net1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 1
+          - Tri:
+              filename: ../../test/parser/testcases/net1.v
+              ldelay:
+                DelayStatement: null
+              lengths:
+              - Length:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/net1.v
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/parser/testcases/net1.v
+                      left:
+                        Power:
+                          filename: ../../test/parser/testcases/net1.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/net1.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 2
+                          line: 10
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/net1.v
+                              line: 10
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                      line: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/net1.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 10
+              name: c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/net1.v
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/parser/testcases/net1.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/net1.v
+                          line: 10
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/net1.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 1
+          line: 1
+          name: net1
+          params:
+          - Parameter:
+              filename: ../../test/parser/testcases/net1.v
+              line: 2
+              name: WIDTH
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/net1.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 8
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/net1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 3
+                  name: reset
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/net1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/net1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 4
+                  name: clk
+                  sign: false
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/net1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/net1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 5
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/net1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/net1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/net1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/net1.v
+                              line: 5
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/net1.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/net1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/net1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/net1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/net1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/net1.v
+                              line: 5
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/net1.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: ../../test/parser/testcases/net1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 6
+                  name: out
+                  sign: false
+              line: 6
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/net1.v
+                  line: 6
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+      filename: ../../test/parser/testcases/net1.v
+      line: 1
+  filename: ../../test/parser/testcases/net1.v
+  line: 1
+

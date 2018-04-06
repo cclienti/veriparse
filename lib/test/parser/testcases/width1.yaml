@@ -1,0 +1,497 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/width1.v
+          items:
+          - Function:
+              automatic: false
+              filename: ../../test/parser/testcases/width1.v
+              line: 7
+              name: word
+              ports:
+              - Ioport:
+                  filename: ../../test/parser/testcases/width1.v
+                  first:
+                    Input:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 7
+                      name: address
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 7
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 10
+                  line: 7
+                  second: null
+              - Ioport:
+                  filename: ../../test/parser/testcases/width1.v
+                  first:
+                    Input:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 7
+                      name: cst32
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 7
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 7
+                      - Width:
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 7
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 3
+                  line: 7
+                  second: null
+              retsign: false
+              rettype: NONE
+              retwidths:
+              - Width:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 7
+              - Width:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 3
+              statements:
+              - Block:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/parser/testcases/width1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 9
+                              name: address
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 0
+                      false_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 12
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/parser/testcases/width1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/width1.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/width1.v
+                                      line: 13
+                                      name: word
+                                      scope:
+                                        IdentifierScope: null
+                              line: 13
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/width1.v
+                                  line: 13
+                                  var:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/width1.v
+                                      line: 13
+                                      sign: false
+                                      size: 32
+                                      value: 0
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 9
+                      true_statement:
+                        Block:
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 9
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/parser/testcases/width1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/width1.v
+                                  line: 10
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/width1.v
+                                      line: 10
+                                      name: word
+                                      scope:
+                                        IdentifierScope: null
+                              line: 10
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/width1.v
+                                  line: 10
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/width1.v
+                                      line: 10
+                                      name: cst32
+                                      scope:
+                                        IdentifierScope: null
+          - Always:
+              filename: ../../test/parser/testcases/width1.v
+              line: 18
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 18
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 18
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 18
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 19
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          args:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 19
+                              name: address
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/width1.v
+                              line: 19
+                              name: MEM_WORD
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 19
+                          name: word
+          line: 1
+          name: width1
+          params:
+          - Parameter:
+              filename: ../../test/parser/testcases/width1.v
+              line: 2
+              name: MEM_WORD
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 2
+                      sign: false
+                      size: 32
+                      value: 2309737967
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 2
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 7
+              - Width:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 2
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 3
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/width1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 4
+                  name: address
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 10
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/width1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: address
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 10
+          - Ioport:
+              filename: ../../test/parser/testcases/width1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 5
+                  name: word_out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+                  - Width:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 5
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/width1.v
+                  line: 5
+                  name: word_out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+                  - Width:
+                      filename: ../../test/parser/testcases/width1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/width1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 3
+      filename: ../../test/parser/testcases/width1.v
+      line: 1
+  filename: ../../test/parser/testcases/width1.v
+  line: 1

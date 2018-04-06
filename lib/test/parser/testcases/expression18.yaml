@@ -1,0 +1,300 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/expression18.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/expression18.v
+              line: 8
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/expression18.v
+                  line: 8
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 8
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/expression18.v
+                          line: 8
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                NonblockingSubstitution:
+                  filename: ../../test/parser/testcases/expression18.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 8
+                      var:
+                        Identifier:
+                          filename: ../../test/parser/testcases/expression18.v
+                          line: 8
+                          name: out
+                          scope:
+                            IdentifierScope: null
+                  line: 8
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 8
+                      var:
+                        Sll:
+                          filename: ../../test/parser/testcases/expression18.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 8
+                              name: in
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 2
+          line: 1
+          name: expression18
+          params:
+          - Parameter:
+              filename: ../../test/parser/testcases/expression18.v
+              line: 2
+              name: WIDTH
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/expression18.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 8
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/expression18.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/expression18.v
+                  line: 3
+                  name: reset
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/expression18.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/expression18.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/expression18.v
+                  line: 4
+                  name: clk
+                  sign: false
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/expression18.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/expression18.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/expression18.v
+                  line: 5
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/expression18.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/expression18.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 5
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/expression18.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/expression18.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/expression18.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 5
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: ../../test/parser/testcases/expression18.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/expression18.v
+                  line: 6
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/expression18.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/expression18.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 6
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 6
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/expression18.v
+                  line: 6
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/expression18.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/expression18.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/expression18.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 6
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/expression18.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+      filename: ../../test/parser/testcases/expression18.v
+      line: 1
+  filename: ../../test/parser/testcases/expression18.v
+  line: 1
+

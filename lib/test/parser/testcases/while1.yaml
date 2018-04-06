@@ -1,0 +1,194 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/while1.v
+          items:
+          - Integer:
+              filename: ../../test/parser/testcases/while1.v
+              line: 3
+              name: i
+              right:
+                Rvalue: null
+          - Reg:
+              filename: ../../test/parser/testcases/while1.v
+              lengths:
+              - Length:
+                  filename: ../../test/parser/testcases/while1.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 255
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+              line: 4
+              name: ram
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/while1.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/while1.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 7
+          - Initial:
+              filename: ../../test/parser/testcases/while1.v
+              line: 6
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/while1.v
+                  line: 6
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/while1.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/while1.v
+                          line: 7
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/while1.v
+                              line: 7
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 7
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/while1.v
+                          line: 7
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/while1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                  - WhileStatement:
+                      cond:
+                        LessThan:
+                          filename: ../../test/parser/testcases/while1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/while1.v
+                              line: 8
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/while1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 256
+                      filename: ../../test/parser/testcases/while1.v
+                      line: 8
+                      statement:
+                        BlockingSubstitution:
+                          filename: ../../test/parser/testcases/while1.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/while1.v
+                              line: 8
+                              var:
+                                Pointer:
+                                  filename: ../../test/parser/testcases/while1.v
+                                  line: 8
+                                  ptr:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/while1.v
+                                      line: 8
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/while1.v
+                                      line: 8
+                                      name: ram
+                                      scope:
+                                        IdentifierScope: null
+                          line: 8
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/while1.v
+                              line: 8
+                              var:
+                                Plus:
+                                  filename: ../../test/parser/testcases/while1.v
+                                  left:
+                                    Times:
+                                      filename: ../../test/parser/testcases/while1.v
+                                      left:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/parser/testcases/while1.v
+                                          line: 8
+                                          sign: false
+                                          size: -1
+                                          value: 2
+                                      line: 8
+                                      right:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/while1.v
+                                          line: 8
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 8
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/while1.v
+                                      line: 8
+                                      sign: false
+                                      size: -1
+                                      value: 1
+          line: 1
+          name: while1
+      filename: ../../test/parser/testcases/while1.v
+      line: 1
+  filename: ../../test/parser/testcases/while1.v
+  line: 1
+

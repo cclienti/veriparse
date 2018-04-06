@@ -1,0 +1,304 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/module3.v
+          items:
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 7
+              name: A
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 7
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 2
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 7
+              name: B
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 7
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 3
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 7
+              name: C
+              sign: true
+              type: INTEGER
+              value: null
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 8
+              name: X
+              sign: true
+              type: NONE
+              value: null
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 8
+              name: Y
+              sign: true
+              type: NONE
+              value: null
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 9
+              name: Z
+              sign: false
+              type: NONE
+              value: null
+          - Ioport:
+              filename: ../../test/parser/testcases/module3.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 11
+                  name: reset
+                  sign: false
+              line: 11
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/module3.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 11
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/module3.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 11
+                  name: clk
+                  sign: false
+              line: 11
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/module3.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 11
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/module3.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 12
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 12
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 12
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 12
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 12
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/module3.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 12
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 12
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 12
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 12
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/module3.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 13
+                  name: out
+                  sign: false
+              line: 13
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 13
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+          line: 2
+          name: module3
+          params:
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 3
+              name: T1
+              sign: false
+              type: NONE
+              value: null
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 3
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 7
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 3
+              name: T2
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 3
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 3
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 7
+          - Parameter:
+              filename: ../../test/parser/testcases/module3.v
+              line: 4
+              name: T4
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 2
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/module3.v
+              line: 5
+              name: reset
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/module3.v
+              line: 5
+              name: clk
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/module3.v
+              line: 5
+              name: in
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/module3.v
+              line: 5
+              name: out
+              type: ''
+      filename: ../../test/parser/testcases/module3.v
+      line: 2
+  filename: ../../test/parser/testcases/module3.v
+  line: 2
+

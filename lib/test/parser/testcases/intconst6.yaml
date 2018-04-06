@@ -1,0 +1,225 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/intconst6.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/intconst6.v
+              line: 7
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  line: 7
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/intconst6.v
+                      line: 7
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 7
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                NonblockingSubstitution:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: ../../test/parser/testcases/intconst6.v
+                      line: 7
+                      var:
+                        Identifier:
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 7
+                          name: out
+                          scope:
+                            IdentifierScope: null
+                  line: 7
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/intconst6.v
+                      line: 7
+                      var:
+                        IntConstN:
+                          base: 16
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 7
+                          sign: true
+                          size: 8
+                          value: -2
+          line: 1
+          name: intconst6
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/intconst6.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  line: 2
+                  name: reset
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/intconst6.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  line: 3
+                  name: clk
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/intconst6.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  line: 4
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/intconst6.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/intconst6.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/intconst6.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  line: 5
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/intconst6.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/intconst6.v
+                  line: 5
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/intconst6.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/intconst6.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: ../../test/parser/testcases/intconst6.v
+      line: 1
+  filename: ../../test/parser/testcases/intconst6.v
+  line: 1

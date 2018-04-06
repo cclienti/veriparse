@@ -1,0 +1,182 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/block0.v
+          items:
+          - Reg:
+              filename: ../../test/parser/testcases/block0.v
+              line: 2
+              name: clk
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/parser/testcases/block0.v
+              line: 2
+              name: reset
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/parser/testcases/block0.v
+              line: 2
+              name: enable
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/parser/testcases/block0.v
+              line: 2
+              name: data
+              right:
+                Rvalue: null
+              sign: false
+          - Initial:
+              filename: ../../test/parser/testcases/block0.v
+              line: 4
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/block0.v
+                  line: 4
+                  scope: ''
+                  statements:
+                  - Block:
+                      filename: ../../test/parser/testcases/block0.v
+                      line: 5
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/parser/testcases/block0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 6
+                              var:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 6
+                                  name: clk
+                                  scope:
+                                    IdentifierScope: null
+                          line: 6
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 6
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                      - BlockingSubstitution:
+                          filename: ../../test/parser/testcases/block0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 7
+                              var:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 7
+                                  name: reset
+                                  scope:
+                                    IdentifierScope: null
+                          line: 7
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 7
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                  - Block:
+                      filename: ../../test/parser/testcases/block0.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/parser/testcases/block0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 10
+                                  name: enable
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 10
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                      - BlockingSubstitution:
+                          filename: ../../test/parser/testcases/block0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 11
+                                  name: data
+                                  scope:
+                                    IdentifierScope: null
+                          line: 11
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/block0.v
+                              line: 11
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/block0.v
+                                  line: 11
+                                  sign: false
+                                  size: -1
+                                  value: 0
+          line: 1
+          name: block0
+      filename: ../../test/parser/testcases/block0.v
+      line: 1
+  filename: ../../test/parser/testcases/block0.v
+  line: 1
+

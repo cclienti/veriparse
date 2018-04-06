@@ -1,0 +1,577 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: REG
+          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+          items:
+          - Parameter:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              line: 4
+              name: M
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 3
+          - Parameter:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              line: 4
+              name: N
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 4
+          - Ioport:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 6
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 6
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 6
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 6
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 6
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 6
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 7
+                  name: out0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 7
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 7
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 7
+                  name: out1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 7
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 7
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 8
+                  name: clk
+                  sign: false
+              line: 8
+              second: null
+          - Wire:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              ldelay:
+                DelayStatement: null
+              line: 10
+              name: t0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    Times:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 10
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      line: 10
+                      right:
+                        Minus:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 10
+                              name: N
+                              scope:
+                                IdentifierScope: null
+                          line: 10
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
+          - Wire:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              ldelay:
+                DelayStatement: null
+              line: 11
+              name: t1
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 11
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 11
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    Times:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 11
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      line: 11
+                      right:
+                        Minus:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          left:
+                            Times:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  line: 11
+                                  sign: false
+                                  size: -1
+                                  value: 2
+                              line: 11
+                              right:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  line: 11
+                                  name: N
+                                  scope:
+                                    IdentifierScope: null
+                          line: 11
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 1
+          - Instancelist:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 18
+                      lsb:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 18
+                          name: N
+                          scope:
+                            IdentifierScope: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 18
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 18
+                  module: dffn
+                  name: p0
+                  parameterlist:
+                  - ParamArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 18
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 18
+                      name: ''
+                  portlist:
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 18
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 18
+                              name: out0
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 18
+                              name: t0
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 18
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 18
+                              name: t0
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 18
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 18
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 19
+                      lsb:
+                        Times:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 19
+                              sign: false
+                              size: -1
+                              value: 2
+                          line: 19
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 19
+                              name: N
+                              scope:
+                                IdentifierScope: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 19
+                  module: dffn
+                  name: p1
+                  parameterlist:
+                  - ParamArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 18
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 18
+                      name: ''
+                  portlist:
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 19
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 19
+                              name: out1
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 19
+                              name: t1
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 19
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 19
+                              name: t1
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              line: 19
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          line: 19
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              line: 18
+              module: dffn
+              parameterlist:
+              - ParamArg:
+                  value:
+                    Identifier:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 18
+                      name: M
+                      scope:
+                        IdentifierScope: null
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 18
+                  name: ''
+          line: 3
+          name: MxN_pipeline
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              line: 3
+              name: in0
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              line: 3
+              name: in1
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              line: 3
+              name: out0
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              line: 3
+              name: out1
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              line: 3
+              name: clk
+              type: ''
+      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+      line: 3
+  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+  line: 3

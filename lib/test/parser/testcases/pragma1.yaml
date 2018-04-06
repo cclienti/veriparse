@@ -1,0 +1,208 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Pragma:
+          expression: null
+          filename: ../../test/parser/testcases/pragma1.v
+          line: 1
+          name: my_pragma
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/pragma1.v
+          items:
+          - Ioport:
+              filename: ../../test/parser/testcases/pragma1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 3
+                  name: reset
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/pragma1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 3
+                  name: clk
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/pragma1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 4
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/pragma1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/pragma1.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/pragma1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 5
+                  name: out
+                  sign: false
+              line: 5
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 5
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Reg:
+              filename: ../../test/parser/testcases/pragma1.v
+              lengths:
+              - Length:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/pragma1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 1023
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/pragma1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+              line: 7
+              name: ram
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/pragma1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/pragma1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 7
+          line: 2
+          name: pragma1
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/pragma1.v
+              line: 2
+              name: reset
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/pragma1.v
+              line: 2
+              name: clk
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/pragma1.v
+              line: 2
+              name: in
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/pragma1.v
+              line: 2
+              name: out
+              type: ''
+      filename: ../../test/parser/testcases/pragma1.v
+      line: 1
+  filename: ../../test/parser/testcases/pragma1.v
+  line: 1
+

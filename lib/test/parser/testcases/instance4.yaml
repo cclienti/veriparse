@@ -1,0 +1,899 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/instance4.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 3
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 3
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 3
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 3
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                NonblockingSubstitution:
+                  filename: ../../test/parser/testcases/instance4.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 3
+                          name: q
+                          scope:
+                            IdentifierScope: null
+                  line: 3
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 3
+                          name: d
+                          scope:
+                            IdentifierScope: null
+          line: 1
+          name: DFF
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 1
+                  name: q
+                  sign: false
+              line: 1
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 1
+                  name: q
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 2
+                  name: d
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/instance4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 2
+                  name: clk
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/instance4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/instance4.v
+          items:
+          - Parameter:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 7
+              name: bits
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 7
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 1
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 9
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 9
+                              name: bits
+                              scope:
+                                IdentifierScope: null
+                          line: 9
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 9
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 10
+                  name: q
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 10
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 10
+                              name: bits
+                              scope:
+                                IdentifierScope: null
+                          line: 10
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 10
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 11
+                  name: clk
+                  sign: false
+              line: 11
+              second: null
+          - Instancelist:
+              filename: ../../test/parser/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 13
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 13
+                              name: bits
+                              scope:
+                                IdentifierScope: null
+                          line: 13
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 1
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 13
+                  module: DFF
+                  name: dff
+                  portlist:
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 13
+                          name: q
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 13
+                          name: d
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 13
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              line: 13
+              module: DFF
+          line: 6
+          name: dffn
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 6
+              name: q
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 6
+              name: d
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 6
+              name: clk
+              type: ''
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/instance4.v
+          items:
+          - Parameter:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 17
+              name: M
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 17
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 3
+          - Parameter:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 17
+              name: N
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 17
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 4
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 19
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 19
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 19
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 19
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 19
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 19
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 19
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 19
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 19
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 19
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 19
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 19
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 20
+                  name: out0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 20
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 20
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 20
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 20
+                  name: out1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 20
+                              name: M
+                              scope:
+                                IdentifierScope: null
+                          line: 20
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 20
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 21
+                  name: clk
+                  sign: false
+              line: 21
+              second: null
+          - Wire:
+              filename: ../../test/parser/testcases/instance4.v
+              ldelay:
+                DelayStatement: null
+              line: 23
+              name: t0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 23
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 23
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    Times:
+                      filename: ../../test/parser/testcases/instance4.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 23
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      line: 23
+                      right:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 23
+                              name: N
+                              scope:
+                                IdentifierScope: null
+                          line: 23
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 23
+                              sign: false
+                              size: -1
+                              value: 1
+          - Wire:
+              filename: ../../test/parser/testcases/instance4.v
+              ldelay:
+                DelayStatement: null
+              line: 24
+              name: t1
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 24
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 24
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    Times:
+                      filename: ../../test/parser/testcases/instance4.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 24
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      line: 24
+                      right:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            Times:
+                              filename: ../../test/parser/testcases/instance4.v
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/instance4.v
+                                  line: 24
+                                  sign: false
+                                  size: -1
+                                  value: 2
+                              line: 24
+                              right:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/instance4.v
+                                  line: 24
+                                  name: N
+                                  scope:
+                                    IdentifierScope: null
+                          line: 24
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 24
+                              sign: false
+                              size: -1
+                              value: 1
+          - Instancelist:
+              filename: ../../test/parser/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 31
+                      lsb:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: N
+                          scope:
+                            IdentifierScope: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 31
+                  module: dffn
+                  name: p0
+                  parameterlist:
+                  - ParamArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 31
+                      name: ''
+                  portlist:
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: out0
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: t0
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: t0
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 32
+                      lsb:
+                        Times:
+                          filename: ../../test/parser/testcases/instance4.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              sign: false
+                              size: -1
+                              value: 2
+                          line: 32
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: N
+                              scope:
+                                IdentifierScope: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 32
+                  module: dffn
+                  name: p1
+                  parameterlist:
+                  - ParamArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: M
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 31
+                      name: ''
+                  portlist:
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: out1
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: t1
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: t1
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+                  - PortArg:
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      filename: ''
+                      line: 0
+                      name: ''
+              line: 31
+              module: dffn
+              parameterlist:
+              - ParamArg:
+                  value:
+                    Identifier:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 31
+                      name: M
+                      scope:
+                        IdentifierScope: null
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 31
+                  name: ''
+          line: 16
+          name: MxN_pipeline
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: in0
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: in1
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: out0
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: out1
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: clk
+              type: ''
+      filename: ../../test/parser/testcases/instance4.v
+      line: 1
+  filename: ../../test/parser/testcases/instance4.v
+  line: 1

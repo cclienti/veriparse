@@ -1,0 +1,372 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/bidir0.v
+          items:
+          - Ioport:
+              filename: ../../test/parser/testcases/bidir0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 2
+                  name: oe
+                  sign: false
+                  widths: []
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/parser/testcases/bidir0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 3
+                  name: clk
+                  sign: false
+                  widths: []
+              line: 3
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/parser/testcases/bidir0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 4
+                  name: inp
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/parser/testcases/bidir0.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 5
+                  name: outp
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/parser/testcases/bidir0.v
+              first:
+                Inout:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 6
+                  name: bidir
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 6
+              second:
+                Variable: null
+          - Reg:
+              filename: ../../test/parser/testcases/bidir0.v
+              lengths: []
+              line: 8
+              name: a
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 8
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 8
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 8
+                      sign: false
+                      size: -1
+                      value: 7
+          - Reg:
+              filename: ../../test/parser/testcases/bidir0.v
+              lengths: []
+              line: 9
+              name: b
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/parser/testcases/bidir0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 11
+                      name: bidir
+                      scope:
+                        IdentifierScope: null
+              line: 11
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 11
+                  var:
+                    Cond:
+                      cond:
+                        Identifier:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 11
+                          name: oe
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/parser/testcases/bidir0.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 11
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                      line: 11
+                      right:
+                        IntConst:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 11
+                          value: 8'bZ
+          - Assign:
+              filename: ../../test/parser/testcases/bidir0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 12
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 12
+                      name: outp
+                      scope:
+                        IdentifierScope: null
+              line: 12
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 12
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 12
+                      name: b
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 14
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 14
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 14
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 14
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 14
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 15
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/bidir0.v
+                              line: 15
+                              name: b
+                              scope:
+                                IdentifierScope: null
+                      line: 15
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 15
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/bidir0.v
+                              line: 15
+                              name: bidir
+                              scope:
+                                IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/bidir0.v
+                              line: 16
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/bidir0.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/bidir0.v
+                              line: 16
+                              name: inp
+                              scope:
+                                IdentifierScope: null
+          line: 1
+          name: bidirec
+          params: []
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: oe
+              widths: []
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: clk
+              widths: []
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: inp
+              widths: []
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: outp
+              widths: []
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: bidir
+              widths: []
+      filename: ../../test/parser/testcases/bidir0.v
+      line: 1
+  filename: ../../test/parser/testcases/bidir0.v
+  line: 1
+

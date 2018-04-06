@@ -1,0 +1,249 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/fork0.v
+          items:
+          - Ioport:
+              filename: ../../test/parser/testcases/fork0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/fork0.v
+                  line: 2
+                  name: clk
+                  sign: false
+              line: 2
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/fork0.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/fork0.v
+                  line: 3
+                  name: a
+                  sign: false
+              line: 3
+              second: null
+          - Ioport:
+              filename: ../../test/parser/testcases/fork0.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/fork0.v
+                  line: 4
+                  name: b
+                  sign: false
+              line: 4
+              second: null
+          - Reg:
+              filename: ../../test/parser/testcases/fork0.v
+              line: 6
+              name: a
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/parser/testcases/fork0.v
+              line: 6
+              name: b
+              right:
+                Rvalue: null
+              sign: false
+          - Initial:
+              filename: ../../test/parser/testcases/fork0.v
+              line: 8
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/fork0.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/fork0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 9
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                      line: 9
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 9
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/fork0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 10
+                              name: b
+                              scope:
+                                IdentifierScope: null
+                      line: 10
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 10
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 0
+          - Always:
+              filename: ../../test/parser/testcases/fork0.v
+              line: 13
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/fork0.v
+                  line: 13
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/fork0.v
+                      line: 13
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 13
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                ParallelBlock:
+                  filename: ../../test/parser/testcases/fork0.v
+                  line: 13
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/fork0.v
+                      ldelay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 14
+                              sign: false
+                              size: -1
+                              value: 2
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 14
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 14
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 14
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                      line: 14
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 14
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 14
+                              sign: false
+                              size: -1
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/fork0.v
+                      ldelay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 1
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 15
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 15
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 15
+                              name: b
+                              scope:
+                                IdentifierScope: null
+                      line: 15
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/fork0.v
+                          line: 15
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/fork0.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 1
+          line: 1
+          name: fork0
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/fork0.v
+              line: 1
+              name: clk
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/fork0.v
+              line: 1
+              name: a
+              type: ''
+          - Port:
+              filename: ../../test/parser/testcases/fork0.v
+              line: 1
+              name: b
+              type: ''
+      filename: ../../test/parser/testcases/fork0.v
+      line: 1
+  filename: ../../test/parser/testcases/fork0.v
+  line: 1
+

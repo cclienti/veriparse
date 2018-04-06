@@ -1,0 +1,661 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/module2.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 7
+                  name: clock
+                  sign: false
+              line: 7
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 8
+                  name: reset_n
+                  sign: false
+              line: 8
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 9
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 9
+                          name: LOG2_WIDTH
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 9
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 9
+                          name: LOG2_WIDTH
+                          scope:
+                            IdentifierScope: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 10
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 10
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 10
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 10
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 10
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 11
+                  name: strobe
+                  sign: false
+              line: 11
+              second:
+                Variable: null
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 12
+              name: out
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 12
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 12
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 12
+                          sign: false
+                          size: -1
+                          value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 13
+              name: strobe
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 14
+              name: prefix_l_suffix
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 14
+                          name: LO2
+                          scope:
+                            IdentifierScope: null
+                      line: 14
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 1
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 16
+              name: prefix_j_suffix
+              right:
+                Rvalue: null
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              lengths:
+              - Length:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 17
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 17
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 17
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 17
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 17
+              name: prefix_lut_suffix
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 17
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 17
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 17
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 17
+                          sign: false
+                          size: -1
+                          value: 1
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 19
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 19
+                  scope: ''
+                  statements:
+                  - ForStatement:
+                      cond:
+                        LessThan:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 20
+                              name: prefix_j_suffix
+                              scope:
+                                IdentifierScope: null
+                          line: 20
+                          right:
+                            Minus:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 20
+                                  name: WIDTH
+                                  scope:
+                                    IdentifierScope: null
+                              line: 20
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 20
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 20
+                      post:
+                        BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 20
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 20
+                                  name: prefix_j_suffix
+                                  scope:
+                                    IdentifierScope: null
+                          line: 20
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 20
+                              var:
+                                Plus:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/module2.v
+                                      line: 20
+                                      name: prefix_j_suffix
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 20
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/module2.v
+                                      line: 20
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                      pre:
+                        BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 20
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 20
+                                  name: prefix_j_suffix
+                                  scope:
+                                    IdentifierScope: null
+                          line: 20
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 20
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 20
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 20
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 21
+                                  var:
+                                    Pointer:
+                                      filename: ../../test/passes/transformations/testcases/module2.v
+                                      line: 21
+                                      ptr:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/module2.v
+                                          line: 21
+                                          name: prefix_j_suffix
+                                          scope:
+                                            IdentifierScope: null
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/module2.v
+                                          line: 21
+                                          name: prefix_lut_suffix
+                                          scope:
+                                            IdentifierScope: null
+                              line: 21
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 21
+                                  var:
+                                    Plus:
+                                      filename: ../../test/passes/transformations/testcases/module2.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/module2.v
+                                          line: 21
+                                          name: prefix_j_suffix
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 21
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/module2.v
+                                          line: 21
+                                          sign: false
+                                          size: -1
+                                          value: 1
+          - Always:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 25
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 25
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 25
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 25
+                          name: reset_n
+                          scope:
+                            IdentifierScope: null
+                      type: NEGEDGE
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 25
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 25
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 25
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 26
+                              name: prefix_l_suffix
+                              scope:
+                                IdentifierScope: null
+                      line: 26
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 26
+                              name: in
+                              scope:
+                                IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 27
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 27
+                              name: out
+                              scope:
+                                IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 27
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/module2.v
+                              line: 27
+                              ptr:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 27
+                                  name: prefix_l_suffix
+                                  scope:
+                                    IdentifierScope: null
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/module2.v
+                                  line: 27
+                                  name: prefix_lut_suffix
+                                  scope:
+                                    IdentifierScope: null
+          line: 1
+          name: module2
+          params:
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 2
+              name: WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 2
+                  var:
+                    Power:
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 2
+                      right:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/module2.v
+                          line: 2
+                          name: LOG2_WIDTH
+                          scope:
+                            IdentifierScope: null
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 3
+              name: LOG2_WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/module2.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 3
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 4
+              name: LOG2
+              sign: false
+              type: NONE
+              value: null
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 5
+              name: clock
+          - Port:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 5
+              name: reset_n
+          - Port:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 5
+              name: in
+          - Port:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 5
+              name: out
+          - Port:
+              filename: ../../test/passes/transformations/testcases/module2.v
+              line: 5
+              name: strobe
+      filename: ../../test/passes/transformations/testcases/module2.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/module2.v
+  line: 1
+

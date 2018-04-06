@@ -1,0 +1,244 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/translate_off1.v
+          items:
+          - Localparam:
+              filename: ../../test/parser/testcases/translate_off1.v
+              line: 8
+              name: DOUBLE_WIDTH
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 8
+                  var:
+                    Times:
+                      filename: ../../test/parser/testcases/translate_off1.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          line: 8
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 8
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 2
+          - Reg:
+              filename: ../../test/parser/testcases/translate_off1.v
+              line: 15
+              name: rtl_reg
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 15
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/translate_off1.v
+                      line: 15
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    Minus:
+                      filename: ../../test/parser/testcases/translate_off1.v
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          line: 15
+                          name: DOUBLE_WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 15
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 1
+          line: 1
+          name: translate_off1
+          params:
+          - Parameter:
+              filename: ../../test/parser/testcases/translate_off1.v
+              line: 2
+              name: WIDTH
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/translate_off1.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 8
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/translate_off1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 3
+                  name: reset
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/translate_off1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 4
+                  name: clk
+                  sign: false
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/translate_off1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 5
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/translate_off1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/translate_off1.v
+                              line: 5
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/translate_off1.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/translate_off1.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/translate_off1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/translate_off1.v
+                              line: 5
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/translate_off1.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: ../../test/parser/testcases/translate_off1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 6
+                  name: out
+                  sign: false
+              line: 6
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/translate_off1.v
+                  line: 6
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+      filename: ../../test/parser/testcases/translate_off1.v
+      line: 1
+  filename: ../../test/parser/testcases/translate_off1.v
+  line: 1
+

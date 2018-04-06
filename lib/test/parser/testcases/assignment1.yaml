@@ -1,0 +1,167 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/assignment1.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/assignment1.v
+              line: 4
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  line: 4
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/assignment1.v
+                      line: 4
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/assignment1.v
+                          line: 4
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                NonblockingSubstitution:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: ../../test/parser/testcases/assignment1.v
+                      line: 4
+                      var:
+                        Identifier:
+                          filename: ../../test/parser/testcases/assignment1.v
+                          line: 4
+                          name: s
+                          scope:
+                            IdentifierScope: null
+                  line: 4
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/assignment1.v
+                      line: 4
+                      var:
+                        And:
+                          filename: ../../test/parser/testcases/assignment1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/assignment1.v
+                              line: 4
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                          line: 4
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/assignment1.v
+                              line: 4
+                              name: b
+                              scope:
+                                IdentifierScope: null
+          line: 1
+          name: assignment1
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/assignment1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  line: 1
+                  name: clock
+                  sign: false
+              line: 1
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  ldelay:
+                    DelayStatement: null
+                  length:
+                    Length: null
+                  line: 1
+                  name: clock
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/assignment1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  line: 2
+                  name: a
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  ldelay:
+                    DelayStatement: null
+                  length:
+                    Length: null
+                  line: 2
+                  name: a
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/assignment1.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  line: 2
+                  name: b
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  ldelay:
+                    DelayStatement: null
+                  length:
+                    Length: null
+                  line: 2
+                  name: b
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/assignment1.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  line: 3
+                  name: s
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/assignment1.v
+                  ldelay:
+                    DelayStatement: null
+                  length:
+                    Length: null
+                  line: 3
+                  name: s
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+      filename: ../../test/parser/testcases/assignment1.v
+      line: 1
+  filename: ../../test/parser/testcases/assignment1.v
+  line: 1
