@@ -128,6 +128,10 @@ namespace Veriparse
 							const std::string &new_name = replace_dict[name];
 							variable->set_name(new_name);
 						}
+						AST::Node::ListPtr children = node->get_children();
+						for (AST::Node::Ptr child: *children) {
+							rc |= anotate_names(child, replace_dict);
+						}
 					}
 
 					else if (node->is_node_type(AST::NodeType::Identifier)) {
@@ -145,6 +149,10 @@ namespace Veriparse
 						if(replace_dict.count(name)) {
 							const std::string &new_name = replace_dict[name];
 							localparam->set_name(new_name);
+						}
+						AST::Node::ListPtr children = node->get_children();
+						for (AST::Node::Ptr child: *children) {
+							rc |= anotate_names(child, replace_dict);
 						}
 					}
 
@@ -164,6 +172,10 @@ namespace Veriparse
 							const std::string &new_name = replace_dict[name];
 							fcall->set_name(new_name);
 						}
+						AST::Node::ListPtr children = node->get_children();
+						for (AST::Node::Ptr child: *children) {
+							rc |= anotate_names(child, replace_dict);
+						}
 					}
 
 					else if (node->is_node_type(AST::NodeType::Task)) {
@@ -181,6 +193,10 @@ namespace Veriparse
 						if(replace_dict.count(name)) {
 							const std::string &new_name = replace_dict[name];
 							tcall->set_name(new_name);
+						}
+						AST::Node::ListPtr children = node->get_children();
+						for (AST::Node::Ptr child: *children) {
+							rc |= anotate_names(child, replace_dict);
 						}
 					}
 

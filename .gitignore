@@ -5,6 +5,9 @@
 .*.swp
 *.log
 
+### Kdevelop
+*.kdev4
+
 ### Binary files
 *.o
 *.a
