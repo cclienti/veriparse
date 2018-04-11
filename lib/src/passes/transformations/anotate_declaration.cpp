@@ -1,5 +1,7 @@
 #include <veriparse/passes/transformations/anotate_declaration.hpp>
 #include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/passes/analysis/function.hpp>
+#include <veriparse/passes/analysis/task.hpp>
 #include <veriparse/logger/logger.hpp>
 
 #include <algorithm>
@@ -163,6 +165,10 @@ namespace Veriparse
 							const std::string &new_name = replace_dict[name];
 							function->set_name(new_name);
 						}
+						std::vector<std::string> iodirs = Analysis::Function::get_iodir_names(node);
+						std::vector<std::string> vars = Analysis::Function::get_variable_names(node);
+						for(const auto &iodir: iodirs) LOG_INFO_N(node) << iodir;
+						for(const auto &var: vars)	LOG_INFO_N(node) << var;
 					}
 
 					else if (node->is_node_type(AST::NodeType::FunctionCall)) {
@@ -185,6 +191,10 @@ namespace Veriparse
 							const std::string &new_name = replace_dict[name];
 							task->set_name(new_name);
 						}
+						std::vector<std::string> iodirs = Analysis::Task::get_iodir_names(node);
+						std::vector<std::string> vars = Analysis::Task::get_variable_names(node);
+						for(const auto &iodir: iodirs) LOG_INFO_N(node) << iodir;
+						for(const auto &var: vars) LOG_INFO_N(node) << var;
 					}
 
 					else if (node->is_node_type(AST::NodeType::TaskCall)) {

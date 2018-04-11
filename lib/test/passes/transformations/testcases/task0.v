@@ -1,10 +1,15 @@
 module task0;
 
+   localparam DEC = 1;
+   localparam SHIFT = 1;
+
    task clogb2(input [31:0] value, output reg [31:0] clog);
+      integer SHIFT;
       begin
-         value = value - 1;
+         SHIFT = 1;
+         value = value - DEC;
          for (clog = 0; value > 0; clog = clog + 1) begin
-            value = value >> 1;
+            value = value >> SHIFT;
          end
       end
    endtask
