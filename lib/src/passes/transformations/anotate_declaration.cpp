@@ -165,10 +165,13 @@ namespace Veriparse
 							const std::string &new_name = replace_dict[name];
 							function->set_name(new_name);
 						}
-						std::vector<std::string> iodirs = Analysis::Function::get_iodir_names(node);
-						std::vector<std::string> vars = Analysis::Function::get_variable_names(node);
-						for(const auto &iodir: iodirs) LOG_INFO_N(node) << iodir;
-						for(const auto &var: vars)	LOG_INFO_N(node) << var;
+						std::set<std::string> locals = merge_set(to_set(Analysis::Function::get_iodir_names(node)),
+						                                         to_set(Analysis::Function::get_variable_names(node)));
+						ReplaceDict new_replace_dict = remove_keys(replace_dict, locals);
+						AST::Node::ListPtr children = node->get_children();
+						for (AST::Node::Ptr child: *children) {
+							rc |= anotate_names(child, new_replace_dict);
+						}
 					}
 
 					else if (node->is_node_type(AST::NodeType::FunctionCall)) {
@@ -191,10 +194,13 @@ namespace Veriparse
 							const std::string &new_name = replace_dict[name];
 							task->set_name(new_name);
 						}
-						std::vector<std::string> iodirs = Analysis::Task::get_iodir_names(node);
-						std::vector<std::string> vars = Analysis::Task::get_variable_names(node);
-						for(const auto &iodir: iodirs) LOG_INFO_N(node) << iodir;
-						for(const auto &var: vars) LOG_INFO_N(node) << var;
+						std::set<std::string> locals = merge_set(to_set(Analysis::Task::get_iodir_names(node)),
+						                                         to_set(Analysis::Task::get_variable_names(node)));
+						ReplaceDict new_replace_dict = remove_keys(replace_dict, locals);
+						AST::Node::ListPtr children = node->get_children();
+						for (AST::Node::Ptr child: *children) {
+							rc |= anotate_names(child, new_replace_dict);
+						}
 					}
 
 					else if (node->is_node_type(AST::NodeType::TaskCall)) {

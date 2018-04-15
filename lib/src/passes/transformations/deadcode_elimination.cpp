@@ -10,6 +10,26 @@
 #include <cstddef>
 #include <sstream>
 
+namespace
+{
+	template<class T>
+	std::string print_set(const std::set<T> &set)
+	{
+		std::stringstream ss;
+		typename std::set<T>::const_iterator it = set.cbegin();
+		typename std::set<T>::const_iterator it_end = set.cend();
+		if(it == it_end) return ss.str();
+		while(1) {
+			ss << *it;
+			if(++it != it_end)
+				ss << ", ";
+			else
+				break;
+		}
+		return ss.str();
+	}
+}
+
 
 namespace Veriparse
 {
@@ -17,30 +37,6 @@ namespace Veriparse
 	{
 		namespace Transformations
 		{
-
-			namespace
-			{
-				std::string print_set(const DeadcodeElimination::DSet &dset)
-				{
-					std::stringstream ss;
-					std::set<std::string>::const_iterator it = dset.cbegin();
-					std::set<std::string>::const_iterator it_end = dset.cend();
-
-					if(it == it_end) return ss.str();
-
-					while(1) {
-						ss << *it;
-						if(++it != it_end) {
-							ss << ", ";
-						}
-						else {
-							break;
-						}
-					}
-
-					return ss.str();
-				}
-			}
 
 			int DeadcodeElimination::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 			{
@@ -66,10 +62,10 @@ namespace Veriparse
 					lvalue_set.insert(var_node->get_name());
 				}
 
-				DSet iodir_set = vec2set(Analysis::Module::get_iodir_names(node));
-				DSet localparam_set = vec2set(Analysis::Module::get_localparam_names(node));
-				DSet parameter_set = vec2set(Analysis::Module::get_parameter_names(node));
-				DSet rvalue_set = vec2set(Analysis::Module::get_rvalue_identifier_names(node));
+				DSet iodir_set = to_set(Analysis::Module::get_iodir_names(node));
+				DSet localparam_set = to_set(Analysis::Module::get_localparam_names(node));
+				DSet parameter_set = to_set(Analysis::Module::get_parameter_names(node));
+				DSet rvalue_set = to_set(Analysis::Module::get_rvalue_identifier_names(node));
 
 				DSet instance_arg_set;
 				AST::Instance::ListPtr instances = Analysis::Module::get_instance_nodes(node);
@@ -149,22 +145,22 @@ namespace Veriparse
 					else if(node->is_node_category(AST::NodeType::Assign)) {
 						AST::Assign::Ptr assign = AST::cast_to<AST::Assign>(node);
 						// Looking for lvalues for the current assignment
-						DSet lvalue_set = vec2set(Analysis::Lvalue::get_lvalue_names(assign->get_left()));
+						DSet lvalue_set = to_set(Analysis::Lvalue::get_lvalue_names(assign->get_left()));
 
 						// Compute the intersection with the dead set.
 						std::set<std::string> inter_set;
 						std::set_intersection(deadset.begin(), deadset.end(), lvalue_set.begin(), lvalue_set.end(),
 						                      std::inserter(inter_set, inter_set.begin()));
 
-						LOG_INFO << "lvalue_set={" << print_set(lvalue_set) << "} - "
-						         << "inter_set={" << print_set(inter_set) << "}";
+						LOG_INFO << "lvalue_set={" << ::print_set(lvalue_set) << "} - "
+						         << "inter_set={" << ::print_set(inter_set) << "}";
 
 						// If the intersection is equal to the lvalue_set
 						if(inter_set == lvalue_set) {
 							// We can remove safely the stmt
 							parent->remove(node);
 							removedset.insert(lvalue_set.begin(), lvalue_set.end());
-							LOG_INFO_N(node) << "removing " << print_set(lvalue_set) << " assignation";
+							LOG_INFO_N(node) << "removing " << ::print_set(lvalue_set) << " assignation";
 						}
 					}
 

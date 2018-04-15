@@ -1,11 +1,16 @@
 module function0();
 
+   localparam DEC = 1;
+   localparam SHIFT = 1;
+
    function integer clogb2(input [31:0] value);
+      integer SHIFT;
       reg [31:0] tmp;
       begin
-         tmp = value - 1;
+         SHIFT = 1;
+         tmp = value - DEC;
          for (clogb2 = 0; tmp > 0; clogb2 = clogb2 + 1) begin
-            tmp = tmp >> 1;
+            tmp = tmp >> SHIFT;
          end
       end
    endfunction
