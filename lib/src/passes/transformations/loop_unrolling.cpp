@@ -1,5 +1,8 @@
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
 #include <veriparse/passes/transformations/ast_replace.hpp>
+#include <veriparse/passes/transformations/annotate_declaration.hpp>
+#include <veriparse/passes/transformations/expression_evaluation.hpp>
+#include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/logger/logger.hpp>
 
 
@@ -60,7 +63,7 @@ namespace Veriparse
 						}
 						LOG_TRACE_N(for_node) << print_for_range_t(*for_range);
 
-						// Unroll the statement
+						// Unroll the statements
 						AST::Node::ListPtr stmts;
 						if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
 							stmts = AST::cast_to<AST::Block>(for_node->get_statement())->get_statements();
@@ -70,14 +73,26 @@ namespace Veriparse
 							stmts->push_back(for_node->get_statement());
 						}
 
+						// Replace the loop identifier in unrolled statements and annotate declarations
 						AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
+						AnnotateDeclaration annotate;
 
 						for(AST::Node::Ptr p: for_range->second) {
 							AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
 							ASTReplace::replace_identifier(stmts_copy, for_range->first, p);
+
+							// We put the stmts vector in a AST::Block in order to
+							// annotate all stmts at a time.
+							std::ostringstream ss_replace;
+							ss_replace << "$&_" << for_range->first << "_" << Generators::VerilogGenerator().render(p);
+							annotate.set_search_replace("^.*$", ss_replace.str());
+							AST::Block::Ptr block = std::make_shared<AST::Block>(stmts_copy, "");
+							annotate.run(block);
+
 							unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
 						}
 
+						// Replace the unrolled statements in the parent block
 						if (parent->is_node_type(AST::NodeType::Block)) {
 							parent->replace(node, unrolled_stmts);
 						}
@@ -95,7 +110,7 @@ namespace Veriparse
 							}
 						}
 
-						// Finally search for another nested for statement
+						// Finally search for another nested for statement in the unrolled ones.
 						for (AST::Node::Ptr child: *unrolled_stmts) {
 							ret += process(child, parent);
 						}

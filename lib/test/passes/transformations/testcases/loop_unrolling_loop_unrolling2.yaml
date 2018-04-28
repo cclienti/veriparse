@@ -1,0 +1,4068 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+          items:
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+              items:
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 4
+                  name: i
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_0
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_1
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_1_j_i_1_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_1_j_i_1_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_1_j_i_1_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_2
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_2_j_i_2_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_2_j_i_2_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 2
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_2_j_i_2_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_2_j_i_2_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_2_j_i_2_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 2
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_2_j_i_2_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_3
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_3_j_i_3_3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_3_j_i_3_3
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_3_j_i_3_3
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_3_j_i_3_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_3_j_i_3_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_3_j_i_3_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_3_j_i_3_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_3_j_i_3_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_3_j_i_3_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_4
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_4_j_i_4_4
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_4_j_i_4_4
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 4
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_4_j_i_4_4
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_4_j_i_4_3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_4_j_i_4_3
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 4
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_4_j_i_4_3
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_4_j_i_4_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_4_j_i_4_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 4
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_4_j_i_4_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_4_j_i_4_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_4_j_i_4_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 4
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_4_j_i_4_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_5
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_5_j_i_5_5
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_5_j_i_5_5
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 5
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_5_j_i_5_5
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_5_j_i_5_4
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_5_j_i_5_4
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 5
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_5_j_i_5_4
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_5_j_i_5_3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_5_j_i_5_3
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 5
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_5_j_i_5_3
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_5_j_i_5_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_5_j_i_5_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 5
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_5_j_i_5_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_5_j_i_5_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_5_j_i_5_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 5
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_5_j_i_5_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_6
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_6_j_i_6_6
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_6_j_i_6_6
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 6
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_6_j_i_6_6
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_6_j_i_6_5
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_6_j_i_6_5
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 6
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_6_j_i_6_5
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_6_j_i_6_4
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_6_j_i_6_4
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 6
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_6_j_i_6_4
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_6_j_i_6_3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_6_j_i_6_3
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 6
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_6_j_i_6_3
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_6_j_i_6_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_6_j_i_6_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 6
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_6_j_i_6_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_6_j_i_6_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_6_j_i_6_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 6
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_6_j_i_6_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_7
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_7_j_i_7_7
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_7_j_i_7_7
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_7_j_i_7_7
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_7_j_i_7_6
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_7_j_i_7_6
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_7_j_i_7_6
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_7_j_i_7_5
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_7_j_i_7_5
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_7_j_i_7_5
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_7_j_i_7_4
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_7_j_i_7_4
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_7_j_i_7_4
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_7_j_i_7_3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_7_j_i_7_3
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_7_j_i_7_3
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_7_j_i_7_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_7_j_i_7_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_7_j_i_7_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_7_j_i_7_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_7_j_i_7_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_7_j_i_7_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_8
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_8
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_8
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_8
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_7
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_7
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_7
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_6
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_6
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_6
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_5
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_5
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_5
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_4
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_4
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_4
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_3
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_3
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_8_j_i_8_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_8_j_i_8_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_8_j_i_8_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 6
+                  name: j_i_9
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_9
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_9
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_9
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_8
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_8
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_8
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_7
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_7
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_7
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_6
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_6
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_6
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_5
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_5
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_5
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_4
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_4
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_4
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_3
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_3
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_3
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_2
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_2
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_2
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              - Reg:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  lengths: []
+                  line: 8
+                  name: R_i_9_j_i_9_1
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                  line: 9
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                      line: 9
+                      scope: ''
+                      statements:
+                      - BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 10
+                                  name: R_i_9_j_i_9_1
+                                  scope:
+                                    IdentifierScope: null
+                          line: 10
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 10
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                          line: 11
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  value: '%m'
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                                  line: 11
+                                  name: R_i_9_j_i_9_1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+                              line: 11
+                              syscall: display
+              line: 3
+          line: 1
+          name: loop_unrolling2
+      filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/loop_unrolling2.v
+  line: 1
+

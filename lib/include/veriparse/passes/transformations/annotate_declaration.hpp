@@ -1,5 +1,5 @@
-#ifndef VERIPARSE_PASSES_TRANSFORMATIONS_ANOTATE_DECLARATION
-#define VERIPARSE_PASSES_TRANSFORMATIONS_ANOTATE_DECLARATION
+#ifndef VERIPARSE_PASSES_TRANSFORMATIONS_ANNOTATE_DECLARATION
+#define VERIPARSE_PASSES_TRANSFORMATIONS_ANNOTATE_DECLARATION
 
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
@@ -19,7 +19,7 @@ namespace Veriparse {
 			 * with a module. It will ignore declarations related to an
 			 * Input/Output/Inout.
 			 */
-			class AnotateDeclaration: public TransformationBase {
+			class AnnotateDeclaration: public TransformationBase {
 				typedef std::map<std::string, std::string> ReplaceDict;
 
 			public:
@@ -27,13 +27,13 @@ namespace Veriparse {
 				 * Default constructor. The default search pattern is
 				 * "^.*$" and the default replace pattern is "$&".
 				 */
-				AnotateDeclaration();
+				AnnotateDeclaration();
 
 				/**
 				 * Constructor with the regex search (c++11 format) and
 				 * replace pattern.
 				 */
-				AnotateDeclaration(const std::string &search, const std::string &replace);
+				AnnotateDeclaration(const std::string &search, const std::string &replace);
 
 				/**
 				 * Set the regex search (c++11 format) and replace
@@ -57,7 +57,7 @@ namespace Veriparse {
 				/**
 				 * @return zero on success
 				 */
-				int anotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict);
+				int annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict);
 
 			private:
 				std::regex m_search;

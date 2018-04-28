@@ -2,7 +2,7 @@
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/parser/verilog.hpp>
 #include <veriparse/importers/yaml_importer.hpp>
-#include <veriparse/passes/transformations/anotate_declaration.hpp>
+#include <veriparse/passes/transformations/annotate_declaration.hpp>
 #include <gtest/gtest.h>
 
 using namespace Veriparse;
@@ -20,14 +20,14 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
                                                                                 \
 	/* apply the transformation */                                               \
 	test_helpers.render_node_to_verilog_file(source, test_string + "_before.v"); \
-	Passes::Transformations::AnotateDeclaration ad("^.*$", "prefix_$&_suffix");  \
+	Passes::Transformations::AnnotateDeclaration ad("^.*$", "prefix_$&_suffix"); \
 	ad.run(source);                                                              \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");        \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");        \
 	test_helpers.render_node_to_dot_file(source, test_string + ".dot");          \
                                                                                 \
 	/* load the reference */                                                     \
-	std::string test_ref_suffix = "anotate_declaration_";                        \
+	std::string test_ref_suffix = "annotate_declaration_";                       \
 	const std::string ref_filename = test_ref_suffix + test_name;                \
 	AST::Node::Ptr source_ref = Importers::YAMLImporter().import                 \
 		(test_helpers.get_yaml_filename(ref_filename).c_str());                   \
@@ -37,22 +37,22 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 	ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 
-TEST(PassesTransformation_AnotateDeclaration, module2)
+TEST(PassesTransformation_AnnotateDeclaration, module2)
 {
 	TEST_CORE;
 }
 
-TEST(PassesTransformation_AnotateDeclaration, localparam0)
+TEST(PassesTransformation_AnnotateDeclaration, localparam0)
 {
 	TEST_CORE;
 }
 
-TEST(PassesTransformation_AnotateDeclaration, task0)
+TEST(PassesTransformation_AnnotateDeclaration, task0)
 {
 	TEST_CORE;
 }
 
-TEST(PassesTransformation_AnotateDeclaration, function0)
+TEST(PassesTransformation_AnnotateDeclaration, function0)
 {
 	TEST_CORE;
 }

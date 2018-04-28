@@ -1,4 +1,4 @@
-#include <veriparse/passes/transformations/anotate_declaration.hpp>
+#include <veriparse/passes/transformations/annotate_declaration.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/function.hpp>
 #include <veriparse/passes/analysis/task.hpp>
@@ -15,24 +15,24 @@ namespace Veriparse
 		namespace Transformations
 		{
 
-			AnotateDeclaration::AnotateDeclaration():
+			AnnotateDeclaration::AnnotateDeclaration():
 				m_search    ("^.*$"),
 				m_replace   ("$&")
 			{}
 
-			AnotateDeclaration::AnotateDeclaration(const std::string &search, const std::string &replace):
+			AnnotateDeclaration::AnnotateDeclaration(const std::string &search, const std::string &replace):
 				m_search    (search),
 				m_replace   (replace)
 			{}
 
-			void AnotateDeclaration::set_search_replace(const std::string &search,
+			void AnnotateDeclaration::set_search_replace(const std::string &search,
 			                                             const std::string &replace)
 			{
 				m_search = search;
 				m_replace = replace;
 			}
 
-			int AnotateDeclaration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
+			int AnnotateDeclaration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 			{
 				ReplaceDict replace_dict;
 				std::set<std::string> excluded_names;
@@ -43,13 +43,13 @@ namespace Veriparse
 				if(get_declaration_names(node, replace_dict, excluded_names))
 					return 1;
 
-				if(anotate_names(node, replace_dict))
+				if(annotate_names(node, replace_dict))
 					return 1;
 
 				return 0;
 			}
 
-			int AnotateDeclaration::get_declaration_names(const AST::Node::Ptr node, ReplaceDict &replace_dict,
+			int AnnotateDeclaration::get_declaration_names(const AST::Node::Ptr node, ReplaceDict &replace_dict,
 			                                              const std::set<std::string> &excluded_names)
 			{
 				int rc = 0;
@@ -118,7 +118,7 @@ namespace Veriparse
 				return rc;
 			}
 
-			int AnotateDeclaration::anotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict)
+			int AnnotateDeclaration::annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict)
 			{
 				int rc = 0;
 
@@ -132,7 +132,7 @@ namespace Veriparse
 						}
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							rc |= anotate_names(child, replace_dict);
+							rc |= annotate_names(child, replace_dict);
 						}
 					}
 
@@ -154,7 +154,7 @@ namespace Veriparse
 						}
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							rc |= anotate_names(child, replace_dict);
+							rc |= annotate_names(child, replace_dict);
 						}
 					}
 
@@ -170,7 +170,7 @@ namespace Veriparse
 						ReplaceDict new_replace_dict = remove_keys(replace_dict, locals);
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							rc |= anotate_names(child, new_replace_dict);
+							rc |= annotate_names(child, new_replace_dict);
 						}
 					}
 
@@ -183,7 +183,7 @@ namespace Veriparse
 						}
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							rc |= anotate_names(child, replace_dict);
+							rc |= annotate_names(child, replace_dict);
 						}
 					}
 
@@ -199,7 +199,7 @@ namespace Veriparse
 						ReplaceDict new_replace_dict = remove_keys(replace_dict, locals);
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							rc |= anotate_names(child, new_replace_dict);
+							rc |= annotate_names(child, new_replace_dict);
 						}
 					}
 
@@ -212,14 +212,14 @@ namespace Veriparse
 						}
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							rc |= anotate_names(child, replace_dict);
+							rc |= annotate_names(child, replace_dict);
 						}
 					}
 
 					else {
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							rc |= anotate_names(child, replace_dict);
+							rc |= annotate_names(child, replace_dict);
 						}
 					}
 				}
