@@ -1,3 +1,5 @@
+#include "./transformation_helpers.hpp"
+
 #include <veriparse/passes/transformations/annotate_declaration.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/function.hpp>

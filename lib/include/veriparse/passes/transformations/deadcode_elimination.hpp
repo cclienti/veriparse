@@ -4,7 +4,7 @@
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <string>
-
+#include <set>
 
 namespace Veriparse {
 	namespace Passes {
