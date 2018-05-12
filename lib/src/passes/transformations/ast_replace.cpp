@@ -11,14 +11,42 @@ namespace Veriparse {
 
 			int ASTReplace::replace_identifier(AST::Node::Ptr node, const std::string &id_name,
 			                                   AST::Node::Ptr value, AST::Node::Ptr parent) {
+				return replace_identifier(node, {{id_name, value}}, parent);
+			}
+
+			int ASTReplace::replace_identifier(AST::Node::ListPtr node_list,
+			                                   const std::string &id_name, AST::Node::Ptr value) {
+				int ret = 0;
+
+				if(node_list) {
+					for(AST::Node::Ptr node: *node_list) {
+						ret += ASTReplace::replace_identifier(node, id_name, value, nullptr);
+					}
+				}
+				else {
+					LOG_ERROR << "Empty node list";
+					return 1;
+				}
+
+				return ret;
+			}
+
+			int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replace_map,
+			                                   AST::Node::Ptr parent) {
+				int ret = 0;
+
+				if (replace_map.size() == 0) {
+					return 0;
+				}
+
 				if (node) {
 					switch(node->get_node_type()) {
 					case AST::NodeType::Identifier:
-						if(parent) {
-							if (parent->get_node_type() != AST::NodeType::Lvalue) {
-								if (AST::cast_to<AST::Identifier>(node)->get_name() == id_name) {
-									parent->replace(node, value->clone());
-								}
+						{
+							const std::string identifier_name = AST::cast_to<AST::Identifier>(node)->get_name();
+							ReplaceMap::const_iterator it = replace_map.find(identifier_name);
+							if(it != replace_map.cend()) {
+								parent->replace(node, it->second->clone());
 							}
 						}
 						break;
@@ -30,7 +58,7 @@ namespace Veriparse {
 						{
 							AST::Node::ListPtr children = node->get_children();
 							for (AST::Node::Ptr child: *children) {
-								replace_identifier(child, id_name, value, node);
+								ret += replace_identifier(child, replace_map, node);
 							}
 						}
 					}
@@ -40,43 +68,23 @@ namespace Veriparse {
 					return 1;
 				}
 
-				return 0;
-			}
-
-			int ASTReplace::replace_identifier(AST::Node::ListPtr node_list,
-			                                   const std::string &id_name, AST::Node::Ptr value) {
-				if(node_list) {
-					for(AST::Node::Ptr node: *node_list) {
-						ASTReplace::replace_identifier(node, id_name, value, nullptr);
-					}
-				}
-				else {
-					return 1;
-				}
-
-				return 0;
-			}
-
-			int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replace_map,
-			                                   AST::Node::Ptr parent) {
-				for(auto &elt: replace_map) {
-					ASTReplace::replace_identifier(node, elt.first, elt.second, nullptr);
-				}
-
-				return 0;
+				return ret;
 			}
 
 			int ASTReplace::replace_identifier(AST::Node::ListPtr node_list, const ReplaceMap &replace_map) {
+				int ret = 0;
+
 				if(node_list) {
 					for(AST::Node::Ptr node: *node_list) {
-						ASTReplace::replace_identifier(node, replace_map, nullptr);
+						ret += ASTReplace::replace_identifier(node, replace_map, nullptr);
 					}
 				}
 				else {
+					LOG_ERROR << "Empty node list";
 					return 1;
 				}
 
-				return 0;
+				return ret;
 			}
 
 		}
