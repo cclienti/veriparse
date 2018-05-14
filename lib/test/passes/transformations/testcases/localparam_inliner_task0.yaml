@@ -1,0 +1,478 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/task0.v
+          items:
+          - Task:
+              automatic: false
+              filename: ../../test/passes/transformations/testcases/task0.v
+              line: 6
+              name: clogb2
+              ports:
+              - Ioport:
+                  filename: ../../test/passes/transformations/testcases/task0.v
+                  first:
+                    Input:
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 6
+                      name: value
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 6
+                  second:
+                    Variable: null
+              - Ioport:
+                  filename: ../../test/passes/transformations/testcases/task0.v
+                  first:
+                    Output:
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 6
+                      name: clog
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 6
+                  second:
+                    Reg:
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 6
+                      name: clog
+                      right:
+                        Rvalue: null
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 31
+              statements:
+              - Integer:
+                  filename: ../../test/passes/transformations/testcases/task0.v
+                  line: 7
+                  name: SHIFT
+                  right:
+                    Rvalue: null
+              - Block:
+                  filename: ../../test/passes/transformations/testcases/task0.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 9
+                              name: SHIFT
+                              scope:
+                                IdentifierScope: null
+                      line: 9
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 9
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 10
+                              name: value
+                              scope:
+                                IdentifierScope: null
+                      line: 10
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 10
+                          var:
+                            Minus:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  line: 10
+                                  name: value
+                                  scope:
+                                    IdentifierScope: null
+                              line: 10
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  line: 3
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  - ForStatement:
+                      cond:
+                        GreaterThan:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 11
+                              name: value
+                              scope:
+                                IdentifierScope: null
+                          line: 11
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 0
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 11
+                      post:
+                        BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  line: 11
+                                  name: clog
+                                  scope:
+                                    IdentifierScope: null
+                          line: 11
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                Plus:
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/task0.v
+                                      line: 11
+                                      name: clog
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 11
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/task0.v
+                                      line: 11
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                      pre:
+                        BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  line: 11
+                                  name: clog
+                                  scope:
+                                    IdentifierScope: null
+                          line: 11
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  line: 11
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 11
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  line: 12
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/task0.v
+                                      line: 12
+                                      name: value
+                                      scope:
+                                        IdentifierScope: null
+                              line: 12
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/task0.v
+                                  line: 12
+                                  var:
+                                    Srl:
+                                      filename: ../../test/passes/transformations/testcases/task0.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/task0.v
+                                          line: 12
+                                          name: value
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 12
+                                      right:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/task0.v
+                                          line: 12
+                                          name: SHIFT
+                                          scope:
+                                            IdentifierScope: null
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/task0.v
+              line: 17
+              name: val
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/task0.v
+                  line: 17
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/task0.v
+              line: 18
+              name: clog_reg
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/task0.v
+                  line: 18
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 18
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 18
+                      sign: false
+                      size: -1
+                      value: 31
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/task0.v
+              line: 20
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/task0.v
+                  line: 20
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 21
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 21
+                              name: val
+                              scope:
+                                IdentifierScope: null
+                      line: 21
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 21
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 21
+                              sign: false
+                              size: -1
+                              value: 53
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 22
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          args:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 22
+                              name: val
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 22
+                              name: clog_reg
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 22
+                          name: clogb2
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/task0.v
+                      line: 23
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 23
+                              value: clogb2(%0d) = %0d
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 23
+                              name: val
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/task0.v
+                              line: 23
+                              name: clog_reg
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/task0.v
+                          line: 23
+                          syscall: display
+          line: 1
+          name: task0
+      filename: ../../test/passes/transformations/testcases/task0.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/task0.v
+  line: 1
+

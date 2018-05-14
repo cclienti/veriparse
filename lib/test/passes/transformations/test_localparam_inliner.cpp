@@ -38,3 +38,5 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 
 
 TEST(PassesTransformation_LocalparamInliner, localparam0) {TEST_CORE;}
+TEST(PassesTransformation_LocalparamInliner, function0) {TEST_CORE;}
+TEST(PassesTransformation_LocalparamInliner, task0) {TEST_CORE;}

@@ -1,4 +1,8 @@
+#include "./transformation_helpers.hpp"
+
 #include <veriparse/passes/transformations/ast_replace.hpp>
+#include <veriparse/passes/analysis/function.hpp>
+#include <veriparse/passes/analysis/task.hpp>
 #include <veriparse/logger/logger.hpp>
 
 #include <algorithm>
@@ -51,8 +55,31 @@ namespace Veriparse {
 						}
 						break;
 
-					case AST::NodeType::Function:  break;
-					case AST::NodeType::Task:      break;
+					case AST::NodeType::Function:
+						{
+							AST::Function::Ptr function = AST::cast_to<AST::Function>(node);
+							std::set<std::string> locals = merge_set(to_set(Analysis::Function::get_iodir_names(node)),
+							                                         to_set(Analysis::Function::get_variable_names(node)));
+							ReplaceMap new_replace_map = remove_keys(replace_map, locals);
+							AST::Node::ListPtr children = node->get_children();
+							for (AST::Node::Ptr child: *children) {
+								ret |= replace_identifier(child, new_replace_map);
+							}
+						}
+						break;
+
+					case AST::NodeType::Task:
+						{
+							AST::Task::Ptr task = AST::cast_to<AST::Task>(node);
+							std::set<std::string> locals = merge_set(to_set(Analysis::Task::get_iodir_names(node)),
+							                                         to_set(Analysis::Task::get_variable_names(node)));
+							ReplaceMap new_replace_map = remove_keys(replace_map, locals);
+							AST::Node::ListPtr children = node->get_children();
+							for (AST::Node::Ptr child: *children) {
+								ret |= replace_identifier(child, new_replace_map);
+							}
+						}
+						break;
 
 					default:
 						{
