@@ -39,3 +39,5 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 
 TEST(PassesTransformation_ParameterInliner, module1) {TEST_CORE;}
 TEST(PassesTransformation_ParameterInliner, module2) {TEST_CORE;}
+TEST(PassesTransformation_ParameterInliner, function1) {TEST_CORE;}
+TEST(PassesTransformation_ParameterInliner, task1) {TEST_CORE;}
