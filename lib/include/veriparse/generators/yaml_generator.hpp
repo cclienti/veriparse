@@ -95,6 +95,7 @@ namespace Veriparse {
 			virtual YAML::Node render_blockingsubstitution(const AST::BlockingSubstitution::Ptr node) const;
 			virtual YAML::Node render_nonblockingsubstitution(const AST::NonblockingSubstitution::Ptr node) const;
 			virtual YAML::Node render_ifstatement(const AST::IfStatement::Ptr node) const;
+			virtual YAML::Node render_repeatstatement(const AST::RepeatStatement::Ptr node) const;
 			virtual YAML::Node render_forstatement(const AST::ForStatement::Ptr node) const;
 			virtual YAML::Node render_whilestatement(const AST::WhileStatement::Ptr node) const;
 			virtual YAML::Node render_casestatement(const AST::CaseStatement::Ptr node) const;

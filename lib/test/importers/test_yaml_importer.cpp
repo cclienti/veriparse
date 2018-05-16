@@ -2252,6 +2252,31 @@ TEST(YAMLImporter, IfStatement) {
 
 	
 
+TEST(YAMLImporter, RepeatStatement) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLImporter.RepeatStatement.log");
+	Logger::add_stdout_sink();
+	std::string str (
+		"RepeatStatement:\n"
+		"  filename: repeatstatement.v\n"
+		"  line: 15\n"
+		"  times:\n"
+		"  statement:\n"
+	);
+
+	AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+	YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+	ASSERT_TRUE(yaml["RepeatStatement"]);
+	ASSERT_TRUE(yaml["RepeatStatement"]["filename"].as<std::string>() == "repeatstatement.v");
+	ASSERT_TRUE(yaml["RepeatStatement"]["line"].as<int>() == 15);
+	ASSERT_TRUE(yaml["RepeatStatement"]["times"]);
+	ASSERT_TRUE(yaml["RepeatStatement"]["statement"]);
+}
+
+
+	
+
 TEST(YAMLImporter, ForStatement) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLImporter.ForStatement.log");

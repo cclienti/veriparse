@@ -35,17 +35,8 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 	ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 
-TEST(PassesTransformation_LoopUnrolling, loop_unrolling0)
-{
-	TEST_CORE;
-}
-
-TEST(PassesTransformation_LoopUnrolling, loop_unrolling1)
-{
-	TEST_CORE;
-}
-
-TEST(PassesTransformation_LoopUnrolling, loop_unrolling2)
-{
-	TEST_CORE;
-}
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling0) {TEST_CORE;}
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling1) {TEST_CORE;}
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling2) {TEST_CORE;}
+TEST(PassesTransformation_LoopUnrolling, repeat0) {TEST_CORE;}
+TEST(PassesTransformation_LoopUnrolling, repeat1) {TEST_CORE;}

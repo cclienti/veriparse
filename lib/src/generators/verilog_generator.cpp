@@ -957,6 +957,21 @@ namespace Veriparse {
 			return result;
 		}
 
+		std::string VerilogGenerator::render_repeatstatement(const AST::RepeatStatement::Ptr node) const {
+			std::string result;
+			if (node) {
+				AST::Node::Ptr times = node->get_times();
+				AST::Node::Ptr stmt = node->get_statement();
+
+				std::string times_str = StringUtils::delete_surrounding_brackets(StringUtils::remove_whitespace(render(times)));
+				std::string stmt_str = block_or_single_statement_to_string(stmt);
+
+				result = "repeat(" + times_str + ")" + stmt_str;
+
+			}
+			return result;
+		}
+
 		std::string VerilogGenerator::render_forstatement(const AST::ForStatement::Ptr node) const {
 			std::string result;
 			if (node) {

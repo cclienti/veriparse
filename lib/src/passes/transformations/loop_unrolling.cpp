@@ -114,8 +114,60 @@ namespace Veriparse
 						for (AST::Node::Ptr child: *unrolled_stmts) {
 							ret += process(child, parent);
 						}
-
 					}
+
+					else if(node->is_node_type(AST::NodeType::RepeatStatement)) {
+						const AST::RepeatStatement::Ptr repeat_node = AST::cast_to<AST::RepeatStatement>(node);
+						AST::Node::Ptr times_node = ExpressionEvaluation().evaluate_node(repeat_node->get_times());
+						if(times_node) {
+							if(times_node->is_node_type(AST::NodeType::IntConstN)) {
+								AST::IntConstN::Ptr times = AST::cast_to<AST::IntConstN>(times_node);
+
+								// Unroll the statements
+								AST::Node::ListPtr stmts;
+								if(repeat_node->get_statement()->is_node_type(AST::NodeType::Block)) {
+									stmts = AST::cast_to<AST::Block>(repeat_node->get_statement())->get_statements();
+								}
+								else {
+									stmts = std::make_shared<AST::Node::List>();
+									stmts->push_back(repeat_node->get_statement());
+								}
+
+								AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
+								for(uint64_t x=0; x<times->get_value().get_ui(); x++) {
+									AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
+									unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
+								}
+
+								// Replace the unrolled statements in the parent block
+								if (parent->is_node_type(AST::NodeType::Block)) {
+									parent->replace(node, unrolled_stmts);
+								}
+								else {
+									// if the node to replace is already in a list,
+									// we can directly replace the node by our
+									// list. There is no need to create a block.
+									bool node_in_list = parent->replace(node, unrolled_stmts);
+
+									// We create a block to store our list.
+									if (!node_in_list) {
+										AST::Block::Ptr block = std::make_shared<AST::Block>(unrolled_stmts, "");
+										parent->replace(node, block);
+										parent = block;
+									}
+								}
+
+								// Finally search for another nested for statement in the unrolled ones.
+								for (AST::Node::Ptr child: *unrolled_stmts) {
+									ret += process(child, parent);
+								}
+							}
+							else {
+								LOG_WARNING_N(node) << "non integer repeat";
+							}
+						}
+					}
+
 					else {
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {

@@ -295,6 +295,9 @@ namespace Veriparse {
 					case AST::NodeType::IfStatement:
 					return render_ifstatement(AST::cast_to<AST::IfStatement>(node));
 					
+					case AST::NodeType::RepeatStatement:
+					return render_repeatstatement(AST::cast_to<AST::RepeatStatement>(node));
+					
 					case AST::NodeType::ForStatement:
 					return render_forstatement(AST::cast_to<AST::ForStatement>(node));
 					
@@ -1232,6 +1235,16 @@ namespace Veriparse {
 			 */
 			T render(const AST::IfStatement::Ptr node) const {
 				return render_ifstatement(node);
+			}
+			
+			/**
+			 * Main rendering method for the RepeatStatement node, we
+			 * dispatch directly to the right rendering method.
+			 *
+			 * @see GeneratorBase::render_repeatstatement(const AST::RepeatStatement::Ptr &node)
+			 */
+			T render(const AST::RepeatStatement::Ptr node) const {
+				return render_repeatstatement(node);
 			}
 			
 			/**
@@ -2191,6 +2204,14 @@ namespace Veriparse {
 			 * overloaded in a derived class to your needs.
 			 */
 			virtual T render_ifstatement(const AST::IfStatement::Ptr node) const {
+				return T();
+			}
+			
+			/**
+			 * Render the RepeatStatement node. This method must be
+			 * overloaded in a derived class to your needs.
+			 */
+			virtual T render_repeatstatement(const AST::RepeatStatement::Ptr node) const {
 				return T();
 			}
 			

@@ -97,6 +97,7 @@ namespace Veriparse {
 		template<> constexpr NodeType get_node_type<BlockingSubstitution>() {return NodeType::BlockingSubstitution;}
 		template<> constexpr NodeType get_node_type<NonblockingSubstitution>() {return NodeType::NonblockingSubstitution;}
 		template<> constexpr NodeType get_node_type<IfStatement>() {return NodeType::IfStatement;}
+		template<> constexpr NodeType get_node_type<RepeatStatement>() {return NodeType::RepeatStatement;}
 		template<> constexpr NodeType get_node_type<ForStatement>() {return NodeType::ForStatement;}
 		template<> constexpr NodeType get_node_type<WhileStatement>() {return NodeType::WhileStatement;}
 		template<> constexpr NodeType get_node_type<CaseStatement>() {return NodeType::CaseStatement;}

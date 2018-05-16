@@ -2012,6 +2012,27 @@ namespace Veriparse {
 
   
 
+	 	YAML::Node YAMLGenerator::render_repeatstatement(const AST::RepeatStatement::Ptr node) const {
+			YAML::Node node_repeatstatement;
+			YAML::Node content;
+
+			if (node) {
+				if (node->get_node_type() != AST::NodeType::RepeatStatement) return render(AST::cast_to<AST::Node>(node));
+
+				content["filename"] = node->get_filename();
+				content["line"] = node->get_line();
+    
+				content["times"] = render(node->get_times());
+    
+				content["statement"] = render(node->get_statement());
+			}
+
+			node_repeatstatement["RepeatStatement"] = content;
+			return node_repeatstatement;
+		}
+
+  
+
 	 	YAML::Node YAMLGenerator::render_forstatement(const AST::ForStatement::Ptr node) const {
 			YAML::Node node_forstatement;
 			YAML::Node content;

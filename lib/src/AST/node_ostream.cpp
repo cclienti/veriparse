@@ -92,6 +92,7 @@ namespace Veriparse {
 			case NodeType::BlockingSubstitution: os << static_cast<const AST::BlockingSubstitution &>(p); break;
 			case NodeType::NonblockingSubstitution: os << static_cast<const AST::NonblockingSubstitution &>(p); break;
 			case NodeType::IfStatement: os << static_cast<const AST::IfStatement &>(p); break;
+			case NodeType::RepeatStatement: os << static_cast<const AST::RepeatStatement &>(p); break;
 			case NodeType::ForStatement: os << static_cast<const AST::ForStatement &>(p); break;
 			case NodeType::WhileStatement: os << static_cast<const AST::WhileStatement &>(p); break;
 			case NodeType::CaseStatement: os << static_cast<const AST::CaseStatement &>(p); break;

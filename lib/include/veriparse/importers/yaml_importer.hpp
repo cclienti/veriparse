@@ -106,6 +106,7 @@ namespace Veriparse {
 			AST::Node::Ptr convert_blockingsubstitution(const YAML::Node node) const;
 			AST::Node::Ptr convert_nonblockingsubstitution(const YAML::Node node) const;
 			AST::Node::Ptr convert_ifstatement(const YAML::Node node) const;
+			AST::Node::Ptr convert_repeatstatement(const YAML::Node node) const;
 			AST::Node::Ptr convert_forstatement(const YAML::Node node) const;
 			AST::Node::Ptr convert_whilestatement(const YAML::Node node) const;
 			AST::Node::Ptr convert_casestatement(const YAML::Node node) const;

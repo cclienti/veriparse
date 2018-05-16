@@ -281,6 +281,12 @@ IfStatement:
     true_statement: Node
     false_statement: Node
 
+RepeatStatement:
+  properties:
+  children:
+    times: Node
+    statement: Node
+
 ForStatement:
   properties:
   children:

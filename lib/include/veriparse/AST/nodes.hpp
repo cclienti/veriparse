@@ -87,6 +87,7 @@
 #include <veriparse/AST/blockingsubstitution.hpp>
 #include <veriparse/AST/nonblockingsubstitution.hpp>
 #include <veriparse/AST/ifstatement.hpp>
+#include <veriparse/AST/repeatstatement.hpp>
 #include <veriparse/AST/forstatement.hpp>
 #include <veriparse/AST/whilestatement.hpp>
 #include <veriparse/AST/casestatement.hpp>

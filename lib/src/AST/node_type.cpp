@@ -93,6 +93,7 @@ namespace Veriparse {
 			case NodeType::BlockingSubstitution: return "BlockingSubstitution";
 			case NodeType::NonblockingSubstitution: return "NonblockingSubstitution";
 			case NodeType::IfStatement: return "IfStatement";
+			case NodeType::RepeatStatement: return "RepeatStatement";
 			case NodeType::ForStatement: return "ForStatement";
 			case NodeType::WhileStatement: return "WhileStatement";
 			case NodeType::CaseStatement: return "CaseStatement";

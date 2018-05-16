@@ -86,6 +86,7 @@ namespace Veriparse {
 			virtual std::string render_blockingsubstitution(const AST::BlockingSubstitution::Ptr node) const;
 			virtual std::string render_nonblockingsubstitution(const AST::NonblockingSubstitution::Ptr node) const;
 			virtual std::string render_ifstatement(const AST::IfStatement::Ptr node) const;
+			virtual std::string render_repeatstatement(const AST::RepeatStatement::Ptr node) const;
 			virtual std::string render_forstatement(const AST::ForStatement::Ptr node) const;
 			virtual std::string render_whilestatement(const AST::WhileStatement::Ptr node) const;
 			virtual std::string render_casestatement(const AST::CaseStatement::Ptr node) const;

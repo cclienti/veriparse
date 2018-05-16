@@ -135,6 +135,7 @@ namespace Veriparse {
 %token                  TK_INITIAL      "'initial'"
 %token                  TK_IF           "'if'"
 %token                  TK_ELSE         "'else'"
+%token                  TK_REPEAT       "'repeat'"
 %token                  TK_FOR          "'for'"
 %token                  TK_WHILE        "'while'"
 %token                  TK_CASE         "'case'"
@@ -320,6 +321,8 @@ namespace Veriparse {
 %type   <AST::ForStatement::Ptr>             for_statement
 %type   <AST::BlockingSubstitution::Ptr>     forpre forpost
 %type   <AST::Node::Ptr>                     forcond forcontent_statement
+
+%type   <AST::RepeatStatement::Ptr>          repeat_statement
 
 %type   <AST::WhileStatement::Ptr>           while_statement
 %type   <AST::Node::Ptr>                     whilecontent_statement
@@ -1968,6 +1971,11 @@ basic_statement:if_statement
                     $$ = AST::to_node($1);
                 }
 
+        |       repeat_statement
+                {
+                    $$ = AST::to_node($1);
+                }
+
         |       for_statement
                 {
                     $$ = AST::to_node($1);
@@ -2233,6 +2241,16 @@ named_parallelblock:
                     $$->set_scope($3);
                 }
         ;
+
+repeat_statement:
+					 TK_REPEAT TK_LPARENTHESIS expression TK_RPARENTHESIS basic_statement
+                {
+	                $$ = std::make_shared<AST::RepeatStatement>(scanner.get_filename(), @1.begin.line);
+	                $$->set_times($3);
+	                $$->set_statement($5);
+                }
+
+		  ;
 
 if_statement:   TK_IF TK_LPARENTHESIS cond TK_RPARENTHESIS true_statement TK_ELSE false_statement
                 {

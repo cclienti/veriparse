@@ -92,6 +92,7 @@ namespace Veriparse {
 			BlockingSubstitution,
 			NonblockingSubstitution,
 			IfStatement,
+			RepeatStatement,
 			ForStatement,
 			WhileStatement,
 			CaseStatement,

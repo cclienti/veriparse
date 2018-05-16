@@ -306,6 +306,9 @@ namespace Veriparse {
 				if (node["IfStatement"]) {
 					return convert_ifstatement(node["IfStatement"]);
 				}
+				if (node["RepeatStatement"]) {
+					return convert_repeatstatement(node["RepeatStatement"]);
+				}
 				if (node["ForStatement"]) {
 					return convert_forstatement(node["ForStatement"]);
 				}
@@ -4846,6 +4849,50 @@ namespace Veriparse {
 
 			// Return the result
 			return AST::cast_to<AST::IfStatement>(result);
+		}
+		
+
+		AST::Node::Ptr YAMLImporter::convert_repeatstatement(const YAML::Node node) const {
+			AST::RepeatStatement::Ptr result;
+			if (node.IsMap()) {
+				if (node["filename"]) {
+					if (node["filename"].IsScalar()) {
+						if(!result) result = std::make_shared<AST::RepeatStatement>();
+						result->set_filename(node["filename"].as<std::string>());
+					}
+				}
+				if (node["line"]) {
+					if (node["line"].IsScalar()) {
+						if(!result) result = std::make_shared<AST::RepeatStatement>();
+						result->set_line(node["line"].as<int>());
+					}
+				}
+
+				// Manage Child times
+				if (node["times"]) {
+					const YAML::Node node_times = node["times"];
+					// Set the child
+					AST::Node::Ptr child = convert(node_times);
+					if (child) {
+						if(!result) result = std::make_shared<AST::RepeatStatement>();
+						result->set_times(child);
+					}
+				}
+
+				// Manage Child statement
+				if (node["statement"]) {
+					const YAML::Node node_statement = node["statement"];
+					// Set the child
+					AST::Node::Ptr child = convert(node_statement);
+					if (child) {
+						if(!result) result = std::make_shared<AST::RepeatStatement>();
+						result->set_statement(child);
+					}
+				}
+			}
+
+			// Return the result
+			return AST::cast_to<AST::RepeatStatement>(result);
 		}
 		
 

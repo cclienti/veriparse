@@ -1687,6 +1687,25 @@ TEST(YAMLGenerator, IfStatement) {
 	ASSERT_TRUE(yaml["IfStatement"]["false_statement"]);
 }
 
+TEST(YAMLGenerator, RepeatStatement) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.RepeatStatement.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Node::Ptr c_times(new AST::Node);
+	AST::Node::Ptr c_statement(new AST::Node);
+
+	AST::RepeatStatement::Ptr m_repeatstatement(new AST::RepeatStatement
+		(c_times, c_statement, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_repeatstatement);
+
+	ASSERT_TRUE(yaml["RepeatStatement"]);
+	ASSERT_TRUE(yaml["RepeatStatement"]["times"]);
+	ASSERT_TRUE(yaml["RepeatStatement"]["statement"]);
+}
+
 TEST(YAMLGenerator, ForStatement) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLGenerator.ForStatement.log");

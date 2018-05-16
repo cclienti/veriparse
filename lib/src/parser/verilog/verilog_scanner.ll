@@ -77,6 +77,7 @@ using token = Veriparse::Parser::VerilogParser::token;
 "initial"     {return token::TK_INITIAL;}
 "if"          {return token::TK_IF;}
 "else"        {return token::TK_ELSE;}
+"repeat"      {return token::TK_REPEAT;}
 "for"         {return token::TK_FOR;}
 "while"       {return token::TK_WHILE;}
 "case"        {return token::TK_CASE;}
