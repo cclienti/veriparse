@@ -18,3 +18,4 @@
 ### CMake build dir
 build*/
 
+__pycache__/
