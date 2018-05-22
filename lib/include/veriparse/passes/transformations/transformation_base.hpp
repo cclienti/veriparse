@@ -18,8 +18,28 @@ namespace Veriparse {
 				}
 
 			protected:
+				/**
+				 * @brief Method that process the current node.
+				 * @return zero on success.
+				 */
 				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) = 0;
 
+				/**
+				 * @brief Call the process method for each child (and the
+				 * current node become the parent).
+				 * @return zero on success.
+				 */
+				virtual int recurse_in_childs(AST::Node::Ptr node)
+				{
+					int ret = 0;
+					if(node) {
+						AST::Node::ListPtr children = node->get_children();
+						for (AST::Node::Ptr child: *children) {
+							ret += process(child, node);
+						}
+					}
+					return ret;
+				}
 			};
 
 		}

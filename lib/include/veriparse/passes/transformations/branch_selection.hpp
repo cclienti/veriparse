@@ -20,9 +20,7 @@ namespace Veriparse {
 				/**
 				 * @return zero on success.
 				 */
-				int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
-
-			private:
+				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 			};
 
 		}

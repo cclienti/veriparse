@@ -15,7 +15,7 @@ namespace Veriparse {
 				typedef std::set<std::string> DSet;
 
 			protected:
-				int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
 			private:
 				std::string print_set(const DSet &dset);
