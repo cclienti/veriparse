@@ -11,13 +11,11 @@ namespace Veriparse {
 		namespace Transformations {
 
 			class ModuleIONormalizer: public TransformationBase {
-			protected:
 				/**
 				 * @return zero on success
 				 */
 				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-			private:
 				void remove_module_parameters(AST::Node::Ptr node, AST::Node::Ptr parent=nullptr);
 
 				void remove_module_ioports(AST::Node::Ptr node, AST::Node::Ptr parent=nullptr);

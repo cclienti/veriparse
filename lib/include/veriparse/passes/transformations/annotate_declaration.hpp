@@ -41,13 +41,12 @@ namespace Veriparse {
 				 */
 				void set_search_replace(const std::string &search, const std::string &replace);
 
-			protected:
+			private:
 				/**
 				 * @return zero on success
 				 */
 				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-			private:
 				/**
 				 * @return zero on success
 				 */

@@ -45,8 +45,6 @@ namespace Veriparse
 
 			int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 			{
-				int ret = 0;
-
 				if (node) {
 					if(node->is_node_type(AST::NodeType::ForStatement)) {
 						const AST::ForStatement::Ptr for_node = AST::cast_to<AST::ForStatement>(node);
@@ -58,61 +56,58 @@ namespace Veriparse
 
 						// Look for the current for loop range
 						LoopUnrolling::range_ptr_t for_range = LoopUnrolling::get_for_range(for_node);
-						if (!for_range) {
-							return 1;
-						}
-						LOG_TRACE_N(for_node) << print_for_range_t(*for_range);
+						if (for_range) {
+							LOG_TRACE_N(for_node) << print_for_range_t(*for_range);
 
-						// Unroll the statements
-						AST::Node::ListPtr stmts;
-						if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
-							stmts = AST::cast_to<AST::Block>(for_node->get_statement())->get_statements();
-						}
-						else {
-							stmts = std::make_shared<AST::Node::List>();
-							stmts->push_back(for_node->get_statement());
-						}
-
-						// Replace the loop identifier in unrolled statements and annotate declarations
-						AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
-						AnnotateDeclaration annotate;
-
-						for(AST::Node::Ptr p: for_range->second) {
-							AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
-							ASTReplace::replace_identifier(stmts_copy, for_range->first, p);
-
-							// We put the stmts vector in a AST::Block in order to
-							// annotate all stmts at a time.
-							std::ostringstream ss_replace;
-							ss_replace << "$&_" << for_range->first << "_" << Generators::VerilogGenerator().render(p);
-							annotate.set_search_replace("^.*$", ss_replace.str());
-							AST::Block::Ptr block = std::make_shared<AST::Block>(stmts_copy, "");
-							annotate.run(block);
-
-							unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
-						}
-
-						// Replace the unrolled statements in the parent block
-						if (parent->is_node_type(AST::NodeType::Block)) {
-							parent->replace(node, unrolled_stmts);
-						}
-						else {
-							// if the node to replace is already in a list,
-							// we can directly replace the node by our
-							// list. There is no need to create a block.
-							bool node_in_list = parent->replace(node, unrolled_stmts);
-
-							// We create a block to store our list.
-							if (!node_in_list) {
-								AST::Block::Ptr block = std::make_shared<AST::Block>(unrolled_stmts, "");
-								parent->replace(node, block);
-								parent = block;
+							// Unroll the statements
+							AST::Node::ListPtr stmts;
+							if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
+								stmts = AST::cast_to<AST::Block>(for_node->get_statement())->get_statements();
 							}
-						}
+							else {
+								stmts = std::make_shared<AST::Node::List>();
+								stmts->push_back(for_node->get_statement());
+							}
 
-						// Finally search for another nested for statement in the unrolled ones.
-						for (AST::Node::Ptr child: *unrolled_stmts) {
-							ret += process(child, parent);
+							// Replace the loop identifier in unrolled statements and annotate declarations
+							AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
+							AnnotateDeclaration annotate;
+
+							for(AST::Node::Ptr p: for_range->second) {
+								AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
+								ASTReplace::replace_identifier(stmts_copy, for_range->first, p);
+
+								// We put the stmts vector in a AST::Block in order to
+								// annotate all stmts at a time.
+								std::ostringstream ss_replace;
+								ss_replace << "$&_" << for_range->first << "_" << Generators::VerilogGenerator().render(p);
+								annotate.set_search_replace("^.*$", ss_replace.str());
+								AST::Block::Ptr block = std::make_shared<AST::Block>(stmts_copy, "");
+								annotate.run(block);
+
+								unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
+							}
+
+							// Replace the unrolled statements in the parent block
+							if (parent->is_node_type(AST::NodeType::Block)) {
+								parent->replace(node, unrolled_stmts);
+							}
+							else {
+								// if the node to replace is already in a list,
+								// we can directly replace the node by our
+								// list. There is no need to create a block.
+								bool node_in_list = parent->replace(node, unrolled_stmts);
+
+								// We create a block to store our list.
+								if (!node_in_list) {
+									AST::Block::Ptr block = std::make_shared<AST::Block>(unrolled_stmts, "");
+									parent->replace(node, block);
+									parent = block;
+								}
+							}
+
+							// Finally search for another nested for statement in the unrolled ones.
+							return recurse_in_childs(parent);
 						}
 					}
 
@@ -158,9 +153,7 @@ namespace Veriparse
 								}
 
 								// Finally search for another nested for statement in the unrolled ones.
-								for (AST::Node::Ptr child: *unrolled_stmts) {
-									ret += process(child, parent);
-								}
+								return recurse_in_childs(parent);
 							}
 							else {
 								LOG_WARNING_N(node) << "non integer repeat";
@@ -168,15 +161,9 @@ namespace Veriparse
 						}
 					}
 
-					else {
-						AST::Node::ListPtr children = node->get_children();
-						for (AST::Node::Ptr child: *children) {
-							ret += process(child, node);
-						}
-					}
 				}
 
-				return ret;
+				return recurse_in_childs(node);
 			}
 
 			LoopUnrolling::range_ptr_t LoopUnrolling::get_for_range(const AST::ForStatement::Ptr for_node)

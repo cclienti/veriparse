@@ -9,11 +9,9 @@ namespace Veriparse {
 	namespace Passes {
 		namespace Transformations {
 
-			class ASTReplace {
-			public:
+			struct ASTReplace {
 				typedef std::map<std::string, AST::Node::Ptr> ReplaceMap;
 
-			public:
 				/**
 				 * Walk in the AST and replace all matching identifier
 				 * name by a clone of the given value.
@@ -43,7 +41,6 @@ namespace Veriparse {
 				 */
 				static int replace_identifier(AST::Node::ListPtr node_list, const ReplaceMap &replace_map);
 
-			private:
 			};
 
 		}

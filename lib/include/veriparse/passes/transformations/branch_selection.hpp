@@ -16,7 +16,6 @@ namespace Veriparse {
 
 			class BranchSelection: public TransformationBase
 			{
-			protected:
 				/**
 				 * @return zero on success.
 				 */

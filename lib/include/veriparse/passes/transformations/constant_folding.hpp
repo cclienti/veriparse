@@ -11,7 +11,6 @@ namespace Veriparse {
 		namespace Transformations {
 
 			class ConstantFolding: public TransformationBase {
-			protected:
 				/**
 				 * @return zero on success
 				 */

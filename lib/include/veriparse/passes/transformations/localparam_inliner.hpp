@@ -14,7 +14,7 @@ namespace Veriparse {
 			public:
 				LocalparamInliner();
 
-			protected:
+			private:
 				/**
 				 * @return zero on success
 				 */

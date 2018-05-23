@@ -16,13 +16,12 @@ namespace Veriparse {
 
 				ParameterInliner(AST::ParamArg::ListPtr paramlist_inst);
 
-			protected:
+			private:
 				/**
 				 * @return zero on success
 				 */
 				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-			private:
 				/**
 				 * Inline parameters rvalue in all others parameters. The algorithm is
 				 * in O(n^2). For each parameter, we replace the parameter rvalue

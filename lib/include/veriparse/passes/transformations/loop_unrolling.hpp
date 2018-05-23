@@ -18,25 +18,22 @@ namespace Veriparse {
 				typedef std::pair<std::string, std::vector<AST::Node::Ptr>> range_t;
 				typedef std::shared_ptr<range_t> range_ptr_t;
 
-			protected:
 				/**
 				 * @return zero on success.
 				 */
 				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-			private:
-
 				/**
-				 * Evaluate a ForStatement Node. It returns a range_t made
-				 * of the loop variable string and the vector of all loop
-				 * index values. It returns nullptr if the pre, post or
-				 * condition part of the for expression cannot be resolved
-				 * statically.
+				 * @brief Evaluate a ForStatement Node. It returns a
+				 * range_t made of the loop variable string and the vector
+				 * of all loop index values. It returns nullptr if the
+				 * pre, post or condition part of the for expression
+				 * cannot be resolved statically.
 				 */
 				static range_ptr_t get_for_range(const AST::ForStatement::Ptr for_node);
 
 				/**
-				 * Return the lvalue identifier name of a blocking
+				 * @brief Return the lvalue identifier name of a blocking
 				 * substitution.
 				 *
 				 * @return non-empty string on success.
@@ -44,14 +41,14 @@ namespace Veriparse {
 				static std::string get_cond_lvalue(const AST::BlockingSubstitution::Ptr subst);
 
 				/**
-				 * Return the rvalue node of a blocking substitution.
+				 * @brief Return the rvalue node of a blocking substitution.
 				 *
 				 * @return non-nullptr on success.
 				 */
 				static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr subst);
 
 				/**
-				 * Return the rvalue node of a blocking substitution.
+				 * @brief Return the rvalue node of a blocking substitution.
 				 *
 				 * @return non-nullptr on success.
 				 */

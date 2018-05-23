@@ -17,16 +17,10 @@ namespace Veriparse {
 						if(expr) {
 							parent->replace(node, expr);
 						}
-						else {
-							AST::Node::ListPtr children = node->get_children();
-							for (AST::Node::Ptr child: *children) {
-								process(child, node);
-							}
-						}
 					}
-
 				}
-				return 0;
+
+				return recurse_in_childs(node);
 			}
 
 
