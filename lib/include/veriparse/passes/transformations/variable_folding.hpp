@@ -45,7 +45,7 @@ namespace Veriparse {
 				 *
 				 * @return lvalue string
 				 */
-				virtual std::string analyze_lvalue(AST::Lvalue::Ptr node);
+				virtual std::string analyze_lvalue(AST::Lvalue::Ptr lvalue);
 
 
 			private:
