@@ -28,7 +28,35 @@ namespace Veriparse {
 				 *
 				 * @return zero on success
 				 */
-				virtual int inline_blocking_assignation(AST::Node::Ptr node, AST::Node::Ptr parent);
+				virtual int execute(AST::Node::Ptr node, AST::Node::Ptr parent);
+
+				/**
+				 * @brief Walk through a if statement.
+				 *
+				 * @return zero on success
+				 */
+				virtual int execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent);
+
+				/**
+				 * @brief Walk through a for statement.
+				 *
+				 * @return zero on success
+				 */
+				virtual int execute_for(AST::ForStatement::Ptr forstmt, AST::Node::Ptr parent);
+
+				/**
+				 * @brief Walk through a while statement.
+				 *
+				 * @return zero on success
+				 */
+				virtual int execute_while(AST::WhileStatement::Ptr whilestmt, AST::Node::Ptr parent);
+
+				/**
+				 * @brief Walk through a repeat statement.
+				 *
+				 * @return zero on success
+				 */
+				virtual int execute_repeat(AST::RepeatStatement::Ptr repeatstmt, AST::Node::Ptr parent);
 
 				/**
 				 * @brief Resolve the rvalue using the variables
@@ -46,7 +74,6 @@ namespace Veriparse {
 				 * @return lvalue string
 				 */
 				virtual std::string analyze_lvalue(AST::Lvalue::Ptr lvalue);
-
 
 			private:
 				StateMap m_state_map;

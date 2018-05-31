@@ -17,13 +17,13 @@ namespace Veriparse {
 					if(node->is_node_type(AST::NodeType::Initial)) {
 						m_state_map.clear();
 						AST::Initial::Ptr initial = AST::cast_to<AST::Initial>(node);
-						return inline_blocking_assignation(initial->get_statement(), node);
+						return execute(initial->get_statement(), node);
 					}
 				}
 				return recurse_in_childs(node);
 			}
 
-			int VariableFolding::inline_blocking_assignation(AST::Node::Ptr node, AST::Node::Ptr parent)
+			int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
 			{
 				switch (node->get_node_type()) {
 				case AST::NodeType::Block:
@@ -31,14 +31,14 @@ namespace Veriparse {
 						int ret = 0;
 						AST::Node::ListPtr children = node->get_children();
 						for (AST::Node::Ptr child: *children) {
-							ret += inline_blocking_assignation(child, node);
+							ret += execute(child, node);
 						}
 						return ret;
 					}
 
 				case AST::NodeType::BlockingSubstitution:
 					{
-						AST::BlockingSubstitution::Ptr subst = AST::cast_to<AST::BlockingSubstitution>(node);
+						auto subst = AST::cast_to<AST::BlockingSubstitution>(node);
 						std::string lvalue_str = analyze_lvalue(subst->get_left());
 						AST::Node::Ptr const_node = analyze_rvalue(subst->get_right());
 
@@ -51,28 +51,53 @@ namespace Veriparse {
 					break;
 
 				case AST::NodeType::IfStatement:
-					{
-						AST::IfStatement::Ptr ifstmt = AST::cast_to<AST::IfStatement>(node);
-						AST::Node::Ptr expr = ExpressionEvaluation().evaluate_node(ifstmt->get_cond());
+					return execute_if(AST::cast_to<AST::IfStatement>(node), parent);
 
-						if(expr == nullptr) return 0;
+				case AST::NodeType::ForStatement:
+					return execute_for(AST::cast_to<AST::ForStatement>(node), parent);
 
-						if(expr->is_node_type(AST::NodeType::IntConstN)) {
-							AST::IntConstN::Ptr cond = AST::cast_to<AST::IntConstN>(expr);
-							if(cond->get_value() != 0) {
-								return inline_blocking_assignation(ifstmt->get_true_statement(), node);
-							}
-							else {
-								return inline_blocking_assignation(ifstmt->get_false_statement(), node);
-							}
-						}
-					}
-					break;
+				case AST::NodeType::WhileStatement:
+					return execute_while(AST::cast_to<AST::WhileStatement>(node), parent);
+
+				case AST::NodeType::RepeatStatement:
+					return execute_repeat(AST::cast_to<AST::RepeatStatement>(node), parent);
 
 				default:
 					break;
 				}
 
+				return 0;
+			}
+
+			int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent)
+			{
+				AST::Node::Ptr expr = ExpressionEvaluation().evaluate_node(ifstmt->get_cond());
+				if(expr == nullptr) return 0;
+
+				if(expr->is_node_type(AST::NodeType::IntConstN)) {
+					auto cond = AST::cast_to<AST::IntConstN>(expr);
+					if(cond->get_value() != 0) {
+						return execute(ifstmt->get_true_statement(), ifstmt);
+					}
+					else {
+						return execute(ifstmt->get_false_statement(), ifstmt);
+					}
+				}
+				return 0;
+			}
+
+			int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)
+			{
+				return 0;
+			}
+
+			int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr parent)
+			{
+				return 0;
+			}
+
+			int VariableFolding::execute_repeat(AST::RepeatStatement::Ptr node, AST::Node::Ptr parent)
+			{
 				return 0;
 			}
 

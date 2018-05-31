@@ -36,3 +36,5 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 
 
 TEST(PassesTransformation_VariableFolding, unrolled0) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, ifstmt0) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, ifstmt1) {TEST_CORE;}
