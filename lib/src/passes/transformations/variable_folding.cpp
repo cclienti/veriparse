@@ -27,28 +27,10 @@ namespace Veriparse {
 			{
 				switch (node->get_node_type()) {
 				case AST::NodeType::Block:
-					{
-						int ret = 0;
-						AST::Node::ListPtr children = node->get_children();
-						for (AST::Node::Ptr child: *children) {
-							ret += execute(child, node);
-						}
-						return ret;
-					}
+						return execute_in_childs(node);
 
 				case AST::NodeType::BlockingSubstitution:
-					{
-						auto subst = AST::cast_to<AST::BlockingSubstitution>(node);
-						std::string lvalue_str = analyze_lvalue(subst->get_left());
-						AST::Node::Ptr const_node = analyze_rvalue(subst->get_right());
-
-						if(lvalue_str.empty() || const_node == nullptr)
-							return 0;
-
-						m_state_map[lvalue_str] = const_node;
-						subst->get_right()->set_var(const_node);
-					}
-					break;
+					return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node), parent);
 
 				case AST::NodeType::IfStatement:
 					return execute_if(AST::cast_to<AST::IfStatement>(node), parent);
@@ -69,21 +51,74 @@ namespace Veriparse {
 				return 0;
 			}
 
+			int VariableFolding::execute_in_childs(AST::Node::Ptr node)
+			{
+				int ret = 0;
+				AST::Node::ListPtr children = node->get_children();
+				for (AST::Node::Ptr child: *children) {
+					ret += execute(child, node);
+				}
+				return ret;
+			}
+
+			int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst, AST::Node::Ptr parent)
+			{
+				std::string lvalue_str = analyze_lvalue(subst->get_left());
+				AST::Node::Ptr const_node = analyze_rvalue(subst->get_right());
+
+				if(lvalue_str.empty() || const_node == nullptr)
+					return 0;
+
+				m_state_map[lvalue_str] = const_node;
+				subst->get_right()->set_var(const_node);
+				return 0;
+			}
+
 			int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent)
 			{
 				AST::Node::Ptr expr = ExpressionEvaluation().evaluate_node(ifstmt->get_cond());
-				if(expr == nullptr) return 0;
 
-				if(expr->is_node_type(AST::NodeType::IntConstN)) {
-					auto cond = AST::cast_to<AST::IntConstN>(expr);
-					if(cond->get_value() != 0) {
-						return execute(ifstmt->get_true_statement(), ifstmt);
-					}
-					else {
-						return execute(ifstmt->get_false_statement(), ifstmt);
+				if(expr != nullptr) {
+					if(expr->is_node_type(AST::NodeType::IntConstN)) {
+						auto cond = AST::cast_to<AST::IntConstN>(expr);
+						AST::Node::Ptr stmt;
+						if(cond->get_value() != 0) {
+							stmt = ifstmt->get_true_statement();
+						}
+						else {
+							stmt = ifstmt->get_false_statement();
+						}
+
+						AST::Node::ListPtr stmts;
+						if(stmt->is_node_type(AST::NodeType::Block)) {
+							stmts = AST::cast_to<AST::Block>(stmt)->get_statements();
+						}
+						else {
+							stmts = std::make_shared<AST::Node::List>();
+							stmts->push_back(stmt);
+						}
+
+						// Replace the unrolled statements in the parent block
+						if (parent->is_node_type(AST::NodeType::Block)) {
+							parent->replace(ifstmt, stmts);
+						}
+						else {
+							// if the node to replace is already in a list,
+							// we can directly replace the node by our
+							// list. There is no need to create a block.
+							bool node_in_list = parent->replace(ifstmt, stmts);
+
+							// We create a block to store our list.
+							if (!node_in_list) {
+								AST::Block::Ptr block = std::make_shared<AST::Block>(stmts, "");
+								parent->replace(ifstmt, block);
+								parent = block;
+							}
+						}
 					}
 				}
-				return 0;
+
+				return execute_in_childs(ifstmt);
 			}
 
 			int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)

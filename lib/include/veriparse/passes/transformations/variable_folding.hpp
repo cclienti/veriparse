@@ -31,6 +31,20 @@ namespace Veriparse {
 				virtual int execute(AST::Node::Ptr node, AST::Node::Ptr parent);
 
 				/**
+				 * @brief Walk through a block.
+				 *
+				 * @return zero on success
+				 */
+				virtual int execute_in_childs(AST::Node::Ptr node);
+
+				/**
+				 * @brief Walk through a blocking substitution.
+				 *
+				 * @return zero on success
+				 */
+				virtual int execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst, AST::Node::Ptr parent);
+
+				/**
 				 * @brief Walk through a if statement.
 				 *
 				 * @return zero on success
