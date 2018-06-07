@@ -3,6 +3,7 @@
 
 #include <veriparse/AST/nodes.hpp>
 #include <string>
+#include <functional>
 
 namespace Veriparse {
 	namespace Passes {
@@ -29,17 +30,37 @@ namespace Veriparse {
 				 * current node become the parent).
 				 * @return zero on success.
 				 */
-				virtual int recurse_in_childs(AST::Node::Ptr node)
-				{
-					int ret = 0;
-					if(node) {
-						AST::Node::ListPtr children = node->get_children();
-						for (AST::Node::Ptr child: *children) {
-							ret += process(child, node);
-						}
-					}
-					return ret;
-				}
+				virtual int recurse_in_childs(AST::Node::Ptr node);
+
+				/**
+				 * @brief Replace the given node in the parent by a list
+				 * of nodes list.
+				 *
+				 * If necessary a block can be added or the existing list
+				 * in the parent is appended with the stmts.
+				 *
+				 * This function is typically useful to replace a if node
+				 * by either the true or the false statements.
+				 *
+				 * @return nothing.
+				 */
+				virtual void pickup_statements(AST::Node::Ptr parent, AST::Node::Ptr node,
+				                               AST::Node::ListPtr stmts);
+
+				/**
+				 * @brief Replace the given node in the parent by the stmt node.
+				 *
+				 * If necessary the given block can be merged with an existing block
+				 * in the parent to append the statements.
+				 *
+				 * This function is typically useful to replace a if node
+				 * by either the true or the false statements.
+				 *
+				 * @return nothing.
+				 */
+				virtual void pickup_statements(AST::Node::Ptr parent, AST::Node::Ptr node,
+				                               AST::Node::Ptr stmt);
+
 			};
 
 		}

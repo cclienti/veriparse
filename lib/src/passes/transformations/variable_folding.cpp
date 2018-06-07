@@ -89,32 +89,7 @@ namespace Veriparse {
 							stmt = ifstmt->get_false_statement();
 						}
 
-						AST::Node::ListPtr stmts;
-						if(stmt->is_node_type(AST::NodeType::Block)) {
-							stmts = AST::cast_to<AST::Block>(stmt)->get_statements();
-						}
-						else {
-							stmts = std::make_shared<AST::Node::List>();
-							stmts->push_back(stmt);
-						}
-
-						// Replace the unrolled statements in the parent block
-						if (parent->is_node_type(AST::NodeType::Block)) {
-							parent->replace(ifstmt, stmts);
-						}
-						else {
-							// if the node to replace is already in a list,
-							// we can directly replace the node by our
-							// list. There is no need to create a block.
-							bool node_in_list = parent->replace(ifstmt, stmts);
-
-							// We create a block to store our list.
-							if (!node_in_list) {
-								AST::Block::Ptr block = std::make_shared<AST::Block>(stmts, "");
-								parent->replace(ifstmt, block);
-								parent = block;
-							}
-						}
+						pickup_statements(parent, ifstmt, stmt);
 					}
 				}
 
