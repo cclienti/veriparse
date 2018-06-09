@@ -50,7 +50,8 @@ namespace Veriparse {
 					stmts = std::make_shared<AST::Node::List>();
 					stmts->push_back(stmt);
 				}
-				pickup_statements(parent, node, stmts);
+
+				return pickup_statements(parent, node, stmts);
 			}
 
 

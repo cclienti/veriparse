@@ -81,15 +81,13 @@ namespace Veriparse {
 				if(expr != nullptr) {
 					if(expr->is_node_type(AST::NodeType::IntConstN)) {
 						auto cond = AST::cast_to<AST::IntConstN>(expr);
-						AST::Node::Ptr stmt;
 						if(cond->get_value() != 0) {
-							stmt = ifstmt->get_true_statement();
+							pickup_statements(parent, ifstmt, ifstmt->get_true_statement());
 						}
 						else {
-							stmt = ifstmt->get_false_statement();
+							pickup_statements(parent, ifstmt, ifstmt->get_false_statement());
 						}
 
-						pickup_statements(parent, ifstmt, stmt);
 					}
 				}
 

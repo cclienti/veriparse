@@ -89,22 +89,7 @@ namespace Veriparse
 							}
 
 							// Replace the unrolled statements in the parent block
-							if (parent->is_node_type(AST::NodeType::Block)) {
-								parent->replace(node, unrolled_stmts);
-							}
-							else {
-								// if the node to replace is already in a list,
-								// we can directly replace the node by our
-								// list. There is no need to create a block.
-								bool node_in_list = parent->replace(node, unrolled_stmts);
-
-								// We create a block to store our list.
-								if (!node_in_list) {
-									AST::Block::Ptr block = std::make_shared<AST::Block>(unrolled_stmts, "");
-									parent->replace(node, block);
-									parent = block;
-								}
-							}
+							pickup_statements(parent, node, unrolled_stmts);
 
 							// Finally search for another nested for statement in the unrolled ones.
 							return recurse_in_childs(parent);
@@ -135,22 +120,7 @@ namespace Veriparse
 								}
 
 								// Replace the unrolled statements in the parent block
-								if (parent->is_node_type(AST::NodeType::Block)) {
-									parent->replace(node, unrolled_stmts);
-								}
-								else {
-									// if the node to replace is already in a list,
-									// we can directly replace the node by our
-									// list. There is no need to create a block.
-									bool node_in_list = parent->replace(node, unrolled_stmts);
-
-									// We create a block to store our list.
-									if (!node_in_list) {
-										AST::Block::Ptr block = std::make_shared<AST::Block>(unrolled_stmts, "");
-										parent->replace(node, block);
-										parent = block;
-									}
-								}
+								pickup_statements(parent, node, unrolled_stmts);
 
 								// Finally search for another nested for statement in the unrolled ones.
 								return recurse_in_childs(parent);
