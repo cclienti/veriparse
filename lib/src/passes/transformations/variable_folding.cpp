@@ -76,22 +76,26 @@ namespace Veriparse {
 
 			int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent)
 			{
+
 				AST::Node::Ptr expr = ExpressionEvaluation().evaluate_node(ifstmt->get_cond());
 
 				if(expr != nullptr) {
 					if(expr->is_node_type(AST::NodeType::IntConstN)) {
 						auto cond = AST::cast_to<AST::IntConstN>(expr);
+						AST::Node::Ptr selected_stmt;
+
 						if(cond->get_value() != 0) {
-							pickup_statements(parent, ifstmt, ifstmt->get_true_statement());
+							selected_stmt = ifstmt->get_true_statement();
 						}
 						else {
-							pickup_statements(parent, ifstmt, ifstmt->get_false_statement());
+							selected_stmt = ifstmt->get_false_statement();
 						}
 
+						return execute(selected_stmt, ifstmt);
 					}
 				}
 
-				return execute_in_childs(ifstmt);
+				return 0;
 			}
 
 			int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)

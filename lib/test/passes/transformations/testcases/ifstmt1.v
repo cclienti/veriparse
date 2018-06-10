@@ -30,9 +30,9 @@ module ifstmt0 (output reg [31:0] a);
 
    generate
       if (1) begin
-         always @(*) begin
+   always @(*) begin
             a = x + y;
-         end
+   end
       end
       else begin
          always @(*) begin
