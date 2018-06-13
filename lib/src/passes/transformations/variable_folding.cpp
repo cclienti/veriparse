@@ -77,10 +77,11 @@ namespace Veriparse {
 			int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent)
 			{
 
-				AST::Node::Ptr expr = ExpressionEvaluation().evaluate_node(ifstmt->get_cond());
+				AST::Node::Ptr expr = analyze_expression(ifstmt->get_cond());
 
 				if(expr != nullptr) {
 					if(expr->is_node_type(AST::NodeType::IntConstN)) {
+						ifstmt->set_cond(expr);
 						auto cond = AST::cast_to<AST::IntConstN>(expr);
 						AST::Node::Ptr selected_stmt;
 
@@ -149,6 +150,11 @@ namespace Veriparse {
 				return Generators::VerilogGenerator().render(lvalue->get_var());
 			}
 
+			AST::Node::Ptr VariableFolding::analyze_expression(AST::Node::Ptr expr)
+			{
+				ASTReplace::replace_identifier(AST::to_node(expr), m_state_map);
+				return ExpressionEvaluation().evaluate_node(expr);
+			}
 
 		}
 	}

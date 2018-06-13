@@ -1,0 +1,640 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+          items:
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+              line: 2
+              name: Z
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 0
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+              line: 4
+              name: x
+              right:
+                Rvalue: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+              line: 4
+              name: y
+              right:
+                Rvalue: null
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+              line: 6
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                  line: 6
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 7
+                              name: Z
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                      false_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 18
+                          scope: ''
+                          statements:
+                          - IfStatement:
+                              cond:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 19
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                              false_statement:
+                                BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 20
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 20
+                                          name: x
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 20
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 20
+                                      var:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 20
+                                          sign: false
+                                          size: -1
+                                          value: 4
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 19
+                              true_statement:
+                                BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 19
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 19
+                                          name: x
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 19
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 19
+                                      var:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 19
+                                          sign: false
+                                          size: -1
+                                          value: 1
+                          - IfStatement:
+                              cond:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 22
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              false_statement:
+                                Block:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 25
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 26
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 26
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 26
+                                          var:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 3
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 22
+                              true_statement:
+                                Block:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 22
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 23
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 23
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 23
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 23
+                                          var:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 23
+                                              sign: false
+                                              size: -1
+                                              value: 2
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 7
+                      true_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 7
+                          scope: ''
+                          statements:
+                          - IfStatement:
+                              cond:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 8
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              false_statement:
+                                BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 9
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 9
+                                          name: x
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 9
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 9
+                                      var:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 9
+                                          sign: false
+                                          size: -1
+                                          value: 4
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 8
+                              true_statement:
+                                BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 8
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 8
+                                          name: x
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 8
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 8
+                                      var:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 8
+                                          sign: false
+                                          size: -1
+                                          value: 1
+                          - IfStatement:
+                              cond:
+                                IntConstN:
+                                  base: 2
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 11
+                                  sign: false
+                                  size: 1
+                                  value: 1
+                              false_statement:
+                                Block:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 14
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 15
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 15
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 15
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 15
+                                          var:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 15
+                                              sign: false
+                                              size: -1
+                                              value: 3
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 11
+                              true_statement:
+                                Block:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 11
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 12
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 12
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 12
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 12
+                                          var:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 12
+                                              sign: false
+                                              size: -1
+                                              value: 2
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+              items:
+              - IfStatement:
+                  cond:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 32
+                      sign: false
+                      size: -1
+                      value: 1
+                  false_statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 37
+                      scope: ''
+                      statements:
+                      - Always:
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 38
+                          senslist:
+                            Senslist:
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 38
+                              list:
+                              - Sens:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 38
+                                  sig: null
+                                  type: ALL
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 38
+                              scope: ''
+                              statements:
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 39
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 39
+                                          name: a
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 39
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 39
+                                      var:
+                                        Times:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 39
+                                              name: x
+                                              scope:
+                                                IdentifierScope: null
+                                          line: 39
+                                          right:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 39
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                  line: 32
+                  true_statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 32
+                      scope: ''
+                      statements:
+                      - Always:
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 33
+                          senslist:
+                            Senslist:
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 33
+                              list:
+                              - Sens:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  line: 33
+                                  sig: null
+                                  type: ALL
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 33
+                              scope: ''
+                              statements:
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 34
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          line: 34
+                                          name: a
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 34
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                      line: 34
+                                      var:
+                                        Plus:
+                                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 34
+                                              name: x
+                                              scope:
+                                                IdentifierScope: null
+                                          line: 34
+                                          right:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                                              line: 34
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+              line: 31
+          - Always:
+              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+              line: 44
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                  line: 44
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 44
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                  line: 44
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 45
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                              line: 45
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 45
+                          syscall: display
+          line: 1
+          name: ifstmt1
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/ifstmt1.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                  line: 1
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 1
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 1
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 1
+                          sign: false
+                          size: -1
+                          value: 31
+              line: 1
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                  line: 1
+                  name: a
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                      line: 1
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 1
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/ifstmt1.v
+                          line: 1
+                          sign: false
+                          size: -1
+                          value: 31
+      filename: ../../test/passes/transformations/testcases/ifstmt1.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/ifstmt1.v
+  line: 1
+

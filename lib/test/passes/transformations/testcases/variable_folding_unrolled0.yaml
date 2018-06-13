@@ -1,0 +1,1899 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/unrolled0.v
+          items:
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              line: 5
+              name: j
+              right:
+                Rvalue: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              line: 5
+              name: k
+              right:
+                Rvalue: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              line: 5
+              name: offset
+              right:
+                Rvalue: null
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              lengths:
+              - Length:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 15
+              line: 6
+              name: lut
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 7
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              line: 8
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 9
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 9
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 9
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 10
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 10
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 10
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 2
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 11
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 11
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 11
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 11
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 11
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 4
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 13
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 13
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 13
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 13
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 2
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 14
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 14
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 14
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 14
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 3
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 15
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 15
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 15
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 15
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 15
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 6
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 17
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 3
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 18
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 18
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 4
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 19
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 19
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 2
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 19
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 19
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 19
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 8
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 21
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 21
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 21
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 21
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 4
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 22
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 22
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 22
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 22
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 5
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 23
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 23
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 23
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 23
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 23
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 10
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 25
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 25
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 25
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 25
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 5
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 26
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 26
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 26
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 6
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 27
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 27
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 4
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 27
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 27
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 12
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 29
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 29
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 29
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 29
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 6
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 30
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 30
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 30
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 30
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 7
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 31
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 31
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 5
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 31
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 31
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 31
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 14
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 33
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 33
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 33
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 33
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 7
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 34
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 34
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 34
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 34
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 8
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 35
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 35
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 6
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 35
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 35
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 35
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 16
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 37
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 37
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 37
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 37
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 8
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 38
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 38
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 38
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 38
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 9
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 39
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 39
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 7
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 39
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 39
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 39
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 18
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 41
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 41
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 41
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 41
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 9
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 42
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 42
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 42
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 42
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 10
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 43
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 43
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 8
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 43
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 43
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 43
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 20
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 45
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 45
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 45
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 45
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 10
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 46
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 46
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 46
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 46
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 11
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 47
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 47
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 9
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 47
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 47
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 47
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 22
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 49
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 49
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 49
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 49
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 11
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 50
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 50
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 50
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 50
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 12
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 51
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 51
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 10
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 51
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 51
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 51
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 24
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 53
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 53
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 53
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 53
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 12
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 54
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 54
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 54
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 54
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 13
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 55
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 55
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 11
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 55
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 55
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 55
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 26
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 57
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 57
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 57
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 57
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 13
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 58
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 58
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 58
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 58
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 14
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 59
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 59
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 12
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 59
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 59
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 59
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 28
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 61
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 61
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 61
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 61
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 14
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 62
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 62
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 62
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 62
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 15
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 63
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 63
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 13
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 63
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 63
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 63
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 30
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 65
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 65
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 65
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 65
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 15
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 66
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 66
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 66
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 66
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 16
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 67
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 67
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 14
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 67
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 67
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 67
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 32
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 69
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 69
+                              name: k
+                              scope:
+                                IdentifierScope: null
+                      line: 69
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 69
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 16
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 70
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 70
+                              name: offset
+                              scope:
+                                IdentifierScope: null
+                      line: 70
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 70
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 17
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 71
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 71
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 15
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 71
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 71
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 71
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 34
+          - Always:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              line: 74
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 74
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 74
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 74
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 75
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 75
+                              name: out
+                              scope:
+                                IdentifierScope: null
+                      line: 75
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 75
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/unrolled0.v
+                              line: 75
+                              ptr:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 75
+                                  name: in
+                                  scope:
+                                    IdentifierScope: null
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                                  line: 75
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+          line: 1
+          name: unrolled0
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 2
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/unrolled0.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 3
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 3
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/unrolled0.v
+                  line: 3
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/unrolled0.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/unrolled0.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: ../../test/passes/transformations/testcases/unrolled0.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/unrolled0.v
+  line: 1
+

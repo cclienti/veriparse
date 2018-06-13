@@ -1,4 +1,4 @@
-module ifstmt0 (output reg [31:0] a);
+module ifstmt1 (output reg [31:0] a);
    parameter Z = 0;
 
    integer x, y;

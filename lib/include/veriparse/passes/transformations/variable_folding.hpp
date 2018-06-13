@@ -89,6 +89,14 @@ namespace Veriparse {
 				 */
 				virtual std::string analyze_lvalue(AST::Lvalue::Ptr lvalue);
 
+				/**
+				 * @brief Resolve the expression using the variables
+				 * state. Return the constant value.
+				 *
+				 * @return constant value on success, else nullptr
+				 */
+				virtual AST::Node::Ptr analyze_expression(AST::Node::Ptr expr);
+
 			private:
 				StateMap m_state_map;
 
