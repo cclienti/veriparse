@@ -1,4 +1,4 @@
-module repeat0;
+module repeat1;
 
   initial
      repeat(10) begin

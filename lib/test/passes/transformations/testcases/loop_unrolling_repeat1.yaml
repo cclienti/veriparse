@@ -176,9 +176,8 @@ Source:
                           line: 5
                           syscall: display
           line: 1
-          name: repeat0
+          name: repeat1
       filename: ../../test/passes/transformations/testcases/repeat1.v
       line: 1
   filename: ../../test/passes/transformations/testcases/repeat1.v
   line: 1
-

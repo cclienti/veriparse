@@ -39,3 +39,6 @@ TEST(PassesTransformation_VariableFolding, unrolled0) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, ifstmt0) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, ifstmt1) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, ifstmt2) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, repeat0) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, repeat1) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, repeat2) {TEST_CORE;}

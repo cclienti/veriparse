@@ -27,7 +27,7 @@ namespace Veriparse {
 			{
 				switch (node->get_node_type()) {
 				case AST::NodeType::Block:
-						return execute_in_childs(node);
+					return execute_in_childs(node);
 
 				case AST::NodeType::BlockingSubstitution:
 					return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node), parent);
@@ -47,7 +47,6 @@ namespace Veriparse {
 				default:
 					break;
 				}
-
 				return 0;
 			}
 
@@ -77,9 +76,9 @@ namespace Veriparse {
 			int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent)
 			{
 
-				AST::Node::Ptr expr = analyze_expression(ifstmt->get_cond());
+				auto expr = analyze_expression(ifstmt->get_cond());
 
-				if(expr != nullptr) {
+				if(expr) {
 					if(expr->is_node_type(AST::NodeType::IntConstN)) {
 						ifstmt->set_cond(expr);
 						auto cond = AST::cast_to<AST::IntConstN>(expr);
@@ -111,7 +110,38 @@ namespace Veriparse {
 
 			int VariableFolding::execute_repeat(AST::RepeatStatement::Ptr node, AST::Node::Ptr parent)
 			{
-				return 0;
+				int ret = 0;
+
+				auto expr = analyze_expression(node->get_times());
+
+				if(expr) {
+					if(expr->is_node_type(AST::NodeType::IntConstN)) {
+						auto block = std::make_shared<AST::Block>();
+						auto block_stmts = std::make_shared<AST::Node::List>();
+						block->set_statements(block_stmts);
+
+						auto times = AST::cast_to<AST::IntConstN>(expr);
+						for(mpz_class i=0; i<times->get_value(); i++) {
+							auto current = node->get_statement()->clone();
+
+							if(current->is_node_type(AST::NodeType::Block)) {
+								auto current_block = AST::cast_to<AST::Block>(current);
+								for(auto stmt: *current_block->get_statements()) {
+									block_stmts->push_back(stmt);
+									ret += execute(stmt, parent);
+								}
+							}
+							else {
+								block_stmts->push_back(current);
+								ret += execute(current, parent);
+							}
+						}
+
+						pickup_statements(parent, node, block_stmts);
+					}
+				}
+
+				return ret;
 			}
 
 			AST::Node::Ptr VariableFolding::analyze_rvalue(AST::Rvalue::Ptr rvalue)
@@ -152,8 +182,8 @@ namespace Veriparse {
 
 			AST::Node::Ptr VariableFolding::analyze_expression(AST::Node::Ptr expr)
 			{
-				ASTReplace::replace_identifier(AST::to_node(expr), m_state_map);
-				return ExpressionEvaluation().evaluate_node(expr);
+				auto rvalue = std::make_shared<AST::Rvalue>(expr);
+				return analyze_rvalue(rvalue);
 			}
 
 		}
