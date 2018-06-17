@@ -73,6 +73,13 @@ namespace Veriparse {
 				virtual int execute_repeat(AST::RepeatStatement::Ptr repeatstmt, AST::Node::Ptr parent);
 
 				/**
+				 * @brief Walk through a repeat statement.
+				 *
+				 * @return zero on success
+				 */
+				virtual int execute_call(AST::Node::Ptr call, AST::Node::Ptr parent);
+
+				/**
 				 * @brief Resolve the rvalue using the variables
 				 * state. Return the constant value. The given rvalue is
 				 * updated with the node created using the rvalue result.

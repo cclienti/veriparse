@@ -1,0 +1,184 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/repeat0.v
+          items:
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/repeat0.v
+              line: 3
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/repeat0.v
+                  line: 3
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/repeat0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/repeat0.v
+                              line: 5
+                              value: repeat!
+                          filename: ../../test/passes/transformations/testcases/repeat0.v
+                          line: 5
+                          syscall: display
+          line: 1
+          name: repeat0
+      filename: ../../test/passes/transformations/testcases/repeat0.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/repeat0.v
+  line: 1
+

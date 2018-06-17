@@ -27,7 +27,8 @@ namespace Veriparse {
 			{
 				switch (node->get_node_type()) {
 				case AST::NodeType::Block:
-					return execute_in_childs(node);
+				case AST::NodeType::SingleStatement:
+						return execute_in_childs(node);
 
 				case AST::NodeType::BlockingSubstitution:
 					return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node), parent);
@@ -44,9 +45,14 @@ namespace Veriparse {
 				case AST::NodeType::RepeatStatement:
 					return execute_repeat(AST::cast_to<AST::RepeatStatement>(node), parent);
 
+				case AST::NodeType::FunctionCall:
+				case AST::NodeType::TaskCall:
+				case AST::NodeType::SystemCall:
+					return execute_call(node, parent);
 				default:
 					break;
 				}
+
 				return 0;
 			}
 
@@ -116,6 +122,7 @@ namespace Veriparse {
 
 				if(expr) {
 					if(expr->is_node_type(AST::NodeType::IntConstN)) {
+						// Create a temporary block to hold stmts.
 						auto block = std::make_shared<AST::Block>();
 						auto block_stmts = std::make_shared<AST::Node::List>();
 						block->set_statements(block_stmts);
@@ -128,20 +135,56 @@ namespace Veriparse {
 								auto current_block = AST::cast_to<AST::Block>(current);
 								for(auto stmt: *current_block->get_statements()) {
 									block_stmts->push_back(stmt);
-									ret += execute(stmt, parent);
 								}
 							}
 							else {
 								block_stmts->push_back(current);
-								ret += execute(current, parent);
 							}
 						}
 
-						pickup_statements(parent, node, block_stmts);
+						pickup_statements(parent, node, block);
+
+						// We must call execute on each element of the
+						// temporary block to pass the right parentt.
+						for(auto stmt: *block_stmts) {
+							ret += execute(stmt, parent);
+						}
 					}
 				}
 
 				return ret;
+			}
+
+			int VariableFolding::execute_call(AST::Node::Ptr node, AST::Node::Ptr parent)
+			{
+				AST::Node::ListPtr args;
+
+				switch(node->get_node_type()) {
+				case AST::NodeType::FunctionCall:
+					args = AST::cast_to<AST::FunctionCall>(node)->get_args();
+					break;
+				case AST::NodeType::TaskCall:
+					args = AST::cast_to<AST::TaskCall>(node)->get_args();
+					break;
+				case AST::NodeType::SystemCall:
+					args = AST::cast_to<AST::SystemCall>(node)->get_args();
+					break;
+				default:
+					LOG_ERROR_N(node) << "VariableFolding: unknown node type";
+					return 1;
+				}
+
+				if(args) {
+					for(auto arg: *args) {
+						ASTReplace::replace_identifier(arg, m_state_map, node);
+						auto expr = ExpressionEvaluation().evaluate_node(arg);
+						if(expr) {
+							node->replace(arg, expr);
+						}
+					}
+				}
+
+				return 0;
 			}
 
 			AST::Node::Ptr VariableFolding::analyze_rvalue(AST::Rvalue::Ptr rvalue)
