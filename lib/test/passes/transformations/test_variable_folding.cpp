@@ -18,6 +18,7 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 	ASSERT_TRUE(source != nullptr);                                              \
                                                                                 \
 	test_helpers.render_node_to_verilog_file(source, test_string + "_before.v"); \
+	test_helpers.render_node_to_dot_file(source, test_string + "_before.dot");   \
 	/* apply the transformation */                                               \
 	Passes::Transformations::VariableFolding().run(source);                      \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");        \
@@ -42,3 +43,5 @@ TEST(PassesTransformation_VariableFolding, ifstmt2) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, repeat0) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, repeat1) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, repeat2) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, while0) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, while1) {TEST_CORE;}

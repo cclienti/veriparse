@@ -84,21 +84,19 @@ namespace Veriparse {
 
 				auto expr = analyze_expression(ifstmt->get_cond());
 
-				if(expr) {
-					if(expr->is_node_type(AST::NodeType::IntConstN)) {
-						ifstmt->set_cond(expr);
-						auto cond = AST::cast_to<AST::IntConstN>(expr);
-						AST::Node::Ptr selected_stmt;
+				if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
+					ifstmt->set_cond(expr);
+					auto cond = AST::cast_to<AST::IntConstN>(expr);
+					AST::Node::Ptr selected_stmt;
 
-						if(cond->get_value() != 0) {
-							selected_stmt = ifstmt->get_true_statement();
-						}
-						else {
-							selected_stmt = ifstmt->get_false_statement();
-						}
-
-						return execute(selected_stmt, ifstmt);
+					if(cond->get_value() != 0) {
+						selected_stmt = ifstmt->get_true_statement();
 					}
+					else {
+						selected_stmt = ifstmt->get_false_statement();
+					}
+
+					return execute(selected_stmt, ifstmt);
 				}
 
 				return 0;
@@ -111,7 +109,53 @@ namespace Veriparse {
 
 			int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr parent)
 			{
-				return 0;
+				int ret = 0;
+
+				auto expr = analyze_expression(node->get_cond()->clone());
+
+				if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
+					auto cond = AST::cast_to<AST::IntConstN>(expr);
+					LOG_WARNING_N(node) << "condition "<< Generators::VerilogGenerator().render(node->get_cond())
+					                    <<" value: " << cond->get_value();
+
+					auto block = std::make_shared<AST::Block>();
+					auto block_stmts = std::make_shared<AST::Node::List>();
+					block->set_statements(block_stmts);
+
+					while(cond->get_value() != 0) {
+						auto current = node->get_statement()->clone();
+
+						if(current->is_node_type(AST::NodeType::Block)) {
+							auto current_block = AST::cast_to<AST::Block>(current);
+							for(auto stmt: *current_block->get_statements()) {
+								block_stmts->push_back(stmt);
+								ret += execute(stmt, block);
+							}
+						}
+						else {
+							block_stmts->push_back(current);
+							ret += execute(current, block);
+						}
+
+						expr = analyze_expression(node->get_cond()->clone());
+						if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
+							cond = AST::cast_to<AST::IntConstN>(expr);
+							LOG_WARNING_N(node) << "condition "<< Generators::VerilogGenerator().render(node->get_cond())
+							                    <<" value: " << cond->get_value();
+						}
+						else {
+							LOG_WARNING_N(node) << "condition cannot be evaluated during while loop unrolling";
+							return 0;
+						}
+
+						LOG_WARNING_N(node) << Generators::VerilogGenerator().render(block);
+					}
+
+					pickup_statements(parent, node, block);
+
+				}
+
+				return ret;
 			}
 
 			int VariableFolding::execute_repeat(AST::RepeatStatement::Ptr node, AST::Node::Ptr parent)
@@ -120,35 +164,33 @@ namespace Veriparse {
 
 				auto expr = analyze_expression(node->get_times());
 
-				if(expr) {
-					if(expr->is_node_type(AST::NodeType::IntConstN)) {
-						// Create a temporary block to hold stmts.
-						auto block = std::make_shared<AST::Block>();
-						auto block_stmts = std::make_shared<AST::Node::List>();
-						block->set_statements(block_stmts);
+				if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
+					// Create a temporary block to hold stmts.
+					auto block = std::make_shared<AST::Block>();
+					auto block_stmts = std::make_shared<AST::Node::List>();
+					block->set_statements(block_stmts);
 
-						auto times = AST::cast_to<AST::IntConstN>(expr);
-						for(mpz_class i=0; i<times->get_value(); i++) {
-							auto current = node->get_statement()->clone();
+					auto times = AST::cast_to<AST::IntConstN>(expr);
+					for(mpz_class i=0; i<times->get_value(); i++) {
+						auto current = node->get_statement()->clone();
 
-							if(current->is_node_type(AST::NodeType::Block)) {
-								auto current_block = AST::cast_to<AST::Block>(current);
-								for(auto stmt: *current_block->get_statements()) {
-									block_stmts->push_back(stmt);
-								}
-							}
-							else {
-								block_stmts->push_back(current);
+						if(current->is_node_type(AST::NodeType::Block)) {
+							auto current_block = AST::cast_to<AST::Block>(current);
+							for(auto stmt: *current_block->get_statements()) {
+								block_stmts->push_back(stmt);
 							}
 						}
-
-						pickup_statements(parent, node, block);
-
-						// We must call execute on each element of the
-						// temporary block to pass the right parentt.
-						for(auto stmt: *block_stmts) {
-							ret += execute(stmt, parent);
+						else {
+							block_stmts->push_back(current);
 						}
+					}
+
+					pickup_statements(parent, node, block);
+
+					// We must call execute on each element of the
+					// temporary block to pass the right parentt.
+					for(auto stmt: *block_stmts) {
+						ret += execute(stmt, parent);
 					}
 				}
 
