@@ -115,21 +115,34 @@ namespace Veriparse {
 
 				if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
 					auto cond = AST::cast_to<AST::IntConstN>(expr);
-					LOG_WARNING_N(node) << "condition "<< Generators::VerilogGenerator().render(node->get_cond())
-					                    <<" value: " << cond->get_value();
 
-					auto block = std::make_shared<AST::Block>();
-					auto block_stmts = std::make_shared<AST::Node::List>();
-					block->set_statements(block_stmts);
+					// We create a temporary block to hold a temporary
+					// unrolled result.
+					//
+					// We must pay attention that the list within the block
+					// can be replaced! A new list can be created when the
+					// "replace" or the "pickup_statements" methods are
+					// called.
+					auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
 
 					while(cond->get_value() != 0) {
+						// We must get the new list updated by pickup_parents.
+						auto block_stmts = block->get_statements();
+
+						// We clone the statement to analyze
 						auto current = node->get_statement()->clone();
 
 						if(current->is_node_type(AST::NodeType::Block)) {
 							auto current_block = AST::cast_to<AST::Block>(current);
 							for(auto stmt: *current_block->get_statements()) {
 								block_stmts->push_back(stmt);
+								if(node->get_line() == 7)
+									LOG_WARNING_N(node) << "SIZE: " << block_stmts->size();
+								if(node->get_line() == 7)
+									LOG_WARNING_N(node) << "BEFORE:" << Generators::VerilogGenerator().render(block);
 								ret += execute(stmt, block);
+								if(node->get_line() == 7)
+									LOG_WARNING_N(node) << "AFTER:" << Generators::VerilogGenerator().render(block);
 							}
 						}
 						else {
@@ -137,20 +150,22 @@ namespace Veriparse {
 							ret += execute(current, block);
 						}
 
+						if(node->get_line() == 7)
+							LOG_WARNING_N(node) << Generators::VerilogGenerator().render(block);
+
+						// We clone the condition and we evaluate it.
 						expr = analyze_expression(node->get_cond()->clone());
 						if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
 							cond = AST::cast_to<AST::IntConstN>(expr);
-							LOG_WARNING_N(node) << "condition "<< Generators::VerilogGenerator().render(node->get_cond())
-							                    <<" value: " << cond->get_value();
 						}
 						else {
 							LOG_WARNING_N(node) << "condition cannot be evaluated during while loop unrolling";
 							return 0;
 						}
-
-						LOG_WARNING_N(node) << Generators::VerilogGenerator().render(block);
 					}
 
+					// At this point everything is unrolled and we can
+					// replace the block in the parent.
 					pickup_statements(parent, node, block);
 
 				}
