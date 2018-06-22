@@ -136,22 +136,13 @@ namespace Veriparse {
 							auto current_block = AST::cast_to<AST::Block>(current);
 							for(auto stmt: *current_block->get_statements()) {
 								block_stmts->push_back(stmt);
-								if(node->get_line() == 7)
-									LOG_WARNING_N(node) << "SIZE: " << block_stmts->size();
-								if(node->get_line() == 7)
-									LOG_WARNING_N(node) << "BEFORE:" << Generators::VerilogGenerator().render(block);
 								ret += execute(stmt, block);
-								if(node->get_line() == 7)
-									LOG_WARNING_N(node) << "AFTER:" << Generators::VerilogGenerator().render(block);
 							}
 						}
 						else {
 							block_stmts->push_back(current);
 							ret += execute(current, block);
 						}
-
-						if(node->get_line() == 7)
-							LOG_WARNING_N(node) << Generators::VerilogGenerator().render(block);
 
 						// We clone the condition and we evaluate it.
 						expr = analyze_expression(node->get_cond()->clone());

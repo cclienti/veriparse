@@ -45,3 +45,4 @@ TEST(PassesTransformation_VariableFolding, repeat1) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, repeat2) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, while0) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, while1) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, while2) {TEST_CORE;}
