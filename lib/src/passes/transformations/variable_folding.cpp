@@ -13,46 +13,45 @@ namespace Veriparse {
 
 			int VariableFolding::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 			{
-				if (node) {
-					if(node->is_node_type(AST::NodeType::Initial)) {
-						m_state_map.clear();
-						AST::Initial::Ptr initial = AST::cast_to<AST::Initial>(node);
-						return execute(initial->get_statement(), node);
-					}
+				if(node && node->is_node_type(AST::NodeType::Initial)) {
+					m_state_map.clear();
+					AST::Initial::Ptr initial = AST::cast_to<AST::Initial>(node);
+					return execute(initial->get_statement(), node);
 				}
 				return recurse_in_childs(node);
 			}
 
 			int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
 			{
-				switch (node->get_node_type()) {
-				case AST::NodeType::Block:
-				case AST::NodeType::SingleStatement:
+				if(node) {
+					switch (node->get_node_type()) {
+					case AST::NodeType::Block:
+					case AST::NodeType::SingleStatement:
 						return execute_in_childs(node);
 
-				case AST::NodeType::BlockingSubstitution:
-					return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node), parent);
+					case AST::NodeType::BlockingSubstitution:
+						return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node), parent);
 
-				case AST::NodeType::IfStatement:
-					return execute_if(AST::cast_to<AST::IfStatement>(node), parent);
+					case AST::NodeType::IfStatement:
+						return execute_if(AST::cast_to<AST::IfStatement>(node), parent);
 
-				case AST::NodeType::ForStatement:
-					return execute_for(AST::cast_to<AST::ForStatement>(node), parent);
+					case AST::NodeType::ForStatement:
+						return execute_for(AST::cast_to<AST::ForStatement>(node), parent);
 
-				case AST::NodeType::WhileStatement:
-					return execute_while(AST::cast_to<AST::WhileStatement>(node), parent);
+					case AST::NodeType::WhileStatement:
+						return execute_while(AST::cast_to<AST::WhileStatement>(node), parent);
 
-				case AST::NodeType::RepeatStatement:
-					return execute_repeat(AST::cast_to<AST::RepeatStatement>(node), parent);
+					case AST::NodeType::RepeatStatement:
+						return execute_repeat(AST::cast_to<AST::RepeatStatement>(node), parent);
 
-				case AST::NodeType::FunctionCall:
-				case AST::NodeType::TaskCall:
-				case AST::NodeType::SystemCall:
-					return execute_call(node, parent);
-				default:
-					break;
+					case AST::NodeType::FunctionCall:
+					case AST::NodeType::TaskCall:
+					case AST::NodeType::SystemCall:
+						return execute_call(node, parent);
+					default:
+						break;
+					}
 				}
-
 				return 0;
 			}
 
@@ -81,6 +80,7 @@ namespace Veriparse {
 
 			int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent)
 			{
+				int ret = 0;
 
 				auto expr = analyze_expression(ifstmt->get_cond());
 
@@ -96,20 +96,83 @@ namespace Veriparse {
 						selected_stmt = ifstmt->get_false_statement();
 					}
 
-					return execute(selected_stmt, ifstmt);
+					ret = execute(selected_stmt, ifstmt);
+					pickup_statements(parent, ifstmt, selected_stmt);
 				}
 
-				return 0;
+				return ret;
 			}
 
 			int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)
 			{
-				return 0;
+				int ret = 0;
+
+				if(!node) return ret;
+
+				// We create a temporary block to hold a temporary
+				// unrolled result.
+				//
+				// We must pay attention that the list within the block
+				// can be replaced! A new list can be created when the
+				// "replace" or the "pickup_statements" methods are
+				// called.
+				auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
+
+				// Pre condition.
+				auto pre = node->get_pre();
+				if(pre) {
+					ret += execute(pre, node);
+				}
+
+				while(1) {
+					auto cloned = AST::cast_to<AST::ForStatement>(node->clone());
+
+					// Statements within for.
+					auto block_stmts = block->get_statements();
+					auto current = cloned->get_statement();
+
+					if(current->is_node_type(AST::NodeType::Block)) {
+						auto current_block = AST::cast_to<AST::Block>(current);
+						for(auto stmt: *current_block->get_statements()) {
+							block_stmts->push_back(stmt);
+							ret += execute(stmt, block);
+						}
+					}
+					else {
+						block_stmts->push_back(current);
+						ret += execute(current, block);
+					}
+
+					// Post update.
+					auto post = cloned->get_post();
+					if(post) {
+						ret += execute(post, cloned);
+					}
+
+					// Analyze condition.
+					auto cond = analyze_expression(cloned->get_cond());
+					if(cond && cond->is_node_type(AST::NodeType::IntConstN)) {
+						if(AST::cast_to<AST::IntConstN>(cond)->get_value() == 0)
+							break;
+					}
+					else {
+						LOG_WARNING_N(node) << "condition cannot be evaluated during for loop unrolling";
+						return 0;
+					}
+				}
+
+				// At this point everything is unrolled and we can
+				// replace the block in the parent.
+				pickup_statements(parent, node, block);
+
+				return ret;
 			}
 
 			int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr parent)
 			{
 				int ret = 0;
+
+				if(!node) return ret;
 
 				auto expr = analyze_expression(node->get_cond()->clone());
 
@@ -171,33 +234,35 @@ namespace Veriparse {
 				auto expr = analyze_expression(node->get_times());
 
 				if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
-					// Create a temporary block to hold stmts.
-					auto block = std::make_shared<AST::Block>();
-					auto block_stmts = std::make_shared<AST::Node::List>();
-					block->set_statements(block_stmts);
+					// Create a temporary block to hold unrolled statements.
+					//
+					// We must pay attention that the list within the block
+					// can be replaced! A new list can be created when the
+					// "replace" or the "pickup_statements" methods are
+					// called.
+					auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
 
 					auto times = AST::cast_to<AST::IntConstN>(expr);
 					for(mpz_class i=0; i<times->get_value(); i++) {
+						auto block_stmts = block->get_statements();
 						auto current = node->get_statement()->clone();
 
 						if(current->is_node_type(AST::NodeType::Block)) {
 							auto current_block = AST::cast_to<AST::Block>(current);
 							for(auto stmt: *current_block->get_statements()) {
 								block_stmts->push_back(stmt);
+								ret += execute(stmt, block);
 							}
 						}
 						else {
 							block_stmts->push_back(current);
+							ret += execute(current, block);
 						}
 					}
 
+					// At this point everything is unrolled and we can
+					// replace the block in the parent.
 					pickup_statements(parent, node, block);
-
-					// We must call execute on each element of the
-					// temporary block to pass the right parentt.
-					for(auto stmt: *block_stmts) {
-						ret += execute(stmt, parent);
-					}
 				}
 
 				return ret;

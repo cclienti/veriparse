@@ -46,3 +46,6 @@ TEST(PassesTransformation_VariableFolding, repeat2) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, while0) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, while1) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, while2) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, for0) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, for1) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, for2) {TEST_CORE;}
