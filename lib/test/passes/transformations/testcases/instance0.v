@@ -15,20 +15,3 @@ module instance0;
    );
 
 endmodule
-
-
-module mod (input wire clock,
-            input wire reset,
-            input wire [7:0] in0, in1,
-            output reg [7:0] out);
-
-   always @(posedge clock) begin
-      if (reset) begin
-         out <= 0;
-      end
-      else begin
-         out <= in0 + in1;
-      end
-   end
-
-endmodule

@@ -16,6 +16,15 @@ namespace Veriparse {
 				 */
 				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
+				/**
+				 * @brief split instance lists
+				 */
+				int split_lists(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
+				/**
+				 * @brief split instance's array
+				 */
+				int split_array(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 			};
 
 		}
