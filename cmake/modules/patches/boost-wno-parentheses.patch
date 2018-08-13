@@ -1,0 +1,21 @@
+--- boost/mpl/assert.hpp	2018-08-13 21:46:14.127884332 +0200
++++ boost/mpl/assert.hpp	2018-08-13 21:55:42.323052587 +0200
+@@ -185,14 +185,14 @@
+ };
+
+ template< typename Pred >
+-failed ************ (Pred::************
++failed ************ Pred::************
+       assert_arg( void (*)(Pred), typename assert_arg_pred<Pred>::type )
+-    );
++    ;
+
+ template< typename Pred >
+-failed ************ (boost::mpl::not_<Pred>::************
++failed ************ boost::mpl::not_<Pred>::************
+       assert_not_arg( void (*)(Pred), typename assert_arg_pred_not<Pred>::type )
+-    );
++    ;
+
+ template< typename Pred >
+ AUX778076_ASSERT_ARG(assert<false>)
