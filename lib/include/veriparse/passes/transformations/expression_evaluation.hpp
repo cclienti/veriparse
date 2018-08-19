@@ -33,6 +33,20 @@ namespace Veriparse {
 				 */
 				AST::Node::Ptr evaluate_node(const AST::Node::Ptr node);
 
+				/**
+				 * Evaluate node recursively and return the value by
+				 * reference. If the value is valid, the method returns
+				 * true.
+				 */
+				bool evaluate_node(const AST::Node::Ptr &node, mpz_class &value);
+
+				/**
+				 * Evaluate node recursively and return the value by
+				 * reference. If the value is valid, the method returns
+				 * true.
+				 */
+				bool evaluate_node(const AST::Node::Ptr &node, double &value);
+
 			private:
 				/**
 				 * Evaluate unary system call
