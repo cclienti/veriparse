@@ -28,26 +28,31 @@ bool Dimensions::DimList::operator==(const Dimensions::DimList &dims) const
 }
 
 template<typename TArray>
-void Dimensions::extract_arrays(const TArray &arrays, Packing packing, DimList &dims)
+bool Dimensions::extract_array(const TArray &array, Packing packing, DimInfo &dim)
+{
+	mpz_class msb, lsb;
+	const bool msb_valid = Transformations::ExpressionEvaluation().evaluate_node(array->get_msb(), msb);
+	const bool lsb_valid = Transformations::ExpressionEvaluation().evaluate_node(array->get_lsb(), lsb);
+
+	if (msb_valid && lsb_valid) {
+		dim.msb = msb.get_ui();
+		dim.lsb = lsb.get_ui();
+		dim.width = std::max(dim.msb, dim.lsb) - std::min(dim.msb, dim.lsb) + 1;
+		dim.is_big = dim.msb > dim.lsb;
+		dim.is_packed = (packing == Packing::packed);
+		return true;
+	}
+
+	return false;
+}
+
+template<typename TArrays>
+void Dimensions::extract_arrays(const TArrays &arrays, Packing packing, DimList &dims)
 {
 	if (arrays) {
-		for(auto it = arrays->cbegin(); it!=arrays->cend(); ++it) {
-			//for(const auto &array: *arrays) {
-			const auto &array = *it;
-
-			mpz_class msb, lsb;
-			const bool msb_valid = Transformations::ExpressionEvaluation().evaluate_node(array->get_msb(), msb);
-			const bool lsb_valid = Transformations::ExpressionEvaluation().evaluate_node(array->get_lsb(), lsb);
-
-			if (msb_valid && lsb_valid) {
-				DimInfo dim;
-
-				dim.msb = msb.get_ui();
-				dim.lsb = lsb.get_ui();
-				dim.width = std::max(dim.msb, dim.lsb) - std::min(dim.msb, dim.lsb) + 1;
-				dim.is_big = dim.msb > dim.lsb;
-				dim.is_packed = (packing == Packing::packed);
-
+		for(const auto &array: *arrays) {
+			DimInfo dim;
+			if (extract_array(array, packing, dim)) {
 				dims.list.emplace_front(dim);
 			}
 		}
@@ -126,6 +131,7 @@ std::ostream &operator<<(std::ostream &os, const Dimensions::DimInfo &dim)
 	os << "{"
 	   << "msb: " << dim.msb << ", "
 	   << "lsb: " << dim.lsb << ", "
+	   << "width: " << dim.width << ", "
 	   << "is_big: " << dim.is_big << ", "
 	   << "is_packed: " << dim.is_packed
 	   << "}";

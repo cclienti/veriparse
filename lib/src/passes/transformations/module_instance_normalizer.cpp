@@ -11,10 +11,13 @@ namespace Transformations {
 
 int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
-	int ret = 0;
+	int ret = Analysis::Dimensions::analyze(node, m_dim_map);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during signal dimensions analysis";
+		return ret;
+	}
 
 	ret  = split_lists(node, parent);
-	ret += analyze_signals(node, parent);
 	ret += split_array(node, parent);
 
 	return ret;
@@ -68,65 +71,6 @@ int ModuleInstanceNormalizer::split_lists(const AST::Node::Ptr &node, const AST:
 	return 0;
 }
 
-int ModuleInstanceNormalizer::analyze_signals(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
-{
-	if (node) {
-		switch (node->get_node_type()) {
-		case AST::NodeType::Module:
-			{
-				const auto &var_nodes = Analysis::Module::get_variable_nodes(node);
-				const auto &io_nodes = Analysis::Module::get_iodir_nodes(node);
-
-				for (const auto &io: *io_nodes) {
-					LOG_INFO << io;
-					const auto &widths = io->get_widths();
-					if (widths) {
-						DimensionList dim_list;
-						mpz_class msb, lsb;
-						for (const auto &width: *widths) {
-							const bool msb_valid = ExpressionEvaluation().evaluate_node(width->get_msb(), msb);
-							const bool lsb_valid = ExpressionEvaluation().evaluate_node(width->get_lsb(), lsb);
-							if (msb_valid && lsb_valid) {
-								Dimension dim;
-								dim.msb = msb.get_ui();
-								dim.lsb = msb.get_ui();
-								dim.width = std::max(dim.msb, dim.lsb) - std::min(dim.msb, dim.lsb) + 1;
-								dim.is_big = dim.msb > dim.lsb;
-								dim.is_packed = true;
-								dim_list.emplace_back(dim);
-							}
-						}
-						if (!dim_list.empty()) {
-							auto ret = m_signals.emplace(std::make_pair(io->get_name(), dim_list));
-							auto key_val_it = ret.first;
-							bool is_inserted = ret.second;
-							// if (!is_inserted && key_val_it->second != dim_list) {
-							// 	LOG_ERROR << "";
-							// 	return 1;
-							// }
-						}
-					}
-				}
-
-				for (const auto &var: *var_nodes) {
-					LOG_INFO << var;
-				}
-
-			}
-			break;
-
-		default:
-			int ret = 0;
-			AST::Node::ListPtr children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
-				ret += analyze_signals(child, node);
-			}
-			return ret;
-		}
-	}
-
-	return 0;
-}
 
 int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
 {
@@ -134,6 +78,19 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 		switch (node->get_node_type()) {
 		case AST::NodeType::Instance:
 			{
+				const auto &instance = AST::cast_to<AST::Instance>(node);
+				const auto &array = instance->get_array();
+
+				if (array) {
+					Analysis::Dimensions::DimInfo dim;
+					if (Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::unpacked, dim)) {
+						LOG_INFO_N(node) << "instance array: " << dim;
+					}
+					else {
+						LOG_WARNING_N(node) << "could not split instance array, dimensions cannot be resolved";
+						return 1;
+					}
+				}
 			}
 			break;
 

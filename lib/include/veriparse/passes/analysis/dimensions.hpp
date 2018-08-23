@@ -84,13 +84,36 @@ public:
 	friend std::ostream &operator<<(std::ostream &os, const DimMap &dim_map);
 
 public:
+	/**
+	 * @brief analyse all I/O and variables of a module and fill a map
+	 * where name are keys and values are DimList.
+	 *
+	 * @return zero on success
+	 */
 	static int analyze(const AST::Node::Ptr &node, DimMap &dim_map);
 
-private:
 	enum class Packing {packed, unpacked};
 
+	/**
+	 * @brief Analyze a AST::Length::Ptr or AST::Width::Ptr.
+	 *
+	 * Fill a DimInfo structure with all gathered dimensions information.
+	 *
+	 * @param[in] array (AST::Length::Ptr or AST::Width::Ptr)
+	 * @param[in] packing
+	 * @param[out] dim
+	 * @return true if the dimensions are correctly resolved
+	 */
 	template<typename TArray>
-	static void extract_arrays(const TArray &arrays, Packing packing, DimList &dim_list);
+	static bool extract_array(const TArray &array, Packing packing, DimInfo &dim);
+
+	/**
+	 * @brief Analyze a list of AST::Length::Ptr or AST::Width::Ptr.
+	 *
+	 * Fill a DimList structure with all gathered dimensions information.
+	 */
+	template<typename TArrays>
+	static void extract_arrays(const TArrays &arrays, Packing packing, DimList &dim_list);
 
 };
 
