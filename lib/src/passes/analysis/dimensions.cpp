@@ -77,12 +77,21 @@ int Dimensions::analyze(const AST::Node::Ptr &node, DimMap &dim_map)
 
 	for (const auto &var: *var_nodes) {
 		DimList dims;
-		dims.decl = DimList::Decl::io;
+		dims.decl = DimList::Decl::var;
 
 		extract_arrays(var->get_lengths(), Packing::unpacked, dims);
 
 		if (var->is_node_type(AST::NodeType::Reg)) {
 			extract_arrays(AST::cast_to<AST::Reg>(var)->get_widths(), Packing::packed, dims);
+		}
+		else if (var->is_node_type(AST::NodeType::Integer)) {
+			DimInfo dim;
+			dim.msb = 31;
+			dim.lsb = 0;
+			dim.width = 32;
+			dim.is_big = true;
+			dim.is_packed = true;
+			dims.list.emplace_front(dim);
 		}
 		else if (var->is_node_category(AST::NodeType::Net)) {
 			extract_arrays(AST::cast_to<AST::Net>(var)->get_widths(), Packing::packed, dims);
