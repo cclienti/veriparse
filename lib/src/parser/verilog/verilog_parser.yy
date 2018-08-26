@@ -2603,10 +2603,23 @@ instance_bodylist:
         ;
 
 
-instance_body:  TK_IDENTIFIER TK_LPARENTHESIS instance_ports TK_RPARENTHESIS
+instance_body:  TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Instance>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                }
+
+        |       TK_IDENTIFIER TK_LPARENTHESIS instance_ports TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::Instance>(scanner.get_filename(), @1.begin.line);
                     $$->set_portlist($3);
+                    $$->set_name($1);
+                }
+
+        |       TK_IDENTIFIER length TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Instance>(scanner.get_filename(), @1.begin.line);
+                    $$->set_array($2);
                     $$->set_name($1);
                 }
 
@@ -2635,7 +2648,12 @@ instance_bodylist_noname:
         ;
 
 instance_body_noname:
-                TK_LPARENTHESIS instance_ports TK_RPARENTHESIS
+                TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Instance>(scanner.get_filename(), @1.begin.line);
+                }
+
+        |       TK_LPARENTHESIS instance_ports TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::Instance>(scanner.get_filename(), @1.begin.line);
                     $$->set_portlist($2);
