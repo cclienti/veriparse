@@ -208,8 +208,9 @@ namespace Veriparse {
 		}
 
 		Reg::ListPtr Reg::clone_list(const ListPtr nodes) {
-			ListPtr list = std::make_shared<List>();
+			ListPtr list;
 			if (nodes) {
+                list = std::make_shared<List>();
 				for(const Ptr p : *nodes) {
 					list->push_back(cast_to<Reg>(p->clone()));
 				}

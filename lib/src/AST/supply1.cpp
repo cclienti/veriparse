@@ -228,8 +228,9 @@ namespace Veriparse {
 		}
 
 		Supply1::ListPtr Supply1::clone_list(const ListPtr nodes) {
-			ListPtr list = std::make_shared<List>();
+			ListPtr list;
 			if (nodes) {
+                list = std::make_shared<List>();
 				for(const Ptr p : *nodes) {
 					list->push_back(cast_to<Supply1>(p->clone()));
 				}
