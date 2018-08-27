@@ -1,0 +1,68 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance2.v
+          items:
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance2.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance2.v
+                  line: 2
+                  module: my_module
+                  name: inst3
+              line: 2
+              module: my_module
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance2.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance2.v
+                  line: 2
+                  module: my_module
+                  name: inst2
+              line: 2
+              module: my_module
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance2.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance2.v
+                  line: 2
+                  module: my_module
+                  name: inst1
+              line: 2
+              module: my_module
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance2.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance2.v
+                  line: 2
+                  module: my_module
+                  name: inst0
+              line: 2
+              module: my_module
+          line: 1
+          name: instance2
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance2.v
+          line: 5
+          name: my_module
+      filename: ../../test/passes/transformations/testcases/instance2.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/instance2.v
+  line: 1
+
