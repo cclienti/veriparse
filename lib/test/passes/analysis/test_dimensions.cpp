@@ -21,13 +21,35 @@ TEST(PassesAnalysis_Dimensions, dimension0) {
 	test_helpers.render_node_to_dot_file(source, test_string + ".dot");
 
 	Dimensions::DimMap dim_map;
-	int ret = Dimensions::analyze(source, dim_map);
+	int ret = Dimensions::analyze_decls(source, dim_map);
 	ASSERT_EQ(0, ret);
 
 
 	//--------------------------------------------
+	Dimensions::DimList clock_ref_dims {
+		Dimensions::DimList::Decl::both, // decl
+	};
+
+	ASSERT_EQ(1u, dim_map.count("clock"));
+	LOG_INFO << "ref: " << clock_ref_dims.list;
+	LOG_INFO << "got: " << dim_map["clock"].list;
+	ASSERT_EQ(clock_ref_dims, dim_map["clock"]);
+
+
+	//--------------------------------------------
+	Dimensions::DimList valid_ref_dims {
+		Dimensions::DimList::Decl::both, // decl
+	};
+
+	ASSERT_EQ(1u, dim_map.count("valid"));
+	LOG_INFO << "ref: " << valid_ref_dims.list;
+	LOG_INFO << "got: " << dim_map["valid"].list;
+	ASSERT_EQ(valid_ref_dims, dim_map["valid"]);
+
+
+	//--------------------------------------------
 	Dimensions::DimList a_ref_dims {
-		Dimensions::DimList::Decl::io, // decl
+		Dimensions::DimList::Decl::both, // decl
 		// list
 		{  // msb, lsb, width, is_big, is_packed
 			{7, 0, 8, true, true}, // dim 0

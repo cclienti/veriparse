@@ -20,6 +20,8 @@ namespace Analysis {
 class Dimensions
 {
 public:
+	enum class Packing {packed, unpacked};
+
 	/**
 	 * @brief gather array information of signals.
 	 */
@@ -57,10 +59,12 @@ public:
 	 * The front element in the list will correspond to the dimension
 	 * [1:0], the next for [2:0], then [3:0], ... until the last
 	 * element (back) for [5:0].
+	 *
+	 * Note that an empty DimList::list means a dimension of 1-bit.
 	 */
 	struct DimList
 	{
-		enum class Decl {var, io};
+		enum class Decl {var, io, both};
 
 		Decl decl;
 		std::list<DimInfo> list;
@@ -90,9 +94,17 @@ public:
 	 *
 	 * @return zero on success
 	 */
-	static int analyze(const AST::Node::Ptr &node, DimMap &dim_map);
+	static int analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map);
 
-	enum class Packing {packed, unpacked};
+	/**
+	 * @brief analyse the dimension of an expression.
+	 *
+	 * @param[in] node: expression to analyze.
+	 * @param[in] dim_map: map of the analyzed declarations.
+	 * @param[out] dim_list: result of the analysis.
+	 * @return zero on success.
+	 */
+	static int analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, DimList &dim_list);
 
 	/**
 	 * @brief Analyze a AST::Length::Ptr or AST::Width::Ptr.

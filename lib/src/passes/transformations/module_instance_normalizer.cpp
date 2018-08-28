@@ -11,7 +11,7 @@ namespace Transformations {
 
 int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
-	int ret = Analysis::Dimensions::analyze(node, m_dim_map);
+	int ret = Analysis::Dimensions::analyze_decls(node, m_dim_map);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during signal dimensions analysis";
 		return ret;
@@ -194,8 +194,13 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 								pointer_node = std::make_shared<AST::Pointer>(index_node, arg);
 							}
 							else {
-								std::size_t msb_index = id_dim_info.msb-(i*width_div);
-								std::size_t lsb_index = msb_index-width_div+1;
+								long msb_index = id_dim_info.msb-(i*width_div);
+								long lsb_index = msb_index-width_div+1;
+
+								if (msb_index < 0 || lsb_index < 0) {
+									LOG_ERROR_N(port) << "bad instance index, negative range in port argument";
+								}
+
 								auto msb_index_node = std::make_shared<AST::IntConstN>(10, -1, true, msb_index);
 								auto lsb_index_node = std::make_shared<AST::IntConstN>(10, -1, true, lsb_index);
 								pointer_node = std::make_shared<AST::Partselect>(msb_index_node, lsb_index_node, arg);

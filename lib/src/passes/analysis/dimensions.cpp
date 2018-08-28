@@ -59,7 +59,7 @@ void Dimensions::extract_arrays(const TArrays &arrays, Packing packing, DimList 
 	}
 }
 
-int Dimensions::analyze(const AST::Node::Ptr &node, DimMap &dim_map)
+int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
 {
 	const auto &io_nodes = Analysis::Module::get_iodir_nodes(node);
 
@@ -69,12 +69,10 @@ int Dimensions::analyze(const AST::Node::Ptr &node, DimMap &dim_map)
 
 		extract_arrays(io->get_widths(), Packing::packed, dims);
 
-		if (!dims.list.empty()) {
-			auto ret = dim_map.insert(std::make_pair(io->get_name(), dims));
-			if (!ret.second) {
-				LOG_ERROR_N(io) << "'" << io->get_name() << "' already defined!";
-				return 1;
-			}
+		auto ret = dim_map.insert(std::make_pair(io->get_name(), dims));
+		if (!ret.second) {
+			LOG_ERROR_N(io) << "'" << io->get_name() << "' already defined!";
+			return 1;
 		}
 	}
 
@@ -102,25 +100,67 @@ int Dimensions::analyze(const AST::Node::Ptr &node, DimMap &dim_map)
 			extract_arrays(AST::cast_to<AST::Net>(var)->get_widths(), Packing::packed, dims);
 		}
 
-		if (!dims.list.empty()) {
-			auto ret = dim_map.emplace(var->get_name(), dims);
-			if (!ret.second) {
-				const auto &dim_pair = *ret.first;
-				const auto &existing_dims = dim_pair.second;
+		auto ret = dim_map.emplace(var->get_name(), dims);
+		if (!ret.second) {
+			auto &dim_pair = *ret.first;
+			auto &existing_dims = dim_pair.second;
 
-				if (existing_dims.decl == DimList::Decl::io) {
-					if (existing_dims.list != dims.list) {
-						LOG_ERROR_N(var) << "'" << var->get_name() << "' "
-						                 << "defined as I/O and variable but with different dimensions";
-					}
+			if (existing_dims.decl == DimList::Decl::io) {
+				existing_dims.decl = DimList::Decl::both;
+				if (existing_dims.list != dims.list) {
+					LOG_ERROR_N(var) << "'" << var->get_name() << "' "
+					                 << "defined as I/O and variable but with different dimensions";
 				}
-				else {
-					LOG_ERROR_N(var) << "'" << var->get_name() << "' already defined";
-					return 1;
-				}
+			}
+			else {
+				LOG_ERROR_N(var) << "'" << var->get_name() << "' already defined";
+				return 1;
 			}
 		}
 
+	}
+
+	return 0;
+}
+
+int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, DimList &dim_list) {
+	if (node) {
+		switch (node->get_node_type()) {
+		case AST::NodeType::Identifier:
+			{
+				const auto &name = AST::cast_to<AST::Identifier>(node)->get_name();
+				auto it = dim_map.find(name);
+				if (it != dim_map.end()) {
+					dim_list = it->second;
+					return 0;
+				}
+				LOG_ERROR_N(node) << "declaration of variable or port " << name << " not found";
+				return 1;
+			}
+			break;
+
+		case AST::NodeType::Pointer:
+			{
+				const auto &var = AST::cast_to<AST::Pointer>(node)->get_var();
+				DimList nested;
+
+				int ret = analyze_expr(var, dim_map, nested);
+				if (ret) {
+					return 1;
+				}
+
+				if (nested.list.empty()) {
+					LOG_ERROR_N(node) << "bad array index";
+					return 1;
+				}
+
+				nested.list.pop_back();
+				dim_list = std::move(nested);
+			}
+
+		default:
+			break;
+		}
 	}
 
 	return 0;
@@ -141,9 +181,11 @@ std::ostream &operator<<(std::ostream &os, const Dimensions::DimInfo &dim)
 
 std::ostream &operator<<(std::ostream &os, const std::list<Dimensions::DimInfo> &list)
 {
+	os << '[';
 	for (const auto &dim: list) {
-		os << dim << " ";
+		os << dim << ",";
 	}
+	os << ']';
 	return os;
 }
 
