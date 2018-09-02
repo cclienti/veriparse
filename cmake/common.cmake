@@ -31,7 +31,7 @@ endif()
 set (CMAKE_CXX_FLAGS "-std=c++14 -Wall")
 set (CMAKE_CXX_FLAGS_DEBUG  "-O0 -g -DDEBUG")
 set (CMAKE_CXX_FLAGS_FULL_DEBUG  "-O0 -g -DDEBUG -DFULL_DEBUG")
-set (CMAKE_CXX_FLAGS_RELEASE "-Werror -g -O2")
+set (CMAKE_CXX_FLAGS_RELEASE "-Werror -g -O3")
 set (CMAKE_CXX_FLAGS_COVERAGE "-g -O0 -fprofile-arcs -ftest-coverage")
 
 
