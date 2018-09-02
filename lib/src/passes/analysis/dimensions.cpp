@@ -174,8 +174,8 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 				const std::size_t cst_len = cst->get_value().size();
 
 				DimInfo dim;
-				dim.msb = (cst_len == 0) ? 8 : cst_len;
-				dim.lsb = 1;
+				dim.msb = (cst_len == 0) ? 8 : cst_len*8-1;
+				dim.lsb = 0;
 				dim.width = dim.msb - dim.lsb + 1;
 				dim.is_big = true;
 				dim.is_packed = true;
@@ -309,12 +309,12 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 					if (cur_dim.is_big) {
 						cur_dim.msb = index.get_si() + size.get_si() - 1;
 						cur_dim.lsb = index.get_si();
-						cur_dim.width = cur_dim.msb - cur_dim.lsb;
+						cur_dim.width = cur_dim.msb - cur_dim.lsb + 1;
 					}
 					else {
 						cur_dim.msb = index.get_si();
 						cur_dim.lsb = index.get_si() + size.get_si() - 1;
-						cur_dim.width = cur_dim.lsb - cur_dim.msb;
+						cur_dim.width = cur_dim.lsb - cur_dim.msb + 1;
 					}
 				}
 				else {
@@ -380,7 +380,6 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 		case AST::NodeType::Lconcat:
 		case AST::NodeType::Concat:
 			{
-				LOG_INFO << "Entering Concat";
 				const auto &concat = AST::cast_to<AST::Concat>(node);
 
 				std::size_t width = 0;
@@ -416,7 +415,6 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 
 		case AST::NodeType::Repeat:
 			{
-				LOG_INFO << "Entering Repeat";
 				const auto &repeat = AST::cast_to<AST::Repeat>(node);
 				const auto &value = repeat->get_value();
 
@@ -486,6 +484,31 @@ std::ostream &operator<<(std::ostream &os, const std::list<Dimensions::DimInfo> 
 		os << dim << ",";
 	}
 	os << ']';
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Dimensions::DimList::Decl decl)
+{
+	switch (decl) {
+	case Dimensions::DimList::Decl::io:
+		os << "io";
+		break;
+
+	case Dimensions::DimList::Decl::var:
+		os << "var";
+		break;
+
+	default:
+		os << "io-var";
+	}
+
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Dimensions::DimList &dims)
+{
+	os << "{decl: " << dims.decl << ", list:";
+	os << dims.list << "}";
 	return os;
 }
 

@@ -93,29 +93,13 @@ public:
 	using DimMap = std::map<std::string, DimList>;
 
 	friend std::ostream &operator<<(std::ostream &os, const DimInfo &dim);
+	friend std::ostream &operator<<(std::ostream &os, const DimList::Decl decl);
 	friend std::ostream &operator<<(std::ostream &os, const std::list<DimInfo> &list);
+	friend std::ostream &operator<<(std::ostream &os, const DimList &dims);
 	friend std::ostream &operator<<(std::ostream &os, const DimMap::value_type &dim_pair);
 	friend std::ostream &operator<<(std::ostream &os, const DimMap &dim_map);
 
 public:
-	/**
-	 * @brief analyse all I/O and variables of a module and fill a map
-	 * where name are keys and values are DimList.
-	 *
-	 * @return zero on success
-	 */
-	static int analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map);
-
-	/**
-	 * @brief analyse the dimension of an expression.
-	 *
-	 * @param[in] node: expression to analyze.
-	 * @param[in] dim_map: map of the analyzed declarations.
-	 * @param[out] dims: result of the analysis.
-	 * @return zero on success.
-	 */
-	static int analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, DimList &dims);
-
 	/**
 	 * @brief Analyze a AST::Length::Ptr or AST::Width::Ptr.
 	 *
@@ -136,6 +120,24 @@ public:
 	 */
 	template<typename TArrays>
 	static bool extract_arrays(const TArrays &arrays, Packing packing, DimList &dims);
+
+	/**
+	 * @brief analyse all I/O and variables of a module and fill a map
+	 * where name are keys and values are DimList.
+	 *
+	 * @return zero on success
+	 */
+	static int analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map);
+
+	/**
+	 * @brief analyse the dimension of an expression.
+	 *
+	 * @param[in] node: expression to analyze.
+	 * @param[in] dim_map: map of the analyzed declarations.
+	 * @param[out] dims: result of the analysis.
+	 * @return zero on success.
+	 */
+	static int analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, DimList &dims);
 
 };
 

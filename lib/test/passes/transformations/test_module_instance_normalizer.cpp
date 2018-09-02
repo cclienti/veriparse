@@ -36,9 +36,9 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 	ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 
-TEST(PassesTransformation_ModuleInstanceNormalizer, instance0) {TEST_CORE;}
-TEST(PassesTransformation_ModuleInstanceNormalizer, instance1) {TEST_CORE;}
-TEST(PassesTransformation_ModuleInstanceNormalizer, instance2) {TEST_CORE;}
-TEST(PassesTransformation_ModuleInstanceNormalizer, instance3) {TEST_CORE;}
-TEST(PassesTransformation_ModuleInstanceNormalizer, instance4) {TEST_CORE;}
-TEST(PassesTransformation_ModuleInstanceNormalizer, instance5) {TEST_CORE;}
+// TEST(PassesTransformation_ModuleInstanceNormalizer, instance0) {TEST_CORE;}
+// TEST(PassesTransformation_ModuleInstanceNormalizer, instance1) {TEST_CORE;}
+// TEST(PassesTransformation_ModuleInstanceNormalizer, instance2) {TEST_CORE;}
+// TEST(PassesTransformation_ModuleInstanceNormalizer, instance3) {TEST_CORE;}
+// TEST(PassesTransformation_ModuleInstanceNormalizer, instance4) {TEST_CORE;}
+// TEST(PassesTransformation_ModuleInstanceNormalizer, instance5) {TEST_CORE;}
