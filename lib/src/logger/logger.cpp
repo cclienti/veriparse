@@ -67,8 +67,12 @@ namespace Veriparse {
 			// log all messages
 			ostream_sink->set_filter(severity >= boost::log::trivial::trace);
 #else
+#ifdef DEBUG
+			ostream_sink->set_filter(severity >= boost::log::trivial::debug);
+#else
 			// log all messages except debug and trace
 			ostream_sink->set_filter(severity >= boost::log::trivial::info);
+#endif
 #endif
 
 			// Enable auto-flushing after each log record written
@@ -94,8 +98,12 @@ namespace Veriparse {
 			// log all messages
 			ostream_sink->set_filter(severity >= boost::log::trivial::trace);
 #else
+#ifdef DEBUG
+			ostream_sink->set_filter(severity >= boost::log::trivial::debug);
+#else
 			// log all messages except debug and trace
 			ostream_sink->set_filter(severity >= boost::log::trivial::info);
+#endif
 #endif
 
 			// Enable auto-flushing after each log record written
@@ -121,8 +129,12 @@ namespace Veriparse {
 			// log all messages
 			file_sink->set_filter(severity >= boost::log::trivial::trace);
 #else
+#ifdef DEBUG
+			file_sink->set_filter(severity >= boost::log::trivial::debug);
+#else
 			// log all messages except debug and trace
 			file_sink->set_filter(severity >= boost::log::trivial::info);
+#endif
 #endif
 
 			// Enable auto-flushing after each log record written
