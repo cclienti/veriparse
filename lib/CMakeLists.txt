@@ -77,5 +77,7 @@ endif()
 add_subdirectory(test)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+  set(LCOV_REMOVE_EXTRA "'${CMAKE_CURRENT_BINARY_DIR}/external/*'")
+  message(STATUS "Coverage: excluding ${LCOV_REMOVE_EXTRA}")
   setup_target_for_coverage(coverage "make run_tests" coverage)
 endif()
