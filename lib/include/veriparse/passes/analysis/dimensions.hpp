@@ -27,8 +27,8 @@ public:
 	 */
 	struct DimInfo
 	{
-		std::size_t msb;   /**< Index of the dimension's Most Significant Bit. */
-		std::size_t lsb;   /**< Index of the dimension's Least Significant Bit. */
+		std::int64_t msb;  /**< Index of the dimension's Most Significant Bit. */
+		std::int64_t lsb;  /**< Index of the dimension's Least Significant Bit. */
 		std::size_t width; /**< Width of the array. */
 		bool is_big;       /**< True if MSB > LSB, not relevant if MSB is equal to LSB. */
 		bool is_packed;    /**< True if the dimension is packed. */
@@ -57,7 +57,7 @@ public:
 	 * @endcode
 	 *
 	 * The front element in the list will correspond to the dimension
-	 * [1:0], the next for [2:0], then [3:0], ... until the last
+	 * [2:0], the next for [1:0], then [3:0], ... until the last
 	 * element (back) for [5:0].
 	 *
 	 * Note that an empty DimList::list means a dimension of 1-bit.
@@ -75,6 +75,16 @@ public:
 		 * To check only list, use std::list::operator==().
 		 */
 		bool operator==(const DimList& dims) const;
+
+		/**
+		 * @brief Return true if all dimensions are packed.
+		 */
+		bool is_fully_packed() const;
+
+		/**
+		 * @brief Return the merged width of all packed dimensions.
+		 */
+		std::size_t packed_width() const;
 	};
 
 	/**
@@ -101,10 +111,10 @@ public:
 	 *
 	 * @param[in] node: expression to analyze.
 	 * @param[in] dim_map: map of the analyzed declarations.
-	 * @param[out] dim_list: result of the analysis.
+	 * @param[out] dims: result of the analysis.
 	 * @return zero on success.
 	 */
-	static int analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, DimList &dim_list);
+	static int analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, DimList &dims);
 
 	/**
 	 * @brief Analyze a AST::Length::Ptr or AST::Width::Ptr.
@@ -125,7 +135,7 @@ public:
 	 * Fill a DimList structure with all gathered dimensions information.
 	 */
 	template<typename TArrays>
-	static void extract_arrays(const TArrays &arrays, Packing packing, DimList &dim_list);
+	static bool extract_arrays(const TArrays &arrays, Packing packing, DimList &dims);
 
 };
 

@@ -1,17 +1,19 @@
 module instance0;
-   wire       clock;
-   wire       reset;
-   wire [7:0] in0_i;
-   wire [7:0] in1_i;
-   reg [7:0]  out_i;
+   reg [11*8:1] str = "Hello World";
+   string_test_mod disp [10:0] (.car(str));
 
-   mod mod_inst
-   (
-      .clock (clock),
-      .reset (reset),
-      .in0   ({in0_i[7:4], in0_i[3:0]}),
-      .in1   (in1_i),
-      .out   (out_i)
-   );
+   reg [8:1] test_ab = "1";
+   string_test_mod disp_a [0:0] (.car(test_ab));
+   string_test_mod disp_b [3:0] (.car(test_ab));
 
+   reg [16:1] test_c = "22";
+   string_test_mod disp_test3 [1:0] (.car(test_c));
+
+endmodule
+
+module string_test_mod (input wire [7:0] car);
+   always @(car) begin
+      $display("%c", car);
+      $finish;
+   end
 endmodule
