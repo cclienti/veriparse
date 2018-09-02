@@ -27,7 +27,10 @@ namespace Veriparse {
 			size_t semi1 = reduced1.rfind("::");
 			std::string reduced2 = reduced1.substr(0, semi1);
 			size_t semi2 = reduced2.rfind("::");
-			return reduced2.substr(semi2+2, reduced2.size()-1);
+			std::string reduced3 = reduced2.substr(semi2+2, reduced2.size()-1);
+			size_t semi3 = reduced3.rfind(" ");
+			std::string reduced4 = reduced3.substr(semi3+1, reduced3.size()-1);
+			return reduced4;
 		}
 
 		BOOST_LOG_ATTRIBUTE_KEYWORD(timestamp, "TimeStamp", boost::posix_time::ptime)
