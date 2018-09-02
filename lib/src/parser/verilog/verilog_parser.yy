@@ -1674,7 +1674,27 @@ repeat:         TK_LBRACE expression concat TK_RBRACE
         ;
 
 
-partselect:     pointer TK_LBRACKET expression TK_COLON expression TK_RBRACKET
+partselect:     partselect TK_LBRACKET expression TK_COLON expression TK_RBRACKET
+                {
+                    $$ = AST::to_node(std::make_shared<AST::Partselect>($3, $5, $1,
+                                                                        scanner.get_filename(), @1.begin.line));
+                }
+
+		  |       partselect TK_LBRACKET expression TK_PLUSCOLON expression TK_RBRACKET
+                {
+                    $$ = AST::to_node(std::make_shared<AST::PartselectPlusIndexed>($3, $5, $1,
+                                                                                   scanner.get_filename(),
+                                                                                   @1.begin.line));
+                }
+
+        |       partselect TK_LBRACKET expression TK_MINUSCOLON expression TK_RBRACKET
+                {
+                    $$ = AST::to_node(std::make_shared<AST::PartselectMinusIndexed>($3, $5, $1,
+                                                                                    scanner.get_filename(),
+                                                                                    @1.begin.line));
+                }
+
+		  |       pointer TK_LBRACKET expression TK_COLON expression TK_RBRACKET
                 {
                     $$ = AST::to_node(std::make_shared<AST::Partselect>($3, $5, $1,
                                                                         scanner.get_filename(), @1.begin.line));
@@ -1719,7 +1739,12 @@ partselect:     pointer TK_LBRACKET expression TK_COLON expression TK_RBRACKET
         ;
 
 
-pointer:        pointer TK_LBRACKET expression TK_RBRACKET
+pointer:        partselect TK_LBRACKET expression TK_RBRACKET
+                {
+                    $$ = AST::to_node(std::make_shared<AST::Pointer>($3, $1, scanner.get_filename(), @1.begin.line));
+                }
+
+        |       pointer TK_LBRACKET expression TK_RBRACKET
                 {
                     $$ = AST::to_node(std::make_shared<AST::Pointer>($3, $1, scanner.get_filename(), @1.begin.line));
                 }
