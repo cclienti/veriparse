@@ -31,6 +31,15 @@ namespace Veriparse {
 				 */
 				int split_array(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
+				/**
+				 * @brief Replace all instance's argument by a variable if
+				 * necessary.
+				 *
+				 * Declaration of corresponding variables inserted will
+				 * be added in the module.
+				 */
+				int replace_args(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
 			private:
 				Analysis::Dimensions::DimMap m_dim_map;
 			};

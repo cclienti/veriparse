@@ -5,3 +5,5 @@
 2018-08-18: Add a to_string method in each AST class to print the real derived instance values in operator<<overloading.
 
 2018-08-28: Manage error codes: OK, PASS_FAILED, SYNTAX_ERROR, ...
+
+2018-09-05: When instantiating new verilog variable/IO, check if the selected name is available.

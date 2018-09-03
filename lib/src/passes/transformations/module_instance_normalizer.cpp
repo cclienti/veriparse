@@ -18,6 +18,7 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
 	}
 
 	ret  = split_lists(node, parent);
+	ret += replace_args(node, parent);
 	ret += split_array(node, parent);
 
 	return ret;
@@ -232,6 +233,93 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 		}
 		return ret;
 	}
+
+	return 0;
+}
+
+
+int ModuleInstanceNormalizer::replace_args(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
+{
+	if (!node) {
+		return 0;
+	}
+
+	if (!node->is_node_type(AST::NodeType::Instancelist)) {
+		int ret = 0;
+		AST::Node::ListPtr children = node->get_children();
+		for (AST::Node::Ptr child: *children) {
+			ret += replace_args(child, node);
+		}
+		return ret;
+	}
+
+	const auto &instancelist = AST::cast_to<AST::Instancelist>(node);
+	const auto &instances = instancelist->get_instances();
+
+	if (!instances) {
+		LOG_ERROR_N(node) << "instance list is null";
+		return 1;
+	}
+
+	if (instances->size() != 1) {
+		LOG_ERROR_N(node) << "instances not correctly splitted";
+		return 1;
+	}
+
+	const auto &instance = instances->front();
+	const auto &portlist = instance->get_portlist();
+	const auto &stmts = std::make_shared<AST::Node::List>();
+
+	std::size_t portindex = 0;
+	for (const auto &portarg: *portlist) {
+		// Construct a name for the new signal. TODO: check if a signal with this name already exists.
+		const std::string portname = instance->get_name() + "_" + portarg->get_name() + std::to_string(portindex++);
+
+		// If the port is empty continue
+		const auto &portvalue = portarg->get_value();
+		if (!portvalue) {
+			continue;
+		}
+
+		// If the portvalue is an identifier or a const, we have nothing
+		// to do.
+		if (portvalue->is_node_type(AST::NodeType::Identifier) ||
+		    portvalue->is_node_type(AST::NodeType::IntConstN)  ||
+		    portvalue->is_node_type(AST::NodeType::FloatConst)) {
+			continue;
+		}
+
+		// Analyse portarg dimensions
+		Analysis::Dimensions::DimList dims;
+		if (Analysis::Dimensions::analyze_expr(portvalue, m_dim_map, dims)) {
+			return 1;
+		}
+
+		// Generate the declaration
+		const auto &decl = Analysis::Dimensions::generate_decl(portname, AST::NodeType::Wire, dims);
+		if (!decl) {
+			return 1;
+		}
+
+		const std::string &filename = portarg->get_filename();
+		const std::uint32_t line = portarg->get_line();
+		const auto &identifier = std::make_shared<AST::Identifier>(nullptr, portname, filename, line);
+		const auto &lvalue = std::make_shared<AST::Lvalue>(identifier, filename, line);
+		const auto &rvalue = std::make_shared<AST::Rvalue>(portvalue, filename, line);
+		const auto &assign = std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr, filename, line);
+
+		m_dim_map.emplace(portname, dims);
+		portarg->set_value(std::make_shared<AST::Identifier>(nullptr, portname, filename, line));
+		stmts->push_back(decl);
+		stmts->push_back(assign);
+	}
+
+	if (stmts->empty()) {
+		return 0;
+	}
+
+	stmts->push_back(node);
+	parent->replace(node, stmts);
 
 	return 0;
 }
