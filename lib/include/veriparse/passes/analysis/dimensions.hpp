@@ -139,6 +139,17 @@ public:
 	 */
 	static int analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, DimList &dims);
 
+	/**
+	 * @brief generate a declaration that corresponds to the given
+	 * dimension list.
+	 *
+	 * @param[in] name: name of the declaration
+	 * @param[in] node_type: type of the declaration (wire, reg, ...)
+	 * @param[in] dims: dimensions list
+	 * @return the declaration AST else nullptr
+	 */
+	static AST::Node::Ptr generate_decl(const std::string &name, const AST::NodeType node_type, const DimList &dims,
+	                                    const std::string &filename="", std::uint32_t line=0);
 };
 
 

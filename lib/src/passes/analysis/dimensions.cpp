@@ -464,6 +464,64 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 	return 0;
 }
 
+AST::Node::Ptr Dimensions::generate_decl(const std::string &name, const AST::NodeType node_type, const DimList &dims,
+                                         const std::string &filename, std::uint32_t line)
+{
+	const auto &widths = std::make_shared<AST::Width::List>();
+	const auto &lengths = std::make_shared<AST::Length::List>();
+
+	for (const auto &dim: dims.list) {
+		const auto &msb = std::make_shared<AST::IntConstN>(10, -1, true, dim.msb, filename, line);
+		const auto &lsb = std::make_shared<AST::IntConstN>(10, -1, true, dim.lsb, filename, line);
+
+		if (dim.is_packed) {
+			widths->push_back(std::make_shared<AST::Width>(msb, lsb, filename, line));
+		}
+		else {
+			lengths->push_back(std::make_shared<AST::Length>(msb, lsb, filename, line));
+		}
+	}
+
+	switch(node_type) {
+	case AST::NodeType::Wire:
+		{
+			const auto &wire = std::make_shared<AST::Wire>();
+			wire->set_sign(false);
+			wire->set_name(name);
+			wire->set_filename(filename);
+			wire->set_line(line);
+			if (lengths->size() > 0) {
+				wire->set_lengths(lengths);
+			}
+			if (widths->size() > 0) {
+				wire->set_widths(widths);
+			}
+			return wire;
+		}
+
+	case AST::NodeType::Reg:
+		{
+			const auto &reg = std::make_shared<AST::Reg>();
+			reg->set_sign(false);
+			reg->set_name(name);
+			reg->set_filename(filename);
+			reg->set_line(line);
+			if (lengths->size() > 0) {
+				reg->set_lengths(lengths);
+			}
+			if (widths->size() > 0) {
+				reg->set_widths(widths);
+			}
+			return reg;
+		}
+
+	default:
+		LOG_ERROR_FL(filename, line) << "unsupported node type";
+	}
+
+	return nullptr;
+}
+
 std::ostream &operator<<(std::ostream &os, const Dimensions::DimInfo &dim)
 {
 	os << "{"
