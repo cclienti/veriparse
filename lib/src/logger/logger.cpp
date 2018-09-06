@@ -19,18 +19,24 @@
 
 namespace Veriparse {
 	namespace Logger {
-		//Veriparse::Passes::Transformations::DeadcodeElimination::DSet Veriparse::Passes::Transformations::DeadcodeElimination::remove_deadcode_step()
 		std::string get_class_name(const std::string &funcname)
 		{
 			size_t paren = funcname.rfind("(");
-			std::string reduced1 = funcname.substr(0, paren-1);
+			std::string reduced1 = funcname.substr(0, paren);
+
 			size_t semi1 = reduced1.rfind("::");
 			std::string reduced2 = reduced1.substr(0, semi1);
+
 			size_t semi2 = reduced2.rfind("::");
 			std::string reduced3 = reduced2.substr(semi2+2, reduced2.size()-1);
+
 			size_t semi3 = reduced3.rfind(" ");
-			std::string reduced4 = reduced3.substr(semi3+1, reduced3.size()-1);
-			return reduced4;
+			if (semi3 != std::string::npos) {
+				std::string reduced4 = reduced3.substr(semi3+1, reduced3.size()-1);
+				return reduced4;
+			}
+
+			return reduced3;
 		}
 
 		BOOST_LOG_ATTRIBUTE_KEYWORD(timestamp, "TimeStamp", boost::posix_time::ptime)
