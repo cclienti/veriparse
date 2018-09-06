@@ -9,6 +9,60 @@ using namespace Veriparse;
 static TestHelpers test_helpers("../../test/parser/testcases/");
 
 
+TEST(PassesAnalysis_Module, ModuleDictionary) {
+	ENABLE_LOGGER;
+
+	const auto &node_list = std::make_shared<AST::Node::List>();
+
+	Parser::Verilog verilog;
+	verilog.parse("../../test/passes/transformations/testcases/instance1.v");
+	const auto &source1 = verilog.get_source();
+	ASSERT_TRUE(source1 != nullptr);
+	node_list->push_back(source1);
+
+	verilog.parse("../../test/passes/transformations/testcases/instance2.v");
+	const auto &source2 = verilog.get_source();
+	ASSERT_TRUE(source2 != nullptr);
+	node_list->push_back(source2);
+
+	verilog.parse("../../test/passes/transformations/testcases/instance3.v");
+	const auto &source3 = verilog.get_source();
+	ASSERT_TRUE(source3 != nullptr);
+	node_list->push_back(source3);
+
+	Passes::Analysis::Module::StrToModule str_to_module;
+	int ret = Passes::Analysis::Module::get_module_dictionary(node_list, str_to_module);
+	ASSERT_EQ(0, ret);
+	ASSERT_EQ(5u, str_to_module.size());
+
+	for (const auto &pair: str_to_module) {
+		ASSERT_EQ(pair.first, pair.second->get_name());
+	}
+
+	ASSERT_EQ(1u, str_to_module.count("instance1"));
+	ASSERT_EQ(1u, str_to_module.count("instance2"));
+	ASSERT_EQ(1u, str_to_module.count("instance3"));
+	ASSERT_EQ(1u, str_to_module.count("my_module"));
+	ASSERT_EQ(1u, str_to_module.count("string_test_mod"));
+
+	node_list->push_back(source3);
+
+	node_list->push_back(source3->clone());
+	ret = Passes::Analysis::Module::get_module_dictionary(node_list, str_to_module);
+	ASSERT_EQ(1, ret);
+	ASSERT_EQ(5u, str_to_module.size());
+
+	for (const auto &pair: str_to_module) {
+		ASSERT_EQ(pair.first, pair.second->get_name());
+	}
+
+	ASSERT_EQ(1u, str_to_module.count("instance1"));
+	ASSERT_EQ(1u, str_to_module.count("instance2"));
+	ASSERT_EQ(1u, str_to_module.count("instance3"));
+	ASSERT_EQ(1u, str_to_module.count("my_module"));
+	ASSERT_EQ(1u, str_to_module.count("string_test_mod"));
+}
+
 TEST(PassesAnalysis_Module, parameter0) {
 	ENABLE_LOGGER;
 
