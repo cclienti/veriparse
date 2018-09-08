@@ -10,28 +10,38 @@ namespace Passes
 namespace Analysis
 {
 
-int Module::get_module_dictionary(const AST::Node::ListPtr &node_list, ModulesMap &str_to_module)
+int Module::get_module_dictionary(const AST::Node::ListPtr &node_list, ModulesMap &modules_map)
 {
 	if (!node_list) {
 		return 1;
 	}
 
 	for (const auto &node: *node_list) {
-		const auto &nodes = get_module_nodes(node);
-		for (const auto module: *nodes) {
-			if (str_to_module.count(module->get_name()) != 0)
-			{
-				LOG_ERROR_N(module) << "module " << module->get_name() << " already declared";
-				LOG_ERROR_N(str_to_module[module->get_name()]) << "module " << module->get_name() << " was firstly found here";
-				return 1;
-			}
-			str_to_module.emplace(module->get_name(), module);
+		if (get_module_dictionary(node, modules_map)) {
+			return 1;
 		}
 	}
 
 	return 0;
 }
 
+int Module::get_module_dictionary(const AST::Node::Ptr &node, ModulesMap &modules_map)
+{
+	if (!node) {
+		return 1;
+	}
+
+	const auto &modules = get_module_nodes(node);
+	for (const auto module: *modules) {
+		if (modules_map.count(module->get_name()) != 0)	{
+			LOG_ERROR_N(module) << "module " << module->get_name() << " already declared";
+			LOG_ERROR_N(modules_map[module->get_name()]) << "module " << module->get_name() << " was firstly found here";
+			return 1;
+		}
+		modules_map.emplace(module->get_name(), module);
+	}
+	return 0;
+}
 
 AST::Module::ListPtr Module::get_module_nodes(AST::Node::Ptr node)
 {

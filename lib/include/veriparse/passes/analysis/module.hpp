@@ -29,7 +29,16 @@ public:
 	 * The key will be the module name string and the value
 	 * the module AST.
 	 */
-	static int get_module_dictionary(const AST::Node::ListPtr &node_list, ModulesMap &str_to_module);
+	static int get_module_dictionary(const AST::Node::ListPtr &node_list, ModulesMap &modules_map);
+
+	/**
+	 * @brief Fill the map with all modules found in the
+	 * node.
+	 *
+	 * The key will be the module name string and the value
+	 * the module AST.
+	 */
+	static int get_module_dictionary(const AST::Node::Ptr &node, ModulesMap &modules_map);
 
 	/**
 	 * @brief Return all module nodes
