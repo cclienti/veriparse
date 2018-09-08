@@ -10,7 +10,7 @@ namespace Passes
 namespace Analysis
 {
 
-int Module::get_module_dictionary(const AST::Node::ListPtr &node_list, StrToModule &str_to_module)
+int Module::get_module_dictionary(const AST::Node::ListPtr &node_list, ModulesMap &str_to_module)
 {
 	if (!node_list) {
 		return 1;

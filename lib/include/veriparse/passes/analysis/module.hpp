@@ -20,7 +20,7 @@ class Module: public StandardSearch
 public:
 	Module() = delete;
 
-	using StrToModule = std::map<std::string, AST::Module::Ptr>;
+	using ModulesMap = std::map<std::string, AST::Module::Ptr>;
 
 	/**
 	 * @brief Fill the map with all modules found in the
@@ -29,7 +29,7 @@ public:
 	 * The key will be the module name string and the value
 	 * the module AST.
 	 */
-	static int get_module_dictionary(const AST::Node::ListPtr &node_list, StrToModule &str_to_module);
+	static int get_module_dictionary(const AST::Node::ListPtr &node_list, ModulesMap &str_to_module);
 
 	/**
 	 * @brief Return all module nodes

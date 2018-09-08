@@ -30,7 +30,7 @@ TEST(PassesAnalysis_Module, ModuleDictionary) {
 	ASSERT_TRUE(source3 != nullptr);
 	node_list->push_back(source3);
 
-	Passes::Analysis::Module::StrToModule str_to_module;
+	Passes::Analysis::Module::ModulesMap str_to_module;
 	int ret = Passes::Analysis::Module::get_module_dictionary(node_list, str_to_module);
 	ASSERT_EQ(0, ret);
 	ASSERT_EQ(5u, str_to_module.size());
