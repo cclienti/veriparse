@@ -43,6 +43,62 @@ int Module::get_module_dictionary(const AST::Node::Ptr &node, ModulesMap &module
 	return 0;
 }
 
+
+AST::Node::ListPtr Module::get_port_nodes(AST::Node::Ptr node)
+{
+	const auto &modules = get_module_nodes(node);
+	if (modules->size() != 1) {
+		LOG_ERROR_N(node) << "cannot analyze module port names, multiple modules found in the AST";
+		return nullptr;
+	}
+
+	const auto &module = modules->front();
+	const auto &ports = module->get_ports();
+
+	return ports;
+}
+
+std::vector<std::string> Module::get_port_names(AST::Node::Ptr node)
+{
+	const auto &nodes = get_port_nodes(node);
+
+	if (!nodes) {
+		return std::vector<std::string>();
+	}
+
+	const auto &plist = std::make_shared<AST::Port::List>();
+	const auto &iolist = std::make_shared<AST::IODir::List>();
+
+	for (const auto &item : *nodes) {
+		get_node_list<AST::Port>(item, AST::NodeType::Port, plist);
+		get_node_list_by_category<AST::IODir>(item, AST::NodeType::IODir, iolist);
+	}
+
+	auto pnames = get_property_in_list<std::string, AST::Port>
+		(plist, [](const AST::Port::Ptr &id){return id->get_name();});
+
+	const auto &ionames = get_property_in_list<std::string, AST::IODir>
+		(iolist, [](const AST::IODir::Ptr &id){return id->get_name();});
+
+	if (pnames.size() == 0) {
+		return ionames;
+	}
+
+	if (ionames.size() == 0) {
+		return pnames;
+	}
+
+	LOG_ERROR_N(node) << "mixing port declaration type in module";
+
+	pnames.insert(pnames.end(), ionames.begin(), ionames.end());
+	std::sort(pnames.begin(), pnames.end());
+	pnames.erase(std::unique(pnames.begin(), pnames.end() ), pnames.end());
+
+	return pnames;
+}
+
+
+
 AST::Module::ListPtr Module::get_module_nodes(AST::Node::Ptr node)
 {
 	AST::Module::ListPtr list = std::make_shared<AST::Module::List>();

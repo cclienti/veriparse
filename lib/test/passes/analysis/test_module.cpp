@@ -344,6 +344,15 @@ TEST(PassesAnalysis_Module, module0) {
 	verilog.parse(test_helpers.get_verilog_filename(test_name));
 	AST::Node::Ptr source = verilog.get_source();
 	ASSERT_TRUE(source != nullptr);
+	test_helpers.render_node_to_dot_file(source, test_string + ".dot");
+
+	AST::Node::ListPtr ports;
+	ports = Passes::Analysis::Module::get_port_nodes(source);
+	ASSERT_EQ(5u, ports->size());
+	std::vector<std::string> ref_port_names{"reset", "clk", "in0", "in1", "out"};
+	std::vector<std::string> port_names = Passes::Analysis::Module::get_port_names(source);
+	ASSERT_EQ(5u, port_names.size());
+	ASSERT_EQ(ref_port_names, port_names);
 
 	AST::IODir::ListPtr iodir_nodes;
 	iodir_nodes = Passes::Analysis::Module::get_iodir_nodes(source);
@@ -380,6 +389,14 @@ TEST(PassesAnalysis_Module, bidir0) {
 	verilog.parse(test_helpers.get_verilog_filename(test_name));
 	AST::Node::Ptr source = verilog.get_source();
 	ASSERT_TRUE(source != nullptr);
+
+	AST::Node::ListPtr ports;
+	ports = Passes::Analysis::Module::get_port_nodes(source);
+	ASSERT_EQ(5u, ports->size());
+	std::vector<std::string> ref_port_names{"oe", "clk", "inp", "outp", "bidir"};
+	std::vector<std::string> port_names = Passes::Analysis::Module::get_port_names(source);
+	ASSERT_EQ(5u, port_names.size());
+	ASSERT_EQ(ref_port_names, port_names);
 
 	AST::IODir::ListPtr iodir_nodes;
 	iodir_nodes = Passes::Analysis::Module::get_iodir_nodes(source);
@@ -426,10 +443,17 @@ TEST(PassesAnalysis_Module, module1) {
 	AST::Node::Ptr source = verilog.get_source();
 	ASSERT_TRUE(source != nullptr);
 
+	AST::Node::ListPtr ports;
+	ports = Passes::Analysis::Module::get_port_nodes(source);
+	ASSERT_EQ(5u, ports->size());
+	std::vector<std::string> ref_port_names{"reset", "clk", "in0", "in1", "out"};
+	std::vector<std::string> port_names = Passes::Analysis::Module::get_port_names(source);
+	ASSERT_EQ(5u, port_names.size());
+	ASSERT_EQ(ref_port_names, port_names);
+
 	AST::IODir::ListPtr nodes;
 	nodes = Passes::Analysis::Module::get_iodir_nodes(source);
 	ASSERT_EQ(5u, nodes->size());
-
 	std::vector<std::string> names;
 	std::vector<std::string> ref_names{"reset", "clk", "in0", "in1", "out"};
 	names = Passes::Analysis::Module::get_iodir_names(source);
@@ -445,10 +469,17 @@ TEST(PassesAnalysis_Module, module2) {
 	AST::Node::Ptr source = verilog.get_source();
 	ASSERT_TRUE(source != nullptr);
 
+	AST::Node::ListPtr ports;
+	ports = Passes::Analysis::Module::get_port_nodes(source);
+	ASSERT_EQ(7u, ports->size());
+	std::vector<std::string> ref_port_names{"reset", "clk", "in0", "in1", "in2", "in3", "out"};
+	std::vector<std::string> port_names = Passes::Analysis::Module::get_port_names(source);
+	ASSERT_EQ(7u, port_names.size());
+	ASSERT_EQ(ref_port_names, port_names);
+
 	AST::IODir::ListPtr nodes;
 	nodes = Passes::Analysis::Module::get_iodir_nodes(source);
 	ASSERT_EQ(7u, nodes->size());
-
 	std::vector<std::string> names;
 	std::vector<std::string> ref_names{"reset", "clk", "in0", "in1", "in2", "in3", "out"};
 	names = Passes::Analysis::Module::get_iodir_names(source);

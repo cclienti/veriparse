@@ -61,6 +61,26 @@ public:
 	static std::vector<std::string> get_parameter_names(AST::Node::Ptr node);
 
 	/**
+	 * @brief Return all parameters nodes.
+	 *
+	 * It returns the port nodes in the module port declaration. It
+	 * takes into account the correct order of declaration. It does not
+	 * take into account the IODir nodes declared in the module
+	 * statements.
+	 */
+	static AST::Node::ListPtr get_port_nodes(AST::Node::Ptr node);
+
+	/**
+	 * @brief Return all parameters names.
+	 *
+	 * It retrieves the port names in the module port declaration. It
+	 * takes into account the correct order of declaration. It does not
+	 * take into account the IODir names declared in the module
+	 * statements.
+	 */
+	static std::vector<std::string> get_port_names(AST::Node::Ptr node);
+
+	/**
 	 * @brief Return all localparams nodes.
 	 */
 	static AST::Localparam::ListPtr get_localparam_nodes(AST::Node::Ptr node);
