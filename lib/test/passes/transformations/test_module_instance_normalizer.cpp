@@ -17,10 +17,14 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 	AST::Node::Ptr source = verilog.get_source();                                \
 	ASSERT_TRUE(source != nullptr);                                              \
                                                                                 \
+	Passes::Analysis::Module::ModulesMap modules_map;                            \
+	Passes::Analysis::Module::get_module_dictionary(source, modules_map);        \
+                                                                                \
 	test_helpers.render_node_to_verilog_file(source, test_string + "_before.v"); \
 	test_helpers.render_node_to_dot_file(source, test_string + "_before.dot");   \
 	/* apply the transformation */                                               \
-	Passes::Transformations::ModuleInstanceNormalizer().run(source);             \
+	Passes::Transformations::ModuleInstanceNormalizer normalize(modules_map);    \
+	normalize.run(modules_map[test_name]);                                       \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");        \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");        \
 	test_helpers.render_node_to_dot_file(source, test_string + ".dot");          \
@@ -42,3 +46,5 @@ TEST(PassesTransformation_ModuleInstanceNormalizer, instance2) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance3) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance4) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance5) {TEST_CORE;}
+TEST(PassesTransformation_ModuleInstanceNormalizer, instance6) {TEST_CORE;}
+TEST(PassesTransformation_ModuleInstanceNormalizer, instance7) {TEST_CORE;}
