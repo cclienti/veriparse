@@ -168,6 +168,18 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 	if (node) {
 		switch (node->get_node_type()) {
 
+		case AST::NodeType::FloatConst:
+			{
+				DimInfo dim;
+				dim.msb = 63;
+				dim.lsb = 0;
+				dim.width = 64;
+				dim.is_big = true;
+				dim.is_packed = true;
+				dims.list.emplace_front(dim);
+			}
+			break;
+
 		case AST::NodeType::StringConst:
 			{
 				const auto &cst = AST::cast_to<AST::StringConst>(node);

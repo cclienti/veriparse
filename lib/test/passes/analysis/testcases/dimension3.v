@@ -61,4 +61,13 @@ module dimension3 (input wire [0:3][0:7] a,
    reg [11*8:1] str;
    assign str = "Hello World";
 
+   real float;
+   initial float = 3.2;
+
+   integer int32;
+   initial int32 = 3;
+
+   reg [9:0] reg10;
+   initial reg10 = 10'd3;
+
 endmodule

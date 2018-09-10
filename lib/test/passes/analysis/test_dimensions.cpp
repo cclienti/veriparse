@@ -735,13 +735,70 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 		ret = Dimensions::analyze_expr(rvalue_string->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
-		LOG_DEBUG_N(rvalue_string) << "ptr: " << dims;
+		LOG_DEBUG_N(rvalue_string) << "string: " << dims;
 
 		Dimensions::DimList ref_dims {
 			Dimensions::DimList::Decl::both, // decl
 			// list
 			{  // msb, lsb, width, is_big, is_packed
 				{87,  0, 88, true, true}, // dim 0
+			}
+		};
+		ASSERT_EQ(ref_dims, dims);
+	}
+
+	const auto rvalue_real = rvalue_nodes->front();
+	rvalue_nodes->pop_front();
+	{
+		Dimensions::DimList dims;
+		ret = Dimensions::analyze_expr(rvalue_real->get_var(), dim_map, dims);
+		ASSERT_EQ(0, ret);
+
+		LOG_DEBUG_N(rvalue_real) << "real: " << dims;
+
+		Dimensions::DimList ref_dims {
+			Dimensions::DimList::Decl::both, // decl
+			// list
+			{  // msb, lsb, width, is_big, is_packed
+				{63,  0, 64, true, true}, // dim 0
+			}
+		};
+		ASSERT_EQ(ref_dims, dims);
+	}
+
+	const auto rvalue_integer = rvalue_nodes->front();
+	rvalue_nodes->pop_front();
+	{
+		Dimensions::DimList dims;
+		ret = Dimensions::analyze_expr(rvalue_integer->get_var(), dim_map, dims);
+		ASSERT_EQ(0, ret);
+
+		LOG_DEBUG_N(rvalue_integer) << "integer: " << dims;
+
+		Dimensions::DimList ref_dims {
+			Dimensions::DimList::Decl::both, // decl
+			// list
+			{  // msb, lsb, width, is_big, is_packed
+				{31,  0, 32, true, true}, // dim 0
+			}
+		};
+		ASSERT_EQ(ref_dims, dims);
+	}
+
+	const auto rvalue_bit_vector = rvalue_nodes->front();
+	rvalue_nodes->pop_front();
+	{
+		Dimensions::DimList dims;
+		ret = Dimensions::analyze_expr(rvalue_bit_vector->get_var(), dim_map, dims);
+		ASSERT_EQ(0, ret);
+
+		LOG_DEBUG_N(rvalue_bit_vector) << "bit_vector: " << dims;
+
+		Dimensions::DimList ref_dims {
+			Dimensions::DimList::Decl::both, // decl
+			// list
+			{  // msb, lsb, width, is_big, is_packed
+				{9,  0, 10, true, true}, // dim 0
 			}
 		};
 		ASSERT_EQ(ref_dims, dims);
