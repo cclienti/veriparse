@@ -27,11 +27,31 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
 		return ret;
 	}
 
-	ret  = split_lists(node, parent);
-	ret += set_portarg_names(node, parent);
-	ret += split_array(node, parent);
+	ret = split_lists(node, parent);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during instance list split";
+		return ret;
+	}
 
-	return ret;
+	ret = set_portarg_names(node, parent);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during instance port name normalization";
+		return ret;
+	}
+
+	ret = set_paramarg_names(node, parent);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during instance parameter name normalization";
+		return ret;
+	}
+
+	ret = split_array(node, parent);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during instance array split";
+		return ret;
+	}
+
+	return 0;
 }
 
 int ModuleInstanceNormalizer::split_lists(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
@@ -99,7 +119,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 		int ret = 0;
 		AST::Node::ListPtr children = node->get_children();
 		for (AST::Node::Ptr child: *children) {
-			ret += set_portarg_names(child, node);
+			ret += split_array(child, node);
 		}
 		return ret;
 	}
@@ -193,7 +213,8 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 	auto instlistlist = std::make_shared<AST::Node::List>();
 
 	for (std::size_t i=0; i<array_dims.width; i++) {
-		const auto &new_name = instance->get_name() + std::to_string(array_dims.msb-i);
+		std::size_t new_name_index = array_dims.is_big ? array_dims.msb-i : array_dims.msb+i;
+		const std::string &new_name = instance->get_name() + std::to_string(new_name_index);
 		const auto &new_instlist = AST::cast_to<AST::Instancelist>(node->clone());
 		const auto &new_inst = new_instlist->get_instances()->front();
 		new_inst->set_array(nullptr);
@@ -203,10 +224,16 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 		for (auto &port: *new_inst->get_portlist()) {
 			// Check argument value dimensions
 			const auto &value = port->get_value();
+
+			if (!value) {
+				// No port value, we go on with the next port.
+				continue;
+			}
 			Analysis::Dimensions::DimList value_dims;
 			Analysis::Dimensions::analyze_expr(value, m_dim_map, value_dims);
 
-			// Check in the module declaration for the corresponding port dimension
+			// Check in the dimension in the module declaration for the
+			// corresponding port.
 			const auto &arg = port->get_name();
 			auto itarg = module_dim_map.find(arg);
 			if (itarg == module_dim_map.end()) {
@@ -219,61 +246,68 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 			// the arg_dims. We can check if we must index the port value
 			// or not. If yes we will add a pointer or partselect to the
 			// value even if it is not syntactically correct. This will
-			// be corrected in the final step.
+			// be corrected in the final step. We use an rvalue to find
+			// in the final step where we added the index related to an
+			// instance array: Pointer(Index,(Rvalue(PortValue))).
 
-#if 0
-			// The argument is an identifier, we can go
-			// further. Concat are excluded.
-			if (arg->is_node_type(AST::NodeType::Identifier)) {
-				const auto &id_name = AST::cast_to<AST::Identifier>(arg)->get_name();
+			AST::Node::Ptr pnode;
 
-				// We search for the identifier name in the map.
-				auto itsearch = m_dim_map.find(id_name);
-				if (itsearch != m_dim_map.end()) {
-					const auto &id_dim_info = itsearch->second.list.back();
+			// The port value does not need to be indexed, nothing to do.
+			if (value_dims.is_fully_packed() && arg_dims.packed_width() == value_dims.packed_width()) {
+				continue;
+			}
 
-					if (!id_dim_info.is_packed && id_dim_info.width != dim_inst.width) {
-						LOG_ERROR_N(port) << "Bad outer dimension of " << id_name << " (unpacked), "
-						                  << "expecting " << dim_inst.width << ", received " << id_dim_info.width;
-						return 1;
-					}
+			// The port must be indexed.
+			auto value_outer_width = value_dims.outer_width();
+			auto value_outer_msb = value_dims.outer_msb();
+			auto value_outer_is_big = value_dims.outer_is_big();
 
-					std::size_t width_mod = id_dim_info.width % dim_inst.width;
-					if (width_mod != 0) {
-						LOG_ERROR_N(port) << "Bad outer dimension of " << id_name;
-						return 1;
-					}
+			std::size_t width_mod = value_outer_width % array_dims.width;
+			if (width_mod != 0 || value_dims.list.size() == 0) {
+				LOG_ERROR_N(port) << "Bad outer dimension, cannot split instance array";
+				return 1;
+			}
 
-					AST::Node::Ptr pointer_node;
-
-					std::size_t width_div = id_dim_info.width / dim_inst.width;
-					if (width_div == 1) {
-						auto index_node = std::make_shared<AST::IntConstN>(10, -1, true, id_dim_info.msb-i);
-						pointer_node = std::make_shared<AST::Pointer>(index_node, arg);
-					}
-					else {
-						long msb_index = id_dim_info.msb-(i*width_div);
-						long lsb_index = msb_index-width_div+1;
-
-						if (msb_index < 0 || lsb_index < 0) {
-							LOG_ERROR_N(port) << "bad instance index, negative range in port argument";
-						}
-
-						auto msb_index_node = std::make_shared<AST::IntConstN>(10, -1, true, msb_index);
-						auto lsb_index_node = std::make_shared<AST::IntConstN>(10, -1, true, lsb_index);
-						pointer_node = std::make_shared<AST::Partselect>(msb_index_node, lsb_index_node, arg);
-					}
-
-					port->set_value(pointer_node);
+			std::size_t width_div = value_outer_width / array_dims.width;
+			if (width_div == 1) {
+				// We just have to pop a dimension, because we will add a pointer node.
+				value_dims.list.pop_front();
+				if (!value_dims.is_fully_packed() || value_dims.packed_width() != arg_dims.packed_width()) {
+					LOG_ERROR_N(port) << "could not index the port value with the declared instance array";
+					return 1;
 				}
-				else {
-					LOG_INFO_N(port) << "map lookup failed";
-				}
+
+				std::size_t value_outer_index = value_outer_is_big ? value_outer_msb-i : value_outer_msb+i;
+				auto index_node = std::make_shared<AST::IntConstN>(10, -1, true, value_outer_index);
+				auto rvalue = std::make_shared<AST::Rvalue>(port->get_value());
+				pnode = std::make_shared<AST::Pointer>(index_node, rvalue);
 			}
 			else {
-				LOG_INFO_N(port) << "other than identifier";
+				// We need to slice the outer dimension because we will add
+				// a partselect node.
+				long slice_msb = value_outer_is_big ? (value_outer_msb - width_div*i) : (value_outer_msb + width_div*i);
+				long slice_lsb = value_outer_is_big ? (slice_msb - width_div + 1) : (slice_msb + width_div - 1);
+
+				if (slice_msb < 0 || slice_lsb < 0) {
+					LOG_ERROR_N(port) << "bad instance index during instance array splitting, negative range in port argument";
+				}
+
+				value_dims.list.front().msb = slice_msb;
+				value_dims.list.front().lsb = slice_lsb;
+				value_dims.list.front().width = width_div;
+
+				if (!value_dims.is_fully_packed() || value_dims.packed_width() != arg_dims.packed_width()) {
+					LOG_ERROR_N(port) << "could not index the port value with the declared instance array";
+					return 1;
+				}
+
+				auto slice_msb_node = std::make_shared<AST::IntConstN>(10, -1, true, slice_msb);
+				auto slice_lsb_node = std::make_shared<AST::IntConstN>(10, -1, true, slice_lsb);
+				auto rvalue = std::make_shared<AST::Rvalue>(port->get_value());
+				pnode = std::make_shared<AST::Partselect>(slice_msb_node, slice_lsb_node, rvalue);
 			}
-#endif
+
+			port->set_value(pnode);
 
 		}
 	}
@@ -383,11 +417,9 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node, cons
 		}
 	}
 	else {
-		// Add missing port arg names.
-
-		std::vector<std::string> args_to_add;
-		// Search of the matching instanciated portarg name and the
-		// declared portarg name (in the module declaration).
+		// Add missing port arg names. Search of the matching
+		// instanciated portarg name and the declared portarg name (in
+		// the module declaration).
 		for (const auto &portarg : *portlist) {
 			const auto &argname = portarg->get_name();
 			auto it = decl_portnames.cbegin();
@@ -412,79 +444,158 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node, cons
 		}
 	}
 
-	// //-----------------------------------------------
-	// // Replace port arguments by identifier only
-	// //-----------------------------------------------
+	return 0;
+}
 
-	// const auto &stmts = std::make_shared<AST::Node::List>();
+int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
+{
+	if (!node) {
+		return 0;
+	}
 
-	// std::size_t portindex = 0;
-	// for (const auto &portarg: *portlist) {
-	// 	// Construct a name for the new signal. TODO: check if a signal with this name already exists.
-	// 	const std::string portname = instance->get_name() + "_" + portarg->get_name() + std::to_string(portindex++);
+	//-----------------------------------------------
+	// Recurse in children
+	//-----------------------------------------------
 
-	// 	// If the port is empty continue
-	// 	const auto &portvalue = portarg->get_value();
-	// 	if (!portvalue) {
-	// 		continue;
-	// 	}
+	if (!node->is_node_type(AST::NodeType::Instancelist)) {
+		int ret = 0;
+		AST::Node::ListPtr children = node->get_children();
+		for (AST::Node::Ptr child: *children) {
+			ret += set_paramarg_names(child, node);
+		}
+		return ret;
+	}
 
-	// 	// If the portvalue is an identifier we have nothing to do.
-	// 	if (portvalue->is_node_type(AST::NodeType::Identifier)) {
-	// 		continue;
-	// 	}
+	//-----------------------------------------------
+	// Extract instance information
+	//-----------------------------------------------
 
-	// 	// Analyse portvalue dimensions
-	// 	Analysis::Dimensions::DimList value_dims;
-	// 	if (Analysis::Dimensions::analyze_expr(portvalue, m_dim_map, value_dims)) {
-	// 		return 1;
-	// 	}
+	const auto &instancelist = AST::cast_to<AST::Instancelist>(node);
+	const auto &instances = instancelist->get_instances();
 
-	// 	if (!value_dims.is_fully_packed()) {
-	// 		LOG_ERROR_N(portvalue) << "port value is not packed";
-	// 		return 1;
-	// 	}
+	if (!instances) {
+		LOG_ERROR_N(node) << "instance list is null";
+		return 1;
+	}
 
-	// 	// Get portarg dimensions from instantiated module declaration
-	// 	const auto &arg_dims = inst_module_dim_map[portarg->get_name()];
-	// 	if (!arg_dims.is_fully_packed()) {
-	// 		LOG_ERROR_N(portarg) << "port is not packed";
-	// 		return 1;
-	// 	}
+	if (instances->size() != 1) {
+		LOG_ERROR_N(node) << "instances not correctly splitted";
+		return 1;
+	}
 
-	// 	if (arg_dims.packed_width() != value_dims.packed_width()) {
-	// 		LOG_WARNING_N(portvalue) << "port value width (" << value_dims.packed_width()
-	// 		                         << ") is not consistant with "
-	// 		                         << "port '" << portarg->get_name() << "' of "
-	// 		                         << "module '" << inst_module->get_name() << "' "
-	// 		                         << "(" << arg_dims.packed_width() << ")";
-	// 	}
+	const auto &instance = instances->front();
+	const auto &paramlist = instance->get_parameterlist();
 
-	// 	// Generate the new identifier declaration
-	// 	const auto &decl = Analysis::Dimensions::generate_decl(portname, AST::NodeType::Wire, arg_dims);
-	// 	if (!decl) {
-	// 		return 1;
-	// 	}
+	//-----------------------------------------------
+	// Extract instance module information
+	//-----------------------------------------------
 
-	// 	const std::string &filename = portarg->get_filename();
-	// 	const std::uint32_t line = portarg->get_line();
-	// 	const auto &identifier = std::make_shared<AST::Identifier>(nullptr, portname, filename, line);
-	// 	const auto &lvalue = std::make_shared<AST::Lvalue>(identifier, filename, line);
-	// 	const auto &rvalue = std::make_shared<AST::Rvalue>(portvalue, filename, line);
-	// 	const auto &assign = std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr, filename, line);
+	const auto &inst_module_str = instance->get_module();
 
-	// 	m_dim_map.emplace(portname, arg_dims);
-	// 	portarg->set_value(std::make_shared<AST::Identifier>(nullptr, portname, filename, line));
-	// 	stmts->push_back(decl);
-	// 	stmts->push_back(assign);
-	// }
+	auto itm = m_modules_map.find(inst_module_str);
+	if (itm == m_modules_map.end()) {
+		LOG_ERROR_N(instance) << "Instantiated module """ << inst_module_str << """ not found";
+		return 1;
+	}
 
-	// if (stmts->empty()) {
-	// 	return 0;
-	// }
+	const auto &module_decl = itm->second;
+	auto decl_paramlist = Analysis::Module::get_parameter_nodes(module_decl);
 
-	// stmts->push_back(node);
-	// parent->replace(node, stmts);
+	//-----------------------------------------------
+	// Normalize parameters
+	//-----------------------------------------------
+
+	// We have to take care here, because of default parameter value in
+	// the instantiated module.
+
+	// If no parameters arguments are declared, we should have to look
+	// in the module declaration to analyze default values. It is
+	// possible that some parameter values can be not resolved at this
+	// point. This step will be done in the module instance inline
+	// pass.
+	if (!paramlist) {
+		if (decl_paramlist->size() == 0) {
+			return 0;
+		}
+
+		auto new_paramlist = std::make_shared<AST::ParamArg::List>();
+		auto new_paramlist2 = std::make_shared<AST::ParamArg::List>();
+
+		for (const auto &param: *decl_paramlist) {
+			if (!param->get_value()) {
+				LOG_ERROR_N(param) << "missing default value of parameter '" << param->get_name() << "'";
+				return 1;
+			}
+			auto new_param = std::make_shared<AST::ParamArg>(nullptr, param->get_name(),
+			                                                 instance->get_filename(), instance->get_line());
+			new_paramlist->push_back(new_param);
+			new_paramlist2->push_back(AST::cast_to<AST::ParamArg>(new_param->clone()));
+		}
+
+		// Parameters of an instance are declared at two places. This
+		// would be nice to change this ...
+		instance->set_parameterlist(new_paramlist);
+		instancelist->set_parameterlist(new_paramlist2);
+
+		return 0;
+	}
+
+
+	// The instance parameter list is not empty
+	if (decl_paramlist->size() < paramlist->size()) {
+		LOG_ERROR_N(module_decl) << "bad number of parameters for instance '" << instance->get_name() << "', "
+		                         << "(module '" << instance->get_module()
+		                         << "')";
+		return 1;
+	}
+
+	// Add missing param arg names. Search of the matching
+	// instanciated paramarg name and the declared paramarg name (in
+	// the module declaration).
+	for (const auto &param : *paramlist) {
+		const auto &name = param->get_name();
+
+		if (name.empty()) {
+			if (decl_paramlist->empty()) {
+				LOG_ERROR_N(param) << "cannot match the parameter in the module declaration";
+			}
+			param->set_name(decl_paramlist->front()->get_name());
+			decl_paramlist->pop_front();
+		}
+		else {
+			auto it = decl_paramlist->cbegin();
+			for (; it != decl_paramlist->cend(); ++it) {
+				const auto &decl_node = *it;
+				if (name == decl_node->get_name()) {
+					break;
+				}
+			}
+			if (it != decl_paramlist->cend()) {
+				// Name found, we can remove the name to avoid searching
+				// for it later.
+				decl_paramlist->erase(it);
+			}
+		}
+	}
+
+	// add all name not found in the paramlist
+	for (const auto &decl_param: *decl_paramlist)
+	{
+		const auto &missing = std::make_shared<AST::ParamArg>(nullptr, decl_param->get_name(),
+		                                                      instance->get_filename(), instance->get_line());
+		paramlist->push_back(missing);
+	}
+
+
+	// Parameters of an instance are declared at two places. This would
+	// be nice to change this ... So we clear it and we clone the
+	// paramlist into paramlist2.
+
+	const auto &paramlist2 = instancelist->get_parameterlist();
+	paramlist2->clear();
+	for (const auto &param: *paramlist) {
+		instancelist->get_parameterlist()->push_back(AST::cast_to<AST::ParamArg>(param->clone()));
+	}
 
 	return 0;
 }
