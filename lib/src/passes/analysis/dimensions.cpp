@@ -27,6 +27,42 @@ bool Dimensions::DimList::operator==(const Dimensions::DimList &dims) const
 	return decl == dims.decl && list == dims.list;
 }
 
+std::size_t Dimensions::DimList::outer_width() const
+{
+	if (list.size() == 0) {
+		return 1;
+	}
+
+	return list.front().width;
+}
+
+int64_t Dimensions::DimList::outer_msb() const
+{
+	if (list.size() == 0) {
+		return 0;
+	}
+
+	return list.front().msb;
+}
+
+int64_t Dimensions::DimList::outer_lsb() const
+{
+	if (list.size() == 0) {
+		return 0;
+	}
+
+	return list.front().lsb;
+}
+
+bool Dimensions::DimList::outer_is_big() const
+{
+	if (list.size() == 0) {
+		return true;
+	}
+
+	return list.front().is_big;
+}
+
 bool Dimensions::DimList::is_fully_packed() const
 {
 	for (const auto &dim: list) {

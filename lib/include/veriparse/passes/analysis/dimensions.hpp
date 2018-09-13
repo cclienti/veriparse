@@ -77,6 +77,26 @@ public:
 		bool operator==(const DimList& dims) const;
 
 		/**
+		 * @brief return the width of the outer dimension.
+		 */
+		std::size_t outer_width() const;
+
+		/**
+		 * @brief return the msb index of the outer dimension.
+		 */
+		int64_t outer_msb() const;
+
+		/**
+		 * @brief return the lsb of the outer dimension.
+		 */
+		int64_t outer_lsb() const;
+
+		/**
+		 * @brief return true if the outer dimension is big endian.
+		 */
+		bool outer_is_big() const;
+
+		/**
 		 * @brief Return true if all dimensions are packed.
 		 */
 		bool is_fully_packed() const;
