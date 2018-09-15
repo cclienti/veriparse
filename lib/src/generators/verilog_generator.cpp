@@ -839,11 +839,13 @@ namespace Veriparse {
 		}
 
 		std::string VerilogGenerator::render_always(const AST::Always::Ptr node) const {
-			std::string result;
+			std::string result = "always";
 			if (node) {
 				const AST::Senslist::Ptr senslist = node->get_senslist();
 				const AST::Node::Ptr statement = node->get_statement();
-				result = "always @(" + render(senslist) + ")";
+				if (senslist) {
+					result += " @(" + render(senslist) + ")";
+				}
 				result.append(block_or_single_statement_to_string(statement));
 			}
 			return result;
