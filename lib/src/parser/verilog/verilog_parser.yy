@@ -2735,10 +2735,16 @@ param_arg_noname:
                 }
 
 
-param_arg:      TK_DOT TK_IDENTIFIER paren_expression
+param_arg:      TK_DOT TK_IDENTIFIER TK_LPARENTHESIS expression TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::ParamArg>(scanner.get_filename(), @1.begin.line);
-                    $$->set_value($3);
+                    $$->set_value($4);
+                    $$->set_name($2);
+                }
+
+		  |		 TK_DOT TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::ParamArg>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
                 }
         ;
@@ -2796,10 +2802,10 @@ instance_ports_arg:
 
 
 instance_port_arg:
-                TK_DOT TK_IDENTIFIER paren_expression
+                TK_DOT TK_IDENTIFIER TK_LPARENTHESIS expression TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::PortArg>(scanner.get_filename(), @1.begin.line);
-                    $$->set_value($3);
+                    $$->set_value($4);
                     $$->set_name($2);
                 }
 
