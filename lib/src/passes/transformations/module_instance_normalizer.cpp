@@ -4,6 +4,8 @@
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
 
+#include <algorithm>
+
 
 namespace Veriparse {
 namespace Passes {
@@ -48,6 +50,12 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
 	ret = split_array(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance array split";
+		return ret;
+	}
+
+	ret = replace_port_affectation(node, parent);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during instance port value re-assignation";
 		return ret;
 	}
 
@@ -599,6 +607,167 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 
 	return 0;
 }
+
+
+int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
+{
+	if (!node) {
+		return 0;
+	}
+
+	//-----------------------------------------------
+	// Recurse in children
+	//-----------------------------------------------
+
+	if (!node->is_node_type(AST::NodeType::Instancelist)) {
+		int ret = 0;
+		AST::Node::ListPtr children = node->get_children();
+		for (AST::Node::Ptr child: *children) {
+			ret += replace_port_affectation(child, node);
+		}
+		return ret;
+	}
+
+	//-----------------------------------------------
+	// Extract instance information
+	//-----------------------------------------------
+
+	auto instancelist = AST::cast_to<AST::Instancelist>(node);
+	const auto &instances = instancelist->get_instances();
+
+	if (!instances) {
+		LOG_ERROR_N(node) << "instance list is null";
+		return 1;
+	}
+
+	if (instances->size() != 1) {
+		LOG_ERROR_N(node) << "instances not correctly splitted";
+		return 1;
+	}
+
+	const auto &instance = instances->front();
+	const auto &portlist = instance->get_portlist();
+
+	//-----------------------------------------------
+	// Lookup for the instantiated module definition
+	//-----------------------------------------------
+
+	const auto &module_name = instance->get_module();
+	auto itmod = m_modules_map.find(module_name);
+	if (itmod == m_modules_map.end()) {
+		LOG_ERROR_N(instance) << "Instantiated module """ << module_name << """ not found";
+		return 1;
+	}
+
+	const auto &module_decl = itmod->second;
+
+	Analysis::Dimensions::DimMap module_dim_map;
+	int ret = Analysis::Dimensions::analyze_decls(module_decl, module_dim_map);
+	if (ret) {
+		LOG_ERROR_N(module_decl) << "error during signal dimensions analysis";
+		return ret;
+	}
+
+	const auto &module_decl_outputs = Analysis::Module::get_output_names(module_decl);
+
+	//-----------------------------------------------
+	// Replace port affectation
+	//-----------------------------------------------
+
+	auto new_stmts = std::make_shared<AST::Node::List>();
+
+	for (const auto &port: *portlist) {
+		const auto &port_value = port->get_value();
+		if (!port_value) {
+			continue;
+		}
+
+		// Only Partselect and Pointer nodes can hold the Rvalue node
+		// inserted in the previous step to identify the needed
+		// assignations.
+		switch (port_value->get_node_type()) {
+		case AST::NodeType::Partselect:
+		case AST::NodeType::Pointer:
+			{
+				// Keep the ref counting on indirect, because it can move
+				// to an assignation.
+				auto indirect = AST::cast_to<AST::Indirect>(port_value);
+				const auto &var = indirect->get_var();
+
+				if (var->is_node_type(AST::NodeType::Rvalue)) {
+					// Create the identifier node
+					const auto &id_str = instance->get_name() + "_" + port->get_name();
+
+					// Generate the declaration
+					auto itdecl = module_dim_map.find(port->get_name());
+					if (itdecl == module_dim_map.end()) {
+						LOG_ERROR_N(port) << "port not found in module definition";
+						return 1;
+					}
+					auto decl_dims = itdecl->second;
+					if (!decl_dims.is_fully_packed()) {
+						LOG_ERROR_N(port) << "port in module definition is not fully packed";
+						return 1;
+					}
+					const auto &decl = Analysis::Dimensions::generate_decl(id_str, AST::NodeType::Wire, decl_dims,
+					                                                       port->get_filename(), port->get_line());
+					new_stmts->push_back(decl);
+
+					// We need to keep the ref counting before overwriting
+					// the port value.
+					auto rvalue = AST::cast_to<AST::Rvalue>(var);
+
+					// Replace the port value by the identifier
+					const auto &identifier = std::make_shared<AST::Identifier>(nullptr, id_str,
+					                                                           port->get_filename(), port->get_line());
+					port->set_value(identifier);
+
+					// Remove the rvalue in the pointer var member and
+					// reuse it to store the pointer itself.
+					indirect->set_var(rvalue->get_var());
+
+					// Analyze rvalue against decl.
+					Analysis::Dimensions::DimList indirect_dims;
+					Analysis::Dimensions::analyze_expr(indirect, m_dim_map, indirect_dims);
+					if (!indirect_dims.is_fully_packed()) {
+						LOG_ERROR_N(port) << "port expression is not fully packed";
+						return 1;
+					}
+					if (decl_dims.packed_width() != indirect_dims.packed_width()) {
+						LOG_WARNING_N(port) << "port expression width is different from the width "
+						                    << "declared in the module port definition";
+					}
+
+					// Create the assignation with and lvalue and the rvalue.
+					AST::Lvalue::Ptr lvalue;
+					auto it_out_search = std::find(module_decl_outputs.cbegin(), module_decl_outputs.cend(), port->get_name());
+					if (it_out_search == module_decl_outputs.cend()) {
+						rvalue->set_var(indirect);
+						lvalue = std::make_shared<AST::Lvalue>(identifier, port->get_filename(), port->get_line());
+					}
+					else {
+						rvalue->set_var(identifier);
+						lvalue = std::make_shared<AST::Lvalue>(indirect, port->get_filename(), port->get_line());
+					}
+
+					const auto &assign = std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr,
+					                                                   port->get_filename(), port->get_line());
+					new_stmts->push_back(assign);
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	new_stmts->push_back(instancelist);
+	parent->replace(instancelist, new_stmts);
+
+	return 0;
+}
+
 
 
 }

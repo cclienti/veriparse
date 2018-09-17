@@ -35,7 +35,14 @@ private:
 	virtual int split_lists(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
-	 * @brief split instance's array
+	 * @brief split instance's array.
+	 *
+	 * During this pass, pointer or partselect will be added to
+	 * existing port value. To identify the pointer or partselect, the
+	 * old port expression is encapsulated in a Rvalue. This will ease
+	 * the replace_port_affectation sub-pass.
+	 *
+	 * @sa replace_port_affectation
 	 */
 	virtual int split_array(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
@@ -48,6 +55,16 @@ private:
 	 * @brief Convert all instance's parameters to a named parameters scheme.
 	 */
 	virtual int set_paramarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
+	/**
+	 * @brief Create identifier to replace port value.
+	 *
+	 * A blocking assign will be added to affect the newly created
+	 * identifier with the previous port value. To identify what is
+	 * really necessary to replace, the split array sub-pass adds a
+	 * rvalue into the expression.
+	 */
+	virtual int replace_port_affectation(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 private:
 	Analysis::Dimensions::DimMap m_dim_map;
