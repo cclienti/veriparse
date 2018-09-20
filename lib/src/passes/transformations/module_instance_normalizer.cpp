@@ -47,15 +47,15 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
 		return ret;
 	}
 
-	ret = split_array(node, parent);
-	if (ret) {
-		LOG_ERROR_N(node) << "error during instance array split";
-		return ret;
-	}
-
 	ret = replace_port_affectation(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance port value re-assignation";
+		return ret;
+	}
+
+	ret = split_array(node, parent);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during instance array split";
 		return ret;
 	}
 
@@ -649,6 +649,24 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 	const auto &portlist = instance->get_portlist();
 
 	//-----------------------------------------------
+	// Analyze the instance array if it exists
+	//-----------------------------------------------
+
+	const auto &array = instance->get_array();
+
+	if (!array) {
+		// Nothing to split
+		return 0;
+	}
+
+	// Extract the instance array dimensions
+	Analysis::Dimensions::DimInfo array_dim;
+	if (!Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::packed, array_dim)) {
+		LOG_WARNING_N(node) << "instance array dimensions cannot be resolved";
+		return 1;
+	}
+
+	//-----------------------------------------------
 	// Lookup for the instantiated module definition
 	//-----------------------------------------------
 
@@ -682,84 +700,60 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 			continue;
 		}
 
-		// Only Partselect and Pointer nodes can hold the Rvalue node
-		// inserted in the previous step to identify the needed
-		// assignations.
-		switch (port_value->get_node_type()) {
-		case AST::NodeType::Partselect:
-		case AST::NodeType::Pointer:
-			{
-				// Keep the ref counting on indirect, because it can move
-				// to an assignation.
-				auto indirect = AST::cast_to<AST::Indirect>(port_value);
-				const auto &var = indirect->get_var();
+		// Create the identifier node
+		const auto &id_str = instance->get_name() + "_" + port->get_name();
 
-				if (var->is_node_type(AST::NodeType::Rvalue)) {
-					// Create the identifier node
-					const auto &id_str = instance->get_name() + "_" + port->get_name();
-
-					// Generate the declaration
-					auto itdecl = module_dim_map.find(port->get_name());
-					if (itdecl == module_dim_map.end()) {
-						LOG_ERROR_N(port) << "port not found in module definition";
-						return 1;
-					}
-					auto decl_dims = itdecl->second;
-					if (!decl_dims.is_fully_packed()) {
-						LOG_ERROR_N(port) << "port in module definition is not fully packed";
-						return 1;
-					}
-					const auto &decl = Analysis::Dimensions::generate_decl(id_str, AST::NodeType::Wire, decl_dims,
-					                                                       port->get_filename(), port->get_line());
-					new_stmts->push_back(decl);
-
-					// We need to keep the ref counting before overwriting
-					// the port value.
-					auto rvalue = AST::cast_to<AST::Rvalue>(var);
-
-					// Replace the port value by the identifier
-					const auto &identifier = std::make_shared<AST::Identifier>(nullptr, id_str,
-					                                                           port->get_filename(), port->get_line());
-					port->set_value(identifier);
-
-					// Remove the rvalue in the pointer var member and
-					// reuse it to store the pointer itself.
-					indirect->set_var(rvalue->get_var());
-
-					// Analyze rvalue against decl.
-					Analysis::Dimensions::DimList indirect_dims;
-					Analysis::Dimensions::analyze_expr(indirect, m_dim_map, indirect_dims);
-					if (!indirect_dims.is_fully_packed()) {
-						LOG_ERROR_N(port) << "port expression is not fully packed";
-						return 1;
-					}
-					if (decl_dims.packed_width() != indirect_dims.packed_width()) {
-						LOG_WARNING_N(port) << "port expression width is different from the width "
-						                    << "declared in the module port definition";
-					}
-
-					// Create the assignation with and lvalue and the rvalue.
-					AST::Lvalue::Ptr lvalue;
-					auto it_out_search = std::find(module_decl_outputs.cbegin(), module_decl_outputs.cend(), port->get_name());
-					if (it_out_search == module_decl_outputs.cend()) {
-						rvalue->set_var(indirect);
-						lvalue = std::make_shared<AST::Lvalue>(identifier, port->get_filename(), port->get_line());
-					}
-					else {
-						rvalue->set_var(identifier);
-						lvalue = std::make_shared<AST::Lvalue>(indirect, port->get_filename(), port->get_line());
-					}
-
-					const auto &assign = std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr,
-					                                                   port->get_filename(), port->get_line());
-					new_stmts->push_back(assign);
-				}
-			}
-			break;
-
-		default:
-			break;
+		// Analyze port_value against decl.
+		Analysis::Dimensions::DimList port_value_dims;
+		Analysis::Dimensions::analyze_expr(port_value, m_dim_map, port_value_dims);
+		if (!port_value_dims.is_fully_packed()) {
+			continue;
 		}
+
+		// Generate the declaration
+		auto itdecl = module_dim_map.find(port->get_name());
+		if (itdecl == module_dim_map.end()) {
+			LOG_ERROR_N(port) << "port not found in module definition";
+			return 1;
+		}
+		auto decl_dims = itdecl->second;
+		if (!decl_dims.is_fully_packed()) {
+			LOG_ERROR_N(port) << "port in module definition is not fully packed";
+			return 1;
+		}
+
+		if ((decl_dims.packed_width() * array_dim.width) == port_value_dims.packed_width()) {
+			decl_dims.list.push_front(array_dim);
+		}
+
+		const auto &decl = Analysis::Dimensions::generate_decl(id_str, AST::NodeType::Wire, decl_dims,
+		                                                       port->get_filename(), port->get_line());
+		new_stmts->push_back(decl);
+
+		// update the dimensions map
+		m_dim_map.emplace(id_str, decl_dims);
+
+		// Replace the port value by the identifier
+		const auto &identifier = std::make_shared<AST::Identifier>(nullptr, id_str,
+		                                                           port->get_filename(), port->get_line());
+		port->set_value(identifier);
+
+		// Create the assignation.
+		AST::Rvalue::Ptr rvalue;
+		AST::Lvalue::Ptr lvalue;
+		auto it_out_search = std::find(module_decl_outputs.cbegin(), module_decl_outputs.cend(), port->get_name());
+		if (it_out_search == module_decl_outputs.cend()) {
+			rvalue = std::make_shared<AST::Rvalue>(port_value, port->get_filename(), port->get_line());
+			lvalue = std::make_shared<AST::Lvalue>(identifier, port->get_filename(), port->get_line());
+		}
+		else {
+			rvalue = std::make_shared<AST::Rvalue>(identifier, port->get_filename(), port->get_line());
+			lvalue = std::make_shared<AST::Lvalue>(port_value, port->get_filename(), port->get_line());
+		}
+
+		const auto &assign = std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr,
+		                                                   port->get_filename(), port->get_line());
+		new_stmts->push_back(assign);
 	}
 
 	new_stmts->push_back(instancelist);
