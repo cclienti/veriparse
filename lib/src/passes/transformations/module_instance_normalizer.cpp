@@ -163,8 +163,8 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 	}
 
 	// Extract the instance array dimensions
-	Analysis::Dimensions::DimInfo array_dims;
-	if (!Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::unpacked, array_dims)) {
+	Analysis::Dimensions::DimInfo array_dim;
+	if (!Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::packed, array_dim)) {
 		LOG_WARNING_N(node) << "could not split instance array, dimensions cannot be resolved";
 		return 1;
 	}
@@ -190,38 +190,16 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 	}
 
 	//-----------------------------------------------
-	// Split the instance array but the portlist
-	// is empty
-	//-----------------------------------------------
-
-	const auto &portlist = instance->get_portlist();
-
-	if (!portlist) {
-		// No ports declared, we just have to split the
-		// instance.
-		auto instlistlist = std::make_shared<AST::Node::List>();
-
-		for (std::size_t i=0; i<array_dims.width; i++) {
-			const auto &new_name = instance->get_name() + std::to_string(array_dims.msb-i);
-			const auto &new_instlist = AST::cast_to<AST::Instancelist>(node->clone());
-			const auto &new_inst = new_instlist->get_instances()->front();
-			new_inst->set_array(nullptr);
-			new_inst->set_name(new_name);
-			instlistlist->emplace_back(new_instlist);
-		}
-
-		parent->replace(node, instlistlist);
-		return 0;
-	}
-
-	//-----------------------------------------------
 	// Split the instance array
 	//-----------------------------------------------
 
 	auto instlistlist = std::make_shared<AST::Node::List>();
 
-	for (std::size_t i=0; i<array_dims.width; i++) {
-		std::size_t new_name_index = array_dims.is_big ? array_dims.msb-i : array_dims.msb+i;
+	auto array_start = array_dim.is_big ? array_dim.lsb : array_dim.msb;
+	auto array_stop = array_dim.is_big ? array_dim.msb : array_dim.lsb;
+
+	for (auto i=array_stop; i >= array_start; i--) {
+		std::size_t new_name_index = array_dim.is_big ? array_dim.msb-i : array_dim.msb+i;
 		const std::string &new_name = instance->get_name() + std::to_string(new_name_index);
 		const auto &new_instlist = AST::cast_to<AST::Instancelist>(node->clone());
 		const auto &new_inst = new_instlist->get_instances()->front();
@@ -229,7 +207,12 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 		new_inst->set_name(new_name);
 		instlistlist->emplace_back(new_instlist);
 
-		for (auto &port: *new_inst->get_portlist()) {
+		const auto &portlist = new_inst->get_portlist();
+		if (!portlist) {
+			continue;
+		}
+
+		for (auto &port: *portlist) {
 			// Check argument value dimensions
 			const auto &value = port->get_value();
 
@@ -270,13 +253,13 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 			auto value_outer_msb = value_dims.outer_msb();
 			auto value_outer_is_big = value_dims.outer_is_big();
 
-			std::size_t width_mod = value_outer_width % array_dims.width;
+			std::size_t width_mod = value_outer_width % array_dim.width;
 			if (width_mod != 0 || value_dims.list.size() == 0) {
 				LOG_ERROR_N(port) << "Bad outer dimension, cannot split instance array";
 				return 1;
 			}
 
-			std::size_t width_div = value_outer_width / array_dims.width;
+			std::size_t width_div = value_outer_width / array_dim.width;
 			if (width_div == 1) {
 				// We just have to pop a dimension, because we will add a pointer node.
 				value_dims.list.pop_front();
@@ -647,6 +630,11 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 
 	const auto &instance = instances->front();
 	const auto &portlist = instance->get_portlist();
+
+	// If the portlist is empty, nothing to do.
+	if (!portlist) {
+		return 0;
+	}
 
 	//-----------------------------------------------
 	// Analyze the instance array if it exists
