@@ -1,0 +1,1780 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance4.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 2
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 2
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 2
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 2
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 3
+                  name: out0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 2
+              line: 3
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 3
+                  name: out1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 2
+              line: 3
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 4
+                  name: clk
+                  sign: false
+              line: 4
+              second:
+                Variable: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              ldelay:
+                DelayStatement: null
+              line: 6
+              name: t0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 9
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              ldelay:
+                DelayStatement: null
+              line: 7
+              name: t1
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 21
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: p0_q
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 4
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 1
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 2
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Concat:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 10
+                      list:
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 10
+                          name: out0
+                          scope:
+                            IdentifierScope: null
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 10
+                          name: t0
+                          scope:
+                            IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: p0_q
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: p0_d
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 4
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 1
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 2
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: p0_d
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Concat:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 10
+                      list:
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 10
+                          name: t0
+                          scope:
+                            IdentifierScope: null
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 10
+                          name: in0
+                          scope:
+                            IdentifierScope: null
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: p0_clk
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: p0_clk
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 10
+                      name: clk
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 10
+                  module: dffn
+                  name: p04
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 4
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 4
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p0_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 10
+                  module: dffn
+                  name: p03
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p0_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 10
+                  module: dffn
+                  name: p02
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p0_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 10
+                  module: dffn
+                  name: p01
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p0_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p0_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: p1_q
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 8
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 1
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 2
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Concat:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 11
+                      list:
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 11
+                          name: out1
+                          scope:
+                            IdentifierScope: null
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 11
+                          name: t1
+                          scope:
+                            IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: p1_q
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: p1_d
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 8
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 1
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 2
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: p1_d
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Concat:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 11
+                      list:
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 11
+                          name: t1
+                          scope:
+                            IdentifierScope: null
+                      - Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 11
+                          name: in1
+                          scope:
+                            IdentifierScope: null
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: p1_clk
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: p1_clk
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 11
+                      name: clk
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p18
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 8
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 8
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p17
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 7
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 7
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p16
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 6
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 6
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p15
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 5
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 5
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p14
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 4
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 4
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p13
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p12
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 11
+                  module: dffn
+                  name: p11
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: q
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_q
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: p1_d
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: p1_clk
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: dffn
+          line: 1
+          name: instance4
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 1
+              name: in0
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 1
+              name: in1
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 1
+              name: out0
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 1
+              name: out1
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 1
+              name: clk
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance4.v
+          items:
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 16
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 16
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 16
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 16
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                NonblockingSubstitution:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 16
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 16
+                          name: q
+                          scope:
+                            IdentifierScope: null
+                  line: 16
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 16
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 16
+                          name: d
+                          scope:
+                            IdentifierScope: null
+          line: 14
+          name: DFF
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 14
+                  name: q
+                  sign: false
+              line: 14
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 14
+                  name: q
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 15
+                  name: d
+                  sign: false
+              line: 15
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 15
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 15
+                  name: clk
+                  sign: false
+              line: 15
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 15
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance4.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 20
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 2
+              line: 20
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 21
+                  name: q
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 21
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 2
+              line: 21
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 22
+                  name: clk
+                  sign: false
+              line: 22
+              second:
+                Variable: null
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 24
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 24
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 24
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  line: 24
+                  module: DFF
+                  name: dff
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 24
+                          name: q
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 24
+                          name: d
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          line: 24
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+              line: 24
+              module: DFF
+          line: 19
+          name: dffn
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 19
+              name: q
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 19
+              name: d
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance4.v
+              line: 19
+              name: clk
+      filename: ../../test/passes/transformations/testcases/instance4.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/instance4.v
+  line: 1
+

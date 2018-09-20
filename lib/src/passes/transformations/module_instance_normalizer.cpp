@@ -195,10 +195,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 
 	auto instlistlist = std::make_shared<AST::Node::List>();
 
-	auto array_start = array_dim.is_big ? array_dim.lsb : array_dim.msb;
-	auto array_stop = array_dim.is_big ? array_dim.msb : array_dim.lsb;
-
-	for (auto i=array_stop; i >= array_start; i--) {
+	for (std::int64_t i=array_dim.width-1; i >= 0; i--) {
 		std::size_t new_name_index = array_dim.is_big ? array_dim.msb-i : array_dim.msb+i;
 		const std::string &new_name = instance->get_name() + std::to_string(new_name_index);
 		const auto &new_instlist = AST::cast_to<AST::Instancelist>(node->clone());
@@ -236,10 +233,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 			// At this point, we have the array_dims, the value_dims and
 			// the arg_dims. We can check if we must index the port value
 			// or not. If yes we will add a pointer or partselect to the
-			// value even if it is not syntactically correct. This will
-			// be corrected in the final step. We use an rvalue to find
-			// in the final step where we added the index related to an
-			// instance array: Pointer(Index,(Rvalue(PortValue))).
+			// value.
 
 			AST::Node::Ptr pnode;
 
@@ -270,8 +264,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 
 				std::size_t value_outer_index = value_outer_is_big ? value_outer_msb-i : value_outer_msb+i;
 				auto index_node = std::make_shared<AST::IntConstN>(10, -1, true, value_outer_index);
-				auto rvalue = std::make_shared<AST::Rvalue>(port->get_value());
-				pnode = std::make_shared<AST::Pointer>(index_node, rvalue);
+				pnode = std::make_shared<AST::Pointer>(index_node, port->get_value());
 			}
 			else {
 				// We need to slice the outer dimension because we will add
@@ -294,8 +287,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 
 				auto slice_msb_node = std::make_shared<AST::IntConstN>(10, -1, true, slice_msb);
 				auto slice_lsb_node = std::make_shared<AST::IntConstN>(10, -1, true, slice_lsb);
-				auto rvalue = std::make_shared<AST::Rvalue>(port->get_value());
-				pnode = std::make_shared<AST::Partselect>(slice_msb_node, slice_lsb_node, rvalue);
+				pnode = std::make_shared<AST::Partselect>(slice_msb_node, slice_lsb_node, port->get_value());
 			}
 
 			port->set_value(pnode);

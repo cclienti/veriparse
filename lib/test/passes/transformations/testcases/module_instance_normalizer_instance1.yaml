@@ -1,0 +1,975 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance1.v
+          items:
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              line: 2
+              name: disp_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      sign: true
+                      size: -1
+                      value: 10
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: disp_car
+                      scope:
+                        IdentifierScope: null
+              line: 2
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  var:
+                    StringConst:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      value: Hello World
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp0
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp1
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp2
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp3
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp4
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 4
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp5
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 5
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp6
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 6
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp7
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 7
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp8
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 8
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp9
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 9
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 2
+                  module: string_test_mod
+                  name: disp10
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 2
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 10
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 2
+                              name: disp_car
+                              scope:
+                                IdentifierScope: null
+              line: 2
+              module: string_test_mod
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              line: 3
+              name: disp2_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 3
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 3
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 3
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 3
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 3
+                      name: disp2_car
+                      scope:
+                        IdentifierScope: null
+              line: 3
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 3
+                  var:
+                    StringConst:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 3
+                      value: 1
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 3
+                  module: string_test_mod
+                  name: disp20
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 3
+                      name: car
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 3
+                          name: disp2_car
+                          scope:
+                            IdentifierScope: null
+              line: 3
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 3
+                  module: string_test_mod
+                  name: disp21
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 3
+                      name: car
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 3
+                          name: disp2_car
+                          scope:
+                            IdentifierScope: null
+              line: 3
+              module: string_test_mod
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              line: 4
+              name: disp3_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 4
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 4
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 4
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 4
+                      name: disp3_car
+                      scope:
+                        IdentifierScope: null
+              line: 4
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 4
+                  var:
+                    StringConst:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 4
+                      value: ''
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 4
+                  module: string_test_mod
+                  name: disp30
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 4
+                      name: car
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 4
+                          name: disp3_car
+                          scope:
+                            IdentifierScope: null
+              line: 4
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 4
+                  module: string_test_mod
+                  name: disp31
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 4
+                      name: car
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 4
+                          name: disp3_car
+                          scope:
+                            IdentifierScope: null
+              line: 4
+              module: string_test_mod
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              line: 5
+              name: disp4_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 5
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      sign: true
+                      size: -1
+                      value: 1
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 5
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 5
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      name: disp4_car
+                      scope:
+                        IdentifierScope: null
+              line: 5
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 5
+                  var:
+                    StringConst:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      value: 22
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 5
+                  module: string_test_mod
+                  name: disp40
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 5
+                              name: disp4_car
+                              scope:
+                                IdentifierScope: null
+              line: 5
+              module: string_test_mod
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 5
+                  module: string_test_mod
+                  name: disp41
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 5
+                      name: car
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 5
+                              name: disp4_car
+                              scope:
+                                IdentifierScope: null
+              line: 5
+              module: string_test_mod
+          line: 1
+          name: instance1
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance1.v
+          items:
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              line: 9
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 9
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 9
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 9
+                          name: car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 9
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 10
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 10
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance1.v
+                              line: 10
+                              name: car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 10
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 11
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 11
+                          syscall: finish
+          line: 8
+          name: string_test_mod
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance1.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  line: 8
+                  name: car
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 8
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance1.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 8
+                  name: car
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance1.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: ../../test/passes/transformations/testcases/instance1.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/instance1.v
+  line: 1
+

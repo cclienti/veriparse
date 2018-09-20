@@ -1,0 +1,1708 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 2
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: a
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 3
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: b
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 4
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: c
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 6
+                  module: my_mod0
+                  name: my_mod0_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 8
+                      name: x
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 8
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 9
+                      name: y
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 9
+                          name: b
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 6
+                      name: z
+                      value: null
+              line: 6
+              module: my_mod0
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 12
+                  module: my_mod1
+                  name: my_mod1_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 14
+                      name: x
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 14
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 15
+                      name: z
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 15
+                          name: c
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 12
+                      name: y
+                      value: null
+              line: 12
+              module: my_mod1
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 18
+                  module: my_mod2
+                  name: my_mod2_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 20
+                      name: y
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 20
+                          name: b
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 21
+                      name: z
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 21
+                          name: c
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 18
+                      name: x
+                      value: null
+              line: 18
+              module: my_mod2
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 24
+                  module: my_mod3
+                  name: my_mod3_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 26
+                      name: z
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 26
+                          name: c
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 24
+                      name: x
+                      value: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 24
+                      name: y
+                      value: null
+              line: 24
+              module: my_mod3
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 29
+                  module: my_mod4
+                  name: my_mod4_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 29
+                      name: x
+                      value: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 29
+                      name: y
+                      value: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 29
+                      name: z
+                      value: null
+              line: 29
+              module: my_mod4
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 31
+                  module: my_mod5
+                  name: my_mod5_inst
+              line: 31
+              module: my_mod5
+          line: 1
+          name: instance7
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 1
+              name: a
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 1
+              name: b
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 1
+              name: c
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 36
+                  name: x
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 36
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 36
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 36
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 36
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 36
+                  name: x
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 36
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 36
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 36
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 37
+                  name: y
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 37
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 37
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 37
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 37
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 37
+                  name: y
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 37
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 37
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 37
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 38
+                  name: z
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 38
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 38
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 38
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 38
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 38
+                  name: z
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 38
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 38
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 38
+                          sign: false
+                          size: -1
+                          value: 7
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 40
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 40
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 40
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 40
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 41
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 41
+                              value: x=%0d, y=%0d
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 41
+                              name: x
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 41
+                              name: y
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 41
+                          syscall: display
+          line: 35
+          name: my_mod0
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 35
+              name: x
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 35
+              name: y
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 35
+              name: z
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 46
+                  name: x
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 46
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 46
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 46
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 46
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 46
+                  name: x
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 46
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 46
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 46
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 47
+                  name: y
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 47
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 47
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 47
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 47
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 47
+                  name: y
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 47
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 47
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 47
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 48
+                  name: z
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 48
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 48
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 48
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 48
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 48
+                  name: z
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 48
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 48
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 48
+                          sign: false
+                          size: -1
+                          value: 7
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 50
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 50
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 50
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 50
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 51
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 51
+                              value: x=%0d, z=%0d
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 51
+                              name: x
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 51
+                              name: z
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 51
+                          syscall: display
+          line: 45
+          name: my_mod1
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 45
+              name: x
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 45
+              name: y
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 45
+              name: z
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 56
+                  name: x
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 56
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 56
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 56
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 56
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 56
+                  name: x
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 56
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 56
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 56
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 57
+                  name: y
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 57
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 57
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 57
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 57
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 57
+                  name: y
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 57
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 57
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 57
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 58
+                  name: z
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 58
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 58
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 58
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 58
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 58
+                  name: z
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 58
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 58
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 58
+                          sign: false
+                          size: -1
+                          value: 7
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 60
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 60
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 60
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 60
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 61
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 61
+                              value: y=%0d, z=%0d
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 61
+                              name: y
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 61
+                              name: z
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 61
+                          syscall: display
+          line: 55
+          name: my_mod2
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 55
+              name: x
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 55
+              name: y
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 55
+              name: z
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 66
+                  name: x
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 66
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 66
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 66
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 66
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 66
+                  name: x
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 66
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 66
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 66
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 67
+                  name: y
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 67
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 67
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 67
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 67
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 67
+                  name: y
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 67
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 67
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 67
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 68
+                  name: z
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 68
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 68
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 68
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 68
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 68
+                  name: z
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 68
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 68
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 68
+                          sign: false
+                          size: -1
+                          value: 7
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 70
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 70
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 70
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 70
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 71
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 71
+                              value: z=%0d
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 71
+                              name: z
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 71
+                          syscall: display
+          line: 65
+          name: my_mod3
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 65
+              name: x
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 65
+              name: y
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 65
+              name: z
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 76
+                  name: x
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 76
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 76
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 76
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 76
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 76
+                  name: x
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 76
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 76
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 76
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 77
+                  name: y
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 77
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 77
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 77
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 77
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 77
+                  name: y
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 77
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 77
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 77
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 78
+                  name: z
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 78
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 78
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 78
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 78
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 78
+                  name: z
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 78
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 78
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 78
+                          sign: false
+                          size: -1
+                          value: 7
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 80
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 80
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 81
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 81
+                              value: nothing
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 81
+                          syscall: display
+          line: 75
+          name: my_mod4
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 75
+              name: x
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 75
+              name: y
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 75
+              name: z
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              line: 86
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 86
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance7.v
+                      line: 87
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance7.v
+                              line: 87
+                              value: no ports in the module
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 87
+                          syscall: display
+          line: 85
+          name: my_mod5
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance7.v
+          items:
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance7.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance7.v
+                  line: 92
+                  module: instance7
+                  name: inst7
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 92
+                          sign: false
+                          size: 8
+                          value: 5
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 92
+                          sign: false
+                          size: 8
+                          value: 6
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance7.v
+                          line: 92
+                          sign: false
+                          size: 8
+                          value: 7
+              line: 92
+              module: instance7
+          line: 91
+          name: testbench
+      filename: ../../test/passes/transformations/testcases/instance7.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/instance7.v
+  line: 1
+

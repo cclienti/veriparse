@@ -6,8 +6,9 @@ module instance4 (in0, in1, out0, out1, clk);
    wire [9:1]   t0;
    wire [21:1]  t1;
 
-   dffn #(3) p0 [1:4]   ({out0, t0}, {t0, in0}, clk),
-             p1 [1:8] ({out1, t1}, {t1, in1}, clk);
+   dffn
+     p0 [1:4] ({out0, t0}, {t0, in0}, clk),
+     p1 [1:8] ({out1, t1}, {t1, in1}, clk);
 endmodule
 
 module DFF (output reg q,
