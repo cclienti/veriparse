@@ -57,6 +57,11 @@ private:
 	virtual int set_paramarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
+	 * @brief Replace concat nodes to lconcat nodes recursively.
+	 */
+	virtual int convert_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
+	/**
 	 * @brief Create identifier to replace port value.
 	 *
 	 * A blocking assign will be added to affect the newly created

@@ -583,6 +583,38 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 	return 0;
 }
 
+int ModuleInstanceNormalizer::convert_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
+{
+	if (!node) {
+		return 0;
+	}
+
+	//-----------------------------------------------
+	// Recurse in children
+	//-----------------------------------------------
+
+	if (!node->is_node_type(AST::NodeType::Concat)) {
+		int ret = 0;
+		AST::Node::ListPtr children = node->get_children();
+		for (AST::Node::Ptr child: *children) {
+			ret += convert_to_lconcat(child, node);
+		}
+		return ret;
+	}
+
+	//-----------------------------------------------
+	// Convert concat to lconcat
+	//-----------------------------------------------
+
+	if (node->is_node_type(AST::NodeType::Concat)) {
+		const auto &concat = AST::cast_to<AST::Concat>(node);
+		const auto &lconcat = std::make_shared<AST::Lconcat>(concat->get_list(),
+		                                                     concat->get_filename(), concat->get_line());
+		parent->replace(concat, lconcat);
+	}
+
+	return 0;
+}
 
 int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
 {
@@ -696,6 +728,8 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 			LOG_ERROR_N(port) << "port not found in module definition";
 			return 1;
 		}
+
+		// copy the dims in order to be able to append instance array dim
 		auto decl_dims = itdecl->second;
 		if (!decl_dims.is_fully_packed()) {
 			LOG_ERROR_N(port) << "port in module definition is not fully packed";
@@ -718,7 +752,7 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 		                                                           port->get_filename(), port->get_line());
 		port->set_value(identifier);
 
-		// Create the assignation.
+		// Prepare the assignation.
 		AST::Rvalue::Ptr rvalue;
 		AST::Lvalue::Ptr lvalue;
 		auto it_out_search = std::find(module_decl_outputs.cbegin(), module_decl_outputs.cend(), port->get_name());
@@ -731,6 +765,14 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 			lvalue = std::make_shared<AST::Lvalue>(port_value, port->get_filename(), port->get_line());
 		}
 
+		// Convert concat in lvalue
+		ret = convert_to_lconcat(lvalue->get_var(), lvalue);
+		if (ret != 0) {
+			LOG_ERROR_N(lvalue) << "cannot convert concat to lvalue";
+			return 1;
+		}
+
+		// Create the assignation.
 		const auto &assign = std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr,
 		                                                   port->get_filename(), port->get_line());
 		new_stmts->push_back(assign);

@@ -262,7 +262,7 @@ Source:
                   filename: ''
                   line: 0
                   var:
-                    Concat:
+                    Lconcat:
                       filename: ../../test/passes/transformations/testcases/instance4.v
                       line: 10
                       list:
@@ -760,7 +760,7 @@ Source:
                   filename: ''
                   line: 0
                   var:
-                    Concat:
+                    Lconcat:
                       filename: ../../test/passes/transformations/testcases/instance4.v
                       line: 11
                       list:
@@ -1777,4 +1777,3 @@ Source:
       line: 1
   filename: ../../test/passes/transformations/testcases/instance4.v
   line: 1
-
