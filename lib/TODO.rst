@@ -7,5 +7,3 @@
 2018-08-28: Manage error codes: OK, PASS_FAILED, SYNTAX_ERROR, ...
 
 2018-09-05: When instantiating new verilog variable/IO, check if the selected name is available.
-
-2018-09-08: During module IO normalization, take care of order in module declaration ports when no IO are used (*module mymod(b, a, c);*)
