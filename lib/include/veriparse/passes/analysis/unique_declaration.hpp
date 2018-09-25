@@ -8,8 +8,6 @@
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/AST/nodes.hpp>
 
-#include <veriparse/passes/analysis/search.hpp>
-
 
 namespace Veriparse {
 namespace Passes {
@@ -23,7 +21,7 @@ namespace Analysis {
  * instances, tasks, funtcions, ...
  *
  */
-class UniqueDeclaration: public StandardSearch
+class UniqueDeclaration
 {
 public:
 	using IdentifierSet = std::set<std::string>;
@@ -44,16 +42,16 @@ public:
 	 * @brief Return true if the given identifier is found in the
 	 * internal set.
 	 */
-	static bool identifier_declaration_exists(const std::string identifier, const IdentifierSet &id_set);
+	static bool identifier_declaration_exists(const std::string &identifier, const IdentifierSet &id_set);
 
 	/**
 	 * @brief Return a unique identifier. It can suffix the given
 	 * identifier with a random number.
 	 *
-	 * the given identifier set will be updated with the returned
+	 * The given identifier set will be updated with the returned
 	 * identifier string.
 	 */
-	static std::string get_unique_identifier(const std::string identifier_basename, IdentifierSet &id_set);
+	static std::string get_unique_identifier(const std::string &identifier_basename, IdentifierSet &id_set);
 
 };
 
