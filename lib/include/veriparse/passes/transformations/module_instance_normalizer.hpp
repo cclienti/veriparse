@@ -5,6 +5,7 @@
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/dimensions.hpp>
+#include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <string>
 #include <map>
 #include <list>
@@ -74,6 +75,7 @@ private:
 private:
 	Analysis::Dimensions::DimMap m_dim_map;
 	Analysis::Module::ModulesMap m_modules_map;
+	Analysis::UniqueDeclaration::IdentifierSet m_declared;
 };
 
 }

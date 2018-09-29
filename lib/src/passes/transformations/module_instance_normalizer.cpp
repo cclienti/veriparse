@@ -29,6 +29,12 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
 		return ret;
 	}
 
+	ret = Analysis::UniqueDeclaration::analyze(node, m_declared);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during analysis of declared identifiers";
+		return ret;
+	}
+
 	ret = split_lists(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance list split";
@@ -713,7 +719,8 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 		}
 
 		// Create the identifier node
-		const auto &id_str = instance->get_name() + "_" + port->get_name();
+		const auto &id_str = Analysis::UniqueDeclaration::get_unique_identifier
+			(instance->get_name() + "_" + port->get_name(), m_declared);
 
 		// Analyze port_value against decl.
 		Analysis::Dimensions::DimList port_value_dims;
