@@ -76,7 +76,15 @@ namespace Veriparse {
 				for (AST::Parameter::Ptr pa: *m_paramlist) {
 					for (AST::Parameter::Ptr pb: *m_paramlist) {
 						if (pa->get_name() != pb->get_name()) {
-							ASTReplace::replace_identifier(pb, pa->get_name(), pa->get_value());
+							auto val = pa->get_value();
+							if (val)
+							{
+								auto var = AST::cast_to<AST::Rvalue>(val)->get_var();
+								ASTReplace::replace_identifier(pb, pa->get_name(), var);
+							}
+							else {
+								LOG_WARNING_N(node) << "missing value for parameter " << pa->get_name();
+							}
 						}
 					}
 				}

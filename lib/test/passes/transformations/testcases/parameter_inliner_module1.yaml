@@ -125,17 +125,13 @@ Source:
                                   value: 2
                               line: 2
                               right:
-                                Rvalue:
+                                IntConstN:
+                                  base: 10
                                   filename: ../test/passes/transformations/testcases/module1.v
                                   line: 3
-                                  var:
-                                    IntConstN:
-                                      base: 10
-                                      filename: ../test/passes/transformations/testcases/module1.v
-                                      line: 3
-                                      sign: false
-                                      size: -1
-                                      value: 3
+                                  sign: false
+                                  size: -1
+                                  value: 3
                           line: 13
                           right:
                             IntConstN:
@@ -194,17 +190,13 @@ Source:
                               value: 2
                           line: 2
                           right:
-                            Rvalue:
+                            IntConstN:
+                              base: 10
                               filename: ../test/passes/transformations/testcases/module1.v
                               line: 3
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/module1.v
-                                  line: 3
-                                  sign: false
-                                  size: -1
-                                  value: 3
+                              sign: false
+                              size: -1
+                              value: 3
                       line: 15
                       right:
                         IntConstN:
@@ -257,17 +249,13 @@ Source:
                               value: 2
                           line: 2
                           right:
-                            Rvalue:
+                            IntConstN:
+                              base: 10
                               filename: ../test/passes/transformations/testcases/module1.v
                               line: 3
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/module1.v
-                                  line: 3
-                                  sign: false
-                                  size: -1
-                                  value: 3
+                              sign: false
+                              size: -1
+                              value: 3
                       line: 19
                       right:
                         IntConstN:
@@ -310,17 +298,13 @@ Source:
                               value: 2
                           line: 2
                           right:
-                            Rvalue:
+                            IntConstN:
+                              base: 10
                               filename: ../test/passes/transformations/testcases/module1.v
                               line: 3
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/module1.v
-                                  line: 3
-                                  sign: false
-                                  size: -1
-                                  value: 3
+                              sign: false
+                              size: -1
+                              value: 3
                       line: 19
                       right:
                         IntConstN:
@@ -367,17 +351,13 @@ Source:
                                       value: 2
                                   line: 2
                                   right:
-                                    Rvalue:
+                                    IntConstN:
+                                      base: 10
                                       filename: ../test/passes/transformations/testcases/module1.v
                                       line: 3
-                                      var:
-                                        IntConstN:
-                                          base: 10
-                                          filename: ../test/passes/transformations/testcases/module1.v
-                                          line: 3
-                                          sign: false
-                                          size: -1
-                                          value: 3
+                                      sign: false
+                                      size: -1
+                                      value: 3
                               line: 22
                               right:
                                 IntConstN:
@@ -623,4 +603,3 @@ Source:
       line: 1
   filename: ../test/passes/transformations/testcases/module1.v
   line: 1
-
