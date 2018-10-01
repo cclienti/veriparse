@@ -25,34 +25,40 @@ namespace Veriparse {
 
 			int ParameterInliner::process(AST::Node::Ptr node, AST::Node::Ptr parent) {
 				m_paramlist = Analysis::Module::get_parameter_nodes(node);
-				if (m_paramlist) {
-					int ret;
-					if((ret=resolve_paramlist(node))) return ret;
+				if (!m_paramlist) {
+					return 0;
 				}
 
-				m_paramlist = Analysis::Module::get_parameter_nodes(node);
-				if (m_paramlist) {
-					ASTReplace::ReplaceMap rmap;
-					for (AST::Parameter::Ptr p: *m_paramlist) {
-						AST::Node::Ptr val = p->get_value();
-						if (val) {
-							AST::Node::Ptr var = AST::cast_to<AST::Rvalue>(val)->get_var();
-							if (var) {
-								rmap[p->get_name()] = var;
-							}
+				int ret = resolve_paramlist();
+				if (ret != 0) {
+					return ret;
+				}
+
+				ASTReplace::ReplaceMap rmap;
+				for (AST::Parameter::Ptr p: *m_paramlist) {
+					AST::Node::Ptr val = p->get_value();
+					if (val) {
+						AST::Node::Ptr var = AST::cast_to<AST::Rvalue>(val)->get_var();
+						if (var) {
+							rmap[p->get_name()] = var;
 						}
 					}
-					ASTReplace::replace_identifier(node, rmap, parent);
+				}
 
-					for(const auto &elt: rmap) {
-						remove_parameter(node, elt.first, parent);
-					}
+				ASTReplace::replace_identifier(node, rmap, parent);
+
+				// We does not know what parameter match in the
+				// replace_identifier. This is not completely safe to
+				// remove parameters. But if it fails, the code is not
+				// syntactically correct.
+				for (const auto &elt: rmap) {
+					remove_parameter(node, elt.first, parent);
 				}
 
 				return 0;
 			}
 
-			int ParameterInliner::resolve_paramlist(AST::Node::Ptr node) {
+			int ParameterInliner::resolve_paramlist() {
 				// if m_paramlist_inst is not null, we replace
 				// corresponding values in paramlist by those given in
 				// m_paramlist_inst
@@ -83,7 +89,7 @@ namespace Veriparse {
 								ASTReplace::replace_identifier(pb, pa->get_name(), var);
 							}
 							else {
-								LOG_WARNING_N(node) << "missing value for parameter " << pa->get_name();
+								LOG_WARNING_N(pa) << "missing value for parameter " << pa->get_name();
 							}
 						}
 					}

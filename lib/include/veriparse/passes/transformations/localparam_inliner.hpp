@@ -22,10 +22,22 @@ namespace Veriparse {
 
 			private:
 				/**
+				 * Inline localparams rvalue in all others parameters. The
+				 * algorithm is in O(n^2). For each localparam, we replace
+				 * the localparam rvalue in all other localparams.
+				 *
+				 * If there is circular dependencies, the method will
+				 * fail.
+				 *
+				 * @return zero on success.
+				 */
+				int resolve_localparamlist();
+
+				/**
 				 * Remove the localparam using its name.
 				 * @return zero on success.
 				 */
-				int remove_localparam(AST::Node::Ptr node, std::string name, AST::Node::Ptr parent=nullptr);
+				int remove_localparam(const AST::Node::Ptr &node, const std::string &name, const AST::Node::Ptr &parent);
 
 			private:
 				AST::Localparam::ListPtr m_localparamlist;

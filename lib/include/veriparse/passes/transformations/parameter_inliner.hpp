@@ -33,7 +33,7 @@ private:
 	 *
 	 * @return zero on success.
 	 */
-	int resolve_paramlist(AST::Node::Ptr node);
+	int resolve_paramlist();
 
 	/**
 	 * Remove the parameter using its name.

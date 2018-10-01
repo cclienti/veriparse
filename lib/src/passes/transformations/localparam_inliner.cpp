@@ -15,29 +15,63 @@ namespace Veriparse {
 
 			int LocalparamInliner::process(AST::Node::Ptr node, AST::Node::Ptr parent) {
 				m_localparamlist = Analysis::Module::get_localparam_nodes(node);
-				if (m_localparamlist) {
-					ASTReplace::ReplaceMap rmap;
-					for (AST::Localparam::Ptr p: *m_localparamlist) {
-						AST::Node::Ptr val = p->get_value();
-						if (val) {
-							AST::Node::Ptr var = AST::cast_to<AST::Rvalue>(val)->get_var();
-							if (var) {
-								rmap[p->get_name()] = var;
-							}
+				if (!m_localparamlist) {
+					return 0;
+				}
+
+				int ret = resolve_localparamlist();
+				if (ret != 0) {
+					return ret;
+				}
+
+				ASTReplace::ReplaceMap rmap;
+				for (AST::Localparam::Ptr p: *m_localparamlist) {
+					AST::Node::Ptr val = p->get_value();
+					if (val) {
+						AST::Node::Ptr var = AST::cast_to<AST::Rvalue>(val)->get_var();
+						if (var) {
+							rmap[p->get_name()] = var;
 						}
 					}
-
-					ASTReplace::replace_identifier(node, rmap, parent);
-
-					for(const auto &elt: rmap) {
-						remove_localparam(node, elt.first, parent);
-					}
-
 				}
+
+				ASTReplace::replace_identifier(node, rmap, parent);
+
+				// We does not know what localparam match in the
+				// replace_identifier. This is not completely safe to
+				// remove localparams. But if it fails, the code is not
+				// syntactically correct.
+				for (const auto &elt: rmap) {
+					remove_localparam(node, elt.first, parent);
+				}
+
 				return 0;
 			}
 
-			int LocalparamInliner::remove_localparam(AST::Node::Ptr node, std::string name, AST::Node::Ptr parent) {
+			int LocalparamInliner::resolve_localparamlist() {
+				// Inline parameters rvalue in all others localparams. The
+				// algorithm is in O(n^2). For each localparam, we replace
+				// the localparam rvalue in all other localparams.
+				for (const auto &pa: *m_localparamlist) {
+					for (const auto &pb: *m_localparamlist) {
+						if (pa->get_name() != pb->get_name()) {
+							auto val = pa->get_value();
+							if (val)	{
+								auto var = AST::cast_to<AST::Rvalue>(val)->get_var();
+								ASTReplace::replace_identifier(pb, pa->get_name(), var);
+							}
+							else {
+								LOG_WARNING_N(pa) << "missing value for localparam " << pa->get_name();
+							}
+						}
+					}
+				}
+
+				return 0;
+			}
+
+			int LocalparamInliner::remove_localparam(const AST::Node::Ptr &node, const std::string &name,
+			                                         const AST::Node::Ptr &parent) {
 				if (node) {
 					switch(node->get_node_type()) {
 					case AST::NodeType::Localparam:
