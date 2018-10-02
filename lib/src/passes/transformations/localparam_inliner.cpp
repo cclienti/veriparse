@@ -26,9 +26,9 @@ namespace Veriparse {
 
 				ASTReplace::ReplaceMap rmap;
 				for (AST::Localparam::Ptr p: *m_localparamlist) {
-					AST::Node::Ptr val = p->get_value();
+					const auto &val = p->get_value();
 					if (val) {
-						AST::Node::Ptr var = AST::cast_to<AST::Rvalue>(val)->get_var();
+						const auto &var = AST::cast_to<AST::Rvalue>(val)->get_var();
 						if (var) {
 							rmap[p->get_name()] = var;
 						}
@@ -37,10 +37,6 @@ namespace Veriparse {
 
 				ASTReplace::replace_identifier(node, rmap, parent);
 
-				// We does not know what localparam match in the
-				// replace_identifier. This is not completely safe to
-				// remove localparams. But if it fails, the code is not
-				// syntactically correct.
 				for (const auto &elt: rmap) {
 					remove_localparam(node, elt.first, parent);
 				}

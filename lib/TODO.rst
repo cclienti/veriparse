@@ -8,4 +8,8 @@
 
 2018-09-24: Add the module inlining pass. Do not forget to add a replace_port_affectation before inlining.
 
-2018-09-30: Add a pass that gather all existing passes to simplify a module, except the module inlining pass. (Name ResolveModule ?)
+2018-10-02: Add more test for pass ResolveModule
+
+2018-10-02: Check consistency of localparam/parameter rvalue width regarding width declared (ex: parameter [1:0] P = 3'd2)
+
+2018-10-02: Add an analysis method (or dedicated pass ?) that checks consistency of all assignation widths regarding declaration.
