@@ -13,3 +13,7 @@
 2018-10-02: Check consistency of localparam/parameter rvalue width regarding width declared (ex: parameter [1:0] P = 3'd2)
 
 2018-10-02: Add an analysis method (or dedicated pass ?) that checks consistency of all assignation widths regarding declaration.
+
+2018-10-03: Bug in generate unrolling: Instance parameter are not expanded with the loop index
+
+2018-10-03: Bug in generate: generate/endgenerate blocks are not removed
