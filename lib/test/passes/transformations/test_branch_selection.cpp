@@ -37,3 +37,5 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 
 TEST(PassesTransformation_BranchSelection, ifstmt0) {TEST_CORE;}
 TEST(PassesTransformation_BranchSelection, ifstmt1) {TEST_CORE;}
+TEST(PassesTransformation_BranchSelection, case0) {TEST_CORE;}
+TEST(PassesTransformation_BranchSelection, case1) {TEST_CORE;}

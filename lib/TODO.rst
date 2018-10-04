@@ -14,6 +14,8 @@
 
 2018-10-02: Add an analysis method (or dedicated pass ?) that checks consistency of all assignation widths regarding declaration.
 
-2018-10-03: Bug in generate unrolling: Instance parameter are not expanded with the loop index
+2018-10-03: module_instance_normalization: check that named parameter and named ports exists in the module definition.
 
-2018-10-03: Bug in generate: generate/endgenerate blocks are not removed
+2018-10-03: Bug in loop unrolling: generate/endgenerate blocks are not removed. Add a pass to manage this.
+
+2018-10-04: Support for case stmt in branch selection
