@@ -46,7 +46,7 @@ module shmemif
    generate
       for(i=0 ; i<NB_PORTS ; i=i+1) begin: lut_gen
          prra_lut
-            #(.width(NB_PORTS), .log2_width(LOG2_NB_PORTS), .state_offset(i))
+            #(.WIDTH(NB_PORTS), .LOG2_WIDTH(LOG2_NB_PORTS), .STATE_OFFSET(i))
          prra_lut_inst
             (.request(shmem_request), .state(lut_states[i]));
       end
