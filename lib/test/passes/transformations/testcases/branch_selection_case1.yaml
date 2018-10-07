@@ -1,0 +1,140 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/case1.v
+          items:
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/case1.v
+              items:
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/case1.v
+                  line: 8
+                  statement:
+                    SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/case1.v
+                      line: 8
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/case1.v
+                              line: 8
+                              value: 3
+                          filename: ../../test/passes/transformations/testcases/case1.v
+                          line: 8
+                          syscall: display
+              line: 3
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/case1.v
+              items:
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/case1.v
+                  line: 18
+                  statement:
+                    SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/case1.v
+                      line: 18
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/case1.v
+                              line: 18
+                              value: 4
+                          filename: ../../test/passes/transformations/testcases/case1.v
+                          line: 18
+                          syscall: display
+              line: 12
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/case1.v
+              items:
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/case1.v
+                  line: 33
+                  statement:
+                    SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/case1.v
+                      line: 33
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/case1.v
+                              line: 33
+                              value: 2
+                          filename: ../../test/passes/transformations/testcases/case1.v
+                          line: 33
+                          syscall: display
+              line: 22
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/case1.v
+              items:
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/case1.v
+                  line: 49
+                  statement:
+                    SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/case1.v
+                      line: 49
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/case1.v
+                              line: 49
+                              value: 1
+                          filename: ../../test/passes/transformations/testcases/case1.v
+                          line: 49
+                          syscall: display
+              line: 42
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/case1.v
+              items:
+              - Initial:
+                  filename: ../../test/passes/transformations/testcases/case1.v
+                  line: 66
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/case1.v
+                      line: 66
+                      scope: ''
+                      statements:
+                      - SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/case1.v
+                          line: 67
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              args:
+                              - StringConst:
+                                  filename: ../../test/passes/transformations/testcases/case1.v
+                                  line: 67
+                                  value: 0
+                              filename: ../../test/passes/transformations/testcases/case1.v
+                              line: 67
+                              syscall: display
+              line: 63
+          line: 1
+          name: case1
+      filename: ../../test/passes/transformations/testcases/case1.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/case1.v
+  line: 1
+
