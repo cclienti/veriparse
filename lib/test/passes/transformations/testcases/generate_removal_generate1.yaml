@@ -1,0 +1,799 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/generate1.v
+          items:
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/generate1.v
+              items:
+              - Integer:
+                  filename: ../../test/passes/transformations/testcases/generate1.v
+                  line: 4
+                  name: x
+                  right:
+                    Rvalue: null
+              - Integer:
+                  filename: ../../test/passes/transformations/testcases/generate1.v
+                  line: 4
+                  name: y
+                  right:
+                    Rvalue: null
+              - IfStatement:
+                  cond:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 1
+                  false_statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 10
+                      scope: ''
+                      statements:
+                      - Always:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 11
+                          senslist:
+                            Senslist:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 11
+                              list:
+                              - Sens:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 11
+                                  sig: null
+                                  type: ALL
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 11
+                              scope: ''
+                              statements:
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 12
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 12
+                                          name: a
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 12
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 12
+                                      var:
+                                        Times:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/generate1.v
+                                              line: 12
+                                              name: x
+                                              scope:
+                                                IdentifierScope: null
+                                          line: 12
+                                          right:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/generate1.v
+                                              line: 12
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+                  filename: ../../test/passes/transformations/testcases/generate1.v
+                  line: 5
+                  true_statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 5
+                      scope: ''
+                      statements:
+                      - Always:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 6
+                          senslist:
+                            Senslist:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 6
+                              list:
+                              - Sens:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 6
+                                  sig: null
+                                  type: ALL
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 6
+                              scope: ''
+                              statements:
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 7
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 7
+                                          name: a
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 7
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 7
+                                      var:
+                                        Plus:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/generate1.v
+                                              line: 7
+                                              name: x
+                                              scope:
+                                                IdentifierScope: null
+                                          line: 7
+                                          right:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/generate1.v
+                                              line: 7
+                                              name: y
+                                              scope:
+                                                IdentifierScope: null
+              line: 3
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/generate1.v
+              items:
+              - CaseStatement:
+                  caselist:
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 0
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 19
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 19
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 19
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 19
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 19
+                                          value: 0
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 19
+                                      syscall: display
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 1
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 20
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 20
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 20
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 20
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 20
+                                          value: 1
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 20
+                                      syscall: display
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 2
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 21
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 21
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 21
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 21
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 21
+                                          value: 2
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 21
+                                      syscall: display
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 22
+                          sign: false
+                          size: -1
+                          value: 3
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 22
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 22
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 22
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 22
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 22
+                                          value: 3
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 22
+                                      syscall: display
+                  comp:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 18
+                      sign: false
+                      size: -1
+                      value: 3
+                  filename: ../../test/passes/transformations/testcases/generate1.v
+                  line: 18
+              line: 17
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/generate1.v
+              items:
+              - CaseStatement:
+                  caselist:
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 28
+                          sign: false
+                          size: -1
+                          value: 0
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 28
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 28
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 28
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 28
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 28
+                                          value: 0
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 28
+                                      syscall: display
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 29
+                          sign: false
+                          size: -1
+                          value: 1
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 29
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 29
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 29
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 29
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 29
+                                          value: 1
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 29
+                                      syscall: display
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 2
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 30
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 30
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 30
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 30
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 30
+                                          value: 2
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 30
+                                      syscall: display
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 31
+                          sign: false
+                          size: -1
+                          value: 3
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 31
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 31
+                          scope: ''
+                          statements:
+                          - Initial:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 31
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 31
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 31
+                                          value: 3
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 31
+                                      syscall: display
+                  comp:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 27
+                      sign: false
+                      size: -1
+                      value: 3
+                  filename: ../../test/passes/transformations/testcases/generate1.v
+                  line: 27
+              line: 26
+          - GenerateStatement:
+              filename: ../../test/passes/transformations/testcases/generate1.v
+              items:
+              - Genvar:
+                  filename: ../../test/passes/transformations/testcases/generate1.v
+                  line: 36
+                  name: i
+              - ForStatement:
+                  cond:
+                    LessThan:
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          name: i
+                          scope:
+                            IdentifierScope: null
+                      line: 37
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          sign: false
+                          size: -1
+                          value: 10
+                  filename: ../../test/passes/transformations/testcases/generate1.v
+                  line: 37
+                  post:
+                    BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 37
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 37
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          var:
+                            Plus:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 37
+                                  name: i
+                                  scope:
+                                    IdentifierScope: null
+                              line: 37
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 37
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  pre:
+                    BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 37
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 37
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 37
+                              sign: false
+                              size: -1
+                              value: 0
+                  statement:
+                    Block:
+                      filename: ../../test/passes/transformations/testcases/generate1.v
+                      line: 37
+                      scope: gen1
+                      statements:
+                      - Genvar:
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 38
+                          name: j
+                      - ForStatement:
+                          cond:
+                            GreaterEq:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  name: j
+                                  scope:
+                                    IdentifierScope: null
+                              line: 39
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                          filename: ../../test/passes/transformations/testcases/generate1.v
+                          line: 39
+                          post:
+                            BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 39
+                                      name: j
+                                      scope:
+                                        IdentifierScope: null
+                              line: 39
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  var:
+                                    Minus:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 39
+                                          name: j
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 39
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 39
+                                          sign: false
+                                          size: -1
+                                          value: 1
+                          pre:
+                            BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 39
+                                      name: j
+                                      scope:
+                                        IdentifierScope: null
+                              line: 39
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 39
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/generate1.v
+                              line: 39
+                              scope: gen2
+                              statements:
+                              - Reg:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 40
+                                  name: R
+                                  right:
+                                    Rvalue: null
+                                  sign: false
+                                  widths:
+                                  - Width:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 40
+                                      lsb:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 40
+                                          sign: false
+                                          size: -1
+                                          value: 0
+                                      msb:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 40
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                              - Initial:
+                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                  line: 41
+                                  statement:
+                                    Block:
+                                      filename: ../../test/passes/transformations/testcases/generate1.v
+                                      line: 41
+                                      scope: ''
+                                      statements:
+                                      - BlockingSubstitution:
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          ldelay:
+                                            DelayStatement: null
+                                          left:
+                                            Lvalue:
+                                              filename: ../../test/passes/transformations/testcases/generate1.v
+                                              line: 42
+                                              var:
+                                                Identifier:
+                                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                                  line: 42
+                                                  name: R
+                                                  scope:
+                                                    IdentifierScope: null
+                                          line: 42
+                                          rdelay:
+                                            DelayStatement: null
+                                          right:
+                                            Rvalue:
+                                              filename: ../../test/passes/transformations/testcases/generate1.v
+                                              line: 42
+                                              var:
+                                                Identifier:
+                                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                                  line: 42
+                                                  name: i
+                                                  scope:
+                                                    IdentifierScope: null
+                                      - SingleStatement:
+                                          delay:
+                                            DelayStatement: null
+                                          filename: ../../test/passes/transformations/testcases/generate1.v
+                                          line: 43
+                                          scope: ''
+                                          statement:
+                                            SystemCall:
+                                              args:
+                                              - StringConst:
+                                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                                  line: 43
+                                                  value: '%m'
+                                              - Identifier:
+                                                  filename: ../../test/passes/transformations/testcases/generate1.v
+                                                  line: 43
+                                                  name: R
+                                                  scope:
+                                                    IdentifierScope: null
+                                              filename: ../../test/passes/transformations/testcases/generate1.v
+                                              line: 43
+                                              syscall: display
+              line: 35
+          line: 1
+          name: generate1
+      filename: ../../test/passes/transformations/testcases/generate1.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/generate1.v
+  line: 1
+

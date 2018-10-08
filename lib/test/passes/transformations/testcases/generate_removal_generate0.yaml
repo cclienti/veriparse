@@ -1,0 +1,350 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/generate0.v
+          items:
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 4
+              statement:
+                SingleStatement:
+                  delay:
+                    DelayStatement: null
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 5
+                  scope: ''
+                  statement:
+                    SystemCall:
+                      args:
+                      - StringConst:
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 5
+                          value: 5
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 5
+                      syscall: display
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 9
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 9
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 10
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 10
+                              value: 4
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 10
+                          syscall: display
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 15
+              name: a
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 15
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 15
+                      sign: false
+                      size: -1
+                      value: 1
+          - Always:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 16
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 16
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 16
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 16
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 17
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                      false_statement: null
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 17
+                      true_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 17
+                          scope: ''
+                          statements:
+                          - SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 18
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: ../../test/passes/transformations/testcases/generate0.v
+                                      line: 18
+                                      value: 3
+                                  filename: ../../test/passes/transformations/testcases/generate0.v
+                                  line: 18
+                                  syscall: display
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 24
+              name: b
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 24
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 24
+                      sign: false
+                      size: -1
+                      value: 2
+          - Always:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 25
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 25
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 25
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 25
+                  scope: ''
+                  statements:
+                  - CaseStatement:
+                      caselist:
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 27
+                              sign: false
+                              size: -1
+                              value: 2
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 27
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 27
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: ../../test/passes/transformations/testcases/generate0.v
+                                      line: 27
+                                      value: 2
+                                  filename: ../../test/passes/transformations/testcases/generate0.v
+                                  line: 27
+                                  syscall: display
+                      comp:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 26
+                          name: b
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 26
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 33
+              name: c
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 33
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 33
+                      sign: false
+                      size: -1
+                      value: 3
+          - Always:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 34
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 34
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 34
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 34
+                  scope: ''
+                  statements:
+                  - CasezStatement:
+                      caselist:
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 36
+                              sign: false
+                              size: -1
+                              value: 3
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 36
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 36
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: ../../test/passes/transformations/testcases/generate0.v
+                                      line: 36
+                                      value: 1
+                                  filename: ../../test/passes/transformations/testcases/generate0.v
+                                  line: 36
+                                  syscall: display
+                      comp:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 35
+                          name: c
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 35
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 42
+              name: d
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 42
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 42
+                      sign: false
+                      size: -1
+                      value: 4
+          - Always:
+              filename: ../../test/passes/transformations/testcases/generate0.v
+              line: 43
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 43
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 43
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/generate0.v
+                  line: 43
+                  scope: ''
+                  statements:
+                  - CasexStatement:
+                      caselist:
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 45
+                              sign: false
+                              size: -1
+                              value: 1
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 45
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: ../../test/passes/transformations/testcases/generate0.v
+                              line: 45
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: ../../test/passes/transformations/testcases/generate0.v
+                                      line: 45
+                                      value: 0
+                                  filename: ../../test/passes/transformations/testcases/generate0.v
+                                  line: 45
+                                  syscall: display
+                      comp:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/generate0.v
+                          line: 44
+                          name: d
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/generate0.v
+                      line: 44
+          line: 1
+          name: generate0
+      filename: ../../test/passes/transformations/testcases/generate0.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/generate0.v
+  line: 1
+
