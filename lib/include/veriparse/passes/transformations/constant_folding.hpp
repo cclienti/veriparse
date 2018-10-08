@@ -3,23 +3,22 @@
 
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
-#include <string>
 
 
 namespace Veriparse {
-	namespace Passes {
-		namespace Transformations {
+namespace Passes {
+namespace Transformations {
 
-			class ConstantFolding: public TransformationBase {
-				/**
-				 * @return zero on success
-				 */
-				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+class ConstantFolding: public TransformationBase {
+	/**
+	 * @return zero on success
+	 */
+	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-			};
+};
 
-		}
-	}
+}
+}
 }
 
 #endif

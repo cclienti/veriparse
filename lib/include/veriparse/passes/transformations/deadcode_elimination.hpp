@@ -7,33 +7,33 @@
 #include <set>
 
 namespace Veriparse {
-	namespace Passes {
-		namespace Transformations {
+namespace Passes {
+namespace Transformations {
 
-			class DeadcodeElimination: public TransformationBase
-			{
-				typedef std::set<std::string> DSet;
+class DeadcodeElimination: public TransformationBase
+{
+	typedef std::set<std::string> DSet;
 
-				virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-				std::string print_set(const DSet &dset);
+	std::string print_set(const DSet &dset);
 
-				DSet remove_deadcode_step(AST::Node::Ptr node, AST::Node::Ptr parent);
+	DSet remove_deadcode_step(AST::Node::Ptr node, AST::Node::Ptr parent);
 
-				int remove_deadstmt(const DeadcodeElimination::DSet &deadset,
-				                    DeadcodeElimination::DSet &removedset,
-				                    AST::Node::Ptr node, AST::Node::Ptr parent);
+	int remove_deadstmt(const DeadcodeElimination::DSet &deadset,
+	                    DeadcodeElimination::DSet &removedset,
+	                    AST::Node::Ptr node, AST::Node::Ptr parent);
 
-				int remove_deaddecl(const DeadcodeElimination::DSet &removedset,
-				                    AST::Node::Ptr node, AST::Node::Ptr parent);
+	int remove_deaddecl(const DeadcodeElimination::DSet &removedset,
+	                    AST::Node::Ptr node, AST::Node::Ptr parent);
 
-				int remove_emptyblock(AST::Node::Ptr node, AST::Node::Ptr parent);
+	int remove_emptyblock(AST::Node::Ptr node, AST::Node::Ptr parent);
 
-				int remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr parent);
-			};
+	int remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr parent);
+};
 
-		}
-	}
+}
+}
 }
 
 #endif
