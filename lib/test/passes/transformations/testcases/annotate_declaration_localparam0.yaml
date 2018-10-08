@@ -9,7 +9,7 @@ Source:
           - Localparam:
               filename: ../../test/passes/transformations/testcases/localparam0.v
               line: 8
-              name: prefix_WIDTH2_suffix
+              name: prefix_WIDTH3_suffix
               sign: true
               type: INTEGER
               value:
@@ -17,13 +17,13 @@ Source:
                   filename: ../../test/passes/transformations/testcases/localparam0.v
                   line: 8
                   var:
-                    Times:
+                    Plus:
                       filename: ../../test/passes/transformations/testcases/localparam0.v
                       left:
                         Identifier:
                           filename: ../../test/passes/transformations/testcases/localparam0.v
                           line: 8
-                          name: prefix_WIDTH_suffix
+                          name: prefix_WIDTH2_suffix
                           scope:
                             IdentifierScope: null
                       line: 8
@@ -34,17 +34,46 @@ Source:
                           line: 8
                           sign: false
                           size: -1
-                          value: 2
+                          value: 1
           - Localparam:
               filename: ../../test/passes/transformations/testcases/localparam0.v
               line: 9
-              name: prefix_WIDTH_suffix
+              name: prefix_WIDTH2_suffix
               sign: true
               type: INTEGER
               value:
                 Rvalue:
                   filename: ../../test/passes/transformations/testcases/localparam0.v
                   line: 9
+                  var:
+                    Times:
+                      filename: ../../test/passes/transformations/testcases/localparam0.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/localparam0.v
+                          line: 9
+                          name: prefix_WIDTH_suffix
+                          scope:
+                            IdentifierScope: null
+                      line: 9
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/localparam0.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 2
+          - Localparam:
+              filename: ../../test/passes/transformations/testcases/localparam0.v
+              line: 10
+              name: prefix_WIDTH_suffix
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/localparam0.v
+                  line: 10
                   var:
                     Minus:
                       filename: ../../test/passes/transformations/testcases/localparam0.v
@@ -55,53 +84,53 @@ Source:
                             IntConstN:
                               base: 10
                               filename: ../../test/passes/transformations/testcases/localparam0.v
-                              line: 9
+                              line: 10
                               sign: false
                               size: -1
                               value: 2
-                          line: 9
+                          line: 10
                           right:
                             Identifier:
                               filename: ../../test/passes/transformations/testcases/localparam0.v
-                              line: 9
+                              line: 10
                               name: LOG_WIDTH
                               scope:
                                 IdentifierScope: null
-                      line: 9
+                      line: 10
                       right:
                         IntConstN:
                           base: 10
                           filename: ../../test/passes/transformations/testcases/localparam0.v
-                          line: 9
+                          line: 10
                           sign: false
                           size: -1
                           value: 1
           - Always:
               filename: ../../test/passes/transformations/testcases/localparam0.v
-              line: 11
+              line: 12
               senslist:
                 Senslist:
                   filename: ../../test/passes/transformations/testcases/localparam0.v
-                  line: 11
+                  line: 12
                   list:
                   - Sens:
                       filename: ../../test/passes/transformations/testcases/localparam0.v
-                      line: 11
+                      line: 12
                       sig:
                         Identifier:
                           filename: ../../test/passes/transformations/testcases/localparam0.v
-                          line: 11
+                          line: 12
                           name: clock
                           scope:
                             IdentifierScope: null
                       type: POSEDGE
                   - Sens:
                       filename: ../../test/passes/transformations/testcases/localparam0.v
-                      line: 11
+                      line: 12
                       sig:
                         Identifier:
                           filename: ../../test/passes/transformations/testcases/localparam0.v
-                          line: 11
+                          line: 12
                           name: reset
                           scope:
                             IdentifierScope: null
@@ -109,7 +138,7 @@ Source:
               statement:
                 Block:
                   filename: ../../test/passes/transformations/testcases/localparam0.v
-                  line: 11
+                  line: 12
                   scope: ''
                   statements:
                   - IfStatement:
@@ -119,23 +148,23 @@ Source:
                           left:
                             Identifier:
                               filename: ../../test/passes/transformations/testcases/localparam0.v
-                              line: 12
+                              line: 13
                               name: reset
                               scope:
                                 IdentifierScope: null
-                          line: 12
+                          line: 13
                           right:
                             IntConstN:
                               base: 2
                               filename: ../../test/passes/transformations/testcases/localparam0.v
-                              line: 12
+                              line: 13
                               sign: false
                               size: 1
                               value: 0
                       false_statement:
                         Block:
                           filename: ../../test/passes/transformations/testcases/localparam0.v
-                          line: 15
+                          line: 16
                           scope: ''
                           statements:
                           - NonblockingSubstitution:
@@ -145,34 +174,34 @@ Source:
                               left:
                                 Lvalue:
                                   filename: ../../test/passes/transformations/testcases/localparam0.v
-                                  line: 16
+                                  line: 17
                                   var:
                                     Identifier:
                                       filename: ../../test/passes/transformations/testcases/localparam0.v
-                                      line: 16
+                                      line: 17
                                       name: out
                                       scope:
                                         IdentifierScope: null
-                              line: 16
+                              line: 17
                               rdelay:
                                 DelayStatement: null
                               right:
                                 Rvalue:
                                   filename: ../../test/passes/transformations/testcases/localparam0.v
-                                  line: 16
+                                  line: 17
                                   var:
                                     Identifier:
                                       filename: ../../test/passes/transformations/testcases/localparam0.v
-                                      line: 16
+                                      line: 17
                                       name: in
                                       scope:
                                         IdentifierScope: null
                       filename: ../../test/passes/transformations/testcases/localparam0.v
-                      line: 12
+                      line: 13
                       true_statement:
                         Block:
                           filename: ../../test/passes/transformations/testcases/localparam0.v
-                          line: 12
+                          line: 13
                           scope: ''
                           statements:
                           - NonblockingSubstitution:
@@ -182,37 +211,37 @@ Source:
                               left:
                                 Lvalue:
                                   filename: ../../test/passes/transformations/testcases/localparam0.v
-                                  line: 13
+                                  line: 14
                                   var:
                                     Identifier:
                                       filename: ../../test/passes/transformations/testcases/localparam0.v
-                                      line: 13
+                                      line: 14
                                       name: out
                                       scope:
                                         IdentifierScope: null
-                              line: 13
+                              line: 14
                               rdelay:
                                 DelayStatement: null
                               right:
                                 Rvalue:
                                   filename: ../../test/passes/transformations/testcases/localparam0.v
-                                  line: 13
+                                  line: 14
                                   var:
                                     Plus:
                                       filename: ../../test/passes/transformations/testcases/localparam0.v
                                       left:
                                         Identifier:
                                           filename: ../../test/passes/transformations/testcases/localparam0.v
-                                          line: 13
-                                          name: prefix_WIDTH2_suffix
+                                          line: 14
+                                          name: prefix_WIDTH3_suffix
                                           scope:
                                             IdentifierScope: null
-                                      line: 13
+                                      line: 14
                                       right:
                                         IntConstN:
                                           base: 10
                                           filename: ../../test/passes/transformations/testcases/localparam0.v
-                                          line: 13
+                                          line: 14
                                           sign: false
                                           size: -1
                                           value: 1
