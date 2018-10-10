@@ -16,8 +16,6 @@
 
 2018-10-03: module_instance_normalization: check that named parameter and named ports exists in the module definition.
 
-2018-10-03: Bug in loop unrolling: generate/endgenerate blocks are not removed. Add a pass to manage this.
-
 2018-10-07: Support for defparam keyword.
 
 2018-10-07: Add instance inlining. Manage defparam and signal that reads information across multiple levels of instanciation.

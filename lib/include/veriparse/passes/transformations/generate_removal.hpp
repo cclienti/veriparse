@@ -20,7 +20,6 @@ class GenerateRemoval: public TransformationBase
 	 * @return return true if the generate block sub-statements can be safely removed.
 	 */
 	bool is_generate_removable(const AST::Node::Ptr &node);
-
 };
 
 }

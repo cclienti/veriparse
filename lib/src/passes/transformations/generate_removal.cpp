@@ -19,11 +19,6 @@ int GenerateRemoval::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
 	switch (node->get_node_type())
 	{
-	case AST::NodeType::Genvar:
-		{
-		}
-		break;
-
 	case AST::NodeType::GenerateStatement:
 		{
 			if (is_generate_removable(node)) {

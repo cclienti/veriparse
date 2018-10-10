@@ -5,6 +5,7 @@
 #include <veriparse/passes/transformations/constant_folding.hpp>
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
 #include <veriparse/passes/transformations/branch_selection.hpp>
+#include <veriparse/passes/transformations/generate_removal.hpp>
 #include <veriparse/passes/transformations/variable_folding.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
 #include <veriparse/passes/transformations/module_instance_normalizer.hpp>
@@ -58,6 +59,11 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 	}
 
 	if (BranchSelection().run(node)) {
+		LOG_ERROR_N(node) << "Failed to select branches";
+		return 1;
+	}
+
+	if (GenerateRemoval().run(node)) {
 		LOG_ERROR_N(node) << "Failed to select branches";
 		return 1;
 	}
