@@ -117,7 +117,7 @@ namespace Veriparse
 
 #ifdef FULL_DEBUG
 				for(const std::string &dead: deadset) {
-					LOG_INFO_F(node->get_filename()) << "dead: " << dead;
+					LOG_DEBUG_F(node->get_filename()) << "dead: " << dead;
 				}
 #endif
 				DSet removedset;
@@ -154,8 +154,8 @@ namespace Veriparse
 						std::set_intersection(deadset.begin(), deadset.end(), lvalue_set.begin(), lvalue_set.end(),
 						                      std::inserter(inter_set, inter_set.begin()));
 
-						LOG_INFO << "lvalue_set={" << ::print_set(lvalue_set) << "} - "
-						         << "inter_set={" << ::print_set(inter_set) << "}";
+						LOG_DEBUG_N(node) << "lvalue_set={" << ::print_set(lvalue_set) << "} - "
+						                  << "inter_set={" << ::print_set(inter_set) << "}";
 
 						// If the intersection is equal to the lvalue_set
 						if(inter_set == lvalue_set) {
