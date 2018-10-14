@@ -138,7 +138,7 @@ int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 	return recurse_in_childs(node);
 }
 
-LoopUnrolling::range_ptr_t LoopUnrolling::get_for_range(const AST::ForStatement::Ptr for_node)
+LoopUnrolling::range_ptr_t LoopUnrolling::get_for_range(const AST::ForStatement::Ptr &for_node)
 {
 	const AST::BlockingSubstitution::Ptr pre_subst = for_node->get_pre();
 	if(!pre_subst) {
@@ -239,7 +239,7 @@ LoopUnrolling::range_ptr_t LoopUnrolling::get_for_range(const AST::ForStatement:
 	return range;
 }
 
-std::string LoopUnrolling::get_cond_lvalue(const AST::BlockingSubstitution::Ptr subst)
+std::string LoopUnrolling::get_cond_lvalue(const AST::BlockingSubstitution::Ptr &subst)
 {
 	const AST::Lvalue::Ptr lvalue = subst->get_left();
 	if(!lvalue) {
@@ -257,7 +257,7 @@ std::string LoopUnrolling::get_cond_lvalue(const AST::BlockingSubstitution::Ptr 
 	return AST::cast_to<AST::Identifier>(identifier)->get_name();
 }
 
-AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::Ptr subst)
+AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst)
 {
 	const AST::Rvalue::Ptr rvalue = subst->get_right();
 	if(!rvalue) {
@@ -267,7 +267,7 @@ AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::P
 	return rvalue->get_var();
 }
 
-AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::Ptr subst,
+AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst,
                                               const ExpressionEvaluation::replace_map_t &map)
 {
 	const AST::Rvalue::Ptr rvalue = subst->get_right();

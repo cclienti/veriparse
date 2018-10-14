@@ -30,7 +30,7 @@ class LoopUnrolling: public TransformationBase {
 	 * pre, post or condition part of the for expression
 	 * cannot be resolved statically.
 	 */
-	static range_ptr_t get_for_range(const AST::ForStatement::Ptr for_node);
+	static range_ptr_t get_for_range(const AST::ForStatement::Ptr &for_node);
 
 	/**
 	 * @brief Return the lvalue identifier name of a blocking
@@ -38,21 +38,21 @@ class LoopUnrolling: public TransformationBase {
 	 *
 	 * @return non-empty string on success.
 	 */
-	static std::string get_cond_lvalue(const AST::BlockingSubstitution::Ptr subst);
+	static std::string get_cond_lvalue(const AST::BlockingSubstitution::Ptr &subst);
 
 	/**
 	 * @brief Return the rvalue node of a blocking substitution.
 	 *
 	 * @return non-nullptr on success.
 	 */
-	static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr subst);
+	static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst);
 
 	/**
 	 * @brief Return the rvalue node of a blocking substitution.
 	 *
 	 * @return non-nullptr on success.
 	 */
-	static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr subst,
+	static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst,
 	                                      const ExpressionEvaluation::replace_map_t &map);
 };
 

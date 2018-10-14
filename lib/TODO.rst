@@ -7,6 +7,8 @@ Mechanics
 
 #. 2018-10-13: Use unique_ptr instead of share_ptr.
 
+#. 2018-10-14: Remove indentation levels for namespaces
+
 #. 2018-08-18: Add a to_string method in each AST class to print the real derived instance values in operator<<overloading.
 
 #. 2018-08-28: Manage error codes: OK, PASS_FAILED, SYNTAX_ERROR, ...
