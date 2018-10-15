@@ -5,7 +5,7 @@ module deadcode1
     input wire [7:0] in,
     output reg [width-1:0] out);
 
-   reg [4:0] c, e;
+   wire [4:0] c, e;
    reg [7:0] debug0;
    reg [7:0] debug1;
    reg [7:0] debug2;
@@ -54,7 +54,7 @@ module deadcode1
       while(i<8) begin
          j=0;
          while(j<8) begin
-            debug3[i][j] <= in[i];
+            debug3[i][j] <= in[j];
             j=j+1;
          end
          i=i+1;

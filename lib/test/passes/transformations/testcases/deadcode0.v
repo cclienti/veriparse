@@ -5,7 +5,7 @@ module deadcode0
     input wire [7:0] in,
     output reg [width-1:0] out);
 
-   reg [4:0] c, d, e;
+   wire [4:0] c, d, e;
    reg [7:0] debug0;
    reg [7:0] debug1;
    reg [7:0] debug2;

@@ -6,10 +6,14 @@ Source:
           default_nettype: WIRE
           filename: ../../test/passes/transformations/testcases/deadcode1.v
           items:
-          - Reg:
+          - Wire:
               filename: ../../test/passes/transformations/testcases/deadcode1.v
+              ldelay:
+                DelayStatement: null
               line: 8
               name: c
+              rdelay:
+                DelayStatement: null
               right:
                 Rvalue: null
               sign: false
@@ -33,10 +37,14 @@ Source:
                       sign: false
                       size: -1
                       value: 4
-          - Reg:
+          - Wire:
               filename: ../../test/passes/transformations/testcases/deadcode1.v
+              ldelay:
+                DelayStatement: null
               line: 8
               name: e
+              rdelay:
+                DelayStatement: null
               right:
                 Rvalue: null
               sign: false
@@ -99,86 +107,6 @@ Source:
               name: j
               right:
                 Rvalue: null
-          - Wire:
-              filename: ../../test/passes/transformations/testcases/deadcode1.v
-              ldelay:
-                DelayStatement: null
-              line: 17
-              name: f
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ../../test/passes/transformations/testcases/deadcode1.v
-                  line: 17
-                  var:
-                    Identifier:
-                      filename: ../../test/passes/transformations/testcases/deadcode1.v
-                      line: 17
-                      name: e
-                      scope:
-                        IdentifierScope: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/deadcode1.v
-                  line: 17
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/deadcode1.v
-                      line: 17
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/deadcode1.v
-                      line: 17
-                      sign: false
-                      size: -1
-                      value: 4
-          - Wire:
-              filename: ../../test/passes/transformations/testcases/deadcode1.v
-              ldelay:
-                DelayStatement: null
-              line: 18
-              name: d
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ../../test/passes/transformations/testcases/deadcode1.v
-                  line: 18
-                  var:
-                    Identifier:
-                      filename: ../../test/passes/transformations/testcases/deadcode1.v
-                      line: 18
-                      name: c
-                      scope:
-                        IdentifierScope: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/deadcode1.v
-                  line: 18
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/deadcode1.v
-                      line: 18
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/deadcode1.v
-                      line: 18
-                      sign: false
-                      size: -1
-                      value: 4
           - Assign:
               filename: ../../test/passes/transformations/testcases/deadcode1.v
               ldelay:
