@@ -33,34 +33,34 @@ TEST(PassesAnalysis_Module, ModuleDictionary) {
 	Passes::Analysis::Module::ModulesMap str_to_module;
 	int ret = Passes::Analysis::Module::get_module_dictionary(node_list, str_to_module);
 	ASSERT_EQ(0, ret);
-	ASSERT_EQ(5u, str_to_module.size());
+	ASSERT_EQ(6u, str_to_module.size());
 
 	for (const auto &pair: str_to_module) {
 		ASSERT_EQ(pair.first, pair.second->get_name());
 	}
 
 	ASSERT_EQ(1u, str_to_module.count("instance1"));
-	ASSERT_EQ(1u, str_to_module.count("instance2"));
-	ASSERT_EQ(1u, str_to_module.count("instance3"));
-	ASSERT_EQ(1u, str_to_module.count("my_module"));
 	ASSERT_EQ(1u, str_to_module.count("string_test_mod"));
-
-	node_list->push_back(source3);
+	ASSERT_EQ(1u, str_to_module.count("instance2"));
+	ASSERT_EQ(1u, str_to_module.count("my_module2"));
+	ASSERT_EQ(1u, str_to_module.count("instance3"));
+	ASSERT_EQ(1u, str_to_module.count("my_module3"));
 
 	node_list->push_back(source3->clone());
 	ret = Passes::Analysis::Module::get_module_dictionary(node_list, str_to_module);
 	ASSERT_EQ(1, ret);
-	ASSERT_EQ(5u, str_to_module.size());
+	ASSERT_EQ(6u, str_to_module.size());
 
 	for (const auto &pair: str_to_module) {
 		ASSERT_EQ(pair.first, pair.second->get_name());
 	}
 
 	ASSERT_EQ(1u, str_to_module.count("instance1"));
-	ASSERT_EQ(1u, str_to_module.count("instance2"));
-	ASSERT_EQ(1u, str_to_module.count("instance3"));
-	ASSERT_EQ(1u, str_to_module.count("my_module"));
 	ASSERT_EQ(1u, str_to_module.count("string_test_mod"));
+	ASSERT_EQ(1u, str_to_module.count("instance2"));
+	ASSERT_EQ(1u, str_to_module.count("my_module2"));
+	ASSERT_EQ(1u, str_to_module.count("instance3"));
+	ASSERT_EQ(1u, str_to_module.count("my_module3"));
 }
 
 TEST(PassesAnalysis_Module, parameter0) {

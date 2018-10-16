@@ -211,7 +211,7 @@ Source:
                         Identifier:
                           filename: ../../test/passes/transformations/testcases/module2.v
                           line: 14
-                          name: LO2
+                          name: LOG2
                           scope:
                             IdentifierScope: null
                       line: 14

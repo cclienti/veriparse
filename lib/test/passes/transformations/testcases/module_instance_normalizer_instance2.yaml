@@ -14,10 +14,10 @@ Source:
                     Length: null
                   filename: ../../test/passes/transformations/testcases/instance2.v
                   line: 2
-                  module: my_module
+                  module: my_module2
                   name: inst0
               line: 2
-              module: my_module
+              module: my_module2
           - Instancelist:
               filename: ../../test/passes/transformations/testcases/instance2.v
               instances:
@@ -26,10 +26,10 @@ Source:
                     Length: null
                   filename: ../../test/passes/transformations/testcases/instance2.v
                   line: 2
-                  module: my_module
+                  module: my_module2
                   name: inst1
               line: 2
-              module: my_module
+              module: my_module2
           - Instancelist:
               filename: ../../test/passes/transformations/testcases/instance2.v
               instances:
@@ -38,10 +38,10 @@ Source:
                     Length: null
                   filename: ../../test/passes/transformations/testcases/instance2.v
                   line: 2
-                  module: my_module
+                  module: my_module2
                   name: inst2
               line: 2
-              module: my_module
+              module: my_module2
           - Instancelist:
               filename: ../../test/passes/transformations/testcases/instance2.v
               instances:
@@ -50,18 +50,19 @@ Source:
                     Length: null
                   filename: ../../test/passes/transformations/testcases/instance2.v
                   line: 2
-                  module: my_module
+                  module: my_module2
                   name: inst3
               line: 2
-              module: my_module
+              module: my_module2
           line: 1
           name: instance2
       - Module:
           default_nettype: WIRE
           filename: ../../test/passes/transformations/testcases/instance2.v
           line: 5
-          name: my_module
+          name: my_module2
       filename: ../../test/passes/transformations/testcases/instance2.v
       line: 1
   filename: ../../test/passes/transformations/testcases/instance2.v
   line: 1
+

@@ -4,13 +4,13 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../test/passes/transformations/testcases/module2.v
+          filename: ../../test/passes/transformations/testcases/module2.v
           items:
           - Ioport:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               first:
                 Input:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 7
                   name: clock
                   sign: false
@@ -18,10 +18,10 @@ Source:
               second:
                 Variable: null
           - Ioport:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               first:
                 Input:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 8
                   name: reset_n
                   sign: false
@@ -29,21 +29,21 @@ Source:
               second:
                 Variable: null
           - Ioport:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               first:
                 Input:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 9
                   name: in
                   sign: false
                   widths:
                   - Width:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 9
                       lsb:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 9
                           sign: false
                           size: -1
@@ -51,7 +51,7 @@ Source:
                       msb:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 3
                           sign: false
                           size: -1
@@ -59,7 +59,7 @@ Source:
               line: 9
               second:
                 Wire:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   ldelay:
                     DelayStatement: null
                   line: 9
@@ -71,12 +71,12 @@ Source:
                   sign: false
                   widths:
                   - Width:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 9
                       lsb:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 9
                           sign: false
                           size: -1
@@ -84,41 +84,41 @@ Source:
                       msb:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 3
                           sign: false
                           size: -1
                           value: 3
           - Ioport:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               first:
                 Output:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 10
                   name: out
                   sign: false
                   widths:
                   - Width:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 10
                       lsb:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 10
                           sign: false
                           size: -1
                           value: 0
                       msb:
                         Minus:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           left:
                             Power:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               left:
                                 IntConstN:
                                   base: 10
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 2
                                   sign: false
                                   size: -1
@@ -127,7 +127,7 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 3
                                   sign: false
                                   size: -1
@@ -136,7 +136,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 10
                               sign: false
                               size: -1
@@ -145,10 +145,10 @@ Source:
               second:
                 Variable: null
           - Ioport:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               first:
                 Output:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 11
                   name: strobe
                   sign: false
@@ -156,7 +156,7 @@ Source:
               second:
                 Variable: null
           - Reg:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 12
               name: out
               right:
@@ -164,26 +164,26 @@ Source:
               sign: false
               widths:
               - Width:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 12
                   lsb:
                     IntConstN:
                       base: 10
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 12
                       sign: false
                       size: -1
                       value: 0
                   msb:
                     Minus:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       left:
                         Power:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           left:
                             IntConstN:
                               base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 2
                               sign: false
                               size: -1
@@ -192,7 +192,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 3
                               sign: false
                               size: -1
@@ -201,20 +201,20 @@ Source:
                       right:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 12
                           sign: false
                           size: -1
                           value: 1
           - Reg:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 13
               name: strobe
               right:
                 Rvalue: null
               sign: false
           - Reg:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 14
               name: l
               right:
@@ -222,65 +222,65 @@ Source:
               sign: false
               widths:
               - Width:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 14
                   lsb:
                     IntConstN:
                       base: 10
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 14
                       sign: false
                       size: -1
                       value: 0
                   msb:
                     Minus:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       left:
                         Identifier:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 14
-                          name: LO2
+                          name: LOG2
                           scope:
                             IdentifierScope: null
                       line: 14
                       right:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 14
                           sign: false
                           size: -1
                           value: 1
           - Integer:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 16
               name: j
               right:
                 Rvalue: null
           - Reg:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               lengths:
               - Length:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 17
                   lsb:
                     IntConstN:
                       base: 10
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 17
                       sign: false
                       size: -1
                       value: 0
                   msb:
                     Minus:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       left:
                         Power:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           left:
                             IntConstN:
                               base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 2
                               sign: false
                               size: -1
@@ -289,7 +289,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 3
                               sign: false
                               size: -1
@@ -298,7 +298,7 @@ Source:
                       right:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 17
                           sign: false
                           size: -1
@@ -310,26 +310,26 @@ Source:
               sign: false
               widths:
               - Width:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 17
                   lsb:
                     IntConstN:
                       base: 10
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 17
                       sign: false
                       size: -1
                       value: 0
                   msb:
                     Minus:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       left:
                         Power:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           left:
                             IntConstN:
                               base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 2
                               sign: false
                               size: -1
@@ -338,7 +338,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 3
                               sign: false
                               size: -1
@@ -347,27 +347,27 @@ Source:
                       right:
                         IntConstN:
                           base: 10
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 17
                           sign: false
                           size: -1
                           value: 1
           - Initial:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 19
               statement:
                 Block:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 19
                   scope: ''
                   statements:
                   - ForStatement:
                       cond:
                         LessThan:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           left:
                             Identifier:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 20
                               name: j
                               scope:
@@ -375,14 +375,14 @@ Source:
                           line: 20
                           right:
                             Minus:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               left:
                                 Power:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   left:
                                     IntConstN:
                                       base: 10
-                                      filename: ../test/passes/transformations/testcases/module2.v
+                                      filename: ../../test/passes/transformations/testcases/module2.v
                                       line: 2
                                       sign: false
                                       size: -1
@@ -391,7 +391,7 @@ Source:
                                   right:
                                     IntConstN:
                                       base: 10
-                                      filename: ../test/passes/transformations/testcases/module2.v
+                                      filename: ../../test/passes/transformations/testcases/module2.v
                                       line: 3
                                       sign: false
                                       size: -1
@@ -400,25 +400,25 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 20
                                   sign: false
                                   size: -1
                                   value: 1
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 20
                       post:
                         BlockingSubstitution:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 20
                               var:
                                 Identifier:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 20
                                   name: j
                                   scope:
@@ -428,14 +428,14 @@ Source:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 20
                               var:
                                 Plus:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   left:
                                     Identifier:
-                                      filename: ../test/passes/transformations/testcases/module2.v
+                                      filename: ../../test/passes/transformations/testcases/module2.v
                                       line: 20
                                       name: j
                                       scope:
@@ -444,23 +444,23 @@ Source:
                                   right:
                                     IntConstN:
                                       base: 10
-                                      filename: ../test/passes/transformations/testcases/module2.v
+                                      filename: ../../test/passes/transformations/testcases/module2.v
                                       line: 20
                                       sign: false
                                       size: -1
                                       value: 1
                       pre:
                         BlockingSubstitution:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 20
                               var:
                                 Identifier:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 20
                                   name: j
                                   scope:
@@ -470,44 +470,44 @@ Source:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 20
                               var:
                                 IntConstN:
                                   base: 10
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 20
                                   sign: false
                                   size: -1
                                   value: 0
                       statement:
                         Block:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 20
                           scope: ''
                           statements:
                           - BlockingSubstitution:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               ldelay:
                                 DelayStatement: null
                               left:
                                 Lvalue:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 21
                                   var:
                                     Pointer:
-                                      filename: ../test/passes/transformations/testcases/module2.v
+                                      filename: ../../test/passes/transformations/testcases/module2.v
                                       line: 21
                                       ptr:
                                         Identifier:
-                                          filename: ../test/passes/transformations/testcases/module2.v
+                                          filename: ../../test/passes/transformations/testcases/module2.v
                                           line: 21
                                           name: j
                                           scope:
                                             IdentifierScope: null
                                       var:
                                         Identifier:
-                                          filename: ../test/passes/transformations/testcases/module2.v
+                                          filename: ../../test/passes/transformations/testcases/module2.v
                                           line: 21
                                           name: lut
                                           scope:
@@ -517,14 +517,14 @@ Source:
                                 DelayStatement: null
                               right:
                                 Rvalue:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 21
                                   var:
                                     Plus:
-                                      filename: ../test/passes/transformations/testcases/module2.v
+                                      filename: ../../test/passes/transformations/testcases/module2.v
                                       left:
                                         Identifier:
-                                          filename: ../test/passes/transformations/testcases/module2.v
+                                          filename: ../../test/passes/transformations/testcases/module2.v
                                           line: 21
                                           name: j
                                           scope:
@@ -533,36 +533,36 @@ Source:
                                       right:
                                         IntConstN:
                                           base: 10
-                                          filename: ../test/passes/transformations/testcases/module2.v
+                                          filename: ../../test/passes/transformations/testcases/module2.v
                                           line: 21
                                           sign: false
                                           size: -1
                                           value: 1
           - Always:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 25
               senslist:
                 Senslist:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 25
                   list:
                   - Sens:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 25
                       sig:
                         Identifier:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 25
                           name: reset_n
                           scope:
                             IdentifierScope: null
                       type: NEGEDGE
                   - Sens:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       line: 25
                       sig:
                         Identifier:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 25
                           name: clock
                           scope:
@@ -570,21 +570,21 @@ Source:
                       type: POSEDGE
               statement:
                 Block:
-                  filename: ../test/passes/transformations/testcases/module2.v
+                  filename: ../../test/passes/transformations/testcases/module2.v
                   line: 25
                   scope: ''
                   statements:
                   - NonblockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 26
                           var:
                             Identifier:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 26
                               name: l
                               scope:
@@ -594,26 +594,26 @@ Source:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 26
                           var:
                             Identifier:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 26
                               name: in
                               scope:
                                 IdentifierScope: null
                   - NonblockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                      filename: ../../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 27
                           var:
                             Identifier:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 27
                               name: out
                               scope:
@@ -623,22 +623,22 @@ Source:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../test/passes/transformations/testcases/module2.v
+                          filename: ../../test/passes/transformations/testcases/module2.v
                           line: 27
                           var:
                             Pointer:
-                              filename: ../test/passes/transformations/testcases/module2.v
+                              filename: ../../test/passes/transformations/testcases/module2.v
                               line: 27
                               ptr:
                                 Identifier:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 27
                                   name: l
                                   scope:
                                     IdentifierScope: null
                               var:
                                 Identifier:
-                                  filename: ../test/passes/transformations/testcases/module2.v
+                                  filename: ../../test/passes/transformations/testcases/module2.v
                                   line: 27
                                   name: lut
                                   scope:
@@ -647,7 +647,7 @@ Source:
           name: module2
           params:
           - Parameter:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 4
               name: LOG2
               sign: false
@@ -655,26 +655,27 @@ Source:
               value: null
           ports:
           - Port:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 5
               name: clock
           - Port:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 5
               name: reset_n
           - Port:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 5
               name: in
           - Port:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 5
               name: out
           - Port:
-              filename: ../test/passes/transformations/testcases/module2.v
+              filename: ../../test/passes/transformations/testcases/module2.v
               line: 5
               name: strobe
-      filename: ../test/passes/transformations/testcases/module2.v
+      filename: ../../test/passes/transformations/testcases/module2.v
       line: 1
-  filename: ../test/passes/transformations/testcases/module2.v
+  filename: ../../test/passes/transformations/testcases/module2.v
   line: 1
+

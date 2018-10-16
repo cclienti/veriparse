@@ -1,0 +1,3872 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/shmemif.v
+          items:
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              lengths:
+              - Length:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 28
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 28
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+              line: 28
+              name: lut_states
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 28
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 28
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 1
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              line: 29
+              name: lut_select
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 29
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 29
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 30
+              name: state
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 30
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 30
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              lengths:
+              - Length:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 31
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 31
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+              line: 31
+              name: decoder_done
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 31
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 31
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              lengths:
+              - Length:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 33
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 33
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+              line: 33
+              name: shmem_datain_array
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 33
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 33
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 31
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              lengths:
+              - Length:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 34
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 34
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+              line: 34
+              name: shmem_addr_array
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 34
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 34
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 11
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              line: 36
+              name: mem_wren_comb
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              line: 37
+              name: mem_addr_comb
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 37
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 37
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 11
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              line: 38
+              name: mem_datain_comb
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 38
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 38
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 31
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 50
+                  module: prra_lut
+                  name: prra_lut_inst
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 4
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: LOG2_WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 2
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: STATE_OFFSET
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 47
+                          sign: false
+                          size: -1
+                          value: 0
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: request
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          name: shmem_request
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: state
+                      value:
+                        Pointer:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 47
+                              sign: false
+                              size: -1
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 51
+                              name: lut_states
+                              scope:
+                                IdentifierScope: null
+              line: 48
+              module: prra_lut
+              parameterlist:
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 4
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: LOG2_WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 2
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: STATE_OFFSET
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 47
+                      sign: false
+                      size: -1
+                      value: 0
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 50
+                  module: prra_lut
+                  name: prra_lut_inst
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 4
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: LOG2_WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 2
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: STATE_OFFSET
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: request
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          name: shmem_request
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: state
+                      value:
+                        Pointer:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 51
+                              name: lut_states
+                              scope:
+                                IdentifierScope: null
+              line: 48
+              module: prra_lut
+              parameterlist:
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 4
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: LOG2_WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 2
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: STATE_OFFSET
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 1
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 50
+                  module: prra_lut
+                  name: prra_lut_inst
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 4
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: LOG2_WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 2
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: STATE_OFFSET
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: request
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          name: shmem_request
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: state
+                      value:
+                        Pointer:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 51
+                              name: lut_states
+                              scope:
+                                IdentifierScope: null
+              line: 48
+              module: prra_lut
+              parameterlist:
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 4
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: LOG2_WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 2
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: STATE_OFFSET
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 2
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 50
+                  module: prra_lut
+                  name: prra_lut_inst
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 4
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: LOG2_WIDTH
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 2
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 49
+                      name: STATE_OFFSET
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: request
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          name: shmem_request
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 51
+                      name: state
+                      value:
+                        Pointer:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 51
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 51
+                              name: lut_states
+                              scope:
+                                IdentifierScope: null
+              line: 48
+              module: prra_lut
+              parameterlist:
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 4
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: LOG2_WIDTH
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 2
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 49
+                  name: STATE_OFFSET
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 61
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 61
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 64
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 62
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 64
+                                  name: decoder_done
+                                  scope:
+                                    IdentifierScope: null
+                      line: 64
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 64
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 64
+                                  name: decoder_done
+                                  scope:
+                                    IdentifierScope: null
+                      line: 64
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 2
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 64
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 2
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 64
+                                  name: decoder_done
+                                  scope:
+                                    IdentifierScope: null
+                      line: 64
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 4
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 64
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 64
+                                  name: decoder_done
+                                  scope:
+                                    IdentifierScope: null
+                      line: 64
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 64
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 8
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 68
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 68
+                      name: lut_select
+                      scope:
+                        IdentifierScope: null
+              line: 68
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 68
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 68
+                      ptr:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 68
+                          name: state
+                          scope:
+                            IdentifierScope: null
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 68
+                          name: lut_states
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 70
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 70
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 70
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 70
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 70
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 71
+                              name: srst
+                              scope:
+                                IdentifierScope: null
+                          line: 71
+                          right:
+                            IntConstN:
+                              base: 2
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 71
+                              sign: false
+                              size: 1
+                              value: 1
+                      false_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 75
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 76
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 76
+                                      name: state
+                                      scope:
+                                        IdentifierScope: null
+                              line: 76
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 76
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 76
+                                      name: lut_select
+                                      scope:
+                                        IdentifierScope: null
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 77
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 77
+                                      name: shmem_done
+                                      scope:
+                                        IdentifierScope: null
+                              line: 77
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 77
+                                  var:
+                                    And:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 77
+                                          ptr:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 77
+                                              name: state
+                                              scope:
+                                                IdentifierScope: null
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 77
+                                              name: decoder_done
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 77
+                                      right:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 77
+                                          name: shmem_request
+                                          scope:
+                                            IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 71
+                      true_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 71
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 72
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 72
+                                      name: state
+                                      scope:
+                                        IdentifierScope: null
+                              line: 72
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 72
+                                  var:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 72
+                                      sign: false
+                                      size: -1
+                                      value: 0
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 73
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 73
+                                      name: shmem_done
+                                      scope:
+                                        IdentifierScope: null
+                              line: 73
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 73
+                                  var:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 73
+                                      sign: false
+                                      size: -1
+                                      value: 0
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 87
+                          name: shmem_dataout
+                          scope:
+                            IdentifierScope: null
+              line: 87
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      name: mem_dataout
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 32
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 63
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 87
+                          name: shmem_dataout
+                          scope:
+                            IdentifierScope: null
+              line: 87
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      name: mem_dataout
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 64
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 95
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 87
+                          name: shmem_dataout
+                          scope:
+                            IdentifierScope: null
+              line: 87
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      name: mem_dataout
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 96
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 127
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 87
+                          name: shmem_dataout
+                          scope:
+                            IdentifierScope: null
+              line: 87
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 87
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 87
+                      name: mem_dataout
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 89
+                          sign: false
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain_array
+                          scope:
+                            IdentifierScope: null
+              line: 90
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 89
+                          sign: false
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr_array
+                          scope:
+                            IdentifierScope: null
+              line: 91
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 11
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain_array
+                          scope:
+                            IdentifierScope: null
+              line: 90
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 32
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 63
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr_array
+                          scope:
+                            IdentifierScope: null
+              line: 91
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 12
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 23
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain_array
+                          scope:
+                            IdentifierScope: null
+              line: 90
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 64
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 95
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr_array
+                          scope:
+                            IdentifierScope: null
+              line: 91
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 24
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 35
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain_array
+                          scope:
+                            IdentifierScope: null
+              line: 90
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 90
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 90
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 96
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 127
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 90
+                          name: shmem_datain
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr_array
+                          scope:
+                            IdentifierScope: null
+              line: 91
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 91
+                  var:
+                    Partselect:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 91
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 36
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 47
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 91
+                          name: shmem_addr
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 95
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 95
+                      name: mem_wren_comb
+                      scope:
+                        IdentifierScope: null
+              line: 95
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 95
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 95
+                      ptr:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 95
+                          name: state
+                          scope:
+                            IdentifierScope: null
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 95
+                          name: shmem_wren
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 96
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 96
+                      name: mem_addr_comb
+                      scope:
+                        IdentifierScope: null
+              line: 96
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 96
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 96
+                      ptr:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 96
+                          name: state
+                          scope:
+                            IdentifierScope: null
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 96
+                          name: shmem_addr_array
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 97
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 97
+                      name: mem_datain_comb
+                      scope:
+                        IdentifierScope: null
+              line: 97
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 97
+                  var:
+                    Pointer:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 97
+                      ptr:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 97
+                          name: state
+                          scope:
+                            IdentifierScope: null
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 97
+                          name: shmem_datain_array
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 101
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 101
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 101
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 101
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 101
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 102
+                              name: srst
+                              scope:
+                                IdentifierScope: null
+                          line: 102
+                          right:
+                            IntConstN:
+                              base: 2
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 102
+                              sign: false
+                              size: 1
+                              value: 1
+                      false_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 105
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 106
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 106
+                                      name: mem_wren
+                                      scope:
+                                        IdentifierScope: null
+                              line: 106
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 106
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 106
+                                      name: mem_wren_comb
+                                      scope:
+                                        IdentifierScope: null
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 107
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 107
+                                      name: mem_addr
+                                      scope:
+                                        IdentifierScope: null
+                              line: 107
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 107
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 107
+                                      name: mem_addr_comb
+                                      scope:
+                                        IdentifierScope: null
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 108
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 108
+                                      name: mem_datain
+                                      scope:
+                                        IdentifierScope: null
+                              line: 108
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 108
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 108
+                                      name: mem_datain_comb
+                                      scope:
+                                        IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 102
+                      true_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 102
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 103
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 103
+                                      name: mem_wren
+                                      scope:
+                                        IdentifierScope: null
+                              line: 103
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 103
+                                  var:
+                                    IntConstN:
+                                      base: 2
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 103
+                                      sign: false
+                                      size: 1
+                                      value: 0
+          line: 3
+          name: shmemif
+          ports:
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 10
+                  name: clk
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 10
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 11
+                  name: srst
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 11
+                  name: srst
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 14
+                  name: shmem_request
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 14
+                  name: shmem_request
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 15
+                  name: shmem_wren
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 15
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 15
+                  name: shmem_wren
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 15
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 16
+                  name: shmem_addr
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 16
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 47
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 16
+                  name: shmem_addr
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 16
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 47
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 17
+                  name: shmem_datain
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 17
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 17
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 127
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 17
+                  name: shmem_datain
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 17
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 17
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 127
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 18
+                  name: shmem_dataout
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 18
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 18
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 127
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 18
+                  name: shmem_dataout
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 18
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 18
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 127
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 19
+                  name: shmem_done
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 19
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 0
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 19
+                  name: shmem_done
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 19
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 22
+                  name: mem_wren
+                  sign: false
+              line: 0
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 22
+                  name: mem_wren
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 23
+                  name: mem_addr
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 23
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 11
+              line: 0
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 23
+                  name: mem_addr
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 23
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 11
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 24
+                  name: mem_datain
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 24
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 24
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+              line: 0
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 24
+                  name: mem_datain
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 24
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 24
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 25
+                  name: mem_dataout
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 25
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 25
+                  name: mem_dataout
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 25
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 31
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/shmemif.v
+          items:
+          - Localparam:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 131
+              name: lut_length
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 131
+                  var:
+                    Power:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 131
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 131
+                      right:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 131
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 134
+              name: j
+              right:
+                Rvalue: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 135
+              name: k
+              right:
+                Rvalue: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 136
+              name: l
+              right:
+                Rvalue: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 137
+              name: value
+              right:
+                Rvalue: null
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 139
+              name: lut_index
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 139
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 139
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 139
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 139
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 139
+                          sign: false
+                          size: -1
+                          value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              lengths:
+              - Length:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 140
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 140
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 140
+                          name: lut_length
+                          scope:
+                            IdentifierScope: null
+                      line: 140
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 140
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 140
+              name: lut
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 140
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 140
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 140
+                          name: LOG2_WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 140
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 140
+                          sign: false
+                          size: -1
+                          value: 1
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 142
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 142
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 143
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 143
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 143
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 143
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+                      line: 143
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 143
+                          var:
+                            Partselect:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 143
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 143
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                Minus:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 143
+                                      name: LOG2_WIDTH
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 143
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 143
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 143
+                                  name: STATE_OFFSET
+                                  scope:
+                                    IdentifierScope: null
+                  - ForStatement:
+                      cond:
+                        LessThan:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 145
+                              name: j
+                              scope:
+                                IdentifierScope: null
+                          line: 145
+                          right:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 145
+                              name: lut_length
+                              scope:
+                                IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 145
+                      post:
+                        BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 145
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 145
+                                  name: j
+                                  scope:
+                                    IdentifierScope: null
+                          line: 145
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 145
+                              var:
+                                Plus:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 145
+                                      name: j
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 145
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 145
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                      pre:
+                        BlockingSubstitution:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 145
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 145
+                                  name: j
+                                  scope:
+                                    IdentifierScope: null
+                          line: 145
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 145
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 145
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                      statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 145
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 147
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 147
+                                      name: lut_index
+                                      scope:
+                                        IdentifierScope: null
+                              line: 147
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 147
+                                  var:
+                                    Partselect:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 147
+                                      lsb:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 147
+                                          sign: false
+                                          size: -1
+                                          value: 0
+                                      msb:
+                                        Minus:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 147
+                                              name: WIDTH
+                                              scope:
+                                                IdentifierScope: null
+                                          line: 147
+                                          right:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 147
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 147
+                                          name: j
+                                          scope:
+                                            IdentifierScope: null
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 148
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 148
+                                      name: value
+                                      scope:
+                                        IdentifierScope: null
+                              line: 148
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 148
+                                  var:
+                                    Uminus:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 148
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 148
+                                          sign: false
+                                          size: -1
+                                          value: 1
+                          - ForStatement:
+                              cond:
+                                LessThan:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 152
+                                      name: k
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 152
+                                  right:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 152
+                                      name: WIDTH
+                                      scope:
+                                        IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 152
+                              post:
+                                BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 152
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 152
+                                          name: k
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 152
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 152
+                                      var:
+                                        Plus:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 152
+                                              name: k
+                                              scope:
+                                                IdentifierScope: null
+                                          line: 152
+                                          right:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 152
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                              pre:
+                                BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 152
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 152
+                                          name: k
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 152
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 152
+                                      var:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 152
+                                          sign: false
+                                          size: -1
+                                          value: 0
+                              statement:
+                                Block:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 152
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 153
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 153
+                                              name: l
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 153
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 153
+                                          var:
+                                            Mod:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              left:
+                                                Plus:
+                                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                  left:
+                                                    Plus:
+                                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                      left:
+                                                        Identifier:
+                                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                          line: 153
+                                                          name: k
+                                                          scope:
+                                                            IdentifierScope: null
+                                                      line: 153
+                                                      right:
+                                                        Identifier:
+                                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                          line: 153
+                                                          name: STATE_OFFSET
+                                                          scope:
+                                                            IdentifierScope: null
+                                                  line: 153
+                                                  right:
+                                                    IntConstN:
+                                                      base: 10
+                                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                      line: 153
+                                                      sign: false
+                                                      size: -1
+                                                      value: 1
+                                              line: 153
+                                              right:
+                                                Identifier:
+                                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                  line: 153
+                                                  name: WIDTH
+                                                  scope:
+                                                    IdentifierScope: null
+                                  - IfStatement:
+                                      cond:
+                                        Eq:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          left:
+                                            Pointer:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 154
+                                              ptr:
+                                                Identifier:
+                                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                  line: 154
+                                                  name: l
+                                                  scope:
+                                                    IdentifierScope: null
+                                              var:
+                                                Identifier:
+                                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                  line: 154
+                                                  name: lut_index
+                                                  scope:
+                                                    IdentifierScope: null
+                                          line: 154
+                                          right:
+                                            IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 154
+                                              sign: false
+                                              size: 1
+                                              value: 1
+                                      false_statement: null
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 154
+                                      true_statement:
+                                        Block:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 154
+                                          scope: ''
+                                          statements:
+                                          - IfStatement:
+                                              cond:
+                                                Eq:
+                                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                  left:
+                                                    Identifier:
+                                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                      line: 155
+                                                      name: value
+                                                      scope:
+                                                        IdentifierScope: null
+                                                  line: 155
+                                                  right:
+                                                    Uminus:
+                                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                      line: 155
+                                                      right:
+                                                        IntConstN:
+                                                          base: 10
+                                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                          line: 155
+                                                          sign: false
+                                                          size: -1
+                                                          value: 1
+                                              false_statement: null
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 155
+                                              true_statement:
+                                                BlockingSubstitution:
+                                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                  ldelay:
+                                                    DelayStatement: null
+                                                  left:
+                                                    Lvalue:
+                                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                      line: 155
+                                                      var:
+                                                        Identifier:
+                                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                          line: 155
+                                                          name: value
+                                                          scope:
+                                                            IdentifierScope: null
+                                                  line: 155
+                                                  rdelay:
+                                                    DelayStatement: null
+                                                  right:
+                                                    Rvalue:
+                                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                      line: 155
+                                                      var:
+                                                        Identifier:
+                                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                                          line: 155
+                                                          name: l
+                                                          scope:
+                                                            IdentifierScope: null
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 159
+                                  var:
+                                    Pointer:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 159
+                                      ptr:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 159
+                                          name: j
+                                          scope:
+                                            IdentifierScope: null
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 159
+                                          name: lut
+                                          scope:
+                                            IdentifierScope: null
+                              line: 159
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 159
+                                  var:
+                                    Partselect:
+                                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                                      line: 159
+                                      lsb:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 159
+                                          sign: false
+                                          size: -1
+                                          value: 0
+                                      msb:
+                                        Minus:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 159
+                                              name: LOG2_WIDTH
+                                              scope:
+                                                IdentifierScope: null
+                                          line: 159
+                                          right:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                                              line: 159
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                                          line: 159
+                                          name: value
+                                          scope:
+                                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 164
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 164
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 164
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 164
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 165
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 165
+                              name: state
+                              scope:
+                                IdentifierScope: null
+                      line: 165
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 165
+                          var:
+                            Pointer:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 165
+                              ptr:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 165
+                                  name: request
+                                  scope:
+                                    IdentifierScope: null
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                                  line: 165
+                                  name: lut
+                                  scope:
+                                    IdentifierScope: null
+          line: 122
+          name: prra_lut
+          params:
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 123
+              name: WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 123
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 123
+                      sign: false
+                      size: -1
+                      value: 4
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 124
+              name: LOG2_WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 124
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 124
+                      sign: false
+                      size: -1
+                      value: 2
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              line: 125
+              name: STATE_OFFSET
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 125
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 125
+                      sign: false
+                      size: -1
+                      value: 0
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 127
+                  name: request
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 127
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 127
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 127
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 127
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 127
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 127
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 127
+                  name: request
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 127
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 127
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 127
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 127
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 127
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/shmemif.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 128
+                  name: state
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 128
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 128
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 128
+                              name: LOG2_WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 128
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 128
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 128
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/shmemif.v
+                  line: 128
+                  name: state
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/shmemif.v
+                      line: 128
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          line: 128
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/shmemif.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 128
+                              name: LOG2_WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 128
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/shmemif.v
+                              line: 128
+                              sign: false
+                              size: -1
+                              value: 1
+      filename: ../../test/passes/transformations/testcases/shmemif.v
+      line: 3
+  filename: ../../test/passes/transformations/testcases/shmemif.v
+  line: 3
+

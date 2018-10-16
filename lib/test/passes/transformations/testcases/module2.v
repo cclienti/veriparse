@@ -11,7 +11,7 @@ module module2
    output strobe;
    reg [WIDTH-1:0] out;
    reg strobe;
-   reg [LO2-1:0] l;
+   reg [LOG2-1:0] l;
 
    integer j;
    reg [WIDTH-1:0] lut [WIDTH-1:0];

@@ -68,6 +68,11 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 		return 1;
 	}
 
+	if (ConstantFolding().run(node)) {
+		LOG_ERROR_N(node) << "Failed to fold constants";
+		return 1;
+	}
+
 	if (VariableFolding().run(node)) {
 		LOG_ERROR_N(node) << "Failed to fold variables";
 		return 1;
