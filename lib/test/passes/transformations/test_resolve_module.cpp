@@ -44,3 +44,4 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 TEST(PassesTransformation_ResolveModule, module1) {TEST_CORE;}
 TEST(PassesTransformation_ResolveModule, module2) {TEST_CORE;}
 TEST(PassesTransformation_ResolveModule, shmemif) {TEST_CORE;}
+TEST(PassesTransformation_ResolveModule, alu_dsp) {TEST_CORE;}
