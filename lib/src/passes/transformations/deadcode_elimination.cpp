@@ -1,10 +1,8 @@
 #include "./transformation_helpers.hpp"
 
-#include <veriparse/passes/analysis/taskcall.hpp>
-#include <veriparse/passes/analysis/systemcall.hpp>
-#include <veriparse/passes/analysis/functioncall.hpp>
-#include <veriparse/passes/analysis/instance.hpp>
 #include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/passes/analysis/task.hpp>
+#include <veriparse/passes/analysis/function.hpp>
 #include <veriparse/passes/analysis/lvalue.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -12,8 +10,11 @@
 #include <cstddef>
 #include <sstream>
 
+
 namespace
 {
+
+// Workaround
 template<class T>
 std::string print_set(const std::set<T> &set)
 {
@@ -32,13 +33,31 @@ std::string print_set(const std::set<T> &set)
 }
 }
 
-
 namespace Veriparse
 {
 namespace Passes
 {
 namespace Transformations
 {
+
+// boost::log::formatting_ostream& operator<<(boost::log::formatting_ostream& os,
+//                                            const DeadcodeElimination::DSet &set)
+// {
+// 	auto it = set.cbegin();
+// 	auto it_end = set.cend();
+// 	if (it == it_end) {
+// 		return os;
+// 	}
+// 	while (1) {
+// 		os << *it;
+// 		if(++it != it_end)
+// 			os << ", ";
+// 		else
+// 			break;
+// 	}
+// 	return os;
+// }
+
 
 int DeadcodeElimination::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
@@ -53,82 +72,109 @@ int DeadcodeElimination::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 	return 0;
 }
 
+
+int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifiers)
+{
+	int rc = 0;
+
+	if (!node) {
+		LOG_ERROR << "nullptr node";
+		return 1;
+	}
+
+	if (node->is_node_category(AST::NodeType::IODir)) {
+		// We do not want to remove IO so we add them
+		const auto &io = AST::cast_to<AST::IODir>(node);
+		identifiers.insert(io->get_name());
+	}
+	else if (node->is_node_type(AST::NodeType::Function)) {
+		// Look for local variables
+		auto locals = merge_set(to_set(Analysis::Function::get_iodir_names(node)),
+		                        to_set(Analysis::Function::get_variable_names(node)));
+
+		// Create a new identifiers and recurse
+		DSet new_identifiers;
+		AST::Node::ListPtr children = node->get_children();
+		for (AST::Node::Ptr child: *children) {
+			rc += analyze_identifiers(child, new_identifiers);
+		}
+
+		// Merge result without local variables
+		for (const auto &name: new_identifiers) {
+			if (locals.count(name) == 0) {
+				identifiers.insert(name);
+			}
+		}
+	}
+	else if (node->is_node_type(AST::NodeType::Task)) {
+		// Look for local variables
+		auto locals = merge_set(to_set(Analysis::Task::get_iodir_names(node)),
+		                        to_set(Analysis::Task::get_variable_names(node)));
+
+		// Create a new identifiers and recurse
+		DSet new_identifiers;
+		AST::Node::ListPtr children = node->get_children();
+		for (AST::Node::Ptr child: *children) {
+			rc += analyze_identifiers(child, new_identifiers);
+		}
+
+		// Merge result without local variables
+		for (const auto &name: new_identifiers) {
+			if (locals.count(name) == 0) {
+				identifiers.insert(name);
+			}
+		}
+	}
+	else if (node->is_node_type(AST::NodeType::Task)) {
+
+	}
+	else if (node->is_node_type(AST::NodeType::Lvalue)) {
+		const auto &lvalue = AST::cast_to<AST::Lvalue>(node);
+		for (const auto &name: Analysis::Lvalue::get_rvalue_names(lvalue)) {
+			identifiers.insert(name);
+		}
+	}
+	else if (node->is_node_type(AST::NodeType::Identifier)) {
+		const auto &id = AST::cast_to<AST::Identifier>(node);
+		identifiers.insert(id->get_name());
+	}
+	else if (node->is_node_type(AST::NodeType::Parameter)) {
+		const auto &param = AST::cast_to<AST::Parameter>(node);
+		identifiers.insert(param->get_name());
+	}
+	else if (node->is_node_type(AST::NodeType::Localparam)) {
+		const auto &lparam = AST::cast_to<AST::Localparam>(node);
+		identifiers.insert(lparam->get_name());
+	}
+	else {
+		AST::Node::ListPtr children = node->get_children();
+		for (AST::Node::Ptr child: *children) {
+			rc += analyze_identifiers(child, identifiers);
+		}
+	}
+
+	return rc;
+}
+
+
 DeadcodeElimination::DSet DeadcodeElimination::remove_deadcode_step(AST::Node::Ptr node,
                                                                     AST::Node::Ptr parent)
 {
 	AST::Lvalue::ListPtr lvalue_nodes = Analysis::Module::get_lvalue_nodes(node);
-	DSet rvalue_in_lvalue_set;
 	DSet lvalue_set;
 	for(AST::Lvalue::Ptr lvalue_node: *lvalue_nodes) {
-		std::vector<std::string> rvalue_names = Analysis::Lvalue::get_rvalue_names(lvalue_node);
-		rvalue_in_lvalue_set.insert(rvalue_names.begin(), rvalue_names.end());
 		std::vector<std::string> lvalue_names = Analysis::Lvalue::get_lvalue_names(lvalue_node);
 		lvalue_set.insert(lvalue_names.begin(), lvalue_names.end());
 	}
 
-	AST::Variable::ListPtr variable_nodes = Analysis::Module::get_variable_nodes(node);
-	for(AST::Variable::Ptr var_node: *variable_nodes) {
-		lvalue_set.insert(var_node->get_name());
-	}
-
-	DSet iodir_set = to_set(Analysis::Module::get_iodir_names(node));
-	DSet localparam_set = to_set(Analysis::Module::get_localparam_names(node));
-	DSet parameter_set = to_set(Analysis::Module::get_parameter_names(node));
-	DSet rvalue_set = to_set(Analysis::Module::get_rvalue_identifier_names(node));
-
-	DSet instance_arg_set;
-	AST::Instance::ListPtr instances = Analysis::Module::get_instance_nodes(node);
-	for(AST::Instance::Ptr instance: *instances) {
-		std::vector<std::string> vec = Analysis::Instance::get_argument_identifier_names(instance);
-		instance_arg_set.insert(vec.begin(), vec.end());
-	}
-
-	DSet systemcall_arg_set;
-	AST::SystemCall::ListPtr systemcalls = Analysis::Module::get_systemcall_nodes(node);
-	for(AST::SystemCall::Ptr systemcall: *systemcalls) {
-		std::vector<std::string> vec = Analysis::SystemCall::get_argument_identifier_names(systemcall);
-		systemcall_arg_set.insert(vec.begin(), vec.end());
-	}
-
-	DSet taskcall_arg_set;
-	AST::TaskCall::ListPtr taskcalls = Analysis::Module::get_taskcall_nodes(node);
-	for(AST::TaskCall::Ptr taskcall: *taskcalls) {
-		std::vector<std::string> vec = Analysis::TaskCall::get_argument_identifier_names(taskcall);
-		taskcall_arg_set.insert(vec.begin(), vec.end());
-	}
-
-	DSet functioncall_arg_set;
-	AST::FunctionCall::ListPtr functioncalls = Analysis::Module::get_functioncall_nodes(node);
-	for(AST::FunctionCall::Ptr functioncall: *functioncalls) {
-		std::vector<std::string> vec = Analysis::FunctionCall::get_argument_identifier_names(functioncall);
-		functioncall_arg_set.insert(vec.begin(), vec.end());
-	}
-
-	LOG_DEBUG_N(node) << "iodir_set: " << ::print_set(iodir_set);
-	LOG_DEBUG_N(node) << "localparam_set: " << ::print_set(localparam_set);
-	LOG_DEBUG_N(node) << "parameter_set: " << ::print_set(parameter_set);
-	LOG_DEBUG_N(node) << "rvalue_set: " << ::print_set(rvalue_set);
-	LOG_DEBUG_N(node) << "rvalue_in_lvalue_set: " << ::print_set(rvalue_in_lvalue_set);
-	LOG_DEBUG_N(node) << "instance_arg_set: " << ::print_set(instance_arg_set);
-	LOG_DEBUG_N(node) << "systemcall_arg_set: " << ::print_set(systemcall_arg_set);
-	LOG_DEBUG_N(node) << "taskcall_arg_set: " << ::print_set(taskcall_arg_set);
-	LOG_DEBUG_N(node) << "functioncall_arg_set: " << ::print_set(functioncall_arg_set);
-
+	DSet identifiers;
+	analyze_identifiers(node, identifiers);
+	LOG_DEBUG_N(node) << "identifiers set: " << print_set(identifiers);
 
 	DSet deadset;
 
 	for(const std::string &a: lvalue_set) {
-		std::size_t count = 0;
-		count += iodir_set.count(a);
-		count += localparam_set.count(a);
-		count += parameter_set.count(a);
-		count += rvalue_set.count(a);
-		count += rvalue_in_lvalue_set.count(a);
-		count += instance_arg_set.count(a);
-		count += systemcall_arg_set.count(a);
-		count += taskcall_arg_set.count(a);
-		count += functioncall_arg_set.count(a);
-		if(!count) {
+		if(!identifiers.count(a)) {
 			deadset.insert(a);
 		}
 	}
@@ -176,13 +222,13 @@ int DeadcodeElimination::remove_deadstmt(const DeadcodeElimination::DSet &deadse
 		std::set_intersection(deadset.begin(), deadset.end(), lvalue_set.begin(), lvalue_set.end(),
 		                      std::inserter(inter_set, inter_set.begin()));
 
-		LOG_DEBUG_N(node) << "lvalue_set={" << ::print_set(lvalue_set) << "} - "
-		                  << "inter_set={" << ::print_set(inter_set) << "}";
+		LOG_DEBUG_N(node) << "lvalue_set={" << print_set(lvalue_set) << "} - "
+		                  << "inter_set={" << print_set(inter_set) << "}";
 
 		// If the intersection is equal to the lvalue_set
 		if(inter_set == lvalue_set) {
 			// We can remove safely the stmt
-			LOG_INFO_N(node) << "removing " << ::print_set(lvalue_set) << " assignation";
+			LOG_INFO_N(node) << "removing " << print_set(lvalue_set) << " assignation";
 			parent->remove(node);
 			removedset.insert(lvalue_set.begin(), lvalue_set.end());
 		}

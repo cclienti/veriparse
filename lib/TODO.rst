@@ -19,9 +19,12 @@ Functional
 
 #. 2018-10-02: Deadcode Elimination: Do not remove declarations that are also IOs.
 
-#. 2018-10-02: Deadcode Elimination: Deadcode search only for lvalue/rvalue/instance/systemcall/taskcall/functioncall
+#. 2018-10-17: Deadcode Elimination: Deadcode search only for lvalue/rvalue/instance/systemcall/taskcall/functioncall
    but it does not look for identifier in blocks (if, while, etc ...). As a consequence, too much code is removed whereas it
    should not be. See resolve_module_dsp_alu testcase.
+
+#. 2018-10-18: Add more test to Deadcode Elimination to check global scope in function and tasks. Check also all type of
+   identifiers (in if, while, rvalue etc ...)
 
 #. 2018-10-07: Support for defparam keyword.
 

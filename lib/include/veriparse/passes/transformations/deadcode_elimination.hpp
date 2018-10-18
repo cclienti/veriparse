@@ -5,6 +5,7 @@
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <string>
 #include <set>
+#include <iostream>
 
 namespace Veriparse {
 namespace Passes {
@@ -12,9 +13,11 @@ namespace Transformations {
 
 class DeadcodeElimination: public TransformationBase
 {
-	typedef std::set<std::string> DSet;
+	using DSet = std::set<std::string>;
 
 	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+
+	int analyze_identifiers(AST::Node::Ptr node, DSet &identifiers);
 
 	DSet remove_deadcode_step(AST::Node::Ptr node, AST::Node::Ptr parent);
 
