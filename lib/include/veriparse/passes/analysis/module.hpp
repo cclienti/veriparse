@@ -146,16 +146,6 @@ public:
 	static AST::Lvalue::ListPtr get_lvalue_nodes(AST::Node::Ptr node);
 
 	/**
-	 * @brief Return all lvalues identifier nodes.
-	 */
-	static AST::Identifier::ListPtr get_lvalue_identifier_nodes(AST::Node::Ptr node);
-
-	/**
-	 * @brief Return all lvalues identifier names.
-	 */
-	static std::vector<std::string> get_lvalue_identifier_names(AST::Node::Ptr node);
-
-	/**
 	 * @brief Return all rvalues nodes.
 	 */
 	static AST::Rvalue::ListPtr get_rvalue_nodes(AST::Node::Ptr node);
