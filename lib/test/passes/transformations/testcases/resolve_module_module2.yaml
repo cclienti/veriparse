@@ -680,7 +680,13 @@ Source:
                   sign: false
               line: 0
               second:
-                Variable: null
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/module2.v
+                  line: 13
+                  name: strobe
+                  right:
+                    Rvalue: null
+                  sign: false
       filename: ../../test/passes/transformations/testcases/module2.v
       line: 1
   filename: ../../test/passes/transformations/testcases/module2.v
