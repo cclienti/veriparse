@@ -1,0 +1,51 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/deadcode4.v
+          items:
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode4.v
+              line: 3
+              name: out1
+              right:
+                Rvalue: null
+              sign: false
+          line: 1
+          name: deadcode4
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode4.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/deadcode4.v
+                  line: 1
+                  name: out0
+                  sign: false
+              line: 1
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/deadcode4.v
+                  line: 1
+                  name: out0
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode4.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/deadcode4.v
+                  line: 2
+                  name: out1
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+      filename: ../../test/passes/transformations/testcases/deadcode4.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/deadcode4.v
+  line: 1
+

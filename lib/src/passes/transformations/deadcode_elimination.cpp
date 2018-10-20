@@ -63,11 +63,12 @@ int DeadcodeElimination::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
 	while (remove_deadcode_step(node, parent).size() != 0);
 
+	DSet iodirs = to_set(Analysis::Module::get_iodir_names(node));
 	DSet identifiers;
 	if (collect_identifier(identifiers, node)) {
 		return 1;
 	}
-	while (remove_unused_decl(identifiers, node, parent) != 0);
+	while (remove_unused_decl(identifiers, iodirs, node, parent) != 0);
 
 	return 0;
 }
@@ -160,7 +161,7 @@ int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifi
 DeadcodeElimination::DSet DeadcodeElimination::remove_deadcode_step(AST::Node::Ptr node,
                                                                     AST::Node::Ptr parent)
 {
-	AST::Lvalue::ListPtr lvalue_nodes = Analysis::Module::get_lvalue_nodes(node);
+	const auto &lvalue_nodes = Analysis::Module::get_lvalue_nodes(node);
 	DSet lvalue_set;
 	for(AST::Lvalue::Ptr lvalue_node: *lvalue_nodes) {
 		std::vector<std::string> lvalue_names = Analysis::Lvalue::get_lvalue_names(lvalue_node);
@@ -409,6 +410,7 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 
 
 int DeadcodeElimination::remove_unused_decl(const DeadcodeElimination::DSet &identifiers,
+                                            const DeadcodeElimination::DSet &iodirs,
                                             const AST::Node::Ptr &node, AST::Node::Ptr parent)
 {
 	int rc = 0;
@@ -419,7 +421,8 @@ int DeadcodeElimination::remove_unused_decl(const DeadcodeElimination::DSet &ide
 
 	if (node->is_node_category(AST::NodeType::VariableBase)) {
 		const auto &varbase = AST::cast_to<AST::VariableBase>(node);
-		if (identifiers.count(varbase->get_name()) == 0) {
+		if (identifiers.count(varbase->get_name()) == 0 &&
+		    iodirs.count(varbase->get_name()) == 0) {
 			if (!parent) {
 				LOG_ERROR_N(node) << "the parent node is null";
 				return -1;
@@ -431,7 +434,7 @@ int DeadcodeElimination::remove_unused_decl(const DeadcodeElimination::DSet &ide
 	else {
 		const auto &children = node->get_children();
 		for (AST::Node::Ptr child: *children) {
-			rc += remove_unused_decl(identifiers, child, node);
+			rc += remove_unused_decl(identifiers, iodirs, child, node);
 		}
 	}
 

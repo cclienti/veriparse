@@ -1,0 +1,1254 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/deadcode3.v
+          items:
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 9
+              name: out_comb
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 9
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 9
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 10
+              name: out_comb2
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 10
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 1
+          - Function:
+              automatic: false
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 13
+              name: adder
+              ports:
+              - Ioport:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  first:
+                    Input:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 13
+                      name: in0
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 13
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            Minus:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 13
+                                  name: WIDTH
+                                  scope:
+                                    IdentifierScope: null
+                              line: 13
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 13
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  line: 13
+                  second:
+                    Variable: null
+              - Ioport:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  first:
+                    Input:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 13
+                      name: in1
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 13
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            Minus:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 13
+                                  name: WIDTH
+                                  scope:
+                                    IdentifierScope: null
+                              line: 13
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 13
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  line: 13
+                  second:
+                    Variable: null
+              retsign: false
+              rettype: NONE
+              retwidths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 13
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 13
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 13
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 13
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 1
+              statements:
+              - Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 14
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 15
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 15
+                              name: adder
+                              scope:
+                                IdentifierScope: null
+                      line: 15
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 15
+                          var:
+                            Plus:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 15
+                                  name: in0
+                                  scope:
+                                    IdentifierScope: null
+                              line: 15
+                              right:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 15
+                                  name: in1
+                                  scope:
+                                    IdentifierScope: null
+                  - IfStatement:
+                      cond:
+                        NotEql:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 16
+                              name: out_comb2
+                              scope:
+                                IdentifierScope: null
+                          line: 16
+                          right:
+                            IntConst:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 16
+                              value: ' ''hx'
+                      false_statement: null
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 16
+                      true_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 16
+                          scope: ''
+                          statements:
+                          - SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 17
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                      line: 17
+                                      value: '%0d + %0d = %0d'
+                                  - Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                      line: 17
+                                      name: in0
+                                      scope:
+                                        IdentifierScope: null
+                                  - Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                      line: 17
+                                      name: in1
+                                      scope:
+                                        IdentifierScope: null
+                                  - Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                      line: 17
+                                      name: adder
+                                      scope:
+                                        IdentifierScope: null
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 17
+                                  syscall: display
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 22
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 22
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 22
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 22
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 23
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 23
+                              name: out_comb
+                              scope:
+                                IdentifierScope: null
+                      line: 23
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 23
+                          var:
+                            FunctionCall:
+                              args:
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 23
+                                  name: in0
+                                  scope:
+                                    IdentifierScope: null
+                              - Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 23
+                                  name: in1
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 23
+                              name: adder
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 24
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 24
+                              name: out_comb2
+                              scope:
+                                IdentifierScope: null
+                      line: 24
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 24
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 24
+                              name: out_comb
+                              scope:
+                                IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 28
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 28
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 28
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 28
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 28
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 29
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 29
+                              name: out
+                              scope:
+                                IdentifierScope: null
+                      line: 29
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 29
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 29
+                              name: out_comb
+                              scope:
+                                IdentifierScope: null
+          line: 3
+          name: deadcode3
+          params:
+          - Parameter:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 4
+              name: WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 8
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 5
+                  name: clock
+                  sign: false
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: clock
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 6
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 6
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 6
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 6
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 6
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 6
+                  name: in1
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 7
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 7
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 7
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 7
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 7
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/deadcode3.v
+          items:
+          - Localparam:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 36
+              name: WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 36
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 36
+                      sign: false
+                      size: -1
+                      value: 8
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 38
+              name: clock
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 39
+              name: in0
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 39
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 39
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 39
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 39
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 39
+                          sign: false
+                          size: -1
+                          value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 40
+              name: in1
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 40
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 40
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 40
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 40
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 40
+                          sign: false
+                          size: -1
+                          value: 1
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              ldelay:
+                DelayStatement: null
+              line: 41
+              name: out
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 41
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 41
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      left:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 41
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 41
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 41
+                          sign: false
+                          size: -1
+                          value: 1
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 43
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 43
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 44
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 44
+                              name: clock
+                              scope:
+                                IdentifierScope: null
+                      line: 44
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 44
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 44
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 45
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 45
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      line: 45
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 45
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 45
+                              sign: false
+                              size: -1
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 46
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 46
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      line: 46
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 46
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 46
+                              sign: false
+                              size: -1
+                              value: 2
+                  - SingleStatement:
+                      delay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 47
+                              sign: false
+                              size: -1
+                              value: 100
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 47
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 47
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 47
+                          syscall: finish
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 50
+              senslist:
+                Senslist: null
+              statement:
+                BlockingSubstitution:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  ldelay:
+                    DelayStatement:
+                      delay:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 51
+                          sign: false
+                          size: -1
+                          value: 5
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 51
+                  left:
+                    Lvalue:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 51
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 51
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                  line: 51
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 51
+                      var:
+                        Unot:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 51
+                          right:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 51
+                              name: clock
+                              scope:
+                                IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              line: 53
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 53
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 53
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 53
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 53
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 54
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 54
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      line: 54
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 54
+                          var:
+                            Plus:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 54
+                                  name: in0
+                                  scope:
+                                    IdentifierScope: null
+                              line: 54
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 54
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 55
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              line: 55
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      line: 55
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 55
+                          var:
+                            Plus:
+                              filename: ../../test/passes/transformations/testcases/deadcode3.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 55
+                                  name: in1
+                                  scope:
+                                    IdentifierScope: null
+                              line: 55
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                                  line: 55
+                                  sign: false
+                                  size: -1
+                                  value: 1
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/deadcode3.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 62
+                  module: deadcode3
+                  name: decode2_inst
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 60
+                      name: WIDTH
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 60
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 64
+                      name: clock
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 64
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 65
+                      name: in0
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 65
+                          name: in0
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 66
+                      name: in1
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 66
+                          name: in1
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 67
+                      name: out
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode3.v
+                          line: 67
+                          name: out
+                          scope:
+                            IdentifierScope: null
+              line: 58
+              module: deadcode3
+              parameterlist:
+              - ParamArg:
+                  filename: ../../test/passes/transformations/testcases/deadcode3.v
+                  line: 60
+                  name: WIDTH
+                  value:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/deadcode3.v
+                      line: 60
+                      name: WIDTH
+                      scope:
+                        IdentifierScope: null
+          line: 35
+          name: deadcode3_tb
+      filename: ../../test/passes/transformations/testcases/deadcode3.v
+      line: 3
+  filename: ../../test/passes/transformations/testcases/deadcode3.v
+  line: 3
+
