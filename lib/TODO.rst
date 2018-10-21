@@ -24,6 +24,8 @@ Functional
 
 #. 2018-10-03: module_instance_normalization: check that named parameter and named ports exists in the module definition.
 
+#. 2018-10-21: Add a verilog pre-processor (compiler directives).
+
 #. 2018-04-17: Manage properly recursion in function and task as done in anotate_declaration.
 
 #. 2018-10-02: Check consistency of localparam/parameter rvalue width regarding width declared (ex: parameter [1:0] P = 3'd2)
