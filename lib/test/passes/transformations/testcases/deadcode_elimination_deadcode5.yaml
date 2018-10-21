@@ -1,0 +1,1891 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/deadcode5.v
+          items:
+          - Localparam:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 7
+              name: OP_MIN
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 7
+                  var:
+                    IntConstN:
+                      base: 2
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 7
+                      sign: false
+                      size: 2
+                      value: 0
+          - Localparam:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 8
+              name: OP_MAX
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 8
+                  var:
+                    IntConstN:
+                      base: 2
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 8
+                      sign: false
+                      size: 2
+                      value: 1
+          - Localparam:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 9
+              name: OP_ADD
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 9
+                  var:
+                    IntConstN:
+                      base: 2
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 9
+                      sign: false
+                      size: 2
+                      value: 2
+          - Localparam:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 10
+              name: OP_SUB
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 10
+                  var:
+                    IntConstN:
+                      base: 2
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 10
+                      sign: false
+                      size: 2
+                      value: 3
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 12
+              name: min_comb
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 12
+              name: max_comb
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 12
+              name: add_comb
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 12
+              name: sub_comb
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 13
+              name: out_comb
+              right:
+                Rvalue: null
+              sign: true
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 13
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 13
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 13
+                      sign: false
+                      size: -1
+                      value: 31
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 15
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        LessThan:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 16
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                          line: 16
+                          right:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 16
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      false_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 20
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 21
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 21
+                                      name: min_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 21
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 21
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 21
+                                      name: in1
+                                      scope:
+                                        IdentifierScope: null
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 22
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 22
+                                      name: max_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 22
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 22
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 22
+                                      name: in0
+                                      scope:
+                                        IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 16
+                      true_statement:
+                        Block:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 16
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 17
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 17
+                                      name: min_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 17
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 17
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 17
+                                      name: in0
+                                      scope:
+                                        IdentifierScope: null
+                          - BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 18
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 18
+                                      name: max_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 18
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 18
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 18
+                                      name: in1
+                                      scope:
+                                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 26
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 26
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 26
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 26
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 27
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 27
+                              name: add_comb
+                              scope:
+                                IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 27
+                          var:
+                            Plus:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 27
+                                  name: in0
+                                  scope:
+                                    IdentifierScope: null
+                              line: 27
+                              right:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 27
+                                  name: in1
+                                  scope:
+                                    IdentifierScope: null
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 28
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 28
+                              name: sub_comb
+                              scope:
+                                IdentifierScope: null
+                      line: 28
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 28
+                          var:
+                            Minus:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 28
+                                  name: in0
+                                  scope:
+                                    IdentifierScope: null
+                              line: 28
+                              right:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 28
+                                  name: in1
+                                  scope:
+                                    IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 31
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 31
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 31
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 31
+                  scope: ''
+                  statements:
+                  - CaseStatement:
+                      caselist:
+                      - Case:
+                          cond:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 33
+                              name: OP_MIN
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 33
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 33
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 33
+                                      name: out_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 33
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 33
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 33
+                                      name: min_comb
+                                      scope:
+                                        IdentifierScope: null
+                      - Case:
+                          cond:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 34
+                              name: OP_MAX
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 34
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 34
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 34
+                                      name: out_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 34
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 34
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 34
+                                      name: max_comb
+                                      scope:
+                                        IdentifierScope: null
+                      - Case:
+                          cond:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 35
+                              name: OP_ADD
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 35
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 35
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 35
+                                      name: out_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 35
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 35
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 35
+                                      name: add_comb
+                                      scope:
+                                        IdentifierScope: null
+                      - Case:
+                          cond:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 36
+                              name: OP_SUB
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 36
+                          statement:
+                            BlockingSubstitution:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 36
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 36
+                                      name: out_comb
+                                      scope:
+                                        IdentifierScope: null
+                              line: 36
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 36
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                      line: 36
+                                      name: sub_comb
+                                      scope:
+                                        IdentifierScope: null
+                      comp:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 32
+                          name: op
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 32
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 40
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 40
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 40
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 40
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 40
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 41
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 41
+                              value: 'in0: %0d, in1: %0d, out: %0d'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 41
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 41
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 41
+                              name: out_comb
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 41
+                          syscall: display
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 42
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 42
+                              name: out
+                              scope:
+                                IdentifierScope: null
+                      line: 42
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 42
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 42
+                              name: out_comb
+                              scope:
+                                IdentifierScope: null
+          line: 1
+          name: deadcode5
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 1
+                  name: clock
+                  sign: false
+              line: 1
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 1
+                  name: clock
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 2
+                  name: op
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: op
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 3
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 31
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 31
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 4
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 31
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: in1
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 31
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 5
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 31
+              line: 5
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 5
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 31
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/deadcode5.v
+          items:
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 48
+              name: clock
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 49
+              name: op
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 49
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 49
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 49
+                      sign: false
+                      size: -1
+                      value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 50
+              name: in0
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 50
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 50
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 50
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 51
+              name: in1
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 51
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 51
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 51
+                      sign: false
+                      size: -1
+                      value: 31
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              ldelay:
+                DelayStatement: null
+              line: 52
+              name: out
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 52
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 52
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 52
+                      sign: false
+                      size: -1
+                      value: 31
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 54
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 54
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 55
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 55
+                              name: clock
+                              scope:
+                                IdentifierScope: null
+                      line: 55
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 55
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 55
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 56
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 56
+                              name: op
+                              scope:
+                                IdentifierScope: null
+                      line: 56
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 56
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 56
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 57
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 57
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      line: 57
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 57
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 57
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 58
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 58
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      line: 58
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 58
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 58
+                              sign: false
+                              size: -1
+                              value: 0
+                  - EventStatement:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 60
+                      senslist:
+                        Senslist:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 60
+                          list:
+                          - Sens:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 60
+                              sig:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 60
+                                  name: clock
+                                  scope:
+                                    IdentifierScope: null
+                              type: POSEDGE
+                      statement: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 62
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 62
+                              name: op
+                              scope:
+                                IdentifierScope: null
+                      line: 62
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 62
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 62
+                              sign: false
+                              size: -1
+                              value: 0
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 63
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 63
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      line: 63
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 63
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 63
+                              sign: false
+                              size: -1
+                              value: 1
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 64
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 64
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      line: 64
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 64
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 64
+                              sign: false
+                              size: -1
+                              value: 0
+                  - EventStatement:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 65
+                      senslist:
+                        Senslist:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 65
+                          list:
+                          - Sens:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 65
+                              sig:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 65
+                                  name: clock
+                                  scope:
+                                    IdentifierScope: null
+                              type: POSEDGE
+                      statement: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 67
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 67
+                              name: op
+                              scope:
+                                IdentifierScope: null
+                      line: 67
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 67
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 67
+                              sign: false
+                              size: -1
+                              value: 1
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 68
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 68
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      line: 68
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 68
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 68
+                              sign: false
+                              size: -1
+                              value: 2
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 69
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 69
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      line: 69
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 69
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 69
+                              sign: false
+                              size: -1
+                              value: 3
+                  - EventStatement:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 70
+                      senslist:
+                        Senslist:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 70
+                          list:
+                          - Sens:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 70
+                              sig:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 70
+                                  name: clock
+                                  scope:
+                                    IdentifierScope: null
+                              type: POSEDGE
+                      statement: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 72
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 72
+                              name: op
+                              scope:
+                                IdentifierScope: null
+                      line: 72
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 72
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 72
+                              sign: false
+                              size: -1
+                              value: 2
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 73
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 73
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      line: 73
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 73
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 73
+                              sign: false
+                              size: -1
+                              value: 3
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 74
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 74
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      line: 74
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 74
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 74
+                              sign: false
+                              size: -1
+                              value: 5
+                  - EventStatement:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 75
+                      senslist:
+                        Senslist:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 75
+                          list:
+                          - Sens:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 75
+                              sig:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 75
+                                  name: clock
+                                  scope:
+                                    IdentifierScope: null
+                              type: POSEDGE
+                      statement: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 77
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 77
+                              name: op
+                              scope:
+                                IdentifierScope: null
+                      line: 77
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 77
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 77
+                              sign: false
+                              size: -1
+                              value: 3
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 78
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 78
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+                      line: 78
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 78
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 78
+                              sign: false
+                              size: -1
+                              value: 9
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 79
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 79
+                              name: in1
+                              scope:
+                                IdentifierScope: null
+                      line: 79
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 79
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 79
+                              sign: false
+                              size: -1
+                              value: 12
+                  - EventStatement:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 80
+                      senslist:
+                        Senslist:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 80
+                          list:
+                          - Sens:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 80
+                              sig:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 80
+                                  name: clock
+                                  scope:
+                                    IdentifierScope: null
+                              type: POSEDGE
+                      statement: null
+                  - EventStatement:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 82
+                      senslist:
+                        Senslist:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 82
+                          list:
+                          - Sens:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 82
+                              sig:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                                  line: 82
+                                  name: clock
+                                  scope:
+                                    IdentifierScope: null
+                              type: POSEDGE
+                      statement: null
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 83
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 83
+                          syscall: finish
+          - Always:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              line: 86
+              senslist:
+                Senslist: null
+              statement:
+                BlockingSubstitution:
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  ldelay:
+                    DelayStatement:
+                      delay:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 87
+                          sign: false
+                          size: -1
+                          value: 5
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 87
+                  left:
+                    Lvalue:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 87
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 87
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                  line: 87
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 87
+                      var:
+                        Unot:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 87
+                          right:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/deadcode5.v
+                              line: 87
+                              name: clock
+                              scope:
+                                IdentifierScope: null
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/deadcode5.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/deadcode5.v
+                  line: 89
+                  module: deadcode5
+                  name: deadcode5_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 91
+                      name: clock
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 91
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 92
+                      name: op
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 92
+                          name: op
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 93
+                      name: in0
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 93
+                          name: in0
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 94
+                      name: in1
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 94
+                          name: in1
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/deadcode5.v
+                      line: 95
+                      name: out
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/deadcode5.v
+                          line: 95
+                          name: out
+                          scope:
+                            IdentifierScope: null
+              line: 89
+              module: deadcode5
+          line: 47
+          name: deadcode5_tb
+      filename: ../../test/passes/transformations/testcases/deadcode5.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/deadcode5.v
+  line: 1
+

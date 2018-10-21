@@ -17,9 +17,6 @@ Mechanics
 Functional
 ----------
 
-#. 2018-10-18: Add more test to Deadcode Elimination to check global scope in function and tasks. Check also all type of
-   identifiers (in if, while, rvalue etc ...)
-
 #. 2018-10-07: Support for defparam keyword.
 
 #. 2018-10-07: Add instance inlining. Manage defparam and signal that reads information across multiple levels of
