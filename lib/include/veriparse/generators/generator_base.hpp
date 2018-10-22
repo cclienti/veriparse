@@ -283,6 +283,12 @@ namespace Veriparse {
 					case AST::NodeType::Sens:
 					return render_sens(AST::cast_to<AST::Sens>(node));
 					
+					case AST::NodeType::Defparamlist:
+					return render_defparamlist(AST::cast_to<AST::Defparamlist>(node));
+					
+					case AST::NodeType::Defparam:
+					return render_defparam(AST::cast_to<AST::Defparam>(node));
+					
 					case AST::NodeType::Assign:
 					return render_assign(AST::cast_to<AST::Assign>(node));
 					
@@ -1195,6 +1201,26 @@ namespace Veriparse {
 			 */
 			T render(const AST::Sens::Ptr node) const {
 				return render_sens(node);
+			}
+			
+			/**
+			 * Main rendering method for the Defparamlist node, we
+			 * dispatch directly to the right rendering method.
+			 *
+			 * @see GeneratorBase::render_defparamlist(const AST::Defparamlist::Ptr &node)
+			 */
+			T render(const AST::Defparamlist::Ptr node) const {
+				return render_defparamlist(node);
+			}
+			
+			/**
+			 * Main rendering method for the Defparam node, we
+			 * dispatch directly to the right rendering method.
+			 *
+			 * @see GeneratorBase::render_defparam(const AST::Defparam::Ptr &node)
+			 */
+			T render(const AST::Defparam::Ptr node) const {
+				return render_defparam(node);
 			}
 			
 			/**
@@ -2172,6 +2198,22 @@ namespace Veriparse {
 			 * overloaded in a derived class to your needs.
 			 */
 			virtual T render_sens(const AST::Sens::Ptr node) const {
+				return T();
+			}
+			
+			/**
+			 * Render the Defparamlist node. This method must be
+			 * overloaded in a derived class to your needs.
+			 */
+			virtual T render_defparamlist(const AST::Defparamlist::Ptr node) const {
+				return T();
+			}
+			
+			/**
+			 * Render the Defparam node. This method must be
+			 * overloaded in a derived class to your needs.
+			 */
+			virtual T render_defparam(const AST::Defparam::Ptr node) const {
 				return T();
 			}
 			

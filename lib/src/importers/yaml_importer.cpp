@@ -294,6 +294,12 @@ namespace Veriparse {
 				if (node["Sens"]) {
 					return convert_sens(node["Sens"]);
 				}
+				if (node["Defparamlist"]) {
+					return convert_defparamlist(node["Defparamlist"]);
+				}
+				if (node["Defparam"]) {
+					return convert_defparam(node["Defparam"]);
+				}
 				if (node["Assign"]) {
 					return convert_assign(node["Assign"]);
 				}
@@ -4584,6 +4590,101 @@ namespace Veriparse {
 
 			// Return the result
 			return AST::cast_to<AST::Sens>(result);
+		}
+		
+
+		AST::Node::Ptr YAMLImporter::convert_defparamlist(const YAML::Node node) const {
+			AST::Defparamlist::Ptr result;
+			if (node.IsMap()) {
+				if (node["filename"]) {
+					if (node["filename"].IsScalar()) {
+						if(!result) result = std::make_shared<AST::Defparamlist>();
+						result->set_filename(node["filename"].as<std::string>());
+					}
+				}
+				if (node["line"]) {
+					if (node["line"].IsScalar()) {
+						if(!result) result = std::make_shared<AST::Defparamlist>();
+						result->set_line(node["line"].as<int>());
+					}
+				}
+
+				// Manage Child list
+				if (node["list"]) {
+					const YAML::Node node_list = node["list"];
+					// Fill the list of children
+					AST::Defparam::ListPtr list_list (new AST::Defparam::List);
+					if (node_list.IsSequence()) {
+						// The YAML node is a sequence
+						for(YAML::const_iterator it=node_list.begin(); it !=  node_list.end(); ++it) {
+							AST::Node::Ptr child = convert(*it);
+							if (child) {
+								AST::Defparam::Ptr child_cast = AST::cast_to<AST::Defparam>(child);
+								list_list->push_back(child_cast);
+							}
+						}
+					}
+					else {
+						AST::Node::Ptr child = convert(node_list);
+						if (child) {
+							AST::Defparam::Ptr child_cast = AST::cast_to<AST::Defparam>(child);
+							list_list->push_back(child_cast);
+						}
+					}
+					// Set the list
+					if(!result) result = std::make_shared<AST::Defparamlist>();
+					result->set_list(list_list);
+				}
+			}
+
+			// Return the result
+			return AST::cast_to<AST::Defparamlist>(result);
+		}
+		
+
+		AST::Node::Ptr YAMLImporter::convert_defparam(const YAML::Node node) const {
+			AST::Defparam::Ptr result;
+			if (node.IsMap()) {
+				if (node["filename"]) {
+					if (node["filename"].IsScalar()) {
+						if(!result) result = std::make_shared<AST::Defparam>();
+						result->set_filename(node["filename"].as<std::string>());
+					}
+				}
+				if (node["line"]) {
+					if (node["line"].IsScalar()) {
+						if(!result) result = std::make_shared<AST::Defparam>();
+						result->set_line(node["line"].as<int>());
+					}
+				}
+
+				// Manage Child identifier
+				if (node["identifier"]) {
+					const YAML::Node node_identifier = node["identifier"];
+					// Set the child
+					AST::Node::Ptr child = convert(node_identifier);
+					if (child) {
+						AST::Identifier::Ptr child_cast = AST::cast_to<AST::Identifier>(child);
+						if(!result) result = std::make_shared<AST::Defparam>();
+						result->set_identifier(child_cast);
+					}
+				}
+
+				// Manage Child right
+				if (node["right"]) {
+					const YAML::Node node_right = node["right"];
+					// Set the child
+					AST::Node::Ptr child = convert(node_right);
+					if (child) {
+						AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
+						if(!result) result = std::make_shared<AST::Defparam>();
+						result->set_right(child_cast);
+					}
+				}
+			}
+
+			// Return the result
+			return AST::cast_to<AST::Defparam>(result);
 		}
 		
 

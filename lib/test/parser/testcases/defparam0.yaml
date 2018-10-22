@@ -1,0 +1,431 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/defparam0.v
+          items:
+          - Wire:
+              filename: ../../test/parser/testcases/defparam0.v
+              ldelay:
+                DelayStatement: null
+              line: 3
+              name: clock
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../../test/parser/testcases/defparam0.v
+              ldelay:
+                DelayStatement: null
+              line: 4
+              name: in0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 31
+          - Wire:
+              filename: ../../test/parser/testcases/defparam0.v
+              ldelay:
+                DelayStatement: null
+              line: 5
+              name: out
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 5
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 31
+          - Defparamlist:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 7
+              list:
+              - Defparam:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  identifier:
+                    Identifier:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 7
+                      name: WIDTH
+                      scope:
+                        IdentifierScope:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          labellist:
+                          - IdentifierScopeLabel:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 7
+                              loop: null
+                              name: myregister_inst
+                          line: 7
+                  line: 7
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 7
+                      var:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 32
+          - Instancelist:
+              filename: ../../test/parser/testcases/defparam0.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 9
+                  module: myregister
+                  name: myregister_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 9
+                      name: clock
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 9
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 10
+                      name: in0
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 10
+                          name: in0
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 11
+                      name: out
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 11
+                          name: out
+                          scope:
+                            IdentifierScope: null
+              line: 9
+              module: myregister
+          line: 1
+          name: defparm0
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/defparam0.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 20
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 20
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 20
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 20
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 20
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 21
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 21
+                              name: out
+                              scope:
+                                IdentifierScope: null
+                      line: 21
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 21
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 21
+                              name: in0
+                              scope:
+                                IdentifierScope: null
+          line: 14
+          name: myregister
+          params:
+          - Parameter:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 15
+              name: WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 15
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 15
+                      sign: false
+                      size: -1
+                      value: 2
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/defparam0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 16
+                  name: clock
+                  sign: false
+              line: 16
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 16
+                  name: clock
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/defparam0.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 17
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 17
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 17
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 17
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 17
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 17
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 17
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 17
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 17
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 17
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 17
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 17
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 17
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: ../../test/parser/testcases/defparam0.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 18
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 18
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 18
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 18
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 18
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 18
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 18
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 18
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 18
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 18
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 18
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 18
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 18
+                              sign: false
+                              size: -1
+                              value: 1
+      filename: ../../test/parser/testcases/defparam0.v
+      line: 1
+  filename: ../../test/parser/testcases/defparam0.v
+  line: 1
+

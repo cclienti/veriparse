@@ -94,6 +94,8 @@ namespace Veriparse {
 			virtual std::string render_always(const AST::Always::Ptr node) const;
 			virtual std::string render_senslist(const AST::Senslist::Ptr node) const;
 			virtual std::string render_sens(const AST::Sens::Ptr node) const;
+			virtual std::string render_defparamlist(const AST::Defparamlist::Ptr node) const;
+			virtual std::string render_defparam(const AST::Defparam::Ptr node) const;
 			virtual std::string render_assign(const AST::Assign::Ptr node) const;
 			virtual std::string render_blockingsubstitution(const AST::BlockingSubstitution::Ptr node) const;
 			virtual std::string render_nonblockingsubstitution(const AST::NonblockingSubstitution::Ptr node) const;

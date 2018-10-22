@@ -127,6 +127,7 @@ namespace Veriparse {
 %token                  TK_SUPPLY0      "'supply0'"
 %token                  TK_SUPPLY1      "'supply1'"
 %token                  TK_AUTOMATIC    "'automatic'"
+%token                  TK_DEFPARAM     "'defparam'"
 %token                  TK_ASSIGN       "'assign'"
 %token                  TK_ALWAYS       "'always'"
 %token                  TK_SENS_OR      "'or'"
@@ -272,6 +273,9 @@ namespace Veriparse {
 %type   <AST::Node::Ptr>                     initial_statement
 %type   <AST::Parameter::ListPtr>            params_block params param_assignment_list parameter_decl
 %type   <AST::Parameter::Ptr>                param_assignment param_type param_start
+%type   <AST::Defparamlist::Ptr>             defparam
+%type   <AST::Defparam::ListPtr>             defparamlist
+%type   <AST::Defparam::Ptr>                 defparam_assignment
 %type   <AST::Localparam::ListPtr>           localparam_assignment_list localparam_decl
 %type   <AST::Localparam::Ptr>               localparam_assignment localparam_type
 %type   <AST::Width::ListPtr>                widths
@@ -399,12 +403,12 @@ definitions:    definition
 
 definition:     moduledef
                 {
-	                $$ = AST::to_node($1);
+                   $$ = AST::to_node($1);
                 }
 
         |       pragma
                 {
-	                $$ = AST::to_node($1);
+                   $$ = AST::to_node($1);
                 }
         ;
 
@@ -797,6 +801,12 @@ standard_item:  ioports_decl
         |       genvar_decl
                 {
                     $$ = AST::cast_list_to<AST::Node>($1);
+                }
+
+        |       defparam
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
                 }
 
         |       instance
@@ -1249,6 +1259,36 @@ localparam_assignment:
         ;
 
 
+defparam:       TK_DEFPARAM defparamlist TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Defparamlist>(scanner.get_filename(), @1.begin.line);
+                    $$->set_list($2);
+                }
+        ;
+
+defparamlist:   defparamlist TK_COMMA defparam_assignment
+                {
+                    $$ = $1;
+                    $1->push_back($3);
+                }
+
+        |       defparam_assignment
+                {
+                    $$ = std::make_shared<AST::Defparam::List>();
+                    $$->push_back($1);
+                }
+        ;
+
+defparam_assignment:
+                identifier TK_EQUALS rvalue
+                {
+                    $$ = std::make_shared<AST::Defparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_identifier($1);
+                    $$->set_right($3);
+                }
+        ;
+
+
 assignment:     TK_ASSIGN lvalue TK_EQUALS rvalue TK_SEMICOLON
                 {
                     AST::Assign::Ptr assign = std::make_shared<AST::Assign>(scanner.get_filename(), @1.begin.line);
@@ -1289,13 +1329,13 @@ assignment:     TK_ASSIGN lvalue TK_EQUALS rvalue TK_SEMICOLON
 
 lpartselect:    pointer TK_LBRACKET expression TK_COLON expression TK_RBRACKET
                 {
-	                 $$ = AST::to_node(std::make_shared<AST::Partselect>($3, $5, $1,
-	                                                                     scanner.get_filename(), @1.begin.line));
+                    $$ = AST::to_node(std::make_shared<AST::Partselect>($3, $5, $1,
+                                                                        scanner.get_filename(), @1.begin.line));
                 }
 
         |       pointer TK_LBRACKET expression TK_PLUSCOLON expression TK_RBRACKET
                 {
-	                 $$ = AST::to_node(std::make_shared<AST::PartselectPlusIndexed>($3, $5, $1,
+                    $$ = AST::to_node(std::make_shared<AST::PartselectPlusIndexed>($3, $5, $1,
                                                                                    scanner.get_filename(),
                                                                                    @1.begin.line));
                 }
@@ -1311,7 +1351,7 @@ lpartselect:    pointer TK_LBRACKET expression TK_COLON expression TK_RBRACKET
                 {
                     AST::Node::Ptr id = AST::to_node($1);
                     $$ = AST::to_node(std::make_shared<AST::Partselect>($3, $5, id,
-	                                                                     scanner.get_filename(),
+                                                                        scanner.get_filename(),
                                                                         @1.begin.line));
                 }
 
@@ -1680,7 +1720,7 @@ partselect:     partselect TK_LBRACKET expression TK_COLON expression TK_RBRACKE
                                                                         scanner.get_filename(), @1.begin.line));
                 }
 
-		  |       partselect TK_LBRACKET expression TK_PLUSCOLON expression TK_RBRACKET
+        |       partselect TK_LBRACKET expression TK_PLUSCOLON expression TK_RBRACKET
                 {
                     $$ = AST::to_node(std::make_shared<AST::PartselectPlusIndexed>($3, $5, $1,
                                                                                    scanner.get_filename(),
@@ -1694,7 +1734,7 @@ partselect:     partselect TK_LBRACKET expression TK_COLON expression TK_RBRACKE
                                                                                     @1.begin.line));
                 }
 
-		  |       pointer TK_LBRACKET expression TK_COLON expression TK_RBRACKET
+        |       pointer TK_LBRACKET expression TK_COLON expression TK_RBRACKET
                 {
                     $$ = AST::to_node(std::make_shared<AST::Partselect>($3, $5, $1,
                                                                         scanner.get_filename(), @1.begin.line));
@@ -1777,12 +1817,12 @@ const_expression:
 
 floatnumber:    TK_FLOATNUMBER
                 {
-	                double d;
-	                char *end;
-	                std::string dblstr = Misc::StringUtils::remove_underscore($1);
-	                d = strtod(dblstr.c_str(), &end);
-	                if (*end != '\0') error(@1, "malformed real constant");
-	                $$ = std::make_shared<AST::FloatConst>(d, scanner.get_filename(), @1.begin.line);
+                   double d;
+                   char *end;
+                   std::string dblstr = Misc::StringUtils::remove_underscore($1);
+                   d = strtod(dblstr.c_str(), &end);
+                   if (*end != '\0') error(@1, "malformed real constant");
+                   $$ = std::make_shared<AST::FloatConst>(d, scanner.get_filename(), @1.begin.line);
                 }
         ;
 
@@ -2268,14 +2308,14 @@ named_parallelblock:
         ;
 
 repeat_statement:
-					 TK_REPEAT TK_LPARENTHESIS expression TK_RPARENTHESIS basic_statement
+                TK_REPEAT TK_LPARENTHESIS expression TK_RPARENTHESIS basic_statement
                 {
-	                $$ = std::make_shared<AST::RepeatStatement>(scanner.get_filename(), @1.begin.line);
-	                $$->set_times($3);
-	                $$->set_statement($5);
+                   $$ = std::make_shared<AST::RepeatStatement>(scanner.get_filename(), @1.begin.line);
+                   $$->set_times($3);
+                   $$->set_statement($5);
                 }
 
-		  ;
+        ;
 
 if_statement:   TK_IF TK_LPARENTHESIS cond TK_RPARENTHESIS true_statement TK_ELSE false_statement
                 {
@@ -2742,7 +2782,7 @@ param_arg:      TK_DOT TK_IDENTIFIER TK_LPARENTHESIS expression TK_RPARENTHESIS
                     $$->set_name($2);
                 }
 
-		  |		 TK_DOT TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+        |       TK_DOT TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::ParamArg>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);

@@ -89,6 +89,8 @@ namespace Veriparse {
 			case NodeType::Always: return "Always";
 			case NodeType::Senslist: return "Senslist";
 			case NodeType::Sens: return "Sens";
+			case NodeType::Defparamlist: return "Defparamlist";
+			case NodeType::Defparam: return "Defparam";
 			case NodeType::Assign: return "Assign";
 			case NodeType::BlockingSubstitution: return "BlockingSubstitution";
 			case NodeType::NonblockingSubstitution: return "NonblockingSubstitution";

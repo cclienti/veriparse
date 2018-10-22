@@ -2138,6 +2138,54 @@ TEST(YAMLImporter, Sens) {
 
 	
 
+TEST(YAMLImporter, Defparamlist) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLImporter.Defparamlist.log");
+	Logger::add_stdout_sink();
+	std::string str (
+		"Defparamlist:\n"
+		"  filename: defparamlist.v\n"
+		"  line: 12\n"
+		"  list:\n"
+	);
+
+	AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+	YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+	ASSERT_TRUE(yaml["Defparamlist"]);
+	ASSERT_TRUE(yaml["Defparamlist"]["filename"].as<std::string>() == "defparamlist.v");
+	ASSERT_TRUE(yaml["Defparamlist"]["line"].as<int>() == 12);
+	ASSERT_TRUE(yaml["Defparamlist"]["list"]);
+}
+
+
+	
+
+TEST(YAMLImporter, Defparam) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLImporter.Defparam.log");
+	Logger::add_stdout_sink();
+	std::string str (
+		"Defparam:\n"
+		"  filename: defparam.v\n"
+		"  line: 8\n"
+		"  identifier:\n"
+		"  right:\n"
+	);
+
+	AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+	YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+	ASSERT_TRUE(yaml["Defparam"]);
+	ASSERT_TRUE(yaml["Defparam"]["filename"].as<std::string>() == "defparam.v");
+	ASSERT_TRUE(yaml["Defparam"]["line"].as<int>() == 8);
+	ASSERT_TRUE(yaml["Defparam"]["identifier"]);
+	ASSERT_TRUE(yaml["Defparam"]["right"]);
+}
+
+
+	
+
 TEST(YAMLImporter, Assign) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLImporter.Assign.log");

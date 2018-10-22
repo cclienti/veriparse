@@ -46,6 +46,10 @@ TEST(VerilogParserTest, module3)        {TEST_CORE;}
 TEST(VerilogParserTest, localparam0)    {TEST_CORE;}
 TEST(VerilogParserTest, parameter0)     {TEST_CORE;}
 TEST(VerilogParserTest, parameter1)     {TEST_CORE;}
+TEST(VerilogParserTest, defparam0)      {TEST_CORE;}
+TEST(VerilogParserTest, defparam1)      {TEST_CORE;}
+TEST(VerilogParserTest, defparam2)      {TEST_CORE;}
+TEST(VerilogParserTest, defparam3)      {TEST_CORE;}
 TEST(VerilogParserTest, translate_off0) {TEST_CORE;}
 TEST(VerilogParserTest, translate_off1) {TEST_CORE;}
 TEST(VerilogParserTest, pragma0)        {TEST_CORE;}

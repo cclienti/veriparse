@@ -88,6 +88,8 @@ namespace Veriparse {
 			case NodeType::Always: os << static_cast<const AST::Always &>(p); break;
 			case NodeType::Senslist: os << static_cast<const AST::Senslist &>(p); break;
 			case NodeType::Sens: os << static_cast<const AST::Sens &>(p); break;
+			case NodeType::Defparamlist: os << static_cast<const AST::Defparamlist &>(p); break;
+			case NodeType::Defparam: os << static_cast<const AST::Defparam &>(p); break;
 			case NodeType::Assign: os << static_cast<const AST::Assign &>(p); break;
 			case NodeType::BlockingSubstitution: os << static_cast<const AST::BlockingSubstitution &>(p); break;
 			case NodeType::NonblockingSubstitution: os << static_cast<const AST::NonblockingSubstitution &>(p); break;

@@ -88,6 +88,8 @@ namespace Veriparse {
 			Always,
 			Senslist,
 			Sens,
+			Defparamlist,
+			Defparam,
 			Assign,
 			BlockingSubstitution,
 			NonblockingSubstitution,

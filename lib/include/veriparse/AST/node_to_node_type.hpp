@@ -93,6 +93,8 @@ namespace Veriparse {
 		template<> constexpr NodeType get_node_type<Always>() {return NodeType::Always;}
 		template<> constexpr NodeType get_node_type<Senslist>() {return NodeType::Senslist;}
 		template<> constexpr NodeType get_node_type<Sens>() {return NodeType::Sens;}
+		template<> constexpr NodeType get_node_type<Defparamlist>() {return NodeType::Defparamlist;}
+		template<> constexpr NodeType get_node_type<Defparam>() {return NodeType::Defparam;}
 		template<> constexpr NodeType get_node_type<Assign>() {return NodeType::Assign;}
 		template<> constexpr NodeType get_node_type<BlockingSubstitution>() {return NodeType::BlockingSubstitution;}
 		template<> constexpr NodeType get_node_type<NonblockingSubstitution>() {return NodeType::NonblockingSubstitution;}

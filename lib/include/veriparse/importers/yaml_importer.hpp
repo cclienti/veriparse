@@ -102,6 +102,8 @@ namespace Veriparse {
 			AST::Node::Ptr convert_always(const YAML::Node node) const;
 			AST::Node::Ptr convert_senslist(const YAML::Node node) const;
 			AST::Node::Ptr convert_sens(const YAML::Node node) const;
+			AST::Node::Ptr convert_defparamlist(const YAML::Node node) const;
+			AST::Node::Ptr convert_defparam(const YAML::Node node) const;
 			AST::Node::Ptr convert_assign(const YAML::Node node) const;
 			AST::Node::Ptr convert_blockingsubstitution(const YAML::Node node) const;
 			AST::Node::Ptr convert_nonblockingsubstitution(const YAML::Node node) const;

@@ -1914,6 +1914,51 @@ namespace Veriparse {
 
   
 
+	 	YAML::Node YAMLGenerator::render_defparamlist(const AST::Defparamlist::Ptr node) const {
+			YAML::Node node_defparamlist;
+			YAML::Node content;
+
+			if (node) {
+				if (node->get_node_type() != AST::NodeType::Defparamlist) return render(AST::cast_to<AST::Node>(node));
+
+				content["filename"] = node->get_filename();
+				content["line"] = node->get_line();
+    
+				if (node->get_list()) {
+					content["list"] = YAML::Load("[]");
+					for(const AST::Defparam::Ptr &n: *node->get_list()) {
+						content["list"].push_back(render(n));
+					}
+				}
+			}
+
+			node_defparamlist["Defparamlist"] = content;
+			return node_defparamlist;
+		}
+
+  
+
+	 	YAML::Node YAMLGenerator::render_defparam(const AST::Defparam::Ptr node) const {
+			YAML::Node node_defparam;
+			YAML::Node content;
+
+			if (node) {
+				if (node->get_node_type() != AST::NodeType::Defparam) return render(AST::cast_to<AST::Node>(node));
+
+				content["filename"] = node->get_filename();
+				content["line"] = node->get_line();
+    
+				content["identifier"] = render(node->get_identifier());
+    
+				content["right"] = render(node->get_right());
+			}
+
+			node_defparam["Defparam"] = content;
+			return node_defparam;
+		}
+
+  
+
 	 	YAML::Node YAMLGenerator::render_assign(const AST::Assign::Ptr node) const {
 			YAML::Node node_assign;
 			YAML::Node content;

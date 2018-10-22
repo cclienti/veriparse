@@ -1597,6 +1597,42 @@ TEST(YAMLGenerator, Sens) {
 	ASSERT_TRUE(yaml["Sens"]["type"].as<AST::Sens::TypeEnum>() == AST::Sens::TypeEnum::NONE);
 }
 
+TEST(YAMLGenerator, Defparamlist) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.Defparamlist.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Defparam::ListPtr c_list(new AST::Defparam::List);
+
+	AST::Defparamlist::Ptr m_defparamlist(new AST::Defparamlist
+		(c_list, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_defparamlist);
+
+	ASSERT_TRUE(yaml["Defparamlist"]);
+	ASSERT_TRUE(yaml["Defparamlist"]["list"]);
+}
+
+TEST(YAMLGenerator, Defparam) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.Defparam.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Identifier::Ptr c_identifier(new AST::Identifier);
+	AST::Rvalue::Ptr c_right(new AST::Rvalue);
+
+	AST::Defparam::Ptr m_defparam(new AST::Defparam
+		(c_identifier, c_right, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_defparam);
+
+	ASSERT_TRUE(yaml["Defparam"]);
+	ASSERT_TRUE(yaml["Defparam"]["identifier"]);
+	ASSERT_TRUE(yaml["Defparam"]["right"]);
+}
+
 TEST(YAMLGenerator, Assign) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLGenerator.Assign.log");

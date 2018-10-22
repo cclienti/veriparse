@@ -70,6 +70,7 @@ using token = Veriparse::Parser::VerilogParser::token;
 "supply1"     {return token::TK_SUPPLY1;}
 "automatic"   {return token::TK_AUTOMATIC;}
 "assign"      {return token::TK_ASSIGN;}
+"defparam"    {return token::TK_DEFPARAM;}
 "always"      {return token::TK_ALWAYS;}
 "or"          {return token::TK_SENS_OR;}
 "posedge"     {return token::TK_POSEDGE;}

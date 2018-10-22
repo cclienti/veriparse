@@ -263,6 +263,17 @@ Sens:
   children:
     sig: Node
 
+Defparamlist:
+  properties:
+  children:
+    list: list(Defparam)
+
+Defparam:
+  properties:
+  children:
+    identifier: Identifier
+    right: Rvalue # an expression
+
 Assign:
   properties:
   children:

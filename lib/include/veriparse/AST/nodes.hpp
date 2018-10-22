@@ -83,6 +83,8 @@
 #include <veriparse/AST/always.hpp>
 #include <veriparse/AST/senslist.hpp>
 #include <veriparse/AST/sens.hpp>
+#include <veriparse/AST/defparamlist.hpp>
+#include <veriparse/AST/defparam.hpp>
 #include <veriparse/AST/assign.hpp>
 #include <veriparse/AST/blockingsubstitution.hpp>
 #include <veriparse/AST/nonblockingsubstitution.hpp>

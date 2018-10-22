@@ -17,7 +17,7 @@ Mechanics
 Functional
 ----------
 
-#. 2018-10-07: Support for defparam keyword.
+#. 2018-10-07: Support for defparam keyword in verilog generator
 
 #. 2018-10-07: Add instance inlining. Manage defparam and signal that reads information across multiple levels of
    instanciation. Do not forget to add a replace_port_affectation before inlining.

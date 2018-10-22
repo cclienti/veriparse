@@ -3569,6 +3569,88 @@ namespace Veriparse {
 		
 		
 
+		std::string DotGenerator::render_defparamlist(const AST::Defparamlist::Ptr node) const {
+			std::stringstream ss;
+
+			if (node) {
+				if (node->get_node_type() != AST::NodeType::Defparamlist) return render(AST::cast_to<AST::Node>(node));
+
+				uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+				ss << "\tn" << nodeID
+				   << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+				   << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+				   << "<FONT COLOR=\"white\">Defparamlist</FONT></TD></TR>\n"
+				   << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+				ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+				   << "<FONT COLOR=\"wheat\">list</FONT></TD></TR>\n";
+
+				ss << "\t\t</TABLE>>];" << std::endl;
+				if (node->get_list()) {
+					for(const AST::Defparam::Ptr &n: *node->get_list()) {
+						if (n) {
+							ss << render(n);
+						}
+					}
+				}
+				uint64_t childID;
+				if (node->get_list()) {
+					int i=0;
+					for(const AST::Defparam::Ptr &n: *node->get_list()) {
+						childID = reinterpret_cast<uint64_t>(n.get());
+						if (childID) {
+							ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++ <<"\"];" << std::endl;
+						}
+					}
+				}
+			}
+
+			return ss.str();
+		}
+		
+		
+
+		std::string DotGenerator::render_defparam(const AST::Defparam::Ptr node) const {
+			std::stringstream ss;
+
+			if (node) {
+				if (node->get_node_type() != AST::NodeType::Defparam) return render(AST::cast_to<AST::Node>(node));
+
+				uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+				ss << "\tn" << nodeID
+				   << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+				   << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+				   << "<FONT COLOR=\"white\">Defparam</FONT></TD></TR>\n"
+				   << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+				ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+				   << "<FONT COLOR=\"wheat\">identifier</FONT></TD></TR>\n";
+				ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+				   << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+				ss << "\t\t</TABLE>>];" << std::endl;
+				if (node->get_identifier().get()) {
+					ss << render(node->get_identifier());
+				}
+				if (node->get_right().get()) {
+					ss << render(node->get_right());
+				}
+				uint64_t childID;
+				childID = reinterpret_cast<uint64_t>(node->get_identifier().get());
+				if (childID) {
+					ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+				}
+				childID = reinterpret_cast<uint64_t>(node->get_right().get());
+				if (childID) {
+					ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+				}
+			}
+
+			return ss.str();
+		}
+		
+		
+
 		std::string DotGenerator::render_assign(const AST::Assign::Ptr node) const {
 			std::stringstream ss;
 
