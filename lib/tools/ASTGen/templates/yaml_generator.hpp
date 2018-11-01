@@ -6,17 +6,17 @@
 
 
 namespace Veriparse {
-	namespace Generators {
+namespace Generators {
 
-		class YAMLGenerator : public GeneratorBase<YAML::Node> {
-			virtual YAML::Node render_node(const AST::Node::Ptr node) const;
+class YAMLGenerator : public GeneratorBase<YAML::Node> {
+	virtual YAML::Node render_node(const AST::Node::Ptr node) const;
 
-			{%- for ntype in nodes_dict.keys() %}
-			virtual YAML::Node render_{{ ntype.lower() }}(const AST::{{ ntype }}::Ptr node) const;
-			{%- endfor %}
-		};
+	{%- for ntype in nodes_dict.keys() %}
+	virtual YAML::Node render_{{ ntype.lower() }}(const AST::{{ ntype }}::Ptr node) const;
+	{%- endfor %}
+};
 
-	}
+}
 }
 
 

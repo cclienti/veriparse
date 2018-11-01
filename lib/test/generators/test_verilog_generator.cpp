@@ -62,6 +62,10 @@ TEST(VerilogGeneratorTest, net3)           {TEST_CORE;}
 TEST(VerilogGeneratorTest, var0)           {TEST_CORE;}
 TEST(VerilogGeneratorTest, var1)           {TEST_CORE;}
 TEST(VerilogGeneratorTest, var2)           {TEST_CORE;}
+TEST(VerilogGeneratorTest, defparam0)      {TEST_CORE;}
+TEST(VerilogGeneratorTest, defparam1)      {TEST_CORE;}
+TEST(VerilogGeneratorTest, defparam2)      {TEST_CORE;}
+TEST(VerilogGeneratorTest, defparam3)      {TEST_CORE;}
 TEST(VerilogGeneratorTest, expression0)    {TEST_CORE;}
 TEST(VerilogGeneratorTest, expression1)    {TEST_CORE;}
 TEST(VerilogGeneratorTest, expression2)    {TEST_CORE;}

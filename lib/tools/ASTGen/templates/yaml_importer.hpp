@@ -9,24 +9,24 @@
 
 
 namespace Veriparse {
-	namespace Importers {
+namespace Importers {
 
-		class YAMLImporter {
-		public:
-			AST::Node::Ptr import(const char *filename) const;
-			AST::Node::Ptr import(const std::string &str) const;
-			AST::Node::Ptr import(std::istream &iss) const;
+class YAMLImporter {
+public:
+	AST::Node::Ptr import(const char *filename) const;
+	AST::Node::Ptr import(const std::string &str) const;
+	AST::Node::Ptr import(std::istream &iss) const;
 
-		private:
-			AST::Node::Ptr convert(const YAML::Node node) const;
+private:
+	AST::Node::Ptr convert(const YAML::Node node) const;
 
-			AST::Node::Ptr convert_node(const YAML::Node node) const;
-			{%- for ntype in nodes_dict.keys() %}
-			AST::Node::Ptr convert_{{ ntype.lower() }}(const YAML::Node node) const;
-			{%- endfor %}
-		};
+	AST::Node::Ptr convert_node(const YAML::Node node) const;
+	{%- for ntype in nodes_dict.keys() %}
+	AST::Node::Ptr convert_{{ ntype.lower() }}(const YAML::Node node) const;
+	{%- endfor %}
+};
 
-	}
+}
 }
 
 

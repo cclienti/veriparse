@@ -4,21 +4,21 @@
 #include <iostream>
 
 namespace Veriparse {
-	namespace AST {
+namespace AST {
 
-		enum class NodeType {
-			{%- for type in nodes_dict.keys() %}
-			{{ type }},
-			{%- endfor %}
-			Node,
-			None
-		};
+enum class NodeType {
+	{%- for type in nodes_dict.keys() %}
+	{{ type }},
+	{%- endfor %}
+	Node,
+	None
+};
 
-		const char* NodeTypeToString(NodeType node_type);
+const char* NodeTypeToString(NodeType node_type);
 
-		std::ostream & operator<<(std::ostream &os, const NodeType node_type);
+std::ostream & operator<<(std::ostream &os, const NodeType node_type);
 
-	}
+}
 }
 
 #endif
