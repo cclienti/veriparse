@@ -422,6 +422,11 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node, cons
 				// for it later.
 				decl_portnames.erase(it);
 			}
+			else {
+				LOG_ERROR_N(portarg) << "cannot match port '" << argname << "' "
+				                     << "in the module definition";
+				return 1;
+			}
 		}
 
 		// add all name not found in the portlist
@@ -538,15 +543,16 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 		return 1;
 	}
 
-	// Add missing param arg names. Search of the matching
-	// instanciated paramarg name and the declared paramarg name (in
-	// the module declaration).
+	// Add missing param arg names. Search of the matching instanciated
+	// paramarg name and the declared paramarg name (in the module
+	// declaration).
 	for (const auto &param : *paramlist) {
 		const auto &name = param->get_name();
 
 		if (name.empty()) {
 			if (decl_paramlist->empty()) {
 				LOG_ERROR_N(param) << "cannot match the parameter in the module declaration";
+				return 1;
 			}
 			param->set_name(decl_paramlist->front()->get_name());
 			decl_paramlist->pop_front();
@@ -563,6 +569,11 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 				// Name found, we can remove the name to avoid searching
 				// for it later.
 				decl_paramlist->erase(it);
+			}
+			else {
+				LOG_ERROR_N(param) << "cannot match the parameter '" << name << "' "
+				                   << "in the module declaration";
+				return 1;
 			}
 		}
 	}
