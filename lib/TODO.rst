@@ -17,6 +17,8 @@ Mechanics
 Functional
 ----------
 
+#. 2018-11-28: Test are broken in release (passes, dimensions)
+
 #. 2018-10-07: Add instance inlining. Manage defparam and signal that reads information across multiple levels of
    instanciation. Do not forget to add a replace_port_affectation before inlining.
 
