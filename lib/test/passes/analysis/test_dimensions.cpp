@@ -144,7 +144,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 	const auto rvalue_concat = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_concat->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -165,7 +165,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 		const auto rvalue_ptr = rvalue_nodes->front();
 		rvalue_nodes->pop_front();
 		{
-			Dimensions::DimList dims;
+			Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 			ret = Dimensions::analyze_expr(rvalue_ptr->get_var(), dim_map, dims);
 			ASSERT_EQ(0, ret);
 
@@ -186,7 +186,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 	const auto rvalue_repacked = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_repacked->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -215,7 +215,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 	const auto rvalue_repeated_a = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_repeated_a->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -235,7 +235,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 	const auto rvalue_repeated_b = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_repeated_b->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -276,7 +276,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 	const auto rvalue_slice_a_p = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a_p->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -297,7 +297,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 	const auto rvalue_slice_a_m = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a_m->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -322,7 +322,7 @@ TEST(PassesAnalysis_Dimensions, dimension1) {
 	                                                        replacement, rvalue_int_ptr);
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_int_ptr->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -363,7 +363,7 @@ TEST(PassesAnalysis_Dimensions, dimension2) {
 	const auto rvalue_concat = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_concat->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -384,7 +384,7 @@ TEST(PassesAnalysis_Dimensions, dimension2) {
 		const auto rvalue_ptr = rvalue_nodes->front();
 		rvalue_nodes->pop_front();
 		{
-			Dimensions::DimList dims;
+			Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 			ret = Dimensions::analyze_expr(rvalue_ptr->get_var(), dim_map, dims);
 			ASSERT_EQ(0, ret);
 
@@ -405,7 +405,7 @@ TEST(PassesAnalysis_Dimensions, dimension2) {
 	const auto rvalue_repeated_a = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_repeated_a->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -425,7 +425,7 @@ TEST(PassesAnalysis_Dimensions, dimension2) {
 	const auto rvalue_repeated_b = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_repeated_b->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -445,7 +445,7 @@ TEST(PassesAnalysis_Dimensions, dimension2) {
 	const auto rvalue_slice_a = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -466,7 +466,7 @@ TEST(PassesAnalysis_Dimensions, dimension2) {
 	const auto rvalue_slice_a_p = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a_p->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -487,7 +487,7 @@ TEST(PassesAnalysis_Dimensions, dimension2) {
 	const auto rvalue_slice_a_m = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a_m->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -532,7 +532,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_concat = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_concat->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -553,7 +553,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 		const auto rvalue_ptr = rvalue_nodes->front();
 		rvalue_nodes->pop_front();
 		{
-			Dimensions::DimList dims;
+			Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 			ret = Dimensions::analyze_expr(rvalue_ptr->get_var(), dim_map, dims);
 			ASSERT_EQ(0, ret);
 
@@ -574,7 +574,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_repeated_a = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_repeated_a->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -594,7 +594,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_repeated_b = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::var, {}};
 		ret = Dimensions::analyze_expr(rvalue_repeated_b->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -614,7 +614,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_slice_a = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -635,7 +635,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_slice_a_p = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a_p->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -656,7 +656,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_slice_a_m = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_slice_a_m->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -678,7 +678,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 		const auto rvalue_ptr = rvalue_nodes->front();
 		rvalue_nodes->pop_front();
 		{
-			Dimensions::DimList dims;
+			Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 			ret = Dimensions::analyze_expr(rvalue_ptr->get_var(), dim_map, dims);
 			ASSERT_EQ(0, ret);
 
@@ -699,7 +699,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 		const auto rvalue_ptr = rvalue_nodes->front();
 		rvalue_nodes->pop_front();
 		{
-			Dimensions::DimList dims;
+			Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 			ret = Dimensions::analyze_expr(rvalue_ptr->get_var(), dim_map, dims);
 			ASSERT_EQ(0, ret);
 
@@ -721,7 +721,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 		const auto rvalue_invalid = rvalue_nodes->front();
 		rvalue_nodes->pop_front();
 		{
-			Dimensions::DimList dims;
+			Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 			ret = Dimensions::analyze_expr(rvalue_invalid->get_var(), dim_map, dims);
 			ASSERT_EQ(1, ret);
 		}
@@ -731,7 +731,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_string = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_string->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -750,7 +750,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_real = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_real->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -769,7 +769,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_integer = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_integer->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 
@@ -788,7 +788,7 @@ TEST(PassesAnalysis_Dimensions, dimension3) {
 	const auto rvalue_bit_vector = rvalue_nodes->front();
 	rvalue_nodes->pop_front();
 	{
-		Dimensions::DimList dims;
+		Dimensions::DimList dims {Dimensions::DimList::Decl::both, {}};
 		ret = Dimensions::analyze_expr(rvalue_bit_vector->get_var(), dim_map, dims);
 		ASSERT_EQ(0, ret);
 

@@ -456,7 +456,6 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 				dim.is_packed = true;
 
 				dims.list.clear();
-				dims.decl = Dimensions::DimList::Decl::var;
 				dims.list.emplace_front(dim);
 			}
 			break;
