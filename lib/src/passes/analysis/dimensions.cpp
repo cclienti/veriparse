@@ -350,8 +350,10 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
 				auto &cur_dim = dims.list.front();
 
 				mpz_class index, size;
-				const bool index_valid = Transformations::ExpressionEvaluation().evaluate_node(psp_index->get_index(), index);
-				const bool size_valid = Transformations::ExpressionEvaluation().evaluate_node(psp_index->get_size(), size);
+				const bool index_valid = Transformations::ExpressionEvaluation().evaluate_node
+                    (psp_index->get_index(), index);
+				const bool size_valid = Transformations::ExpressionEvaluation().evaluate_node
+                    (psp_index->get_size(), size);
 
 				if (index_valid && size_valid) {
 					if (cur_dim.is_big) {
@@ -603,8 +605,13 @@ std::ostream &operator<<(std::ostream &os, const Dimensions::DimList::Decl decl)
 		os << "var";
 		break;
 
-	default:
+	case Dimensions::DimList::Decl::both:
 		os << "io-var";
+		break;
+
+	default:
+        LOG_ERROR << "unknown dimension decl!";
+		os << "UNKNOWN";
 	}
 
 	return os;
