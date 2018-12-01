@@ -1,5 +1,5 @@
-#ifndef VERIPARSE_PASSES_TRANSFORMATIONS_MODULE_INLINER
-#define VERIPARSE_PASSES_TRANSFORMATIONS_MODULE_INLINER
+#ifndef VERIPARSE_PASSES_TRANSFORMATIONS_MODULE_FLATTENER
+#define VERIPARSE_PASSES_TRANSFORMATIONS_MODULE_FLATTENER
 
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
@@ -14,15 +14,15 @@ namespace Veriparse {
 namespace Passes {
 namespace Transformations {
 
-class ModuleInliner: public TransformationBase
+class ModuleFlattener: public TransformationBase
 {
 public:
-	ModuleInliner() = delete;
+	ModuleFlattener() = delete;
 
-	ModuleInliner(const AST::ParamArg::ListPtr &paramlist_inst,
+	ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
 	              const Analysis::Module::ModulesMap &modules_map);
 
-	virtual ~ModuleInliner();
+	virtual ~ModuleFlattener();
 
 private:
 	/**
@@ -30,7 +30,10 @@ private:
 	 */
 	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
+    int flattener(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
 private:
+    AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;
 	Analysis::UniqueDeclaration::IdentifierSet m_declared;
 };
