@@ -2,7 +2,7 @@
 ### Global options
 ########################################
 
-cmake_minimum_required (VERSION 3.7)
+cmake_minimum_required (VERSION 3.9)
 project (veriparse_lib)
 include (${CMAKE_CURRENT_LIST_DIR}/../cmake/common.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
@@ -46,6 +46,10 @@ add_library (veriparse_static STATIC ${source_files}
   ${FLEX_Veriparse_VerilogScanner_OUTPUTS}
   ${BISON_Veriparse_VerilogNumberParser_OUTPUTS}
   ${FLEX_Veriparse_VerilogNumberScanner_OUTPUTS})
+
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+  set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+endif()
 
 add_dependencies(veriparse_static ${YAMLCPP_LIBRARY})
 add_dependencies(veriparse_static ${BOOST_LIBRARIES})
