@@ -20,7 +20,7 @@ public:
 	ModuleFlattener() = delete;
 
 	ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
-	              const Analysis::Module::ModulesMap &modules_map);
+                    const Analysis::Module::ModulesMap &modules_map);
 
 	virtual ~ModuleFlattener();
 
@@ -30,7 +30,20 @@ private:
 	 */
 	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
+	/**
+	 * @return zero on success
+	 */
     int flattener(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
+	/**
+     * @brief Bind a module
+     *
+     * Return necessary items (declaration and assignation) to
+     * flatten the instantiated module.
+     *
+	 * @return nullptr on error
+	 */
+    AST::Node::ListPtr bind(const AST::Module::Ptr &module);
 
 private:
     AST::ParamArg::ListPtr m_paramlist_inst;
