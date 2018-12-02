@@ -26,12 +26,12 @@ bool ExpressionEvaluation::evaluate_node(const AST::Node::Ptr &node, mpz_class &
 	if (eval_node) {
 		switch (eval_node->get_node_type()) {
 		case AST::NodeType::IntConstN:
-				value = AST::cast_to<AST::IntConstN>(eval_node)->get_value();
-				return true;
+            value = AST::cast_to<AST::IntConstN>(eval_node)->get_value();
+            return true;
 
 		case AST::NodeType::FloatConst:
-				value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
-				return true;
+            value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
+            return true;
 
 		default:
 			break;
@@ -47,12 +47,12 @@ bool ExpressionEvaluation::evaluate_node(const AST::Node::Ptr &node, double &val
 	if (eval_node) {
 		switch (eval_node->get_node_type()) {
 		case AST::NodeType::IntConstN:
-				value = AST::cast_to<AST::IntConstN>(eval_node)->get_value().get_d();
-				return true;
+            value = AST::cast_to<AST::IntConstN>(eval_node)->get_value().get_d();
+            return true;
 
 		case AST::NodeType::FloatConst:
-				value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
-				return true;
+            value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
+            return true;
 
 		default:
 			break;
@@ -136,22 +136,31 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_system_call(const std::string &cal
                                                           const AST::Node::ListPtr args,
                                                           const std::string &filename, uint32_t line)
 {
-	if(args) {
-		if(args->size() == 1) {
-			if (call == "clog2") {
-				return expression_operator_unary<clog2>(args->front());
-			}
-			else if (call == "unsigned") {
-				return expression_operator_unary<unsigned_fct>(args->front());
-			}
-			else if (call == "signed") {
-				return expression_operator_unary<signed_fct>(args->front());
-			}
-		}
-		else {
-			LOG_ERROR << filename << ":" << line << ": too much arguments in " << call;
-		}
-	}
+	if(!args) {
+        return nullptr;
+    }
+
+    if (call == "clog2") {
+        if (args->size() != 1) {
+            LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
+            return nullptr;
+        }
+        return expression_operator_unary<clog2>(args->front());
+    }
+    else if (call == "unsigned") {
+        if (args->size() != 1) {
+            LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
+            return nullptr;
+        }
+        return expression_operator_unary<unsigned_fct>(args->front());
+    }
+    else if (call == "signed") {
+        if (args->size() != 1) {
+            LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
+            return nullptr;
+        }
+        return expression_operator_unary<signed_fct>(args->front());
+    }
 
 	return nullptr;
 }
