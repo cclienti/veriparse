@@ -18,17 +18,19 @@ namespace Transformations
 {
 
 AnnotateDeclaration::AnnotateDeclaration():
+    m_ignore_io (true),
     m_search    ("^.*$"),
     m_replace   ("$&")
 {}
 
-AnnotateDeclaration::AnnotateDeclaration(const std::string &search, const std::string &replace):
+AnnotateDeclaration::AnnotateDeclaration(const std::string &search, const std::string &replace, bool ignore_io):
+    m_ignore_io (ignore_io),
     m_search    (search),
     m_replace   (replace)
 {}
 
 void AnnotateDeclaration::set_search_replace(const std::string &search,
-                                             const std::string &replace)
+                                            const std::string &replace)
 {
     m_search = search;
     m_replace = replace;
@@ -39,8 +41,10 @@ int AnnotateDeclaration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     ReplaceDict replace_dict;
     std::set<std::string> excluded_names;
 
-    std::vector<std::string> iodir_names = Analysis::Module::get_iodir_names(node);
-    excluded_names.insert(iodir_names.cbegin(), iodir_names.cend());
+    if (m_ignore_io) {
+        std::vector<std::string> iodir_names = Analysis::Module::get_iodir_names(node);
+        excluded_names.insert(iodir_names.cbegin(), iodir_names.cend());
+    }
 
     if(get_declaration_names(node, replace_dict, excluded_names))
         return 1;

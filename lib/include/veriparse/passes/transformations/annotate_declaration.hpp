@@ -16,7 +16,7 @@ namespace Transformations {
 
 /**
  * This pass provides an annotation scheme of declaration
- * with a module. It will ignore declarations related to an
+ * with a module. It can ignore declarations related to an
  * Input/Output/Inout.
  */
 class AnnotateDeclaration: public TransformationBase {
@@ -33,7 +33,7 @@ public:
 	 * Constructor with the regex search (c++11 format) and
 	 * replace pattern.
 	 */
-	AnnotateDeclaration(const std::string &search, const std::string &replace);
+	AnnotateDeclaration(const std::string &search, const std::string &replace, bool ignore_io);
 
 	/**
 	 * Set the regex search (c++11 format) and replace
@@ -59,6 +59,7 @@ private:
 	int annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict);
 
 private:
+    bool m_ignore_io;
 	std::regex m_search;
 	std::string m_replace;
 };
