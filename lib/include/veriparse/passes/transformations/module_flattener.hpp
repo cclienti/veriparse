@@ -43,7 +43,7 @@ private:
      *
 	 * @return nullptr on error
 	 */
-    AST::Node::ListPtr bind(const AST::Module::Ptr &module);
+    AST::Node::ListPtr bind(const AST::Instance::Ptr &instance, const AST::Module::Ptr &module);
 
 private:
     AST::ParamArg::ListPtr m_paramlist_inst;

@@ -71,7 +71,8 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 
             LOG_INFO_N(node) << "flattenning " << module_name << "::" << instance_name;
 
-            // Resolve parameters
+            // Check parameters declared in the instance against
+            // declared in the module.
             auto paramlist_module = Analysis::Module::get_parameter_nodes(module);
             auto paramlist_inst = instance->get_parameterlist();
             if (paramlist_inst) {
@@ -114,7 +115,9 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
             }
 
             // Filter null value in paramlist_inst
-            paramlist_inst->remove_if([](const AST::ParamArg::Ptr &p){return p->get_value() == nullptr;});
+            if (paramlist_inst) {
+                paramlist_inst->remove_if([](const AST::ParamArg::Ptr &p){return p->get_value() == nullptr;});
+            }
 
             // Resolve the instantiated module
             ModuleFlattener flattener(paramlist_inst, m_modules_map);
@@ -133,12 +136,12 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
             }
 
             // Prefix content of the module
-            AnnotateDeclaration prefixer("^.*$", instance_name + "_$&");
+            AnnotateDeclaration prefixer("^.*$", instance_name + "_$&", false);
             prefixer.run(module);
 
             // Bind module
             const auto &mod_cast = AST::cast_to<AST::Module>(module);
-            auto binded_items = bind(mod_cast);
+            auto binded_items = bind(instance, mod_cast);
             if (!binded_items) {
                 LOG_ERROR_N(node) << "Could not bind " << module_name << "::" << instance_name;
                 return 1;
@@ -150,7 +153,7 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
                 binded_items->insert(binded_items->end(), mod_items->begin(), mod_items->end());
             }
 
-            parent->replace(node, mod_items);
+            parent->replace(node, binded_items);
         }
         break;
 
@@ -169,58 +172,94 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
     return 0;
 }
 
-AST::Node::ListPtr ModuleFlattener::bind(const AST::Module::Ptr &module)
+AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, const AST::Module::Ptr &module)
 {
     const auto &items = std::make_shared<AST::Node::List>();
+
+    const auto &ports = module->get_ports();
+    if (!ports) {
+        // Nothing to bind
+        return items;
+    }
+
+    // Check consistency
+    const auto &inst_ports = instance->get_portlist();
+    if (!inst_ports) {
+        LOG_ERROR_N(instance) << "module IO and instantiated ports are not consistent";
+        return nullptr;
+    }
+
+    // Generate declarations
+    for (const auto &port: *ports) {
+        if (!port->is_node_type(AST::NodeType::Ioport)) {
+            LOG_FATAL_N(port) << "module IO not properly normalized";
+            return nullptr;
+        }
+        const auto &var = AST::cast_to<AST::Ioport>(port)->get_second();
+        items->push_back(var->clone());
+    }
+
+    // Generate assignments
+    for (const auto &port: *ports) {
+        const auto &ioport = AST::cast_to<AST::Ioport>(port);
+        const auto &iodir = ioport->get_first();
+        const auto &var = ioport->get_second();
+
+        AST::Node::Ptr inst_value = nullptr;
+        for (const auto &inst_port: *inst_ports) {
+            std::string port_name = instance->get_name() + "_" + inst_port->get_name();
+            if (var->get_name() == port_name) {
+                inst_value = inst_port->get_value();
+                LOG_DEBUG_N(inst_value) << var->get_name() << " matched";
+                break;
+            }
+        }
+
+        if (!inst_value) {
+            if (iodir->is_node_type(AST::NodeType::Input)) {
+                LOG_WARNING_N(inst_value) << module->get_name() << "::" << instance->get_name() << "::"
+                                          << var->get_name() << ", "
+                                          << "input left unconnected";
+            }
+            continue;
+        }
+
+        AST::Lvalue::Ptr lvalue;
+        AST::Rvalue::Ptr rvalue;
+
+        switch (iodir->get_node_type()) {
+        case AST::NodeType::Input:
+        case AST::NodeType::Inout:
+            lvalue = std::make_shared<AST::Lvalue>(std::make_shared<AST::Identifier>(nullptr, var->get_name()));
+            rvalue = std::make_shared<AST::Rvalue>(inst_value->clone());
+            break;
+
+        case AST::NodeType::Output:
+            lvalue = std::make_shared<AST::Lvalue>(inst_value->clone());
+            rvalue = std::make_shared<AST::Rvalue>(std::make_shared<AST::Identifier>(nullptr, var->get_name()));
+            break;
+
+        default:
+            LOG_FATAL_N(iodir) << "Unknown IO type";
+            return nullptr;
+        }
+
+        if (var->is_node_category(AST::NodeType::Net)) {
+            items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
+        }
+        else {
+            const auto &subst = std::make_shared<AST::BlockingSubstitution>(lvalue, rvalue, nullptr, nullptr);
+            const auto &senslist = std::make_shared<AST::Sens::List>();
+            senslist->push_back(std::make_shared<AST::Sens>(nullptr, AST::Sens::TypeEnum::ALL));
+            items->push_back(std::make_shared<AST::Always>(std::make_shared<AST::Senslist>(senslist), subst));
+        }
+
+    }
 
     return items;
 }
 
 
-// int ModuleFlattener::prefix_content(const std::string &prefix, ASTReplace::ReplaceMap &replaced_map,
-//                                     const AST::Node::Ptr &node)
-// {
-//     if (!node) {
-//         return 0;
-//     }
-
-//     int ret = 0;
-
-//     if (node->is_node_category(AST::NodeType::VariableBase)) {
-//         const auto &var = AST::cast_to<AST::VariableBase>(node);
-//         var->set_name(prefix + "_" + var->get_name());
-//     }
-//     else if (node->is_node_type(AST::NodeType::Function)) {
-//         const auto &function = AST::cast_to<AST::Function>(node);
-//         function->set_name(prefix + "_" + function->get_name());
-//         return 0; // We do not visit in function body
-//     }
-//     else if (node->is_node_type(AST::NodeType::FunctionCall)) {
-//         const auto &function_call = AST::cast_to<AST::FunctionCall>(node);
-//         function_call->set_name(prefix + "_" + function_call->get_name());
-//     }
-//     else if (node->is_node_type(AST::NodeType::Task)) {
-//         const auto &task = AST::cast_to<AST::Task>(node);
-//         task->set_name(prefix + "_" + task->get_name());
-//         return 0; // We do not visit in task body
-//     }
-//     else if (node->is_node_type(AST::NodeType::TaskCall)) {
-//         const auto &task_call = AST::cast_to<AST::TaskCall>(node);
-//         task_call->set_name(prefix + "_" + task_call->get_name());
-//     }
-//     else if (node->is_node_type(AST::NodeType::Instance)) {
-//         const auto &instance = AST::cast_to<AST::Instance>(node);
-//         instance->set_name(prefix + "_" + instance->get_name());
-//     }
-
-
-//     const auto &children = node->get_children();
-//     for (const auto &child: *children) {
-//         ret += prefix_content(prefix, replaced_map, child);
-//     }
-
-//     return ret;
-// }
 
 
 }
