@@ -1,6 +1,8 @@
 Mechanics
 ---------
 
+#. 2018-12-03: Check if Senslist can be removed and replaced directly by Sens::List.
+
 #. 2018-08-18: Use references on shared pointer in method and function to improve the speedup.
 
 #. 2018-10-13: Change AST cast by adding a Node::as<T> method.
