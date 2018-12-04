@@ -34,6 +34,12 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         return 1;
     }
 
+    // Collect all variable types
+    const auto &vars = Analysis::Module::get_variable_nodes(node);
+    for (const auto &var: *vars) {
+        m_var_type_map.emplace(var->get_name(), var->get_node_type());
+    }
+
     if (flattener(node, parent)) {
         LOG_ERROR_N(node) << "failed to inline the module";
         return 1;
@@ -189,7 +195,7 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
         return nullptr;
     }
 
-    // Generate declarations
+    // Generate binding declarations
     for (const auto &port: *ports) {
         if (!port->is_node_type(AST::NodeType::Ioport)) {
             LOG_FATAL_N(port) << "module IO not properly normalized";
@@ -229,30 +235,37 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
 
         switch (iodir->get_node_type()) {
         case AST::NodeType::Input:
-        case AST::NodeType::Inout:
             lvalue = std::make_shared<AST::Lvalue>(std::make_shared<AST::Identifier>(nullptr, var->get_name()));
             rvalue = std::make_shared<AST::Rvalue>(inst_value->clone());
+
+            if (var->is_node_category(AST::NodeType::Net)) {
+                items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
+            }
+            else {
+                const auto &subst = std::make_shared<AST::BlockingSubstitution>(lvalue, rvalue, nullptr, nullptr);
+                const auto &senslist = std::make_shared<AST::Sens::List>();
+                senslist->push_back(std::make_shared<AST::Sens>(nullptr, AST::Sens::TypeEnum::ALL));
+                items->push_back(std::make_shared<AST::Always>(std::make_shared<AST::Senslist>(senslist), subst));
+            }
+
             break;
 
         case AST::NodeType::Output:
             lvalue = std::make_shared<AST::Lvalue>(inst_value->clone());
             rvalue = std::make_shared<AST::Rvalue>(std::make_shared<AST::Identifier>(nullptr, var->get_name()));
+            items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
             break;
+
+        case AST::NodeType::Inout:
+            LOG_ERROR_N(iodir) << "Inout port not supported during flattening, giving up "
+                               << module->get_name() << "::" << instance->get_name();
+            return nullptr;
 
         default:
             LOG_FATAL_N(iodir) << "Unknown IO type";
             return nullptr;
         }
 
-        if (var->is_node_category(AST::NodeType::Net)) {
-            items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
-        }
-        else {
-            const auto &subst = std::make_shared<AST::BlockingSubstitution>(lvalue, rvalue, nullptr, nullptr);
-            const auto &senslist = std::make_shared<AST::Sens::List>();
-            senslist->push_back(std::make_shared<AST::Sens>(nullptr, AST::Sens::TypeEnum::ALL));
-            items->push_back(std::make_shared<AST::Always>(std::make_shared<AST::Senslist>(senslist), subst));
-        }
 
     }
 

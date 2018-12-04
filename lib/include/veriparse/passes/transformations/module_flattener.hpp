@@ -48,7 +48,8 @@ private:
 private:
     AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;
-	Analysis::UniqueDeclaration::IdentifierSet m_declared;
+    std::map<std::string, AST::NodeType> m_var_type_map;
+    Analysis::UniqueDeclaration::IdentifierSet m_declared;
 };
 
 }
