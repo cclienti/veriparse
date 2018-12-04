@@ -19,6 +19,10 @@ Mechanics
 Functional
 ----------
 
+#. 2018-12-04: Module Flatten: If binding an instance output, check that upper module binded net is a wire.
+
+#. 2018-12-04: How to manage inout during module flatten binding.
+
 #. 2018-11-28: Test are broken in release (passes, dimensions)
 
 #. 2018-10-07: Add instance inlining. Manage defparam and signal that reads information across multiple levels of
