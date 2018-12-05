@@ -45,6 +45,22 @@ private:
 	 */
     AST::Node::ListPtr bind(const AST::Instance::Ptr &instance, const AST::Module::Ptr &module);
 
+ 	/**
+     * @brief Check that instantiated port value is a wire or composed
+     * by wired.
+     *
+	 * @return true if the port value is valid.
+	 */
+    bool check_output_rvalue_wire(const AST::Node::Ptr &node);
+
+ 	/**
+     * @brief Check that instantiated port value is a wire or composed
+     * by wired.
+     *
+	 * @return true if the port value is valid.
+	 */
+    int convert_concat_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
 private:
     AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;

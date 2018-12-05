@@ -253,7 +253,13 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
         case AST::NodeType::Output:
             lvalue = std::make_shared<AST::Lvalue>(inst_value->clone());
             rvalue = std::make_shared<AST::Rvalue>(std::make_shared<AST::Identifier>(nullptr, var->get_name()));
-            items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
+            if (check_output_rvalue_wire(lvalue)) {
+                convert_concat_to_lconcat(lvalue->get_var(), lvalue);
+                items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
+            }
+            else {
+                return nullptr;
+            }
             break;
 
         case AST::NodeType::Inout:
@@ -265,15 +271,98 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
             LOG_FATAL_N(iodir) << "Unknown IO type";
             return nullptr;
         }
-
-
     }
 
     return items;
 }
 
 
+bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
+{
+    bool ret = true;
 
+    if (!node) {
+        return ret;
+    }
+
+    switch(node->get_node_type()) {
+    case AST::NodeType::Identifier:
+        {
+            const auto &id = AST::cast_to<AST::Identifier>(node);
+            const auto it = m_var_type_map.find(id->get_name());
+            if (it != m_var_type_map.end()) {
+                if (it->second == AST::NodeType::Wire) {
+                    ret = true;
+                }
+                else {
+                    LOG_ERROR_N(node) << "Identifier '" << id->get_name() << "' is not declared as a wire";
+                    ret = false;
+                }
+            }
+            else {
+                LOG_ERROR_N(node) << "Identifier '" << id->get_name() << "' not declared";
+                ret = false;
+            }
+        }
+        break;
+
+    case AST::NodeType::Repeat:
+    case AST::NodeType::StringConst:
+    case AST::NodeType::FloatConst:
+    case AST::NodeType::IntConst:
+    case AST::NodeType::IntConstN:
+    case AST::NodeType::Real:
+        LOG_ERROR_N(node) << "Invalid expression in an output port";
+        ret = false;
+        break;
+
+    default:
+        {
+            const auto &children = node->get_children();
+            for (AST::Node::Ptr child: *children) {
+                ret &= check_output_rvalue_wire(child);
+            }
+        }
+    }
+
+    return ret;
+}
+
+
+ int ModuleFlattener::convert_concat_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
+ {
+     int ret = 0;
+
+     if (!node) {
+         return ret;
+     }
+
+     switch(node->get_node_type()) {
+     case AST::NodeType::Concat:
+         {
+             const auto &children = node->get_children();
+             for (AST::Node::Ptr child: *children) {
+                 ret += convert_concat_to_lconcat(child, node);
+             }
+
+             const auto &concat = AST::cast_to<AST::Concat>(node);
+             const auto &lconcat = std::make_shared<AST::Lconcat>(concat->get_list());
+
+             parent->replace(node, lconcat);
+         }
+         break;
+
+     default:
+         {
+             const auto &children = node->get_children();
+             for (AST::Node::Ptr child: *children) {
+                 ret += convert_concat_to_lconcat(child, node);
+             }
+         }
+     }
+
+     return ret;
+ }
 
 }
 }
