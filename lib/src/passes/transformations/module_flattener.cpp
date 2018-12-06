@@ -28,6 +28,7 @@ ModuleFlattener::~ModuleFlattener()
 
 int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
+    // Resolve the module
     ResolveModule resolver(m_paramlist_inst, m_modules_map);
     if (resolver.run(node)) {
         LOG_ERROR_N(node) << "failed to resolve the module";
@@ -40,6 +41,13 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         m_var_type_map.emplace(var->get_name(), var->get_node_type());
     }
 
+    // Analysis declarations
+    if (Analysis::UniqueDeclaration::analyze(node, m_declared)) {
+        LOG_ERROR_N(node) << "failed to analyze declarations";
+        return 1;
+    }
+
+    // Flatten
     if (flattener(node, parent)) {
         LOG_ERROR_N(node) << "failed to inline the module";
         return 1;
@@ -70,12 +78,12 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 
             auto it_module = m_modules_map.find(module_name);
             if (it_module == m_modules_map.end()) {
-                LOG_INFO_N(node) << "keeping " << module_name << "::" << instance_name;
+                LOG_INFO_N(node) << "keeping " << instance_name << " (" << module_name << ")";
                 return 0;
             }
             auto module = it_module->second->clone();
 
-            LOG_INFO_N(node) << "flattenning " << module_name << "::" << instance_name;
+            LOG_INFO_N(node) << "flattenning " << instance_name << " (" << module_name << ")";
 
             // Check parameters declared in the instance against
             // declared in the module.
@@ -85,7 +93,7 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
                 for (auto &param_inst: *paramlist_inst) {
                     // if a value is declared, we continue.
                     if (param_inst->get_value()) {
-                        LOG_INFO_N(node) << module_name << "::" << instance_name << ", "
+                        LOG_INFO_N(node) << instance_name << " (" << module_name << "), "
                                          << "parameter " << param_inst->get_name() << ", "
                                          << "using instanciated value";
                         continue;
@@ -101,7 +109,7 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
                     for (auto &param_module: *paramlist_module) {
                         if (param_module->get_name() == param_inst->get_name()) {
                             found = true;
-                            LOG_INFO_N(node) << module_name << "::" << instance_name << ", "
+                            LOG_INFO_N(node) << instance_name << " (" << module_name << "), "
                                              << "parameter " << param_inst->get_name() << ", "
                                              << "using default value from module definition";
                             auto default_value = param_module->get_value();
@@ -137,19 +145,28 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
             if (!remaining_parameters.empty()) {
                 std::string joined = boost::algorithm::join(remaining_parameters, ", ");
                 LOG_ERROR_N(node) << "non resolved parameter found for "
-                                  << module_name << "::" << instance_name << ": " << joined;
+                                  << instance_name << " (" << module_name << "): " << joined;
                 return 1;
             }
 
             // Prefix content of the module
             AnnotateDeclaration prefixer("^.*$", instance_name + "_$&", false);
-            prefixer.run(module);
+            if (prefixer.run(module)) {
+                LOG_ERROR_N(node) << "cannot prefix module instance";
+                return 1;
+            }
 
             // Bind module
             const auto &mod_cast = AST::cast_to<AST::Module>(module);
             auto binded_items = bind(instance, mod_cast);
             if (!binded_items) {
-                LOG_ERROR_N(node) << "Could not bind " << module_name << "::" << instance_name;
+                LOG_ERROR_N(node) << "Could not bind " << instance_name << " (" << module_name << ")";
+                return 1;
+            }
+
+            // Analyze module's declarations
+            if (Analysis::UniqueDeclaration::analyze(module, m_declared)) {
+                LOG_ERROR_N(module) << "failed to analyze declarations";
                 return 1;
             }
 
@@ -180,12 +197,10 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 
 AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, const AST::Module::Ptr &module)
 {
-    const auto &items = std::make_shared<AST::Node::List>();
-
     const auto &ports = module->get_ports();
     if (!ports) {
         // Nothing to bind
-        return items;
+        return std::make_shared<AST::Node::List>();
     }
 
     // Check consistency
@@ -195,37 +210,53 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
         return nullptr;
     }
 
-    // Generate binding declarations
-    for (const auto &port: *ports) {
-        if (!port->is_node_type(AST::NodeType::Ioport)) {
-            LOG_FATAL_N(port) << "module IO not properly normalized";
-            return nullptr;
-        }
-        const auto &var = AST::cast_to<AST::Ioport>(port)->get_second();
-        items->push_back(var->clone());
-    }
+    const auto &decl_items = std::make_shared<AST::Node::List>();
+    const auto &assign_items = std::make_shared<AST::Node::List>();
 
-    // Generate assignments
+    // Generate
     for (const auto &port: *ports) {
         const auto &ioport = AST::cast_to<AST::Ioport>(port);
         const auto &iodir = ioport->get_first();
         const auto &var = ioport->get_second();
 
+        // Don't take ref here because variable can be updated with a
+        // new name and we need the original name for the matching.
+        const auto var_name = var->get_name();
+
+        // Search for an unique identifier
+        LOG_DEBUG_N(var) << "looking for '" << var_name << "' in declared variables";
+        const std::string &var_new_name =
+            Analysis::UniqueDeclaration::get_unique_identifier(var->get_name(), m_declared);
+
+        // Renamed the cloned declaration
+        if (var_new_name != var_name) {
+            LOG_DEBUG_N(var) << "renaming '" << var_name << "' to '" << var_new_name << "'";
+            AnnotateDeclaration renamer(var_name, var_new_name, false);
+            // renaming variable in the module will also rename "var"
+            renamer.run(module);
+        }
+
+        // Append declaration
+        const auto &decl_var = var->clone();
+        decl_items->push_back(decl_var);
+
+        // Generate assignments
         AST::Node::Ptr inst_value = nullptr;
         for (const auto &inst_port: *inst_ports) {
             std::string port_name = instance->get_name() + "_" + inst_port->get_name();
-            if (var->get_name() == port_name) {
+            if (var_name == port_name) {
                 inst_value = inst_port->get_value();
-                LOG_DEBUG_N(inst_value) << var->get_name() << " matched";
+                LOG_DEBUG << var_new_name << " matched";
                 break;
             }
         }
 
         if (!inst_value) {
             if (iodir->is_node_type(AST::NodeType::Input)) {
-                LOG_WARNING_N(inst_value) << module->get_name() << "::" << instance->get_name() << "::"
-                                          << var->get_name() << ", "
-                                          << "input left unconnected";
+                LOG_WARNING << instance->get_name() << " (" << module->get_name() << ") " << "::"
+                            << var_name << ", "
+                            << "input left unconnected";
+                return nullptr;
             }
             continue;
         }
@@ -235,27 +266,28 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
 
         switch (iodir->get_node_type()) {
         case AST::NodeType::Input:
-            lvalue = std::make_shared<AST::Lvalue>(std::make_shared<AST::Identifier>(nullptr, var->get_name()));
+            lvalue = std::make_shared<AST::Lvalue>(std::make_shared<AST::Identifier>(nullptr, var_new_name));
             rvalue = std::make_shared<AST::Rvalue>(inst_value->clone());
 
             if (var->is_node_category(AST::NodeType::Net)) {
-                items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
+                assign_items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
             }
             else {
                 const auto &subst = std::make_shared<AST::BlockingSubstitution>(lvalue, rvalue, nullptr, nullptr);
                 const auto &senslist = std::make_shared<AST::Sens::List>();
                 senslist->push_back(std::make_shared<AST::Sens>(nullptr, AST::Sens::TypeEnum::ALL));
-                items->push_back(std::make_shared<AST::Always>(std::make_shared<AST::Senslist>(senslist), subst));
+                assign_items->push_back
+                    (std::make_shared<AST::Always>(std::make_shared<AST::Senslist>(senslist), subst));
             }
 
             break;
 
         case AST::NodeType::Output:
             lvalue = std::make_shared<AST::Lvalue>(inst_value->clone());
-            rvalue = std::make_shared<AST::Rvalue>(std::make_shared<AST::Identifier>(nullptr, var->get_name()));
+            rvalue = std::make_shared<AST::Rvalue>(std::make_shared<AST::Identifier>(nullptr, var_new_name));
             if (check_output_rvalue_wire(lvalue)) {
                 convert_concat_to_lconcat(lvalue->get_var(), lvalue);
-                items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
+                assign_items->push_back(std::make_shared<AST::Assign>(lvalue, rvalue, nullptr, nullptr));
             }
             else {
                 return nullptr;
@@ -264,7 +296,7 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
 
         case AST::NodeType::Inout:
             LOG_ERROR_N(iodir) << "Inout port not supported during flattening, giving up "
-                               << module->get_name() << "::" << instance->get_name();
+                               << instance->get_name() << " (" << module->get_name() << ") ";
             return nullptr;
 
         default:
@@ -273,7 +305,9 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance, con
         }
     }
 
-    return items;
+    decl_items->insert(decl_items->end(), assign_items->begin(), assign_items->end());
+
+    return decl_items;
 }
 
 

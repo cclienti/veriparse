@@ -1,0 +1,2820 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance0.v
+          items:
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 2
+              name: str
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 2
+                  var:
+                    StringConst:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 2
+                      value: Hello World
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 2
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 88
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 3
+              name: disp_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 3
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 3
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 3
+                      sign: true
+                      size: -1
+                      value: 10
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 3
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 3
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 3
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 3
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 3
+                      name: disp_car
+                      scope:
+                        IdentifierScope: null
+              line: 3
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 3
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 3
+                      name: str
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp0_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp0_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp0_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp0_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp1_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp1_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp1_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp1_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp2_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp2_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp2_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp2_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp3_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp3_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp3_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp3_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp4_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp4_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 4
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp4_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp4_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp5_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp5_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 5
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp5_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp5_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp6_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp6_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 6
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp6_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp6_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp7_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp7_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 7
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp7_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp7_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp8_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp8_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 8
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp8_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp8_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp9_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp9_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 9
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp9_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp9_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp10_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp10_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 10
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 3
+                          name: disp_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp10_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp10_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 5
+              name: test_ab
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 5
+                  var:
+                    StringConst:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 5
+                      value: 1
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 5
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 8
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 6
+              name: disp_a_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 6
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 6
+                      sign: true
+                      size: -1
+                      value: 0
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 6
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 6
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 6
+                      name: disp_a_car
+                      scope:
+                        IdentifierScope: null
+              line: 6
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 6
+                      name: test_ab
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp_a0_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp_a0_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 6
+                      name: disp_a_car
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp_a0_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp_a0_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 7
+              name: disp_b_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 7
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      name: disp_b_car
+                      scope:
+                        IdentifierScope: null
+              line: 7
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 7
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      name: test_ab
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp_b0_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp_b0_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      name: disp_b_car
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp_b0_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp_b0_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp_b1_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp_b1_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      name: disp_b_car
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp_b1_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp_b1_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp_b2_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp_b2_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      name: disp_b_car
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp_b2_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp_b2_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp_b3_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp_b3_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 7
+                      name: disp_b_car
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp_b3_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp_b3_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 9
+              name: test_c
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 9
+                  var:
+                    StringConst:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 9
+                      value: 22
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 1
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 16
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 10
+              name: disp_test3_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 1
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 10
+                      name: disp_test3_car
+                      scope:
+                        IdentifierScope: null
+              line: 10
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 10
+                      name: test_c
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp_test30_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp_test30_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 10
+                          name: disp_test3_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp_test30_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp_test30_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              ldelay:
+                DelayStatement: null
+              line: 14
+              name: disp_test31_car
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: disp_test31_car
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 10
+                          name: disp_test3_car
+                          scope:
+                            IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: disp_test31_car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: disp_test31_car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          line: 1
+          name: instance0
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance0.v
+          items:
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 15
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 15
+                          name: car
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 16
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              value: '%c'
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance0.v
+                              line: 16
+                              name: car
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 16
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 17
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 17
+                          syscall: finish
+          line: 14
+          name: string_test_mod
+          ports:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance0.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  line: 14
+                  name: car
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 14
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance0.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 14
+                  name: car
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance0.v
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance0.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: ../../test/passes/transformations/testcases/instance0.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/instance0.v
+  line: 1
+
