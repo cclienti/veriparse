@@ -754,6 +754,493 @@ Source:
               filename: ../../test/passes/transformations/testcases/instance3.v
               line: 7
               name: oc
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance3.v
+          items:
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              line: 16
+              name: clk
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 16
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 16
+                      sign: false
+                      size: -1
+                      value: 0
+              sign: false
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              line: 17
+              senslist:
+                Senslist: null
+              statement:
+                BlockingSubstitution:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  ldelay:
+                    DelayStatement:
+                      delay:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 18
+                          sign: false
+                          size: -1
+                          value: 5
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 18
+                  left:
+                    Lvalue:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 18
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 18
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                  line: 18
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 18
+                      var:
+                        Unot:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 18
+                          right:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 18
+                              name: clk
+                              scope:
+                                IdentifierScope: null
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              line: 20
+              name: cpt
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 20
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 0
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              line: 22
+              name: a
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 22
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 0
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 22
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 3
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              line: 23
+              name: b
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 23
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 23
+                      sign: false
+                      size: -1
+                      value: 0
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 23
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 23
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 23
+                      sign: false
+                      size: -1
+                      value: 3
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              ldelay:
+                DelayStatement: null
+              line: 24
+              name: c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 24
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 24
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 24
+                      sign: false
+                      size: -1
+                      value: 3
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 26
+                  module: instance3
+                  name: instance3_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 28
+                      name: a
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 28
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 29
+                      name: b
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 29
+                          name: b
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 30
+                      name: c
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 30
+                          name: c
+                          scope:
+                            IdentifierScope: null
+              line: 26
+              module: instance3
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              line: 33
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 33
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 33
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 33
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 33
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 34
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 34
+                              name: cpt
+                              scope:
+                                IdentifierScope: null
+                      line: 34
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 34
+                          var:
+                            Plus:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 34
+                                  name: cpt
+                                  scope:
+                                    IdentifierScope: null
+                              line: 34
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 34
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 35
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 35
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                      line: 35
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 35
+                          var:
+                            Partselect:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 35
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 35
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 35
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 35
+                                  name: cpt
+                                  scope:
+                                    IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 36
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 36
+                              name: b
+                              scope:
+                                IdentifierScope: null
+                      line: 36
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 36
+                          var:
+                            Partselect:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 36
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 36
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 36
+                                  sign: false
+                                  size: -1
+                                  value: 4
+                              var:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/instance3.v
+                                  line: 36
+                                  name: cpt
+                                  scope:
+                                    IdentifierScope: null
+                  - IfStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          left:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 37
+                              name: cpt
+                              scope:
+                                IdentifierScope: null
+                          line: 37
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 37
+                              sign: false
+                              size: -1
+                              value: 7
+                      false_statement: null
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 37
+                      true_statement:
+                        SingleStatement:
+                          delay:
+                            DelayStatement: null
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 38
+                          scope: ''
+                          statement:
+                            SystemCall:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 38
+                              syscall: finish
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance3.v
+              line: 42
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 42
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 42
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance3.v
+                  line: 42
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance3.v
+                      line: 43
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 43
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 43
+                              name: b
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance3.v
+                              line: 43
+                              name: c
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance3.v
+                          line: 43
+                          syscall: display
+          line: 14
+          name: testbench
       filename: ../../test/passes/transformations/testcases/instance3.v
       line: 1
   filename: ../../test/passes/transformations/testcases/instance3.v

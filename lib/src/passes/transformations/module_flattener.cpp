@@ -340,13 +340,21 @@ bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
         }
         break;
 
+    case AST::NodeType::Indirect:
+    case AST::NodeType::Partselect:
+    case AST::NodeType::PartselectIndexed:
+    case AST::NodeType::PartselectPlusIndexed:
+    case AST::NodeType::PartselectMinusIndexed:
+    case AST::NodeType::Pointer:
+        return check_output_rvalue_wire(AST::cast_to<AST::Indirect>(node)->get_var());
+
     case AST::NodeType::Repeat:
     case AST::NodeType::StringConst:
     case AST::NodeType::FloatConst:
     case AST::NodeType::IntConst:
     case AST::NodeType::IntConstN:
     case AST::NodeType::Real:
-        LOG_ERROR_N(node) << "Invalid expression in an output port";
+        LOG_ERROR << "Invalid expression in an output port";
         ret = false;
         break;
 
