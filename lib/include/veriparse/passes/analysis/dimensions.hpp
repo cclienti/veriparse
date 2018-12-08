@@ -152,8 +152,8 @@ public:
 	/**
 	 * @brief analyse the dimension of an expression.
 	 *
-     * The dims::decl field is left untouched.
-     *
+	 * The dims::decl field is left untouched.
+	 *
 	 * @param[in] node: expression to analyze.
 	 * @param[in] dim_map: map of the analyzed declarations.
 	 * @param[out] dims: result of the analysis.

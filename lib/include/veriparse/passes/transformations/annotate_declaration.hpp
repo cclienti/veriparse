@@ -59,7 +59,7 @@ private:
 	int annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict);
 
 private:
-    bool m_ignore_io;
+	bool m_ignore_io;
 	std::regex m_search;
 	std::string m_replace;
 };

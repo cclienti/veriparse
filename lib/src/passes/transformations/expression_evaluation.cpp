@@ -26,12 +26,12 @@ bool ExpressionEvaluation::evaluate_node(const AST::Node::Ptr &node, mpz_class &
 	if (eval_node) {
 		switch (eval_node->get_node_type()) {
 		case AST::NodeType::IntConstN:
-            value = AST::cast_to<AST::IntConstN>(eval_node)->get_value();
-            return true;
+			value = AST::cast_to<AST::IntConstN>(eval_node)->get_value();
+			return true;
 
 		case AST::NodeType::FloatConst:
-            value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
-            return true;
+			value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
+			return true;
 
 		default:
 			break;
@@ -47,12 +47,12 @@ bool ExpressionEvaluation::evaluate_node(const AST::Node::Ptr &node, double &val
 	if (eval_node) {
 		switch (eval_node->get_node_type()) {
 		case AST::NodeType::IntConstN:
-            value = AST::cast_to<AST::IntConstN>(eval_node)->get_value().get_d();
-            return true;
+			value = AST::cast_to<AST::IntConstN>(eval_node)->get_value().get_d();
+			return true;
 
 		case AST::NodeType::FloatConst:
-            value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
-            return true;
+			value = AST::cast_to<AST::FloatConst>(eval_node)->get_value();
+			return true;
 
 		default:
 			break;
@@ -108,14 +108,14 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_node(const AST::Node::Ptr node)
 		else if (node->is_node_type(AST::NodeType::SystemCall)) {
 			AST::SystemCall::Ptr syscall_node = AST::cast_to<AST::SystemCall>(node);
 			AST::Node::ListPtr syscall_args = syscall_node->get_args();
-            if (syscall_args) {
-                AST::Node::ListPtr args = std::make_shared<AST::Node::List>();
-                for (AST::Node::Ptr syscall_arg: *syscall_args) {
-                    args->push_back(evaluate_node(syscall_arg));
-                }
-                return evaluate_system_call(syscall_node->get_syscall(), args,
-                                            syscall_node->get_filename(), syscall_node->get_line());
-            }
+			if (syscall_args) {
+				AST::Node::ListPtr args = std::make_shared<AST::Node::List>();
+				for (AST::Node::Ptr syscall_arg: *syscall_args) {
+					args->push_back(evaluate_node(syscall_arg));
+				}
+				return evaluate_system_call(syscall_node->get_syscall(), args,
+				                            syscall_node->get_filename(), syscall_node->get_line());
+			}
 		}
 		else if (node->is_node_type(AST::NodeType::IntConstN)) {
 			return node->clone();
@@ -139,30 +139,30 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_system_call(const std::string &cal
                                                           const std::string &filename, uint32_t line)
 {
 	if(!args) {
-        return nullptr;
-    }
+		return nullptr;
+	}
 
-    if (call == "clog2") {
-        if (args->size() != 1) {
-            LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
-            return nullptr;
-        }
-        return expression_operator_unary<clog2>(args->front());
-    }
-    else if (call == "unsigned") {
-        if (args->size() != 1) {
-            LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
-            return nullptr;
-        }
-        return expression_operator_unary<unsigned_fct>(args->front());
-    }
-    else if (call == "signed") {
-        if (args->size() != 1) {
-            LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
-            return nullptr;
-        }
-        return expression_operator_unary<signed_fct>(args->front());
-    }
+	if (call == "clog2") {
+		if (args->size() != 1) {
+			LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
+			return nullptr;
+		}
+		return expression_operator_unary<clog2>(args->front());
+	}
+	else if (call == "unsigned") {
+		if (args->size() != 1) {
+			LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
+			return nullptr;
+		}
+		return expression_operator_unary<unsigned_fct>(args->front());
+	}
+	else if (call == "signed") {
+		if (args->size() != 1) {
+			LOG_WARNING << filename << ":" << line << ": too much arguments in " << call;
+			return nullptr;
+		}
+		return expression_operator_unary<signed_fct>(args->front());
+	}
 
 	return nullptr;
 }

@@ -14,12 +14,12 @@ class ParameterInliner: public TransformationBase {
 public:
 	ParameterInliner();
 
-    /**
-     * Constructor
-     *
-     * The parameter "paramlist_inst" is a list of ParamArg. The
-     * ParamArg::value can be a rvalue node or directly an expression.
-     */
+	/**
+	 * Constructor
+	 *
+	 * The parameter "paramlist_inst" is a list of ParamArg. The
+	 * ParamArg::value can be a rvalue node or directly an expression.
+	 */
 	ParameterInliner(AST::ParamArg::ListPtr paramlist_inst);
 
 private:

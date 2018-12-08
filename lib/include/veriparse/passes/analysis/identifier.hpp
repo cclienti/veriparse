@@ -11,28 +11,28 @@
 
 
 namespace Veriparse {
-	namespace Passes {
-		namespace Analysis {
+namespace Passes {
+namespace Analysis {
 
-			class Identifier: public StandardSearch {
-			public:
-				Identifier() = delete;
+class Identifier: public StandardSearch {
+public:
+	Identifier() = delete;
 
-				/**
-				 * Return identifier nodes from an identifier
-				 */
-				static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
+	/**
+	 * Return identifier nodes from an identifier
+	 */
+	static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
 
-				/**
-				 * Return identifier nodes from an identifier
-				 */
-				static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
+	/**
+	 * Return identifier nodes from an identifier
+	 */
+	static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
 
 
-			};
+};
 
-		}
-	}
+}
+}
 }
 
 #endif

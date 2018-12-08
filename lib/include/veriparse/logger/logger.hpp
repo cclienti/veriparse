@@ -52,27 +52,27 @@
 
 
 
-namespace Veriparse {
-namespace Logger {
+	namespace Veriparse {
+	namespace Logger {
 
-// Forward-declares a global logger with a custom initialization
-BOOST_LOG_GLOBAL_LOGGER(logger, boost::log::sources::severity_logger_mt<boost::log::trivial::severity_level>)
+	// Forward-declares a global logger with a custom initialization
+	BOOST_LOG_GLOBAL_LOGGER(logger, boost::log::sources::severity_logger_mt<boost::log::trivial::severity_level>)
 
-void add_stdout_sink(void);
-void add_stream_sink(std::shared_ptr<std::ostringstream> oss);
-void add_text_sink(std::string const &filename);
-void flush(void);
-void remove_all_sinks(void);
+	void add_stdout_sink(void);
+	void add_stream_sink(std::shared_ptr<std::ostringstream> oss);
+	void add_text_sink(std::string const &filename);
+	void flush(void);
+	void remove_all_sinks(void);
 
-bool warning_enabled(void);
-bool info_enabled(void);
-bool debug_enabled(void);
-bool trace_enabled(void);
+	bool warning_enabled(void);
+	bool info_enabled(void);
+	bool debug_enabled(void);
+	bool trace_enabled(void);
 
-std::string get_class_name(const std::string &funcname);
+	std::string get_class_name(const std::string &funcname);
 
-}
-}
+	}
+	}
 
 
 #endif

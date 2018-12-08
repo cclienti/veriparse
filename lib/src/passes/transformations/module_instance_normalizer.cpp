@@ -107,14 +107,14 @@ int ModuleInstanceNormalizer::split_lists(const AST::Node::Ptr &node, const AST:
 		break;
 
 	default:
-        {
-            int ret = 0;
-            AST::Node::ListPtr children = node->get_children();
-            for (AST::Node::Ptr child: *children) {
-                ret += split_lists(child, node);
-            }
-            return ret;
-        }
+		{
+			int ret = 0;
+			AST::Node::ListPtr children = node->get_children();
+			for (AST::Node::Ptr child: *children) {
+				ret += split_lists(child, node);
+			}
+			return ret;
+		}
 	}
 
 	return 0;

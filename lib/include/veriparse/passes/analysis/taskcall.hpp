@@ -11,27 +11,27 @@
 
 
 namespace Veriparse {
-	namespace Passes {
-		namespace Analysis {
+namespace Passes {
+namespace Analysis {
 
-			class TaskCall: public StandardSearch {
-			public:
-				TaskCall() = delete;
+class TaskCall: public StandardSearch {
+public:
+	TaskCall() = delete;
 
-				/**
-				 * Return identifier nodes from a task call
-				 */
-				static AST::Identifier::ListPtr get_argument_identifier_nodes(AST::TaskCall::Ptr taskcall);
+	/**
+	 * Return identifier nodes from a task call
+	 */
+	static AST::Identifier::ListPtr get_argument_identifier_nodes(AST::TaskCall::Ptr taskcall);
 
-				/**
-				 * Return identifier names from a task call
-				 */
-				static std::vector<std::string> get_argument_identifier_names(AST::TaskCall::Ptr taskcall);
+	/**
+	 * Return identifier names from a task call
+	 */
+	static std::vector<std::string> get_argument_identifier_names(AST::TaskCall::Ptr taskcall);
 
-			};
+};
 
-		}
-	}
+}
+}
 }
 
 

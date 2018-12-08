@@ -20,7 +20,7 @@ public:
 	ModuleFlattener() = delete;
 
 	ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
-                    const Analysis::Module::ModulesMap &modules_map);
+	                const Analysis::Module::ModulesMap &modules_map);
 
 	virtual ~ModuleFlattener();
 
@@ -33,39 +33,39 @@ private:
 	/**
 	 * @return zero on success
 	 */
-    int flattener(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int flattener(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
-     * @brief Bind a module
-     *
-     * Return necessary items (declaration and assignation) to
-     * flatten the instantiated module.
-     *
+	 * @brief Bind a module
+	 *
+	 * Return necessary items (declaration and assignation) to
+	 * flatten the instantiated module.
+	 *
 	 * @return nullptr on error
 	 */
-    AST::Node::ListPtr bind(const AST::Instance::Ptr &instance, const AST::Module::Ptr &module);
+	AST::Node::ListPtr bind(const AST::Instance::Ptr &instance, const AST::Module::Ptr &module);
 
- 	/**
-     * @brief Check that instantiated port value is a wire or composed
-     * by wired.
-     *
+	/**
+	 * @brief Check that instantiated port value is a wire or composed
+	 * by wired.
+	 *
 	 * @return true if the port value is valid.
 	 */
-    bool check_output_rvalue_wire(const AST::Node::Ptr &node);
+	bool check_output_rvalue_wire(const AST::Node::Ptr &node);
 
- 	/**
-     * @brief Check that instantiated port value is a wire or composed
-     * by wired.
-     *
+	/**
+	 * @brief Check that instantiated port value is a wire or composed
+	 * by wired.
+	 *
 	 * @return true if the port value is valid.
 	 */
-    int convert_concat_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int convert_concat_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 private:
-    AST::ParamArg::ListPtr m_paramlist_inst;
+	AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;
-    std::map<std::string, AST::NodeType> m_var_type_map;
-    Analysis::UniqueDeclaration::IdentifierSet m_declared;
+	std::map<std::string, AST::NodeType> m_var_type_map;
+	Analysis::UniqueDeclaration::IdentifierSet m_declared;
 };
 
 }
