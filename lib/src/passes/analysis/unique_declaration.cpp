@@ -1,7 +1,6 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <algorithm>
-#include <random>
 #include <sstream>
 
 
@@ -12,6 +11,13 @@ namespace Passes
 namespace Analysis
 {
 
+
+thread_local UniqueDeclaration::RandGen UniqueDeclaration::s_generator;
+
+void UniqueDeclaration::seed(UniqueDeclaration::RandGen::result_type value)
+{
+	s_generator.seed(value);
+}
 
 int UniqueDeclaration::analyze(const AST::Node::Ptr &node, IdentifierSet &id_set)
 {
@@ -94,7 +100,6 @@ std::string UniqueDeclaration::get_unique_identifier(const std::string &identifi
 		return identifier_basename;
 	}
 
-	static thread_local std::default_random_engine generator;
 	std::uniform_int_distribution<int> distribution(97, 122);
 
 	std::stringstream ss;
@@ -106,7 +111,7 @@ std::string UniqueDeclaration::get_unique_identifier(const std::string &identifi
 		ss << identifier_basename << "_";
 
 		for (int i=0; i<6; i++) {
-			ss << static_cast<char>(distribution(generator));
+			ss << static_cast<char>(distribution(s_generator));
 		}
 	} while (identifier_declaration_exists(ss.str(), id_set));
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <set>
 #include <string>
+#include <random>
 
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/AST/nodes.hpp>
@@ -23,6 +24,8 @@ namespace Analysis {
  */
 class UniqueDeclaration
 {
+	using RandGen = std::default_random_engine;
+
 public:
 	using IdentifierSet = std::set<std::string>;
 
@@ -31,7 +34,8 @@ public:
 	 */
 	UniqueDeclaration() = delete;
 
-	/** @brief collect in the identifier set all identifiers of I/O,
+	/**
+	 * @brief collect in the identifier set all identifiers of I/O,
 	 * variables, instances, tasks, funtcions, ...
 	 *
 	 * @return zero on success
@@ -52,6 +56,14 @@ public:
 	 * identifier string.
 	 */
 	static std::string get_unique_identifier(const std::string &identifier_basename, IdentifierSet &id_set);
+
+	/**
+	 * @brief Reset the random generator seed.
+	 */
+	static void seed(RandGen::result_type value);
+
+private:
+	static thread_local RandGen s_generator;
 
 };
 
