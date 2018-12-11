@@ -19,6 +19,8 @@ Mechanics
 Functional
 ----------
 
+#. 2018-12-06: Rename declaration (net, instance, ...) during generate for etc ...
+
 #. 2018-12-06: Add a test in module instance normalization to trig instance name collision during array splitting.
 
 #. 2018-12-04: Module Flatten: If binding an instance output, check that upper module binded net is a wire.

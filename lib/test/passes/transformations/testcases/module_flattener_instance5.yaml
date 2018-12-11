@@ -1,0 +1,4364 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance5.v
+          items:
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 9
+              name: inst_clock
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 9
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 9
+                      name: inst_clock
+                      scope:
+                        IdentifierScope: null
+              line: 9
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 9
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 9
+                      name: clock
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 10
+              name: inst_a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 3
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 10
+                      sign: true
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 10
+                      name: inst_a
+                      scope:
+                        IdentifierScope: null
+              line: 10
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 10
+                      name: a
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 11
+              name: inst_b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 11
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 11
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 11
+                      sign: true
+                      size: -1
+                      value: 3
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 11
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 11
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 11
+                      sign: true
+                      size: -1
+                      value: 1
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 11
+                      name: inst_b
+                      scope:
+                        IdentifierScope: null
+              line: 11
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 11
+                      name: b
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 12
+              name: inst_c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 12
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 12
+                      sign: true
+                      size: -1
+                      value: 3
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 12
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 12
+                      sign: true
+                      size: -1
+                      value: 1
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 12
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 12
+                      name: inst_c
+                      scope:
+                        IdentifierScope: null
+              line: 12
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 12
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 12
+                      name: c
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 13
+              name: inst_d
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 13
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 13
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 13
+                      sign: true
+                      size: -1
+                      value: 3
+          - Assign:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 13
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 13
+                      name: d
+                      scope:
+                        IdentifierScope: null
+              line: 13
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 13
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 13
+                      name: inst_d
+                      scope:
+                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 19
+              name: inst0_clock
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 20
+              name: inst0_a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 20
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 7
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 21
+              name: inst0_b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 21
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 1
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 22
+              name: inst0_c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 22
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst0_d
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst0_e
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_clock
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 9
+                      name: inst_clock
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_a
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 10
+                          name: inst_a
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_b
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 11
+                          name: inst_b
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_c
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 12
+                          name: inst_c
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 13
+                          name: inst_d
+                          scope:
+                            IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_d
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 25
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 25
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 25
+                          name: inst0_clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 26
+                              name: inst0_d
+                              scope:
+                                IdentifierScope: null
+                      line: 26
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst0_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst0_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 26
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst0_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst0_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 26
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 26
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      name: inst0_c
+                                      scope:
+                                        IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 27
+                              name: inst0_e
+                              scope:
+                                IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst0_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst0_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 27
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst0_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst0_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 27
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 27
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      sign: false
+                                      size: -1
+                                      value: 0
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      name: inst0_c
+                                      scope:
+                                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 19
+              name: inst1_clock
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 20
+              name: inst1_a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 20
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 7
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 21
+              name: inst1_b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 21
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 1
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 22
+              name: inst1_c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 22
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst1_d
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst1_e
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_clock
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 9
+                      name: inst_clock
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_a
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 10
+                          name: inst_a
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_b
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 11
+                          name: inst_b
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_c
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 12
+                          name: inst_c
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 13
+                          name: inst_d
+                          scope:
+                            IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_d
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 25
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 25
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 25
+                          name: inst1_clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 26
+                              name: inst1_d
+                              scope:
+                                IdentifierScope: null
+                      line: 26
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst1_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst1_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 26
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst1_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst1_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 26
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 26
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      name: inst1_c
+                                      scope:
+                                        IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 27
+                              name: inst1_e
+                              scope:
+                                IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst1_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst1_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 27
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst1_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst1_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 27
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 27
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      sign: false
+                                      size: -1
+                                      value: 0
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      name: inst1_c
+                                      scope:
+                                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 19
+              name: inst2_clock
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 20
+              name: inst2_a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 20
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 7
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 21
+              name: inst2_b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 21
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 1
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 22
+              name: inst2_c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 22
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst2_d
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst2_e
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_clock
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 9
+                      name: inst_clock
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_a
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 10
+                          name: inst_a
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_b
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 11
+                          name: inst_b
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_c
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 12
+                          name: inst_c
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 13
+                          name: inst_d
+                          scope:
+                            IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_d
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 25
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 25
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 25
+                          name: inst2_clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 26
+                              name: inst2_d
+                              scope:
+                                IdentifierScope: null
+                      line: 26
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst2_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst2_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 26
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst2_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst2_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 26
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 26
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      name: inst2_c
+                                      scope:
+                                        IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 27
+                              name: inst2_e
+                              scope:
+                                IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst2_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst2_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 27
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst2_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst2_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 27
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 27
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      sign: false
+                                      size: -1
+                                      value: 0
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      name: inst2_c
+                                      scope:
+                                        IdentifierScope: null
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 19
+              name: inst3_clock
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 20
+              name: inst3_a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 20
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      sign: false
+                      size: -1
+                      value: 7
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 21
+              name: inst3_b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 21
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      sign: false
+                      size: -1
+                      value: 1
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 22
+              name: inst3_c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 22
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      sign: false
+                      size: -1
+                      value: 1
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst3_d
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 23
+              name: inst3_e
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_clock
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 9
+                      name: inst_clock
+                      scope:
+                        IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_a
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 10
+                          name: inst_a
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_b
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 11
+                          name: inst_b
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_c
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 12
+                          name: inst_c
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 13
+                          name: inst_d
+                          scope:
+                            IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_d
+                      scope:
+                        IdentifierScope: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 25
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 25
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 25
+                          name: inst3_clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 26
+                              name: inst3_d
+                              scope:
+                                IdentifierScope: null
+                      line: 26
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst3_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst3_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 26
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst3_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: inst3_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 26
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 26
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      name: inst3_c
+                                      scope:
+                                        IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 27
+                              name: inst3_e
+                              scope:
+                                IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst3_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst3_b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 27
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst3_a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: inst3_b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 27
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 27
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      sign: false
+                                      size: -1
+                                      value: 0
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      name: inst3_c
+                                      scope:
+                                        IdentifierScope: null
+          line: 1
+          name: instance5
+          ports:
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 2
+                  name: clock
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: clock
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 3
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 3
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: a
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 3
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 4
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: b
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 5
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: c
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 6
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 3
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+              line: 0
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 6
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 3
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance5.v
+          items:
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 19
+                  name: clock
+                  sign: false
+              line: 19
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 19
+                  name: clock
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 20
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 20
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 20
+                  name: a
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 21
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 21
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 21
+                  name: b
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 21
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              first:
+                Input:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 22
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 22
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 22
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 22
+              second:
+                Wire:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 22
+                  name: c
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 22
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 22
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 22
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 23
+                  name: d
+                  sign: false
+              line: 23
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 23
+                  name: d
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              first:
+                Output:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 23
+                  name: e
+                  sign: false
+              line: 23
+              second:
+                Reg:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 23
+                  name: e
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 25
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 25
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 25
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 25
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 26
+                              name: d
+                              scope:
+                                IdentifierScope: null
+                      line: 26
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 26
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 26
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 26
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 26
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 26
+                                              name: b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 26
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 26
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 26
+                                      name: c
+                                      scope:
+                                        IdentifierScope: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 27
+                              name: e
+                              scope:
+                                IdentifierScope: null
+                      line: 27
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 27
+                          var:
+                            Lor:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Land:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  left:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: b
+                                              scope:
+                                                IdentifierScope: null
+                                  line: 27
+                                  right:
+                                    Lor:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      left:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: a
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 27
+                                      right:
+                                        Pointer:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 27
+                                          ptr:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 27
+                                              name: b
+                                              scope:
+                                                IdentifierScope: null
+                              line: 27
+                              right:
+                                Pointer:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 27
+                                  ptr:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      sign: false
+                                      size: -1
+                                      value: 0
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 27
+                                      name: c
+                                      scope:
+                                        IdentifierScope: null
+          line: 18
+          name: my_module
+          ports:
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 18
+              name: clock
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 18
+              name: a
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 18
+              name: b
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 18
+              name: c
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 18
+              name: d
+          - Port:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 18
+              name: e
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/passes/transformations/testcases/instance5.v
+          items:
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 36
+              name: clock
+              right:
+                Rvalue: null
+              sign: false
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 37
+              name: a
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 37
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 37
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 37
+                      sign: false
+                      size: -1
+                      value: 3
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 37
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 37
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 37
+                      sign: false
+                      size: -1
+                      value: 7
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 38
+              name: b
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 38
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 38
+                      sign: false
+                      size: -1
+                      value: 7
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 38
+                      sign: false
+                      size: -1
+                      value: 0
+          - Reg:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 39
+              name: c
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 39
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 39
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 39
+                      sign: false
+                      size: -1
+                      value: 7
+          - Wire:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              ldelay:
+                DelayStatement: null
+              line: 40
+              name: d
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 40
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 40
+                      sign: false
+                      size: -1
+                      value: 3
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 40
+                      sign: false
+                      size: -1
+                      value: 0
+          - Integer:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 42
+              name: cpt
+              right:
+                Rvalue: null
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 49
+              senslist:
+                Senslist: null
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 49
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 50
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 50
+                              name: clock
+                              scope:
+                                IdentifierScope: null
+                      line: 50
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 50
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 50
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 51
+                              sign: false
+                              size: -1
+                              value: 5
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 51
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 51
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 51
+                              name: clock
+                              scope:
+                                IdentifierScope: null
+                      line: 51
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 51
+                          var:
+                            Ulnot:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 51
+                              right:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 51
+                                  name: clock
+                                  scope:
+                                    IdentifierScope: null
+          - Instancelist:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 59
+                  module: instance5
+                  name: instance5_inst
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 61
+                      name: clock
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 61
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 62
+                      name: a
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 62
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 63
+                      name: b
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 63
+                          name: b
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 64
+                      name: c
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 64
+                          name: c
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 65
+                      name: d
+                      value:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 65
+                          name: d
+                          scope:
+                            IdentifierScope: null
+              line: 59
+              module: instance5
+          - Initial:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 73
+              statement:
+                BlockingSubstitution:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 73
+                      var:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 73
+                          name: cpt
+                          scope:
+                            IdentifierScope: null
+                  line: 73
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 73
+                      var:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 73
+                          sign: false
+                          size: -1
+                          value: 0
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 75
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 75
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 75
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 75
+                          name: clock
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 75
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 76
+                          var:
+                            Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 76
+                              name: cpt
+                              scope:
+                                IdentifierScope: null
+                      line: 76
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 76
+                          var:
+                            Plus:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 76
+                                  name: cpt
+                                  scope:
+                                    IdentifierScope: null
+                              line: 76
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 76
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 77
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 77
+                              name: d
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 77
+                          syscall: display
+          - Always:
+              filename: ../../test/passes/transformations/testcases/instance5.v
+              line: 80
+              senslist:
+                Senslist:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 80
+                  list:
+                  - Sens:
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 80
+                      sig:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 80
+                          name: cpt
+                          scope:
+                            IdentifierScope: null
+                      type: NONE
+              statement:
+                Block:
+                  filename: ../../test/passes/transformations/testcases/instance5.v
+                  line: 80
+                  scope: ''
+                  statements:
+                  - CaseStatement:
+                      caselist:
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 82
+                              sign: false
+                              size: -1
+                              value: 1
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 82
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 82
+                              scope: ''
+                              statements:
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 83
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 83
+                                          name: a
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 83
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 83
+                                      var:
+                                        Concat:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 83
+                                          list:
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 83
+                                              sign: false
+                                              size: 8
+                                              value: 172
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 83
+                                              sign: false
+                                              size: 8
+                                              value: 150
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 83
+                                              sign: false
+                                              size: 8
+                                              value: 241
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 83
+                                              sign: false
+                                              size: 8
+                                              value: 165
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 84
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 84
+                                          name: b
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 84
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 84
+                                      var:
+                                        IntConstN:
+                                          base: 2
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 84
+                                          sign: false
+                                          size: 8
+                                          value: 231
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 85
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 85
+                                          name: c
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 85
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 85
+                                      var:
+                                        IntConstN:
+                                          base: 2
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 85
+                                          sign: false
+                                          size: 8
+                                          value: 60
+                      - Case:
+                          cond:
+                          - IntConstN:
+                              base: 10
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 87
+                              sign: false
+                              size: -1
+                              value: 5
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 87
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 87
+                              scope: ''
+                              statements:
+                              - SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  line: 88
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 88
+                                      syscall: finish
+                      - Case:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 90
+                          statement:
+                            Block:
+                              filename: ../../test/passes/transformations/testcases/instance5.v
+                              line: 90
+                              scope: ''
+                              statements:
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 91
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 91
+                                          name: a
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 91
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 91
+                                      var:
+                                        Concat:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 91
+                                          list:
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 91
+                                              sign: false
+                                              size: 8
+                                              value: 0
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 91
+                                              sign: false
+                                              size: 8
+                                              value: 0
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 91
+                                              sign: false
+                                              size: 8
+                                              value: 0
+                                          - IntConstN:
+                                              base: 2
+                                              filename: ../../test/passes/transformations/testcases/instance5.v
+                                              line: 91
+                                              sign: false
+                                              size: 8
+                                              value: 0
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 92
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 92
+                                          name: b
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 92
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 92
+                                      var:
+                                        IntConstN:
+                                          base: 2
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 92
+                                          sign: false
+                                          size: 8
+                                          value: 0
+                              - BlockingSubstitution:
+                                  filename: ../../test/passes/transformations/testcases/instance5.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 93
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 93
+                                          name: c
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 93
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/passes/transformations/testcases/instance5.v
+                                      line: 93
+                                      var:
+                                        IntConstN:
+                                          base: 2
+                                          filename: ../../test/passes/transformations/testcases/instance5.v
+                                          line: 93
+                                          sign: false
+                                          size: 8
+                                          value: 0
+                      comp:
+                        Identifier:
+                          filename: ../../test/passes/transformations/testcases/instance5.v
+                          line: 81
+                          name: cpt
+                          scope:
+                            IdentifierScope: null
+                      filename: ../../test/passes/transformations/testcases/instance5.v
+                      line: 81
+          line: 31
+          name: instance5_testbench
+      filename: ../../test/passes/transformations/testcases/instance5.v
+      line: 1
+  filename: ../../test/passes/transformations/testcases/instance5.v
+  line: 1
+
