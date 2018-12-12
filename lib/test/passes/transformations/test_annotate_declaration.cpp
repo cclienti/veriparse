@@ -31,28 +31,15 @@ static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
 	const std::string ref_filename = test_ref_suffix + test_name;                      \
 	AST::Node::Ptr source_ref = Importers::YAMLImporter().import                       \
 		(test_helpers.get_yaml_filename(ref_filename).c_str());                         \
+	test_helpers.render_node_to_verilog_file(source_ref, test_string + "_ref.v");      \
 	ASSERT_TRUE(source_ref != nullptr);                                                \
                                                                                       \
 	/* Check parsed against reference */                                               \
 	ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 
-TEST(PassesTransformation_AnnotateDeclaration, module2)
-{
-	TEST_CORE;
-}
-
-TEST(PassesTransformation_AnnotateDeclaration, localparam0)
-{
-	TEST_CORE;
-}
-
-TEST(PassesTransformation_AnnotateDeclaration, task0)
-{
-	TEST_CORE;
-}
-
-TEST(PassesTransformation_AnnotateDeclaration, function0)
-{
-	TEST_CORE;
-}
+TEST(PassesTransformation_AnnotateDeclaration, module2) {TEST_CORE;}
+TEST(PassesTransformation_AnnotateDeclaration, localparam0) {TEST_CORE;}
+TEST(PassesTransformation_AnnotateDeclaration, task0) {TEST_CORE;}
+TEST(PassesTransformation_AnnotateDeclaration, function0) {TEST_CORE;}
+TEST(PassesTransformation_AnnotateDeclaration, instance0) {TEST_CORE;}

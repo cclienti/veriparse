@@ -19,7 +19,7 @@ Mechanics
 Functional
 ----------
 
-#. 2018-12-06: Rename declaration (net, instance, ...) during generate for etc ...
+#. 2018-12-12: Verilog generator: assign and ternary operator are not properly indented (see flattener alu_dsp test).
 
 #. 2018-12-06: Add a test in module instance normalization to trig instance name collision during array splitting.
 
