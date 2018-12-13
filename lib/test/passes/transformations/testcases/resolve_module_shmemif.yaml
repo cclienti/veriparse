@@ -346,7 +346,7 @@ Source:
                   filename: ../../test/passes/transformations/testcases/shmemif.v
                   line: 50
                   module: prra_lut
-                  name: prra_lut_inst
+                  name: prra_lut_inst_i_0
                   parameterlist:
                   - ParamArg:
                       filename: ../../test/passes/transformations/testcases/shmemif.v
@@ -467,7 +467,7 @@ Source:
                   filename: ../../test/passes/transformations/testcases/shmemif.v
                   line: 50
                   module: prra_lut
-                  name: prra_lut_inst
+                  name: prra_lut_inst_i_1
                   parameterlist:
                   - ParamArg:
                       filename: ../../test/passes/transformations/testcases/shmemif.v
@@ -588,7 +588,7 @@ Source:
                   filename: ../../test/passes/transformations/testcases/shmemif.v
                   line: 50
                   module: prra_lut
-                  name: prra_lut_inst
+                  name: prra_lut_inst_i_2
                   parameterlist:
                   - ParamArg:
                       filename: ../../test/passes/transformations/testcases/shmemif.v
@@ -709,7 +709,7 @@ Source:
                   filename: ../../test/passes/transformations/testcases/shmemif.v
                   line: 50
                   module: prra_lut
-                  name: prra_lut_inst
+                  name: prra_lut_inst_i_3
                   parameterlist:
                   - ParamArg:
                       filename: ../../test/passes/transformations/testcases/shmemif.v
