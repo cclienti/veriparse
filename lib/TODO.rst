@@ -7,7 +7,7 @@ Mechanics
 
 #. 2018-10-13: Change AST cast by adding a Node::as<T> method.
 
-#. 2018-10-13: Use unique_ptr instead of share_ptr.
+#. 2018-10-13: Use unique_ptr instead of share_ptr. Really useful and achievable ??
 
 #. 2018-10-14: Remove indentation levels for namespaces
 
@@ -19,18 +19,16 @@ Mechanics
 Functional
 ----------
 
+#. 2018-12-13: Module Flattener Tests: modify verilog testbench to check the validity of the test automatically.
+
 #. 2018-12-12: Verilog generator: assign and ternary operator are not properly indented (see flattener alu_dsp test).
 
 #. 2018-12-06: Add a test in module instance normalization to trig instance name collision during array splitting.
 
-#. 2018-12-04: Module Flatten: If binding an instance output, check that upper module binded net is a wire.
-
 #. 2018-12-04: How to manage inout during module flatten binding.
 
-#. 2018-11-28: Test are broken in release (passes, dimensions)
-
-#. 2018-10-07: Add instance inlining. Manage defparam and signal that reads information across multiple levels of
-   instanciation. Do not forget to add a replace_port_affectation before inlining.
+#. 2018-10-07: Module Flattener: manage defparam and signal that reads information across multiple levels of
+   instanciation.
 
 #. 2018-10-21: Add a verilog pre-processor (compiler directives).
 
