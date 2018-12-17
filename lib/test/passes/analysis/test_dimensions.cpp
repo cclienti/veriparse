@@ -8,7 +8,7 @@
 
 using namespace Veriparse;
 
-static TestHelpers test_helpers("../../test/passes/analysis/testcases/");
+static TestHelpers test_helpers("lib/test/passes/analysis/testcases/");
 
 
 TEST(PassesAnalysis_Dimensions, dimension0) {

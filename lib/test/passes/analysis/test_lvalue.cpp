@@ -8,8 +8,8 @@
 using namespace Veriparse;
 using namespace Passes;
 
-static TestHelpers test_helpers("../../test/parser/testcases/");
-static TestHelpers test2_helpers("../../test/passes/analysis/testcases/");
+static TestHelpers test_helpers("lib/test/parser/testcases/");
+static TestHelpers test2_helpers("lib/test/passes/analysis/testcases/");
 
 TEST(PassesAnalysis_Lvalue, lvalue0)
 {

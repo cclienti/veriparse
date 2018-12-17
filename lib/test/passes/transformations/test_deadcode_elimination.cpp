@@ -8,7 +8,7 @@
 
 using namespace Veriparse;
 
-static TestHelpers test_helpers("../../test/passes/transformations/testcases/");
+static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 
 #define TEST_CORE                                                               \
 	ENABLE_LOGGER;                                                               \

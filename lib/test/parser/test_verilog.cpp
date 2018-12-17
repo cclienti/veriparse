@@ -10,7 +10,7 @@
 
 using namespace Veriparse;
 
-static TestHelpers test_helpers("../../test/parser/testcases/");
+static TestHelpers test_helpers("lib/test/parser/testcases/");
 
 
 #define TEST_CORE                                                                      \
@@ -24,7 +24,7 @@ static TestHelpers test_helpers("../../test/parser/testcases/");
 	test_helpers.render_node_to_yaml_file(source, test_string + "_parsed.yaml");        \
 	test_helpers.render_node_to_dot_file(source, test_string + "_parsed.dot");          \
                                                                                        \
-	/* Full cloning and iq_equal test */                                                \
+	/* Full cloning and is_equal test */                                                \
 	AST::Node::Ptr source_cloned = source->clone();                                     \
 	ASSERT_TRUE(source->is_equal(source_cloned));                                       \
 	test_helpers.render_node_to_dot_file(source_cloned, test_string + "_cloned.dot");   \
@@ -36,7 +36,7 @@ static TestHelpers test_helpers("../../test/parser/testcases/");
 	ASSERT_TRUE(source_ref != nullptr);                                                 \
                                                                                        \
 	/* Check parsed against reference */                                                \
-	ASSERT_TRUE(source->is_equal(*source_ref, true))
+	ASSERT_TRUE(source->is_equal(*source_ref, false))
 
 
 TEST(VerilogParserTest, module0)        {TEST_CORE;}

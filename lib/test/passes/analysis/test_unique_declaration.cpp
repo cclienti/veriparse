@@ -7,7 +7,7 @@
 using namespace Veriparse;
 using namespace Passes;
 
-static TestHelpers test_helpers("../../test/parser/testcases/");
+static TestHelpers test_helpers("lib/test/parser/testcases/");
 
 TEST(PassesAnalysis_UniqueDeclaration, module3)
 {

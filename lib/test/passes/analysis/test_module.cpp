@@ -6,7 +6,8 @@
 
 using namespace Veriparse;
 
-static TestHelpers test_helpers("../../test/parser/testcases/");
+static TestHelpers test_helpers("lib/test/parser/testcases");
+static TestHelpers test2_helpers("lib/test/passes/transformations/testcases");
 
 
 TEST(PassesAnalysis_Module, ModuleDictionary) {
@@ -15,17 +16,17 @@ TEST(PassesAnalysis_Module, ModuleDictionary) {
 	const auto &node_list = std::make_shared<AST::Node::List>();
 
 	Parser::Verilog verilog;
-	verilog.parse("../../test/passes/transformations/testcases/instance1.v");
+	verilog.parse(test2_helpers.get_verilog_filename("instance1"));
 	const auto &source1 = verilog.get_source();
 	ASSERT_TRUE(source1 != nullptr);
 	node_list->push_back(source1);
 
-	verilog.parse("../../test/passes/transformations/testcases/instance2.v");
+	verilog.parse(test2_helpers.get_verilog_filename("instance2"));
 	const auto &source2 = verilog.get_source();
 	ASSERT_TRUE(source2 != nullptr);
 	node_list->push_back(source2);
 
-	verilog.parse("../../test/passes/transformations/testcases/instance3.v");
+	verilog.parse(test2_helpers.get_verilog_filename("instance3"));
 	const auto &source3 = verilog.get_source();
 	ASSERT_TRUE(source3 != nullptr);
 	node_list->push_back(source3);
