@@ -4,8 +4,9 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   set(VERIPARSE_COMMON_CMAKE TRUE)
 
   message(STATUS "Using the veriparse common cmake listfile")
-  include(ExternalProject)
+  message(STATUS "VERIPARSE_EXTERNAL_ROOT_PATH=${VERIPARSE_EXTERNAL_ROOT_PATH}")
   include(FindPackageHandleStandardArgs)
+
 
   ########################################
   ### Custom Modules
@@ -68,12 +69,8 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 	NAMES libgtest.a gtest
 	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/googletest/install/lib)
 
-  find_library(GTEST_MAIN_LIBRARY
-	NAMES libgtest_main.a gtest_main
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/googletest/install/lib)
-
-  find_package_handle_standard_args(GTEST DEFAULT_MSG GTEST_INCLUDE_DIR GTEST_LIBRARY GTEST_MAIN_LIBRARY)
-  mark_as_advanced(GTEST_INCLUDE_DIR GTEST_LIBRARY GTEST_MAIN_LIBRARY)
+  find_package_handle_standard_args(GTEST DEFAULT_MSG GTEST_INCLUDE_DIR GTEST_LIBRARY)
+  mark_as_advanced(GTEST_INCLUDE_DIR GTEST_LIBRARY)
 
 
   ########################################
@@ -81,11 +78,11 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ########################################
 
   find_path(YAMLCPP_INCLUDE_DIR
-	NAMES yaml-cpp/yaml.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/yaml-cpp/install/include)
+  	NAMES yaml-cpp/yaml.h
+  	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/yaml-cpp/install/include)
 
   find_library(YAMLCPP_LIBRARY
-	NAMES libyaml-cpp.a yaml-cpp
+  	NAMES libyaml-cpp.a yaml-cpp
 	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/yaml-cpp/install/lib)
 
   find_package_handle_standard_args(YAMLCPP DEFAULT_MSG YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
