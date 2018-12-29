@@ -1,5 +1,6 @@
 #include <veriparse/passes/analysis/dimensions.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
+#include <veriparse/misc/math.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <algorithm>
 
@@ -520,8 +521,8 @@ AST::Node::Ptr Dimensions::generate_decl(const std::string &name, const AST::Nod
 	const auto &lengths = std::make_shared<AST::Length::List>();
 
 	for (const auto &dim: dims.list) {
-		const auto &msb = std::make_shared<AST::IntConstN>(10, -1, true, dim.msb, filename, line);
-		const auto &lsb = std::make_shared<AST::IntConstN>(10, -1, true, dim.lsb, filename, line);
+		const auto &msb = std::make_shared<AST::IntConstN>(10, -1, true, Misc::Math::i64_to_mpz(dim.msb), filename, line);
+		const auto &lsb = std::make_shared<AST::IntConstN>(10, -1, true, Misc::Math::i64_to_mpz(dim.lsb), filename, line);
 
 		if (dim.is_packed) {
 			widths->push_back(std::make_shared<AST::Width>(msb, lsb, filename, line));

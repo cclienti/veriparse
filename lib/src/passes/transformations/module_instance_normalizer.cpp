@@ -2,6 +2,7 @@
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/instance.hpp>
 #include <veriparse/misc/string_utils.hpp>
+#include <veriparse/misc/math.hpp>
 #include <veriparse/logger/logger.hpp>
 
 #include <algorithm>
@@ -271,14 +272,15 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 				}
 
 				std::size_t value_outer_index = value_outer_is_big ? value_outer_msb-i : value_outer_msb+i;
-				auto index_node = std::make_shared<AST::IntConstN>(10, -1, true, value_outer_index);
+				auto index_node = std::make_shared<AST::IntConstN>(10, -1, true,
+				                                                   Misc::Math::u64_to_mpz(value_outer_index));
 				pnode = std::make_shared<AST::Pointer>(index_node, port->get_value());
 			}
 			else {
 				// We need to slice the outer dimension because we will add
 				// a partselect node.
-				long slice_msb = value_outer_is_big ? (value_outer_msb - width_div*i) : (value_outer_msb + width_div*i);
-				long slice_lsb = value_outer_is_big ? (slice_msb - width_div + 1) : (slice_msb + width_div - 1);
+				std::int64_t slice_msb = value_outer_is_big ? (value_outer_msb - width_div*i) : (value_outer_msb + width_div*i);
+				std::int64_t slice_lsb = value_outer_is_big ? (slice_msb - width_div + 1) : (slice_msb + width_div - 1);
 
 				if (slice_msb < 0 || slice_lsb < 0) {
 					LOG_ERROR_N(port) << "bad instance index during instance array splitting, negative range in port argument";
@@ -293,8 +295,10 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 					return 1;
 				}
 
-				auto slice_msb_node = std::make_shared<AST::IntConstN>(10, -1, true, slice_msb);
-				auto slice_lsb_node = std::make_shared<AST::IntConstN>(10, -1, true, slice_lsb);
+				auto slice_msb_node = std::make_shared<AST::IntConstN>(10, -1, true,
+				                                                       Misc::Math::i64_to_mpz(slice_msb));
+				auto slice_lsb_node = std::make_shared<AST::IntConstN>(10, -1, true,
+				                                                       Misc::Math::i64_to_mpz(slice_lsb));
 				pnode = std::make_shared<AST::Partselect>(slice_msb_node, slice_lsb_node, port->get_value());
 			}
 
