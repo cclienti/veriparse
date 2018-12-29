@@ -5,6 +5,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
   message(STATUS "Using the veriparse common cmake listfile")
   include(ExternalProject)
+  include(FindPackageHandleStandardArgs)
 
   ########################################
   ### Custom Modules
@@ -22,9 +23,9 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   if(ENABLE_CCACHE)
     find_program(CCACHE_FOUND ccache)
     if(CCACHE_FOUND)
-	  message(STATUS "Using CCache")
-	  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
-	  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+      message(STATUS "Using CCache")
+      set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+      set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
     endif(CCACHE_FOUND)
   endif()
 
@@ -41,33 +42,93 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
 
   ########################################
+  ### Coverage
+  ########################################
+
+  if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+	include(CodeCoverage)
+  endif()
+
+  if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+	set(LCOV_REMOVE_EXTRA "'${VERIPARSE_EXTERNAL_ROOT_PATH}/*'")
+	message(STATUS "Coverage: excluding ${LCOV_REMOVE_EXTRA}")
+	setup_target_for_coverage(coverage "make run_tests" coverage)
+  endif()
+
+
+  ########################################
   ### GTest
   ########################################
 
-  include(external-googletest)
+  find_path(GTEST_INCLUDE_DIR
+	NAMES gtest/gtest.h
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/googletest/install/include)
+
+  find_library(GTEST_LIBRARY
+	NAMES libgtest.a gtest
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/googletest/install/lib)
+
+  find_library(GTEST_MAIN_LIBRARY
+	NAMES libgtest_main.a gtest_main
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/googletest/install/lib)
+
+  find_package_handle_standard_args(GTEST DEFAULT_MSG GTEST_INCLUDE_DIR GTEST_LIBRARY GTEST_MAIN_LIBRARY)
+  mark_as_advanced(GTEST_INCLUDE_DIR GTEST_LIBRARY GTEST_MAIN_LIBRARY)
 
 
   ########################################
   ### YAML-CPP
   ########################################
 
-  include(external-yaml-cpp)
+  find_path(YAMLCPP_INCLUDE_DIR
+	NAMES yaml-cpp/yaml.h
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/yaml-cpp/install/include)
 
+  find_library(YAMLCPP_LIBRARY
+	NAMES libyaml-cpp.a yaml-cpp
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/yaml-cpp/install/lib)
 
-  ########################################
-  ### Boost configuration
-  ########################################
-
-  set(BOOST_MODULES
-	system program_options log date_time
-	log_setup filesystem thread regex chrono atomic)
-  include(external-boost)
+  find_package_handle_standard_args(YAMLCPP DEFAULT_MSG YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
+  mark_as_advanced(YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
 
 
   ########################################
   ### GMP
   ########################################
 
-  include(external-gmp)
+  find_path(GMP_INCLUDE_DIR
+	NAMES gmp.h
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/include)
+
+  find_library(GMP_LIBRARY
+	NAMES libgmp.a gmp
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/lib)
+
+  find_package_handle_standard_args(GMP DEFAULT_MSG GMP_INCLUDE_DIR GMP_LIBRARY)
+  mark_as_advanced(GMP_INCLUDE_DIR GMP_LIBRARY)
+
+  find_path(GMPXX_INCLUDE_DIR
+	NAMES gmpxx.h
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/include)
+
+  find_library(GMPXX_LIBRARY
+	NAMES libgmpxx.a gmpxx
+	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/lib)
+
+  find_package_handle_standard_args(GMPXX DEFAULT_MSG GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
+  mark_as_advanced(GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
+
+
+  ########################################
+  ### Boost configuration
+  ########################################
+
+  set(BOOST_ROOT ${VERIPARSE_EXTERNAL_ROOT_PATH}/boost/install)
+  set(Boost_USE_STATIC_LIBS        ON)
+  set(Boost_USE_MULTITHREADED      ON)
+  set(Boost_USE_STATIC_RUNTIME     OFF)
+  find_package(Boost 1.64.0 REQUIRED
+	COMPONENTS system program_options thread filesystem date_time log log_setup)
+  message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS}")
 
 endif()

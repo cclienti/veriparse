@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 project (veriparse_lib_test)
 
-find_package(Threads)
 enable_testing()
 
 add_custom_target(build_tests)
@@ -16,10 +15,9 @@ foreach(subdir ${SUBDIRS})
 
     add_executable(${testname} "${test_source_files}")
     add_dependencies(build_tests ${testname})
-    target_include_directories(${testname} PRIVATE ${GTEST_INCLUDE_DIRS})
-    target_link_libraries(${testname} veriparse_static ${CMAKE_THREAD_LIBS_INIT} ${GTEST_BOTH_LIBRARIES})
+    target_include_directories(${testname} PRIVATE ${GTEST_INCLUDE_DIR})
+    target_link_libraries(${testname} veriparse_static ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
     add_test(${testname} ${testname})
-
   endif()
 endforeach()
 

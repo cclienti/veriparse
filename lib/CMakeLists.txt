@@ -6,7 +6,6 @@ cmake_minimum_required (VERSION 3.9)
 project (veriparse_lib)
 include (${CMAKE_CURRENT_LIST_DIR}/../cmake/common.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
-enable_testing()
 
 ########################################
 ### Veriparse Library
@@ -51,20 +50,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
   set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
 endif()
 
-add_dependencies(veriparse_static ${YAMLCPP_LIBRARY})
-add_dependencies(veriparse_static ${BOOST_LIBRARIES})
-add_dependencies(veriparse_static ${GMP_LIBRARIES})
-
 target_include_directories (veriparse_static PUBLIC include)
 target_include_directories (veriparse_static PUBLIC ${YAMLCPP_INCLUDE_DIR})
-target_include_directories (veriparse_static PUBLIC ${BOOST_INCLUDE_DIR})
+target_include_directories (veriparse_static PUBLIC ${BOOST_INCLUDE_DIRS})
 target_include_directories (veriparse_static PUBLIC ${GMP_INCLUDE_DIR})
+target_include_directories (veriparse_static PUBLIC ${GMPXX_INCLUDE_DIR})
 target_include_directories (veriparse_static PRIVATE src)
 target_include_directories (veriparse_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(veriparse_static ${YAMLCPP_LIBRARY})
-target_link_libraries(veriparse_static ${BOOST_LIBRARIES})
-target_link_libraries(veriparse_static ${GMP_LIBRARIES})
+target_link_libraries(veriparse_static Boost::system Boost::filesystem Boost::log)
+target_link_libraries(veriparse_static ${GMPXX_LIBRARY} ${GMP_LIBRARY})
 
 # Specific compilation flags
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
@@ -74,14 +70,4 @@ set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.
 ### Test generation
 ########################################
 
-if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-  include(CodeCoverage)
-endif()
-
 add_subdirectory(test)
-
-if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-  set(LCOV_REMOVE_EXTRA "'${CMAKE_CURRENT_BINARY_DIR}/external/*'")
-  message(STATUS "Coverage: excluding ${LCOV_REMOVE_EXTRA}")
-  setup_target_for_coverage(coverage "make run_tests" coverage)
-endif()
