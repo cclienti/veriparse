@@ -151,7 +151,7 @@ TEST(VerilogNumberParserTest, intconst7) {
 	int base;
 	bool is_signed;
 	int rc;
-	mpz_class mpz_ref = 3735928495;
+	mpz_class mpz_ref = 3735928495u;
 
 	ASSERT_EQ(verilog_number.parse("32'hDeAd_BeAf", mpz, size, base, is_signed, rc, "test.v", 4), 0);
 	ASSERT_EQ(size, 32);
