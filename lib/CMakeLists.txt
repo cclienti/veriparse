@@ -46,8 +46,10 @@ add_library (veriparse_static STATIC ${source_files}
   ${BISON_Veriparse_VerilogNumberParser_OUTPUTS}
   ${FLEX_Veriparse_VerilogNumberScanner_OUTPUTS})
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-  set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+if (NOT MINGW)
+  if (CMAKE_BUILD_TYPE STREQUAL "Release")
+	set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+  endif()
 endif()
 
 target_include_directories (veriparse_static PUBLIC include)
