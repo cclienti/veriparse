@@ -35,7 +35,12 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ### Compiler flags
   ########################################
 
-  set(CMAKE_CXX_FLAGS "-std=c++14 -Wall")
+  if(MINGW)
+    set(CMAKE_CXX_FLAGS "-Wa,-mbig-obj -std=c++14 -Wall")
+  else()
+    set(CMAKE_CXX_FLAGS "-std=c++14 -Wall")
+  endif()
+
   set(CMAKE_CXX_FLAGS_DEBUG  "-g -DDEBUG")
   set(CMAKE_CXX_FLAGS_FULL_DEBUG  "-g3 -DDEBUG -DFULL_DEBUG")
   set(CMAKE_CXX_FLAGS_RELEASE "-Werror -g -O3")
