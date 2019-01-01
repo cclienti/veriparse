@@ -1,0 +1,13 @@
+[Unit]
+Description=BuildBot worker service
+After=network.target
+ 
+[Service]
+User=root
+Group=root
+WorkingDirectory=/root/worker
+ExecStart=/bin/bash -l -c '/usr/local/bin/buildbot-worker start --nodaemon'
+ExecReload=/bin/kill -HUP $MAINPID
+ 
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+[Unit]
+	Description=BuildBot master service
+	After=network.target
+
+[Service]
+	User=root
+	Group=root
+	WorkingDirectory=/root/master
+	ExecStart=/usr/local/bin/buildbot start --nodaemon
+	ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+	WantedBy=multi-user.target
+
