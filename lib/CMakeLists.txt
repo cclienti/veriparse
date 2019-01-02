@@ -8,6 +8,13 @@ include (${CMAKE_CURRENT_LIST_DIR}/../cmake/common.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
 ########################################
+### License Library
+########################################
+
+add_library(license INTERFACE)
+target_include_directories(license INTERFACE include)
+
+########################################
 ### Veriparse Library
 ########################################
 

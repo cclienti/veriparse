@@ -1,0 +1,14 @@
+#ifndef LICENSE_PUBLIC_KEY_HPP
+#define LICENSE_PUBLIC_KEY_HPP
+
+#include <license/hide_string.hpp>
+#include <cstring>
+
+namespace license
+{
+
+<public_key>
+
+}
+
+#endif
