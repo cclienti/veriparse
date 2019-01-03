@@ -22,7 +22,6 @@ file (GLOB source_files
 add_executable (license_generator ${source_files})
 target_link_libraries (license_generator license)
 target_link_libraries (license_generator veriparse_static)
-target_link_libraries (license_generator crypto)
 target_link_libraries (license_generator ${Boost_LIBRARIES})
 
 # if(WIN32)

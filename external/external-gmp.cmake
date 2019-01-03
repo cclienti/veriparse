@@ -4,7 +4,7 @@ ProcessorCount(GMP_PROC)
 set(GMP_URL_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/gmp)
 set(GMP_URL_INSTALL_DIR ${GMP_URL_PREFIX_DIR}/install)
 
-message(STATUS "External project GMP installation in ${GMP_URL_INSTALL_DIR}")
+message(STATUS "External project gmp installation in ${GMP_URL_INSTALL_DIR}")
 
 set(GMP_URL            https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2)
 set(GMP_SHA256         5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2)

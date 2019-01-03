@@ -95,6 +95,15 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
 
   ########################################
+  ### OpenSSL
+  ########################################
+
+  set(OPENSSL_ROOT_DIR ${VERIPARSE_EXTERNAL_ROOT_PATH}/openssl/install)
+  set(OPENSSL_USE_STATIC_LIBS      ON)
+  find_package(OpenSSL)
+
+
+  ########################################
   ### GMP
   ########################################
 
