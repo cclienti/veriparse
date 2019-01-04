@@ -13,7 +13,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
 add_library(license INTERFACE)
 target_include_directories(license INTERFACE ${OPENSSL_INCLUDE_DIR})
-target_link_libraries(license INTERFACE ${OPENSSL_LIBRARIES} dl)
+if(MINGW)
+  target_link_libraries(license INTERFACE ${OPENSSL_LIBRARIES} z)
+else()
+  target_link_libraries(license INTERFACE ${OPENSSL_LIBRARIES} dl)
+endif()
 
 ########################################
 ### Veriparse Library
