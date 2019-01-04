@@ -6,13 +6,33 @@ cmake_minimum_required (VERSION 3.9)
 project (veriparse-external)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
+
+########################################
+### Count number of processors
+########################################
+
+include(ProcessorCount)
+ProcessorCount(VERIPARSE_PROCESSOR_COUNT)
+
+if(VERIPARSE_PROCESSOR_COUNT LESS 8)
+  set(VERIPARSE_PROCESSOR_COUNT 1)
+endif()
+
+message(STATUS "Bulding using ${VERIPARSE_PROCESSOR_COUNT} core(s)")
+
+
+########################################
+### Include external projects
+########################################
+
 include(ExternalProject)
 
-include (external-boost.cmake)
-include (external-gmp.cmake)
-include (external-googletest.cmake)
-include (external-yaml-cpp.cmake)
-include (external-openssl.cmake)
+set(VERIPARSE_EXTERNALS boost gmp googletest yaml-cpp openssl)
+
+foreach(VER_EXT ${VERIPARSE_EXTERNALS})
+  set(VERIPARSE_EXTERNAL_DEPS ${VERIPARSE_EXTERNAL_DEPS} ${VER_EXT}-ext)
+  include(external-${VER_EXT}.cmake)
+endforeach()
 
 
 ########################################
@@ -20,7 +40,7 @@ include (external-openssl.cmake)
 ########################################
 
 ExternalProject_Add(veriparse
-  DEPENDS           boost-url gmp-url yaml-cpp-git googletest-git
+  DEPENDS           ${VERIPARSE_EXTERNAL_DEPS}
   SOURCE_DIR        ${CMAKE_CURRENT_LIST_DIR}/..
   CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                     -DVERIPARSE_EXTERNAL_ROOT_PATH=${CMAKE_CURRENT_BINARY_DIR}/external

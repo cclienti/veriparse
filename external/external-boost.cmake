@@ -1,5 +1,7 @@
-include(ProcessorCount)
-ProcessorCount(BOOST_PROC)
+if(NOT VERIPARSE_PROCESSOR_COUNT)
+  set(VERIPARSE_PROCESSOR_COUNT 1)
+  message(STATUS "VERIPARSE_PROCESSOR_COUNT not set, forcing to 1")
+endif()
 
 set(BOOST_URL_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/boost)
 set(BOOST_URL_INSTALL_DIR ${BOOST_URL_PREFIX_DIR}/install)
@@ -12,7 +14,7 @@ set(BOOST_SHA256         7f6130bc3cf65f56a618888ce9d5ea704fa10b462be126ad053e80e
 # Patch command is used to setup the install
 set(BOOST_PATCH_CMD      echo "using gcc : : ${CMAKE_CXX_COMPILER} : <cxxflags>-Wno-deprecated-declarations $<SEMICOLON>\\n" > tools/build/src/user-config.jam)
 set(BOOST_BOOTSTRAP_CMD  ./bootstrap.sh --prefix=${BOOST_URL_INSTALL_DIR})
-set(BOOST_BUILD_CMD      ./b2 -j${BOOST_PROC} toolset=gcc link=static threading=multi variant=release install)
+set(BOOST_BUILD_CMD      ./b2 -j${VERIPARSE_PROCESSOR_COUNT} toolset=gcc link=static threading=multi variant=release install)
 
 # Boost patch if needed (boost 1.64)
 # Installed command is used to patch boost install against -Werror=parentheses
@@ -21,7 +23,7 @@ set(BOOST_BUILD_CMD      ./b2 -j${BOOST_PROC} toolset=gcc link=static threading=
 
 set(BOOST_LIBRARY_PREFIX_PATH ${BOOST_URL_INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX})
 
-ExternalProject_Add(boost-url
+ExternalProject_Add(boost-ext
     BUILD_IN_SOURCE   1
     PREFIX            ${BOOST_URL_PREFIX_DIR}
     URL               ${BOOST_URL}
