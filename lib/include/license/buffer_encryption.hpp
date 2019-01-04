@@ -115,9 +115,20 @@ static inline int encrypt_buffer(std::string const &rsa_private_key_buffer,
 	AES_KEY aes_enc_key;
 	AES_set_encrypt_key(aes_key, aes_key_size*8, &aes_enc_key);
 
-	// AES function works only on 128-bit buffer even if the key is larger.
-	uint8_t aes_encrypt_input[16];
-	uint8_t aes_encrypt_output[16];
+	// AES function works only on 128-bit buffer even if the key is
+	// larger.
+	//
+	// But due to gcc-8 checking of bad truncation
+	// (-Werror=stringop-truncation), the compilation fails. The
+	// attribute '__attribute__ ((nonstring))' can be added to the
+	// following declarations. It specifies that the array can be not
+	// null-terminated and the strncpy is safe.
+	//
+	// As this attribute is not standard, we choose to add an extra
+	// byte in the array and to null-terminate the array after each
+	// call to strncpy.
+	uint8_t aes_encrypt_input[16+1]; // __attribute__ ((nonstring));
+	uint8_t aes_encrypt_output[16+1]; // __attribute__ ((nonstring));
 
 	ss.str(std::string());
 	ss.clear();
@@ -125,6 +136,7 @@ static inline int encrypt_buffer(std::string const &rsa_private_key_buffer,
 
 	for(uint32_t block=0; block<strlen(input_buffer_str)+1; block+=16) {
 		strncpy(reinterpret_cast<char*>(aes_encrypt_input), input_buffer_str+block, 16);
+		aes_encrypt_input[sizeof(aes_encrypt_input)-1] = '\0';
 		AES_encrypt(aes_encrypt_input, aes_encrypt_output, &aes_enc_key);
 
 		for(uint32_t i=0; i<16; i++) {
