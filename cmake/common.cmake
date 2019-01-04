@@ -4,7 +4,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   set(VERIPARSE_COMMON_CMAKE TRUE)
 
   message(STATUS "Using the veriparse common cmake listfile")
-  message(STATUS "VERIPARSE_EXTERNAL_ROOT_PATH=${VERIPARSE_EXTERNAL_ROOT_PATH}")
+  message(STATUS "VERIPARSE_EXTERNAL_ROOT=${VERIPARSE_EXTERNAL_ROOT}")
   include(FindPackageHandleStandardArgs)
 
 
@@ -56,7 +56,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   endif()
 
   if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-	set(LCOV_REMOVE_EXTRA "'${VERIPARSE_EXTERNAL_ROOT_PATH}/*'")
+	set(LCOV_REMOVE_EXTRA "'${VERIPARSE_EXTERNAL_ROOT}/*'")
 	message(STATUS "Coverage: excluding ${LCOV_REMOVE_EXTRA}")
 	setup_target_for_coverage(coverage "make run_tests" coverage)
   endif()
@@ -68,11 +68,11 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
   find_path(GTEST_INCLUDE_DIR
 	NAMES gtest/gtest.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/googletest/install/include)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/googletest/install/include)
 
   find_library(GTEST_LIBRARY
 	NAMES libgtest.a gtest
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/googletest/install/lib)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/googletest/install/lib)
 
   find_package_handle_standard_args(GTEST DEFAULT_MSG GTEST_INCLUDE_DIR GTEST_LIBRARY)
   mark_as_advanced(GTEST_INCLUDE_DIR GTEST_LIBRARY)
@@ -84,11 +84,11 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
   find_path(YAMLCPP_INCLUDE_DIR
   	NAMES yaml-cpp/yaml.h
-  	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/yaml-cpp/install/include)
+  	HINTS ${VERIPARSE_EXTERNAL_ROOT}/yaml-cpp/install/include)
 
   find_library(YAMLCPP_LIBRARY
   	NAMES libyaml-cpp.a yaml-cpp
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/yaml-cpp/install/lib)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/yaml-cpp/install/lib)
 
   find_package_handle_standard_args(YAMLCPP DEFAULT_MSG YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
   mark_as_advanced(YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
@@ -98,7 +98,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ### OpenSSL
   ########################################
 
-  set(OPENSSL_ROOT_DIR ${VERIPARSE_EXTERNAL_ROOT_PATH}/openssl/install)
+  set(OPENSSL_ROOT_DIR ${VERIPARSE_EXTERNAL_ROOT}/openssl/install)
   set(OPENSSL_USE_STATIC_LIBS      ON)
   find_package(OpenSSL)
 
@@ -109,22 +109,22 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
   find_path(GMP_INCLUDE_DIR
 	NAMES gmp.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/include)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/gmp/install/include)
 
   find_library(GMP_LIBRARY
 	NAMES libgmp.a gmp
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/lib)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/gmp/install/lib)
 
   find_package_handle_standard_args(GMP DEFAULT_MSG GMP_INCLUDE_DIR GMP_LIBRARY)
   mark_as_advanced(GMP_INCLUDE_DIR GMP_LIBRARY)
 
   find_path(GMPXX_INCLUDE_DIR
 	NAMES gmpxx.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/include)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/gmp/install/include)
 
   find_library(GMPXX_LIBRARY
 	NAMES libgmpxx.a gmpxx
-	HINTS ${VERIPARSE_EXTERNAL_ROOT_PATH}/gmp/install/lib)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/gmp/install/lib)
 
   find_package_handle_standard_args(GMPXX DEFAULT_MSG GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
   mark_as_advanced(GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
@@ -134,7 +134,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ### Boost configuration
   ########################################
 
-  set(BOOST_ROOT ${VERIPARSE_EXTERNAL_ROOT_PATH}/boost/install)
+  set(BOOST_ROOT ${VERIPARSE_EXTERNAL_ROOT}/boost/install)
   set(Boost_USE_STATIC_LIBS        ON)
   set(Boost_USE_MULTITHREADED      ON)
   set(Boost_USE_STATIC_RUNTIME     OFF)
