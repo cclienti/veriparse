@@ -7,7 +7,28 @@
 namespace license
 {
 
-<public_key>
+{{hidden_key}}
+
+static inline char *create_{{hidden_name}}() {
+    char *s[] = {{hidden_array_init}};
+
+    int len = 0;
+
+    for(size_t i=0; i<(sizeof(s)/sizeof(char*)); ++i)
+        len += strlen(s[i]);
+
+    char *data_out = new char[len];
+
+    strcpy(data_out, s[0]);
+    shred_string(s[0]);
+
+    for(size_t i=1; i<(sizeof(s)/sizeof(char*)); ++i) {
+        strcat(data_out, s[i]);
+        shred_string(s[i]);
+    }
+
+    return data_out;
+}
 
 }
 

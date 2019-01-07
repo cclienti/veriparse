@@ -5,29 +5,6 @@ import random
 import argparse
 import time
 
-cpp_template = """
-static inline char *create_<pattern>() {
-    char *s[] = <key_array_init>;
-
-    int len = 0;
-
-    for(size_t i=0; i<(sizeof(s)/sizeof(char*)); ++i)
-        len += strlen(s[i]);
-
-    char *data_out = new char[len];
-
-    strcpy(data_out, s[0]);
-    shred_string(s[0]);
-
-    for(size_t i=1; i<(sizeof(s)/sizeof(char*)); ++i) {
-        strcat(data_out, s[i]);
-        shred_string(s[i]);
-    }
-
-    return data_out;
-}
-"""
-
 
 def read_key(key_filename):
     """return Keyfile dumped into a string"""
@@ -54,7 +31,15 @@ def build_c_string(string):
     return c_const
 
 
-def build_hidden_key_string(key, pattern):
+def generate_c_string(key, cpp_template_filename, pattern):
+    try:
+        f = open(cpp_template_filename, 'rb')
+        cpp_template = f.read()
+
+    except IOError:
+        sys.stderr.write('could not read %s!\n' % cpp_template_filename)
+        sys.exit(1)
+
     key = key.splitlines()
     key_len = len(key)
     hidden_key = ''
@@ -62,7 +47,7 @@ def build_hidden_key_string(key, pattern):
 
     for line_index in range(key_len):
         xkey = random.randint(1, 255)
-        hidden_key += '\tDEFINE_HIDDEN_STRING(%s_%d, %d, ' % (pattern, line_index, xkey)
+        hidden_key += 'DEFINE_HIDDEN_STRING(%s_%d, %d, ' % (pattern, line_index, xkey)
         for c in key[line_index]:
             hidden_key += '(\'%s\')' % c
         hidden_key += '(\'\\n\'))\n\n'
@@ -72,24 +57,11 @@ def build_hidden_key_string(key, pattern):
         else:
             key_array_init += ",\n\t\t\t"
 
-    hidden_key += cpp_template
-    hidden_key = hidden_key.replace("<pattern>", pattern)
-    hidden_key = hidden_key.replace("<key_array_init>", key_array_init)
+    cpp_template = cpp_template.replace("{{hidden_key}}", hidden_key)
+    cpp_template = cpp_template.replace("{{hidden_name}}", pattern)
+    cpp_template = cpp_template.replace("{{hidden_array_init}}", key_array_init)
 
-    return hidden_key
-
-
-def generate_c_string(hidden_key, cpp_template_filename, pattern):
-    try:
-        f = open(cpp_template_filename, 'rb')
-        cpp_template_file = f.read()
-
-    except IOError:
-        sys.stderr.write('could not read %s!\n' % cpp_template_filename)
-        sys.exit(1)
-
-    cpp_template_file = cpp_template_file.replace("<%s>" % pattern, hidden_key)
-    sys.stdout.write(cpp_template_file)
+    sys.stdout.write(cpp_template)
 
 
 def main():
@@ -100,10 +72,9 @@ def main():
     args = parser.parse_args()
 
     key = read_key(args.key)
-    hidden_key = build_hidden_key_string(key, args.pattern)
     sys.stdout.write("// File generated the %s, do not edit!\n" % time.strftime("%Y-%m-%d %H:%M:%S"))
     sys.stdout.write("// Command: %s\n\n" % " ".join(sys.argv))
-    generate_c_string(hidden_key, args.cpp_template, args.pattern)
+    generate_c_string(key, args.cpp_template, args.pattern)
 
 
 if __name__ == '__main__':
