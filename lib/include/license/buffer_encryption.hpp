@@ -31,17 +31,17 @@ static inline int encrypt_buffer(std::string const &rsa_private_key_buffer,
 	// Generate the AES-256 key
 	//-------------------------
 
-	uint8_t aes_key[32]; // 256-bit AES Key
-	uint32_t aes_key_size = sizeof(aes_key);
+	std::uint8_t aes_key[32]; // 256-bit AES Key
+	std::uint32_t aes_key_size = sizeof(aes_key);
 
 	std::random_device rd;
-	std::uniform_int_distribution<uint8_t> distribution(0, 255);
+	std::uniform_int_distribution<std::uint8_t> distribution(0, 255);
 	for (size_t i=0; i<aes_key_size; i++) aes_key[i] = distribution(rd);
 
 	std::stringstream debug_aes;
 	debug_aes << std::hex << std::setfill('0');
 	for(size_t i=0; i<aes_key_size; i++) {
-		debug_aes <<  std::setw(2) << static_cast<uint32_t>(aes_key[i]);
+		debug_aes <<  std::setw(2) << static_cast<std::uint32_t>(aes_key[i]);
 	}
 
 	//------------------------------
@@ -76,7 +76,7 @@ static inline int encrypt_buffer(std::string const &rsa_private_key_buffer,
 		return 1;
 	}
 
-	uint8_t *rsa_encrypted_aes_key = new uint8_t[RSA_size(rsa_private_key)];
+	std::uint8_t *rsa_encrypted_aes_key = new std::uint8_t[RSA_size(rsa_private_key)];
 
 	int rsa_size = RSA_private_encrypt(aes_key_size, aes_key, rsa_encrypted_aes_key,
 	                                   rsa_private_key, RSA_PKCS1_PADDING);
@@ -97,7 +97,7 @@ static inline int encrypt_buffer(std::string const &rsa_private_key_buffer,
 	for (int i=0; i<rsa_size; i++) {
 		// The byte is xored, then nibbles are reversed to harden
 		// the aes key discovery.
-		uint8_t nibble_reverse = rsa_encrypted_aes_key[i] ^ 42;
+		std::uint8_t nibble_reverse = rsa_encrypted_aes_key[i] ^ 42;
 		nibble_reverse = (((nibble_reverse & 0x0f) << 4) | ((nibble_reverse & 0xf0) >> 4));
 		ss << std::setw(2) << static_cast<int>(nibble_reverse);
 	}
@@ -127,24 +127,24 @@ static inline int encrypt_buffer(std::string const &rsa_private_key_buffer,
 	// As this attribute is not standard, we choose to add an extra
 	// byte in the array and to null-terminate the array after each
 	// call to strncpy.
-	uint8_t aes_encrypt_input[16+1]; // __attribute__ ((nonstring));
-	uint8_t aes_encrypt_output[16+1]; // __attribute__ ((nonstring));
+	std::uint8_t aes_encrypt_input[16+1]; // __attribute__ ((nonstring));
+	std::uint8_t aes_encrypt_output[16+1]; // __attribute__ ((nonstring));
 
 	ss.str(std::string());
 	ss.clear();
 	ss << std::hex << std::setfill('0');
 
-	for(uint32_t block=0; block<strlen(input_buffer_str)+1; block+=16) {
+	for(std::uint32_t block=0; block<strlen(input_buffer_str)+1; block+=16) {
 		strncpy(reinterpret_cast<char*>(aes_encrypt_input), input_buffer_str+block, 16);
 		aes_encrypt_input[sizeof(aes_encrypt_input)-1] = '\0';
 		AES_encrypt(aes_encrypt_input, aes_encrypt_output, &aes_enc_key);
 
-		for(uint32_t i=0; i<16; i++) {
+		for(std::uint32_t i=0; i<16; i++) {
 			// The byte is xored, then nibbles are reversed to harden
 			// the aes key discovery.
-			uint8_t nibble_reverse = aes_encrypt_output[i] ^ 17;
+			std::uint8_t nibble_reverse = aes_encrypt_output[i] ^ 17;
 			nibble_reverse = (((nibble_reverse & 0x0f) << 4) | ((nibble_reverse & 0xf0) >> 4));
-			ss << std::setw(2) << static_cast<uint32_t>(nibble_reverse);
+			ss << std::setw(2) << static_cast<std::uint32_t>(nibble_reverse);
 		}
 	}
 
