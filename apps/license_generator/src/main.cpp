@@ -1,6 +1,7 @@
 #include "license_generator.hpp"
 #include "license_generator.hpp"
 
+#include <license/platform_id.hpp>
 #include <license/public_key.hpp>
 #include <veriparse/logger/logger.hpp>
 
@@ -98,6 +99,13 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::vector<std::string> license_files = vm["license-files"].as<std::vector<std::string>>();
+
+	char mac[18];
+	std::string if_name = "eno1";
+	if (license::get_mac_address(mac, if_name)) {
+		std::cout << "failed to read mac address" << std::endl;
+	}
+	std::cout << "mac: " << mac << std::endl;
 
 	std::string rsa_private_key;
 	if (read_file(private_file, rsa_private_key) != 0) return 1;
