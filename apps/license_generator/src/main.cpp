@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
 	std::vector<std::string> license_files = vm["license-files"].as<std::vector<std::string>>();
 
 	char mac[18];
-	std::string if_name = "eno1";
+	std::string if_name = "{8CF580F1-CC89-4FFF-8C3A-89AD37D375E1}";
 	if (license::get_mac_address(mac, if_name)) {
 		std::cout << "failed to read mac address" << std::endl;
 	}
