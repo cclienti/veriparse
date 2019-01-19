@@ -23,7 +23,7 @@
 
 namespace license
 {
-inline void shred_string(char *str) {
+static inline void shred_string(char *str) {
 	char *p = str;
 	while (*p != '\0') {
 		*p++ = '\0';

@@ -1,10 +1,10 @@
-#ifndef LICENSE_GENERATOR_HPP
-#define LICENSE_GENERATOR_HPP
+#ifndef LICENSE_LICENSE_GENERATOR_HPP
+#define LICENSE_LICENSE_GENERATOR_HPP
 
 #include <vector>
 #include <string>
 
-int generate_license(std::string const &rsa_private_key, std::string const &rsa_public_key,
-                     std::vector<std::string> const &license_files_list);
+int generate_license(const std::string &rsa_private_key, const std::string &rsa_public_key,
+                     const std::string &license_file);
 
 #endif
