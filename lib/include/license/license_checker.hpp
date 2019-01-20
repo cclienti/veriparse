@@ -101,7 +101,7 @@ static inline int check_license(const std::string &license_file)
 		static bool warn = true;
 		if (warn == true) {
 			warn = false;
-			LOG_WARNING << "License will expire in" << diff_expiration << " days";
+			LOG_WARNING << "License will expire in " << diff_expiration << " day(s)";
 		}
 	}
 
@@ -151,7 +151,7 @@ static inline int check_license(const std::string &license_file)
 	}
 
 	if (ref_address != mac_address_c) {
-		LOG_ERROR << "MAC address of " << ref_interface
+		LOG_ERROR << "MAC address of " << ref_interface << " "
 		          << "does not correspond to that declared in the license file " << license_file;
 		return 6;
 	}
