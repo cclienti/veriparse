@@ -11,7 +11,6 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
-#include <boost/foreach.hpp>
 #include <boost/asio.hpp>
 
 #include <set>

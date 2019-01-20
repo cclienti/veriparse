@@ -5,7 +5,6 @@
 #include <license/public_key.hpp>
 #include <veriparse/logger/logger.hpp>
 
-#include <boost/algorithm/string/join.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 

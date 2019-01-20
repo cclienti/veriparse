@@ -1,9 +1,9 @@
 #include <license/platform_id.hpp>
 #include <license/public_key.hpp>
 #include <license/license_checker.hpp>
+
 #include <veriparse/logger/logger.hpp>
 
-#include <boost/algorithm/string/join.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
