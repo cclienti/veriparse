@@ -28,9 +28,14 @@ namespace license
 {
 
 /**
- * Return 1 if the license buffer cannot be decrypted or hardware information cannot be retrieved
- * Return > 1 if the decrypted license content is not valid
- * Return 0 is the license is valid
+ * @brief Check if the license file is valid regarding hardware
+ * resources.
+ *
+ * @param license_file
+ *
+ * @return 1 if the license buffer cannot be decrypted or hardware
+ * information cannot be retrieved, > 1 if the decrypted license
+ * content is not valid and 0 when the license is valid.
  */
 static inline int check_license(const std::string &license_file)
 {
@@ -156,6 +161,33 @@ static inline int check_license(const std::string &license_file)
 		return 6;
 	}
 
+
+	return 0;
+}
+
+
+/**
+ * @brief Check if the license file is valid regarding hardware
+ * resources.
+ *
+ * The license file is read from the environment variable
+ * VERIPARSE_LICENSE_FILE.
+ *
+ * @return 1 if the license buffer cannot be decrypted or hardware
+ * information cannot be retrieved, > 1 if the decrypted license
+ * content is not valid and 0 when the license is valid.
+ */
+static inline int check_license()
+{
+#ifndef VERIPARSE_NO_LICENSE
+	const char *license_file = std::getenv("VERIPARSE_LICENSE_FILE");
+	if (license_file == nullptr) {
+		LOG_ERROR << "VERIPARSE_LICENSE_FILE environment variable not set or empty";
+		return 1;
+	}
+
+	return check_license(license_file);
+#endif
 
 	return 0;
 }
