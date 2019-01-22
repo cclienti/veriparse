@@ -16,14 +16,15 @@ add_subdirectory(license_validator)
 # and license_validator
 #----------------------------------------
 
-
-add_custom_target(test_check_license)
-add_dependencies(test_check_license license_generator license_validator)
-add_test(
-  NAME
-  test_check_license
-  COMMAND
-  ${CMAKE_CURRENT_SOURCE_DIR}/license_validator/check.sh
-  ${CMAKE_CURRENT_BINARY_DIR}/license_generator/license_generator
-  ${CMAKE_CURRENT_BINARY_DIR}/license_validator/license_validator
-  ${CMAKE_CURRENT_SOURCE_DIR}/license_generator/resources/private.pem)
+if(NOT MINGW)
+  add_custom_target(test_check_license)
+  add_dependencies(test_check_license license_generator license_validator)
+  add_test(
+    NAME
+    test_check_license
+    COMMAND
+    ${CMAKE_CURRENT_SOURCE_DIR}/license_validator/check.sh
+    ${CMAKE_CURRENT_BINARY_DIR}/license_generator/license_generator
+    ${CMAKE_CURRENT_BINARY_DIR}/license_validator/license_validator
+    ${CMAKE_CURRENT_SOURCE_DIR}/license_generator/resources/private.pem)
+endif()
