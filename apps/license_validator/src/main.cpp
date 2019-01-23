@@ -68,19 +68,23 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	if(!vm.count("license-file")) {
-	    LOG_ERROR << "No license file given";
-	    return 1;
+	int rc = 0;
+
+	if(vm.count("license-file") == 0) {
+	    LOG_INFO << "Using environment variable VERIPARSE_LICENSE_FILE";
+	    rc = license::check_license();
+	}
+	else {
+		auto license_file = vm["license-file"].as<std::string>();
+		rc = license::check_license(license_file);
 	}
 
-	auto license_file = vm["license-file"].as<std::string>();
-
-	int rc = license::check_license(license_file);
 	if (rc != 0) {
-		LOG_ERROR << "license validation failed: " << license_file;
+		LOG_ERROR << "license validation failed";
 		return 1;
 	}
 
-	LOG_INFO << "license file " << license_file << " is valid";
+	LOG_INFO << "license file is valid";
+
 	return 0;
 }

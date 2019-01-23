@@ -39,6 +39,13 @@ namespace license
  */
 static inline int check_license(const std::string &license_file)
 {
+	static bool silent = false;
+
+	if (!silent) {
+		LOG_INFO << "Using license file '" << license_file << "'";
+		silent = true;
+	}
+
 	boost::property_tree::ptree tree;
 	boost::property_tree::read_ini(license_file, tree);
 

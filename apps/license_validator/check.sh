@@ -28,6 +28,23 @@ MAC_ADDRESS=$(cat /sys/class/net/$INTERFACE/address)
 
 
 #------------------------------------------------------
+echo "Check env. variable VERIPARSE_LICENSE_FILE"
+#------------------------------------------------------
+
+cat > license_test.ini <<EOF
+[information]
+company = Wavecruncher
+expiration = $(date --date='next year' +%Y-%m-%d)
+hostname = $HOSTNAME
+interface = $INTERFACE
+address = $MAC_ADDRESS
+EOF
+
+$LICENSE_GENERATOR --private $PRIVATE_KEY license_test.ini || exit 1
+VERIPARSE_LICENSE_FILE=license_test.dat $LICENSE_VALIDATOR || exit 1
+
+
+#------------------------------------------------------
 echo "Check next year validity"
 #------------------------------------------------------
 
