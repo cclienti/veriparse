@@ -1,5 +1,3 @@
-#include <license/platform_id.hpp>
-#include <license/public_key.hpp>
 #include <license/license_checker.hpp>
 
 #include <veriparse/logger/logger.hpp>
@@ -7,10 +5,7 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-#include <iostream>
 #include <string>
-#include <fstream>
-#include <streambuf>
 
 
 void show_usage(char const * const progname, boost::program_options::options_description const &desc)
