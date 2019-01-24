@@ -17,9 +17,6 @@ void show_usage(char const * const progname, boost::program_options::options_des
 
 int main(int argc, char *argv[])
 {
-	std::string config_file;
-	std::string private_file;
-
 	Veriparse::Logger::remove_all_sinks();
 	Veriparse::Logger::add_text_sink("license_validator.log");
 	Veriparse::Logger::add_stdout_sink();
@@ -33,6 +30,7 @@ int main(int argc, char *argv[])
 		("license-file", boost::program_options::value<std::string>(), "license file");
 
 	boost::program_options::options_description desc;
+	desc.add(options);
 
 	boost::program_options::options_description desc_all;
 	desc_all.add(desc).add(hidden);
