@@ -9,6 +9,7 @@ enable_testing()
 
 add_subdirectory(license_generator)
 add_subdirectory(license_validator)
+add_subdirectory(veriflat)
 
 
 #----------------------------------------
