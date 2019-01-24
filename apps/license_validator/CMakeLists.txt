@@ -24,8 +24,4 @@ target_link_libraries (license_validator license)
 target_link_libraries (license_validator veriparse_static)
 target_link_libraries (license_validator ${Boost_LIBRARIES})
 
-# if(WIN32)
-#   target_link_libraries (license_validator ws2_32)
-# endif()
-
-# install (TARGETS license_validator RUNTIME DESTINATION bin)
+install (TARGETS license_validator RUNTIME DESTINATION bin)

@@ -24,8 +24,4 @@ target_link_libraries (license_generator license)
 target_link_libraries (license_generator veriparse_static)
 target_link_libraries (license_generator ${Boost_LIBRARIES})
 
-# if(WIN32)
-#   target_link_libraries (license_generator ws2_32)
-# endif()
-
 # install (TARGETS license_generator RUNTIME DESTINATION bin)
