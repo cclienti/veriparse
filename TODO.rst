@@ -1,6 +1,8 @@
 Mechanics
 ---------
 
+#. 2019-01-27: Yaml importer, change std::cerr to LOG_ERROR
+
 #. 2018-12-03: Check if Senslist can be removed and replaced directly by Sens::List.
 
 #. 2018-08-18: Use references on shared pointer in method and function to improve the speedup.
@@ -18,6 +20,8 @@ Mechanics
 
 Functional
 ----------
+
+#. 2019-01-27: Setting NB_PORTS=8 in shmemif.v causes loop_unrolling to loop indefinitely.
 
 #. 2018-12-13: Module Flattener Tests: modify verilog testbench to check the validity of the test automatically.
 
