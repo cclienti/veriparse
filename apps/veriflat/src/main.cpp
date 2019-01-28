@@ -1,3 +1,6 @@
+#include "config.hpp"
+#include "parameters_overloading.hpp"
+
 #include <license/license_checker.hpp>
 
 #include <veriparse/logger/logger.hpp>
@@ -7,44 +10,11 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
 
-#include <yaml-cpp/yaml.h>
-
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
 #include <string>
-#include <ostream>
 
-
-struct Config
-{
-	std::vector<std::string> inputs;
-	std::string output;
-	std::string top_module;
-	std::string param_map;
-	bool obfuscate {false};
-};
-
-static std::ostream &operator<<(std::ostream &os, const Config &config)
-{
-	os << "{inputs: [";
-	std::stringstream ss;
-	for (int i = config.inputs.size()-1; i >= 0; i--) {
-		ss << "'" << config.inputs[i] << "'";
-		if (i != 0) {
-			ss << ", ";
-		}
-	}
-	os << ss.str() << "], ";
-
-	os << "output: '" << config.output << "', ";
-	os << "top_module: '" << config.top_module << "', ";
-	os << "param_map: " << config.param_map << ", ";
-	os << "obfuscate: " << config.obfuscate;
-	os << "}";
-
-	return os;
-}
 
 static void show_usage(char const * const progname, boost::program_options::options_description const &desc)
 {
@@ -155,68 +125,17 @@ static int veriflat(int argc, char *argv[])
 	// Prepare parameter overloading
 	//---------------------------------------------------------
 
-	YAML::Node node;
-
-	try {
-		node = YAML::Load(config.param_map);
-	}
-	catch ( const std::exception & e ) {
-		LOG_ERROR << "could not read parameters from command line";
+	bool overloaded;
+	Veriparse::AST::ParamArg::ListPtr param_args = overload_parameters(config.param_map, overloaded);
+	if (!overloaded) {
 		return 1;
 	}
-
-	Veriparse::AST::ParamArg::ListPtr paramargs;
-
-	if (!node.IsNull()) {
-		if (node.IsMap()) {
-			std::stringstream ssparams;
-			ssparams << "module params;";
-			for (auto param: node) {
-				if (param.second.IsScalar()) {
-					ssparams << "parameter " << param.first << " = " << param.second << ";";
-				}
-				else {
-					LOG_ERROR << "Command line parameter " << param.first << " is not scalar";
-					return 1;
-				}
-			}
-			ssparams << "endmodule";
-
-			Veriparse::Parser::Verilog verilog;
-			verilog.parse(ssparams);
-			auto params = Veriparse::Passes::Analysis::Module::get_parameter_nodes(verilog.get_source());
-
-			if (params && params->size() != 0) {
-				paramargs = std::make_shared<Veriparse::AST::ParamArg::List>();
-				for (auto param: *params) {
-					auto name = param->get_name();
-					auto rvalue = param->get_value();
-
-					if (rvalue) {
-						auto value = Veriparse::AST::cast_to<Veriparse::AST::Rvalue>(rvalue);
-						LOG_INFO << "Overloading parameter: " << name << " = "
-						         << Veriparse::Generators::VerilogGenerator().render(value);
-						paramargs->push_back(std::make_shared<Veriparse::AST::ParamArg>(value, name));
-					}
-					else {
-						LOG_ERROR << "Value of overloaded parameter " << name << " is malformed";
-						return 1;
-					}
-				}
-			}
-		}
-		else {
-			LOG_ERROR << "Parameters from the command line are not in a map";
-			return 1;
-		}
-	}
-
 
 	//---------------------------------------------------------
 	// Flatten the selected module
 	//---------------------------------------------------------
 
-	Veriparse::Passes::Transformations::ModuleFlattener flattener(paramargs, modules_map);
+	Veriparse::Passes::Transformations::ModuleFlattener flattener(param_args, modules_map);
 	flattener.run(module);
 
 

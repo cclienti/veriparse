@@ -11,7 +11,8 @@ project (veriflat)
 ########################################
 
 file (GLOB source_files
-  src/main.cpp)
+  src/main.cpp
+  src/parameters_overloading.cpp)
 
 
 ########################################
