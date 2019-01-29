@@ -1,5 +1,7 @@
 Mechanics
 ---------
+#. 2019-01-29: Move the seed init from Veriparse::Passes::Analysis::UniqueDeclaration::seed into a separate
+   class/header.
 
 #. 2019-01-27: Yaml importer, change std::cerr to LOG_ERROR
 
@@ -13,7 +15,8 @@ Mechanics
 
 #. 2018-10-14: Remove indentation levels for namespaces
 
-#. 2018-08-18: Add a to_string method in each AST class to print the real derived instance values in operator<<overloading.
+#. 2018-08-18: Add a to_string method in each AST class to print the real derived instance values in
+   operator<<overloading.
 
 #. 2018-08-28: Manage error codes: OK, PASS_FAILED, SYNTAX_ERROR, ...
 
@@ -41,4 +44,5 @@ Functional
 
 #. 2018-10-02: Check consistency of localparam/parameter rvalue width regarding width declared (ex: parameter [1:0] P = 3'd2)
 
-#. 2018-10-02: Add an analysis method (or dedicated pass ?) that checks consistency of all assignation widths regarding declaration.
+#. 2018-10-02: Add an analysis method (or dedicated pass ?) that checks consistency of all assignation widths regarding
+   declaration.
