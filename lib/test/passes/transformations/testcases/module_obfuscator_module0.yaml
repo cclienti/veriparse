@@ -1,0 +1,214 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../test/passes/transformations/testcases/module0.v
+          items:
+          - Ioport:
+              filename: ../test/passes/transformations/testcases/module0.v
+              first:
+                Input:
+                  filename: ../test/passes/transformations/testcases/module0.v
+                  line: 3
+                  name: reset
+                  sign: false
+              line: 3
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../test/passes/transformations/testcases/module0.v
+              first:
+                Input:
+                  filename: ../test/passes/transformations/testcases/module0.v
+                  line: 4
+                  name: clk
+                  sign: false
+              line: 4
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../test/passes/transformations/testcases/module0.v
+              first:
+                Input:
+                  filename: ../test/passes/transformations/testcases/module0.v
+                  line: 5
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/module0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/module0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/module0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../test/passes/transformations/testcases/module0.v
+              first:
+                Input:
+                  filename: ../test/passes/transformations/testcases/module0.v
+                  line: 5
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../test/passes/transformations/testcases/module0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/module0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/module0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../test/passes/transformations/testcases/module0.v
+              first:
+                Output:
+                  filename: ../test/passes/transformations/testcases/module0.v
+                  line: 6
+                  name: out
+                  sign: false
+              line: 6
+              second:
+                Variable: null
+          - Wire:
+              filename: ../test/passes/transformations/testcases/module0.v
+              ldelay:
+                DelayStatement: null
+              line: 8
+              name: reset
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../test/passes/transformations/testcases/module0.v
+              ldelay:
+                DelayStatement: null
+              line: 8
+              name: clk
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Wire:
+              filename: ../test/passes/transformations/testcases/module0.v
+              ldelay:
+                DelayStatement: null
+              line: 9
+              name: in0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../test/passes/transformations/testcases/module0.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/module0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/module0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 7
+          - Wire:
+              filename: ../test/passes/transformations/testcases/module0.v
+              ldelay:
+                DelayStatement: null
+              line: 9
+              name: in1
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../test/passes/transformations/testcases/module0.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/module0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/module0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 7
+          line: 2
+          name: module0
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/module0.v
+              line: 2
+              name: reset
+          - Port:
+              filename: ../test/passes/transformations/testcases/module0.v
+              line: 2
+              name: clk
+          - Port:
+              filename: ../test/passes/transformations/testcases/module0.v
+              line: 2
+              name: in0
+          - Port:
+              filename: ../test/passes/transformations/testcases/module0.v
+              line: 2
+              name: in1
+          - Port:
+              filename: ../test/passes/transformations/testcases/module0.v
+              line: 2
+              name: out
+      filename: ../test/passes/transformations/testcases/module0.v
+      line: 2
+  filename: ../test/passes/transformations/testcases/module0.v
+  line: 2
