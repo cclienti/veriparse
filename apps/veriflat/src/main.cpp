@@ -24,6 +24,7 @@ static void show_usage(char const * const progname, boost::program_options::opti
 	std::cout << desc << std::endl;
 }
 
+
 static int veriflat(int argc, char *argv[])
 {
 	//---------------------------------------------------------
@@ -71,6 +72,7 @@ static int veriflat(int argc, char *argv[])
 	pos.add("verilog-file", -1);
 
 	boost::program_options::variables_map vm;
+
 	try {
 		boost::program_options::command_line_parser parser(argc, argv);
 		auto parsed = parser.options(desc_all).positional(pos).run();
@@ -106,6 +108,7 @@ static int veriflat(int argc, char *argv[])
 	//---------------------------------------------------------
 
 	Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
+
 	for (const auto &input: config.inputs) {
 		Veriparse::Parser::Verilog verilog;
 		verilog.parse(input);
@@ -130,6 +133,15 @@ static int veriflat(int argc, char *argv[])
 	if (!overloaded) {
 		return 1;
 	}
+
+	//---------------------------------------------------------
+	// Check license
+	//---------------------------------------------------------
+
+	if (license::check_license()) {
+		return 1;
+	}
+
 
 	//---------------------------------------------------------
 	// Flatten the selected module
