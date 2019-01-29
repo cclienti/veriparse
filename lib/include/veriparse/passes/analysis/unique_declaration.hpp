@@ -55,7 +55,8 @@ public:
 	 * The given identifier set will be updated with the returned
 	 * identifier string.
 	 */
-	static std::string get_unique_identifier(const std::string &identifier_basename, IdentifierSet &id_set);
+	static std::string get_unique_identifier(const std::string &identifier_basename, IdentifierSet &id_set,
+	                                         std::size_t digits=6);
 
 	/**
 	 * @brief Reset the random generator seed.

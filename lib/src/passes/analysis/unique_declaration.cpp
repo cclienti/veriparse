@@ -93,7 +93,7 @@ bool UniqueDeclaration::identifier_declaration_exists(const std::string &identif
 	return id_set.count(identifier) != 0;
 }
 
-std::string UniqueDeclaration::get_unique_identifier(const std::string &identifier_basename, IdentifierSet &id_set)
+std::string UniqueDeclaration::get_unique_identifier(const std::string &identifier_basename, IdentifierSet &id_set, std::size_t digits)
 {
 	if (!identifier_declaration_exists(identifier_basename, id_set)) {
 		id_set.emplace(identifier_basename);
@@ -110,7 +110,7 @@ std::string UniqueDeclaration::get_unique_identifier(const std::string &identifi
 
 		ss << identifier_basename << "_";
 
-		for (int i=0; i<6; i++) {
+		for (std::size_t i=0; i<digits; i++) {
 			ss << static_cast<char>(distribution(s_generator));
 		}
 	} while (identifier_declaration_exists(ss.str(), id_set));
