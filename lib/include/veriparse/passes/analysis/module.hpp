@@ -211,12 +211,12 @@ public:
 	static std::vector<std::string> get_variable_names(AST::Node::Ptr node);
 
 	/**
-	 * @brief Return all input, output and inout port nodes that are not related to an IOPort.
+	 * @brief Return all variable nodes that are not related to an IOPort.
 	 */
 	static AST::Variable::ListPtr get_variable_nodes_within_module(AST::Node::Ptr node);
 
 	/**
-	 * @brief Return all input, output and inout port names that are not related to an IOPort.
+	 * @brief Return variable names that are not related to an IOPort.
 	 */
 	static std::vector<std::string> get_variable_names_within_module(AST::Node::Ptr node);
 
