@@ -3,6 +3,7 @@
 
 #include <veriparse/AST/nodes.hpp>
 #include <map>
+#include <string>
 
 
 namespace Veriparse {
