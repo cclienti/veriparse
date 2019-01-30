@@ -7,8 +7,8 @@
 #include <algorithm>
 
 namespace {
-template<typename T>
 
+template<typename T>
 inline std::set<T> to_set(const std::vector<T> &v)
 {
 	return std::set<T>(v.cbegin(), v.cend());

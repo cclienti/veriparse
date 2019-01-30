@@ -1,0 +1,495 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+          items:
+          - Localparam:
+              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              line: 3
+              name: h16076986444732945819
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 1
+          - Localparam:
+              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              line: 4
+              name: h5442905180692110343
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 1
+          - Function:
+              automatic: false
+              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              line: 6
+              name: h11018145191383052719
+              ports:
+              - Ioport:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  first:
+                    Input:
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 6
+                      name: value
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 6
+                  second:
+                    Variable: null
+              retsign: true
+              rettype: INTEGER
+              statements:
+              - Integer:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 7
+                  name: h5442905180692110343
+                  right:
+                    Rvalue: null
+              - Reg:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 8
+                  name: tmp
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 31
+              - Block:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 9
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: h5442905180692110343
+                              scope:
+                                IdentifierScope: null
+                      line: 10
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 10
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 11
+                          var:
+                            Identifier:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 11
+                              name: tmp
+                              scope:
+                                IdentifierScope: null
+                      line: 11
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 11
+                          var:
+                            Minus:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              left:
+                                Identifier:
+                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  line: 11
+                                  name: value
+                                  scope:
+                                    IdentifierScope: null
+                              line: 11
+                              right:
+                                Identifier:
+                                  filename: ''
+                                  line: 0
+                                  name: h16076986444732945819
+                                  scope:
+                                    IdentifierScope: null
+                  - ForStatement:
+                      cond:
+                        GreaterThan:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          left:
+                            Identifier:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 12
+                              name: tmp
+                              scope:
+                                IdentifierScope: null
+                          line: 12
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 12
+                              sign: false
+                              size: -1
+                              value: 0
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 12
+                      post:
+                        BlockingSubstitution:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 12
+                              var:
+                                Identifier:
+                                  filename: ''
+                                  line: 0
+                                  name: h11018145191383052719
+                                  scope:
+                                    IdentifierScope: null
+                          line: 12
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 12
+                              var:
+                                Plus:
+                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  left:
+                                    Identifier:
+                                      filename: ''
+                                      line: 0
+                                      name: h11018145191383052719
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 12
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                      line: 12
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                      pre:
+                        BlockingSubstitution:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 12
+                              var:
+                                Identifier:
+                                  filename: ''
+                                  line: 0
+                                  name: h11018145191383052719
+                                  scope:
+                                    IdentifierScope: null
+                          line: 12
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 12
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  line: 12
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                      statement:
+                        Block:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 12
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                      line: 13
+                                      name: tmp
+                                      scope:
+                                        IdentifierScope: null
+                              line: 13
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  line: 13
+                                  var:
+                                    Srl:
+                                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                          line: 13
+                                          name: tmp
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 13
+                                      right:
+                                        Identifier:
+                                          filename: ''
+                                          line: 0
+                                          name: h5442905180692110343
+                                          scope:
+                                            IdentifierScope: null
+          - Reg:
+              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              line: 18
+              name: h11099080502181516145
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 18
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 18
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 18
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              line: 19
+              name: h12658907281963018746
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 19
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 19
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 19
+                      sign: false
+                      size: -1
+                      value: 31
+          - Initial:
+              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              line: 21
+              statement:
+                Block:
+                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  line: 21
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 22
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: h11099080502181516145
+                              scope:
+                                IdentifierScope: null
+                      line: 22
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 22
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 22
+                              sign: false
+                              size: -1
+                              value: 53
+                  - BlockingSubstitution:
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 23
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: h12658907281963018746
+                              scope:
+                                IdentifierScope: null
+                      line: 23
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 23
+                          var:
+                            FunctionCall:
+                              args:
+                              - Identifier:
+                                  filename: ''
+                                  line: 0
+                                  name: h11099080502181516145
+                                  scope:
+                                    IdentifierScope: null
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 23
+                              name: h11018145191383052719
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      line: 24
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              line: 24
+                              value: clogb2(%0d) = %0d
+                          - Identifier:
+                              filename: ''
+                              line: 0
+                              name: h11099080502181516145
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ''
+                              line: 0
+                              name: h12658907281963018746
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          line: 24
+                          syscall: display
+          line: 1
+          name: function0
+      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+      line: 1
+  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+  line: 1
+

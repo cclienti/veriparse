@@ -37,5 +37,8 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 
-TEST(PassesTransformation_ModuleObfuscator, module0)    {TEST_CORE;}
-TEST(PassesTransformation_ModuleObfuscator, module1)    {TEST_CORE;}
+TEST(PassesTransformation_ModuleObfuscator, module0)     {TEST_CORE;}
+TEST(PassesTransformation_ModuleObfuscator, module1)     {TEST_CORE;}
+TEST(PassesTransformation_ModuleObfuscator, localparam0) {TEST_CORE;}
+TEST(PassesTransformation_ModuleObfuscator, function0)   {TEST_CORE;}
+TEST(PassesTransformation_ModuleObfuscator, task0)       {TEST_CORE;}

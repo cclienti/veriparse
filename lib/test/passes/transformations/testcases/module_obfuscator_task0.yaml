@@ -1,0 +1,513 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+          items:
+          - Localparam:
+              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+              line: 3
+              name: h16076986444732945819
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 1
+          - Localparam:
+              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+              line: 4
+              name: h5442905180692110343
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 1
+          - Task:
+              automatic: false
+              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+              line: 6
+              name: h11018145191383052719
+              ports:
+              - Ioport:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  first:
+                    Input:
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 6
+                      name: value
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 6
+                  second:
+                    Variable: null
+              - Ioport:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  first:
+                    Output:
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 6
+                      name: clog
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 31
+                  line: 6
+                  second:
+                    Reg:
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 6
+                      name: clog
+                      right:
+                        Rvalue: null
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 31
+              statements:
+              - Integer:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  line: 7
+                  name: h5442905180692110343
+                  right:
+                    Rvalue: null
+              - Block:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: h5442905180692110343
+                              scope:
+                                IdentifierScope: null
+                      line: 9
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 9
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 10
+                              name: value
+                              scope:
+                                IdentifierScope: null
+                      line: 10
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 10
+                          var:
+                            Minus:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              left:
+                                Identifier:
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  line: 10
+                                  name: value
+                                  scope:
+                                    IdentifierScope: null
+                              line: 10
+                              right:
+                                Identifier:
+                                  filename: ''
+                                  line: 0
+                                  name: h16076986444732945819
+                                  scope:
+                                    IdentifierScope: null
+                  - ForStatement:
+                      cond:
+                        GreaterThan:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          left:
+                            Identifier:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 11
+                              name: value
+                              scope:
+                                IdentifierScope: null
+                          line: 11
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 0
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 11
+                      post:
+                        BlockingSubstitution:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  line: 11
+                                  name: clog
+                                  scope:
+                                    IdentifierScope: null
+                          line: 11
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                Plus:
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                      line: 11
+                                      name: clog
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 11
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                      line: 11
+                                      sign: false
+                                      size: -1
+                                      value: 1
+                      pre:
+                        BlockingSubstitution:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  line: 11
+                                  name: clog
+                                  scope:
+                                    IdentifierScope: null
+                          line: 11
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 11
+                              var:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  line: 11
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                      statement:
+                        Block:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 11
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  line: 12
+                                  var:
+                                    Identifier:
+                                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                      line: 12
+                                      name: value
+                                      scope:
+                                        IdentifierScope: null
+                              line: 12
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  line: 12
+                                  var:
+                                    Srl:
+                                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                          line: 12
+                                          name: value
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 12
+                                      right:
+                                        Identifier:
+                                          filename: ''
+                                          line: 0
+                                          name: h5442905180692110343
+                                          scope:
+                                            IdentifierScope: null
+          - Reg:
+              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+              line: 17
+              name: h11099080502181516145
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  line: 17
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 17
+                      sign: false
+                      size: -1
+                      value: 31
+          - Reg:
+              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+              line: 18
+              name: h12658907281963018746
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  line: 18
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 18
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 18
+                      sign: false
+                      size: -1
+                      value: 31
+          - Initial:
+              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+              line: 20
+              statement:
+                Block:
+                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                  line: 20
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 21
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: h11099080502181516145
+                              scope:
+                                IdentifierScope: null
+                      line: 21
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 21
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 21
+                              sign: false
+                              size: -1
+                              value: 53
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 22
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          args:
+                          - Identifier:
+                              filename: ''
+                              line: 0
+                              name: h11099080502181516145
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ''
+                              line: 0
+                              name: h12658907281963018746
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 22
+                          name: h11018145191383052719
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                      line: 23
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 23
+                              value: clogb2(%0d) = %0d
+                          - Identifier:
+                              filename: ''
+                              line: 0
+                              name: h11099080502181516145
+                              scope:
+                                IdentifierScope: null
+                          - Identifier:
+                              filename: ''
+                              line: 0
+                              name: h12658907281963018746
+                              scope:
+                                IdentifierScope: null
+                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                          line: 23
+                          syscall: display
+          line: 1
+          name: task0
+      filename: ../../../lib/test/passes/transformations/testcases/task0.v
+      line: 1
+  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+  line: 1
+

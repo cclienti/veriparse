@@ -3,6 +3,8 @@
 
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
+#include <veriparse/passes/transformations/ast_replace.hpp>
+#include <veriparse/passes/analysis/unique_declaration.hpp>
 
 #include <string>
 #include <cstddef>
@@ -27,9 +29,16 @@ private:
 	 */
 	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
+	int rename_locals(const AST::Node::Ptr &node);
+
+	int rename_procs(const AST::Node::Ptr &node);
+
 private:
 	const std::size_t m_identifier_length;
 	const bool m_use_hash;
+
+	Analysis::UniqueDeclaration::IdentifierSet m_unique_id;
+	ASTReplace::ReplaceMap m_replace_map;
 };
 
 }
