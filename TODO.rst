@@ -1,5 +1,10 @@
 Mechanics
 ---------
+
+#. 2019-01-31: Add a static method in all AST classes that returns the nodetype. This could be useful to get the
+   node type of a AST class in a templated code (avoid code duplication in ModuleObfuscator::rename_procs, C++14 does
+   not allow enumclass as a template parameter).
+
 #. 2019-01-29: Move the seed init from Veriparse::Passes::Analysis::UniqueDeclaration::seed into a separate
    class/header.
 
