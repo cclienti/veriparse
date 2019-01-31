@@ -21,8 +21,8 @@ Source:
                       filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
                       left:
                         Identifier:
-                          filename: ''
-                          line: 0
+                          filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
+                          line: 9
                           name: h2180501729697901224
                           scope:
                             IdentifierScope: null
@@ -50,8 +50,8 @@ Source:
                       filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
                       left:
                         Identifier:
-                          filename: ''
-                          line: 0
+                          filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
+                          line: 10
                           name: h1273557383888215059
                           scope:
                             IdentifierScope: null
@@ -231,8 +231,8 @@ Source:
                                       filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
                                       left:
                                         Identifier:
-                                          filename: ''
-                                          line: 0
+                                          filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
+                                          line: 8
                                           name: h12444357210073423956
                                           scope:
                                             IdentifierScope: null

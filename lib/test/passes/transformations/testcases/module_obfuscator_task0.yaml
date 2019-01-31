@@ -54,7 +54,7 @@ Source:
                     Input:
                       filename: ../../../lib/test/passes/transformations/testcases/task0.v
                       line: 6
-                      name: value
+                      name: h13051542030116610269
                       sign: false
                       widths:
                       - Width:
@@ -85,7 +85,7 @@ Source:
                     Output:
                       filename: ../../../lib/test/passes/transformations/testcases/task0.v
                       line: 6
-                      name: clog
+                      name: h
                       sign: false
                       widths:
                       - Width:
@@ -112,7 +112,7 @@ Source:
                     Reg:
                       filename: ../../../lib/test/passes/transformations/testcases/task0.v
                       line: 6
-                      name: clog
+                      name: h
                       right:
                         Rvalue: null
                       sign: false
@@ -140,7 +140,7 @@ Source:
               - Integer:
                   filename: ../../../lib/test/passes/transformations/testcases/task0.v
                   line: 7
-                  name: h5442905180692110343
+                  name: h_adtlnfbr
                   right:
                     Rvalue: null
               - Block:
@@ -158,9 +158,9 @@ Source:
                           line: 9
                           var:
                             Identifier:
-                              filename: ''
-                              line: 0
-                              name: h5442905180692110343
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 9
+                              name: h_adtlnfbr
                               scope:
                                 IdentifierScope: null
                       line: 9
@@ -190,7 +190,7 @@ Source:
                             Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/task0.v
                               line: 10
-                              name: value
+                              name: h13051542030116610269
                               scope:
                                 IdentifierScope: null
                       line: 10
@@ -207,14 +207,14 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/task0.v
                                   line: 10
-                                  name: value
+                                  name: h13051542030116610269
                                   scope:
                                     IdentifierScope: null
                               line: 10
                               right:
                                 Identifier:
-                                  filename: ''
-                                  line: 0
+                                  filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                  line: 3
                                   name: h16076986444732945819
                                   scope:
                                     IdentifierScope: null
@@ -226,7 +226,7 @@ Source:
                             Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/task0.v
                               line: 11
-                              name: value
+                              name: h13051542030116610269
                               scope:
                                 IdentifierScope: null
                           line: 11
@@ -253,7 +253,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/task0.v
                                   line: 11
-                                  name: clog
+                                  name: h
                                   scope:
                                     IdentifierScope: null
                           line: 11
@@ -270,7 +270,7 @@ Source:
                                     Identifier:
                                       filename: ../../../lib/test/passes/transformations/testcases/task0.v
                                       line: 11
-                                      name: clog
+                                      name: h
                                       scope:
                                         IdentifierScope: null
                                   line: 11
@@ -295,7 +295,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/task0.v
                                   line: 11
-                                  name: clog
+                                  name: h
                                   scope:
                                     IdentifierScope: null
                           line: 11
@@ -331,7 +331,7 @@ Source:
                                     Identifier:
                                       filename: ../../../lib/test/passes/transformations/testcases/task0.v
                                       line: 12
-                                      name: value
+                                      name: h13051542030116610269
                                       scope:
                                         IdentifierScope: null
                               line: 12
@@ -348,15 +348,15 @@ Source:
                                         Identifier:
                                           filename: ../../../lib/test/passes/transformations/testcases/task0.v
                                           line: 12
-                                          name: value
+                                          name: h13051542030116610269
                                           scope:
                                             IdentifierScope: null
                                       line: 12
                                       right:
                                         Identifier:
-                                          filename: ''
-                                          line: 0
-                                          name: h5442905180692110343
+                                          filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                                          line: 12
+                                          name: h_adtlnfbr
                                           scope:
                                             IdentifierScope: null
           - Reg:
@@ -432,8 +432,8 @@ Source:
                           line: 21
                           var:
                             Identifier:
-                              filename: ''
-                              line: 0
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 17
                               name: h11099080502181516145
                               scope:
                                 IdentifierScope: null
@@ -462,14 +462,14 @@ Source:
                         TaskCall:
                           args:
                           - Identifier:
-                              filename: ''
-                              line: 0
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 17
                               name: h11099080502181516145
                               scope:
                                 IdentifierScope: null
                           - Identifier:
-                              filename: ''
-                              line: 0
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 18
                               name: h12658907281963018746
                               scope:
                                 IdentifierScope: null
@@ -490,14 +490,14 @@ Source:
                               line: 23
                               value: clogb2(%0d) = %0d
                           - Identifier:
-                              filename: ''
-                              line: 0
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 17
                               name: h11099080502181516145
                               scope:
                                 IdentifierScope: null
                           - Identifier:
-                              filename: ''
-                              line: 0
+                              filename: ../../../lib/test/passes/transformations/testcases/task0.v
+                              line: 18
                               name: h12658907281963018746
                               scope:
                                 IdentifierScope: null

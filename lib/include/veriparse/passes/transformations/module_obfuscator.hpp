@@ -29,6 +29,9 @@ private:
 	 */
 	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
+	std::string push_decl(AST::Node::Ptr decl, const std::string &decl_name,
+	                      bool override_collision=false);
+
 	int rename_locals(const AST::Node::Ptr &node);
 
 	int rename_procs(const AST::Node::Ptr &node);
