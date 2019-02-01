@@ -10,7 +10,7 @@ using namespace Veriparse;
 static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 
 
-#define TEST_CORE                                                               \
+#define TEST_CORE(hash)                                                         \
 	ENABLE_LOGGER;                                                               \
                                                                                 \
 	/* Parse the file to transform */                                            \
@@ -21,7 +21,7 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
                                                                                 \
 	/* apply the transformation */                                               \
 	test_helpers.render_node_to_verilog_file(source, test_string + "_before.v"); \
-	Passes::Transformations::ModuleObfuscator(16, true).run(source);             \
+	Passes::Transformations::ModuleObfuscator(16, hash).run(source);             \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");        \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");        \
 	test_helpers.render_node_to_dot_file(source, test_string + ".dot");          \
@@ -37,8 +37,8 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 
-TEST(PassesTransformation_ModuleObfuscator, module0)     {TEST_CORE;}
-TEST(PassesTransformation_ModuleObfuscator, module1)     {TEST_CORE;}
-TEST(PassesTransformation_ModuleObfuscator, localparam0) {TEST_CORE;}
-TEST(PassesTransformation_ModuleObfuscator, function0)   {TEST_CORE;}
-TEST(PassesTransformation_ModuleObfuscator, task0)       {TEST_CORE;}
+TEST(PassesTransformation_ModuleObfuscator, module0)     {TEST_CORE(true);}
+TEST(PassesTransformation_ModuleObfuscator, module1)     {TEST_CORE(true);}
+TEST(PassesTransformation_ModuleObfuscator, localparam0) {TEST_CORE(true);}
+TEST(PassesTransformation_ModuleObfuscator, function0)   {TEST_CORE(false);}
+TEST(PassesTransformation_ModuleObfuscator, task0)       {TEST_CORE(true);}

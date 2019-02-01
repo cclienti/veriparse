@@ -409,7 +409,7 @@ Source:
           - Integer:
               filename: ../../../lib/test/passes/transformations/testcases/module1.v
               line: 18
-              name: h10485857595211860659
+              name: h_10485857595211860659
               right:
                 Rvalue: null
           - Reg:
@@ -446,7 +446,7 @@ Source:
                           size: -1
                           value: 1
               line: 19
-              name: h5673871158487670232
+              name: h_5673871158487670232
               right:
                 Rvalue: null
               sign: false
@@ -498,7 +498,7 @@ Source:
                             Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/module1.v
                               line: 18
-                              name: h10485857595211860659
+                              name: h_10485857595211860659
                               scope:
                                 IdentifierScope: null
                           line: 22
@@ -536,7 +536,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/module1.v
                                   line: 18
-                                  name: h10485857595211860659
+                                  name: h_10485857595211860659
                                   scope:
                                     IdentifierScope: null
                           line: 22
@@ -553,7 +553,7 @@ Source:
                                     Identifier:
                                       filename: ../../../lib/test/passes/transformations/testcases/module1.v
                                       line: 18
-                                      name: h10485857595211860659
+                                      name: h_10485857595211860659
                                       scope:
                                         IdentifierScope: null
                                   line: 22
@@ -578,7 +578,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/module1.v
                                   line: 18
-                                  name: h10485857595211860659
+                                  name: h_10485857595211860659
                                   scope:
                                     IdentifierScope: null
                           line: 22
@@ -618,14 +618,14 @@ Source:
                                         Identifier:
                                           filename: ../../../lib/test/passes/transformations/testcases/module1.v
                                           line: 18
-                                          name: h10485857595211860659
+                                          name: h_10485857595211860659
                                           scope:
                                             IdentifierScope: null
                                       var:
                                         Identifier:
                                           filename: ../../../lib/test/passes/transformations/testcases/module1.v
                                           line: 19
-                                          name: h5673871158487670232
+                                          name: h_5673871158487670232
                                           scope:
                                             IdentifierScope: null
                               line: 23
@@ -642,7 +642,7 @@ Source:
                                         Identifier:
                                           filename: ../../../lib/test/passes/transformations/testcases/module1.v
                                           line: 18
-                                          name: h10485857595211860659
+                                          name: h_10485857595211860659
                                           scope:
                                             IdentifierScope: null
                                       line: 23
@@ -727,7 +727,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/module1.v
                                   line: 19
-                                  name: h5673871158487670232
+                                  name: h_5673871158487670232
                                   scope:
                                     IdentifierScope: null
           line: 1

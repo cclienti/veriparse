@@ -9,7 +9,7 @@ Source:
           - Localparam:
               filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
               line: 8
-              name: h12444357210073423956
+              name: h_12444357210073423956
               sign: true
               type: INTEGER
               value:
@@ -23,7 +23,7 @@ Source:
                         Identifier:
                           filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
                           line: 9
-                          name: h2180501729697901224
+                          name: h_2180501729697901224
                           scope:
                             IdentifierScope: null
                       line: 8
@@ -38,7 +38,7 @@ Source:
           - Localparam:
               filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
               line: 9
-              name: h2180501729697901224
+              name: h_2180501729697901224
               sign: true
               type: INTEGER
               value:
@@ -52,7 +52,7 @@ Source:
                         Identifier:
                           filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
                           line: 10
-                          name: h1273557383888215059
+                          name: h_1273557383888215059
                           scope:
                             IdentifierScope: null
                       line: 9
@@ -67,7 +67,7 @@ Source:
           - Localparam:
               filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
               line: 10
-              name: h1273557383888215059
+              name: h_1273557383888215059
               sign: true
               type: INTEGER
               value:
@@ -233,7 +233,7 @@ Source:
                                         Identifier:
                                           filename: ../../../lib/test/passes/transformations/testcases/localparam0.v
                                           line: 8
-                                          name: h12444357210073423956
+                                          name: h_12444357210073423956
                                           scope:
                                             IdentifierScope: null
                                       line: 14

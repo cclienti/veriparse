@@ -9,7 +9,7 @@ Source:
           - Localparam:
               filename: ../../../lib/test/passes/transformations/testcases/function0.v
               line: 3
-              name: h16076986444732945819
+              name: h_rajbkrpywncrksxt
               sign: false
               type: NONE
               value:
@@ -27,7 +27,7 @@ Source:
           - Localparam:
               filename: ../../../lib/test/passes/transformations/testcases/function0.v
               line: 4
-              name: h5442905180692110343
+              name: h_gbtiqtzjgzstqbqx
               sign: false
               type: NONE
               value:
@@ -46,7 +46,7 @@ Source:
               automatic: false
               filename: ../../../lib/test/passes/transformations/testcases/function0.v
               line: 6
-              name: h11018145191383052719
+              name: h_hltmghjemxxbxnni
               ports:
               - Ioport:
                   filename: ../../../lib/test/passes/transformations/testcases/function0.v
@@ -54,7 +54,7 @@ Source:
                     Input:
                       filename: ../../../lib/test/passes/transformations/testcases/function0.v
                       line: 6
-                      name: h13051542030116610269
+                      name: h_zmgcybnjhxnmybtu
                       sign: false
                       widths:
                       - Width:
@@ -85,7 +85,7 @@ Source:
               - Integer:
                   filename: ../../../lib/test/passes/transformations/testcases/function0.v
                   line: 7
-                  name: h5442905180692110343
+                  name: h_gbtiqtzjgzstqbqx
                   right:
                     Rvalue: null
               - Reg:
@@ -132,7 +132,7 @@ Source:
                             Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/function0.v
                               line: 10
-                              name: h5442905180692110343
+                              name: h_gbtiqtzjgzstqbqx
                               scope:
                                 IdentifierScope: null
                       line: 10
@@ -179,7 +179,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/function0.v
                                   line: 11
-                                  name: h13051542030116610269
+                                  name: h_zmgcybnjhxnmybtu
                                   scope:
                                     IdentifierScope: null
                               line: 11
@@ -187,7 +187,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/function0.v
                                   line: 3
-                                  name: h16076986444732945819
+                                  name: h_rajbkrpywncrksxt
                                   scope:
                                     IdentifierScope: null
                   - ForStatement:
@@ -225,7 +225,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/function0.v
                                   line: 6
-                                  name: h11018145191383052719
+                                  name: h_hltmghjemxxbxnni
                                   scope:
                                     IdentifierScope: null
                           line: 12
@@ -242,7 +242,7 @@ Source:
                                     Identifier:
                                       filename: ../../../lib/test/passes/transformations/testcases/function0.v
                                       line: 6
-                                      name: h11018145191383052719
+                                      name: h_hltmghjemxxbxnni
                                       scope:
                                         IdentifierScope: null
                                   line: 12
@@ -267,7 +267,7 @@ Source:
                                 Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/function0.v
                                   line: 6
-                                  name: h11018145191383052719
+                                  name: h_hltmghjemxxbxnni
                                   scope:
                                     IdentifierScope: null
                           line: 12
@@ -328,13 +328,13 @@ Source:
                                         Identifier:
                                           filename: ../../../lib/test/passes/transformations/testcases/function0.v
                                           line: 13
-                                          name: h5442905180692110343
+                                          name: h_gbtiqtzjgzstqbqx
                                           scope:
                                             IdentifierScope: null
           - Reg:
               filename: ../../../lib/test/passes/transformations/testcases/function0.v
               line: 18
-              name: h11099080502181516145
+              name: h
               right:
                 Rvalue: null
               sign: false
@@ -361,7 +361,7 @@ Source:
           - Reg:
               filename: ../../../lib/test/passes/transformations/testcases/function0.v
               line: 19
-              name: h12658907281963018746
+              name: h_adtlnfbrryjnvabn
               right:
                 Rvalue: null
               sign: false
@@ -406,7 +406,7 @@ Source:
                             Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/function0.v
                               line: 18
-                              name: h11099080502181516145
+                              name: h
                               scope:
                                 IdentifierScope: null
                       line: 22
@@ -436,7 +436,7 @@ Source:
                             Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/function0.v
                               line: 19
-                              name: h12658907281963018746
+                              name: h_adtlnfbrryjnvabn
                               scope:
                                 IdentifierScope: null
                       line: 23
@@ -452,12 +452,12 @@ Source:
                               - Identifier:
                                   filename: ../../../lib/test/passes/transformations/testcases/function0.v
                                   line: 18
-                                  name: h11099080502181516145
+                                  name: h
                                   scope:
                                     IdentifierScope: null
                               filename: ../../../lib/test/passes/transformations/testcases/function0.v
                               line: 23
-                              name: h11018145191383052719
+                              name: h_hltmghjemxxbxnni
                   - SingleStatement:
                       delay:
                         DelayStatement: null
@@ -474,13 +474,13 @@ Source:
                           - Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/function0.v
                               line: 18
-                              name: h11099080502181516145
+                              name: h
                               scope:
                                 IdentifierScope: null
                           - Identifier:
                               filename: ../../../lib/test/passes/transformations/testcases/function0.v
                               line: 19
-                              name: h12658907281963018746
+                              name: h_adtlnfbrryjnvabn
                               scope:
                                 IdentifierScope: null
                           filename: ../../../lib/test/passes/transformations/testcases/function0.v

@@ -85,23 +85,22 @@ std::string ModuleObfuscator::push_decl(AST::Node::Ptr decl, const std::string &
 
 	if (m_use_hash) {
 		obf_name = std::to_string(hash(decl_name));
-		obf_name.insert(0, 1, 'h');
-
+		obf_name.insert(0, "h_");
 		if (m_unique_id.count(obf_name)) {
 			LOG_DEBUG_N(decl) << "Collision for name: " << decl_name << " hash:" << obf_name;
-			obf_name = Analysis::UniqueDeclaration::get_unique_identifier("h", m_unique_id, m_identifier_length/2);
+			obf_name = Analysis::UniqueDeclaration::get_unique_identifier("h", m_unique_id, m_identifier_length);
 			LOG_DEBUG_N(decl) << "Collision resolved with: " << obf_name;
 		}
 		else {
 			m_unique_id.insert(obf_name);
 		}
-
-		id->set_name(obf_name);
 	}
 	else {
 		obf_name = Analysis::UniqueDeclaration::get_unique_identifier("h", m_unique_id, m_identifier_length);
 		m_unique_id.insert(obf_name);
 	}
+
+	id->set_name(obf_name);
 
 	LOG_DEBUG_N(decl) << "Obfuscating '" << decl_name << "' with '" << id->get_name() << "'";
 
@@ -198,9 +197,12 @@ int ModuleObfuscator::rename_procs(const AST::Node::Ptr &node)
 			function->set_name(value->get_name());
 		}
 
+		std::set<std::string> local_set;
+
 		auto iodirs = Analysis::Function::get_iodir_nodes(node);
 		if (iodirs) {
 			for (const auto &iodir: *iodirs) {
+				local_set.emplace(iodir->get_name());
 				push_decl(iodir, iodir->get_name(), true);
 			}
 		}
@@ -208,7 +210,9 @@ int ModuleObfuscator::rename_procs(const AST::Node::Ptr &node)
 		auto variables = Analysis::Task::get_variable_nodes(node);
 		if (variables) {
 			for (const auto &variable: *variables) {
-				push_decl(variable, variable->get_name(), true);
+				if (local_set.count(variable->get_name()) == 0) {
+					push_decl(variable, variable->get_name(), true);
+				}
 			}
 		}
 	}
@@ -220,9 +224,12 @@ int ModuleObfuscator::rename_procs(const AST::Node::Ptr &node)
 			task->set_name(value->get_name());
 		}
 
+		std::set<std::string> local_set;
+
 		auto iodirs = Analysis::Task::get_iodir_nodes(node);
 		if (iodirs) {
 			for (const auto &iodir: *iodirs) {
+				local_set.emplace(iodir->get_name());
 				push_decl(iodir, iodir->get_name(), true);
 			}
 		}
@@ -230,7 +237,9 @@ int ModuleObfuscator::rename_procs(const AST::Node::Ptr &node)
 		auto variables = Analysis::Task::get_variable_nodes(node);
 		if (variables) {
 			for (const auto &variable: *variables) {
-				push_decl(variable, variable->get_name(), true);
+				if (local_set.count(variable->get_name()) == 0) {
+					push_decl(variable, variable->get_name(), true);
+				}
 			}
 		}
 	}
