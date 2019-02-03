@@ -14,6 +14,7 @@
 #include <boost/filesystem.hpp>
 
 #include <string>
+#include <cstdint>
 
 
 static void show_usage(char const * const progname, boost::program_options::options_description const &desc)
@@ -55,7 +56,7 @@ static int veriflat(int argc, char *argv[])
 		("output,o", boost::program_options::value<std::string>(&config.output)->required(), "output")
 		("top-module,t", boost::program_options::value<std::string>(&config.top_module)->required(), "top-module")
 		("param-map,p", boost::program_options::value<std::string>(&config.param_map), "YAML parameter map")
-		("obfuscate,b", boost::program_options::bool_switch(&config.obfuscate), "obfuscate")
+		("seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0), "Seed value")
 		;
 
 	boost::program_options::options_description hidden("positional");
@@ -149,15 +150,6 @@ static int veriflat(int argc, char *argv[])
 
 	Veriparse::Passes::Transformations::ModuleFlattener flattener(param_args, modules_map);
 	flattener.run(module);
-
-
-	//---------------------------------------------------------
-	// Flatten the selected module
-	//---------------------------------------------------------
-
-	if (config.obfuscate) {
-		LOG_WARNING << "Obfuscator not implemented";
-	}
 
 
 	//---------------------------------------------------------

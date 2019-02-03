@@ -5,7 +5,7 @@
 #include <ostream>
 #include <sstream>
 #include <string>
-
+#include <cstdint>
 
 struct Config
 {
@@ -13,12 +13,11 @@ struct Config
 	std::string output;
 	std::string top_module;
 	std::string param_map;
-	bool obfuscate {false};
+	std::uint64_t seed;
 };
 
 static inline std::ostream &operator<<(std::ostream &os, const Config &config)
 {
-	os << "{inputs: [";
 	std::stringstream ss;
 	for (int i = config.inputs.size()-1; i >= 0; i--) {
 		ss << "'" << config.inputs[i] << "'";
@@ -26,13 +25,14 @@ static inline std::ostream &operator<<(std::ostream &os, const Config &config)
 			ss << ", ";
 		}
 	}
-	os << ss.str() << "], ";
 
-	os << "output: '" << config.output << "', ";
-	os << "top_module: '" << config.top_module << "', ";
-	os << "param_map: " << config.param_map << ", ";
-	os << "obfuscate: " << config.obfuscate;
-	os << "}";
+	os << "{"
+	   << "inputs: [" << ss.str() << "], "
+	   << "output: '" << config.output << "', "
+	   << "top_module: '" << config.top_module << "', "
+	   << "param_map: " << config.param_map << ", "
+	   << "seed: " << config.seed
+	   << "}";
 
 	return os;
 }
