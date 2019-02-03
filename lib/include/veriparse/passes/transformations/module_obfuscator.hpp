@@ -18,9 +18,9 @@ namespace Transformations {
 class ModuleObfuscator: public TransformationBase
 {
 public:
-	ModuleObfuscator(std::size_t identifier_length=16, bool use_sha1=false):
+	ModuleObfuscator(std::size_t identifier_length=16, bool hash=false):
 		m_identifier_length (identifier_length),
-		m_use_hash (use_sha1)
+		m_use_hash (hash)
 	{}
 
 private:
