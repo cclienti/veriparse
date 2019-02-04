@@ -31,51 +31,56 @@
 #include <cstdlib>
 
 
-namespace Veriparse {
-    namespace Parser {
-        class VerilogDriver;
-        class VerilogScanner;
+namespace Veriparse
+{
+namespace Parser
+{
 
-        enum class net_type_t {
-            INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, NONE
-        };
+class VerilogDriver;
+class VerilogScanner;
 
-        enum class direction_t {
-            INPUT, INOUT, OUTPUT, NONE
-        };
+enum class net_type_t {
+	 INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, NONE
+};
 
-        typedef struct {
-            direction_t direction;
-            net_type_t net_type;
-            bool is_signed;
-            AST::Width::ListPtr widths;
-            std::string name;
-            location loc;
-        } port_info_t;
+enum class direction_t {
+	 INPUT, INOUT, OUTPUT, NONE
+};
 
-        typedef struct {
-            std::string name;
-            AST::DelayStatement::Ptr ldelay;
-            AST::DelayStatement::Ptr rdelay;
-            AST::Length::ListPtr lengths;
-            AST::Rvalue::Ptr rvalue;
-        } decl_name_t;
+typedef struct {
+	 direction_t direction;
+	 net_type_t net_type;
+	 bool is_signed;
+	 AST::Width::ListPtr widths;
+	 std::string name;
+	 location loc;
+} port_info_t;
 
-        namespace ParserHelpers {
-            AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
-                                                       AST::Width::ListPtr widths, bool sign,
-                                                       const std::string &filename="", uint32_t line=0);
+typedef struct {
+	 std::string name;
+	 AST::DelayStatement::Ptr ldelay;
+	 AST::DelayStatement::Ptr rdelay;
+	 AST::Length::ListPtr lengths;
+	 AST::Rvalue::Ptr rvalue;
+} decl_name_t;
 
-            AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
-                                                       AST::Width::ListPtr widths,  std::string name,
-                                                       const std::string &filename="", uint32_t line=0);
+namespace ParserHelpers
+{
+AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
+														 AST::Width::ListPtr widths, bool sign,
+														 const std::string &filename="", uint32_t line=0);
 
-            // if return null, the create_ports_decls failed. Error information are set in loc and error_message.
-            AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
-                                                      const std::string &filename,
-                                                      location &loc, std::string &error_message);
-        }
-    }
+AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
+														 AST::Width::ListPtr widths,  std::string name,
+														 const std::string &filename="", uint32_t line=0);
+
+// if return null, the create_ports_decls failed. Error information are set in loc and error_message.
+AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
+														const std::string &filename,
+														location &loc, std::string &error_message);
+}
+
+}
 }
 
 // The following definitions is missing when %locations isn't used

@@ -21,52 +21,54 @@
 #include <vector>
 
 
-namespace Veriparse {
-	namespace Parser {
+namespace Veriparse
+{
+namespace Parser
+{
 
-		class VerilogScanner : public yyFlexLexer {
-		public:
+class VerilogScanner : public yyFlexLexer {
+public:
 
-			VerilogScanner(std::istream *in, const std::string &filename):
-				yyFlexLexer(in),
-				m_filename(filename)
-			{
-				loc = new Veriparse::Parser::VerilogParser::location_type();
-				m_default_nettype = AST::Module::Default_nettypeEnum::WIRE;
-			};
+	VerilogScanner(std::istream *in, const std::string &filename):
+		yyFlexLexer(in),
+		m_filename(filename)
+	{
+		loc = new Veriparse::Parser::VerilogParser::location_type();
+		m_default_nettype = AST::Module::Default_nettypeEnum::WIRE;
+	};
 
-			virtual ~VerilogScanner() {
-				delete loc;
-			};
+	virtual ~VerilogScanner() {
+		delete loc;
+	};
 
-			virtual const std::string & get_filename() {return m_filename;}
+	virtual const std::string & get_filename() {return m_filename;}
 
-			virtual AST::Module::Default_nettypeEnum get_default_nettype() {return m_default_nettype;}
+	virtual AST::Module::Default_nettypeEnum get_default_nettype() {return m_default_nettype;}
 
-			virtual int yylex(Veriparse::Parser::VerilogParser::semantic_type * const lval,
-			                  Veriparse::Parser::VerilogParser::location_type * location);
+	virtual int yylex(Veriparse::Parser::VerilogParser::semantic_type * const lval,
+	                  Veriparse::Parser::VerilogParser::location_type * location);
 
-			// YY_DECL defined in scanner.ll
-			// Method body created by flex in lex.yy.cc
+	// YY_DECL defined in scanner.ll
+	// Method body created by flex in lex.yy.cc
 
-		private:
-			/* yyval ptr */
-			VerilogParser::semantic_type *yylval = nullptr;
+private:
+	/* yyval ptr */
+	VerilogParser::semantic_type *yylval = nullptr;
 
-			/* location ptr */
-			VerilogParser::location_type *loc    = nullptr;
+	/* location ptr */
+	VerilogParser::location_type *loc    = nullptr;
 
-			/* Preprocessor tokens queue */
-			std::vector<std::string> m_vpp_queue;
+	/* Preprocessor tokens queue */
+	std::vector<std::string> m_vpp_queue;
 
-			/* Verilog Default nettype */
-			AST::Module::Default_nettypeEnum m_default_nettype;
+	/* Verilog Default nettype */
+	AST::Module::Default_nettypeEnum m_default_nettype;
 
-			/* file name string */
-			std::string m_filename;
-		};
+	/* file name string */
+	std::string m_filename;
+};
 
-	}
+}
 }
 
 #endif
