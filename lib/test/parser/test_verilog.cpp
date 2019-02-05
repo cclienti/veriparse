@@ -173,6 +173,10 @@ TEST(VerilogParserTest, instance1)      {TEST_CORE;}
 TEST(VerilogParserTest, instance2)      {TEST_CORE;}
 TEST(VerilogParserTest, instance3)      {TEST_CORE;}
 TEST(VerilogParserTest, instance4)      {TEST_CORE;}
+TEST(VerilogParserTest, instance5)      {TEST_CORE;}
+TEST(VerilogParserTest, instance6)      {TEST_CORE;}
+TEST(VerilogParserTest, instance7)      {TEST_CORE;}
+TEST(VerilogParserTest, instance8)      {TEST_CORE;}
 TEST(VerilogParserTest, generate0)      {TEST_CORE;}
 TEST(VerilogParserTest, generate1)      {TEST_CORE;}
 TEST(VerilogParserTest, generate2)      {TEST_CORE;}

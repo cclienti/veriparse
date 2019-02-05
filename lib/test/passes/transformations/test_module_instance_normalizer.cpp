@@ -49,3 +49,4 @@ TEST(PassesTransformation_ModuleInstanceNormalizer, instance5) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance6) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance7) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance8) {TEST_CORE;}
+TEST(PassesTransformation_ModuleInstanceNormalizer, instance9) {TEST_CORE;}

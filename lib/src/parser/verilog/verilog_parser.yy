@@ -2814,6 +2814,26 @@ instance_ports_list:
                     $$->push_back($3);
                 }
 
+        |       instance_ports_list TK_COMMA
+                {
+                    $$ = $1;
+                    $$->push_back(std::make_shared<AST::PortArg>());
+                }
+
+        |       TK_COMMA instance_port_list
+                {
+                    $$ = std::make_shared<AST::PortArg::List>();
+                    $$->push_back(std::make_shared<AST::PortArg>());
+                    $$->push_back($2);
+                }
+
+        |       TK_COMMA
+                {
+                    $$ = std::make_shared<AST::PortArg::List>();
+                    $$->push_back(std::make_shared<AST::PortArg>());
+                    $$->push_back(std::make_shared<AST::PortArg>());
+                }
+
         |       instance_port_list
                 {
                     $$ = std::make_shared<AST::PortArg::List>();

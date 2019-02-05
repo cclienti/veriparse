@@ -1,0 +1,1370 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../lib/test/passes/transformations/testcases/instance9.v
+          items:
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 2
+                  name: a
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 2
+                  name: b
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 2
+                  name: c
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 2
+                  name: d
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Always:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 4
+              senslist:
+                Senslist:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 4
+                  list:
+                  - Sens:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 4
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 4
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              line: 5
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 5
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              line: 6
+                              name: b
+                              scope:
+                                IdentifierScope: null
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 6
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 7
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              line: 7
+                              name: c
+                              scope:
+                                IdentifierScope: null
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 7
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 8
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              line: 8
+                              name: d
+                              scope:
+                                IdentifierScope: null
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 8
+                          syscall: display
+          line: 1
+          name: my_module
+          ports:
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 1
+              name: a
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 1
+              name: b
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 1
+              name: c
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 1
+              name: d
+      - Module:
+          default_nettype: WIRE
+          filename: ../lib/test/passes/transformations/testcases/instance9.v
+          items:
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 13
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 13
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 13
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 13
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 13
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 13
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 13
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 13
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 13
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              first:
+                Input:
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 13
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 13
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 13
+              second:
+                Variable: null
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: inst0_a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 3
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_a
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 14
+                      name: a
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 14
+                  module: my_module
+                  name: inst00
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst0_a
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 14
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 14
+                  module: my_module
+                  name: inst01
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst0_a
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 14
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 14
+                  module: my_module
+                  name: inst02
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst0_a
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 14
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 14
+                  module: my_module
+                  name: inst03
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst0_a
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 14
+              module: my_module
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: inst1_b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 3
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_b
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 15
+                      name: b
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 15
+                  module: my_module
+                  name: inst10
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst1_b
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 15
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 15
+                  module: my_module
+                  name: inst11
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst1_b
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 15
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 15
+                  module: my_module
+                  name: inst12
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst1_b
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 15
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 15
+                  module: my_module
+                  name: inst13
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst1_b
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 15
+              module: my_module
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: inst2_c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 3
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_c
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 16
+                      name: c
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 16
+                  module: my_module
+                  name: inst20
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst2_c
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 16
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 16
+                  module: my_module
+                  name: inst21
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst2_c
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 16
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 16
+                  module: my_module
+                  name: inst22
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst2_c
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 16
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 16
+                  module: my_module
+                  name: inst23
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst2_c
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value: null
+              line: 16
+              module: my_module
+          - Wire:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              line: 0
+              name: inst3_d
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: ''
+                  line: 0
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: true
+                      size: -1
+                      value: 3
+          - Assign:
+              filename: ''
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_d
+                      scope:
+                        IdentifierScope: null
+              line: 0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      line: 17
+                      name: d
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 17
+                  module: my_module
+                  name: inst30
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst3_d
+                              scope:
+                                IdentifierScope: null
+              line: 17
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 17
+                  module: my_module
+                  name: inst31
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 1
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst3_d
+                              scope:
+                                IdentifierScope: null
+              line: 17
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 17
+                  module: my_module
+                  name: inst32
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 2
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst3_d
+                              scope:
+                                IdentifierScope: null
+              line: 17
+              module: my_module
+          - Instancelist:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  line: 17
+                  module: my_module
+                  name: inst33
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: a
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: b
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: c
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: d
+                      value:
+                        Pointer:
+                          filename: ''
+                          line: 0
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: true
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: ''
+                              line: 0
+                              name: inst3_d
+                              scope:
+                                IdentifierScope: null
+              line: 17
+              module: my_module
+          line: 12
+          name: instance9
+          ports:
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 12
+              name: a
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 12
+              name: b
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 12
+              name: c
+          - Port:
+              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              line: 12
+              name: d
+      filename: ../lib/test/passes/transformations/testcases/instance9.v
+      line: 1
+  filename: ../lib/test/passes/transformations/testcases/instance9.v
+  line: 1
+

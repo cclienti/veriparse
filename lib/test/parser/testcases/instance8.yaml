@@ -1,0 +1,1031 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../lib/test/parser/testcases/instance8.v
+          items:
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 2
+                  name: a
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 2
+                  name: b
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 2
+                  name: c
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 2
+                  name: d
+                  sign: false
+              line: 2
+              second:
+                Variable: null
+          - Always:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 4
+              senslist:
+                Senslist:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 4
+                  list:
+                  - Sens:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 4
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 4
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 5
+                          var:
+                            Identifier:
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 5
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                      line: 5
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 5
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 6
+                              name: b
+                              scope:
+                                IdentifierScope: null
+                      line: 6
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 6
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 7
+                          var:
+                            Identifier:
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 7
+                              name: c
+                              scope:
+                                IdentifierScope: null
+                      line: 7
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 7
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 8
+                              name: d
+                              scope:
+                                IdentifierScope: null
+                      line: 8
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 8
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ../lib/test/parser/testcases/instance8.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+          line: 1
+          name: my_module
+          ports:
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 1
+              name: a
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 1
+              name: b
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 1
+              name: c
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 1
+              name: d
+      - Module:
+          default_nettype: WIRE
+          filename: ../lib/test/parser/testcases/instance8.v
+          items:
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 15
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 15
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 15
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 15
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 15
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 15
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 15
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 15
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 15
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 15
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 15
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 15
+              second:
+                Variable: null
+          - Instancelist:
+              filename: ../lib/test/parser/testcases/instance8.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 16
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 16
+                  module: my_module
+                  name: inst
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 16
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+              line: 16
+              module: my_module
+          line: 14
+          name: top0
+          ports:
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 14
+              name: a
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 14
+              name: b
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 14
+              name: c
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 14
+              name: d
+      - Module:
+          default_nettype: WIRE
+          filename: ../lib/test/parser/testcases/instance8.v
+          items:
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 20
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 20
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 20
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 20
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 20
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 20
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 20
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 20
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 20
+              second:
+                Variable: null
+          - Instancelist:
+              filename: ../lib/test/parser/testcases/instance8.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 21
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 21
+                  module: my_module
+                  name: inst
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 21
+                          name: b
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+              line: 21
+              module: my_module
+          line: 19
+          name: top1
+          ports:
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 19
+              name: a
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 19
+              name: b
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 19
+              name: c
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 19
+              name: d
+      - Module:
+          default_nettype: WIRE
+          filename: ../lib/test/parser/testcases/instance8.v
+          items:
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 25
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 25
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 25
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 25
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 25
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 25
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 25
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 25
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 25
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 25
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 25
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 25
+              second:
+                Variable: null
+          - Instancelist:
+              filename: ../lib/test/parser/testcases/instance8.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 26
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 26
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 26
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 26
+                  module: my_module
+                  name: inst
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 26
+                          name: c
+                          scope:
+                            IdentifierScope: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+              line: 26
+              module: my_module
+          line: 24
+          name: top2
+          ports:
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 24
+              name: a
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 24
+              name: b
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 24
+              name: c
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 24
+              name: d
+      - Module:
+          default_nettype: WIRE
+          filename: ../lib/test/parser/testcases/instance8.v
+          items:
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 30
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 30
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 30
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 30
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 30
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 30
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 30
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 30
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 30
+              second:
+                Variable: null
+          - Ioport:
+              filename: ../lib/test/parser/testcases/instance8.v
+              first:
+                Output:
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 30
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 30
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 30
+              second:
+                Variable: null
+          - Instancelist:
+              filename: ../lib/test/parser/testcases/instance8.v
+              instances:
+              - Instance:
+                  array:
+                    Length:
+                      filename: ../lib/test/parser/testcases/instance8.v
+                      line: 31
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 31
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 31
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: ../lib/test/parser/testcases/instance8.v
+                  line: 31
+                  module: my_module
+                  name: inst
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../lib/test/parser/testcases/instance8.v
+                          line: 31
+                          name: d
+                          scope:
+                            IdentifierScope: null
+              line: 31
+              module: my_module
+          line: 29
+          name: top3
+          ports:
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 29
+              name: a
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 29
+              name: b
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 29
+              name: c
+          - Port:
+              filename: ../lib/test/parser/testcases/instance8.v
+              line: 29
+              name: d
+      filename: ../lib/test/parser/testcases/instance8.v
+      line: 1
+  filename: ../lib/test/parser/testcases/instance8.v
+  line: 1
+
