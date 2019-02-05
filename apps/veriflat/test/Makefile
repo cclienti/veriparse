@@ -1,0 +1,8 @@
+TESTS	= tiny_aes_128 tiny_aes_192 tiny_aes_256
+
+
+all:
+	for test in $(TESTS); do make VERIFLAT=$(VERIFLAT) -C $$test/build iverilog_check veriflat_check; done
+
+clean:
+	for test in $(TESTS); do make -C $$test/build clean; done
