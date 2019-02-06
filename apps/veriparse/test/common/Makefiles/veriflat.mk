@@ -7,7 +7,8 @@ VERIFLAT_OUTPUT    = $(TOP_MODULE)_flat.v
 VERIFLAT_TESTBENCH = $(TESTBENCH_MODULE)_flat
 
 veriflat_check: $(VERIFLAT_TESTBENCH)
-	vvp ./$< -lxt2 | tee output.log
+	@echo -e "---- Test veriflat ----"
+	@vvp ./$< -lxt2 | tee output.log
 	@! grep 'Error\|ERROR\|error' output.log
 
 $(VERIFLAT_TESTBENCH): $(VERIFLAT_OUTPUT)
