@@ -1,0 +1,24 @@
+[*]
+[*] GTKWave Analyzer v3.3.94 (w)1999-2018 BSI
+[*] Sun Feb  3 20:37:57 2019
+[*]
+[dumpfile] "/home/christophe/src/veriparse/apps/veriflat/test/tiny_aes_128/build/test_aes_128.vcd"
+[dumpfile_mtime] "Sun Feb  3 20:37:39 2019"
+[dumpfile_size] 23303
+[savefile] "/home/christophe/src/veriparse/apps/veriflat/test/tiny_aes_128/build/test_aes_128.sav"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-16.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 208
+[signals_width] 114
+[sst_expanded] 1
+[sst_vpaned_height] 145
+@28
+test_aes_128.clk[0]
+@22
+test_aes_128.key[127:0]
+test_aes_128.out[127:0]
+test_aes_128.state[127:0]
+[pattern_trace] 1
+[pattern_trace] 0
