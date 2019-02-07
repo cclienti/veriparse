@@ -24,7 +24,7 @@ if(NOT MINGW)
     NAME
     test_check_license
     COMMAND
-    ${CMAKE_CURRENT_SOURCE_DIR}/license_validator/check.sh
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/check.sh
     ${CMAKE_CURRENT_BINARY_DIR}/license_generator/license_generator
     ${CMAKE_CURRENT_BINARY_DIR}/license_validator/license_validator
     ${CMAKE_CURRENT_SOURCE_DIR}/license_generator/resources/private.pem)
