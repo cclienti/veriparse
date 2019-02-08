@@ -47,7 +47,13 @@ static inline int check_license(const std::string &license_file)
 	}
 
 	boost::property_tree::ptree tree;
-	boost::property_tree::read_ini(license_file, tree);
+	try {
+		boost::property_tree::read_ini(license_file, tree);
+	}
+	catch (const boost::property_tree::ini_parser_error &e) {
+		LOG_ERROR << "could not read file '" << license_file << "'";
+		return 1;
+	}
 
 	std::string info_company, info_expiration;
 	std::string info_hostname, info_interface, info_address;
@@ -63,8 +69,7 @@ static inline int check_license(const std::string &license_file)
 		encrypted_license = tree.get<std::string>("license.value");
 	}
 	catch (const boost::property_tree::ptree_error &e) {
-		LOG_ERROR << "could not read information in " << license_file
-		          << " (" << e.what() << ")" << std::endl;
+		LOG_ERROR << "could not read information in '" << license_file << "'";
 		return 1;
 	}
 
