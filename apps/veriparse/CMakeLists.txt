@@ -23,7 +23,7 @@ set(VERIPARSE_APPS_TESTS
 
 if(NOT MINGW)
 
-  add_custom_target(test_veriparse_apps_license DEPENDS license_test.dat)
+  add_custom_target(test_veriparse_apps_license ALL DEPENDS license_test.dat)
   add_custom_command(
     OUTPUT
     license_test.dat
@@ -32,14 +32,10 @@ if(NOT MINGW)
     ${CMAKE_CURRENT_BINARY_DIR}/../license/license_generator/license_generator
     ${CMAKE_CURRENT_BINARY_DIR}/../license/license_validator/license_validator
     DEPENDS
-    license_generator license_validator
-    )
+    license_generator license_validator)
 
   foreach(VERIPARSE_APPS_TEST ${VERIPARSE_APPS_TESTS})
-    add_custom_target(test_veriparse_${VERIPARSE_APPS_TEST})
-
-    add_dependencies(test_veriparse_${VERIPARSE_APPS_TEST}
-      test_veriparse_apps_license veriflat veriobf)
+    add_custom_target(test_veriparse_${VERIPARSE_APPS_TEST} DEPENDS test_veriparse_apps_license veriflat veriobf)
 
     add_test(
       NAME
