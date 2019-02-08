@@ -19,8 +19,8 @@ static inline std::ostream &operator<<(std::ostream &os, const Config &config)
 	os << "{"
 		<< "input: '" << config.input << "', "
 	   << "output: '" << config.output << "', "
-	   << "identifier_length: " << config.identifier_length
-	   << "random: " << config.hash
+	   << "identifier_length: " << config.identifier_length << ", "
+	   << "random: " << config.hash << ", "
 	   << "seed: " << config.seed
 	   << "}";
 
