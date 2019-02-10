@@ -198,7 +198,7 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_constant_node(const AST::NodeType 
 	case AST::NodeType::Plus:        return expression_operator_binary<plus>(node0, node1);
 	case AST::NodeType::Minus:       return expression_operator_binary<minus>(node0, node1);
 	case AST::NodeType::Sll:         return expression_operator_binary_nofloat<sll>(node0, node1);
-	case AST::NodeType::Srl:         return expression_operator_binary_nofloat<sll>(node0, node1);
+	case AST::NodeType::Srl:         return expression_operator_binary_nofloat<srl>(node0, node1);
 	case AST::NodeType::Sra:         return expression_operator_binary_nofloat<sra>(node0, node1);
 	case AST::NodeType::LessThan:    return expression_operator_binary<less_than>(node0, node1);
 	case AST::NodeType::GreaterThan: return expression_operator_binary<greater_than>(node0, node1);
