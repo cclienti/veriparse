@@ -15,9 +15,32 @@ int VariableFolding::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
 	if(node && node->is_node_type(AST::NodeType::Initial)) {
 		m_state_map.clear();
-		AST::Initial::Ptr initial = AST::cast_to<AST::Initial>(node);
-		return execute(initial->get_statement(), node);
+
+		auto initial = AST::cast_to<AST::Initial>(node);
+		auto ret = execute(initial->get_statement(), node);
+		if (ret) {
+			return ret;
+		}
+
+		// Remove empty initial
+		const auto &stmt = initial->get_statement();
+		if (stmt) {
+			if (stmt->get_node_type() == AST::NodeType::Block) {
+				const auto &block = AST::cast_to<AST::Block>(stmt);
+				if (block->get_statements() == nullptr) {
+					parent->replace(node, AST::Node::Ptr(nullptr));
+				}
+			}
+		}
+		else {
+			if (parent) {
+				parent->replace(node, AST::Node::Ptr(nullptr));
+			}
+		}
+
+		return 0;
 	}
+
 	return recurse_in_childs(node);
 }
 

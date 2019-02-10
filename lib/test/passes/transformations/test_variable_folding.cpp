@@ -50,3 +50,4 @@ TEST(PassesTransformation_VariableFolding, for0) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, for1) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, for2) {TEST_CORE;}
 TEST(PassesTransformation_VariableFolding, gray2bin) {TEST_CORE;}
+TEST(PassesTransformation_VariableFolding, initial_test0) {TEST_CORE;}

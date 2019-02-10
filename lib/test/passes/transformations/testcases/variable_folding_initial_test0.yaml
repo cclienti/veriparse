@@ -1,0 +1,65 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+          items:
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+              line: 13
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+                      line: 14
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+                              line: 14
+                              value: ok
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+                          line: 14
+                          syscall: display
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+              line: 17
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+                  line: 17
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+                      line: 19
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+                              line: 19
+                              value: ok
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+                          line: 19
+                          syscall: display
+          line: 1
+          name: initial_test0
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/initial_test0.v
+  line: 1
+
