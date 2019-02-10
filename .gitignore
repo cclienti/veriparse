@@ -4,6 +4,7 @@
 *~
 .*.swp
 *.log
+*.dot
 
 ### Kdevelop
 *.kdev4
