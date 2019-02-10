@@ -1,0 +1,2384 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+          items:
+          - Reg:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              lengths:
+              - Length:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 8
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 8
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 8
+                      sign: false
+                      size: -1
+                      value: 15
+              line: 8
+              name: lut_array
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 8
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 8
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 8
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 1
+          - Reg:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 9
+              name: bin_temp
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 9
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 1
+          - Reg:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 10
+              name: gray_temp
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 1
+          - Integer:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 12
+              name: i
+              right:
+                Rvalue: null
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 14
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 14
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 0
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 1
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 1
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 2
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 3
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 3
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 2
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 3
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 2
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 2
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 3
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 4
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 6
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 6
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 4
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 5
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 7
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 7
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 5
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 6
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 5
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 5
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 6
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 7
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 4
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 4
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 7
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 8
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 12
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 12
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 8
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 9
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 13
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 13
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 9
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 10
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 15
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 15
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 10
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 11
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 14
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 14
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 11
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 12
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 10
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 10
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 12
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 13
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 11
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 11
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 13
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 14
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 9
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 9
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 14
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 16
+                              name: bin_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 16
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 16
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 15
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 17
+                              name: gray_temp
+                              scope:
+                                IdentifierScope: null
+                      line: 17
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 17
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 8
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 18
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: ''
+                                  line: 0
+                                  sign: false
+                                  size: 4
+                                  value: 8
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 18
+                                  name: lut_array
+                                  scope:
+                                    IdentifierScope: null
+                      line: 18
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 18
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: ''
+                              line: 0
+                              sign: false
+                              size: 4
+                              value: 15
+          - Assign:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 22
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 22
+                      name: bin
+                      scope:
+                        IdentifierScope: null
+              line: 22
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 22
+                  var:
+                    Pointer:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 22
+                      ptr:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 22
+                          name: gray
+                          scope:
+                            IdentifierScope: null
+                      var:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 22
+                          name: lut_array
+                          scope:
+                            IdentifierScope: null
+          line: 3
+          name: gray2bin
+          ports:
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 4
+                  name: gray
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 4
+              second:
+                Wire:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: gray
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              first:
+                Output:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 5
+                  name: bin
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 5
+              second:
+                Wire:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: bin
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 3
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+          items:
+          - Reg:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 29
+              name: gray
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 29
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 29
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 29
+                      sign: false
+                      size: -1
+                      value: 4
+          - Wire:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              ldelay:
+                DelayStatement: null
+              line: 30
+              name: bin
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 30
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 30
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 30
+                      sign: false
+                      size: -1
+                      value: 3
+          - Reg:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 31
+              name: clk
+              right:
+                Rvalue: null
+              sign: false
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 33
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 33
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 34
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 34
+                              name: clk
+                              scope:
+                                IdentifierScope: null
+                      line: 34
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 34
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 34
+                              sign: false
+                              size: -1
+                              value: 0
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 35
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 35
+                              name: gray
+                              scope:
+                                IdentifierScope: null
+                      line: 35
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 35
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 35
+                              sign: false
+                              size: -1
+                              value: 0
+          - Always:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 38
+              senslist:
+                Senslist: null
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 38
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement:
+                          delay:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 39
+                              sign: false
+                              size: -1
+                              value: 4
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 39
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 39
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 39
+                              name: clk
+                              scope:
+                                IdentifierScope: null
+                      line: 39
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 39
+                          var:
+                            Ulnot:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 39
+                              right:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 39
+                                  name: clk
+                                  scope:
+                                    IdentifierScope: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 42
+                  module: gray2bin
+                  name: DUT
+                  portlist:
+                  - PortArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 42
+                      name: gray
+                      value:
+                        Partselect:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 42
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 42
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 42
+                              sign: false
+                              size: -1
+                              value: 3
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 42
+                              name: gray
+                              scope:
+                                IdentifierScope: null
+                  - PortArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 42
+                      name: bin
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 42
+                          name: bin
+                          scope:
+                            IdentifierScope: null
+              line: 42
+              module: gray2bin
+          - Always:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 44
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 44
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 44
+                      sig:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 44
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 44
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 45
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 45
+                              name: gray
+                              scope:
+                                IdentifierScope: null
+                      line: 45
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 45
+                          var:
+                            Plus:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              left:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 45
+                                  name: gray
+                                  scope:
+                                    IdentifierScope: null
+                              line: 45
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 45
+                                  sign: false
+                                  size: -1
+                                  value: 1
+          - Always:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+              line: 48
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 48
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 48
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                  line: 48
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Pointer:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 49
+                          ptr:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 49
+                              sign: false
+                              size: -1
+                              value: 4
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 49
+                              name: gray
+                              scope:
+                                IdentifierScope: null
+                      false_statement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 49
+                      true_statement:
+                        Block:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 49
+                          scope: ''
+                          statements:
+                          - SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 50
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 50
+                                  syscall: finish
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                      line: 53
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 53
+                              value: 'gray: %04b - bin: %04b'
+                          - Partselect:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 53
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 53
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 53
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                                  line: 53
+                                  name: gray
+                                  scope:
+                                    IdentifierScope: null
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                              line: 53
+                              name: bin
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+                          line: 53
+                          syscall: display
+          line: 27
+          name: testbench
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+      line: 3
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/gray2bin.v
+  line: 3
+

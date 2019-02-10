@@ -67,11 +67,17 @@ int VariableFolding::execute_in_childs(AST::Node::Ptr node)
 
 int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst, AST::Node::Ptr parent)
 {
+	std::string lvalue_before = Generators::VerilogGenerator().render(subst->get_left());
+	std::string rvalue_before = Generators::VerilogGenerator().render(subst->get_right());
+
 	std::string lvalue_str = analyze_lvalue(subst->get_left());
 	AST::Node::Ptr const_node = analyze_rvalue(subst->get_right());
 
 	if(lvalue_str.empty() || const_node == nullptr)
 		return 0;
+
+	LOG_DEBUG_N(subst) << lvalue_before << " evaluated to " << lvalue_str;
+	LOG_DEBUG_N(subst) << rvalue_before << " evaluated to " << Generators::VerilogGenerator().render(const_node);
 
 	m_state_map[lvalue_str] = const_node;
 	subst->get_right()->set_var(const_node);
@@ -309,23 +315,29 @@ AST::Node::Ptr VariableFolding::analyze_rvalue(AST::Rvalue::Ptr rvalue)
 
 std::string VariableFolding::analyze_lvalue(AST::Lvalue::Ptr lvalue)
 {
-	AST::Node::Ptr var = lvalue->get_var();
+	const auto &var = lvalue->get_var();
 
 	switch(var->get_node_type()) {
 	case AST::NodeType::Pointer:
-		ASTReplace::replace_identifier(AST::cast_to<AST::Pointer>(var)->get_ptr(), m_state_map);
+		ASTReplace::replace_identifier(AST::cast_to<AST::Pointer>(var)->get_ptr(), m_state_map, var);
 		break;
 
 	case AST::NodeType::Partselect:
-		ASTReplace::replace_identifier(AST::cast_to<AST::Partselect>(var)->get_msb(), m_state_map);
-		ASTReplace::replace_identifier(AST::cast_to<AST::Partselect>(var)->get_lsb(), m_state_map);
+		{
+			auto part = AST::cast_to<AST::Partselect>(var);
+			ASTReplace::replace_identifier(part->get_msb(), m_state_map, var);
+			ASTReplace::replace_identifier(part->get_lsb(), m_state_map, var);
+		}
 		break;
 
 	case AST::NodeType::PartselectIndexed:
 	case AST::NodeType::PartselectPlusIndexed:
 	case AST::NodeType::PartselectMinusIndexed:
-		ASTReplace::replace_identifier(AST::cast_to<AST::PartselectIndexed>(var)->get_index(), m_state_map);
-		ASTReplace::replace_identifier(AST::cast_to<AST::PartselectIndexed>(var)->get_size(), m_state_map);
+		{
+			auto part = AST::cast_to<AST::PartselectIndexed>(var);
+			ASTReplace::replace_identifier(part->get_index(), m_state_map, var);
+			ASTReplace::replace_identifier(part->get_size(), m_state_map, var);
+		}
 		break;
 
 	default:
