@@ -41,3 +41,7 @@ TEST(PassesTransformation_ParameterInliner, module1) {TEST_CORE;}
 TEST(PassesTransformation_ParameterInliner, module2) {TEST_CORE;}
 TEST(PassesTransformation_ParameterInliner, function1) {TEST_CORE;}
 TEST(PassesTransformation_ParameterInliner, task1) {TEST_CORE;}
+TEST(PassesTransformation_ParameterInliner, parameter0) {TEST_CORE;}
+TEST(PassesTransformation_ParameterInliner, parameter1) {TEST_CORE;}
+TEST(PassesTransformation_ParameterInliner, parameter2) {TEST_CORE;}
+TEST(PassesTransformation_ParameterInliner, parameter3) {TEST_CORE;}
