@@ -34,6 +34,9 @@ Veriparse::AST::ParamArg::ListPtr overload_parameters(const std::string &paramet
 				if (param.second.IsScalar()) {
 					ssparams << "parameter " << param.first << " = " << param.second << ";";
 				}
+				else if (param.second.IsNull()) {
+					ssparams << "parameter " << param.first << ";";
+				}
 				else {
 					LOG_ERROR << "Command line parameter " << param.first << " is not scalar";
 					success = false;
@@ -51,18 +54,18 @@ Veriparse::AST::ParamArg::ListPtr overload_parameters(const std::string &paramet
 				for (auto param: *params) {
 					auto name = param->get_name();
 					auto rvalue = param->get_value();
+					Veriparse::AST::Rvalue::Ptr value;
 
 					if (rvalue) {
-						auto value = Veriparse::AST::cast_to<Veriparse::AST::Rvalue>(rvalue);
+						value = Veriparse::AST::cast_to<Veriparse::AST::Rvalue>(rvalue);
 						LOG_INFO << "Overloading parameter: " << name << " = "
 						         << Veriparse::Generators::VerilogGenerator().render(value);
-						param_args->push_back(std::make_shared<Veriparse::AST::ParamArg>(value, name));
 					}
 					else {
-						LOG_ERROR << "Value of overloaded parameter " << name << " is malformed";
-						success = false;
-						return nullptr;
+						LOG_INFO << "Keeping parameter " << name;
 					}
+
+					param_args->push_back(std::make_shared<Veriparse::AST::ParamArg>(value, name));
 				}
 			}
 		}
