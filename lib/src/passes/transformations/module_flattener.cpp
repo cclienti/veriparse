@@ -3,6 +3,7 @@
 #include <veriparse/passes/transformations/annotate_declaration.hpp>
 #include <veriparse/passes/analysis/instance.hpp>
 #include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/logger/logger.hpp>
 
 #include <boost/algorithm/string/join.hpp>
@@ -58,6 +59,8 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
 int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
 {
+	using VGen = Veriparse::Generators::VerilogGenerator;
+
 	if (!node) {
 		return 0;
 	}
@@ -95,7 +98,8 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 					if (param_inst->get_value()) {
 						LOG_INFO_N(node) << instance_name << " (" << module_name << "), "
 						                 << "parameter " << param_inst->get_name() << ", "
-						                 << "using instanciated value";
+						                 << "using instanciated value: ("
+						                 << VGen().render(param_inst->get_value()) << ")";
 						continue;
 					}
 
@@ -109,14 +113,15 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 					for (auto &param_module: *paramlist_module) {
 						if (param_module->get_name() == param_inst->get_name()) {
 							found = true;
-							LOG_INFO_N(node) << instance_name << " (" << module_name << "), "
-							                 << "parameter " << param_inst->get_name() << ", "
-							                 << "using default value from module definition";
 							auto default_value = param_module->get_value();
 							if (!default_value) {
 								LOG_ERROR_N(param_module) << "no default value declared";
 								return 1;
 							}
+							LOG_INFO_N(node) << instance_name << " (" << module_name << "), "
+							                 << "parameter " << param_inst->get_name() << ", "
+							                 << "using default value from module definition: "
+							                 << VGen().render(default_value) << ")";
 						}
 					}
 
