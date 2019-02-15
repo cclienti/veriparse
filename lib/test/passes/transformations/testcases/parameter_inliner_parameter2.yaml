@@ -404,9 +404,8 @@ Source:
                                           size: -1
                                           value: 1
           line: 1
-          name: parameter1
+          name: parameter2
       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/parameter2.v
       line: 1
   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/parameter2.v
   line: 1
-

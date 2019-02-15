@@ -45,3 +45,41 @@ TEST(PassesTransformation_ParameterInliner, parameter0) {TEST_CORE;}
 TEST(PassesTransformation_ParameterInliner, parameter1) {TEST_CORE;}
 TEST(PassesTransformation_ParameterInliner, parameter2) {TEST_CORE;}
 TEST(PassesTransformation_ParameterInliner, parameter3) {TEST_CORE;}
+
+
+#define TEST_CORE_OVERLOAD(PARAMETER)                                           \
+	ENABLE_LOGGER;                                                               \
+                                                                                \
+	test_name = "parameter0";                                                    \
+                                                                                \
+	/* Parse the file to transform */                                            \
+	Parser::Verilog verilog;                                                     \
+	verilog.parse(test_helpers.get_verilog_filename(test_name));                 \
+	AST::Node::Ptr source = verilog.get_source();                                \
+	ASSERT_TRUE(source != nullptr);                                              \
+                                                                                \
+	/* Parameter overload */                                                     \
+	auto paramlist = std::make_shared<AST::ParamArg::List>();                    \
+	auto param = std::make_shared<AST::ParamArg>(nullptr, PARAMETER);            \
+	paramlist->emplace_back(param);                                              \
+                                                                                \
+	/* apply the transformation */                                               \
+	test_helpers.render_node_to_verilog_file(source, test_string + "_before.v"); \
+	Passes::Transformations::ParameterInliner(paramlist).run(source);            \
+	test_helpers.render_node_to_verilog_file(source, test_string + ".v");        \
+	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");        \
+	test_helpers.render_node_to_dot_file(source, test_string + ".dot");          \
+                                                                                \
+	/* load the reference */                                                     \
+	std::string test_ref_suffix = "parameter_inliner_";                          \
+	const std::string ref_filename = test_ref_suffix + test_info->name();        \
+	AST::Node::Ptr source_ref = Importers::YAMLImporter().import                 \
+		(test_helpers.get_yaml_filename(ref_filename).c_str());                   \
+	ASSERT_TRUE(source_ref != nullptr);                                          \
+                                                                                \
+	/* Check parsed against reference */                                         \
+	ASSERT_TRUE(source_ref->is_equal(*source, false))
+
+
+TEST(PassesTransformation_ParameterInliner, parameter0_overload0) {TEST_CORE_OVERLOAD("WIDTH");}
+TEST(PassesTransformation_ParameterInliner, parameter0_overload1) {TEST_CORE_OVERLOAD("RESET_VALUE");}

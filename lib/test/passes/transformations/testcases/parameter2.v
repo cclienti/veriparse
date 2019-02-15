@@ -1,4 +1,4 @@
-module parameter1;
+module parameter2;
 
    parameter integer          WIDTH;
    parameter [WIDTH-1:0][3:0] RESET_VALUE = -1;

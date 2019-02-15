@@ -35,11 +35,20 @@ int ParameterInliner::process(AST::Node::Ptr node, AST::Node::Ptr parent) {
 	}
 
 	ASTReplace::ReplaceMap rmap;
-	for (AST::Parameter::Ptr p: *m_paramlist) {
+	for (const auto &p: *m_paramlist) {
 		AST::Node::Ptr val = p->get_value();
 		if (val) {
-			AST::Node::Ptr var = AST::cast_to<AST::Rvalue>(val)->get_var();
-			if (var) {
+			const auto &var = AST::cast_to<AST::Rvalue>(val)->get_var();
+			bool keep_param = false;
+
+			if (m_paramlist_inst) {
+				auto search = std::find_if(std::begin(*m_paramlist_inst), std::end(*m_paramlist_inst),
+				                           [&] (const AST::ParamArg::Ptr &pinst)
+				                           {return p->get_name() == pinst->get_name() && !pinst->get_value();});
+				keep_param = (search != std::end(*m_paramlist_inst));
+			}
+
+			if (var && !keep_param) {
 				rmap[p->get_name()] = var;
 			}
 		}
@@ -63,23 +72,25 @@ int ParameterInliner::resolve_paramlist() {
 	// corresponding values in paramlist by those given in
 	// m_paramlist_inst
 	if (m_paramlist_inst) {
-		for (AST::ParamArg::Ptr pinst: *m_paramlist_inst) {
+		for (const auto &pinst: *m_paramlist_inst) {
 			auto result =
 				std::find_if(std::begin(*m_paramlist), std::end(*m_paramlist),
 				             [&] (AST::Parameter::Ptr const& p)
 				             {return p->get_name() == pinst->get_name();});
 
 			if (result != std::end(*m_paramlist)) {
-				AST::Parameter::Ptr p = *result;
-				auto value = pinst->get_value();
+				const auto &p = *result;
+				const auto &value = pinst->get_value();
 				if (!value) {
 					continue;
 				}
-				AST::Node::Ptr rvalue = value;
-				if (!value->is_node_type(AST::NodeType::Rvalue)) {
-					rvalue = std::make_shared<AST::Rvalue>(value, value->get_filename(), value->get_line());
+				else {
+					auto rvalue = value;
+					if (!value->is_node_type(AST::NodeType::Rvalue)) {
+						rvalue = std::make_shared<AST::Rvalue>(value, value->get_filename(), value->get_line());
+					}
+					p->set_value(rvalue);
 				}
-				p->set_value(rvalue);
 			}
 		}
 	}
