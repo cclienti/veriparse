@@ -2750,6 +2750,26 @@ param_args_noname:
                     $$->push_back($3);
                 }
 
+        |       param_args_noname TK_COMMA
+                {
+                    $$ = $1;
+                    $$->push_back(std::make_shared<AST::ParamArg>());
+                }
+
+        |       TK_COMMA param_arg_noname
+                {
+                    $$ = std::make_shared<AST::ParamArg::List>();
+                    $$->push_back(std::make_shared<AST::ParamArg>());
+                    $$->push_back($2);
+                }
+
+        |       TK_COMMA
+                {
+                    $$ = std::make_shared<AST::ParamArg::List>();
+                    $$->push_back(std::make_shared<AST::ParamArg>());
+                    $$->push_back(std::make_shared<AST::ParamArg>());
+                }
+
         |       param_arg_noname
                 {
                     $$ = std::make_shared<AST::ParamArg::List>();
