@@ -1,0 +1,850 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+          items:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              line: 2
+              name: MY_X
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 5
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              line: 3
+              name: MY_Y
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 6
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              line: 4
+              name: MY_Z
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 7
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 6
+                  module: my_mod
+                  name: mod0
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 6
+                      name: X
+                      value: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 6
+                      name: Y
+                      value: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 6
+                      name: Z
+                      value: null
+              line: 6
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 6
+                  name: X
+                  value: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 6
+                  name: Y
+                  value: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 6
+                  name: Z
+                  value: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 7
+                  module: my_mod
+                  name: mod1
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 7
+                      name: X
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 7
+                          name: MY_X
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 7
+                      name: Y
+                      value: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 7
+                      name: Z
+                      value: null
+              line: 7
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 7
+                  name: X
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 7
+                      name: MY_X
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 7
+                  name: Y
+                  value: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 7
+                  name: Z
+                  value: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 8
+                  module: my_mod
+                  name: mod2
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 8
+                      name: X
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 8
+                          name: MY_X
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: Y
+                      value: null
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: Z
+                      value: null
+              line: 8
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 8
+                  name: X
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 8
+                      name: MY_X
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: ''
+                  line: 0
+                  name: Y
+                  value: null
+              - ParamArg:
+                  filename: ''
+                  line: 0
+                  name: Z
+                  value: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 9
+                  module: my_mod
+                  name: mod3
+                  parameterlist:
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: X
+                      value: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 9
+                      name: Y
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 9
+                          name: MY_Y
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: Z
+                      value: null
+              line: 9
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: ''
+                  line: 0
+                  name: X
+                  value: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 9
+                  name: Y
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 9
+                      name: MY_Y
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: ''
+                  line: 0
+                  name: Z
+                  value: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 10
+                  module: my_mod
+                  name: mod4
+                  parameterlist:
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: X
+                      value: null
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: Y
+                      value: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 10
+                      name: Z
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 10
+                          name: MY_Z
+                          scope:
+                            IdentifierScope: null
+              line: 10
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: ''
+                  line: 0
+                  name: X
+                  value: null
+              - ParamArg:
+                  filename: ''
+                  line: 0
+                  name: Y
+                  value: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 10
+                  name: Z
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 10
+                      name: MY_Z
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 11
+                  module: my_mod
+                  name: mod5
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 11
+                      name: X
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 11
+                          name: MY_X
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 11
+                      name: Y
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 11
+                          name: MY_Y
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 11
+                      name: Z
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 11
+                          name: MY_Z
+                          scope:
+                            IdentifierScope: null
+              line: 11
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 11
+                  name: X
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 11
+                      name: MY_X
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 11
+                  name: Y
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 11
+                      name: MY_Y
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 11
+                  name: Z
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 11
+                      name: MY_Z
+                      scope:
+                        IdentifierScope: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 12
+                  module: my_mod
+                  name: mod6
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 12
+                      name: X
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 12
+                          name: MY_X
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 12
+                      name: Y
+                      value: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 12
+                      name: Z
+                      value: null
+              line: 12
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 12
+                  name: X
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 12
+                      name: MY_X
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 12
+                  name: Y
+                  value: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 12
+                  name: Z
+                  value: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 13
+                  module: my_mod
+                  name: mod7
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 13
+                      name: Y
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 13
+                          name: MY_Y
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 13
+                      name: X
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 13
+                          name: MY_X
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 13
+                      name: Z
+                      value: null
+              line: 13
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 13
+                  name: Y
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 13
+                      name: MY_Y
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 13
+                  name: X
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 13
+                      name: MY_X
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 13
+                  name: Z
+                  value: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 14
+                  module: my_mod
+                  name: mod8
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 14
+                      name: Y
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 8
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 14
+                      name: X
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 14
+                          name: MY_X
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 14
+                      name: Z
+                      value: null
+              line: 14
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 14
+                  name: Y
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 8
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 14
+                  name: X
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 14
+                      name: MY_X
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 14
+                  name: Z
+                  value: null
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 15
+                  module: my_mod
+                  name: mod9
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: Y
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 8
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: X
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 15
+                          name: MY_X
+                          scope:
+                            IdentifierScope: null
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: Z
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 15
+                          name: MY_Z
+                          scope:
+                            IdentifierScope: null
+              line: 15
+              module: my_mod
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 15
+                  name: Y
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      sign: false
+                      size: -1
+                      value: 8
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 15
+                  name: X
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: MY_X
+                      scope:
+                        IdentifierScope: null
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 15
+                  name: Z
+                  value:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: MY_Z
+                      scope:
+                        IdentifierScope: null
+          line: 1
+          name: instance10
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+          items:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              line: 19
+              name: X
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 19
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 19
+                      sign: false
+                      size: -1
+                      value: 3
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              line: 20
+              name: Y
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 20
+                  var:
+                    Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 20
+                      right:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 20
+                          name: X
+                          scope:
+                            IdentifierScope: null
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              line: 21
+              name: Z
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 21
+                  var:
+                    Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 21
+                      right:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 21
+                          name: X
+                          scope:
+                            IdentifierScope: null
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+              line: 23
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                  line: 23
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 24
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                              line: 24
+                              value: X=%0d
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                              line: 24
+                              name: X
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 24
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 25
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                              line: 25
+                              value: Y=%0d
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                              line: 25
+                              name: Y
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 25
+                          syscall: display
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                      line: 26
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                              line: 26
+                              value: Z=%0d\n
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                              line: 26
+                              name: Z
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+                          line: 26
+                          syscall: display
+          line: 18
+          name: my_mod
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance10.v
+  line: 1
+
