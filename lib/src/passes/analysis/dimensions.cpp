@@ -139,7 +139,7 @@ int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
 		dims.decl = DimList::Decl::io;
 
 		if (!extract_arrays(io->get_widths(), Packing::packed, dims)) {
-			return 1;
+			continue;
 		}
 
 		auto ret = dim_map.insert(std::make_pair(io->get_name(), dims));
@@ -156,12 +156,12 @@ int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
 		dims.decl = DimList::Decl::var;
 
 		if(!extract_arrays(var->get_lengths(), Packing::unpacked, dims)) {
-			return 1;
+			continue;
 		}
 
 		if (var->is_node_type(AST::NodeType::Reg)) {
 			if (!extract_arrays(AST::cast_to<AST::Reg>(var)->get_widths(), Packing::packed, dims)) {
-				return 1;
+				continue;
 			}
 		}
 		else if (var->is_node_type(AST::NodeType::Integer)) {
@@ -175,7 +175,7 @@ int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
 		}
 		else if (var->is_node_category(AST::NodeType::Net)) {
 			if (!extract_arrays(AST::cast_to<AST::Net>(var)->get_widths(), Packing::packed, dims)) {
-				return 1;
+				continue;
 			}
 		}
 
