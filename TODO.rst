@@ -29,6 +29,8 @@ Mechanics
 Functional
 ----------
 
+#. 2019-02-16: Generate loop scope name are not renamed during flattening.
+
 #. 2019-02-05: Improved rendering of unnamed ports/parameter instance in verilog generator (put everything on a line).
 
 #. 2019-01-27: Setting NB_PORTS=8 in shmemif.v seems loop_unrolling to loop indefinitely. But it is not running
