@@ -31,9 +31,6 @@ Functional
 
 #. 2019-02-05: Improved rendering of unnamed ports/parameter instance in verilog generator (put everything on a line).
 
-#. 2019-02-05: Manage empty unnamed ParamArg in instance (ex: my_inst #(,,PARAM3) (a,,c)) as done in the bison rule
-   'instance_ports_list' for ports. Look if this should also be done for TaskCall and FunctionCall.
-
 #. 2019-01-27: Setting NB_PORTS=8 in shmemif.v seems loop_unrolling to loop indefinitely. But it is not running
    indefinitely, it takes just a while. => Try to optimize the code.
 
