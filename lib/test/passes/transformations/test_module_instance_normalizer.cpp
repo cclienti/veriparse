@@ -51,3 +51,4 @@ TEST(PassesTransformation_ModuleInstanceNormalizer, instance7) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance8) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance9) {TEST_CORE;}
 TEST(PassesTransformation_ModuleInstanceNormalizer, instance10) {TEST_CORE;}
+TEST(PassesTransformation_ModuleInstanceNormalizer, instance11) {TEST_CORE;}

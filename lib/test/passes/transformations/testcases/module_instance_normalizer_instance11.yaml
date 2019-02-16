@@ -1,0 +1,228 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+          items:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+              line: 2
+              name: PARAM_0
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 6
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+              line: 3
+              name: PARAM_1
+              sign: true
+              type: INTEGER
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 5
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  line: 5
+                  module: my_mod
+                  name: mod0
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: x
+                      value:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                          line: 5
+                          name: PARAM_0
+                          scope:
+                            IdentifierScope: null
+              line: 5
+              module: my_mod
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  line: 6
+                  module: my_mod
+                  name: mod1
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: x
+                      value:
+                        Partselect:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 7
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                              line: 6
+                              name: PARAM_1
+                              scope:
+                                IdentifierScope: null
+              line: 6
+              module: my_mod
+          line: 1
+          name: instance11
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+          items:
+          - Always:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+              line: 11
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  line: 11
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                      line: 11
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  line: 11
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                      line: 12
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                              line: 12
+                              value: x=%0d
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                              line: 12
+                              name: x
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                          line: 12
+                          syscall: display
+          line: 9
+          name: my_mod
+          ports:
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  line: 9
+                  name: x
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 9
+              second:
+                Wire:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 9
+                  name: x
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                      line: 9
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/instance11.v
+  line: 1
+
