@@ -35,20 +35,31 @@ if(NOT MINGW)
     license_generator license_validator)
 
   foreach(VERIPARSE_APPS_TEST ${VERIPARSE_APPS_TESTS})
-    add_custom_target(test_veriparse_${VERIPARSE_APPS_TEST} DEPENDS test_veriparse_apps_license veriflat veriobf)
+    file(GLOB VERIPARSE_PROJECT_TEST_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/project*)
 
-    add_test(
-      NAME
-      test_veriparse_${VERIPARSE_APPS_TEST}
-      COMMAND
-      make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/project/Makefile
-      VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
-      VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
-      clean iverilog_check veriflat_check veriobf_check)
+    foreach(VERIPARSE_PROJECT_TEST_DIR ${VERIPARSE_PROJECT_TEST_DIRS})
+      if(IS_DIRECTORY ${VERIPARSE_PROJECT_TEST_DIR})
+	get_filename_component(VERIPARSE_PROJECT_NAME ${VERIPARSE_PROJECT_TEST_DIR} NAME)
 
-    set_tests_properties(
-      test_veriparse_${VERIPARSE_APPS_TEST}
-      PROPERTIES ENVIRONMENT VERIPARSE_LICENSE_FILE=${CMAKE_CURRENT_BINARY_DIR}/license_test.dat)
+	set(VERIPARSE_APPS_TEST_NAME test_veriparse_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
+
+	message(STATUS "Veriparse Apps: adding test ${VERIPARSE_APPS_TEST_NAME}")
+	add_custom_target(${VERIPARSE_APPS_TEST_NAME} DEPENDS test_veriparse_apps_license veriflat veriobf)
+
+	add_test(
+	  NAME
+	  ${VERIPARSE_APPS_TEST_NAME}
+	  COMMAND
+	  make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME}/Makefile
+	  VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
+	  VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
+	  clean iverilog_check veriflat_check veriobf_check)
+
+	set_tests_properties(
+	  ${VERIPARSE_APPS_TEST_NAME}
+	  PROPERTIES ENVIRONMENT VERIPARSE_LICENSE_FILE=${CMAKE_CURRENT_BINARY_DIR}/license_test.dat)
+      endif()
+    endforeach()
   endforeach()
 
 endif()
