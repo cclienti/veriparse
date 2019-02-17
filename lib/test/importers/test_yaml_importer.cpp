@@ -2902,7 +2902,7 @@ TEST(YAMLImporter, IdentifierScopeLabel) {
 		"  filename: identifierscopelabel.v\n"
 		"  line: 20\n"
 		"  loop:\n"
-		"  name: mynbiqpmzj\n"
+		"  scope: mynbiqpmzj\n"
 	);
 
 	AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -2912,7 +2912,7 @@ TEST(YAMLImporter, IdentifierScopeLabel) {
 	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["filename"].as<std::string>() == "identifierscopelabel.v");
 	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["line"].as<int>() == 20);
 	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["loop"]);
-	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["name"].as<std::string>() == "mynbiqpmzj");
+	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["scope"].as<std::string>() == "mynbiqpmzj");
 }
 
 

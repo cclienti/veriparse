@@ -4979,8 +4979,8 @@ std::string DotGenerator::render_identifierscopelabel(const AST::IdentifierScope
 			<< "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
 			<< "<FONT COLOR=\"white\">IdentifierScopeLabel</FONT></TD></TR>\n"
 			<< "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
-		  ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: "
-			  << node->get_name() << "</TD></TR>\n";
+		  ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">scope: "
+			  << node->get_scope() << "</TD></TR>\n";
 		ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
 			<< "<FONT COLOR=\"wheat\">loop</FONT></TD></TR>\n";
 

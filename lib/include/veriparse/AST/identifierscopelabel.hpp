@@ -27,7 +27,7 @@ public:
 	/**
 	 * Constructor, m_node_type is set to NodeType::IdentifierScopeLabel.
 	 */
-	IdentifierScopeLabel(const Node::Ptr loop, const std::string &name, const std::string &filename="", uint32_t line=0);
+	IdentifierScopeLabel(const Node::Ptr loop, const std::string &scope, const std::string &filename="", uint32_t line=0);
 	
 
 	/**
@@ -88,14 +88,14 @@ public:
 	}
 	
 	/**
-	 * Return the property name.
+	 * Return the property scope.
 	 */
-	virtual const std::string &get_name(void) const {return m_name;}
+	virtual const std::string &get_scope(void) const {return m_scope;}
 	
 	/**
-	 * Change the property name.
+	 * Change the property scope.
 	 */
-	virtual void set_name(const std::string &name) {m_name = name;}
+	virtual void set_scope(const std::string &scope) {m_scope = scope;}
 	
 
 	/**
@@ -124,7 +124,7 @@ private:
 
 	
 	Node::Ptr m_loop;
-	std::string m_name;
+	std::string m_scope;
 };
 
 std::ostream & operator<<(std::ostream &os, const IdentifierScopeLabel &p);

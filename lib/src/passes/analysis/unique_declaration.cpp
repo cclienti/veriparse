@@ -76,7 +76,7 @@ int UniqueDeclaration::analyze(const AST::Node::Ptr &node, IdentifierSet &id_set
 		id_set.emplace(AST::cast_to<AST::Identifier>(node)->get_name());
 	}
 	else if (node->is_node_category(AST::NodeType::IdentifierScopeLabel)) {
-		id_set.emplace(AST::cast_to<AST::IdentifierScopeLabel>(node)->get_name());
+		id_set.emplace(AST::cast_to<AST::IdentifierScopeLabel>(node)->get_scope());
 	}
 	else if (node->is_node_category(AST::NodeType::Pragma)) {
 		id_set.emplace(AST::cast_to<AST::Pragma>(node)->get_name());

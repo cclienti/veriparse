@@ -15,8 +15,8 @@ namespace Passes {
 namespace Transformations {
 
 /**
- * This pass provides an annotation scheme of declaration
- * with a module. It can ignore declarations related to an
+ * This pass provides an annotation scheme of declaration within a
+ * module. It can ignore declarations related to an
  * Input/Output/Inout.
  */
 class AnnotateDeclaration: public TransformationBase {

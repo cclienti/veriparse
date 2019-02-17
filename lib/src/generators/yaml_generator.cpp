@@ -2650,7 +2650,7 @@ YAML::Node YAMLGenerator::render_identifierscopelabel(const AST::IdentifierScope
 
 		content["filename"] = node->get_filename();
 		content["line"] = node->get_line();
-		content["name"] = node->get_name();
+		content["scope"] = node->get_scope();
 
 		content["loop"] = render(node->get_loop());
 	}

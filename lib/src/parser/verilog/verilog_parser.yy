@@ -3745,7 +3745,7 @@ scope:          identifier TK_DOT
 
                     AST::IdentifierScopeLabel::Ptr lbl =
                         std::make_shared<AST::IdentifierScopeLabel>(scanner.get_filename(), @1.begin.line);
-                    lbl->set_name($1->get_name());
+                    lbl->set_scope($1->get_name());
                     $$->get_labellist()->push_back(lbl);
                 }
 
@@ -3761,7 +3761,7 @@ scope:          identifier TK_DOT
 
                     AST::IdentifierScopeLabel::Ptr lbl =
                         std::make_shared<AST::IdentifierScopeLabel>(scanner.get_filename(), @1.begin.line);
-                    lbl->set_name(var->get_name());
+                    lbl->set_scope(var->get_name());
                     lbl->set_loop(ptr->get_ptr());
                     $$->get_labellist()->push_back(lbl);
                 }

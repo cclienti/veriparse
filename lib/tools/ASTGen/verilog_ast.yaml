@@ -432,7 +432,7 @@ SystemCall:
 
 IdentifierScopeLabel:
   properties:
-    name: "std::string"
+    scope: "std::string"
   children:
     loop: Node
 

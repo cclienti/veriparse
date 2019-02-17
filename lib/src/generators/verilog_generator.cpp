@@ -1409,7 +1409,7 @@ std::string VerilogGenerator::render_systemcall(const AST::SystemCall::Ptr node)
 std::string VerilogGenerator::render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr node) const {
 	std::string result;
 	if (node) {
-		result = StringUtils::escape(node->get_name());
+		result = StringUtils::escape(node->get_scope());
 		const std::string &loop = render(node->get_loop());
 		if (loop.size() > 0) {
 			result += "[" + loop + "]";

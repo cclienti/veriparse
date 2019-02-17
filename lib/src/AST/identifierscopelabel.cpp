@@ -13,15 +13,15 @@ IdentifierScopeLabel::IdentifierScopeLabel(const std::string &filename, uint32_t
 }
 
 
-IdentifierScopeLabel::IdentifierScopeLabel(const Node::Ptr loop, const std::string &name, const std::string &filename, uint32_t line):
-	Node(filename, line), m_loop(loop), m_name(name) {
+IdentifierScopeLabel::IdentifierScopeLabel(const Node::Ptr loop, const std::string &scope, const std::string &filename, uint32_t line):
+	Node(filename, line), m_loop(loop), m_scope(scope) {
 	set_node_type(NodeType::IdentifierScopeLabel);
 	set_node_categories({NodeType::Node});
 }
 
 IdentifierScopeLabel &IdentifierScopeLabel::operator=(const IdentifierScopeLabel &rhs) {
 	Node::operator=(static_cast<const Node &>(rhs));
-	set_name(rhs.get_name());
+	set_scope(rhs.get_scope());
 	return *this;
 }
 
@@ -34,7 +34,7 @@ bool IdentifierScopeLabel::operator==(const IdentifierScopeLabel &rhs) const {
 	if (Node::operator==(rhs) == false) {
 		return false;
 	}
-	if (get_name() != rhs.get_name()) {
+	if (get_scope() != rhs.get_scope()) {
 		return false;
 	}
 	return true;
@@ -118,7 +118,7 @@ std::ostream & operator<<(std::ostream &os, const IdentifierScopeLabel &p) {
 	
 	if (!p.get_filename().empty()) os << ", ";
 	
-	os << "name: " << p.get_name();
+	os << "scope: " << p.get_scope();
 	os << "}";
 	return os;
 }

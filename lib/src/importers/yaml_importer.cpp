@@ -6306,12 +6306,12 @@ AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node)
 				result->set_line(node["line"].as<int>());
 			}
 		}
-		// Manage property name
-		if (node["name"]) {
-			if (node["name"].IsScalar()) {
+		// Manage property scope
+		if (node["scope"]) {
+			if (node["scope"].IsScalar()) {
 				
 				if(!result) result = std::make_shared<AST::IdentifierScopeLabel>();
-				result->set_name(node["name"].as<std::string>());
+				result->set_scope(node["scope"].as<std::string>());
 			}
 		}
 

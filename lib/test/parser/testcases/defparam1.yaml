@@ -25,12 +25,12 @@ Source:
                               filename: ../../test/parser/testcases/defparam1.v
                               line: 2
                               loop: null
-                              name: my_proxy_inst
+                              scope: my_proxy_inst
                           - IdentifierScopeLabel:
                               filename: ../../test/parser/testcases/defparam1.v
                               line: 2
                               loop: null
-                              name: my_module_inst
+                              scope: my_module_inst
                           line: 2
                   line: 2
                   right:
@@ -163,4 +163,3 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/defparam1.v
   line: 1
-

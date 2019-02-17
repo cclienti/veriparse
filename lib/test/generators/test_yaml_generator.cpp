@@ -2185,16 +2185,16 @@ TEST(YAMLGenerator, IdentifierScopeLabel) {
 
 	
 	AST::Node::Ptr c_loop(new AST::Node);
-	std::string p_name = "mynbiqpmzj";
+	std::string p_scope = "mynbiqpmzj";
 
 	AST::IdentifierScopeLabel::Ptr m_identifierscopelabel(new AST::IdentifierScopeLabel
-		(c_loop, p_name, "filename", 0));
+		(c_loop, p_scope, "filename", 0));
 
 	YAML::Node yaml = Generators::YAMLGenerator().render(m_identifierscopelabel);
 
 	ASSERT_TRUE(yaml["IdentifierScopeLabel"]);
 	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["loop"]);
-	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["name"].as<std::string>() == "mynbiqpmzj");
+	ASSERT_TRUE(yaml["IdentifierScopeLabel"]["scope"].as<std::string>() == "mynbiqpmzj");
 }
 
 TEST(YAMLGenerator, IdentifierScope) {
