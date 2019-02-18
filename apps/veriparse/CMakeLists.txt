@@ -18,47 +18,47 @@ add_subdirectory(veriobf)
 #----------------------------------------
 
 set(VERIPARSE_APPS_TESTS
-  "tiny_aes_128" "tiny_aes_192" "tiny_aes_256" "hynoc_5p"
-  "dclkfifolut")
+    "tiny_aes_128" "tiny_aes_192" "tiny_aes_256" "hynoc_5p"
+    "dclkfifolut")
 
 
 if(NOT MINGW)
 
+  # Prepare license used by all test
   add_custom_target(test_veriparse_apps_license ALL DEPENDS license_test.dat)
-  add_custom_command(
-    OUTPUT
-    license_test.dat
-    COMMAND
-    ${CMAKE_CURRENT_SOURCE_DIR}/test/common/license.sh
-    ${CMAKE_CURRENT_BINARY_DIR}/../license/license_generator/license_generator
-    ${CMAKE_CURRENT_BINARY_DIR}/../license/license_validator/license_validator
-    DEPENDS
-    license_generator license_validator)
+  add_custom_command(OUTPUT license_test.dat
+                     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test/common/license.sh
+                             ${CMAKE_CURRENT_BINARY_DIR}/../license/license_generator/license_generator
+                             ${CMAKE_CURRENT_BINARY_DIR}/../license/license_validator/license_validator
+                     DEPENDS license_generator license_validator)
 
+  # Iterate over all tests
   foreach(VERIPARSE_APPS_TEST ${VERIPARSE_APPS_TESTS})
     file(GLOB VERIPARSE_PROJECT_TEST_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/project*)
 
+    # Iterate over all project within a test
     foreach(VERIPARSE_PROJECT_TEST_DIR ${VERIPARSE_PROJECT_TEST_DIRS})
       if(IS_DIRECTORY ${VERIPARSE_PROJECT_TEST_DIR})
-	get_filename_component(VERIPARSE_PROJECT_NAME ${VERIPARSE_PROJECT_TEST_DIR} NAME)
+        get_filename_component(VERIPARSE_PROJECT_NAME ${VERIPARSE_PROJECT_TEST_DIR} NAME)
 
-	set(VERIPARSE_APPS_TEST_NAME test_veriparse_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
+        set(VERIPARSE_APPS_TEST_NAME test_veriparse_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
+        set(VERIPARSE_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME})
 
-	message(STATUS "Veriparse Apps: adding test ${VERIPARSE_APPS_TEST_NAME}")
-	add_custom_target(${VERIPARSE_APPS_TEST_NAME} DEPENDS test_veriparse_apps_license veriflat veriobf)
+        message(STATUS "Veriparse Apps: adding test ${VERIPARSE_APPS_TEST_NAME}")
+	file(MAKE_DIRECTORY ${VERIPARSE_WORKING_DIR})
 
-	add_test(
-	  NAME
-	  ${VERIPARSE_APPS_TEST_NAME}
-	  COMMAND
-	  make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME}/Makefile
-	  VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
-	  VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
-	  clean iverilog_check veriflat_check veriobf_check)
+        add_custom_target(${VERIPARSE_APPS_TEST_NAME} DEPENDS test_veriparse_apps_license veriflat veriobf)
 
-	set_tests_properties(
-	  ${VERIPARSE_APPS_TEST_NAME}
-	  PROPERTIES ENVIRONMENT VERIPARSE_LICENSE_FILE=${CMAKE_CURRENT_BINARY_DIR}/license_test.dat)
+        add_test(NAME ${VERIPARSE_APPS_TEST_NAME}
+                 COMMAND make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME}/Makefile
+                         VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
+                         VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
+                         clean iverilog_check veriflat_check veriobf_check
+                 WORKING_DIRECTORY ${VERIPARSE_WORKING_DIR})
+
+        set_tests_properties(
+          ${VERIPARSE_APPS_TEST_NAME}
+          PROPERTIES ENVIRONMENT VERIPARSE_LICENSE_FILE=${CMAKE_CURRENT_BINARY_DIR}/license_test.dat)
       endif()
     endforeach()
   endforeach()
