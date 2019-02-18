@@ -18,7 +18,8 @@ add_subdirectory(veriobf)
 #----------------------------------------
 
 set(VERIPARSE_APPS_TESTS
-  "tiny_aes_128" "tiny_aes_192" "tiny_aes_256" "hynoc_5p")
+  "tiny_aes_128" "tiny_aes_192" "tiny_aes_256" "hynoc_5p"
+  "dclkfifolut")
 
 
 if(NOT MINGW)
