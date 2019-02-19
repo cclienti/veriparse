@@ -29,6 +29,8 @@ Mechanics
 Functional
 ----------
 
+#. 2019-02-19: Obfucate module instance name
+
 #. 2019-02-16: Generate loop scope name are not renamed during flattening.
 
 #. 2019-02-05: Improved rendering of unnamed ports/parameter instance in verilog generator (put everything on a line).
