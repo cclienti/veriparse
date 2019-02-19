@@ -91,7 +91,7 @@ bool Dimensions::extract_array(const TArray &array, Packing packing, DimInfo &di
 	const bool lsb_valid = Transformations::ExpressionEvaluation().evaluate_node(array->get_lsb(), lsb);
 
 	if (!msb_valid || !lsb_valid) {
-		LOG_ERROR_N(array) << "cannot evaluate dimension range";
+		LOG_WARNING_N(array) << "cannot evaluate dimension range";
 		return false;
 	}
 
