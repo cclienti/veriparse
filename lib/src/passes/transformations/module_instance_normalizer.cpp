@@ -24,42 +24,51 @@ ModuleInstanceNormalizer::~ModuleInstanceNormalizer()
 
 int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
+	LOG_INFO_N(node) << "Normalizing module instances";
+
+	LOG_DEBUG_N(node) << "Analyze declaration dimensions";
 	int ret = Analysis::Dimensions::analyze_decls(node, m_dim_map);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during signal dimensions analysis";
 		return ret;
 	}
 
+	LOG_DEBUG_N(node) << "Analyze unique declarations";
 	ret = Analysis::UniqueDeclaration::analyze(node, m_declared);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during analysis of declared identifiers";
 		return ret;
 	}
 
+	LOG_DEBUG_N(node) << "Split instance lists";
 	ret = split_lists(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance list split";
 		return ret;
 	}
 
+	LOG_DEBUG_N(node) << "Add module port name in instance arguments";
 	ret = set_portarg_names(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance port name normalization";
 		return ret;
 	}
 
+	LOG_DEBUG_N(node) << "Add module param name in instance arguments";
 	ret = set_paramarg_names(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance parameter name normalization";
 		return ret;
 	}
 
+	LOG_DEBUG_N(node) << "Replace port arg affectation";
 	ret = replace_port_affectation(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance port value re-assignation";
 		return ret;
 	}
 
+	LOG_DEBUG_N(node) << "Split arrays";
 	ret = split_array(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance array split";
@@ -161,6 +170,28 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 	const auto &instance = instances->front();
 
 	//-----------------------------------------------
+	// Lookup for the instantiated module definition
+	//-----------------------------------------------
+
+	const auto &module_name = instance->get_module();
+	auto itmod = m_modules_map.find(module_name);
+	if (itmod == m_modules_map.end()) {
+		// The module is not found, we will keep the instance and we
+		// must go on without raising an error.
+		LOG_WARNING_N(instance) << "Instantiated module """ << module_name << """ not found";
+		return 0;
+	}
+
+	const auto &module_decl = itmod->second;
+
+	Analysis::Dimensions::DimMap module_dim_map;
+	int ret = Analysis::Dimensions::analyze_decls(module_decl, module_dim_map);
+	if (ret) {
+		LOG_ERROR_N(module_decl) << "error during signal dimensions analysis";
+		return ret;
+	}
+
+	//-----------------------------------------------
 	// Analyze the instance array if it exists
 	//-----------------------------------------------
 
@@ -176,26 +207,6 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 	if (!Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::packed, array_dim)) {
 		LOG_WARNING_N(node) << "could not split instance array, dimensions cannot be resolved";
 		return 1;
-	}
-
-	//-----------------------------------------------
-	// Lookup for the instantiated module definition
-	//-----------------------------------------------
-
-	const auto &module_name = instance->get_module();
-	auto itmod = m_modules_map.find(module_name);
-	if (itmod == m_modules_map.end()) {
-		LOG_ERROR_N(instance) << "Instantiated module """ << module_name << """ not found";
-		return 1;
-	}
-
-	const auto &module_decl = itmod->second;
-
-	Analysis::Dimensions::DimMap module_dim_map;
-	int ret = Analysis::Dimensions::analyze_decls(module_decl, module_dim_map);
-	if (ret) {
-		LOG_ERROR_N(module_decl) << "error during signal dimensions analysis";
-		return ret;
 	}
 
 	//-----------------------------------------------
@@ -360,8 +371,10 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node, cons
 
 	auto itm = m_modules_map.find(inst_module_str);
 	if (itm == m_modules_map.end()) {
-		LOG_ERROR_N(instance) << "Instantiated module """ << inst_module_str << """ not found";
-		return 1;
+		// The module is not found, we will keep the instance and we
+		// must go on without raising an error.
+		LOG_WARNING_N(instance) << "Instantiated module """ << inst_module_str << """ not found";
+		return 0;
 	}
 
 	const auto &module_decl = itm->second;
@@ -494,8 +507,10 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 
 	auto itm = m_modules_map.find(inst_module_str);
 	if (itm == m_modules_map.end()) {
-		LOG_ERROR_N(instance) << "Instantiated module """ << inst_module_str << """ not found";
-		return 1;
+		// The module is not found, we will keep the instance and we
+		// must go on without raising an error.
+		LOG_WARNING_N(instance) << "Instantiated module """ << inst_module_str << """ not found";
+		return 0;
 	}
 
 	const auto &module_decl = itm->second;
@@ -684,6 +699,30 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 	}
 
 	//-----------------------------------------------
+	// Lookup for the instantiated module definition
+	//-----------------------------------------------
+
+	const auto &module_name = instance->get_module();
+	auto itmod = m_modules_map.find(module_name);
+	if (itmod == m_modules_map.end()) {
+		// The module is not found, we will keep the instance and we
+		// must go on without raising an error.
+		LOG_WARNING_N(instance) << "Instantiated module """ << module_name << """ not found";
+		return 0;
+	}
+
+	const auto &module_decl = itmod->second;
+
+	Analysis::Dimensions::DimMap module_dim_map;
+	int ret = Analysis::Dimensions::analyze_decls(module_decl, module_dim_map);
+	if (ret) {
+		LOG_ERROR_N(module_decl) << "error during signal dimensions analysis";
+		return ret;
+	}
+
+	const auto &module_decl_outputs = Analysis::Module::get_output_names(module_decl);
+
+	//-----------------------------------------------
 	// Analyze the instance array if it exists
 	//-----------------------------------------------
 
@@ -698,30 +737,8 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 	Analysis::Dimensions::DimInfo array_dim;
 	if (!Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::packed, array_dim)) {
 		LOG_WARNING_N(node) << "instance array dimensions cannot be resolved";
-		return 1;
+		return 0;
 	}
-
-	//-----------------------------------------------
-	// Lookup for the instantiated module definition
-	//-----------------------------------------------
-
-	const auto &module_name = instance->get_module();
-	auto itmod = m_modules_map.find(module_name);
-	if (itmod == m_modules_map.end()) {
-		LOG_ERROR_N(instance) << "Instantiated module """ << module_name << """ not found";
-		return 1;
-	}
-
-	const auto &module_decl = itmod->second;
-
-	Analysis::Dimensions::DimMap module_dim_map;
-	int ret = Analysis::Dimensions::analyze_decls(module_decl, module_dim_map);
-	if (ret) {
-		LOG_ERROR_N(module_decl) << "error during signal dimensions analysis";
-		return ret;
-	}
-
-	const auto &module_decl_outputs = Analysis::Module::get_output_names(module_decl);
 
 	//-----------------------------------------------
 	// Replace port affectation
