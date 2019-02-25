@@ -1,6 +1,7 @@
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/resolve_module.hpp>
 #include <veriparse/passes/transformations/annotate_declaration.hpp>
+#include <veriparse/passes/transformations/annotate_scope.hpp>
 #include <veriparse/passes/analysis/instance.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
@@ -155,8 +156,14 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 			}
 
 			// Prefix content of the module
-			AnnotateDeclaration prefixer("^.*$", instance_name + "_$&", false);
-			if (prefixer.run(module)) {
+			AnnotateDeclaration decl_prefixer("^.*$", instance_name + "_$&", false);
+			if (decl_prefixer.run(module)) {
+				LOG_ERROR_N(node) << "cannot prefix module instance";
+				return 1;
+			}
+
+			AnnotateScope scope_prefixer("^.*$", instance_name + "_$&");
+			if (scope_prefixer.run(module)) {
 				LOG_ERROR_N(node) << "cannot prefix module instance";
 				return 1;
 			}
