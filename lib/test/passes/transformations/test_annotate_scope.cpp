@@ -39,3 +39,4 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 
 
 TEST(PassesTransformation_AnnotateScope, generate1) {TEST_CORE;}
+TEST(PassesTransformation_AnnotateScope, scope0) {TEST_CORE;}

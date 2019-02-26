@@ -88,11 +88,21 @@ int AnnotateScope::annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict
 
 	if (node->is_node_type(AST::NodeType::Block)) {
 		const auto &block = AST::cast_to<AST::Block>(node);
-		std::string scope = block->get_scope();
+		const auto &scope = block->get_scope();
 		if (scope.size()) {
 			if (replace_dict.count(scope)) {
 				const std::string &new_scope = replace_dict[scope];
 				block->set_scope(new_scope);
+			}
+		}
+	}
+	else if (node->is_node_type(AST::NodeType::IdentifierScopeLabel)) {
+		const auto &id_scope_label = AST::cast_to<AST::IdentifierScopeLabel>(node);
+		const auto &scope = id_scope_label->get_scope();
+		if (scope.size()) {
+			if (replace_dict.count(scope)) {
+				const std::string &new_scope = replace_dict[scope];
+				id_scope_label->set_scope(new_scope);
 			}
 		}
 	}
