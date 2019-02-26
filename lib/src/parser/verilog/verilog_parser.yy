@@ -1066,13 +1066,13 @@ var_decl_name:  TK_IDENTIFIER
                     $$.rvalue = AST::Rvalue::Ptr();
                 }
 
-        |       TK_IDENTIFIER TK_EQUALS const_expression
+        |       TK_IDENTIFIER TK_EQUALS rvalue
                 {
                     $$.ldelay = AST::DelayStatement::Ptr();
                     $$.name = $1;
                     $$.lengths = AST::Length::ListPtr();
                     $$.rdelay = AST::DelayStatement::Ptr();
-                    $$.rvalue = std::make_shared<AST::Rvalue>($3, scanner.get_filename(), @1.begin.line);
+                    $$.rvalue = $3;
                 }
         ;
 
