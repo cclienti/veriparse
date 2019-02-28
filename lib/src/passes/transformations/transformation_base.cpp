@@ -8,11 +8,19 @@ namespace Transformations {
 
 int TransformationBase::recurse_in_childs(AST::Node::Ptr node)
 {
+	ProcessFunction process_function =
+		[this](AST::Node::Ptr node, AST::Node::Ptr parent) -> int {return this->process(node, parent);};
+
+	return recurse_in_childs(node, process_function);
+}
+
+int TransformationBase::recurse_in_childs(AST::Node::Ptr node, ProcessFunction function)
+{
 	int ret = 0;
 	if(node) {
 		AST::Node::ListPtr children = node->get_children();
 		for (AST::Node::Ptr child: *children) {
-			ret += process(child, node);
+			ret += function(child, node);
 		}
 	}
 	return ret;

@@ -3,11 +3,17 @@
 
 #include <veriparse/AST/nodes.hpp>
 
+#include <functional>
+
+
 namespace Veriparse {
 namespace Passes {
 namespace Transformations {
 
 class TransformationBase {
+private:
+	using ProcessFunction = std::function< int (AST::Node::Ptr, AST::Node::Ptr) >;
+
 public:
 	/**
 	 * @return zero on success
@@ -29,6 +35,13 @@ protected:
 	 * @return zero on success.
 	 */
 	virtual int recurse_in_childs(AST::Node::Ptr node);
+
+	/**
+	 * @brief Call the function method for each child (and the
+	 * current node become the parent).
+	 * @return zero on success.
+	 */
+	virtual int recurse_in_childs(AST::Node::Ptr node, ProcessFunction function);
 
 	/**
 	 * @brief Replace the given node in the parent by a list
