@@ -15,15 +15,15 @@ namespace Transformations
 
 namespace
 {
-typedef std::pair<std::string, std::vector<AST::Node::Ptr>> range_t;
+using Range = std::pair<std::string, std::vector<AST::Node::Ptr>>;
 
-std::string print_for_range_t(const range_t &for_range)
+std::string print_for_range(const Range &for_range)
 {
 	std::stringstream ss;
 	ss << "{name: " << for_range.first << ", range: [";
 	for(uint64_t i=0; i<for_range.second.size(); ++i) {
 		if((i<4) || (i==for_range.second.size()-1)) {
-			AST::Node::Ptr v = for_range.second[i];
+			const auto &v = for_range.second[i];
 			if(v->is_node_type(AST::NodeType::FloatConst)) {
 				ss << AST::cast_to<AST::FloatConst>(v)->get_value();
 			}
@@ -46,6 +46,12 @@ std::string print_for_range_t(const range_t &for_range)
 
 int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
+	m_scope_map.clear();
+	return unroll(node, parent, "");
+}
+
+int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state)
+{
 	if (!node) {
 		return 0;
 	}
@@ -58,10 +64,25 @@ int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 			return 1;
 		}
 
+		// Get the loop scope
+		std::string scope;
+		if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
+			const auto &block = AST::cast_to<AST::Block>(for_node->get_statement());
+			scope = block->get_scope();
+			LOG_DEBUG_N(for_node) << "loop scope: " << scope;
+		}
+		else {
+			LOG_WARNING_N(node) << "for loop without named scope";
+		}
+
+		if (!scope.size()) {
+			LOG_WARNING_N(node) << "for loop without named scope";
+		}
+
 		// Look for the current for loop range
-		LoopUnrolling::range_ptr_t for_range = LoopUnrolling::get_for_range(for_node);
+		LoopUnrolling::RangePtr for_range = LoopUnrolling::get_for_range(for_node);
 		if (for_range) {
-			LOG_TRACE_N(for_node) << print_for_range_t(*for_range);
+			LOG_TRACE_N(for_node) << print_for_range(*for_range);
 
 			// Unroll the statements
 			AST::Node::ListPtr stmts;
@@ -78,25 +99,43 @@ int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 			AnnotateDeclaration annotate;
 
 			for(AST::Node::Ptr p: for_range->second) {
-				AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
+				auto stmts_copy = AST::Node::clone_list(stmts);
+
 				ASTReplace::replace_identifier(stmts_copy, for_range->first, p);
 
+				// Manage the scope mapping
+				const std::string loop_value = Generators::VerilogGenerator().render(p);
+				const std::string src_scope_str = scope + "[" + loop_value + "]";
+				const std::string dest_scope_str = for_range->first + "_" + loop_value;
+				LOG_DEBUG_N(node) << "scope_state: " << scope_state
+				                  << ", src_scope_str: " << src_scope_str
+				                  << ", dest_scope_str: " << dest_scope_str;
 				// We put the stmts vector in a AST::Block in order to
 				// annotate all stmts at a time.
-				std::ostringstream ss_replace;
-				ss_replace << "$&_" << for_range->first << "_" << Generators::VerilogGenerator().render(p);
-				annotate.set_search_replace("^.*$", ss_replace.str());
+				const std::string replace = std::string("$&_") + dest_scope_str;
+				annotate.set_search_replace("^.*$", replace);
 				AST::Block::Ptr block = std::make_shared<AST::Block>(stmts_copy, "");
 				annotate.run(block);
 
-				unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
+				// We pushed the new copied stmts into a block
+				auto block_tmp = std::make_shared<AST::Block>(stmts_copy, src_scope_str);
+
+				// We recurse using the block_tmp as parent. this block is used to hold recurse results.
+				auto recurse_fct = [this, &scope_state, &src_scope_str] (AST::Node::Ptr n, AST::Node::Ptr p)
+				                   {return unroll(n, p, scope_state + "." + src_scope_str);};
+				if (recurse(block_tmp, stmts_copy, recurse_fct)) {
+					return 1;
+				}
+
+				// We accumulate all results
+				unrolled_stmts->splice(unrolled_stmts->end(), *block_tmp->get_statements());
 			}
 
-			// Replace the unrolled statements in the parent block
+			// Replace the all unrolled statements in the true parent
+			// block.
 			pickup_statements(parent, node, unrolled_stmts);
 
-			// Finally search for another nested for statement in the unrolled ones.
-			return recurse_in_childs(parent);
+			return 0;
 		}
 	}
 
@@ -123,11 +162,14 @@ int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 					unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
 				}
 
-				// Replace the unrolled statements in the parent block
+				// Replace the unrolled statements in the parent block.
 				pickup_statements(parent, node, unrolled_stmts);
 
-				// Finally search for another nested for statement in the unrolled ones.
-				return recurse_in_childs(parent);
+				// Finally search for another nested for statement in the
+				// unrolled ones.
+				auto recurse_fct = [this] (AST::Node::Ptr n, AST::Node::Ptr p)
+				                   {return unroll(n, p, "");};
+				return recurse_in_childs(parent, recurse_fct);
 			}
 			else {
 				LOG_WARNING_N(node) << "non integer repeat";
@@ -135,10 +177,12 @@ int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 		}
 	}
 
-	return recurse_in_childs(node);
+	auto recurse_fct = [this, &scope_state] (AST::Node::Ptr n, AST::Node::Ptr p)
+	                   {return unroll(n, p, scope_state);};
+	return recurse_in_childs(node, recurse_fct);
 }
 
-LoopUnrolling::range_ptr_t LoopUnrolling::get_for_range(const AST::ForStatement::Ptr &for_node)
+LoopUnrolling::RangePtr LoopUnrolling::get_for_range(const AST::ForStatement::Ptr &for_node)
 {
 	const AST::BlockingSubstitution::Ptr pre_subst = for_node->get_pre();
 	if(!pre_subst) {
@@ -191,7 +235,7 @@ LoopUnrolling::range_ptr_t LoopUnrolling::get_for_range(const AST::ForStatement:
 	ExpressionEvaluation::replace_map_t replace_map;
 	replace_map[loop_pre_lvalue] = AST::cast_to<AST::Constant>(loop_pre_rvalue);
 
-	range_ptr_t range = std::make_shared<range_t>();
+	RangePtr range = std::make_shared<Range>();
 	range->first = loop_pre_lvalue;
 
 	while(true) {
