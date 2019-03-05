@@ -52,6 +52,12 @@ int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replac
 				if(it != replace_map.cend()) {
 					parent->replace(node, it->second->clone());
 				}
+
+				// Recurse in scopes
+				AST::Node::ListPtr children = node->get_children();
+				for (AST::Node::Ptr child: *children) {
+					ret += replace_identifier(child, replace_map, node);
+				}
 			}
 			break;
 
