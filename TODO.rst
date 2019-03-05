@@ -29,6 +29,8 @@ Mechanics
 Functional
 ----------
 
+#. 2019-03-05: Deadcode elimination: pay attention to scope during deadcode elimination.
+
 #. 2019-02-19: Obfucate module instance name
 
 #. 2019-02-25: Scope are completely managed during flattening. We need to rename variable that use the scope name. Maybe
