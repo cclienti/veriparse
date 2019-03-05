@@ -6,6 +6,18 @@ namespace Passes {
 namespace Transformations {
 
 
+int TransformationBase::recurse(AST::Node::Ptr parent, AST::Node::ListPtr node_list, ProcessFunction function)
+{
+	int ret = 0;
+	if(node_list) {
+		for (const auto &node: *node_list) {
+			ret += function(node, parent);
+		}
+	}
+	return ret;
+}
+
+
 int TransformationBase::recurse_in_childs(AST::Node::Ptr node)
 {
 	ProcessFunction process_function =
@@ -14,17 +26,20 @@ int TransformationBase::recurse_in_childs(AST::Node::Ptr node)
 	return recurse_in_childs(node, process_function);
 }
 
+
 int TransformationBase::recurse_in_childs(AST::Node::Ptr node, ProcessFunction function)
 {
 	int ret = 0;
 	if(node) {
-		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
-			ret += function(child, node);
-		}
+		recurse(node, node->get_children(), function);
+		// AST::Node::ListPtr children = node->get_children();
+		// for (AST::Node::Ptr child: *children) {
+		// 	ret += function(child, node);
+		// }
 	}
 	return ret;
 }
+
 
 void TransformationBase::pickup_statements(AST::Node::Ptr parent, AST::Node::Ptr node,
                                            AST::Node::ListPtr stmts)

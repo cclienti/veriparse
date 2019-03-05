@@ -30,6 +30,12 @@ protected:
 	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) = 0;
 
 	/**
+	 * @brief Call the process method for node in the list.
+	 * @return zero on success.
+	 */
+	virtual int recurse(AST::Node::Ptr parent, AST::Node::ListPtr node_list, ProcessFunction function);
+
+	/**
 	 * @brief Call the process method for each child (and the
 	 * current node become the parent).
 	 * @return zero on success.
