@@ -44,10 +44,24 @@ std::string print_for_range(const Range &for_range)
 }
 }
 
+
 int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
+	int ret;
+
 	m_scope_map.clear();
-	return unroll(node, parent, "");
+
+	ret = unroll(node, parent, "");
+	if (ret) {
+		return ret;
+	}
+
+	ret = rename_scoped_identifiers(node, parent);
+	if (ret) {
+		return ret;
+	}
+
+	return 0;
 }
 
 int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state)
@@ -69,7 +83,7 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 		if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
 			const auto &block = AST::cast_to<AST::Block>(for_node->get_statement());
 			scope = block->get_scope();
-			LOG_DEBUG_N(for_node) << "loop scope: " << scope;
+			LOG_TRACE_N(for_node) << "loop scope: " << scope;
 		}
 		else {
 			LOG_WARNING_N(node) << "for loop without named scope";
@@ -105,24 +119,28 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 
 				// Manage the scope mapping
 				const std::string loop_value = Generators::VerilogGenerator().render(p);
-				const std::string src_scope_str = scope + "[" + loop_value + "]";
-				const std::string dest_scope_str = for_range->first + "_" + loop_value;
-				LOG_DEBUG_N(node) << "scope_state: " << scope_state
-				                  << ", src_scope_str: " << src_scope_str
-				                  << ", dest_scope_str: " << dest_scope_str;
+				const std::string src_scope = scope + "[" + loop_value + "]";
+				const std::string dest_scope = for_range->first + "_" + loop_value;
+				const std::string new_scope_state = scope_state + src_scope + ".";
+
+				if (map_scope(new_scope_state, scope_state, dest_scope)) {
+					LOG_ERROR_N(node) << "error during scope mapping";
+					return 1;
+				}
+
 				// We put the stmts vector in a AST::Block in order to
 				// annotate all stmts at a time.
-				const std::string replace = std::string("$&_") + dest_scope_str;
+				const std::string replace = std::string("$&_") + dest_scope;
 				annotate.set_search_replace("^.*$", replace);
 				AST::Block::Ptr block = std::make_shared<AST::Block>(stmts_copy, "");
 				annotate.run(block);
 
 				// We pushed the new copied stmts into a block
-				auto block_tmp = std::make_shared<AST::Block>(stmts_copy, src_scope_str);
+				auto block_tmp = std::make_shared<AST::Block>(stmts_copy, src_scope);
 
 				// We recurse using the block_tmp as parent. this block is used to hold recurse results.
-				auto recurse_fct = [this, &scope_state, &src_scope_str] (AST::Node::Ptr n, AST::Node::Ptr p)
-				                   {return unroll(n, p, scope_state + "." + src_scope_str);};
+				auto recurse_fct = [this, &new_scope_state] (AST::Node::Ptr n, AST::Node::Ptr p)
+				                   {return unroll(n, p, new_scope_state);};
 				if (recurse(block_tmp, stmts_copy, recurse_fct)) {
 					return 1;
 				}
@@ -141,44 +159,137 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 
 	else if(node->is_node_type(AST::NodeType::RepeatStatement)) {
 		const AST::RepeatStatement::Ptr repeat_node = AST::cast_to<AST::RepeatStatement>(node);
+
+		if(!parent) {
+			LOG_ERROR_N(repeat_node) << "could not unroll loop, no parent";
+			return 1;
+		}
+
+		// Get the loop scope
+		std::string scope;
+		if(repeat_node->get_statement()->is_node_type(AST::NodeType::Block)) {
+			const auto &block = AST::cast_to<AST::Block>(repeat_node->get_statement());
+			scope = block->get_scope();
+			LOG_TRACE_N(repeat_node) << "loop scope: " << scope;
+		}
+		else {
+			LOG_WARNING_N(node) << "for loop without named scope";
+		}
+
+		if (!scope.size()) {
+			LOG_WARNING_N(node) << "for loop without named scope";
+		}
+
 		AST::Node::Ptr times_node = ExpressionEvaluation().evaluate_node(repeat_node->get_times());
-		if(times_node) {
-			if(times_node->is_node_type(AST::NodeType::IntConstN)) {
-				AST::IntConstN::Ptr times = AST::cast_to<AST::IntConstN>(times_node);
+		if(times_node && times_node->is_node_type(AST::NodeType::IntConstN)) {
+			AST::IntConstN::Ptr times = AST::cast_to<AST::IntConstN>(times_node);
 
-				// Unroll the statements
-				AST::Node::ListPtr stmts;
-				if(repeat_node->get_statement()->is_node_type(AST::NodeType::Block)) {
-					stmts = AST::cast_to<AST::Block>(repeat_node->get_statement())->get_statements();
-				}
-				else {
-					stmts = std::make_shared<AST::Node::List>();
-					stmts->push_back(repeat_node->get_statement());
-				}
-
-				AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
-				for(uint64_t x=0; x<times->get_value().get_ui(); x++) {
-					AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
-					unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
-				}
-
-				// Replace the unrolled statements in the parent block.
-				pickup_statements(parent, node, unrolled_stmts);
-
-				// Finally search for another nested for statement in the
-				// unrolled ones.
-				auto recurse_fct = [this] (AST::Node::Ptr n, AST::Node::Ptr p)
-				                   {return unroll(n, p, "");};
-				return recurse_in_childs(parent, recurse_fct);
+			// Unroll the statements
+			AST::Node::ListPtr stmts;
+			if(repeat_node->get_statement()->is_node_type(AST::NodeType::Block)) {
+				stmts = AST::cast_to<AST::Block>(repeat_node->get_statement())->get_statements();
 			}
 			else {
-				LOG_WARNING_N(node) << "non integer repeat";
+				stmts = std::make_shared<AST::Node::List>();
+				stmts->push_back(repeat_node->get_statement());
 			}
+
+			AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
+			for(uint64_t x=0; x<times->get_value().get_ui(); x++) {
+				AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
+
+				// Manage the scope mapping
+				const std::string loop_value = std::to_string(x);
+				const std::string src_scope = scope + "[" + loop_value + "]";
+				const std::string dest_scope = loop_value;
+				const std::string new_scope_state = scope_state + src_scope + ".";
+
+				if (map_scope(new_scope_state, scope_state, dest_scope)) {
+					LOG_ERROR_N(node) << "error during scope mapping";
+					return 1;
+				}
+
+				// We pushed the new copied stmts into a block
+				auto block_tmp = std::make_shared<AST::Block>(stmts_copy, src_scope);
+
+				// We recurse using the block_tmp as parent. this block is used to hold recurse results.
+				auto recurse_fct = [this, &new_scope_state] (AST::Node::Ptr n, AST::Node::Ptr p)
+				                   {return unroll(n, p, new_scope_state);};
+				if (recurse(block_tmp, stmts_copy, recurse_fct)) {
+					return 1;
+				}
+
+				unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
+			}
+
+			// Replace the unrolled statements in the parent block.
+			pickup_statements(parent, node, unrolled_stmts);
+
+			return 0;
+		}
+		else {
+			LOG_WARNING_N(node) << "non integer repeat";
 		}
 	}
 
 	auto recurse_fct = [this, &scope_state] (AST::Node::Ptr n, AST::Node::Ptr p)
 	                   {return unroll(n, p, scope_state);};
+	return recurse_in_childs(node, recurse_fct);
+}
+
+int LoopUnrolling::map_scope(const std::string &verilog_scope, const std::string &scope_state, const std::string &rename_suffix)
+{
+	// Find scope mapping of the current state.
+	std::string rename_suffix_prev;
+	if (!scope_state.empty()) {
+		auto itfind = m_scope_map.find(scope_state);
+		if (itfind != m_scope_map.end()) {
+			rename_suffix_prev = itfind->second;
+		}
+		else {
+			LOG_ERROR << "scope " << scope_state << " not found";
+			return 1;
+		}
+	}
+
+	// Append the current dest mapping to the previous one.
+	const std::string rename_suffix_mapping = rename_suffix_prev + "_" + rename_suffix;
+
+	// Insert the current mapping into the scope map.
+	auto map_res = m_scope_map.emplace(verilog_scope, rename_suffix_mapping);
+	if (!map_res.second) {
+		LOG_ERROR << "scope already defined: " << verilog_scope;
+		return 1;
+	}
+
+	return 0;
+}
+
+int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr parent)
+{
+	if (!node) {
+		return 0;
+	}
+
+	if (node->is_node_type(AST::NodeType::Identifier)) {
+		const auto &identifier = AST::cast_to<AST::Identifier>(node);
+		const auto &scope = identifier->get_scope();
+		if (scope) {
+			const auto scope_str = Generators::VerilogGenerator().render(scope);
+			auto itfind = m_scope_map.find(scope_str);
+			if (itfind != m_scope_map.end()) {
+				identifier->set_scope(nullptr);
+				const auto new_name = identifier->get_name() + itfind->second;
+				identifier->set_name(new_name);
+			}
+			else {
+				LOG_ERROR_N(node) << "scope " << scope_str << "not found";
+				return 1;
+			}
+		}
+	}
+
+	auto recurse_fct = [this] (AST::Node::Ptr n, AST::Node::Ptr p) {return rename_scoped_identifiers(n, p);};
 	return recurse_in_childs(node, recurse_fct);
 }
 

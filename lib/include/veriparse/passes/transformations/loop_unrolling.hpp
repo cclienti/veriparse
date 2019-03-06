@@ -24,21 +24,49 @@ private:
 
 private:
 	/**
+	 * @brief Apply the LoopUnrolling transform.
+	 *
 	 * @return zero on success.
 	 */
 	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
 	/**
+	 * @brief Unroll loops
+	 *
+	 * Unroll loops and keep a track of scope and how identifiers are
+	 * renamed.
+	 *
 	 * @return zero on success.
 	 */
 	int unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state);
 
 	/**
-	 * @brief Evaluate a ForStatement Node. It returns a
-	 * range_t made of the loop variable string and the vector
-	 * of all loop index values. It returns nullptr if the
-	 * pre, post or condition part of the for expression
-	 * cannot be resolved statically.
+	 * @brief Rename scoped identifier with mapping gathered during
+	 * unrolling.
+	 *
+	 * @return zero on success.
+	 */
+	int rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr parent);
+
+	/**
+	 * @brief Push scope into map of scopes.
+	 *
+	 * The scope of map keep tracks of how identifiers are renamed
+	 * depending on scope hierarchy.
+	 *
+	 * @return zero on success.
+	 */
+	int map_scope(const std::string &verilog_scope, const std::string &scope_state, const std::string &rename_suffix);
+
+	/**
+	 * @brief Evaluate a ForStatement Node.
+	 *
+	 * It returns a range_t made of the loop variable string and the
+	 * vector of all loop index values. It returns nullptr if the pre,
+	 * post or condition part of the for expression cannot be resolved
+	 * statically.
+	 *
+	 * @return The range pointer.
 	 */
 	static RangePtr get_for_range(const AST::ForStatement::Ptr &for_node);
 
