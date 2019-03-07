@@ -4,66 +4,66 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
           items:
           - Localparam:
-              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
               line: 3
-              name: h_rajbkrpywncrksxt
+              name: h_kqrsohvjriacnufb
               sign: false
               type: NONE
               value:
                 Rvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 3
                   var:
                     IntConstN:
                       base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 3
                       sign: false
                       size: -1
                       value: 1
           - Localparam:
-              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
               line: 4
-              name: h_gbtiqtzjgzstqbqx
+              name: h_beshbmlnldhvspri
               sign: false
               type: NONE
               value:
                 Rvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 4
                   var:
                     IntConstN:
                       base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 4
                       sign: false
                       size: -1
                       value: 1
           - Function:
               automatic: false
-              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
               line: 6
-              name: h_hltmghjemxxbxnni
+              name: h_bzoawajmotrnadze
               ports:
               - Ioport:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   first:
                     Input:
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 6
-                      name: h_zmgcybnjhxnmybtu
+                      name: h_jppdoyjvzgglvxgt
                       sign: false
                       widths:
                       - Width:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 6
                           lsb:
                             IntConstN:
                               base: 10
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 6
                               sign: false
                               size: -1
@@ -71,7 +71,7 @@ Source:
                           msb:
                             IntConstN:
                               base: 10
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 6
                               sign: false
                               size: -1
@@ -83,13 +83,13 @@ Source:
               rettype: INTEGER
               statements:
               - Integer:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 7
-                  name: h_gbtiqtzjgzstqbqx
+                  name: h_beshbmlnldhvspri
                   right:
                     Rvalue: null
               - Reg:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 8
                   name: tmp
                   right:
@@ -97,12 +97,12 @@ Source:
                   sign: false
                   widths:
                   - Width:
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 8
                       lsb:
                         IntConstN:
                           base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 8
                           sign: false
                           size: -1
@@ -110,29 +110,29 @@ Source:
                       msb:
                         IntConstN:
                           base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 8
                           sign: false
                           size: -1
                           value: 31
               - Block:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 9
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 10
                           var:
                             Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 10
-                              name: h_gbtiqtzjgzstqbqx
+                              name: h_beshbmlnldhvspri
                               scope:
                                 IdentifierScope: null
                       line: 10
@@ -140,27 +140,27 @@ Source:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 10
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 10
                               sign: false
                               size: -1
                               value: 1
                   - BlockingSubstitution:
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 11
                           var:
                             Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 11
                               name: tmp
                               scope:
@@ -170,33 +170,33 @@ Source:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 11
                           var:
                             Minus:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               left:
                                 Identifier:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 11
-                                  name: h_zmgcybnjhxnmybtu
+                                  name: h_jppdoyjvzgglvxgt
                                   scope:
                                     IdentifierScope: null
                               line: 11
                               right:
                                 Identifier:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 3
-                                  name: h_rajbkrpywncrksxt
+                                  name: h_kqrsohvjriacnufb
                                   scope:
                                     IdentifierScope: null
                   - ForStatement:
                       cond:
                         GreaterThan:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           left:
                             Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 12
                               name: tmp
                               scope:
@@ -205,27 +205,27 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 12
                       post:
                         BlockingSubstitution:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 12
                               var:
                                 Identifier:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 6
-                                  name: h_hltmghjemxxbxnni
+                                  name: h_bzoawajmotrnadze
                                   scope:
                                     IdentifierScope: null
                           line: 12
@@ -233,41 +233,41 @@ Source:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 12
                               var:
                                 Plus:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   left:
                                     Identifier:
-                                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                       line: 6
-                                      name: h_hltmghjemxxbxnni
+                                      name: h_bzoawajmotrnadze
                                       scope:
                                         IdentifierScope: null
                                   line: 12
                                   right:
                                     IntConstN:
                                       base: 10
-                                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                       line: 12
                                       sign: false
                                       size: -1
                                       value: 1
                       pre:
                         BlockingSubstitution:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 12
                               var:
                                 Identifier:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 6
-                                  name: h_hltmghjemxxbxnni
+                                  name: h_bzoawajmotrnadze
                                   scope:
                                     IdentifierScope: null
                           line: 12
@@ -275,33 +275,33 @@ Source:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 12
                               var:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 12
                                   sign: false
                                   size: -1
                                   value: 0
                       statement:
                         Block:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 12
                           scope: ''
                           statements:
                           - BlockingSubstitution:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               ldelay:
                                 DelayStatement: null
                               left:
                                 Lvalue:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 13
                                   var:
                                     Identifier:
-                                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                       line: 13
                                       name: tmp
                                       scope:
@@ -311,14 +311,14 @@ Source:
                                 DelayStatement: null
                               right:
                                 Rvalue:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 13
                                   var:
                                     Srl:
-                                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                       left:
                                         Identifier:
-                                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                           line: 13
                                           name: tmp
                                           scope:
@@ -326,13 +326,13 @@ Source:
                                       line: 13
                                       right:
                                         Identifier:
-                                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                           line: 13
-                                          name: h_gbtiqtzjgzstqbqx
+                                          name: h_beshbmlnldhvspri
                                           scope:
                                             IdentifierScope: null
           - Reg:
-              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
               line: 18
               name: h
               right:
@@ -340,12 +340,12 @@ Source:
               sign: false
               widths:
               - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 18
                   lsb:
                     IntConstN:
                       base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 18
                       sign: false
                       size: -1
@@ -353,26 +353,26 @@ Source:
                   msb:
                     IntConstN:
                       base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 18
                       sign: false
                       size: -1
                       value: 31
           - Reg:
-              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
               line: 19
-              name: h_adtlnfbrryjnvabn
+              name: h_eamcexutlapnbokf
               right:
                 Rvalue: null
               sign: false
               widths:
               - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 19
                   lsb:
                     IntConstN:
                       base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 19
                       sign: false
                       size: -1
@@ -380,31 +380,31 @@ Source:
                   msb:
                     IntConstN:
                       base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 19
                       sign: false
                       size: -1
                       value: 31
           - Initial:
-              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
               line: 21
               statement:
                 Block:
-                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                   line: 21
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 22
                           var:
                             Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 18
                               name: h
                               scope:
@@ -414,29 +414,29 @@ Source:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 22
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 22
                               sign: false
                               size: -1
                               value: 53
                   - BlockingSubstitution:
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 23
                           var:
                             Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 19
-                              name: h_adtlnfbrryjnvabn
+                              name: h_eamcexutlapnbokf
                               scope:
                                 IdentifierScope: null
                       line: 23
@@ -444,52 +444,52 @@ Source:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 23
                           var:
                             FunctionCall:
                               args:
                               - Identifier:
-                                  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                                   line: 18
                                   name: h
                                   scope:
                                     IdentifierScope: null
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 23
-                              name: h_hltmghjemxxbxnni
+                              name: h_bzoawajmotrnadze
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                       line: 24
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 24
                               value: clogb2(%0d) = %0d
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 18
                               name: h
                               scope:
                                 IdentifierScope: null
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                               line: 19
-                              name: h_adtlnfbrryjnvabn
+                              name: h_eamcexutlapnbokf
                               scope:
                                 IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/function0.v
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
                           line: 24
                           syscall: display
           line: 1
           name: function0
-      filename: ../../../lib/test/passes/transformations/testcases/function0.v
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
       line: 1
-  filename: ../../../lib/test/passes/transformations/testcases/function0.v
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/function0.v
   line: 1
 
