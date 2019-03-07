@@ -51,6 +51,11 @@ int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
 	m_scope_map.clear();
 
+	ret = Analysis::UniqueDeclaration::analyze(node, m_scope_declared);
+	if (ret) {
+		return ret;
+	}
+
 	ret = unroll(node, parent, "");
 	if (ret) {
 		return ret;
@@ -89,8 +94,9 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 			LOG_WARNING_N(node) << "for loop without named scope";
 		}
 
-		if (!scope.size()) {
+		if (scope.empty()) {
 			LOG_WARNING_N(node) << "for loop without named scope";
+			scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
 		}
 
 		// Look for the current for loop range
@@ -176,8 +182,9 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 			LOG_WARNING_N(node) << "for loop without named scope";
 		}
 
-		if (!scope.size()) {
+		if (scope.empty()) {
 			LOG_WARNING_N(node) << "for loop without named scope";
+			scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
 		}
 
 		AST::Node::Ptr times_node = ExpressionEvaluation().evaluate_node(repeat_node->get_times());
@@ -232,8 +239,24 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 		}
 	}
 
-	auto recurse_fct = [this, &scope_state] (AST::Node::Ptr n, AST::Node::Ptr p)
-	                   {return unroll(n, p, scope_state);};
+	std::string new_scope_state = scope_state;
+	if (node->is_node_type(AST::NodeType::Block)) {
+		const auto &block = AST::cast_to<AST::Block>(node);
+
+		std::string scope = block->get_scope();
+		if (scope.empty()) {
+			scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
+		}
+
+		new_scope_state.append(scope + ".");
+		if (map_scope(new_scope_state, scope_state, "")) {
+			LOG_ERROR_N(node) << "error during scope mapping";
+			return 1;
+		}
+	}
+
+	auto recurse_fct = [this, &new_scope_state] (AST::Node::Ptr n, AST::Node::Ptr p)
+	                   {return unroll(n, p, new_scope_state);};
 	return recurse_in_childs(node, recurse_fct);
 }
 

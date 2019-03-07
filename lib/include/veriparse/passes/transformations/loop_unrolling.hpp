@@ -4,6 +4,7 @@
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
+#include <veriparse/passes/analysis/unique_declaration.hpp>
 
 #include <string>
 #include <memory>
@@ -94,8 +95,10 @@ private:
 	                                      const ExpressionEvaluation::replace_map_t &map);
 
 private:
+	Analysis::UniqueDeclaration::IdentifierSet m_scope_declared;
 	ScopeMap m_scope_map;
 };
+
 
 }
 }
