@@ -19,6 +19,7 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
                                                                                 \
 	test_helpers.render_node_to_verilog_file(source, test_string + "_before.v"); \
 	/* apply the transformation */                                               \
+	Passes::Analysis::UniqueDeclaration::seed(0);                                \
 	Passes::Transformations::LoopUnrolling().run(source);                        \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");        \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");        \
