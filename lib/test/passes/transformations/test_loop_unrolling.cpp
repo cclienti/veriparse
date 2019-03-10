@@ -44,3 +44,5 @@ TEST(PassesTransformation_LoopUnrolling, repeat1) {TEST_CORE;}
 TEST(PassesTransformation_LoopUnrolling, scope0) {TEST_CORE;}
 TEST(PassesTransformation_LoopUnrolling, scope1) {TEST_CORE;}
 TEST(PassesTransformation_LoopUnrolling, scope2) {TEST_CORE;}
+TEST(PassesTransformation_LoopUnrolling, defparam1) {TEST_CORE;}
+TEST(PassesTransformation_LoopUnrolling, defparam2) {TEST_CORE;}

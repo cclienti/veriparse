@@ -144,7 +144,8 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 				// We pushed the new copied stmts into a block
 				auto block_tmp = std::make_shared<AST::Block>(stmts_copy, src_scope);
 
-				// We recurse using the block_tmp as parent. this block is used to hold recurse results.
+				// We recurse using the block_tmp as parent. This block is
+				// used to hold recurse results.
 				auto recurse_fct = [this, &new_scope_state] (AST::Node::Ptr n, AST::Node::Ptr p)
 				                   {return unroll(n, p, new_scope_state);};
 				if (recurse(block_tmp, stmts_copy, recurse_fct)) {
@@ -260,7 +261,8 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 	return recurse_in_childs(node, recurse_fct);
 }
 
-int LoopUnrolling::map_scope(const std::string &verilog_scope, const std::string &scope_state, const std::string &rename_suffix)
+int LoopUnrolling::map_scope(const std::string &verilog_scope, const std::string &scope_state,
+                             const std::string &rename_suffix)
 {
 	// Find scope mapping of the current state.
 	std::string rename_suffix_prev;
@@ -294,7 +296,32 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
 		return 0;
 	}
 
-	if (node->is_node_type(AST::NodeType::Identifier)) {
+	// Check for defparam first
+	if (node->is_node_type(AST::NodeType::Defparam)) {
+		const auto &defparam = AST::cast_to<AST::Defparam>(node);
+		const auto &identifier = defparam->get_identifier();
+		const auto &scope = identifier->get_scope();
+		if (scope) {
+			const auto &labellist = scope->get_labellist();
+			if (labellist && labellist->size() >= 2) {
+				const auto scope_str = Generators::VerilogGenerator().render(labellist->front());
+				auto itfind = m_scope_map.find(scope_str);
+				if (itfind != m_scope_map.end()) {
+					labellist->pop_front();
+					const auto new_name = labellist->front()->get_scope() + itfind->second;
+					labellist->front()->set_scope(new_name);
+				}
+				else {
+					LOG_ERROR_N(node) << "scope " << scope_str << " not found";
+					return 1;
+				}
+			}
+		}
+		// nothing more to recurse
+		return 0;
+	}
+	// Else check if identifier
+	else if (node->is_node_type(AST::NodeType::Identifier)) {
 		const auto &identifier = AST::cast_to<AST::Identifier>(node);
 		const auto &scope = identifier->get_scope();
 		if (scope) {
@@ -306,10 +333,12 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
 				identifier->set_name(new_name);
 			}
 			else {
-				LOG_ERROR_N(node) << "scope " << scope_str << "not found";
+				LOG_ERROR_N(node) << "scope " << scope_str << " not found";
 				return 1;
 			}
 		}
+		// nothing more to recurse
+		return 0;
 	}
 
 	auto recurse_fct = [this] (AST::Node::Ptr n, AST::Node::Ptr p) {return rename_scoped_identifiers(n, p);};
