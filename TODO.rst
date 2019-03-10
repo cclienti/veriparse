@@ -29,6 +29,8 @@ Mechanics
 Functional
 ----------
 
+#. 2019-03-19: Manage defparam in module instance normalizer
+
 #. 2019-03-05: Deadcode elimination: pay attention to scope during deadcode elimination.
 
 #. 2019-02-19: Obfucate module instance name
