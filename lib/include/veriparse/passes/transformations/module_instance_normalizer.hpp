@@ -18,8 +18,6 @@ namespace Transformations {
 class ModuleInstanceNormalizer: public TransformationBase
 {
 public:
-	ModuleInstanceNormalizer() = delete;
-
 	ModuleInstanceNormalizer(const Analysis::Module::ModulesMap &modules_map);
 
 	virtual ~ModuleInstanceNormalizer();
@@ -28,12 +26,12 @@ private:
 	/**
 	 * @return zero on success
 	 */
-	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+	int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
 	/**
 	 * @brief split instance lists
 	 */
-	virtual int split_lists(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int split_lists(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
 	 * @brief split instance's array.
@@ -45,22 +43,34 @@ private:
 	 *
 	 * @sa replace_port_affectation
 	 */
-	virtual int split_array(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int split_array(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
 	 * @brief Convert all instance's port to a named ports scheme.
 	 */
-	virtual int set_portarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int set_portarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
+	/**
+	 * @brief Analysis defparam declaration.
+	 *
+	 * Fill m_defparam_map with gathered defparam. The map key is the
+	 * rendered string that corresponds to the first scope element
+	 * (front in list). The value is the defparam node itself.
+	 *
+	 * Only defparam with an identifier with one scope element are
+	 * taken into account (ie: "defparam scope.inst = X").
+	 */
+	int fill_defparam_map(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
 	 * @brief Convert all instance's parameters to a named parameters scheme.
 	 */
-	virtual int set_paramarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int set_paramarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
 	 * @brief Replace concat nodes to lconcat nodes recursively.
 	 */
-	virtual int convert_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int convert_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 	/**
 	 * @brief Create identifier to replace port value.
@@ -70,12 +80,13 @@ private:
 	 * really necessary to replace, the split array sub-pass adds a
 	 * rvalue into the expression.
 	 */
-	virtual int replace_port_affectation(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+	int replace_port_affectation(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
 private:
 	Analysis::Dimensions::DimMap m_dim_map;
 	Analysis::Module::ModulesMap m_modules_map;
 	Analysis::UniqueDeclaration::IdentifierSet m_declared;
+	std::map<std::string, AST::Defparam::Ptr> m_defparam_map;
 };
 
 }

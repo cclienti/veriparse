@@ -1,6 +1,7 @@
 #include <veriparse/passes/transformations/module_instance_normalizer.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/instance.hpp>
+#include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/misc/math.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -51,6 +52,14 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
 	ret = set_portarg_names(node, parent);
 	if (ret) {
 		LOG_ERROR_N(node) << "error during instance port name normalization";
+		return ret;
+	}
+
+	LOG_DEBUG_N(node) << "Looking for defparam";
+	m_defparam_map.clear();
+	ret = fill_defparam_map(node, parent);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during defparam analysis";
 		return ret;
 	}
 
@@ -460,6 +469,48 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node, cons
 	return 0;
 }
 
+int ModuleInstanceNormalizer::fill_defparam_map(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
+{
+	if (!node) {
+		return 0;
+	}
+
+	if (node->is_node_type(AST::NodeType::Defparam)) {
+		const auto &defparam = AST::cast_to<AST::Defparam>(node);
+		const auto &rvalue = defparam->get_right();
+		const auto &identifier = defparam->get_identifier();
+		const auto &scope = identifier->get_scope();
+		const auto &labellist = scope->get_labellist();
+
+		if (rvalue && labellist && labellist->size() == 1) {
+			const auto &key = Generators::VerilogGenerator().render(identifier);
+			m_defparam_map.emplace(key, defparam);
+			parent->remove(node);
+		}
+	}
+
+	auto recurse_fct = [this] (AST::Node::Ptr n, AST::Node::Ptr p) {return fill_defparam_map(n, p);};
+	int ret = recurse_in_childs(node, recurse_fct);
+	if (ret) {
+		LOG_ERROR_N(node) << "error during defparam analysis";
+	}
+
+	if (node->is_node_type(AST::NodeType::Defparamlist)) {
+		const auto &defparamlist = AST::cast_to<AST::Defparamlist>(node);
+		if (!defparamlist->get_list() || !defparamlist->get_list()->size()) {
+			if (parent) {
+				parent->remove(node);
+			}
+			else {
+				LOG_ERROR_N(node) << "parent is empty, cannot remove defparamlist";
+				return 1;
+			}
+		}
+	}
+
+	return ret;
+}
+
 int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
 {
 	if (!node) {
@@ -497,7 +548,6 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 	}
 
 	const auto &instance = instances->front();
-	const auto &paramlist = instance->get_parameterlist();
 
 	//-----------------------------------------------
 	// Extract instance module information
@@ -516,6 +566,12 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 	const auto &module_decl = itm->second;
 	auto decl_paramlist = Analysis::Module::get_parameter_nodes(module_decl);
 
+	if (decl_paramlist->size() == 0) {
+		instance->set_parameterlist(nullptr);
+		instancelist->set_parameterlist(nullptr);
+		return 0;
+	}
+
 	//-----------------------------------------------
 	// Normalize parameters
 	//-----------------------------------------------
@@ -528,13 +584,10 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 	// possible that some parameter values can be not resolved at this
 	// point. This step will be done in the module instance inline
 	// pass.
-	if (!paramlist) {
-		if (decl_paramlist->size() == 0) {
-			return 0;
-		}
+	auto paramlist = instance->get_parameterlist();
 
-		auto new_paramlist = std::make_shared<AST::ParamArg::List>();
-		auto new_paramlist2 = std::make_shared<AST::ParamArg::List>();
+	if (!paramlist) {
+		paramlist = std::make_shared<AST::ParamArg::List>();
 
 		for (const auto &param: *decl_paramlist) {
 			if (!param->get_value()) {
@@ -543,80 +596,84 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 			}
 			auto new_param = std::make_shared<AST::ParamArg>(nullptr, param->get_name(),
 			                                                 instance->get_filename(), instance->get_line());
-			new_paramlist->push_back(new_param);
-			new_paramlist2->push_back(AST::cast_to<AST::ParamArg>(new_param->clone()));
+			paramlist->push_back(new_param);
 		}
 
 		// Parameters of an instance are declared at two places. This
 		// would be nice to change this ...
-		instance->set_parameterlist(new_paramlist);
-		instancelist->set_parameterlist(new_paramlist2);
+		instance->set_parameterlist(paramlist);
+	}else {
 
-		return 0;
-	}
-
-
-	// The instance parameter list is not empty
-	if (decl_paramlist->size() < paramlist->size()) {
-		LOG_ERROR_N(module_decl) << "bad number of parameters for instance '" << instance->get_name() << "', "
-		                         << "(module '" << instance->get_module()
-		                         << "')";
-		return 1;
-	}
-
-	// Add missing param arg names. Search of the matching instanciated
-	// paramarg name and the declared paramarg name (in the module
-	// declaration).
-	for (const auto &param : *paramlist) {
-		const auto &name = param->get_name();
-
-		if (name.empty()) {
-			if (decl_paramlist->empty()) {
-				LOG_ERROR_N(param) << "cannot match the parameter in the module declaration";
-				return 1;
-			}
-			param->set_name(decl_paramlist->front()->get_name());
-			decl_paramlist->pop_front();
+		// The instance parameter list is not empty
+		if (decl_paramlist->size() < paramlist->size()) {
+			LOG_ERROR_N(module_decl) << "bad number of parameters for instance '" << instance->get_name() << "', "
+			                         << "(module '" << instance->get_module()
+			                         << "')";
+			return 1;
 		}
-		else {
-			auto it = decl_paramlist->cbegin();
-			for (; it != decl_paramlist->cend(); ++it) {
-				const auto &decl_node = *it;
-				if (name == decl_node->get_name()) {
-					break;
+
+		// Add missing param arg names. Search of the matching instanciated
+		// paramarg name and the declared paramarg name (in the module
+		// declaration).
+		for (const auto &param : *paramlist) {
+			const auto &name = param->get_name();
+
+			if (name.empty()) {
+				if (decl_paramlist->empty()) {
+					LOG_ERROR_N(param) << "cannot match the parameter in the module declaration";
+					return 1;
 				}
-			}
-			if (it != decl_paramlist->cend()) {
-				// Name found, we can remove the name to avoid searching
-				// for it later.
-				decl_paramlist->erase(it);
+				param->set_name(decl_paramlist->front()->get_name());
+				decl_paramlist->pop_front();
 			}
 			else {
-				LOG_ERROR_N(param) << "cannot match the parameter '" << name << "' "
-				                   << "in the module declaration";
-				return 1;
+				auto it = decl_paramlist->cbegin();
+				for (; it != decl_paramlist->cend(); ++it) {
+					const auto &decl_node = *it;
+					if (name == decl_node->get_name()) {
+						break;
+					}
+				}
+				if (it != decl_paramlist->cend()) {
+					// Name found, we can remove the name to avoid searching
+					// for it later.
+					decl_paramlist->erase(it);
+				}
+				else {
+					LOG_ERROR_N(param) << "cannot match the parameter '" << name << "' "
+					                   << "in the module declaration";
+					return 1;
+				}
 			}
+		}
+
+		// add all name not found in the paramlist
+		for (const auto &decl_param: *decl_paramlist)
+		{
+			const auto &missing = std::make_shared<AST::ParamArg>(nullptr, decl_param->get_name(),
+			                                                      instance->get_filename(), instance->get_line());
+			paramlist->push_back(missing);
 		}
 	}
 
-	// add all name not found in the paramlist
-	for (const auto &decl_param: *decl_paramlist)
-	{
-		const auto &missing = std::make_shared<AST::ParamArg>(nullptr, decl_param->get_name(),
-		                                                      instance->get_filename(), instance->get_line());
-		paramlist->push_back(missing);
+	// Apply defparam overload
+	for (const auto &param: *paramlist) {
+		const auto &name = param->get_name();
+		auto itfind = m_defparam_map.find(instance->get_name() + "." + name);
+		if (itfind != m_defparam_map.end()) {
+			const auto &defparam_value = itfind->second->get_right()->get_var();
+			param->set_value(defparam_value->clone());
+		}
 	}
-
 
 	// Parameters of an instance are declared at two places. This would
-	// be nice to change this ... So we clear it and we clone the
+	// be nice to change this... So we clear it and we clone the
 	// paramlist into paramlist2.
-
-	const auto &paramlist2 = instancelist->get_parameterlist();
-	paramlist2->clear();
+	auto paramlist2 = std::make_shared<AST::ParamArg::List>();
 	for (const auto &param: *paramlist) {
-		instancelist->get_parameterlist()->push_back(AST::cast_to<AST::ParamArg>(param->clone()));
+		paramlist2->push_back(AST::cast_to<AST::ParamArg>(param->clone()));
 	}
+	instancelist->set_parameterlist(paramlist2);
 
 	return 0;
 }

@@ -1,0 +1,108 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+          items:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+              line: 2
+              name: X
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 0
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+              line: 4
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                  line: 4
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                      line: 5
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                              line: 5
+                              value: X=%0d
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                              line: 5
+                              name: X
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                          line: 5
+                          syscall: display
+          line: 1
+          name: parametrized
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+          items:
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                  line: 11
+                  module: parametrized
+                  name: modinst2
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                      line: 11
+                      name: X
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                          line: 12
+                          sign: false
+                          size: -1
+                          value: 2
+              line: 11
+              module: parametrized
+              parameterlist:
+              - ParamArg:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                  line: 11
+                  name: X
+                  value:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 2
+          line: 10
+          name: defparam0
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam0.v
+  line: 1
+
