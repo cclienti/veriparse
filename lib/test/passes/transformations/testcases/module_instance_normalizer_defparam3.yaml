@@ -1,0 +1,271 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+          items:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+              line: 3
+              name: X
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                              line: 6
+                              value: X=%0d
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                              line: 6
+                              name: X
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 6
+                          syscall: display
+          line: 1
+          name: parametrized
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+          items:
+          - Genvar:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+              line: 13
+              name: i
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+              items:
+              - Instancelist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                  instances:
+                  - Instance:
+                      array:
+                        Length: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 17
+                      module: parametrized
+                      name: modinst_i_0
+                      parameterlist:
+                      - ParamArg:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 17
+                          name: X
+                          value:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 0
+                  line: 17
+                  module: parametrized
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 17
+                      name: X
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 0
+              - Instancelist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                  instances:
+                  - Instance:
+                      array:
+                        Length: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 19
+                      module: parametrized
+                      name: modinst_i_1
+                      parameterlist:
+                      - ParamArg:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 19
+                          name: X
+                          value:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                              line: 32
+                              sign: false
+                              size: -1
+                              value: 1
+                  line: 19
+                  module: parametrized
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 19
+                      name: X
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 32
+                          sign: false
+                          size: -1
+                          value: 1
+              - Instancelist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                  instances:
+                  - Instance:
+                      array:
+                        Length: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 21
+                      module: parametrized
+                      name: modinst_i_2
+                      parameterlist:
+                      - ParamArg:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 21
+                          name: X
+                          value:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                              line: 34
+                              sign: false
+                              size: -1
+                              value: 2
+                  line: 21
+                  module: parametrized
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 21
+                      name: X
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 34
+                          sign: false
+                          size: -1
+                          value: 2
+              - Instancelist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                  instances:
+                  - Instance:
+                      array:
+                        Length: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 23
+                      module: parametrized
+                      name: modinst_i_3
+                      parameterlist:
+                      - ParamArg:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 23
+                          name: X
+                          value:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                              line: 36
+                              sign: false
+                              size: -1
+                              value: 3
+                  line: 23
+                  module: parametrized
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 23
+                      name: X
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 36
+                          sign: false
+                          size: -1
+                          value: 3
+              - Instancelist:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                  instances:
+                  - Instance:
+                      array:
+                        Length: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 25
+                      module: parametrized
+                      name: modinst_i_4
+                      parameterlist:
+                      - ParamArg:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 25
+                          name: X
+                          value:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                              line: 38
+                              sign: false
+                              size: -1
+                              value: 4
+                  line: 25
+                  module: parametrized
+                  parameterlist:
+                  - ParamArg:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                      line: 25
+                      name: X
+                      value:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+                          line: 38
+                          sign: false
+                          size: -1
+                          value: 4
+              line: 15
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+              line: 28
+          line: 11
+          name: defparam3
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam3.v
+  line: 1
+
