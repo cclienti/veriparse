@@ -26,6 +26,7 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	Passes::Transformations::ModuleFlattener flattener(AST::ParamArg::ListPtr(),  \
 	                                                   modules_map);              \
 	Passes::Analysis::UniqueDeclaration::seed(0);                                 \
+	ASSERT_TRUE(modules_map.count(test_name) == 1);                               \
 	flattener.run(modules_map[test_name]);                                        \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");         \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");         \

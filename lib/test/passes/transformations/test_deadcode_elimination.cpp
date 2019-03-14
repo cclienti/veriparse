@@ -25,6 +25,7 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	test_helpers.render_node_to_dot_file(source, test_string + "_before.dot");   \
 	/* apply the transformation */                                               \
 	Passes::Transformations::DeadcodeElimination deadcode;                       \
+	ASSERT_TRUE(modules_map.count(test_name) == 1);                              \
 	deadcode.run(modules_map[test_name]);                                        \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");        \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");        \

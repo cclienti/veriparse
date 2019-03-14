@@ -25,6 +25,7 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	/* apply the transformation */                                                \
 	Passes::Transformations::ResolveModule resolve(AST::ParamArg::ListPtr(),      \
 	                                               modules_map);                  \
+	ASSERT_TRUE(modules_map.count(test_name) == 1);                               \
 	resolve.run(modules_map[test_name]);                                          \
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");         \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");         \
