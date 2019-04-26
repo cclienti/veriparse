@@ -8,11 +8,11 @@ set(BOOST_URL_INSTALL_DIR ${BOOST_URL_PREFIX_DIR}/install)
 
 message(STATUS "External project Boost installation in ${BOOST_URL_INSTALL_DIR}")
 
-set(BOOST_URL            https://kent.dl.sourceforge.net/project/boost/boost/1.68.0/boost_1_68_0.tar.bz2)
-set(BOOST_SHA256         7f6130bc3cf65f56a618888ce9d5ea704fa10b462be126ad053e80e553d6d8b7)
+set(BOOST_URL            https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.bz2)
+set(BOOST_SHA256         430ae8354789de4fd19ee52f3b1f739e1fba576f0aded0897c3c2bc00fb38778)
 
 # Patch command is used to setup the install
-set(BOOST_PATCH_CMD      echo "using gcc : : ${CMAKE_CXX_COMPILER} : <cxxflags>-Wno-deprecated-declarations $<SEMICOLON>\\n" > tools/build/src/user-config.jam)
+set(BOOST_PATCH_CMD      echo "using gcc : : ${CMAKE_CXX_COMPILER} : <cxxflags>-Wno-deprecated-declarations $<SEMICOLON>" > tools/build/src/user-config.jam)
 set(BOOST_BOOTSTRAP_CMD  ./bootstrap.sh --prefix=${BOOST_URL_INSTALL_DIR})
 set(BOOST_BUILD_CMD      ./b2 -j${VERIPARSE_PROCESSOR_COUNT} toolset=gcc link=static threading=multi variant=release install)
 
