@@ -18,5 +18,6 @@
 
 ### CMake build dir
 build*/
-
+compile_commands.json
+.ccls*
 __pycache__/
