@@ -7,6 +7,7 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <list>
 
 
@@ -57,15 +58,27 @@ private:
 	 * @brief Check that instantiated port value is a wire or composed
 	 * by wired.
 	 *
-	 * @return true if the port value is valid.
+	 * @return zero on success.
 	 */
 	int convert_concat_to_lconcat(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
+	/**
+	 * @brief Extract defparam in a multimap. The key is the outer
+	 * scope and the value is the node itself.
+	 */
+	int extract_defparam(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
+
+	/**
+	 * @brief Restore defparam.
+	 */
+	int restore_defparam(const AST::Node::Ptr &node);
 
 private:
 	AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;
 	std::map<std::string, AST::NodeType> m_var_type_map;
 	Analysis::UniqueDeclaration::IdentifierSet m_declared;
+	std::unordered_multimap<std::string, AST::Defparamlist::Ptr> m_defparams;
 };
 
 }

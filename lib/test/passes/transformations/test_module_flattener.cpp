@@ -53,5 +53,6 @@ TEST(PassesTransformation_ModuleFlattener, instance5) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, instance6) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, instance7) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, instance8) {TEST_CORE;}
+TEST(PassesTransformation_ModuleFlattener, defparam4) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, shmemif) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, alu_dsp) {TEST_CORE;}

@@ -49,9 +49,21 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 		return 1;
 	}
 
+	// Extract defparams
+	if (extract_defparam(node, nullptr)) {
+		LOG_ERROR_N(node) << "failed to manage defparams";
+		return 1;
+	}
+
 	// Flatten
 	if (flattener(node, parent)) {
 		LOG_ERROR_N(node) << "failed to inline the module";
+		return 1;
+	}
+
+	// Restore defparams
+	if (restore_defparam(node)) {
+		LOG_ERROR_N(node) << "failed to restore defparams";
 		return 1;
 	}
 
@@ -88,6 +100,30 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 			auto module = it_module->second->clone();
 
 			LOG_INFO_N(node) << "flattenning " << instance_name << " (" << module_name << ")";
+
+			// Manage defparam.
+			//
+			// Get all defparams that match the instance name. Remove
+			// them from the current instance and append them into
+			// 'module' (remove buffer the instance name in the defparam
+			// name).
+			//
+			const auto &defparam_module = AST::cast_to<AST::Module>(module);
+			auto module_items = defparam_module->get_items();
+			if (!module_items) {
+				module_items = std::make_shared<AST::Node::List>();
+				defparam_module->set_items(module_items);
+			}
+
+			auto defparams_range = m_defparams.equal_range(instance_name);
+			for (auto it = defparams_range.first; it != defparams_range.second; it++) {
+				LOG_INFO_N(node) << "applying defparam " << it->first << " to " << module_name;
+				const auto &defp = it->second->get_list()->front();
+				defp->get_identifier()->get_scope()->get_labellist()->pop_front();
+				module_items->push_back(it->second);
+			}
+
+			m_defparams.erase(defparams_range.first, defparams_range.second);
 
 			// Check parameters declared in the instance against
 			// declared in the module.
@@ -417,6 +453,85 @@ int ModuleFlattener::convert_concat_to_lconcat(const AST::Node::Ptr &node, const
 
 	return ret;
 }
+
+
+int ModuleFlattener::extract_defparam(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
+{
+	int ret = 0;
+
+	if (!node) {
+		return ret;
+	}
+
+	switch (node->get_node_type()) {
+	case AST::NodeType::Defparamlist:
+		{
+			const auto &defparaml = AST::cast_to<AST::Defparamlist>(node);
+			for (const auto &defparam: *defparaml->get_list()) {
+				const auto &defp = AST::cast_to<AST::Defparam>(defparam);
+				const auto &defplist = std::make_shared<AST::Defparam::List>();
+				const auto &new_defparaml = std::make_shared<AST::Defparamlist>();
+				new_defparaml->set_list(defplist);
+				defplist->push_back(defp);
+				const auto &scope = defp->get_identifier()->get_scope()->get_labellist()->front()->get_scope();
+				m_defparams.emplace(scope, new_defparaml);
+			}
+			parent->remove(node);
+		}
+		break;
+
+	default:
+		{
+			const auto &children = node->get_children();
+			for (AST::Node::Ptr child: *children) {
+				ret += extract_defparam(child, node);
+			}
+		}
+	}
+
+	return ret;
+}
+
+
+int ModuleFlattener::restore_defparam(const AST::Node::Ptr &node)
+{
+	int ret = 0;
+
+	if (!node) {
+		return ret;
+	}
+
+	switch (node->get_node_type()) {
+	case AST::NodeType::Module:
+		{
+			const auto &module = AST::cast_to<AST::Module>(node);
+
+			auto items = module->get_items();
+			if (!items) {
+				items = std::make_shared<AST::Node::List>();
+				module->set_items(items);
+			}
+
+			for(const auto &entry: m_defparams) {
+				items->push_back(entry.second);
+			}
+
+			module->set_items(items);
+		}
+		break;
+
+	default:
+		{
+			const auto &children = node->get_children();
+			for (AST::Node::Ptr child: *children) {
+				ret += restore_defparam(child);
+			}
+		}
+	}
+
+	return ret;
+}
+
 
 }
 }
