@@ -40,9 +40,6 @@ Functional
 
 #. 2019-02-05: Improved rendering of unnamed ports/parameter instance in verilog generator (put everything on a line).
 
-#. 2019-01-27: Setting NB_PORTS=8 in shmemif.v seems loop_unrolling to loop indefinitely. But it is not running
-   indefinitely, it takes just a while. => Try to optimize the code.
-
 #. 2018-12-13: Module Flattener Tests: modify verilog testbench to check the validity of the test automatically.
 
 #. 2018-12-12: Verilog generator: assign and ternary operator are not properly indented (see flattener alu_dsp test).
