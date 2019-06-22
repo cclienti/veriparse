@@ -29,8 +29,6 @@ Mechanics
 Functional
 ----------
 
-#. 2019-03-19: Manage defparam in module instance normalizer
-
 #. 2019-03-05: Deadcode elimination: pay attention to scope during deadcode elimination.
 
 #. 2019-02-19: Obfucate module instance name
@@ -48,8 +46,7 @@ Functional
 
 #. 2018-12-04: How to manage inout during module flatten binding.
 
-#. 2018-10-07: Module Flattener: manage defparam and signal that reads information across multiple levels of
-   instanciation.
+#. 2018-10-07: Module Flattener: manage signal that reads information across multiple levels of instanciation (see defparam).
 
 #. 2018-10-21: Add a verilog pre-processor (compiler directives).
 
