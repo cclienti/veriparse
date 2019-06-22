@@ -311,10 +311,6 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
 					const auto new_name = labellist->front()->get_scope() + itfind->second;
 					labellist->front()->set_scope(new_name);
 				}
-				else {
-					LOG_ERROR_N(node) << "scope " << scope_str << " not found";
-					return 1;
-				}
 			}
 		}
 		// nothing more to recurse
