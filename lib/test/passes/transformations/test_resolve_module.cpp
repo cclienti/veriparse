@@ -43,6 +43,9 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 
+TEST(PassesTransformation_ResolveModule, scope0) {TEST_CORE;}
+TEST(PassesTransformation_ResolveModule, scope1) {TEST_CORE;}
+TEST(PassesTransformation_ResolveModule, scope2) {TEST_CORE;}
 TEST(PassesTransformation_ResolveModule, module1) {TEST_CORE;}
 TEST(PassesTransformation_ResolveModule, module2) {TEST_CORE;}
 TEST(PassesTransformation_ResolveModule, shmemif) {TEST_CORE;}

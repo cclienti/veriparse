@@ -3,15 +3,15 @@ module scope2;
    genvar i, j;
 
    generate
-      for (i=0; i<5; i=i+1) begin: LOOP_1
+      for (i=0; i<5; i=i+1) begin: GEN_LOOP_1
          integer x=i;
       end
    endgenerate
 
    generate
-      for (i=0; i<5; i=i+1) begin: LOOP_2
+      for (i=0; i<5; i=i+1) begin: GEN_LOOP_2
          always @(*) begin
-            $display("x[%0d]=%0d", i, LOOP_1[i].x);
+            $display("x[%0d]=%0d", i, GEN_LOOP_1[i].x);
          end
       end
    endgenerate
