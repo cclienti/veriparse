@@ -32,7 +32,7 @@ file(MAKE_DIRECTORY ${FLEX_BISON_VERILOG_DIR})
 flex_target (Veriparse_VerilogScanner src/parser/verilog/verilog_scanner.ll ${FLEX_BISON_VERILOG_DIR}/verilog_scanner.cpp
              COMPILE_FLAGS "-P Verilog")
 bison_target (Veriparse_VerilogParser src/parser/verilog/verilog_parser.yy  ${FLEX_BISON_VERILOG_DIR}/verilog_parser.cpp
-              COMPILE_FLAGS "-v -Werror")
+              COMPILE_FLAGS "-v")
 add_flex_bison_dependency (Veriparse_VerilogScanner Veriparse_VerilogParser)
 
 # Verilog Number parser
@@ -45,7 +45,7 @@ flex_target (Veriparse_VerilogNumberScanner
 bison_target (Veriparse_VerilogNumberParser
 			  src/parser/verilog_number/verilog_number_parser.yy
               ${FLEX_BISON_VERILOG_NUMBER_DIR}/verilog_number_parser.cpp
-              COMPILE_FLAGS "-v -Werror")
+              COMPILE_FLAGS "-v")
 add_flex_bison_dependency (Veriparse_VerilogNumberScanner Veriparse_VerilogNumberParser)
 
 

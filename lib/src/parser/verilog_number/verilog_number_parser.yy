@@ -6,6 +6,7 @@
 
 %define api.namespace {Veriparse::Parser}
 %define parser_class_name {VerilogNumberParser}
+// For new version of bison %define api.parser.class {VerilogParser}
 
 %define lr.type lalr
 %define api.value.type variant
