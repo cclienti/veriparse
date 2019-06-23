@@ -29,6 +29,9 @@ Mechanics
 Functional
 ----------
 
+#. 2019-06-23: Undeclared signals must be inferred as 1-bit wire. A pass should declare all undeclared signals. See
+   double_fpu-master file fpu_module.v:150, we added the declaration line 123 in order to flatten properly the project.
+
 #. 2019-03-05: Deadcode elimination: pay attention to scope during deadcode elimination.
 
 #. 2019-02-19: Obfucate module instance name
