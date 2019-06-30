@@ -126,9 +126,6 @@ int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifi
 			}
 		}
 	}
-	else if (node->is_node_type(AST::NodeType::Task)) {
-
-	}
 	else if (node->is_node_type(AST::NodeType::Lvalue)) {
 		const auto &lvalue = AST::cast_to<AST::Lvalue>(node);
 		for (const auto &name: Analysis::Lvalue::get_rvalue_names(lvalue)) {
@@ -421,8 +418,7 @@ int DeadcodeElimination::remove_unused_decl(const DeadcodeElimination::DSet &ide
 
 	if (node->is_node_category(AST::NodeType::VariableBase)) {
 		const auto &varbase = AST::cast_to<AST::VariableBase>(node);
-		if (identifiers.count(varbase->get_name()) == 0 &&
-		    iodirs.count(varbase->get_name()) == 0) {
+		if (identifiers.count(varbase->get_name()) == 0 && iodirs.count(varbase->get_name()) == 0) {
 			if (!parent) {
 				LOG_ERROR_N(node) << "the parent node is null";
 				return -1;
