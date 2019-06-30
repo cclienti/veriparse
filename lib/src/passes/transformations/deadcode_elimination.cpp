@@ -161,8 +161,7 @@ DeadcodeElimination::DSet DeadcodeElimination::remove_deadcode_step(AST::Node::P
 	const auto &lvalue_nodes = Analysis::Module::get_lvalue_nodes(node);
 	DSet lvalue_set;
 	for(AST::Lvalue::Ptr lvalue_node: *lvalue_nodes) {
-		std::vector<std::string> lvalue_names = Analysis::Lvalue::get_lvalue_names(lvalue_node);
-		lvalue_set.insert(lvalue_names.begin(), lvalue_names.end());
+		collect_identifier(lvalue_set, node);
 	}
 
 	DSet identifiers;
@@ -447,7 +446,9 @@ int DeadcodeElimination::collect_identifier(DeadcodeElimination::DSet &identifie
 
 	if (node->is_node_type(AST::NodeType::Identifier)) {
 		const auto &identifier = AST::cast_to<AST::Identifier>(node);
-		identifiers.emplace(identifier->get_name());
+		if (!identifier->get_scope()) {
+			identifiers.emplace(identifier->get_name());
+		}
 	}
 	else {
 		const auto &children = node->get_children();

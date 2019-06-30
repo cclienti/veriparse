@@ -48,3 +48,4 @@ TEST(PassesTransformation_Deadcode, deadcode2) {TEST_CORE;}
 TEST(PassesTransformation_Deadcode, deadcode3) {TEST_CORE;}
 TEST(PassesTransformation_Deadcode, deadcode4) {TEST_CORE;}
 TEST(PassesTransformation_Deadcode, deadcode5) {TEST_CORE;}
+TEST(PassesTransformation_Deadcode, deadcode6) {TEST_CORE;}
