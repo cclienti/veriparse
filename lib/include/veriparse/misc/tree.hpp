@@ -14,7 +14,8 @@ namespace Veriparse
 namespace Misc
 {
 
-std::atomic<std::uint64_t> g_tree_node_id{0};
+
+static std::atomic<std::uint64_t> g_tree_node_id{0};
 
 
 template<typename T>
@@ -27,20 +28,38 @@ public:
 public:
 	TreeNode(const T &value): m_value(value) {}
 
-	virtual ~TreeNode() {};
-
+	/**
+	 * @brief Return true if the node is a leaf.
+	 */
 	bool is_leaf() const {return m_children.empty();}
 
+	/**
+	 * @brief Value getter.
+	 */
 	const T &get_value() const {return m_value;}
+
+	/**
+	 * @brief Value setter.
+	 */
 	void set_value(const T& value) {m_value = value;}
 
+	/**
+	 * @brief Return the children of the current node.
+	 */
 	const Children &get_children() const {return m_children;}
 
+	/**
+	 * @brief Move a node into the children list.
+	 */
 	void push_child(Ptr node)
 	{
 		m_children.push_back(std::move(node));
 	}
 
+	/**
+	 * @brief Generate a dot graph from the current node to the
+	 * children recursively.
+	 */
 	std::string to_dot()
 	{
 		std::stringstream dot;
