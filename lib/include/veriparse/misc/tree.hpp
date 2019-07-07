@@ -15,9 +15,6 @@ namespace Misc
 {
 
 
-static std::atomic<std::uint64_t> g_tree_node_id{0};
-
-
 template<typename T>
 class TreeNode
 {
@@ -27,6 +24,7 @@ public:
 
 public:
 	TreeNode(const T &value): m_value(value) {}
+	virtual ~TreeNode() {}
 
 	/**
 	 * @brief Return true if the node is a leaf.
@@ -77,25 +75,27 @@ public:
 private:
 	void to_dot_recurse(std::stringstream &dot)
 	{
-		auto id = g_tree_node_id.load();
+		auto id = s_tree_node_id.load();
 
 		// Vertice
 		dot << "\tn" << id << " [label=" << m_value << "];\n";
 
 		// Edges
 		for (const auto &child: m_children) {
-			g_tree_node_id++;
-			dot << "\tn" << id << " -> " << "n" << g_tree_node_id << "\n";
+			s_tree_node_id++;
+			dot << "\tn" << id << " -> " << "n" << s_tree_node_id << "\n";
 			child->to_dot_recurse(dot);
 		}
 	}
 
 
 private:
+	static std::atomic<std::uint64_t> s_tree_node_id;
 	T m_value;
 	Children m_children;
 };
 
+template<typename T> std::atomic<std::uint64_t> TreeNode<T>::s_tree_node_id{0};
 
 }
 }
