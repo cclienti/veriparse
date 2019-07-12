@@ -29,9 +29,9 @@ public:
 	/**
 	 * @brief Clone recursively the tree
 	 */
-	Ptr clone() const
+	virtual Ptr clone() const
 	{
-		auto node = std::make_unique<TreeNode>(get_value());
+		auto node = make_ptr(get_value());
 
 		for (const auto &child: m_children) {
 			node->push_child(std::move(child->clone()));
@@ -43,27 +43,32 @@ public:
 	/**
 	 * @brief Return true if the node is a leaf.
 	 */
-	bool is_leaf() const {return m_children.empty();}
+	virtual bool is_leaf() const {return m_children.empty();}
 
 	/**
 	 * @brief Value getter.
 	 */
-	const T &get_value() const {return m_value;}
+	virtual const T &get_value() const {return m_value;}
 
 	/**
 	 * @brief Value setter.
 	 */
-	void set_value(const T& value) {m_value = value;}
+	virtual void set_value(const T& value) {m_value = value;}
 
 	/**
 	 * @brief Return the children of the current node.
 	 */
-	const Children &get_children() const {return m_children;}
+	virtual const Children &get_children() const {return m_children;}
+
+	/**
+	 * @brief Return the children of the current node.
+	 */
+	virtual Children &get_children() {return m_children;}
 
 	/**
 	 * @brief Move a node into the children list.
 	 */
-	void push_child(Ptr node)
+	virtual void push_child(Ptr node)
 	{
 		m_children.push_back(std::move(node));
 	}
@@ -72,7 +77,7 @@ public:
 	 * @brief Generate a dot graph from the current node to the
 	 * children recursively.
 	 */
-	std::string to_dot()
+	virtual std::string to_dot() const
 	{
 		std::stringstream dot;
 
@@ -87,12 +92,26 @@ public:
 	}
 
 private:
-	void to_dot_recurse(std::stringstream &dot)
+	/**
+	 * @brief Pure virtual method to print the node value
+	 */
+	virtual std::string print_value() const = 0;
+
+	/**
+	 * @brief Pure virtual method that instantiates the right
+	 * unique_ptr.
+	 */
+	virtual Ptr make_ptr(const T &value) const = 0;
+
+	/**
+	 * @brief Print recursively
+	 */
+	virtual void to_dot_recurse(std::stringstream &dot) const
 	{
 		auto id = s_tree_node_id.load();
 
 		// Vertice
-		dot << "\tn" << id << " [label=" << m_value << "];\n";
+		dot << "\tn" << id << " [label=\"" << print_value() << "\"];\n";
 
 		// Edges
 		for (const auto &child: m_children) {
@@ -101,7 +120,6 @@ private:
 			child->to_dot_recurse(dot);
 		}
 	}
-
 
 private:
 	static std::atomic<std::uint64_t> s_tree_node_id;
