@@ -38,3 +38,36 @@ TEST(MiscTest, Tree_node_0)
 
 	ASSERT_EQ(node0->to_dot(), ref);
 }
+
+TEST(MiscTest, Tree_node_0_clone)
+{
+	using TNode = Misc::TreeNode<std::string>;
+
+	auto node0 = std::make_unique<TNode>("inst0");
+	auto node1 = std::make_unique<TNode>("inst1");
+	auto node2 = std::make_unique<TNode>("inst2");
+	auto node3 = std::make_unique<TNode>("inst3");
+	auto node4 = std::make_unique<TNode>("inst4");
+
+	node2->push_child(std::move(node3));
+	node2->push_child(std::move(node4));
+	node1->push_child(std::move(node2));
+	node0->push_child(std::move(node1));
+
+	auto node0_clone = node0->clone();
+
+	std::string ref {"digraph G {\n"
+	                 "\trankdir=LR;\n"
+	                 "	n4 [label=inst0];\n"
+	                 "	n4 -> n5\n"
+	                 "	n5 [label=inst1];\n"
+	                 "	n5 -> n6\n"
+	                 "	n6 [label=inst2];\n"
+	                 "	n6 -> n7\n"
+	                 "	n7 [label=inst3];\n"
+	                 "	n6 -> n8\n"
+	                 "	n8 [label=inst4];\n"
+	                 "}\n"};
+
+	ASSERT_EQ(node0_clone->to_dot(), ref);
+}

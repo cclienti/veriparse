@@ -27,6 +27,20 @@ public:
 	virtual ~TreeNode() {}
 
 	/**
+	 * @brief Clone recursively the tree
+	 */
+	Ptr clone() const
+	{
+		auto node = std::make_unique<TreeNode>(get_value());
+
+		for (const auto &child: m_children) {
+			node->push_child(std::move(child->clone()));
+		}
+
+		return node;
+	}
+
+	/**
 	 * @brief Return true if the node is a leaf.
 	 */
 	bool is_leaf() const {return m_children.empty();}
