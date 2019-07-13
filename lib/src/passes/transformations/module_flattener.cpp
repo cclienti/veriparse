@@ -97,9 +97,11 @@ private:
 
 
 ModuleFlattener::ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
-                                 const Analysis::Module::ModulesMap &modules_map):
+                                 const Analysis::Module::ModulesMap &modules_map,
+                                 bool deadcode_elimination):
 	m_paramlist_inst (paramlist_inst),
-	m_modules_map (modules_map)
+	m_modules_map (modules_map),
+	m_deadcode_elimination (deadcode_elimination)
 {
 }
 
@@ -119,7 +121,7 @@ ModuleFlattener::TreeNode::Ptr ModuleFlattener::get_instance_tree() const
 int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
 	// Resolve the module
-	ResolveModule resolver(m_paramlist_inst, m_modules_map);
+	ResolveModule resolver(m_paramlist_inst, m_modules_map, m_deadcode_elimination);
 	if (resolver.run(node)) {
 		LOG_ERROR_N(node) << "failed to resolve the module";
 		return 1;

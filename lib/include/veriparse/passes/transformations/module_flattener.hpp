@@ -27,7 +27,8 @@ public:
 	ModuleFlattener() = delete;
 
 	ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
-	                const Analysis::Module::ModulesMap &modules_map);
+	                const Analysis::Module::ModulesMap &modules_map,
+	                bool deadcode_elimination=true);
 
 	virtual ~ModuleFlattener();
 
@@ -97,6 +98,7 @@ private:
 private:
 	AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;
+	const bool m_deadcode_elimination;
 	std::map<std::string, AST::NodeType> m_var_type_map;
 	Analysis::UniqueDeclaration::IdentifierSet m_declared;
 	std::unordered_multimap<std::string, AST::Defparamlist::Ptr> m_defparams;
