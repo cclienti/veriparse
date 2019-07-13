@@ -24,7 +24,7 @@ endif()
 ########################################
 
 include(GetGitRevisionDescription)
-git_describe(VERIPARSE_VERSION --tags --dirty=-d)
+git_describe(VERIPARSE_VERSION --tags)
 get_git_head_revision(GIT_REFSPEC VERIPARSE_GIT_SHA1)
 
 message(STATUS "Veriparse version: ${VERIPARSE_VERSION}")
