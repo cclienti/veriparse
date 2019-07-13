@@ -13,6 +13,8 @@ struct Config
 	std::string output;
 	std::string top_module;
 	std::string param_map;
+	bool deadcode_at_end{false};
+	bool deadcode_during_flatten{false};
 	std::uint64_t seed;
 };
 

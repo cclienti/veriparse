@@ -9,6 +9,7 @@
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
+#include <veriparse/passes/transformations/deadcode_elimination.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
@@ -56,6 +57,10 @@ static int veriflat(int argc, char *argv[])
 		("output,o", boost::program_options::value<std::string>(&config.output)->required(), "output")
 		("top-module,t", boost::program_options::value<std::string>(&config.top_module)->required(), "top-module")
 		("param-map,p", boost::program_options::value<std::string>(&config.param_map), "YAML parameter map")
+		("deadcode-end,e", boost::program_options::bool_switch(&config.deadcode_at_end),
+		 "Remove deadcode after flatten pass")
+		("deadcode-during,d", boost::program_options::bool_switch(&config.deadcode_during_flatten),
+		 "Remove deadcode during flatten pass")
 		("seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0), "Seed value")
 		;
 
@@ -135,6 +140,7 @@ static int veriflat(int argc, char *argv[])
 		return 1;
 	}
 
+
 	//---------------------------------------------------------
 	// Check license
 	//---------------------------------------------------------
@@ -148,8 +154,19 @@ static int veriflat(int argc, char *argv[])
 	// Flatten the selected module
 	//---------------------------------------------------------
 
-	Veriparse::Passes::Transformations::ModuleFlattener flattener(param_args, modules_map);
+	Veriparse::Passes::Transformations::ModuleFlattener flattener(param_args, modules_map,
+	                                                              config.deadcode_during_flatten);
 	flattener.run(module);
+
+
+	//---------------------------------------------------------
+	// Extra deadcode elimination pass
+	//---------------------------------------------------------
+
+	if (config.deadcode_at_end) {
+		Veriparse::Passes::Transformations::DeadcodeElimination deadcode_elim;
+		deadcode_elim.run(module);
+	}
 
 
 	//---------------------------------------------------------
