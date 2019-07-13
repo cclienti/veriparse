@@ -17,6 +17,85 @@ namespace Passes {
 namespace Transformations {
 
 
+class InstTreeNode: public Misc::TreeNode<std::pair<std::string, std::string>>
+{
+public:
+	InstTreeNode(const std::string &module, const std::string &instance):
+		TreeNode(std::make_pair(module, instance))
+	{}
+
+	/**
+	 * @brief Check if the scoped identifier corresponds to an instance
+	 * hierarchy.
+	 */
+	bool match_scope(const AST::Identifier::Ptr &identifier, std::string &matched) const
+	{
+		auto scope = identifier->get_scope();
+		if (!scope) {
+			return false;
+		}
+
+		auto labellist = scope->get_labellist();
+		if (!labellist) {
+			return false;
+		}
+
+		// Start to look for the scope in the first tree node
+		const InstTreeNode *node = this;
+
+		// For each scope, go down in the tree to mactch with an instance
+		for (auto labelit = labellist->cbegin(); labelit != labellist->cend();) {
+			bool found = false;
+
+			// Check each tree child if it matches with the scope
+			for (const auto &child: node->get_children()) {
+				const auto &labelscope = (*labelit)->get_scope();
+				if (child->get_value().second == labelscope) {
+					// We found the right instance that matches the scope
+					found = true;
+					// Increment the iterator to check the next label
+					++labelit;
+					// The child becomes the new node
+					node = static_cast<const InstTreeNode*>(child.get());
+					// Update the string that will be used to replace the
+					// scoped identifier.
+					if (!matched.empty()) {
+						matched += std::string("_");
+					}
+					matched += labelscope;
+					// Analyse the new node
+					break;
+				}
+			}
+
+			// Return if it does not match
+			if (!found) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+private:
+	/**
+	 * @brief return the string "module(instance)".
+	 */
+	std::string print_value() const final
+	{
+		return get_value().first + "(" + get_value().second + ")";
+	}
+
+	/**
+	 * @brief allocate a new InstTreeNode unique pointer.
+	 */
+	Ptr make_ptr(const std::pair<std::string, std::string> &value) const final
+	{
+		return std::make_unique<InstTreeNode>(value.first, value.second);
+	}
+};
+
+
 ModuleFlattener::ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                                  const Analysis::Module::ModulesMap &modules_map):
 	m_paramlist_inst (paramlist_inst),
@@ -26,6 +105,15 @@ ModuleFlattener::ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
 
 ModuleFlattener::~ModuleFlattener()
 {
+}
+
+ModuleFlattener::TreeNode::Ptr ModuleFlattener::get_instance_tree() const
+{
+	if (m_instance_tree) {
+		return m_instance_tree->clone();
+	}
+
+	return nullptr;
 }
 
 int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
@@ -64,6 +152,11 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 	// Restore defparams
 	if (restore_defparam(node)) {
 		LOG_ERROR_N(node) << "failed to restore defparams";
+		return 1;
+	}
+
+	if (replace_scoped_identifiers(node)) {
+		LOG_ERROR_N(node) << "failed to replace identifiers that correspond to flattened instance hierarchies";
 		return 1;
 	}
 
@@ -182,6 +275,25 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 				return 1;
 			}
 
+			// Construct the (module, instance) tree
+			auto current_tree_node = std::make_unique<InstTreeNode>(module_name, instance_name);
+
+			auto flat_tree_node = flattener.get_instance_tree();
+			if (flat_tree_node) {
+				auto &children = flat_tree_node->get_children();
+				for (auto it = children.begin(); it != children.end(); ++it) {
+					current_tree_node->push_child(std::move(*it));
+				}
+			}
+
+			if (m_instance_tree) {
+				m_instance_tree->push_child(std::move(current_tree_node));
+			}
+			else {
+				LOG_ERROR_N(node) << "No module declaration found in the file";
+				return 1;
+			}
+
 			// Check if there is some remaining unresolved parameter.
 			const auto &remaining_parameters = Analysis::Module::get_parameter_names(module);
 			if (!remaining_parameters.empty()) {
@@ -227,6 +339,14 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 			parent->replace(node, binded_items);
 		}
 		break;
+
+
+	case AST::NodeType::Module:
+		{
+			const auto &module = AST::cast_to<AST::Module>(node);
+			m_instance_tree = std::make_unique<InstTreeNode>(module->get_name(), "");
+		}
+		// We do not break here to recurse in the module;
 
 	default:
 		{
@@ -525,6 +645,56 @@ int ModuleFlattener::restore_defparam(const AST::Node::Ptr &node)
 			const auto &children = node->get_children();
 			for (AST::Node::Ptr child: *children) {
 				ret += restore_defparam(child);
+			}
+		}
+	}
+
+	return ret;
+}
+
+
+int ModuleFlattener::replace_scoped_identifiers(const AST::Node::Ptr &node)
+{
+	int ret = 0;
+
+	if (!node) {
+		return ret;
+	}
+
+	switch(node->get_node_type()) {
+	case AST::NodeType::Identifier:
+		{
+			const auto &identifier = AST::cast_to<AST::Identifier>(node);
+
+			const auto &scope = identifier->get_scope();
+			if (!scope) {
+				return 0;
+			}
+
+			auto labellist = scope->get_labellist();
+			if (!labellist) {
+				return 0;
+			}
+
+			if (!m_instance_tree) {
+				return 0;
+			}
+
+			const auto &tree = static_cast<const InstTreeNode&>(*m_instance_tree);
+			std::string matched;
+			if(tree.match_scope(identifier, matched)) {
+				identifier->set_scope(nullptr);
+				matched += "_" + identifier->get_name();
+				identifier->set_name(matched);
+			}
+		}
+		break;
+
+	default:
+		{
+			const auto &children = node->get_children();
+			for (AST::Node::Ptr child: *children) {
+				ret += replace_scoped_identifiers(child);
 			}
 		}
 	}

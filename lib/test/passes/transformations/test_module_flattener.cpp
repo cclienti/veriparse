@@ -3,6 +3,7 @@
 #include <veriparse/parser/verilog.hpp>
 #include <veriparse/importers/yaml_importer.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
+#include <veriparse/logger/logger.hpp>
 #include <gtest/gtest.h>
 
 using namespace Veriparse;
@@ -31,7 +32,7 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	test_helpers.render_node_to_verilog_file(source, test_string + ".v");         \
 	test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");         \
 	test_helpers.render_node_to_dot_file(source, test_string + ".dot");           \
-                                                                                 \
+	                                                                              \
 	/* load the reference */                                                      \
 	std::string test_ref_suffix = "module_flattener_";                            \
 	const std::string ref_filename = test_ref_suffix + test_name;                 \
@@ -54,5 +55,6 @@ TEST(PassesTransformation_ModuleFlattener, instance6) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, instance7) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, instance8) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, defparam4) {TEST_CORE;}
+TEST(PassesTransformation_ModuleFlattener, deadcode6) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, shmemif) {TEST_CORE;}
 TEST(PassesTransformation_ModuleFlattener, alu_dsp) {TEST_CORE;}

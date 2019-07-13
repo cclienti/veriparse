@@ -5,6 +5,8 @@
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
+#include <veriparse/misc/tree.hpp>
+
 #include <string>
 #include <map>
 #include <unordered_map>
@@ -15,8 +17,12 @@ namespace Veriparse {
 namespace Passes {
 namespace Transformations {
 
+
 class ModuleFlattener: public TransformationBase
 {
+public:
+	using TreeNode = Misc::TreeNode<std::pair<std::string, std::string>>;
+
 public:
 	ModuleFlattener() = delete;
 
@@ -24,6 +30,15 @@ public:
 	                const Analysis::Module::ModulesMap &modules_map);
 
 	virtual ~ModuleFlattener();
+
+public:
+	/**
+	 * @brief Return the instance tree from the processed module.
+	 *
+	 * Each node tree consist in a pair of string. The first element is
+	 * the module name and the second element is the instance name.
+	 */
+	TreeNode::Ptr get_instance_tree() const;
 
 private:
 	/**
@@ -73,12 +88,19 @@ private:
 	 */
 	int restore_defparam(const AST::Node::Ptr &node);
 
+	/**
+	 * @brief Replace scoped identifier that corresponds to flattened
+	 * instance hierarchy.
+	 */
+	int replace_scoped_identifiers(const AST::Node::Ptr &node);
+
 private:
 	AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;
 	std::map<std::string, AST::NodeType> m_var_type_map;
 	Analysis::UniqueDeclaration::IdentifierSet m_declared;
 	std::unordered_multimap<std::string, AST::Defparamlist::Ptr> m_defparams;
+	TreeNode::Ptr m_instance_tree;
 };
 
 }
