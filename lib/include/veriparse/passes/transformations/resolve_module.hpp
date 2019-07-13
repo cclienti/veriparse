@@ -15,10 +15,11 @@ namespace Transformations {
 class ResolveModule: public TransformationBase
 {
 public:
-	ResolveModule();
+	ResolveModule(bool deadcode_elimination=true);
 
 	ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
-	              const Analysis::Module::ModulesMap &modules_map);
+	              const Analysis::Module::ModulesMap &modules_map,
+	              bool deadcode_elimination=true);
 
 private:
 	/**
@@ -29,6 +30,7 @@ private:
 private:
 	AST::ParamArg::ListPtr m_paramlist_inst;
 	Analysis::Module::ModulesMap m_modules_map;
+	const bool m_deadcode_elimination;
 };
 
 

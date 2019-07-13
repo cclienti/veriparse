@@ -20,14 +20,17 @@ namespace Passes {
 namespace Transformations {
 
 
-ResolveModule::ResolveModule()
+ResolveModule::ResolveModule(bool deadcode_elimination):
+	m_deadcode_elimination (deadcode_elimination)
 {
 }
 
 ResolveModule::ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
-                             const Analysis::Module::ModulesMap &modules_map) :
+                             const Analysis::Module::ModulesMap &modules_map,
+                             bool deadcode_elimination):
 	m_paramlist_inst (paramlist_inst),
-	m_modules_map (modules_map)
+	m_modules_map (modules_map),
+	m_deadcode_elimination (deadcode_elimination)
 {
 }
 
@@ -78,9 +81,11 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 		return 1;
 	}
 
-	if (DeadcodeElimination().run(node)) {
-		LOG_ERROR_N(node) << "Failed during dead code elimination";
-		return 1;
+	if (m_deadcode_elimination) {
+		if (DeadcodeElimination().run(node)) {
+			LOG_ERROR_N(node) << "Failure to remove dead code";
+			return 1;
+		}
 	}
 
 	if (ModuleInstanceNormalizer(m_modules_map).run(node)) {
