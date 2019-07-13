@@ -32,8 +32,6 @@ Functional
 #. 2019-06-23: Undeclared signals must be inferred as 1-bit wire. A pass should declare all undeclared signals. See
    double_fpu-master file fpu_module.v:150, we added the declaration line 123 in order to flatten properly the project.
 
-#. 2019-03-05: Deadcode elimination: pay attention to scope during deadcode elimination.
-
 #. 2019-02-19: Obfucate module instance name
 
 #. 2019-02-25: Scope are completely managed during flattening. We need to rename variable that use the scope name. Maybe
@@ -48,8 +46,6 @@ Functional
 #. 2018-12-06: Add a test in module instance normalization to trig instance name collision during array splitting.
 
 #. 2018-12-04: How to manage inout during module flatten binding.
-
-#. 2018-10-07: Module Flattener: manage signal that reads information across multiple levels of instanciation (see defparam).
 
 #. 2018-10-21: Add a verilog pre-processor (compiler directives).
 
