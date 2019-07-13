@@ -1,11 +1,14 @@
 #!/usr/bin/env python
+"""Beautify a YAML file"""
 
 import sys
-import yaml
 import argparse
+import yaml
 
 
-if __name__ == '__main__':
+def main():
+    """Main procedure"""
+
     parser = argparse.ArgumentParser(description='Indent a YAML file or stdin')
     parser.add_argument('infile', type=str, nargs='?', help='YAML file')
 
@@ -20,4 +23,9 @@ if __name__ == '__main__':
             sys.stderr.write("Cannot open file '{}'\n".format(args.infile))
             sys.exit(1)
 
-    print(yaml.dump(yaml.load(yamlstr), default_flow_style=False))
+    print(yaml.dump(yaml.load(yamlstr, Loader=yaml.FullLoader),
+                    default_flow_style=False))
+
+
+if __name__ == '__main__':
+    main()
