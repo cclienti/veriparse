@@ -1,0 +1,25 @@
+#include <veriparse/version.hpp>
+
+
+namespace Veriparse
+{
+namespace Version
+{
+
+std::string get_sha1()
+{
+	std::string sha1 {"@VERIPARSE_GIT_SHA1@"};
+	return sha1.substr(0, 16);
+}
+
+std::string get_version()
+{
+	std::string version {"@VERIPARSE_VERSION@"};
+	if (version == "-128-NOTFOUND") {
+		version = "NO_VERSION_FOUND";
+	}
+	return version;
+}
+
+}
+}

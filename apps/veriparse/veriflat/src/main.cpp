@@ -10,6 +10,7 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
+#include <veriparse/version.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
@@ -54,6 +55,7 @@ static int veriflat(int argc, char *argv[])
 	boost::program_options::options_description options("options");
 	options.add_options()
 		("help,h", "Produce help message")
+		("version,v", "Show the version and exit")
 		("output,o", boost::program_options::value<std::string>(&config.output)->required(), "output")
 		("top-module,t", boost::program_options::value<std::string>(&config.top_module)->required(), "top-module")
 		("param-map,p", boost::program_options::value<std::string>(&config.param_map), "YAML parameter map")
@@ -101,10 +103,19 @@ static int veriflat(int argc, char *argv[])
 		return 1;
 	}
 
+	if (vm.count("version")) {
+		std::cout << Veriparse::Version::get_version() << "\n"
+		          << Veriparse::Version::get_sha1() << std::endl;
+		return 0;
+	}
+
 	if (vm.count("verilog-file") == 0) {
 		LOG_ERROR << "missing verilog file(s)";
 		show_usage(argv[0], desc);
 	}
+
+	LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version()
+	         << " - " << Veriparse::Version::get_sha1();
 
 	LOG_INFO << "Command line: " << config;
 

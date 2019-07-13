@@ -7,6 +7,7 @@
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/transformations/module_obfuscator.hpp>
+#include <veriparse/version.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
@@ -43,6 +44,7 @@ static int veriobf(int argc, char *argv[])
 	boost::program_options::options_description options("options");
 	options.add_options()
 		("help,h", "Produce help message")
+		("version,v", "Show the version and exit")
 		("output,o", boost::program_options::value<std::string>(&config.output)->required(), "Output file")
 		("id-length,l", boost::program_options::value<std::uint64_t>(&config.identifier_length)->default_value(16),
 		 "Maximum length of obfuscated indentifiers")
@@ -87,10 +89,19 @@ static int veriobf(int argc, char *argv[])
 		return 1;
 	}
 
+	if (vm.count("version")) {
+		std::cout << Veriparse::Version::get_version() << "\n"
+		          << Veriparse::Version::get_sha1() << std::endl;
+		return 0;
+	}
+
 	if (vm.count("verilog-file") == 0) {
 		LOG_ERROR << "missing verilog file";
 		show_usage(argv[0], desc);
 	}
+
+	LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version()
+	         << " - " << Veriparse::Version::get_sha1();
 
 	LOG_INFO << "Command line: " << config;
 

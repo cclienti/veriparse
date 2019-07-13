@@ -20,6 +20,22 @@ else()
 endif()
 
 ########################################
+### Manage Version in the Library
+########################################
+
+include(GetGitRevisionDescription)
+git_describe(VERIPARSE_VERSION --tags --dirty=-d)
+get_git_head_revision(GIT_REFSPEC VERIPARSE_GIT_SHA1)
+
+message(STATUS "Veriparse version: ${VERIPARSE_VERSION}")
+message(STATUS "Veriparse git sha1: ${VERIPARSE_GIT_SHA1}")
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/version.cpp.in
+               ${CMAKE_CURRENT_BINARY_DIR}/version.cpp)
+
+set(veriparse_version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
+
+########################################
 ### Veriparse Library
 ########################################
 
@@ -52,7 +68,8 @@ add_flex_bison_dependency (Veriparse_VerilogNumberScanner Veriparse_VerilogNumbe
 # Build library
 file(GLOB_RECURSE source_files src/*.cpp)
 
-add_library (veriparse_static STATIC ${source_files}
+add_library (veriparse_static STATIC
+  ${source_files} ${veriparse_version_file}
   ${BISON_Veriparse_VerilogParser_OUTPUTS}
   ${FLEX_Veriparse_VerilogScanner_OUTPUTS}
   ${BISON_Veriparse_VerilogNumberParser_OUTPUTS}

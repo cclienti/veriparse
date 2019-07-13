@@ -6,6 +6,7 @@
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/AST/node.hpp>
 #include <veriparse/logger/logger.hpp>
+#include <veriparse/version.hpp>
 #include <boost/filesystem.hpp>
 #include <fstream>
 #include <cstdlib>
@@ -18,7 +19,10 @@
 	  \
 	Logger::remove_all_sinks(); \
 	Logger::add_text_sink(test_string + ".log"); \
-	Logger::add_stdout_sink();
+	Logger::add_stdout_sink(); \
+	\
+	LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version() \
+	         << " - " << Veriparse::Version::get_sha1()
 
 
 namespace Veriparse {
