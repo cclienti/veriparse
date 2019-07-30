@@ -70,12 +70,7 @@ add_library (veriparse_static STATIC
 
 if (NOT MINGW)
   if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    check_ipo_supported(RESULT result OUTPUT output)
-    if(result)
-      set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-    else()
-      message(WARNING "IPO is not supported: ${output}")
-    endif()
+    set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
   endif()
 endif()
 
