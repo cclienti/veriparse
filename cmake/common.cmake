@@ -138,7 +138,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   set(Boost_USE_STATIC_LIBS        ON)
   set(Boost_USE_MULTITHREADED      ON)
   set(Boost_USE_STATIC_RUNTIME     OFF)
-  find_package(Boost 1.64.0 REQUIRED
+  find_package(Boost 1.70.0 REQUIRED
 	COMPONENTS system program_options thread filesystem date_time log log_setup)
   message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS}")
 

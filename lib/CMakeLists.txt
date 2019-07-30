@@ -12,7 +12,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 ########################################
 
 add_library(license INTERFACE)
-target_include_directories(license INTERFACE ${OPENSSL_INCLUDE_DIR})
+target_include_directories(license SYSTEM INTERFACE ${OPENSSL_INCLUDE_DIR})
 if(MINGW)
   target_link_libraries(license INTERFACE ${OPENSSL_LIBRARIES} z iphlpapi ws2_32)
 else()
@@ -22,13 +22,6 @@ endif()
 ########################################
 ### Manage Version in the Library
 ########################################
-
-include(GetGitRevisionDescription)
-git_describe(VERIPARSE_VERSION --tags)
-get_git_head_revision(GIT_REFSPEC VERIPARSE_GIT_SHA1)
-
-message(STATUS "Veriparse version: ${VERIPARSE_VERSION}")
-message(STATUS "Veriparse git sha1: ${VERIPARSE_GIT_SHA1}")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/version.cpp.in
                ${CMAKE_CURRENT_BINARY_DIR}/version.cpp)
@@ -77,15 +70,20 @@ add_library (veriparse_static STATIC
 
 if (NOT MINGW)
   if (CMAKE_BUILD_TYPE STREQUAL "Release")
-	set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+    check_ipo_supported(RESULT result OUTPUT output)
+    if(result)
+      set_property(TARGET veriparse_static PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    else()
+      message(WARNING "IPO is not supported: ${output}")
+    endif()
   endif()
 endif()
 
 target_include_directories (veriparse_static PUBLIC include)
-target_include_directories (veriparse_static PUBLIC ${YAMLCPP_INCLUDE_DIR})
-target_include_directories (veriparse_static PUBLIC ${BOOST_INCLUDE_DIRS})
-target_include_directories (veriparse_static PUBLIC ${GMP_INCLUDE_DIR})
-target_include_directories (veriparse_static PUBLIC ${GMPXX_INCLUDE_DIR})
+target_include_directories (veriparse_static SYSTEM PUBLIC ${YAMLCPP_INCLUDE_DIR})
+target_include_directories (veriparse_static SYSTEM PUBLIC ${BOOST_INCLUDE_DIRS})
+target_include_directories (veriparse_static SYSTEM PUBLIC ${GMP_INCLUDE_DIR})
+target_include_directories (veriparse_static SYSTEM PUBLIC ${GMPXX_INCLUDE_DIR})
 target_include_directories (veriparse_static PRIVATE src)
 target_include_directories (veriparse_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
