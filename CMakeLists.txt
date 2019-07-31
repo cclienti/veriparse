@@ -25,7 +25,7 @@ message(STATUS "Veriparse git sha1: ${VERIPARSE_GIT_SHA1}")
 ### install path
 ########################################
 
-set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/veriparse-packages/veripase-${VERIPARSE_VERSION}")
+set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/veriparse-packages/veriparse-${VERIPARSE_VERSION}")
 message(STATUS "Install path in ${CMAKE_INSTALL_PREFIX}")
 
 
