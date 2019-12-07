@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ "$#" != "2" ]]; then
-    echo "usage: license.sh <license_generator_path> <license_validator_path>"
+if [[ "$#" != "3" ]]; then
+    echo "usage: license.sh <license_generator_path> <license_validator_path> <privaye_key>"
     exit 1
 fi
 
@@ -11,14 +11,7 @@ fi
 
 LICENSE_GENERATOR=$1
 LICENSE_VALIDATOR=$2
-
-
-#------------------------------------------------------
-# RSA test keys
-#------------------------------------------------------
-
-PRIVATE_KEY="$(git rev-parse --show-toplevel)/apps/license/license_generator/resources/private.pem"
-
+PRIVATE_KEY=$3
 
 #------------------------------------------------------
 # Platform information

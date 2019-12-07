@@ -32,6 +32,7 @@ if(NOT MINGW)
                      COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test/common/license.sh
                              ${CMAKE_CURRENT_BINARY_DIR}/../license/license_generator/license_generator
                              ${CMAKE_CURRENT_BINARY_DIR}/../license/license_validator/license_validator
+                             ${CMAKE_CURRENT_SOURCE_DIR}/../license/license_generator/resources/private.pem
                      DEPENDS license_generator license_validator)
 
   # Iterate over all tests
