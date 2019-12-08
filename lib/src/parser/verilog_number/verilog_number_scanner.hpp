@@ -17,34 +17,34 @@
 #include <string>
 
 namespace Veriparse {
-	namespace Parser {
+namespace Parser {
 
-		class VerilogNumberScanner : public yyFlexLexer {
-		public:
+class VerilogNumberScanner : public yyFlexLexer {
+public:
 
-			VerilogNumberScanner(std::istream *in) :
-				yyFlexLexer(in)
-			{
-				loc = new Veriparse::Parser::VerilogNumberParser::location_type();
-			};
+	VerilogNumberScanner(std::istream *in) :
+		yyFlexLexer(in)
+	{
+		loc = new Veriparse::Parser::VerilogNumberParser::location_type();
+	};
 
-			virtual ~VerilogNumberScanner() {
-				delete loc;
-			};
+	virtual ~VerilogNumberScanner() {
+		delete loc;
+	};
 
-			virtual int yylex(Veriparse::Parser::VerilogNumberParser::semantic_type * const lval,
-			                  Veriparse::Parser::VerilogNumberParser::location_type * location);
-			// YY_DECL defined in scanner.ll
-			// Method body created by flex in lex.yy.cc
+	virtual int yylex(Veriparse::Parser::VerilogNumberParser::semantic_type * const lval,
+	                  Veriparse::Parser::VerilogNumberParser::location_type * location);
+	// YY_DECL defined in scanner.ll
+	// Method body created by flex in lex.yy.cc
 
-		private:
-			/* yyval ptr */
-			VerilogNumberParser::semantic_type *yylval = nullptr;
-			/* location ptr */
-			VerilogNumberParser::location_type *loc    = nullptr;
-		};
+private:
+	/* yyval ptr */
+	VerilogNumberParser::semantic_type *yylval = nullptr;
+	/* location ptr */
+	VerilogNumberParser::location_type *loc    = nullptr;
+};
 
-	}
+}
 }
 
 #endif

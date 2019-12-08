@@ -15,32 +15,32 @@
 
 
 namespace Veriparse {
-	namespace Parser {
+namespace Parser {
 
-		class VerilogNumberDriver {
-		public:
-			VerilogNumberDriver(): m_parser(nullptr), m_scanner(nullptr) {}
+class VerilogNumberDriver {
+public:
+	VerilogNumberDriver(): m_parser(nullptr), m_scanner(nullptr) {}
 
-			virtual ~VerilogNumberDriver();
+	virtual ~VerilogNumberDriver();
 
-			/**
-			 * parse - parse from a c++ input stream
-			 * @param is - std::istream&, valid input stream
-			 */
-			int parse(const std::string &str, mpz_class &mpz, int &size, int &base,
-			          bool &is_signed, int &rc, std::string filename, int line);
+	/**
+	 * parse - parse from a c++ input stream
+	 * @param is - std::istream&, valid input stream
+	 */
+	int parse(const std::string &str, mpz_class &mpz, int &size, int &base,
+	          bool &is_signed, int &rc, std::string filename, int line);
 
-		private:
-			int parse_helper(const std::string &str, mpz_class &mpz, int &size, int &base,
-			                 bool &is_signed, int &rc, std::string filename, int line);
+private:
+	int parse_helper(const std::string &str, mpz_class &mpz, int &size, int &base,
+	                 bool &is_signed, int &rc, std::string filename, int line);
 
-		private:
-			VerilogNumberParser  *m_parser;
-			VerilogNumberScanner *m_scanner;
+private:
+	VerilogNumberParser  *m_parser;
+	VerilogNumberScanner *m_scanner;
 
-		};
+};
 
-	}
+}
 }
 
 #endif
