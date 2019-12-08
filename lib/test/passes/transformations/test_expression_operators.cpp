@@ -16,17 +16,17 @@ TEST(PassesTransformation_ExpressionOperators, UnaryUnsignedFct) {
 	Passes::Transformations::unsigned_fct<AST::IntConstN::Ptr> unsigned_fct_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, 8, true, -2);
 	res = unsigned_fct_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xFE));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xFE), res->get_value());
 
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -3);
 	res = unsigned_fct_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == 32);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xFFFFFFFD));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(32, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xFFFFFFFD), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnarySignedFct) {
@@ -36,116 +36,115 @@ TEST(PassesTransformation_ExpressionOperators, UnarySignedFct) {
 	Passes::Transformations::signed_fct<AST::IntConstN::Ptr> signed_fct_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, 8, false, 0xFE);
 	res = signed_fct_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-2));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-2), res->get_value());
 
 	x = std::make_shared<AST::IntConstN>(10, -1, false, 0xFFFFFFFD);
 	res = signed_fct_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == 32);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-3));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(32, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-3), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryCLog2) {
 	Passes::Transformations::clog2<int32_t> clog2;
-	ASSERT_TRUE(clog2(-1) == 0);
-	ASSERT_TRUE(clog2(0) == 0);
+	ASSERT_EQ(0, clog2(-1));
+	ASSERT_EQ(0, clog2(0));
 	for(int32_t x=1; x<=1025; x++) {
-		ASSERT_TRUE(clog2(x) == static_cast<int32_t>(std::ceil(std::log2(x))));
+		ASSERT_EQ(static_cast<int32_t>(std::ceil(std::log2(x))), clog2(x));
 	}
 
-	Passes::Transformations::clog2<double> clog2_double;
-	ASSERT_TRUE(clog2(-1.0) == 0.0);
-	ASSERT_TRUE(clog2(0.0) == 0.0);
-	ASSERT_TRUE(clog2(1.0) == 0.0);
-	ASSERT_TRUE(clog2(2.0) == 1.0);
-	ASSERT_TRUE(clog2(3.0) == 2.0);
-	ASSERT_TRUE(clog2(4.0) == 2.0);
-	ASSERT_TRUE(clog2(5.0) == 3.0);
+	ASSERT_EQ(0.0, clog2(-1.0));
+	ASSERT_EQ(0.0, clog2(0.0));
+	ASSERT_EQ(0.0, clog2(1.0));
+	ASSERT_EQ(1.0, clog2(2.0));
+	ASSERT_EQ(2.0, clog2(3.0));
+	ASSERT_EQ(2.0, clog2(4.0));
+	ASSERT_EQ(3.0, clog2(5.0));
 
 	Passes::Transformations::clog2<AST::FloatConst::Ptr> clog2_floatconst;
-	ASSERT_TRUE(clog2_floatconst(std::make_shared<AST::FloatConst>(5))->get_value() == 3.0);
+	ASSERT_EQ(3.0, clog2_floatconst(std::make_shared<AST::FloatConst>(5))->get_value());
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr res;
 	Passes::Transformations::clog2<AST::IntConstN::Ptr> clog2_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = clog2_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(3));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(3), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryPlus) {
 	Passes::Transformations::uplus<int32_t> uplus;
-	ASSERT_TRUE(uplus(5) == 5);
-	ASSERT_TRUE(uplus(-5) == -5);
+	ASSERT_EQ(5, uplus(5));
+	ASSERT_EQ(-5, uplus(-5));
 
 	Passes::Transformations::uplus<double> uplus_double;
-	ASSERT_TRUE(uplus_double(5.0) == 5.0);
-	ASSERT_TRUE(uplus_double(-5.0) == -5.0);
+	ASSERT_EQ(5.0, uplus_double(5.0));
+	ASSERT_EQ(-5.0, uplus_double(-5.0));
 
 	Passes::Transformations::uplus<AST::FloatConst::Ptr> uplus_floatconst;
-	ASSERT_TRUE(uplus_floatconst(std::make_shared<AST::FloatConst>(5))->get_value() == 5.0);
+	ASSERT_EQ(5.0, uplus_floatconst(std::make_shared<AST::FloatConst>(5))->get_value());
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr res;
 	Passes::Transformations::uplus<AST::IntConstN::Ptr> uplus_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = uplus_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == x->get_sign());
-	ASSERT_TRUE(res->get_value() == mpz_class(5));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(x->get_sign(), res->get_sign());
+	ASSERT_EQ(mpz_class(5), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryMinus) {
 	Passes::Transformations::uminus<int32_t> uminus;
-	ASSERT_TRUE(uminus(5) == -5);
-	ASSERT_TRUE(uminus(-5) == 5);
+	ASSERT_EQ(-5, uminus(5));
+	ASSERT_EQ(5, uminus(-5));
 
 	Passes::Transformations::uminus<double> uminus_double;
-	ASSERT_TRUE(uminus_double(5.0) == -5.0);
-	ASSERT_TRUE(uminus_double(-5.0) == 5.0);
+	ASSERT_EQ(-5.0, uminus_double(5.0));
+	ASSERT_EQ(5.0, uminus_double(-5.0));
 
 	Passes::Transformations::uminus<AST::FloatConst::Ptr> uplus_floatconst;
-	ASSERT_TRUE(uplus_floatconst(std::make_shared<AST::FloatConst>(5))->get_value() == -5.0);
+	ASSERT_EQ(-5.0, uplus_floatconst(std::make_shared<AST::FloatConst>(5))->get_value());
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr res;
 	Passes::Transformations::uminus<AST::IntConstN::Ptr> uminus_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = uminus_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == x->get_sign());
-	ASSERT_TRUE(res->get_value() == mpz_class(-5));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(x->get_sign(), res->get_sign());
+	ASSERT_EQ(mpz_class(-5), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryLogicalNot) {
 	Passes::Transformations::ulnot<int32_t> ulnot;
-	ASSERT_TRUE(ulnot(5) == 0);
-	ASSERT_TRUE(ulnot(0) == 1);
+	ASSERT_EQ(0, ulnot(5));
+	ASSERT_EQ(1, ulnot(0));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr res;
 	Passes::Transformations::ulnot<AST::IntConstN::Ptr> ulnot_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = ulnot_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == x->get_sign());
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(x->get_sign(), res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryNot) {
 	Passes::Transformations::unot<uint32_t> unot;
-	ASSERT_TRUE(unot(5) == 0xFFFFFFFA);
-	ASSERT_TRUE(unot(0) == 0xFFFFFFFF);
+	ASSERT_EQ(0xFFFFFFFA, unot(5));
+	ASSERT_EQ(0xFFFFFFFF, unot(0));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr y;
@@ -154,33 +153,33 @@ TEST(PassesTransformation_ExpressionOperators, UnaryNot) {
 	Passes::Transformations::unot<AST::IntConstN::Ptr> unot_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = unot_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == x->get_sign());
-	ASSERT_TRUE(res->get_value() == mpz_class(-6));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(x->get_sign(), res->get_sign());
+	ASSERT_EQ(mpz_class(-6), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 1);
 	res = unot_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == x->get_sign());
-	ASSERT_TRUE(res->get_value() == mpz_class(-2));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(x->get_sign(), res->get_sign());
+	ASSERT_EQ(mpz_class(-2), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -6);
 	res = unot_intconstn(x);
-	ASSERT_TRUE(res->get_base() == x->get_base());
-	ASSERT_TRUE(res->get_size() == x->get_size());
-	ASSERT_TRUE(res->get_sign() == x->get_sign());
-	ASSERT_TRUE(res->get_value() == mpz_class(5));
+	ASSERT_EQ(x->get_base(), res->get_base());
+	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(x->get_sign(), res->get_sign());
+	ASSERT_EQ(mpz_class(5), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryAnd) {
 	Passes::Transformations::uand<uint8_t> uand;
-	ASSERT_TRUE(uand(0x00) == 0);
-	ASSERT_TRUE(uand(0xFE) == 0);
-	ASSERT_TRUE(uand(0xFF) == 1);
+	ASSERT_EQ(0, uand(0x00));
+	ASSERT_EQ(0, uand(0xFE));
+	ASSERT_EQ(1, uand(0xFF));
 	Passes::Transformations::uand<int8_t> uand_s;
-	ASSERT_TRUE(uand_s(0) == 0);
-	ASSERT_TRUE(uand_s(1) == 0);
-	ASSERT_TRUE(uand_s(-1) == 1);
+	ASSERT_EQ(0, uand_s(0));
+	ASSERT_EQ(0, uand_s(1));
+	ASSERT_EQ(1, uand_s(-1));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr y;
@@ -189,45 +188,45 @@ TEST(PassesTransformation_ExpressionOperators, UnaryAnd) {
 	Passes::Transformations::uand<AST::IntConstN::Ptr> uand_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = uand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -1);
 	res = uand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 4, false, 15);
 	res = uand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 4, false, 14);
 	res = uand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 4, true, -1);
 	res = uand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryNand) {
 	Passes::Transformations::unand<uint8_t> unand;
-	ASSERT_TRUE(unand(0x00) == 1);
-	ASSERT_TRUE(unand(0xFE) == 1);
-	ASSERT_TRUE(unand(0xFF) == 0);
+	ASSERT_EQ(1, unand(0x00));
+	ASSERT_EQ(1, unand(0xFE));
+	ASSERT_EQ(0, unand(0xFF));
 	Passes::Transformations::unand<int8_t> unand_s;
-	ASSERT_TRUE(unand_s(0) == 1);
-	ASSERT_TRUE(unand_s(1) == 1);
-	ASSERT_TRUE(unand_s(-1) == 0);
+	ASSERT_EQ(1, unand_s(0));
+	ASSERT_EQ(1, unand_s(1));
+	ASSERT_EQ(0, unand_s(-1));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr res;
@@ -235,105 +234,105 @@ TEST(PassesTransformation_ExpressionOperators, UnaryNand) {
 	Passes::Transformations::unand<AST::IntConstN::Ptr> unand_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = unand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -1);
 	res = unand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 4, false, 15);
 	res = unand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 4, false, 14);
 	res = unand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 4, true, -1);
 	res = unand_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryOr) {
 	Passes::Transformations::uor<uint8_t> uor;
-	ASSERT_TRUE(uor(0x00) == 0);
-	ASSERT_TRUE(uor(0x01) == 1);
-	ASSERT_TRUE(uor(0xFF) == 1);
+	ASSERT_EQ(0, uor(0x00));
+	ASSERT_EQ(1, uor(0x01));
+	ASSERT_EQ(1, uor(0xFF));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr res;
 	Passes::Transformations::uor<AST::IntConstN::Ptr> uor_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, 8, true, 0);
 	res = uor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, 1);
 	res = uor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, 0xff);
 	res = uor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryNotOr) {
 	Passes::Transformations::unor<uint8_t> unor;
-	ASSERT_TRUE(unor(0x00) == 1);
-	ASSERT_TRUE(unor(0x01) == 0);
-	ASSERT_TRUE(unor(0xFF) == 0);
+	ASSERT_EQ(1, unor(0x00));
+	ASSERT_EQ(0, unor(0x01));
+	ASSERT_EQ(0, unor(0xFF));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr res;
 	Passes::Transformations::unor<AST::IntConstN::Ptr> unor_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, 8, true, 0);
 	res = unor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, 1);
 	res = unor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, 0xff);
 	res = unor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryXor) {
 	Passes::Transformations::uxor<uint8_t> uxor;
-	ASSERT_TRUE(uxor(0x00) == 0);
-	ASSERT_TRUE(uxor(0x01) == 1);
-	ASSERT_TRUE(uxor(0xEF) == 1);
-	ASSERT_TRUE(uxor(0xFF) == 0);
+	ASSERT_EQ(0, uxor(0x00));
+	ASSERT_EQ(1, uxor(0x01));
+	ASSERT_EQ(1, uxor(0xEF));
+	ASSERT_EQ(0, uxor(0xFF));
 	Passes::Transformations::uxor<int32_t> uxor_s;
-	ASSERT_TRUE(uxor_s(-1) == 0);
-	ASSERT_TRUE(uxor_s(-2) == 1);
-	ASSERT_TRUE(uxor_s(1) == 1);
-	ASSERT_TRUE(uxor_s(5) == 0);
+	ASSERT_EQ(0, uxor_s(-1));
+	ASSERT_EQ(1, uxor_s(-2));
+	ASSERT_EQ(1, uxor_s(1));
+	ASSERT_EQ(0, uxor_s(5));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr y;
@@ -342,71 +341,71 @@ TEST(PassesTransformation_ExpressionOperators, UnaryXor) {
 	Passes::Transformations::uxor<AST::IntConstN::Ptr> uxor_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 1);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -1);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -2);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, false, 0xff);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, false, 0xef);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, -128);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, -1);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 9, true, -1);
 	res = uxor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, UnaryXnor) {
 	Passes::Transformations::uxnor<uint8_t> uxnor;
-	ASSERT_TRUE(uxnor(0x00) == 1);
-	ASSERT_TRUE(uxnor(0x01) == 0);
-	ASSERT_TRUE(uxnor(0xEF) == 0);
-	ASSERT_TRUE(uxnor(0xFF) == 1);
+	ASSERT_EQ(1, uxnor(0x00));
+	ASSERT_EQ(0, uxnor(0x01));
+	ASSERT_EQ(0, uxnor(0xEF));
+	ASSERT_EQ(1, uxnor(0xFF));
 	Passes::Transformations::uxnor<int32_t> uxnor_s;
-	ASSERT_TRUE(uxnor_s(-1) == 1);
-	ASSERT_TRUE(uxnor_s(-2) == 0);
-	ASSERT_TRUE(uxnor_s(1) == 0);
-	ASSERT_TRUE(uxnor_s(5) == 1);
+	ASSERT_EQ(1, uxnor_s(-1));
+	ASSERT_EQ(0, uxnor_s(-2));
+	ASSERT_EQ(0, uxnor_s(1));
+	ASSERT_EQ(1, uxnor_s(5));
 
 	AST::IntConstN::Ptr x;
 	AST::IntConstN::Ptr y;
@@ -415,58 +414,58 @@ TEST(PassesTransformation_ExpressionOperators, UnaryXnor) {
 	Passes::Transformations::uxnor<AST::IntConstN::Ptr> uxnor_intconstn;
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 1);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -1);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -2);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, false, 0xff);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, false, 0xef);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, -128);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 8, true, -1);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 9, true, -1);
 	res = uxnor_intconstn(x);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryPointer) {
@@ -481,19 +480,19 @@ TEST(PassesTransformation_ExpressionOperators, BinaryPointer) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 31);
 	res = pointer_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 4);
 	res = pointer_intconstn(x, y);
 	LOG_INFO << res;
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryPower) {
@@ -521,38 +520,38 @@ TEST(PassesTransformation_ExpressionOperators, BinaryPower) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 1);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 2);
 	res = power_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 12);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 5);
 	res = power_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(248832));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(248832), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -12);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 6);
 	res = power_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(2985984));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(2985984), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -12);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 7);
 	res = power_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-35831808));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-35831808), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -12);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, -6);
 	res = power_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryTimes) {
@@ -581,17 +580,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryTimes) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 1);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 2);
 	res = times_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(2));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(2), res->get_value());
 	x = std::make_shared<AST::IntConstN>(16, 8, true, -1);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = times_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 16);
-	ASSERT_TRUE(res->get_size() == 16);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-2));
+	ASSERT_EQ(16, res->get_base());
+	ASSERT_EQ(16, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-2), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryDivide) {
@@ -620,17 +619,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryDivide) {
 	x = std::make_shared<AST::IntConstN>(10, 16, false, 1);
 	y = std::make_shared<AST::IntConstN>(10, -1, true, 2);
 	res = divide_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 16);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(16, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 17, true, -54511);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -57);
 	res = divide_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 17);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(956));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(17, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(956), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryModulus) {
@@ -660,31 +659,31 @@ TEST(PassesTransformation_ExpressionOperators, BinaryModulus) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -9);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -7);
 	res = mod_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-2));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-2), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -9);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 7);
 	res = mod_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-2));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-2), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, false, 9);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -7);
 	res = mod_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(2));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(2), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, 7, false, 9);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 7);
 	res = mod_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(2));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(2), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryPlus) {
@@ -714,10 +713,10 @@ TEST(PassesTransformation_ExpressionOperators, BinaryPlus) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -9);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -7);
 	res = plus_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-16));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-16), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryMinus) {
@@ -747,10 +746,10 @@ TEST(PassesTransformation_ExpressionOperators, BinaryMinus) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -9);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -7);
 	res = minus_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-2));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-2), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryShiftLogicalLeft) {
@@ -764,17 +763,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryShiftLogicalLeft) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -9);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = sll_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-36));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-36), res->get_value());
 	x = std::make_shared<AST::IntConstN>(16, 10, false, 12);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 3);
 	res = sll_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 16);
-	ASSERT_TRUE(res->get_size() == 13);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(96));
+	ASSERT_EQ(16, res->get_base());
+	ASSERT_EQ(13, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(96), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryShiftRightLeft) {
@@ -791,17 +790,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryShiftRightLeft) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = srl_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(22));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(22), res->get_value());
 	x = std::make_shared<AST::IntConstN>(16, 10, false, 90);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 3);
 	res = srl_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 16);
-	ASSERT_TRUE(res->get_size() == 7);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(11));
+	ASSERT_EQ(16, res->get_base());
+	ASSERT_EQ(7, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(11), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryShiftRightArithmetic) {
@@ -818,17 +817,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryShiftRightArithmetic) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = sra_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-10));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-10), res->get_value());
 	x = std::make_shared<AST::IntConstN>(16, 10, false, 90);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 3);
 	res = sra_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 16);
-	ASSERT_TRUE(res->get_size() == 7);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(11));
+	ASSERT_EQ(16, res->get_base());
+	ASSERT_EQ(7, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(11), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryLessThan) {
@@ -853,17 +852,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryLessThan) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = less_than_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -38);
 	res = less_than_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryGreaterThan) {
@@ -889,17 +888,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryGreaterThan) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = greater_than_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = greater_than_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryLessEqual) {
@@ -926,17 +925,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryLessEqual) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -38);
 	res = less_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true,  -39);
 	res = less_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryGreaterEqual) {
@@ -964,17 +963,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryGreaterEqual) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 38);
 	res = greater_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = greater_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryEqual) {
@@ -1001,17 +1000,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryEqual) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 38);
 	res = equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryNotEqual) {
@@ -1038,17 +1037,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryNotEqual) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -38);
 	res = not_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = not_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryCaseEqual) {
@@ -1067,17 +1066,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryCaseEqual) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -38);
 	res = case_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = case_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryCaseNotEqual) {
@@ -1096,17 +1095,17 @@ TEST(PassesTransformation_ExpressionOperators, BinaryCaseNotEqual) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, -38);
 	res = case_not_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, -38);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 2);
 	res = case_not_equal_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseAnd) {
@@ -1120,10 +1119,10 @@ TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseAnd) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0xaa55ffff);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 0x55aaaaaa);
 	res = bitwise_and_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(0x0000aaaa));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(0x0000aaaa), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseXor) {
@@ -1137,10 +1136,10 @@ TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseXor) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x11223344);
 	y = std::make_shared<AST::IntConstN>(10, 32, true, 0x55667788);
 	res = bitwise_xor_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(0x444444cc));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(0x444444cc), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseXnor) {
@@ -1157,10 +1156,10 @@ TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseXnor) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x11223344);
 	y = std::make_shared<AST::IntConstN>(10, 32, true, 0x55667788);
 	res = bitwise_xnor_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(-1145324749));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(-1145324749), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseOr) {
@@ -1174,10 +1173,10 @@ TEST(PassesTransformation_ExpressionOperators, BinaryBitwiseOr) {
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0xaa55fff0);
 	y = std::make_shared<AST::IntConstN>(10, 8, true, 0x55aaaaa0);
 	res = bitwise_or_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == -1);
-	ASSERT_TRUE(res->get_sign() == true);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xfffffff0));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(-1, res->get_size());
+	ASSERT_EQ(true, res->get_sign());
+	ASSERT_EQ(mpz_class(0xfffffff0), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryLogicalAnd) {
@@ -1200,15 +1199,15 @@ TEST(PassesTransformation_ExpressionOperators, BinaryLogicalAnd) {
 	y = std::make_shared<AST::IntConstN>(10, 32, true, 0x55667788);
 	z = std::make_shared<AST::IntConstN>(10, 32, true, 0);
 	res = logical_and_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	res = logical_and_intconstn(x, z);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 
 	AST::FloatConst::Ptr xf;
 	AST::FloatConst::Ptr yf;
@@ -1219,9 +1218,9 @@ TEST(PassesTransformation_ExpressionOperators, BinaryLogicalAnd) {
 	yf = std::make_shared<AST::FloatConst>(2);
 	zf = std::make_shared<AST::FloatConst>(0);
 	resf = logical_and_floatconst(xf, yf);
-	ASSERT_TRUE(resf->get_value() == true);
+	ASSERT_EQ(true, resf->get_value());
 	resf = logical_and_floatconst(xf, zf);
-	ASSERT_TRUE(resf->get_value() == false);
+	ASSERT_EQ(false, resf->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, BinaryLogicalOr) {
@@ -1244,15 +1243,15 @@ TEST(PassesTransformation_ExpressionOperators, BinaryLogicalOr) {
 	y = std::make_shared<AST::IntConstN>(10, 32, true, 0);
 	z = std::make_shared<AST::IntConstN>(10, 32, true, 0);
 	res = logical_or_intconstn(x, y);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(1));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(1), res->get_value());
 	res = logical_or_intconstn(y, z);
-	ASSERT_TRUE(res->get_base() == 2);
-	ASSERT_TRUE(res->get_size() == 1);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0));
+	ASSERT_EQ(2, res->get_base());
+	ASSERT_EQ(1, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0), res->get_value());
 
 	AST::FloatConst::Ptr xf;
 	AST::FloatConst::Ptr yf;
@@ -1263,9 +1262,9 @@ TEST(PassesTransformation_ExpressionOperators, BinaryLogicalOr) {
 	yf = std::make_shared<AST::FloatConst>(0);
 	zf = std::make_shared<AST::FloatConst>(0);
 	resf = logical_or_floatconst(xf, yf);
-	ASSERT_TRUE(resf->get_value() == true);
+	ASSERT_EQ(true, resf->get_value());
 	resf = logical_or_floatconst(yf, zf);
-	ASSERT_TRUE(resf->get_value() == false);
+	ASSERT_EQ(false, resf->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, Ternary) {
@@ -1305,34 +1304,34 @@ TEST(PassesTransformation_ExpressionOperators, Ternary) {
 	zf = std::make_shared<AST::FloatConst>(-2, "zf");
 
 	res = ternary_op_intconstn_intconstn(x, y, z);
-	ASSERT_TRUE(*res == *y);
+	ASSERT_EQ(*y, *res);
 	res = ternary_op_intconstn_intconstn(y, x, z);
-	ASSERT_TRUE(*res == *z);
+	ASSERT_EQ(*z, *res);
 
 	res = ternary_op_floatconst_intconstn(xf, y, z);
-	ASSERT_TRUE(*res == *y);
+	ASSERT_EQ(*y, *res);
 	res = ternary_op_floatconst_intconstn(yf, x, z);
-	ASSERT_TRUE(*res == *z);
+	ASSERT_EQ(*z, *res);
 
 	resf = ternary_op_intconstn_floatconst(x, yf, zf);
-	ASSERT_TRUE(*resf == *yf);
+	ASSERT_EQ(*yf, *resf);
 	resf = ternary_op_intconstn_floatconst(y, xf, zf);
-	ASSERT_TRUE(*resf == *zf);
+	ASSERT_EQ(*zf, *resf);
 
 	resf = ternary_op_floatconst_floatconst(xf, yf, zf);
-	ASSERT_TRUE(*resf == *yf);
+	ASSERT_EQ(*yf, *resf);
 	resf = ternary_op_floatconst_floatconst(yf, xf, zf);
-	ASSERT_TRUE(*resf == *zf);
+	ASSERT_EQ(*zf, *resf);
 
 	res = AST::cast_to<AST::IntConstN>(ternary_op_intconstn_node(x, AST::to_node(y), AST::to_node(z)));
-	ASSERT_TRUE(*res == *y);
+	ASSERT_EQ(*y, *res);
 	res = AST::cast_to<AST::IntConstN>(ternary_op_intconstn_node(y, AST::to_node(x), AST::to_node(z)));
-	ASSERT_TRUE(*res == *z);
+	ASSERT_EQ(*z, *res);
 
 	resf = AST::cast_to<AST::FloatConst>(ternary_op_floatconst_node(xf, AST::to_node(yf), AST::to_node(zf)));
-	ASSERT_TRUE(*resf == *yf);
+	ASSERT_EQ(*yf, *resf);
 	resf = AST::cast_to<AST::FloatConst>(ternary_op_floatconst_node(yf, AST::to_node(xf), AST::to_node(zf)));
-	ASSERT_TRUE(*resf == *zf);
+	ASSERT_EQ(*zf, *resf);
 }
 
 TEST(PassesTransformation_ExpressionOperators, Parselect) {
@@ -1351,26 +1350,26 @@ TEST(PassesTransformation_ExpressionOperators, Parselect) {
 	msb = std::make_shared<AST::IntConstN>(10, -1, true, 31, "msb");
 	lsb = std::make_shared<AST::IntConstN>(10, -1, true, 24, "lsb");
 	res = partselect_intconstn(x, msb, lsb);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0x89));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0x89), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF, "x");
 	msb = std::make_shared<AST::IntConstN>(10, -1, true, 7, "msb");
 	lsb = std::make_shared<AST::IntConstN>(10, -1, true, 0, "lsb");
 	res = partselect_intconstn(x, msb, lsb);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xEF));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xEF), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF, "x");
 	msb = std::make_shared<AST::IntConstN>(10, -1, true, 15, "msb");
 	lsb = std::make_shared<AST::IntConstN>(10, -1, true, 8, "lsb");
 	res = partselect_intconstn(x, msb, lsb);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xCD));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xCD), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, Parselect_minus) {
@@ -1389,26 +1388,26 @@ TEST(PassesTransformation_ExpressionOperators, Parselect_minus) {
 	msb = std::make_shared<AST::IntConstN>(10, -1, true, 31, "msb");
 	index = std::make_shared<AST::IntConstN>(10, -1, true, 8, "index");
 	res = partselect_minus_intconstn(x, msb, index);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0x89));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0x89), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF, "x");
 	msb = std::make_shared<AST::IntConstN>(10, -1, true, 7, "msb");
 	index = std::make_shared<AST::IntConstN>(10, -1, true, 8, "index");
 	res = partselect_minus_intconstn(x, msb, index);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xEF));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xEF), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF, "x");
 	msb = std::make_shared<AST::IntConstN>(10, -1, true, 15, "msb");
 	index = std::make_shared<AST::IntConstN>(10, -1, true, 8, "index");
 	res = partselect_minus_intconstn(x, msb, index);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xCD));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xCD), res->get_value());
 }
 
 TEST(PassesTransformation_ExpressionOperators, Parselect_plus) {
@@ -1425,24 +1424,24 @@ TEST(PassesTransformation_ExpressionOperators, Parselect_plus) {
 	lsb = std::make_shared<AST::IntConstN>(10, -1, true, 24, "lsb");
 	index = std::make_shared<AST::IntConstN>(10, -1, true, 8, "index");
 	res = partselect_plus_intconstn(x, lsb, index);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0x89));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0x89), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF, "x");
 	lsb = std::make_shared<AST::IntConstN>(10, -1, true, 0, "lsb");
 	index = std::make_shared<AST::IntConstN>(10, -1, true, 8, "index");
 	res = partselect_plus_intconstn(x, lsb, index);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xEF));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xEF), res->get_value());
 	x = std::make_shared<AST::IntConstN>(10, -1, true, 0x89ABCDEF, "x");
 	lsb = std::make_shared<AST::IntConstN>(10, -1, true, 8, "lsb");
 	index = std::make_shared<AST::IntConstN>(10, -1, true, 8, "index");
 	res = partselect_plus_intconstn(x, lsb, index);
-	ASSERT_TRUE(res->get_base() == 10);
-	ASSERT_TRUE(res->get_size() == 8);
-	ASSERT_TRUE(res->get_sign() == false);
-	ASSERT_TRUE(res->get_value() == mpz_class(0xCD));
+	ASSERT_EQ(10, res->get_base());
+	ASSERT_EQ(8, res->get_size());
+	ASSERT_EQ(false, res->get_sign());
+	ASSERT_EQ(mpz_class(0xCD), res->get_value());
 }
