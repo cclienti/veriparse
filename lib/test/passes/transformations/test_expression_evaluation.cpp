@@ -143,4 +143,12 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0) {
 	AST::Node::Ptr evalJ = Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprJ);
 	ASSERT_TRUE(evalJ != nullptr);
 	ASSERT_EQ(0x12, AST::cast_to<AST::IntConstN>(evalJ)->get_value());
+
+	// K localparam
+	module_stmt->pop_front();
+	AST::Node::Ptr rvalueK = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+	AST::Node::Ptr exprK = AST::cast_to<AST::Rvalue>(rvalueK)->get_var();
+	AST::Node::Ptr evalK = Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprK);
+	ASSERT_TRUE(evalK != nullptr);
+	ASSERT_EQ(-1, AST::cast_to<AST::IntConstN>(evalK)->get_value());
 }

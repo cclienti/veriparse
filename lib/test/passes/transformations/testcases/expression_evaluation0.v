@@ -13,4 +13,5 @@ module expression_evaluation0;
    localparam H = MYVAR[7:3];
    localparam I = MYVAR[16+:8];
    localparam J = MYVAR[31-:8];
+   localparam K = ~32'h0;
 endmodule
