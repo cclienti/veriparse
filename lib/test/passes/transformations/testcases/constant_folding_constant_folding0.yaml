@@ -439,4 +439,3 @@ Source:
       line: 1
   filename: ../../test/passes/transformations/testcases/constant_folding0.v
   line: 1
-

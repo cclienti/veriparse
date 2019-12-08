@@ -157,16 +157,16 @@ TEST(PassesTransformation_ExpressionOperators, UnaryNot) {
 	ASSERT_EQ(x->get_size(), res->get_size());
 	ASSERT_EQ(x->get_sign(), res->get_sign());
 	ASSERT_EQ(mpz_class(-6), res->get_value());
-	x = std::make_shared<AST::IntConstN>(10, -1, true, 1);
+	x = std::make_shared<AST::IntConstN>(10, 8, true, 1);
 	res = unot_intconstn(x);
 	ASSERT_EQ(x->get_base(), res->get_base());
-	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(8, res->get_size());
 	ASSERT_EQ(x->get_sign(), res->get_sign());
 	ASSERT_EQ(mpz_class(-2), res->get_value());
-	x = std::make_shared<AST::IntConstN>(10, -1, true, -6);
+	x = std::make_shared<AST::IntConstN>(10, 16, true, -6);
 	res = unot_intconstn(x);
 	ASSERT_EQ(x->get_base(), res->get_base());
-	ASSERT_EQ(x->get_size(), res->get_size());
+	ASSERT_EQ(16, res->get_size());
 	ASSERT_EQ(x->get_sign(), res->get_sign());
 	ASSERT_EQ(mpz_class(5), res->get_value());
 }

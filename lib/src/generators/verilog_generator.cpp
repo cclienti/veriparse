@@ -188,22 +188,24 @@ std::string VerilogGenerator::render_intconstn(const AST::IntConstN::Ptr node) c
 			ss << value.get_str(10);
 		}
 		else {
-			char base_str = (base == 10) ? 'd' :
+			char base_str =
+				(base == 10) ? 'd' :
 				(base == 16) ? 'h' :
 				(base == 8)  ? 'o' : 'b';
 
-			if (sign) {
-				if(value < 0) {
-					Passes::Transformations::unsigned_fct<AST::IntConstN::Ptr> op;
-					AST::IntConstN::Ptr n = op(node);
-					ss << size << "'s" << base_str << n->get_value().get_str(base);
-				}
-				else {
-					ss << size << "'s" << base_str << value.get_str(base);
-				}
-			}else {
-				ss << size << "'" << base_str << value.get_str(base);
+			if (value < 0) {
+				Passes::Transformations::unsigned_fct<AST::IntConstN::Ptr> op;
+				AST::IntConstN::Ptr n = op(node);
+				value = n->get_value();
 			}
+
+			ss << size << "'";
+
+			if (sign) {
+				ss << 's';
+			}
+
+			ss << base_str << value.get_str(base);
 		}
 	}
 
