@@ -23,8 +23,8 @@ def main():
             sys.stderr.write("Cannot open file '{}'\n".format(args.infile))
             sys.exit(1)
 
-    print(yaml.dump(yaml.load(yamlstr, Loader=yaml.FullLoader),
-                    default_flow_style=False))
+    print(yaml.dump(yaml.load(yamlstr, Loader=yaml.Loader),
+                    default_flow_style=False, Dumper=yaml.Dumper))
 
 
 if __name__ == '__main__':

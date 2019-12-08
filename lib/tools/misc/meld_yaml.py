@@ -19,13 +19,14 @@ if __name__ == '__main__':
         basename = "_" + os.path.basename(f)
 
         try:
-            yamltree = yaml.load(open(f).read())
+            yamltree = yaml.load(open(f).read(), Loader=yaml.Loader)
         except IOError:
             sys.stderr.write("Cannot open file '{}'\n".format(f))
             sys.exit(1)
 
-        to_compare.append(tempfile.NamedTemporaryFile(prefix=".", suffix=basename))
-        yaml.dump(yamltree, to_compare[-1], default_flow_style=False)
+        to_compare.append(tempfile.NamedTemporaryFile(mode='w', prefix=".", suffix=basename))
+        yaml.dump(yamltree, to_compare[-1], default_flow_style=False, Dumper=yaml.Dumper)
+
     to_meld = [f.name for f in to_compare]
 
     os.execvp("meld", ['meld'] + to_meld)
