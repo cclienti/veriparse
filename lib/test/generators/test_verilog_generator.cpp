@@ -123,6 +123,7 @@ TEST(VerilogGeneratorTest, intconst5)      {TEST_CORE;}
 TEST(VerilogGeneratorTest, intconst6)      {TEST_CORE;}
 TEST(VerilogGeneratorTest, intconst7)      {TEST_CORE;}
 TEST(VerilogGeneratorTest, intconst8)      {TEST_CORE;}
+TEST(VerilogGeneratorTest, intconst9)      {TEST_CORE;}
 TEST(VerilogGeneratorTest, realconst0)     {TEST_CORE;}
 TEST(VerilogGeneratorTest, realconst1)     {TEST_CORE;}
 TEST(VerilogGeneratorTest, realconst2)     {TEST_CORE;}

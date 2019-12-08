@@ -118,6 +118,7 @@ TEST(VerilogParserTest, intconst5)      {TEST_CORE;}
 TEST(VerilogParserTest, intconst6)      {TEST_CORE;}
 TEST(VerilogParserTest, intconst7)      {TEST_CORE;}
 TEST(VerilogParserTest, intconst8)      {TEST_CORE;}
+TEST(VerilogParserTest, intconst9)      {TEST_CORE;}
 TEST(VerilogParserTest, realconst0)     {TEST_CORE;}
 TEST(VerilogParserTest, realconst1)     {TEST_CORE;}
 TEST(VerilogParserTest, realconst2)     {TEST_CORE;}
