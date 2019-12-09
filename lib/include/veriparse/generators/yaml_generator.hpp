@@ -12,6 +12,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node> {
 	virtual YAML::Node render_node(const AST::Node::Ptr node) const;
 	virtual YAML::Node render_source(const AST::Source::Ptr node) const;
 	virtual YAML::Node render_description(const AST::Description::Ptr node) const;
+	virtual YAML::Node render_pragmalist(const AST::Pragmalist::Ptr node) const;
 	virtual YAML::Node render_pragma(const AST::Pragma::Ptr node) const;
 	virtual YAML::Node render_module(const AST::Module::Ptr node) const;
 	virtual YAML::Node render_port(const AST::Port::Ptr node) const;

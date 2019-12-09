@@ -15,6 +15,7 @@ private:
 	virtual std::string render_node(const AST::Node::Ptr node) const;
 	virtual std::string render_source(const AST::Source::Ptr node) const;
 	virtual std::string render_description(const AST::Description::Ptr node) const;
+	virtual std::string render_pragmalist(const AST::Pragmalist::Ptr node) const;
 	virtual std::string render_pragma(const AST::Pragma::Ptr node) const;
 	virtual std::string render_module(const AST::Module::Ptr node) const;
 	virtual std::string render_port(const AST::Port::Ptr node) const;

@@ -14,6 +14,7 @@ template<typename NodeT> constexpr NodeType get_node_type() {
 template<> constexpr NodeType get_node_type<Node>() {return NodeType::Node;}
 template<> constexpr NodeType get_node_type<Source>() {return NodeType::Source;}
 template<> constexpr NodeType get_node_type<Description>() {return NodeType::Description;}
+template<> constexpr NodeType get_node_type<Pragmalist>() {return NodeType::Pragmalist;}
 template<> constexpr NodeType get_node_type<Pragma>() {return NodeType::Pragma;}
 template<> constexpr NodeType get_node_type<Module>() {return NodeType::Module;}
 template<> constexpr NodeType get_node_type<Port>() {return NodeType::Port;}

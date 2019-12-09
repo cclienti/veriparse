@@ -104,6 +104,65 @@ std::string DotGenerator::render_description(const AST::Description::Ptr node) c
 
 
 
+std::string DotGenerator::render_pragmalist(const AST::Pragmalist::Ptr node) const {
+	std::stringstream ss;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::Pragmalist) return render(AST::cast_to<AST::Node>(node));
+
+		uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+		ss << "\tn" << nodeID
+			<< " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+			<< "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+			<< "<FONT COLOR=\"white\">Pragmalist</FONT></TD></TR>\n"
+			<< "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+		ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+			<< "<FONT COLOR=\"wheat\">pragmas</FONT></TD></TR>\n";
+		ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+			<< "<FONT COLOR=\"wheat\">statements</FONT></TD></TR>\n";
+
+		ss << "\t\t</TABLE>>];" << std::endl;
+		if (node->get_pragmas()) {
+			for(const AST::Pragma::Ptr &n: *node->get_pragmas()) {
+				if (n) {
+					ss << render(n);
+				}
+			}
+		}
+		if (node->get_statements()) {
+			for(const AST::Node::Ptr &n: *node->get_statements()) {
+				if (n) {
+					ss << render(n);
+				}
+			}
+		}
+		uint64_t childID;
+		if (node->get_pragmas()) {
+			int i=0;
+			for(const AST::Pragma::Ptr &n: *node->get_pragmas()) {
+				childID = reinterpret_cast<uint64_t>(n.get());
+				if (childID) {
+					ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++ <<"\"];" << std::endl;
+				}
+			}
+		}
+		if (node->get_statements()) {
+			int i=0;
+			for(const AST::Node::Ptr &n: *node->get_statements()) {
+				childID = reinterpret_cast<uint64_t>(n.get());
+				if (childID) {
+					ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++ <<"\"];" << std::endl;
+				}
+			}
+		}
+	}
+
+	return ss.str();
+}
+
+
+
 std::string DotGenerator::render_pragma(const AST::Pragma::Ptr node) const {
 	std::stringstream ss;
 

@@ -55,6 +55,37 @@ YAML::Node YAMLGenerator::render_description(const AST::Description::Ptr node) c
 
 
 
+YAML::Node YAMLGenerator::render_pragmalist(const AST::Pragmalist::Ptr node) const {
+	YAML::Node node_pragmalist;
+	YAML::Node content;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::Pragmalist) return render(AST::cast_to<AST::Node>(node));
+
+		content["filename"] = node->get_filename();
+		content["line"] = node->get_line();
+
+		if (node->get_pragmas()) {
+			content["pragmas"] = YAML::Load("[]");
+			for(const AST::Pragma::Ptr &n: *node->get_pragmas()) {
+				content["pragmas"].push_back(render(n));
+			}
+		}
+
+		if (node->get_statements()) {
+			content["statements"] = YAML::Load("[]");
+			for(const AST::Node::Ptr &n: *node->get_statements()) {
+				content["statements"].push_back(render(n));
+			}
+		}
+	}
+
+	node_pragmalist["Pragmalist"] = content;
+	return node_pragmalist;
+}
+
+
+
 YAML::Node YAMLGenerator::render_pragma(const AST::Pragma::Ptr node) const {
 	YAML::Node node_pragma;
 	YAML::Node content;

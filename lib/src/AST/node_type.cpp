@@ -10,6 +10,7 @@ const char* NodeTypeToString(NodeType node_type) {
 	case NodeType::Node: return "Node";
 	case NodeType::Source: return "Source";
 	case NodeType::Description: return "Description";
+	case NodeType::Pragmalist: return "Pragmalist";
 	case NodeType::Pragma: return "Pragma";
 	case NodeType::Module: return "Module";
 	case NodeType::Port: return "Port";

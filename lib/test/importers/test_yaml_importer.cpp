@@ -109,6 +109,31 @@ TEST(YAMLImporter, Description) {
 
 	
 
+TEST(YAMLImporter, Pragmalist) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLImporter.Pragmalist.log");
+	Logger::add_stdout_sink();
+	std::string str (
+		"Pragmalist:\n"
+		"  filename: pragmalist.v\n"
+		"  line: 10\n"
+		"  pragmas:\n"
+		"  statements:\n"
+	);
+
+	AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+	YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+	ASSERT_TRUE(yaml["Pragmalist"]);
+	ASSERT_TRUE(yaml["Pragmalist"]["filename"].as<std::string>() == "pragmalist.v");
+	ASSERT_TRUE(yaml["Pragmalist"]["line"].as<int>() == 10);
+	ASSERT_TRUE(yaml["Pragmalist"]["pragmas"]);
+	ASSERT_TRUE(yaml["Pragmalist"]["statements"]);
+}
+
+
+	
+
 TEST(YAMLImporter, Pragma) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLImporter.Pragma.log");

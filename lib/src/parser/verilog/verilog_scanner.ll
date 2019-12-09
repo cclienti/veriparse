@@ -96,6 +96,9 @@ using token = Veriparse::Parser::VerilogParser::token;
 	 * Operators
 	 **************************************************/
 
+"\(\*" {return token::TK_LATTR;}
+"\*\)" {return token::TK_RATTR;}
+
 "\|\|" {return token::TK_LOR;}
 "\&\&" {return token::TK_LAND;}
 

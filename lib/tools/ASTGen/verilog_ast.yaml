@@ -8,6 +8,12 @@ Description:
   children:
     definitions: list(Node)
 
+Pragmalist:
+  properties:
+  children:
+    pragmas: list(Pragma)
+    statements: list(Node)
+
 Pragma:
   properties:
     name: "std::string"

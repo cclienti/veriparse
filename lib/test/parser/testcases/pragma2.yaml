@@ -1,0 +1,452 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+          items:
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 2
+                  name: reset
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 2
+                  name: clk
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 3
+                  name: in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 3
+              second:
+                Wire:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              first:
+                Output:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 4
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 15
+              line: 4
+              second:
+                Reg:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 4
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 15
+          - Always:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              line: 6
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 6
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 6
+                      sig: null
+                      type: ALL
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 6
+                  scope: ''
+                  statements:
+                  - Pragmalist:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 7
+                      pragmas:
+                      - Pragma:
+                          expression: null
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 7
+                          name: full_case
+                      - Pragma:
+                          expression:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 3
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 7
+                          name: other
+                      statements:
+                      - CaseStatement:
+                          caselist:
+                          - Case:
+                              cond:
+                              - IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                  line: 9
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                              line: 9
+                              statement:
+                                BlockingSubstitution:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                      line: 9
+                                      var:
+                                        Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                          line: 9
+                                          name: out
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 9
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                      line: 9
+                                      var:
+                                        Concat:
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                          line: 9
+                                          list:
+                                          - IntConstN:
+                                              base: 10
+                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                              line: 9
+                                              sign: false
+                                              size: 8
+                                              value: 0
+                                          - Identifier:
+                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                              line: 9
+                                              name: in
+                                              scope:
+                                                IdentifierScope: null
+                          - Case:
+                              cond:
+                              - IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                  line: 10
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                              line: 10
+                              statement:
+                                BlockingSubstitution:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                      line: 10
+                                      var:
+                                        Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                          line: 10
+                                          name: out
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 10
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                      line: 10
+                                      var:
+                                        Times:
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                          left:
+                                            IntConstN:
+                                              base: 10
+                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                              line: 10
+                                              sign: false
+                                              size: -1
+                                              value: 2
+                                          line: 10
+                                          right:
+                                            Identifier:
+                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                              line: 10
+                                              name: in
+                                              scope:
+                                                IdentifierScope: null
+                          - Case:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                              line: 11
+                              statement:
+                                BlockingSubstitution:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                      line: 11
+                                      var:
+                                        Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                          line: 11
+                                          name: out
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 11
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                      line: 11
+                                      var:
+                                        Minus:
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                          left:
+                                            Times:
+                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                              left:
+                                                IntConstN:
+                                                  base: 10
+                                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                                  line: 11
+                                                  sign: false
+                                                  size: -1
+                                                  value: 2
+                                              line: 11
+                                              right:
+                                                Identifier:
+                                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                                  line: 11
+                                                  name: in
+                                                  scope:
+                                                    IdentifierScope: null
+                                          line: 11
+                                          right:
+                                            IntConstN:
+                                              base: 10
+                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                                              line: 11
+                                              sign: false
+                                              size: -1
+                                              value: 1
+                          comp:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                              line: 8
+                              name: in
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 8
+          - Always:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              line: 15
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 15
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 15
+                      sig: null
+                      type: ALL
+              statement:
+                Pragmalist:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                  line: 15
+                  pragmas:
+                  - Pragma:
+                      expression: null
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 15
+                      name: pragma
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                      line: 15
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                              line: 15
+                              value: out=%d
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                              line: 15
+                              name: out
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+                          line: 15
+                          syscall: display
+          line: 1
+          name: pragma2
+          ports:
+          - Port:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              line: 1
+              name: reset
+          - Port:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              line: 1
+              name: clk
+          - Port:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              line: 1
+              name: in
+          - Port:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+              line: 1
+              name: out
+      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma2.v
+  line: 1
+

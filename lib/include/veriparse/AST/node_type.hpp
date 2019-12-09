@@ -9,6 +9,7 @@ namespace AST {
 enum class NodeType {
 	Source,
 	Description,
+	Pragmalist,
 	Pragma,
 	Module,
 	Port,

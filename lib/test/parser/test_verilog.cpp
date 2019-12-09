@@ -54,6 +54,7 @@ TEST(VerilogParserTest, translate_off0) {TEST_CORE;}
 TEST(VerilogParserTest, translate_off1) {TEST_CORE;}
 TEST(VerilogParserTest, pragma0)        {TEST_CORE;}
 TEST(VerilogParserTest, pragma1)        {TEST_CORE;}
+TEST(VerilogParserTest, pragma2)        {TEST_CORE;}
 TEST(VerilogParserTest, net0)           {TEST_CORE;}
 TEST(VerilogParserTest, net1)           {TEST_CORE;}
 TEST(VerilogParserTest, net2)           {TEST_CORE;}

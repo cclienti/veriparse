@@ -157,6 +157,8 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_FORK         "'fork'"
 %token                  TK_JOIN         "'join'"
 %token                  TK_VPP_LINE     "`line'"
+%token                  TK_LATTR        "(*"
+%token                  TK_RATTR        "*)"
 %token                  TK_LOR          "'||'"
 %token                  TK_LAND         "'&&'"
 %token                  TK_NOR          "'~|'"
@@ -206,6 +208,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token  <std::string>   TK_FLOATNUMBER  "'floating const'"
 %token  <std::string>   TK_IDENTIFIER   "identifier"
 %token  <std::string>   TK_STRING       "string"
+%token  <std::string>   TK_PRAGMA       "pragma"
 
 
 // Token precedences
@@ -244,9 +247,10 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 definitions
 %type   <AST::Node::Ptr>                     definition
 %type   <AST::Module::Ptr>                   moduledef
-%type   <AST::Pragma::Ptr>                   pragma
+%type   <AST::Pragmalist::Ptr>               pragmalist
+%type   <AST::Pragma::ListPtr>               pragma
 %type   <AST::Node::Ptr>                     expression ternary paren_expression
-%type   <AST::Node::ListPtr>                 items item standard_item
+%type   <AST::Node::ListPtr>                 items item standard_item_base standard_item
 %type   <AST::Node::ListPtr>                 ioports_decl
 %type   <AST::Node::ListPtr>                 net_decl
 %type   <AST::Node::ListPtr>                 reg_decl
@@ -318,6 +322,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Sens::Ptr>                     levelsig
 %type   <AST::Sens::Ptr>                     levelsig_base
 %type   <AST::Node::Ptr>                     basic_statement
+%type   <AST::Node::Ptr>                     basic_statement_base
 %type   <AST::IfStatement::Ptr>              if_statement
 %type   <AST::Node::Ptr>                     cond true_statement false_statement ifcontent_statement
 
@@ -346,7 +351,6 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::ParallelBlock::Ptr>            parallelblock named_parallelblock
 
 %type   <AST::BlockingSubstitution::Ptr>     blocking_assignment
-%type   <AST::BlockingSubstitution::Ptr>     blocking_assignment_base
 %type   <AST::NonblockingSubstitution::Ptr>  nonblocking_assignment
 %type   <AST::SingleStatement::Ptr>          single_statement
 
@@ -410,25 +414,53 @@ definitions:    definition
 
 definition:     moduledef
                 {
-                   $$ = AST::to_node($1);
+                    $$ = AST::to_node($1);
                 }
 
-        |       pragma
+        |       pragmalist moduledef
                 {
-                   $$ = AST::to_node($1);
+                    auto stmts = std::make_shared<AST::Node::List>();
+                    stmts->push_back($2);
+                    $1->set_statements(stmts);
+                    $$ = AST::to_node($1);
                 }
         ;
 
-
-pragma:         TK_LPARENTHESIS TK_TIMES TK_IDENTIFIER TK_EQUALS expression TK_TIMES TK_RPARENTHESIS
+pragmalist:     TK_LATTR pragma TK_RATTR
                 {
-                    $$ = std::make_shared<AST::Pragma>($5, $3, scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Pragmalist>(scanner.get_filename(), @1.begin.line);
+                    $$->set_pragmas($2);
+                }
+        ;
+
+pragma:         pragma TK_COMMA TK_IDENTIFIER TK_EQUALS expression
+                {
+                    $$ = $1;
+                    $$->push_back(std::make_shared<AST::Pragma>($5, $3,
+                                                                scanner.get_filename(), @1.begin.line));
                 }
 
-        |       TK_LPARENTHESIS TK_TIMES TK_IDENTIFIER TK_TIMES TK_RPARENTHESIS
+        |       pragma TK_COMMA TK_IDENTIFIER
                 {
-                    $$ = std::make_shared<AST::Pragma>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($3);
+                    auto pragma = std::make_shared<AST::Pragma>(scanner.get_filename(), @3.begin.line);
+                    pragma->set_name($3);
+                    $$ = $1;
+                    $$->push_back(pragma);
+                }
+
+        |       TK_IDENTIFIER TK_EQUALS expression
+                {
+                    $$ = std::make_shared<AST::Pragma::List>();
+                    $$->push_back(std::make_shared<AST::Pragma>($3, $1,
+                                                                scanner.get_filename(), @1.begin.line));
+                }
+
+        |       TK_IDENTIFIER
+                {
+                    auto pragma = std::make_shared<AST::Pragma>(scanner.get_filename(), @1.begin.line);
+                    pragma->set_name($1);
+                    $$ = std::make_shared<AST::Pragma::List>();
+                    $$->push_back(pragma);
                 }
         ;
 
@@ -769,8 +801,21 @@ item:           standard_item
                 }
         ;
 
+standard_item:  standard_item_base
+                {
+                    $$ = $1;
+                }
 
-standard_item:  ioports_decl
+        |       pragmalist standard_item_base
+                {
+                    $1->set_statements($2);
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+        ;
+
+standard_item_base:
+                ioports_decl
                 {
                     $$ = $1;
                 }
@@ -847,12 +892,6 @@ standard_item:  ioports_decl
                 }
 
         |       task
-                {
-                    $$ = std::make_shared<AST::Node::List>();
-                    $$->push_back(AST::to_node($1));
-                }
-
-        |       pragma
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     $$->push_back(AST::to_node($1));
@@ -1923,6 +1962,26 @@ senslist:       TK_AT TK_LPARENTHESIS edgesigs TK_RPARENTHESIS
                     l->push_back(s);
                     $$->set_list(l);
                 }
+
+        |       TK_AT TK_LPARENTHESIS TK_RATTR
+                {
+                    $$ = std::make_shared<AST::Senslist>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::Ptr s = std::make_shared<AST::Sens>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::ListPtr l = std::make_shared<AST::Sens::List>();
+                    s->set_type(AST::Sens::TypeEnum::ALL);
+                    l->push_back(s);
+                    $$->set_list(l);
+                }
+
+        |       TK_AT TK_LATTR TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Senslist>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::Ptr s = std::make_shared<AST::Sens>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::ListPtr l = std::make_shared<AST::Sens::List>();
+                    s->set_type(AST::Sens::TypeEnum::ALL);
+                    l->push_back(s);
+                    $$->set_list(l);
+                }
         ;
 
 
@@ -2022,8 +2081,23 @@ levelsig_base:  identifier
                 }
         ;
 
+basic_statement:
+                basic_statement_base
+                {
+                    $$ = $1;
+                }
 
-basic_statement:if_statement
+        |       pragmalist basic_statement_base
+                {
+                    auto stmts = std::make_shared<AST::Node::List>();
+                    stmts->push_back($2);
+                    $1->set_statements(stmts);
+                    $$ = AST::to_node($1);
+                }
+        ;
+
+basic_statement_base:
+                if_statement
                 {
                     $$ = AST::to_node($1);
                 }
@@ -2111,12 +2185,7 @@ basic_statement:if_statement
 
 
 blocking_assignment:
-                blocking_assignment_base TK_SEMICOLON {$$ = $1;}
-        ;
-
-
-blocking_assignment_base:
-                delays lvalue TK_EQUALS delays rvalue
+                delays lvalue TK_EQUALS delays rvalue TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
                     $$->set_left($2);
@@ -2125,7 +2194,7 @@ blocking_assignment_base:
                     $$->set_rdelay($4);
                 }
 
-        |       delays lvalue TK_EQUALS rvalue
+        |       delays lvalue TK_EQUALS rvalue TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
                     $$->set_left($2);
@@ -2133,7 +2202,7 @@ blocking_assignment_base:
                     $$->set_ldelay($1);
                 }
 
-        |       lvalue TK_EQUALS delays rvalue
+        |       lvalue TK_EQUALS delays rvalue TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
                     $$->set_left($1);
@@ -2141,7 +2210,7 @@ blocking_assignment_base:
                     $$->set_rdelay($3);
                 }
 
-        |       lvalue TK_EQUALS rvalue
+        |       lvalue TK_EQUALS rvalue TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
                     $$->set_left($1);
@@ -2428,9 +2497,11 @@ forcond:        cond TK_SEMICOLON
         ;
 
 
-forpost:        blocking_assignment_base
+forpost:        lvalue TK_EQUALS rvalue
                 {
-                    $$ = $1;
+                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
+                    $$->set_left($1);
+                    $$->set_right($3);
                 }
         ;
 
@@ -3854,6 +3925,7 @@ namespace Veriparse {
             std::string s = Logger::file_report(err_message, scanner.get_filename(),
                                                 l.begin.line, l.end.line, l.begin.column, l.end.column);
             LOG_ERROR << s << std::endl;
+            exit(1);
         }
 
         namespace ParserHelpers {

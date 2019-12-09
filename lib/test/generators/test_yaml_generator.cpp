@@ -42,6 +42,25 @@ TEST(YAMLGenerator, Description) {
 	ASSERT_TRUE(yaml["Description"]["definitions"]);
 }
 
+TEST(YAMLGenerator, Pragmalist) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.Pragmalist.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Pragma::ListPtr c_pragmas(new AST::Pragma::List);
+	AST::Node::ListPtr c_statements(new AST::Node::List);
+
+	AST::Pragmalist::Ptr m_pragmalist(new AST::Pragmalist
+		(c_pragmas, c_statements, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_pragmalist);
+
+	ASSERT_TRUE(yaml["Pragmalist"]);
+	ASSERT_TRUE(yaml["Pragmalist"]["pragmas"]);
+	ASSERT_TRUE(yaml["Pragmalist"]["statements"]);
+}
+
 TEST(YAMLGenerator, Pragma) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLGenerator.Pragma.log");

@@ -47,15 +47,34 @@ std::string VerilogGenerator::render_description(const AST::Description::Ptr nod
 	return result;
 }
 
+std::string VerilogGenerator::render_pragmalist(const AST::Pragmalist::Ptr node) const {
+	std::string result;
+	if (node) {
+		result += "(* ";
+		const auto &pragmas = *node->get_pragmas();
+		for (auto it = pragmas.begin(); it != pragmas.end(); ++it) {
+			result += render(*it);
+			if (std::next(it) != pragmas.end()) {
+				result += ", ";
+			}
+		}
+		result += " *)";
+		for (const auto stmt: *node->get_statements()) {
+			result += render(stmt);
+		}
+	}
+	return result;
+}
+
 std::string VerilogGenerator::render_pragma(const AST::Pragma::Ptr node) const {
 	std::string result;
 	if (node) {
 		const AST::Node::Ptr expression = node->get_expression();
 		if (expression) {
-			result = "(* " + node->get_name() + " = " + render(expression) + " *)";
+			result = node->get_name() + " = " + render(expression);
 		}
 		else {
-			result = "(* " + node->get_name() + " *)";
+			result = node->get_name();
 		}
 	}
 	return result;

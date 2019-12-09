@@ -23,6 +23,7 @@ private:
 	AST::Node::Ptr convert_node(const YAML::Node node) const;
 	AST::Node::Ptr convert_source(const YAML::Node node) const;
 	AST::Node::Ptr convert_description(const YAML::Node node) const;
+	AST::Node::Ptr convert_pragmalist(const YAML::Node node) const;
 	AST::Node::Ptr convert_pragma(const YAML::Node node) const;
 	AST::Node::Ptr convert_module(const YAML::Node node) const;
 	AST::Node::Ptr convert_port(const YAML::Node node) const;

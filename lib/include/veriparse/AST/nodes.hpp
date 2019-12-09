@@ -4,6 +4,7 @@
 #include <veriparse/AST/node.hpp>
 #include <veriparse/AST/source.hpp>
 #include <veriparse/AST/description.hpp>
+#include <veriparse/AST/pragmalist.hpp>
 #include <veriparse/AST/pragma.hpp>
 #include <veriparse/AST/module.hpp>
 #include <veriparse/AST/port.hpp>

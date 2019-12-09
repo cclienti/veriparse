@@ -55,6 +55,7 @@ TEST(VerilogGeneratorTest, translate_off0) {TEST_CORE;}
 TEST(VerilogGeneratorTest, translate_off1) {TEST_CORE;}
 TEST(VerilogGeneratorTest, pragma0)        {TEST_CORE;}
 TEST(VerilogGeneratorTest, pragma1)        {TEST_CORE;}
+TEST(VerilogGeneratorTest, pragma2)        {TEST_CORE;}
 TEST(VerilogGeneratorTest, net0)           {TEST_CORE;}
 TEST(VerilogGeneratorTest, net1)           {TEST_CORE;}
 TEST(VerilogGeneratorTest, net2)           {TEST_CORE;}

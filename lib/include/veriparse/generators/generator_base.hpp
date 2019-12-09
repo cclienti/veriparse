@@ -46,6 +46,9 @@ public:
 			case AST::NodeType::Description:
 			return render_description(AST::cast_to<AST::Description>(node));
 			
+			case AST::NodeType::Pragmalist:
+			return render_pragmalist(AST::cast_to<AST::Pragmalist>(node));
+			
 			case AST::NodeType::Pragma:
 			return render_pragma(AST::cast_to<AST::Pragma>(node));
 			
@@ -411,6 +414,16 @@ public:
 	 */
 	T render(const AST::Description::Ptr node) const {
 		return render_description(node);
+	}
+	
+	/**
+	 * Main rendering method for the Pragmalist node, we
+	 * dispatch directly to the right rendering method.
+	 *
+	 * @see GeneratorBase::render_pragmalist(const AST::Pragmalist::Ptr &node)
+	 */
+	T render(const AST::Pragmalist::Ptr node) const {
+		return render_pragmalist(node);
 	}
 	
 	/**
@@ -1566,6 +1579,14 @@ protected:
 	 * overloaded in a derived class to your needs.
 	 */
 	virtual T render_description(const AST::Description::Ptr node) const {
+		return T();
+	}
+	
+	/**
+	 * Render the Pragmalist node. This method must be
+	 * overloaded in a derived class to your needs.
+	 */
+	virtual T render_pragmalist(const AST::Pragmalist::Ptr node) const {
 		return T();
 	}
 	

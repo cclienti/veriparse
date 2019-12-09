@@ -57,6 +57,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const {
 		if (node["Description"]) {
 			return convert_description(node["Description"]);
 		}
+		if (node["Pragmalist"]) {
+			return convert_pragmalist(node["Pragmalist"]);
+		}
 		if (node["Pragma"]) {
 			return convert_pragma(node["Pragma"]);
 		}
@@ -486,6 +489,80 @@ AST::Node::Ptr YAMLImporter::convert_description(const YAML::Node node) const {
 
 	// Return the result
 	return AST::cast_to<AST::Description>(result);
+}
+
+
+AST::Node::Ptr YAMLImporter::convert_pragmalist(const YAML::Node node) const {
+	AST::Pragmalist::Ptr result;
+	if (node.IsMap()) {
+		if (node["filename"]) {
+			if (node["filename"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::Pragmalist>();
+				result->set_filename(node["filename"].as<std::string>());
+			}
+		}
+		if (node["line"]) {
+			if (node["line"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::Pragmalist>();
+				result->set_line(node["line"].as<int>());
+			}
+		}
+
+		// Manage Child pragmas
+		if (node["pragmas"]) {
+			const YAML::Node node_pragmas = node["pragmas"];
+			// Fill the list of children
+			AST::Pragma::ListPtr pragmas_list (new AST::Pragma::List);
+			if (node_pragmas.IsSequence()) {
+				// The YAML node is a sequence
+				for(YAML::const_iterator it=node_pragmas.begin(); it !=  node_pragmas.end(); ++it) {
+					AST::Node::Ptr child = convert(*it);
+					if (child) {
+						AST::Pragma::Ptr child_cast = AST::cast_to<AST::Pragma>(child);
+						pragmas_list->push_back(child_cast);
+					}
+				}
+			}
+			else {
+				AST::Node::Ptr child = convert(node_pragmas);
+				if (child) {
+					AST::Pragma::Ptr child_cast = AST::cast_to<AST::Pragma>(child);
+					pragmas_list->push_back(child_cast);
+				}
+			}
+			// Set the list
+			if(!result) result = std::make_shared<AST::Pragmalist>();
+			result->set_pragmas(pragmas_list);
+		}
+
+		// Manage Child statements
+		if (node["statements"]) {
+			const YAML::Node node_statements = node["statements"];
+			// Fill the list of children
+			AST::Node::ListPtr statements_list (new AST::Node::List);
+			if (node_statements.IsSequence()) {
+				// The YAML node is a sequence
+				for(YAML::const_iterator it=node_statements.begin(); it !=  node_statements.end(); ++it) {
+					AST::Node::Ptr child = convert(*it);
+					if (child) {
+						statements_list->push_back(child);
+					}
+				}
+			}
+			else {
+				AST::Node::Ptr child = convert(node_statements);
+				if (child) {
+					statements_list->push_back(child);
+				}
+			}
+			// Set the list
+			if(!result) result = std::make_shared<AST::Pragmalist>();
+			result->set_statements(statements_list);
+		}
+	}
+
+	// Return the result
+	return AST::cast_to<AST::Pragmalist>(result);
 }
 
 

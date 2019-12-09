@@ -9,6 +9,7 @@ std::ostream & operator<<(std::ostream &os, const Node &p)
 	switch (p.get_node_type()) {
 	case NodeType::Source: os << static_cast<const AST::Source &>(p); break;
 	case NodeType::Description: os << static_cast<const AST::Description &>(p); break;
+	case NodeType::Pragmalist: os << static_cast<const AST::Pragmalist &>(p); break;
 	case NodeType::Pragma: os << static_cast<const AST::Pragma &>(p); break;
 	case NodeType::Module: os << static_cast<const AST::Module &>(p); break;
 	case NodeType::Port: os << static_cast<const AST::Port &>(p); break;
