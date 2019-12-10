@@ -58,7 +58,7 @@ std::string VerilogGenerator::render_pragmalist(const AST::Pragmalist::Ptr node)
 				result += ", ";
 			}
 		}
-		result += " *)";
+		result += " *)\n";
 		for (const auto stmt: *node->get_statements()) {
 			result += render(stmt);
 		}
@@ -112,12 +112,12 @@ std::string VerilogGenerator::render_module(const AST::Module::Ptr node) const {
 		if (items) {
 			for(const AST::Node::Ptr item : *items) {
 				if (item) {
-					result.append(indent(render(item)) + "\n\n");
+					result.append(indent(render(item)) + "\n");
 				}
 			}
 		}
 
-		result += "endmodule\n";
+		result += "\nendmodule\n";
 
 	}
 	return result;
@@ -860,7 +860,7 @@ std::string VerilogGenerator::render_cond(const AST::Cond::Ptr node) const {
 }
 
 std::string VerilogGenerator::render_always(const AST::Always::Ptr node) const {
-	std::string result = "always";
+	std::string result = "\nalways";
 	if (node) {
 		const AST::Senslist::Ptr senslist = node->get_senslist();
 		const AST::Node::Ptr statement = node->get_statement();
@@ -937,7 +937,7 @@ std::string VerilogGenerator::render_assign(const AST::Assign::Ptr node) const {
 	if (node) {
 		const AST::Lvalue::Ptr lvalue = node->get_left();
 		const AST::Rvalue::Ptr rvalue = node->get_right();
-		result = "assign " + render(lvalue) + " = " + render(rvalue) + ";";
+		result = "\nassign " + render(lvalue) + " = " + render(rvalue) + ";";
 	}
 	return result;
 }
@@ -1145,7 +1145,7 @@ std::string VerilogGenerator::render_block(const AST::Block::Ptr node) const {
 std::string VerilogGenerator::render_initial(const AST::Initial::Ptr node) const {
 	std::string result;
 	if (node) {
-		result = "initial" + block_or_single_statement_to_string(node->get_statement());
+		result = "\ninitial" + block_or_single_statement_to_string(node->get_statement());
 	}
 	return result;
 }
@@ -1292,7 +1292,7 @@ std::string VerilogGenerator::render_portarg(const AST::PortArg::Ptr node) const
 std::string VerilogGenerator::render_function(const AST::Function::Ptr node) const {
 	std::string result;
 	if (node) {
-		result = "function ";
+		result = "\nfunction ";
 		if (node->get_automatic()) result += "automatic ";
 
 		result += widths_list_to_string(node->get_retwidths());
@@ -1305,7 +1305,7 @@ std::string VerilogGenerator::render_function(const AST::Function::Ptr node) con
 
 		result += StringUtils::escape(node->get_name());
 
-		const std::string ports_str = ports_list_to_string(node->get_ports(), result.size() + 1);
+		const std::string ports_str = ports_list_to_string(node->get_ports(), result.size());
 
 		if (ports_str.size() != 0) {
 			result += " ";
@@ -1346,13 +1346,13 @@ std::string VerilogGenerator::render_functioncall(const AST::FunctionCall::Ptr n
 std::string VerilogGenerator::render_task(const AST::Task::Ptr node) const {
 	std::string result;
 	if (node) {
-		result = "task ";
+		result = "\ntask ";
 
 		if (node->get_automatic()) result += "automatic ";
 
 		result += StringUtils::escape(node->get_name());
 
-		const std::string ports_str = ports_list_to_string(node->get_ports(), result.size() + 1);
+		const std::string ports_str = ports_list_to_string(node->get_ports(), result.size());
 
 		if (ports_str.size() != 0) {
 			result += " ";
@@ -1396,7 +1396,7 @@ std::string VerilogGenerator::render_taskcall(const AST::TaskCall::Ptr node) con
 std::string VerilogGenerator::render_generatestatement(const AST::GenerateStatement::Ptr node) const {
 	std::string result;
 	if (node) {
-		result = "generate\n";
+		result = "\ngenerate\n";
 		const AST::Node::ListPtr items = node->get_items();
 		if (items) {
 			auto func = [&](const AST::Node::Ptr n){ return indent(render(n)) + "\n"; };
