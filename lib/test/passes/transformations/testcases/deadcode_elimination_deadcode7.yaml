@@ -1,0 +1,59 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+          items:
+          - Reg:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+              line: 3
+              name: test
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+              sign: false
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+                              line: 6
+                              name: test
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+                          line: 6
+                          syscall: display
+          line: 1
+          name: deadcode7
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode7.v
+  line: 1
+

@@ -32,6 +32,8 @@ class DeadcodeElimination: public TransformationBase
 
 	int remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr parent);
 
+	int remove_emptyattr(AST::Node::Ptr node, AST::Node::Ptr parent);
+
 	int remove_unused_decl(const DSet &identifiers, const DSet &iodirs,
 	                       const AST::Node::Ptr &node, AST::Node::Ptr parent);
 

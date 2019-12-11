@@ -1,4 +1,5 @@
 #include "./transformation_helpers.hpp"
+#include "veriparse/AST/pragmalist.hpp"
 
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/task.hpp>
@@ -70,7 +71,7 @@ int DeadcodeElimination::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 	}
 	while (remove_unused_decl(identifiers, iodirs, node, parent) != 0);
 
-	return 0;
+	return remove_emptyattr(node, parent);
 }
 
 
@@ -404,6 +405,28 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 	return rc;
 }
 
+int DeadcodeElimination::remove_emptyattr(AST::Node::Ptr node, AST::Node::Ptr parent)
+{
+	int rc = 0;
+
+	if(!node) {
+		return rc;
+	}
+
+	if (node->is_node_type(AST::NodeType::Pragmalist)) {
+		const auto &stmts = AST::cast_to<AST::Pragmalist>(node)->get_statements();
+		if (!stmts || stmts->empty()) {
+			parent->remove(node);
+		}
+	}
+
+	AST::Node::ListPtr children = node->get_children();
+	for (AST::Node::Ptr child: *children) {
+		rc |= remove_emptyattr(child, node);
+	}
+
+	return rc;
+}
 
 int DeadcodeElimination::remove_unused_decl(const DeadcodeElimination::DSet &identifiers,
                                             const DeadcodeElimination::DSet &iodirs,

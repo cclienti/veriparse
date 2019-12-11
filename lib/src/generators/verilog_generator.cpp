@@ -50,17 +50,20 @@ std::string VerilogGenerator::render_description(const AST::Description::Ptr nod
 std::string VerilogGenerator::render_pragmalist(const AST::Pragmalist::Ptr node) const {
 	std::string result;
 	if (node) {
-		result += "(* ";
-		const auto &pragmas = *node->get_pragmas();
-		for (auto it = pragmas.begin(); it != pragmas.end(); ++it) {
-			result += render(*it);
-			if (std::next(it) != pragmas.end()) {
-				result += ", ";
+		const auto &stmts = node->get_statements();
+		if (stmts && !stmts->empty()) {
+			result += "(* ";
+			const auto &pragmas = *node->get_pragmas();
+			for (auto it = pragmas.begin(); it != pragmas.end(); ++it) {
+				result += render(*it);
+				if (std::next(it) != pragmas.end()) {
+					result += ", ";
+				}
 			}
-		}
-		result += " *)\n";
-		for (const auto stmt: *node->get_statements()) {
-			result += render(stmt);
+			result += " *)\n";
+			for (const auto stmt: *stmts) {
+				result += render(stmt);
+			}
 		}
 	}
 	return result;
