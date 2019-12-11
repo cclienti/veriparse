@@ -3776,6 +3776,12 @@ task_call:      TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                     $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
                 }
+
+        |       TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                }
         ;
 
 

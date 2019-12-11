@@ -1,0 +1,61 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+          items:
+          - Task:
+              automatic: false
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+              line: 3
+              name: empty
+              statements:
+              - Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+                  line: 4
+                  scope: ''
+          - Always:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+              line: 8
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+                  line: 8
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+                      line: 8
+                      sig:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+                          line: 8
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+                      line: 9
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+                          line: 9
+                          name: empty
+          line: 1
+          name: taskcall1
+      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/taskcall1.v
+  line: 1
+
