@@ -29,6 +29,10 @@ Mechanics
 Functional
 ----------
 
+#. 2019-12-11: Create a pass to exchange identifier, taskcall to functioncall and vice-versa depending on what is really
+   declared in the design. Sometimes the parser cannot know easily if it deals with an identifier, a function or a task
+   identifier.
+
 #. 2019-06-23: Undeclared signals must be inferred as 1-bit wire. A pass should declare all undeclared signals. See
    double_fpu-master file fpu_module.v:150, we added the declaration line 123 in order to flatten properly the project.
 
