@@ -25,7 +25,13 @@ message(STATUS "Veriparse git sha1: ${VERIPARSE_GIT_SHA1}")
 ### install path
 ########################################
 
-set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/veriparse-packages/veriparse-${VERIPARSE_VERSION}")
+if(CMAKE_BUILD_TYPE MATCHES DEBUG)
+  set(VERIPARSE_BUILD_TYPE "debug")
+else()
+  set(VERIPARSE_BUILD_TYPE "release")
+endif()
+
+set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/veriparse-packages/veriparse-${VERIPARSE_BUILD_TYPE}-${VERIPARSE_VERSION}")
 message(STATUS "Install path in ${CMAKE_INSTALL_PREFIX}")
 
 
