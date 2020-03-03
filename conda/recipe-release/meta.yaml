@@ -1,0 +1,35 @@
+package:
+  name: veriparse
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '') }}
+
+source:
+  git_url: ../..
+  git_rev: release
+
+build:
+  number: 0
+  ignore_run_exports:
+    - boost
+    - yaml-cpp
+    - gmp
+    - gtest
+    - openssl
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - make
+    - cmake
+    - flex
+    - bison
+    - boost=1.72
+    - yaml-cpp=0.6.3
+    - gmp=6.2.0
+    - gtest=1.10.0
+    - openssl=1.1.1a
+
+
+about:
+  home: https://www.wavecruncher.net
+  license: Proprietary. Christophe Clienti, All Rights Reserved.
+  summary: Verilog Design Flattenner and Obfuscater.

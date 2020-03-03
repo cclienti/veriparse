@@ -31,7 +31,6 @@ else()
   set(VERIPARSE_BUILD_TYPE "release")
 endif()
 
-set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/veriparse-packages/veriparse-${VERIPARSE_BUILD_TYPE}-${VERIPARSE_VERSION}")
 message(STATUS "Install path in ${CMAKE_INSTALL_PREFIX}")
 
 
