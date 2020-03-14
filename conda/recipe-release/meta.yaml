@@ -3,8 +3,7 @@ package:
   version: {{ environ.get('GIT_DESCRIBE_TAG', '') }}
 
 source:
-  git_url: ../..
-  git_rev: release
+  path: ../..
 
 build:
   number: 0
@@ -26,10 +25,10 @@ requirements:
     - yaml-cpp=0.6.3
     - gmp=6.2.0
     - gtest=1.10.0
-    - openssl=1.1.1a
-
+    - openssl=1.1.1d
 
 about:
   home: https://www.wavecruncher.net
-  license: Proprietary. Christophe Clienti, All Rights Reserved.
+  license: Christophe Clienti, All Rights Reserved.
+  license_file: LICENSE
   summary: Verilog Design Flattenner and Obfuscater.
