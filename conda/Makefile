@@ -17,33 +17,33 @@ CONDA_INDEX             = conda-index --no-progress -n $(CONDA_DEST_CHANNEL)
 env:
 	mkdir -p $(CONDA_DEST_REPO)
 	set -e; \
-	  source $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda create -y -n $(CONDA_ENVIRONMENT) conda-build conda-verify
 
 package:
 	set -e; \
-	  source $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda activate $(CONDA_ENVIRONMENT); \
 	  $(CONDA_BUILD) $(CONDA_BUILD_FLAGS) --output-folder $(CONDA_DEST_REPO) recipe-$(BRANCH)
 
 package-name:
 	@set -e; \
-	  source $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda activate $(CONDA_ENVIRONMENT); \
 	  $(CONDA_BUILD) --output-folder $(CONDA_DEST_REPO) --output recipe-$(BRANCH) 2>/dev/null
 
 verify:
 	set -e; \
 	  CONDA_PACKAGE_NAME=`$(MAKE) -s package-name`; \
-	  source $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda activate $(CONDA_ENVIRONMENT); $(CONDA_VERIFY) $$CONDA_PACKAGE_NAME
 
 index:
 	set -e; \
-	  source $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda activate $(CONDA_ENVIRONMENT); $(CONDA_INDEX) $(CONDA_DEST_REPO)
 
 clean:
 	set -e; \
-	  source $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda env remove -y -n $(CONDA_ENVIRONMENT)
