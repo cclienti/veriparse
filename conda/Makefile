@@ -10,7 +10,7 @@ CONDA_BUILD         = conda-build
 CONDA_BUILD_FLAGS   = -c $(CONDA_REPO) -c $(SHARPNESS_CHANNEL)
 CONDA_VERIFY        = conda-verify
 CONDA_INDEX         = conda-index --verbose --no-progress -n $(CONDA_CHANNEL)
-SHELL               = /bin/bash
+
 
 env:
 	conda create -y -n $(CONDA_ENV) conda-build conda-verify
