@@ -38,12 +38,12 @@ CONDA_INDEX          = conda-index --no-progress -n $(CONDA_DEST_CHANNEL)
 ##################################################################
 
 env:
-	mkdir -p $(CONDA_DEST_REPO)
 	set -e; \
 	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda create -y -n $(CONDA_BUILD_ENVIRONMENT) conda-build conda-verify
 
 package:
+	mkdir -p $(CONDA_DEST_REPO)
 	set -e; \
 	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda activate $(CONDA_BUILD_ENVIRONMENT); \
