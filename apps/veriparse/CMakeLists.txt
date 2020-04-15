@@ -11,6 +11,21 @@ enable_testing()
 add_subdirectory(veriflat)
 add_subdirectory(veriobf)
 
+#----------------------------------------
+# Install examples
+#----------------------------------------
+
+install(DIRECTORY test/common/Makefiles
+        DESTINATION share/veriparse/examples/common)
+install(DIRECTORY test/dclkfifolut
+        DESTINATION share/veriparse/examples)
+install(DIRECTORY test/tiny_aes_128
+        DESTINATION share/veriparse/examples)
+install(DIRECTORY test/double_fpu-master
+        DESTINATION share/veriparse/examples)
+install(FILES test/readme.txt
+        DESTINATION share/veriparse/examples)
+
 
 #----------------------------------------
 # Handle common test of veriflat and
