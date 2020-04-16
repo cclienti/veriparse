@@ -12,7 +12,7 @@ add_subdirectory(veriflat)
 add_subdirectory(veriobf)
 
 #----------------------------------------
-# Install examples
+# Installation
 #----------------------------------------
 
 install(DIRECTORY test/common/Makefiles
@@ -23,9 +23,10 @@ install(DIRECTORY test/tiny_aes_128
         DESTINATION share/veriparse/examples)
 install(DIRECTORY test/double_fpu-master
         DESTINATION share/veriparse/examples)
-install(FILES test/readme.txt
-        DESTINATION share/veriparse/examples)
-
+install(FILES ../../conda/readme.txt
+        DESTINATION share/veriparse)
+install(FILES ../../conda/recipe-release/LICENSE
+        DESTINATION share/veriparse)
 
 #----------------------------------------
 # Handle common test of veriflat and
