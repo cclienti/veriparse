@@ -48,7 +48,7 @@ static int veriobf(int argc, char *argv[])
 		("output,o", boost::program_options::value<std::string>(&config.output)->required(), "Output file")
 		("id-length,l", boost::program_options::value<std::uint64_t>(&config.identifier_length)->default_value(16),
 		 "Maximum length of obfuscated indentifiers")
-		("hash,a", boost::program_options::bool_switch(&config.hash)->default_value(true),
+		("hash,a", boost::program_options::bool_switch(&config.hash),
 		 "Use hashed identifiers instead of random ones")
 		("seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0), "Seed value");
 
