@@ -27,6 +27,8 @@ install(FILES ../../conda/readme.txt
         DESTINATION share/veriparse)
 install(FILES ../../conda/recipe-release/LICENSE
         DESTINATION share/veriparse)
+install(FILES scripts/veriparse
+        DESTINATION bin)
 
 #----------------------------------------
 # Handle common test of veriflat and

@@ -1,0 +1,148 @@
+#!/bin/bash
+
+OPT_OUTPUT=""
+OPT_INCLUDE_DIRS=""
+OPT_TOP_MODULE=""
+OPT_PARAM_MAP="{}"
+OPT_DEADCODE_END=""
+OPT_DEADCODE_DURING=""
+OPT_SEED="--seed 0"
+OPT_ID_LENGTH="--id-length 16"
+OPT_HASH=""
+OPT_NO_OBFUSCATE="0"
+OPT_IVFLAGS="-Wall -Wno-sensitivity-entire-array -g2005"
+
+SHORT_OPTS='hvo:t:I:p:eds:l:an'
+LONG_OPTS='help,version,output:,top-module:,include-dir:param-map:,deadcode-end,deadcode-during,seed:,id-length:,hash,no-obfuscate'
+
+function usage() {
+    echo -e "usage: $(basename $0) [OPTIONS]... VERILOG_FILES[...]"
+    echo -e "\nPreprocess, flatten and obfuscate input files into one output file."
+
+    echo -e "\nRequired options:"
+    echo -e "\t-o, --output FILE      Output file."
+    echo -e "\t-t, --top-module TOP   Top module to consider."
+    echo -e "\t                       to apply on Top module."
+
+    echo -e "\nOptions:"
+    echo -e "\t-h, --help             Display this help."
+    echo -e "\t-v, --version          Display version number."
+    echo -e "\t-I, --include-dir      Include directory"
+    echo -e "\t-p, --param-map YAML   YAML map for verilog parameters,"
+    echo -e "\t                       example: '{MODULE_PARAM1: 1,"
+    echo -e "\t                                  MODULE_PARAM2: 2}'"
+    echo -e "\t-e, --deadcode-end     Apply deadcode elimination pass"
+    echo -e "\t                       after flattening pass."
+    echo -e "\t-d, --deadcode-during  Apply deadcode elimination pass"
+    echo -e "\t                       during flattening pass."
+    echo -e "\t-s, --seed INT         Seed for the random number"
+    echo -e "\t                       generator. Default: ${OPT_SEED}."
+    echo -e "\t-l, --id-length INT    Maximum length of obfuscated"
+    echo -e "\t                       indentifiers. Default: ${OPT_ID_LENGTH}."
+    echo -e "\t-a, --hash             Use hashed identifiers instead"
+    echo -e "\t                       of random ones."
+    echo -e "\t-n, --no-obfuscate     Do not obfuscate the output."
+    echo -e ""
+}
+
+ARGS=$(getopt -o ${SHORT_OPTS} --long ${LONG_OPTS} -- "$@") || exit
+eval "set -- $ARGS"
+
+while true; do
+    case $1 in
+        (-o|--output)
+            OPT_OUTPUT="$2"; shift 2;;
+        (-t|--top-module)
+            OPT_TOP_MODULE="$2"; shift 2;;
+        (-h|--help)
+            usage; exit 0;;
+        (-v|--version)
+            veriflat --version --output /dev/null --top null; exit 0;;
+        (-I|--include-dir)
+            OPT_INCLUDE_DIRS="${OPT_INCLUDE_DIRS}-I$2 "; shift 2;;
+        (-p|--param-map)
+            OPT_PARAM_MAP="--param-map $2"; shift 2;;
+        (-e|--deadcode-end)
+            OPT_DEADCODE_END="--deadcode-end"; shift;;
+        (-d|--deadcode-during)
+            OPT_DEADCODE_DURING="--deadcode-during"; shift;;
+        (-s|--seed)
+            OPT_SEED="--seed $2"; shift 2;;
+        (-l|--id-length)
+            OPT_ID_LENGTH="--id-length $2"; shift 2;;
+        (-a|--hash)
+            OPT_HASH="--hash"; shift;;
+        (-n|--no-obfuscate)
+            OPT_NO_OBFUSCATE=1; shift;;
+        (--)  shift; break;;
+        (*)   exit 1;;
+    esac
+done
+
+declare -A OPT_IN_FILES
+for i in "$@"
+do
+    OPT_IN_FILES["$i"]=$i
+done
+
+if [[ -z "${OPT_IN_FILES[@]}" ]]; then
+    echo -e "No input file(s) given"
+    exit 1
+fi
+
+if [[ -z "${OPT_TOP_MODULE}" ]]; then
+    echo -e "No top module given"
+    exit 1
+fi
+
+if [[ -z "${OPT_OUTPUT}" ]]; then
+    echo -e "No output file given"
+    exit 1
+fi
+
+echo -e "Options:"
+echo -e " - Input files: ${OPT_IN_FILES[@]}"
+echo -e " - Output: ${OPT_OUTPUT}"
+echo -e " - Top module: ${OPT_TOP_MODULE}"
+echo -e " - Top Module Parameters map: \"${OPT_PARAM_MAP}\""
+echo -e " - Random generator seed: ${OPT_SEED}"
+echo -e " - Do not obfuscate: ${OPT_NO_OBFUSCATE}"
+echo -e " - Iverilog includes: ${OPT_INCLUDE_DIRS}"
+echo -e " - Obfuscated identifier length: ${OPT_ID_LENGTH}"
+[ ! -z ${OPT_DEADCODE_END} ]    && echo -e " - Deadcode elimination at end: ${OPT_DEADCODE_END}"
+[ ! -z ${OPT_DEADCODE_DURING} ] && echo -e " - Deadcode elimination during: ${OPT_DEADCODE_DURING}"
+[ ! -z ${OPT_HASH} ]            && echo -e " - Obfuscation uses hash: ${OPT_HASH}"
+echo -e ""
+
+# Preprocess files
+echo "-= Preprocessing verilog files =-"
+iverilog ${OPT_IVFLAGS} ${OPT_INCLUDE_DIRS} -E "${OPT_IN_FILES[@]}" -o ${OPT_OUTPUT}
+ret_val=$?
+if [ ${ret_val} -ne 0 ]; then
+    echo "Preprocessing error"
+    exit ${ret_val}
+fi
+
+# Flatten
+echo "-= Flatenning ${OPT_TOP_MODULE} to ${OPT_OUTPUT} =-"
+veriflat --top-module ${OPT_TOP_MODULE} --output ${OPT_OUTPUT} \
+         ${OPT_PARAM_MAP} ${OPT_DEADCODE_END} ${OPT_DEADCODE_DURING} ${OPT_SEED} \
+         ${OPT_OUTPUT}
+ret_val=$?
+if [ ${ret_val} -ne 0 ]; then
+    echo "Flattening error"
+    exit ${ret_val}
+fi
+
+# Obfuscate
+if [ "${OPT_NO_OBFUSCATE}" -eq "1" ]; then exit 0; fi
+
+echo "-= Obfuscating ${OPT_OUTPUT} =-"
+veriobf --output ${OPT_OUTPUT} \
+        ${OPT_SEED} ${OPT_ID_LENGTH} ${OPT_HASH} \
+        ${OPT_OUTPUT}
+ret_val=$?
+if [ ${ret_val} -ne 0 ]; then
+    echo "Obfuscation error"
+    exit ${ret_val}
+fi
