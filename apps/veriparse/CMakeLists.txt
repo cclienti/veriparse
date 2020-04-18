@@ -28,8 +28,10 @@ install(FILES ../../conda/readme.txt
 install(FILES ../../conda/recipe-release/LICENSE
         DESTINATION share/veriparse)
 install(FILES scripts/veriparse
-        DESTINATION bin)
-
+        DESTINATION bin
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                    GROUP_EXECUTE GROUP_READ
+	            WORLD_EXECUTE WORLD_READ)
 #----------------------------------------
 # Handle common test of veriflat and
 # veriobf
