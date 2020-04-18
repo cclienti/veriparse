@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 project (veriparse_lib_test)
-
+include(GoogleTest)
 enable_testing()
 
 add_custom_target(build_tests)
@@ -20,7 +20,7 @@ foreach(subdir ${SUBDIRS})
     if(CMAKE_CROSSCOMPILING)
       add_test(${testname} wine ${testname}${CMAKE_EXECUTABLE_SUFFIX})
     else()
-      add_test(${testname} ${testname})
+      gtest_discover_tests(${testname})
     endif()
   endif()
 endforeach()
