@@ -81,10 +81,22 @@ static int veriflat(int argc, char *argv[])
 
 	boost::program_options::variables_map vm;
 
+	boost::program_options::command_line_parser parser(argc, argv);
+	auto parsed = parser.options(desc_all).positional(pos).run();
+	boost::program_options::store(parsed, vm);
+
+	if (vm.count("help")) {
+		show_usage(argv[0], desc);
+		return 0;
+	}
+
+	if (vm.count("version")) {
+		std::cout << Veriparse::Version::get_version() << "\n"
+		          << Veriparse::Version::get_sha1() << std::endl;
+		return 0;
+	}
+
 	try {
-		boost::program_options::command_line_parser parser(argc, argv);
-		auto parsed = parser.options(desc_all).positional(pos).run();
-		boost::program_options::store(parsed, vm);
 		boost::program_options::notify(vm);
 	}
 	catch(std::exception& e) {
@@ -98,20 +110,10 @@ static int veriflat(int argc, char *argv[])
 		return 1;
 	}
 
-	if (vm.count("help")) {
+	if (vm.count("verilog-file") == 0) {
+		LOG_ERROR << "missing verilog file";
 		show_usage(argv[0], desc);
 		return 1;
-	}
-
-	if (vm.count("version")) {
-		std::cout << Veriparse::Version::get_version() << "\n"
-		          << Veriparse::Version::get_sha1() << std::endl;
-		return 0;
-	}
-
-	if (vm.count("verilog-file") == 0) {
-		LOG_ERROR << "missing verilog file(s)";
-		show_usage(argv[0], desc);
 	}
 
 	LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version()
