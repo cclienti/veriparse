@@ -33,8 +33,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ============================================================================
-YAML-CPP v0.6 License
+This product includes software developed by YAML-CPP project / Jesse Beder
 
+YAML-CPP v0.6 License
 Copyright (c) 2008-2015 Jesse Beder.
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -59,8 +60,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ============================================================================
-Boost v1.72 License
+This product includes software developed by the Boost Project
 
+Boost v1.72 License
 Boost Software License - Version 1.0 - August 17th, 2003
 
 Permission is hereby granted, free of charge, to any person or organization
@@ -88,14 +90,17 @@ DEALINGS IN THE SOFTWARE.
 
 
 ============================================================================
-GNUGMP v6 License
+This product includes software developed by the GNUGMP Project
 
+GNUGMP v6 License
 https://www.gnu.org/licenses/lgpl-3.0.txt
 ----------------------------------------------------------------------------
 
 
 ============================================================================
-OpenSSL v1.1.1d License
+This product includes software developed by the OpenSSL Project
+for use in the OpenSSL Toolkit (http://www.openssl.org/)
 
+OpenSSL v1.1.1d License
 https://www.openssl.org/source/license-openssl-ssleay.txt
 ----------------------------------------------------------------------------

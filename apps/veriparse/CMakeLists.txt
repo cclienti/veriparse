@@ -25,8 +25,6 @@ install(DIRECTORY test/double_fpu-master
         DESTINATION share/veriparse/examples)
 install(FILES ../../conda/readme.txt
         DESTINATION share/veriparse)
-install(FILES ../../conda/recipe-release/LICENSE
-        DESTINATION share/veriparse)
 install(FILES scripts/veriparse
         DESTINATION bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
