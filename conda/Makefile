@@ -13,6 +13,11 @@ CONDA_DISTRIB_PATH      ?= $(shell conda info --base)
 # Name of the environment to build packages
 CONDA_BUILD_ENVIRONMENT ?= veriparse-$(BUILD_TYPE)
 
+# Name of the environment for development
+CONDA_DEV_ENVIRONMENT ?= veriparse-dev
+# Development build type
+CONDA_DEV_BUILD_TYPE  ?= Release # Debug
+
 # Conda Destination Repository Base Path
 CONDA_DEST_PATH        ?= /opt/veriparse-packages
 # Conda Destination Channel within the Base Path
@@ -32,9 +37,54 @@ CONDA_VERIFY         = conda-verify
 
 CONDA_INDEX          = conda-index --no-progress -n $(CONDA_DEST_CHANNEL)
 
+NUM_CORES            = $(shell nproc)
+
 
 ##################################################################
-# Rules
+# Dev Rules
+##################################################################
+
+dev-env:
+	set -e; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  deps=`grep -v "{{" recipe-release/meta.yaml | \
+	        python -c 'import yaml; import sys; \
+                d = yaml.load(sys.stdin, Loader=yaml.FullLoader);\
+                print(" ".join(d["requirements"]["build"]))'`; \
+	  conda create -y -n $(CONDA_DEV_ENVIRONMENT) -c $(SHARPNESS_REPOSITORY) $$deps
+
+dev-cmake:
+	mkdir -p build
+	set -e; \
+	  cd build; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  conda activate $(CONDA_DEV_ENVIRONMENT); \
+	  cmake -DVERIPARSE_EXTERNAL_ROOT=${CONDA_PREFIX} \
+	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) ../..
+
+dev-build:
+	set -e; \
+	  cd build; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  conda activate $(CONDA_DEV_ENVIRONMENT); \
+	  make -j${NUM_CORES}
+
+dev-test:
+	set -e; \
+	  cd build; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  conda activate $(CONDA_DEV_ENVIRONMENT); \
+	  VERIPARSE_SOURCE_ROOT=$(realpath ..) ctest -j${NUM_CORES}
+
+dev-clean:
+	set -e; \
+	  rm -rf build; \
+	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  conda env remove -y -n $(CONDA_DEV_ENVIRONMENT)
+
+
+##################################################################
+# Pkg Rules
 ##################################################################
 
 env:
@@ -69,4 +119,15 @@ index:
 clean:
 	set -e; \
 	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda env remove -y -n $(CONDA_BUILD_ENVIRONMENT)
+	  conda env remove -y -n $(CONDA_BUILD_ENVIRONMENT); \
+	  conda build purge
+
+
+##################################################################
+# Common Rules
+##################################################################
+
+distclean: clean dev-clean
+
+print-%:
+	@echo $*=$($*)
