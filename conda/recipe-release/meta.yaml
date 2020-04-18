@@ -15,6 +15,9 @@ build:
     - openssl
 
 requirements:
+  host:
+    - gmp=6.2.0
+
   run:
     - gmp=6.2.0
 
@@ -35,3 +38,9 @@ about:
   license: Christophe Clienti, All Rights Reserved.
   license_file: ../../licenses/LICENSE
   summary: Verilog Design Flattenner and Obfuscater.
+
+test:
+  commands:
+    - veriparse -h
+    - veriflat -h
+    - veriobf -h
