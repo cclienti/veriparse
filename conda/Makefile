@@ -48,7 +48,7 @@ dev-env:
 	set -e; \
 	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  deps=`grep -v "{{" recipe-release/meta.yaml | \
-	        python -c 'import yaml; import sys; \
+	        $(CONDA_DISTRIB_PATH)/bin/python -c 'import yaml; import sys; \
                 d = yaml.load(sys.stdin, Loader=yaml.FullLoader);\
                 print(" ".join(d["requirements"]["build"]))'`; \
 	  conda create -y -n $(CONDA_DEV_ENVIRONMENT) -c $(SHARPNESS_REPOSITORY) $$deps
