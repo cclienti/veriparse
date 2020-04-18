@@ -113,7 +113,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
 
   find_library(GMP_LIBRARY
-	NAMES libgmp.a gmp
+	NAMES libgmp.so gmp  # Due to LGPLv3 we must use .so
 	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
 
   find_package_handle_standard_args(GMP DEFAULT_MSG GMP_INCLUDE_DIR GMP_LIBRARY)
@@ -124,7 +124,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
 
   find_library(GMPXX_LIBRARY
-	NAMES libgmpxx.a gmpxx
+	NAMES libgmpxx.so gmpxx  # Due to LGPLv3 we must use .so
 	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
 
   find_package_handle_standard_args(GMPXX DEFAULT_MSG GMPXX_INCLUDE_DIR GMPXX_LIBRARY)

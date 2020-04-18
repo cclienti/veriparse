@@ -15,6 +15,9 @@ build:
     - openssl
 
 requirements:
+  run:
+    - gmp=6.2.0
+
   build:
     - {{ compiler('cxx') }}
     - make
@@ -30,5 +33,5 @@ requirements:
 about:
   home: https://www.wavecruncher.net
   license: Christophe Clienti, All Rights Reserved.
-  license_file: LICENSE
+  license_file: ../../licenses/LICENSE
   summary: Verilog Design Flattenner and Obfuscater.
