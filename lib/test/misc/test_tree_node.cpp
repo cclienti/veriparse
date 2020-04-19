@@ -14,6 +14,10 @@ public:
 	TNode(const std::string &value): TreeNode(value) {}
 	virtual ~TNode() {}
 
+	static void reset() {
+		TNode::set_tree_node_id(0);
+	}
+
 private:
 	std::string print_value() const final
 	{
@@ -29,6 +33,8 @@ private:
 
 TEST(MiscTest, Tree_node_0)
 {
+	TNode::reset();
+
 	auto node0 = std::make_unique<TNode>("inst0");
 	auto node1 = std::make_unique<TNode>("inst1");
 	auto node2 = std::make_unique<TNode>("inst2");
@@ -58,6 +64,8 @@ TEST(MiscTest, Tree_node_0)
 
 TEST(MiscTest, Tree_node_0_clone)
 {
+	TNode::reset();
+
 	auto node0 = std::make_unique<TNode>("inst0");
 	auto node1 = std::make_unique<TNode>("inst1");
 	auto node2 = std::make_unique<TNode>("inst2");
@@ -73,15 +81,15 @@ TEST(MiscTest, Tree_node_0_clone)
 
 	std::string ref {"digraph G {\n"
 	                 "\trankdir=LR;\n"
-	                 "	n4 [label=\"inst0\"];\n"
-	                 "	n4 -> n5\n"
-	                 "	n5 [label=\"inst1\"];\n"
-	                 "	n5 -> n6\n"
-	                 "	n6 [label=\"inst2\"];\n"
-	                 "	n6 -> n7\n"
-	                 "	n7 [label=\"inst3\"];\n"
-	                 "	n6 -> n8\n"
-	                 "	n8 [label=\"inst4\"];\n"
+	                 "	n0 [label=\"inst0\"];\n"
+	                 "	n0 -> n1\n"
+	                 "	n1 [label=\"inst1\"];\n"
+	                 "	n1 -> n2\n"
+	                 "	n2 [label=\"inst2\"];\n"
+	                 "	n2 -> n3\n"
+	                 "	n3 [label=\"inst3\"];\n"
+	                 "	n2 -> n4\n"
+	                 "	n4 [label=\"inst4\"];\n"
 	                 "}\n"};
 
 	ASSERT_EQ(node0_clone->to_dot(), ref);

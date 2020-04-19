@@ -91,6 +91,15 @@ public:
 		return dot.str();
 	}
 
+protected:
+	/**
+	 * @brief Change the tree node id static class member
+	 */
+	static void set_tree_node_id(std::uint64_t value=0)
+	{
+		s_tree_node_id = value;
+	}
+
 private:
 	/**
 	 * @brief Pure virtual method to print the node value
