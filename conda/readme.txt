@@ -6,11 +6,11 @@ Veriparse uses the Miniconda packaging system. Please run the following instruct
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
     bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
     eval "$($HOME/miniconda/bin/conda shell.bash hook)"
-    conda create -y -n veriparse -c https://conda.wavecruncher.net libgcc-ng libstdcxx-ng gmp
+    conda create -y -n veriparse -c https://conda.wavecruncher.net/sharpness-1 libgcc-ng libstdcxx-ng gmp
     conda activate veriparse
     conda install ./veriparse-v1.1.6-h6bb024c_0.tar.bz2
     conda deactivate # exit from veriparse env
-    conda deactivate # exit from miniconda env
+    conda deactivate # exit from base env
 
 The veriparse tools base directory is located here: $HOME/miniconda/envs/veriparse
 
@@ -25,9 +25,10 @@ To update an existing conda environment, proceed as follow:
 
     eval "$($HOME/miniconda/bin/conda shell.bash hook)"
     conda activate veriparse
-    conda update -c https://conda.wavecruncher.net/sharpness-1 gmp
+    conda update -y -c https://conda.wavecruncher.net/sharpness-1 gmp
     conda install --force-reinstall ./veriparse-v1.1.6-h6bb024c_0.tar.bz2
-    conda deactivate
+    conda deactivate # exit from veriparse env
+    conda deactivate # exit from base env
 
 
 Running Examples
