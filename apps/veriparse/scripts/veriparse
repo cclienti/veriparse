@@ -87,16 +87,22 @@ done
 
 if [[ -z "${OPT_IN_FILES[@]}" ]]; then
     echo -e "No input file(s) given"
+    echo -e ""
+    usage
     exit 1
 fi
 
 if [[ -z "${OPT_TOP_MODULE}" ]]; then
     echo -e "No top module given"
+    echo -e ""
+    usage
     exit 1
 fi
 
 if [[ -z "${OPT_OUTPUT}" ]]; then
     echo -e "No output file given"
+    echo -e ""
+    usage
     exit 1
 fi
 
