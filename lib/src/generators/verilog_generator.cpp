@@ -991,7 +991,7 @@ std::string VerilogGenerator::render_ifstatement(const AST::IfStatement::Ptr nod
 		const AST::Node::Ptr false_stmt = node->get_false_statement();
 
 		std::string cond_string = StringUtils::delete_surrounding_brackets(render(cond));
-		std::string true_stmt_string = block_or_single_statement_to_string(true_stmt);
+		std::string true_stmt_string = true_stmt ? block_or_single_statement_to_string(true_stmt) : ";";
 		std::string false_stmt_string = block_or_single_statement_to_string(false_stmt);
 
 		result = "if(" + cond_string + ")" + true_stmt_string;

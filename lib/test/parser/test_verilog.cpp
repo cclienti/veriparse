@@ -138,6 +138,8 @@ TEST(VerilogParserTest, cond0)          {TEST_CORE;}
 TEST(VerilogParserTest, if0)            {TEST_CORE;}
 TEST(VerilogParserTest, if1)            {TEST_CORE;}
 TEST(VerilogParserTest, if2)            {TEST_CORE;}
+TEST(VerilogParserTest, if3)            {TEST_CORE;}
+TEST(VerilogParserTest, if4)            {TEST_CORE;}
 TEST(VerilogParserTest, case0)          {TEST_CORE;}
 TEST(VerilogParserTest, case1)          {TEST_CORE;}
 TEST(VerilogParserTest, casex0)         {TEST_CORE;}

@@ -1,0 +1,627 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/if4.v
+          items:
+          - Always:
+              filename: ../../test/parser/testcases/if4.v
+              line: 9
+              senslist:
+                Senslist:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 9
+                  list:
+                  - Sens:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 9
+                      sig:
+                        Identifier:
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 9
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 9
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Eq:
+                          filename: ../../test/parser/testcases/if4.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/if4.v
+                              line: 10
+                              name: sel
+                              scope:
+                                IdentifierScope: null
+                          line: 10
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/if4.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 0
+                      false_statement:
+                        IfStatement:
+                          cond:
+                            Eq:
+                              filename: ../../test/parser/testcases/if4.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/if4.v
+                                  line: 11
+                                  name: sel
+                                  scope:
+                                    IdentifierScope: null
+                              line: 11
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/if4.v
+                                  line: 11
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                          false_statement:
+                            IfStatement:
+                              cond:
+                                Eq:
+                                  filename: ../../test/parser/testcases/if4.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/if4.v
+                                      line: 12
+                                      name: sel
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 12
+                                  right:
+                                    IntConstN:
+                                      base: 10
+                                      filename: ../../test/parser/testcases/if4.v
+                                      line: 12
+                                      sign: false
+                                      size: -1
+                                      value: 2
+                              false_statement:
+                                IfStatement:
+                                  cond:
+                                    Eq:
+                                      filename: ../../test/parser/testcases/if4.v
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/if4.v
+                                          line: 13
+                                          name: sel
+                                          scope:
+                                            IdentifierScope: null
+                                      line: 13
+                                      right:
+                                        IntConstN:
+                                          base: 10
+                                          filename: ../../test/parser/testcases/if4.v
+                                          line: 13
+                                          sign: false
+                                          size: -1
+                                          value: 3
+                                  false_statement: null
+                                  filename: ../../test/parser/testcases/if4.v
+                                  line: 13
+                                  true_statement:
+                                    NonblockingSubstitution:
+                                      filename: ../../test/parser/testcases/if4.v
+                                      ldelay:
+                                        DelayStatement: null
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/if4.v
+                                          line: 13
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/if4.v
+                                              line: 13
+                                              name: out
+                                              scope:
+                                                IdentifierScope: null
+                                      line: 13
+                                      rdelay:
+                                        DelayStatement: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/if4.v
+                                          line: 13
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/if4.v
+                                              line: 13
+                                              name: in3
+                                              scope:
+                                                IdentifierScope: null
+                              filename: ../../test/parser/testcases/if4.v
+                              line: 12
+                              true_statement:
+                                NonblockingSubstitution:
+                                  filename: ../../test/parser/testcases/if4.v
+                                  ldelay:
+                                    DelayStatement: null
+                                  left:
+                                    Lvalue:
+                                      filename: ../../test/parser/testcases/if4.v
+                                      line: 12
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/if4.v
+                                          line: 12
+                                          name: out
+                                          scope:
+                                            IdentifierScope: null
+                                  line: 12
+                                  rdelay:
+                                    DelayStatement: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../../test/parser/testcases/if4.v
+                                      line: 12
+                                      var:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/if4.v
+                                          line: 12
+                                          name: in2
+                                          scope:
+                                            IdentifierScope: null
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 11
+                          true_statement:
+                            NonblockingSubstitution:
+                              filename: ../../test/parser/testcases/if4.v
+                              ldelay:
+                                DelayStatement: null
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/if4.v
+                                  line: 11
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/if4.v
+                                      line: 11
+                                      name: out
+                                      scope:
+                                        IdentifierScope: null
+                              line: 11
+                              rdelay:
+                                DelayStatement: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/if4.v
+                                  line: 11
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/if4.v
+                                      line: 11
+                                      name: in1
+                                      scope:
+                                        IdentifierScope: null
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 10
+                      true_statement: null
+          line: 1
+          name: if4
+          ports:
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 2
+                  name: reset
+                  sign: false
+              line: 2
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/if4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 3
+                  name: clk
+                  sign: false
+              line: 3
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/if4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 4
+                  name: sel
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 4
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/if4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: sel
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 5
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/if4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 5
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/if4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: in1
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 5
+                  name: in2
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/if4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: in2
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Input:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 5
+                  name: in3
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Wire:
+                  filename: ../../test/parser/testcases/if4.v
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: in3
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ../../test/parser/testcases/if4.v
+              first:
+                Output:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 6
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 6
+              second:
+                Reg:
+                  filename: ../../test/parser/testcases/if4.v
+                  line: 6
+                  name: out
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/if4.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/if4.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: ../../test/parser/testcases/if4.v
+      line: 1
+  filename: ../../test/parser/testcases/if4.v
+  line: 1

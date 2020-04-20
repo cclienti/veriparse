@@ -143,6 +143,8 @@ TEST(VerilogGeneratorTest, cond0)          {TEST_CORE;}
 TEST(VerilogGeneratorTest, if0)            {TEST_CORE;}
 TEST(VerilogGeneratorTest, if1)            {TEST_CORE;}
 TEST(VerilogGeneratorTest, if2)            {TEST_CORE;}
+TEST(VerilogGeneratorTest, if3)            {TEST_CORE;}
+TEST(VerilogGeneratorTest, if4)            {TEST_CORE;}
 TEST(VerilogGeneratorTest, case0)          {TEST_CORE;}
 TEST(VerilogGeneratorTest, case1)          {TEST_CORE;}
 TEST(VerilogGeneratorTest, casex0)         {TEST_CORE;}

@@ -6,8 +6,8 @@
 
 %define api.namespace {Veriparse::Parser}
 
-%define parser_class_name {VerilogParser}
-// For new version of bison %define api.parser.class {VerilogParser}
+// Old bison version %define parser_class_name {VerilogParser}
+%define api.parser.class {VerilogParser}
 
 %define lr.type lalr
 %define api.value.type variant
@@ -213,6 +213,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 
 // Token precedences
 %left                   TK_RPARENTHESIS
+%left                   TK_SEMICOLON
 %left                   TK_ELSE
 
 %left                   TK_COLON
@@ -2422,6 +2423,7 @@ if_statement:   TK_IF TK_LPARENTHESIS cond TK_RPARENTHESIS true_statement TK_ELS
                     $$->set_cond($4);
                     $$->set_true_statement($6);
                 }
+
         ;
 
 
@@ -2436,6 +2438,11 @@ true_statement: ifcontent_statement
                 {
                     $$ = $1;
                 }
+
+        |       TK_SEMICOLON
+                {
+                    $$ = nullptr;
+                }
         ;
 
 
@@ -2443,6 +2450,11 @@ false_statement:
                 ifcontent_statement
                 {
                     $$ = $1;
+                }
+
+        |       TK_SEMICOLON
+                {
+                    $$ = nullptr;
                 }
         ;
 
