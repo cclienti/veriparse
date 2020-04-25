@@ -1,12 +1,10 @@
 %skeleton "lalr1.cc"
-%require  "3.0"
+%require  "3.4"
 
 %defines
 %locations
 
 %define api.namespace {Veriparse::Parser}
-
-// Old bison version %define parser_class_name {VerilogParser}
 %define api.parser.class {VerilogParser}
 
 %define lr.type lalr
