@@ -1,0 +1,40 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+          items:
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+              line: 3
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+                  line: 3
+                  scope: ''
+                  statements:
+                  - Integer:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+                      line: 4
+                      name: x
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+                          line: 4
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 0
+          line: 1
+          name: var3
+      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/var3.v
+  line: 1
+

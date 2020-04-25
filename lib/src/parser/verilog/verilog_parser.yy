@@ -341,7 +341,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 
 %type   <AST::WhileStatement::Ptr>           while_statement
 %type   <AST::Node::Ptr>                     whilecontent_statement
-%type   <AST::EventStatement::Ptr>           event_statement
+%type   <AST::EventStatement::Ptr>           event_statement  // Only used during the parsing to avoid conflict
 %type   <AST::WaitStatement::Ptr>            wait_statement
 %type   <AST::Node::Ptr>                     waitcontent_statement
 %type   <AST::ForeverStatement::Ptr>         forever_statement
@@ -3043,6 +3043,12 @@ generate_item:  standard_item
                     $$ = $1;
                 }
 
+        |       generate_block
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+
         |       generate_if
                 {
                     $$ = std::make_shared<AST::Node::List>();
@@ -3073,6 +3079,17 @@ generate_block: TK_BEGIN generate_items TK_END
                 {
                     $$ = std::make_shared<AST::Block>(scanner.get_filename(), @1.begin.line);
                     $$->set_statements($4);
+                    $$->set_scope($3);
+                }
+
+        |       TK_BEGIN TK_END
+                {
+                    $$ = std::make_shared<AST::Block>(scanner.get_filename(), @1.begin.line);
+                }
+
+        |       TK_BEGIN TK_COLON TK_IDENTIFIER TK_END
+                {
+                    $$ = std::make_shared<AST::Block>(scanner.get_filename(), @1.begin.line);
                     $$->set_scope($3);
                 }
         ;
@@ -3147,13 +3164,17 @@ generate_for:   TK_FOR TK_LPARENTHESIS forpre forcond forpost TK_RPARENTHESIS ge
 generate_content:
                 generate_item
                 {
-                    $$ = std::make_shared<AST::Block>(scanner.get_filename(), @1.begin.line);
-                    $$->set_statements($1);
-                }
-
-        |       generate_block
-                {
-                    $$ = $1;
+                    if ($1->size() != 1) {
+                        error(@1, "a begin end block is missing");
+                    }
+                    const auto &elt = $1->front();
+                    if (elt->is_node_type(AST::NodeType::Block)) {
+                        $$ = AST::cast_to<AST::Block>(elt);
+                    }
+                    else {
+                        $$ = std::make_shared<AST::Block>(scanner.get_filename(), @1.begin.line);
+                        $$->set_statements($1);
+                    }
                 }
         ;
 

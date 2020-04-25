@@ -62,6 +62,7 @@ TEST(VerilogParserTest, net3)           {TEST_CORE;}
 TEST(VerilogParserTest, var0)           {TEST_CORE;}
 TEST(VerilogParserTest, var1)           {TEST_CORE;}
 TEST(VerilogParserTest, var2)           {TEST_CORE;}
+TEST(VerilogParserTest, var3)           {TEST_CORE;}
 TEST(VerilogParserTest, expression0)    {TEST_CORE;}
 TEST(VerilogParserTest, expression1)    {TEST_CORE;}
 TEST(VerilogParserTest, expression2)    {TEST_CORE;}
@@ -157,6 +158,8 @@ TEST(VerilogParserTest, forever1)       {TEST_CORE;}
 TEST(VerilogParserTest, initial0)       {TEST_CORE;}
 TEST(VerilogParserTest, initial1)       {TEST_CORE;}
 TEST(VerilogParserTest, block0)         {TEST_CORE;}
+TEST(VerilogParserTest, block1)         {TEST_CORE;}
+TEST(VerilogParserTest, block2)         {TEST_CORE;}
 TEST(VerilogParserTest, namedblock0)    {TEST_CORE;}
 TEST(VerilogParserTest, fork0)          {TEST_CORE;}
 TEST(VerilogParserTest, assignment0)    {TEST_CORE;}
@@ -187,6 +190,7 @@ TEST(VerilogParserTest, generate0)      {TEST_CORE;}
 TEST(VerilogParserTest, generate1)      {TEST_CORE;}
 TEST(VerilogParserTest, generate2)      {TEST_CORE;}
 TEST(VerilogParserTest, generate3)      {TEST_CORE;}
+TEST(VerilogParserTest, generate4)      {TEST_CORE;}
 TEST(VerilogParserTest, width0)         {TEST_CORE;}
 TEST(VerilogParserTest, width1)         {TEST_CORE;}
 TEST(VerilogParserTest, bidir0)         {TEST_CORE;}

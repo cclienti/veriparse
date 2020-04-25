@@ -1,0 +1,569 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+          items:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+              line: 2
+              name: A
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 2
+          - Genvar:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+              line: 3
+              name: i
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+              items:
+              - ForStatement:
+                  cond:
+                    LessThan:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 6
+                          name: i
+                          scope:
+                            IdentifierScope: null
+                      line: 6
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                  line: 6
+                  post:
+                    BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 6
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 6
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 6
+                          var:
+                            Plus:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              left:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 6
+                                  name: i
+                                  scope:
+                                    IdentifierScope: null
+                              line: 6
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  pre:
+                    BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 6
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 6
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 6
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                  statement:
+                    Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 6
+                      scope: GEN_LOOP_1
+                      statements:
+                      - Initial:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 7
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 7
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 7
+                                      value: 'GEN_LOOP_1: %0d '
+                                  - Identifier:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 7
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 7
+                                  syscall: display
+              line: 5
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+              items:
+              - ForStatement:
+                  cond:
+                    LessThan:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 12
+                          name: i
+                          scope:
+                            IdentifierScope: null
+                      line: 12
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 12
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                  line: 12
+                  post:
+                    BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 12
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 12
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 12
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 12
+                          var:
+                            Plus:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              left:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 12
+                                  name: i
+                                  scope:
+                                    IdentifierScope: null
+                              line: 12
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 12
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  pre:
+                    BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 12
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 12
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 12
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 12
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 12
+                              sign: false
+                              size: -1
+                              value: 0
+                  statement:
+                    Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 12
+                      scope: GEN_LOOP_2
+                      statements:
+                      - Initial:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 13
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 13
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 13
+                                      value: 'GEN_LOOP_2: %0d '
+                                  - Identifier:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 13
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 13
+                                  syscall: display
+              line: 11
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+              items:
+              - IfStatement:
+                  cond:
+                    Eq:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 18
+                          name: A
+                          scope:
+                            IdentifierScope: null
+                      line: 18
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 18
+                          sign: false
+                          size: -1
+                          value: 2
+                  false_statement: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                  line: 18
+                  true_statement:
+                    Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 18
+                      scope: TEST
+                      statements:
+                      - Initial:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 19
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 19
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 19
+                                      value: 'TEST: %0d '
+                                  - IntConstN:
+                                      base: 10
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 19
+                                      sign: false
+                                      size: -1
+                                      value: 2
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 19
+                                  syscall: display
+              line: 17
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+              items:
+              - CaseStatement:
+                  caselist:
+                  - Case:
+                      cond:
+                      - IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 25
+                          sign: false
+                          size: -1
+                          value: 2
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 25
+                      statement:
+                        Block:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 25
+                          scope: CASE
+                          statements:
+                          - Initial:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 26
+                              statement:
+                                SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 26
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                          line: 26
+                                          value: 'CASE: %0d '
+                                      - IntConstN:
+                                          base: 10
+                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                          line: 26
+                                          sign: false
+                                          size: -1
+                                          value: 2
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 26
+                                      syscall: display
+                  comp:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 24
+                      name: A
+                      scope:
+                        IdentifierScope: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                  line: 24
+              line: 23
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+              items:
+              - ForStatement:
+                  cond:
+                    LessThan:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 32
+                          name: i
+                          scope:
+                            IdentifierScope: null
+                      line: 32
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 32
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                  line: 32
+                  post:
+                    BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 32
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 32
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 32
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 32
+                          var:
+                            Plus:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              left:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 32
+                                  name: i
+                                  scope:
+                                    IdentifierScope: null
+                              line: 32
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 32
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                  pre:
+                    BlockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 32
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 32
+                              name: i
+                              scope:
+                                IdentifierScope: null
+                      line: 32
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 32
+                          var:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 32
+                              sign: false
+                              size: -1
+                              value: 0
+                  statement:
+                    Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 32
+                      scope: ''
+                      statements:
+                      - Initial:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 32
+                          statement:
+                            SingleStatement:
+                              delay:
+                                DelayStatement: null
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 32
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  args:
+                                  - StringConst:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 32
+                                      value: 'inline for loop: %0d'
+                                  - Identifier:
+                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                      line: 32
+                                      name: i
+                                      scope:
+                                        IdentifierScope: null
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                                  line: 32
+                                  syscall: display
+              - Initial:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                  line: 33
+                  statement:
+                    SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                      line: 33
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                              line: 33
+                              value: inline after for
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+                          line: 33
+                          syscall: display
+              line: 31
+          line: 1
+          name: block2
+      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block2.v
+  line: 1
+

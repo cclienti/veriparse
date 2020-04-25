@@ -1,0 +1,80 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+          items:
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+              line: 3
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                  line: 3
+                  scope: ''
+                  statements:
+                  - Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                      line: 4
+                      scope: ''
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+              line: 8
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                  line: 8
+                  scope: BLOCKA
+                  statements:
+                  - Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                      line: 9
+                      scope: ''
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+              line: 13
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                  line: 13
+                  scope: ''
+                  statements:
+                  - Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                      line: 14
+                      scope: BLOCKB
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+              items:
+              - Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                  line: 19
+                  scope: ''
+                  statements:
+                  - Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                      line: 20
+                      scope: ''
+              line: 18
+          - GenerateStatement:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+              items:
+              - Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                  line: 26
+                  scope: BLOCK0
+                  statements:
+                  - Block:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+                      line: 27
+                      scope: BLOCK1
+              line: 25
+          line: 1
+          name: block1
+      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/block1.v
+  line: 1
+
