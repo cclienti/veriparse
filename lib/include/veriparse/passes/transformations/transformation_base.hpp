@@ -11,7 +11,7 @@ namespace Passes {
 namespace Transformations {
 
 class TransformationBase {
-private:
+protected:
 	using ProcessFunction = std::function< int (AST::Node::Ptr, AST::Node::Ptr) >;
 
 public:

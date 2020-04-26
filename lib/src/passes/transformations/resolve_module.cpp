@@ -4,6 +4,7 @@
 #include <veriparse/passes/transformations/localparam_inliner.hpp>
 #include <veriparse/passes/transformations/constant_folding.hpp>
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
+#include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/branch_selection.hpp>
 #include <veriparse/passes/transformations/generate_removal.hpp>
 #include <veriparse/passes/transformations/variable_folding.hpp>
@@ -53,6 +54,11 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
 	if (ConstantFolding().run(node)) {
 		LOG_ERROR_N(node) << "Failed to fold constants";
+		return 1;
+	}
+
+	if (ScopeElevator().run(node)) {
+		LOG_ERROR_N(node) << "Failed to remove nested blocks";
 		return 1;
 	}
 
