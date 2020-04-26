@@ -36,9 +36,9 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ########################################
 
   if(MINGW)
-    set(CMAKE_CXX_FLAGS "-Wa,-mbig-obj -std=c++14 -Wall")
+    set(CMAKE_CXX_FLAGS "-Wa,-mbig-obj -std=c++17 -Wall")
   else()
-    set(CMAKE_CXX_FLAGS "-std=c++14 -Wall")
+    set(CMAKE_CXX_FLAGS "-std=c++17 -Wall")
   endif()
 
   set(CMAKE_CXX_FLAGS_DEBUG  "-g -DDEBUG")
