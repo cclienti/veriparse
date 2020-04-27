@@ -1,0 +1,200 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+          line: 1
+          name: module3
+          ports:
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                  line: 2
+                  name: reset
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ''
+                  ldelay:
+                    DelayStatement: null
+                  line: 0
+                  name: reset
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                  line: 3
+                  name: clk
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ''
+                  ldelay:
+                    DelayStatement: null
+                  line: 0
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                  line: 4
+                  name: in0
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 0
+              second:
+                Wire:
+                  filename: ''
+                  ldelay:
+                    DelayStatement: null
+                  line: 0
+                  name: in0
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ''
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                  line: 4
+                  name: in1
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 0
+              second:
+                Wire:
+                  filename: ''
+                  ldelay:
+                    DelayStatement: null
+                  line: 0
+                  name: in1
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: ''
+              first:
+                Output:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+                  line: 5
+                  name: out
+                  sign: false
+              line: 0
+              second:
+                Wire:
+                  filename: ''
+                  ldelay:
+                    DelayStatement: null
+                  line: 0
+                  name: out
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+      line: 1
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/module3.v
+  line: 1
+

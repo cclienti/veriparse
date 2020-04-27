@@ -41,3 +41,5 @@ TEST(PassesTransformation_ModuleIONormalizer, parameter0) {TEST_CORE;}
 TEST(PassesTransformation_ModuleIONormalizer, parameter1) {TEST_CORE;}
 TEST(PassesTransformation_ModuleIONormalizer, module0)    {TEST_CORE;}
 TEST(PassesTransformation_ModuleIONormalizer, module1)    {TEST_CORE;}
+TEST(PassesTransformation_ModuleIONormalizer, module2)    {TEST_CORE;}
+TEST(PassesTransformation_ModuleIONormalizer, module3)    {TEST_CORE;}
