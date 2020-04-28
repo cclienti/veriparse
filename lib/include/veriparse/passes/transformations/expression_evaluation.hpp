@@ -10,7 +10,17 @@ namespace Transformations {
 
 class ExpressionEvaluation {
 public:
-	typedef std::map<std::string, AST::Constant::Ptr> replace_map_t;
+	/**
+	 * Map to replace an identifier by a constant during expression
+	 * evaluations.
+	 */
+	using ReplaceMap = std::map<std::string, AST::Constant::Ptr>;
+
+	/**
+	 * Map to get the function that corresponds to the function call
+	 * found during expression evaluations.
+	 */
+	using FunctionMap = std::map<std::string, AST::Function::Ptr>;
 
 
 public:
@@ -24,7 +34,16 @@ public:
 	 * will be used to replace identifier node (that match the
 	 * string name) with the corresponding constant node.
 	 */
-	ExpressionEvaluation(const replace_map_t &replace_identifier);
+	ExpressionEvaluation(const ReplaceMap &replace_map);
+
+	/**
+	 * Construct the ExpressionEvaluation and pass a replace map that
+	 * will be used to replace identifier node (that match the string
+	 * name) with the corresponding constant node. A function map is
+	 * also required to process function call in expressions.
+	 */
+	ExpressionEvaluation(const ReplaceMap &replace_map,
+	                     const FunctionMap &function_map);
 
 	/**
 	 * Evaluate node recursively and return a constant node if
@@ -77,7 +96,8 @@ private:
 	                                      const AST::Node::Ptr node2);
 
 private:
-	const replace_map_t m_replace_identifier;
+	const ReplaceMap m_replace_map;
+	const FunctionMap m_function_map;
 
 };
 

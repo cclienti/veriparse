@@ -92,7 +92,7 @@ private:
 	 * @return non-nullptr on success.
 	 */
 	static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst,
-	                                      const ExpressionEvaluation::replace_map_t &map);
+	                                      const ExpressionEvaluation::ReplaceMap &map);
 
 private:
 	Analysis::UniqueDeclaration::IdentifierSet m_scope_declared;

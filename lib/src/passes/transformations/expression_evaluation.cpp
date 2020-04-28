@@ -16,9 +16,14 @@ namespace Transformations {
 
 ExpressionEvaluation::ExpressionEvaluation()	{}
 
-ExpressionEvaluation::ExpressionEvaluation(const replace_map_t &replace_identifier):
-	m_replace_identifier(replace_identifier) {}
+ExpressionEvaluation::ExpressionEvaluation(const ReplaceMap &replace_map):
+	m_replace_map(replace_map) {}
 
+ExpressionEvaluation::ExpressionEvaluation(const ReplaceMap &replace_map,
+                                           const FunctionMap &function_map):
+	m_replace_map(replace_map),
+	m_function_map(function_map)
+{}
 
 bool ExpressionEvaluation::evaluate_node(const AST::Node::Ptr &node, mpz_class &value)
 {
@@ -125,8 +130,8 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_node(const AST::Node::Ptr node)
 		}
 		else if (node->is_node_type(AST::NodeType::Identifier)) {
 			std::string value = AST::cast_to<AST::Identifier>(node)->get_name();
-			replace_map_t::const_iterator search = m_replace_identifier.find(value);
-			if(search != m_replace_identifier.cend()) {
+			ReplaceMap::const_iterator search = m_replace_map.find(value);
+			if(search != m_replace_map.cend()) {
 				return search->second->clone();
 			}
 		}

@@ -34,7 +34,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0) {
 	module_stmt->pop_front();
 	AST::Node::Ptr rvalue2 = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
 	AST::Node::Ptr expr2 = AST::cast_to<AST::Rvalue>(rvalue2)->get_var();
-	Passes::Transformations::ExpressionEvaluation::replace_map_t map_id;
+	Passes::Transformations::ExpressionEvaluation::ReplaceMap map_id;
 	map_id["X"] = AST::cast_to<AST::Constant>(expr2);
 
 	// Y localparam

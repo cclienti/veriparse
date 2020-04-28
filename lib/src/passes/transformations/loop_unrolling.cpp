@@ -391,7 +391,7 @@ LoopUnrolling::RangePtr LoopUnrolling::get_for_range(const AST::ForStatement::Pt
 		return nullptr;
 	}
 
-	ExpressionEvaluation::replace_map_t replace_map;
+	ExpressionEvaluation::ReplaceMap replace_map;
 	replace_map[loop_pre_lvalue] = AST::cast_to<AST::Constant>(loop_pre_rvalue);
 
 	RangePtr range = std::make_shared<Range>();
@@ -471,7 +471,7 @@ AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::P
 }
 
 AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst,
-                                              const ExpressionEvaluation::replace_map_t &map)
+                                              const ExpressionEvaluation::ReplaceMap &map)
 {
 	const AST::Rvalue::Ptr rvalue = subst->get_right();
 	if(!rvalue) {
