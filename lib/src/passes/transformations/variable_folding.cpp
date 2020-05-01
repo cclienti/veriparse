@@ -4,12 +4,23 @@
 #include <veriparse/passes/transformations/constant_folding.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/logger/logger.hpp>
+#include <veriparse/AST/nodes.hpp>
 
 
 namespace Veriparse {
 namespace Passes {
 namespace Transformations {
 
+
+AST::Node::Ptr VariableFolding::get_state(const std::string &var_name)
+{
+	const auto &it = m_state_map.find(var_name);
+	if (it != m_state_map.end()) {
+		return it->second->clone();
+	}
+
+	return nullptr;
+}
 
 int VariableFolding::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
@@ -52,6 +63,11 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
 		case AST::NodeType::SingleStatement:
 			return execute_in_childs(node);
 
+		case AST::NodeType::Real:
+		case AST::NodeType::Reg:
+		case AST::NodeType::Integer:
+			return execute_variable_decl(AST::cast_to<AST::Variable>(node), parent);
+
 		case AST::NodeType::BlockingSubstitution:
 			return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node), parent);
 
@@ -88,7 +104,27 @@ int VariableFolding::execute_in_childs(AST::Node::Ptr node)
 	return ret;
 }
 
-int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst, AST::Node::Ptr parent)
+int VariableFolding::execute_variable_decl(AST::Variable::Ptr var, AST::Node::Ptr parent)
+{
+	if (!var->get_right()) {
+		return 0;
+	}
+
+	const auto &id = std::make_shared<AST::Identifier>(var->get_filename(), var->get_line());
+	id->set_name(var->get_name());
+
+	const auto &lvalue = std::make_shared<AST::Lvalue>(var->get_filename(), var->get_line());
+	lvalue->set_var(id);
+
+	const auto &subst = std::make_shared<AST::BlockingSubstitution>(var->get_filename(), var->get_line());
+	subst->set_left(lvalue);
+	subst->set_right(AST::cast_to<AST::Rvalue>(var->get_right()->clone()));
+
+	return execute_blocking_substitution(subst, parent);
+}
+
+int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst,
+                                                   AST::Node::Ptr parent)
 {
 	std::string lvalue_before = Generators::VerilogGenerator().render(subst->get_left());
 	std::string rvalue_before = Generators::VerilogGenerator().render(subst->get_right());
@@ -99,8 +135,10 @@ int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Pt
 	if(lvalue_str.empty() || const_node == nullptr)
 		return 0;
 
-	LOG_DEBUG_N(subst) << lvalue_before << " evaluated to " << lvalue_str;
-	LOG_DEBUG_N(subst) << rvalue_before << " evaluated to " << Generators::VerilogGenerator().render(const_node);
+	LOG_DEBUG_N(subst) << "[" << lvalue_before << " = " << rvalue_before
+	                   << "] evaluated to ["
+	                   << lvalue_str << " = " << Generators::VerilogGenerator().render(const_node)
+	                   << "]";
 
 	m_state_map[lvalue_str] = const_node;
 	subst->get_right()->set_var(const_node);

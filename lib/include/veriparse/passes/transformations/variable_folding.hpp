@@ -13,8 +13,12 @@ namespace Transformations {
 
 class VariableFolding: public TransformationBase
 {
-	typedef std::map<std::string, AST::Node::Ptr> StateMap;
+public:
+	using StateMap = std::map<std::string, AST::Node::Ptr>;
 
+	AST::Node::Ptr get_state(const std::string &var_name);
+
+private:
 	/**
 	 * @return zero on success
 	 */
@@ -36,6 +40,13 @@ class VariableFolding: public TransformationBase
 	 * @return zero on success
 	 */
 	virtual int execute_in_childs(AST::Node::Ptr node);
+
+	/**
+	 * @brief Walk through a variable declaration.
+	 *
+	 * @return zero on success
+	 */
+	virtual int execute_variable_decl(AST::Variable::Ptr var, AST::Node::Ptr parent);
 
 	/**
 	 * @brief Walk through a blocking substitution.
