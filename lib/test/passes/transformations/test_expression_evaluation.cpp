@@ -1,14 +1,16 @@
 #include "../../helpers/helpers.hpp"
-#include <veriparse/AST/nodes.hpp>
-#include <veriparse/parser/verilog.hpp>
+
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
+#include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/parser/verilog.hpp>
+#include <veriparse/AST/nodes.hpp>
+
 #include <gtest/gtest.h>
+
 
 using namespace Veriparse;
 
 static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
-
-
 
 
 TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0) {
