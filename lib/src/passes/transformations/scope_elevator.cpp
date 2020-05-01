@@ -1,8 +1,9 @@
-#include "veriparse/AST/identifier.hpp"
 #include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/ast_replace.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/misc/utils.hpp>
+#include <veriparse/AST/nodes.hpp>
+
 
 namespace Veriparse
 {
@@ -61,9 +62,9 @@ int ScopeElevator::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 	}
 
 	for (const auto &elt: m_global_replace_map) {
-		LOG_DEBUG << "Global Replace Map " << elt.first << " -> "
-		          << "Scope[" << render_scope_stack(elt.second.first) << "] "
-		          << "id [" << elt.second.second << "]";
+		LOG_DEBUG_N(node) << "Global Replace Map " << elt.first << " -> "
+		                  << "Scope[" << render_scope_stack(elt.second.first) << "] "
+		                  << "id [" << elt.second.second << "]";
 	}
 
 	m_scope_stack.clear();
@@ -82,15 +83,6 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
 		return 0;
 	}
 
-	if (Veriparse::Logger::debug_enabled()) {
-		if (m_scope_stack.empty()) {
-			LOG_DEBUG << "Current scope is empty";
-		}
-		else {
-			LOG_DEBUG << "Current scope: " << render_scope_stack(m_scope_stack);
-		}
-	}
-
 	auto recfct = [this](AST::Node::Ptr node, AST::Node::Ptr parent) -> int {
 		              return this->process_variables(node, parent);
 	              };
@@ -103,7 +95,10 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
 
 			if (!scope.empty()) {
 				m_scope_stack.push_back(scope);
+				LOG_DEBUG_N(node) << "Current scope: "
+				                  << render_scope_stack(m_scope_stack);
 			}
+
 
 			if (recurse_in_childs(node, recfct)) {
 				LOG_ERROR_N(node) << "Error during managing scope '" << scope << "'";
