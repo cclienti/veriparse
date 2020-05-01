@@ -29,6 +29,9 @@ Mechanics
 Functional
 ----------
 
+#. 2020-05-01: In variable folding, the state map should store not only the node value but also the
+   dimension of the variable to properly slice results.
+
 #. 2019-12-11: Create a pass to exchange identifier, taskcall to functioncall and vice-versa depending on what is really
    declared in the design. Sometimes the parser cannot know easily if it deals with an identifier, a function or a task
    identifier.
