@@ -26,6 +26,11 @@ public:
 	/**
 	 * Return all input, output and inout port nodes.
 	 */
+	static AST::Ioport::ListPtr get_ioport_nodes(AST::Node::Ptr node);
+
+	/**
+	 * Return all input, output and inout port nodes.
+	 */
 	static AST::IODir::ListPtr get_iodir_nodes(AST::Node::Ptr node);
 
 	/**
