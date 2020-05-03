@@ -1,6 +1,7 @@
 #ifndef VERIPARSE_PASSES_TRANSFORMATIONS_FUNCTION_EVALUATION
 #define VERIPARSE_PASSES_TRANSFORMATIONS_FUNCTION_EVALUATION
 
+#include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/AST/nodes.hpp>
 #include <map>
 #include <cstddef>
@@ -14,7 +15,7 @@ namespace Transformations {
 class FunctionEvaluation
 {
 public:
-	using FunctionMap = std::map<std::string, AST::Function::Ptr>;
+	using FunctionMap = Analysis::Module::FunctionMap;
 
 	FunctionEvaluation() = default;
 
