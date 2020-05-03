@@ -80,7 +80,7 @@ AST::Node::Ptr FunctionEvaluation::evaluate(const AST::FunctionCall::Ptr &functi
 
 	ScopeElevator().run(initial);
 
-	VariableFolding variable_folding;
+	VariableFolding variable_folding(function_map);
 	variable_folding.run(initial);
 
 	bool res_found;
