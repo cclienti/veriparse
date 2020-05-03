@@ -1,80 +1,72 @@
-Source:
-  description:
-    Description:
-      definitions:
-      - Module:
-          default_nettype: WIRE
+Module:
+  default_nettype: WIRE
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+  items:
+  - Reg:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+      line: 2
+      name: invert
+      right:
+        Rvalue: null
+      sign: false
+      widths:
+      - Width:
           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-          items:
-          - Reg:
+          line: 2
+          lsb:
+            IntConstN:
+              base: 10
               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
               line: 2
-              name: invert
-              right:
-                Rvalue: null
               sign: false
-              widths:
-              - Width:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                  line: 2
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                      line: 2
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                      line: 2
-                      sign: false
-                      size: -1
-                      value: 31
-          - Initial:
+              size: -1
+              value: 0
+          msb:
+            IntConstN:
+              base: 10
               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-              line: 4
-              statement:
-                Block:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                  line: 4
-                  scope: ''
-                  statements:
-                  - BlockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                      ldelay:
-                        DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                          line: 5
-                          var:
-                            Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                              line: 5
-                              name: invert
-                              scope:
-                                IdentifierScope: null
-                      line: 5
-                      rdelay:
-                        DelayStatement: null
-                      right:
-                        Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-                          line: 5
-                          var:
-                            IntConstN:
-                              base: 16
-                              filename: ''
-                              line: 0
-                              sign: false
-                              size: 32
-                              value: -1
-          line: 1
-          name: constant_folding1
+              line: 2
+              sign: false
+              size: -1
+              value: 31
+  - Initial:
       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
-      line: 1
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+      line: 4
+      statement:
+        Block:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+          line: 4
+          scope: ''
+          statements:
+          - BlockingSubstitution:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+                  line: 5
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+                      line: 5
+                      name: invert
+                      scope:
+                        IdentifierScope: null
+              line: 5
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/constant_folding1.v
+                  line: 5
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: 32
+                      value: -1
   line: 1
+  name: constant_folding1

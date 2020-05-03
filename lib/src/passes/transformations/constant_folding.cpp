@@ -9,14 +9,21 @@ namespace Passes {
 namespace Transformations {
 
 
-int ConstantFolding::process(AST::Node::Ptr node, AST::Node::Ptr parent) {
-	if (node) {
+ConstantFolding::ConstantFolding(const FunctionMap &function_map) :
+	m_function_map (function_map)
+{
+}
 
-		if(!node->is_node_category(AST::NodeType::Constant)) {
-			AST::Node::Ptr expr = ExpressionEvaluation().evaluate_node(node);
-			if(expr) {
-				parent->replace(node, expr);
-			}
+int ConstantFolding::process(AST::Node::Ptr node, AST::Node::Ptr parent)
+{
+	if (!node) {
+		return 0;
+	}
+
+	if (!node->is_node_category(AST::NodeType::Constant)) {
+		const auto &expr = ExpressionEvaluation(m_function_map).evaluate_node(node);
+		if (expr) {
+			parent->replace(node, expr);
 		}
 	}
 
