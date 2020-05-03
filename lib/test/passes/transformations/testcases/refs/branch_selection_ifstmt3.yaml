@@ -1,72 +1,63 @@
-Source:
-  description:
-    Description:
-      definitions:
-      - Module:
-          default_nettype: WIRE
+Module:
+  default_nettype: WIRE
+  filename: ../../test/passes/transformations/testcases/ifstmt3.v
+  items:
+  - Initial:
+      filename: ../../test/passes/transformations/testcases/ifstmt3.v
+      line: 3
+      statement:
+        Block:
           filename: ../../test/passes/transformations/testcases/ifstmt3.v
-          items:
-          - Initial:
+          line: 3
+          scope: ''
+          statements:
+          - SingleStatement:
+              delay:
+                DelayStatement: null
               filename: ../../test/passes/transformations/testcases/ifstmt3.v
-              line: 3
+              line: 5
+              scope: ''
               statement:
-                Block:
-                  filename: ../../test/passes/transformations/testcases/ifstmt3.v
-                  line: 3
-                  scope: ''
-                  statements:
-                  - SingleStatement:
-                      delay:
-                        DelayStatement: null
+                SystemCall:
+                  args:
+                  - StringConst:
                       filename: ../../test/passes/transformations/testcases/ifstmt3.v
                       line: 5
-                      scope: ''
-                      statement:
-                        SystemCall:
-                          args:
-                          - StringConst:
-                              filename: ../../test/passes/transformations/testcases/ifstmt3.v
-                              line: 5
-                              value: 1
-                          filename: ../../test/passes/transformations/testcases/ifstmt3.v
-                          line: 5
-                          syscall: display
-                  - SingleStatement:
-                      delay:
-                        DelayStatement: null
+                      value: 1
+                  filename: ../../test/passes/transformations/testcases/ifstmt3.v
+                  line: 5
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: ../../test/passes/transformations/testcases/ifstmt3.v
+              line: 7
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
                       filename: ../../test/passes/transformations/testcases/ifstmt3.v
                       line: 7
-                      scope: ''
-                      statement:
-                        SystemCall:
-                          args:
-                          - StringConst:
-                              filename: ../../test/passes/transformations/testcases/ifstmt3.v
-                              line: 7
-                              value: 2
-                          filename: ../../test/passes/transformations/testcases/ifstmt3.v
-                          line: 7
-                          syscall: display
-                  - SingleStatement:
-                      delay:
-                        DelayStatement: null
+                      value: 2
+                  filename: ../../test/passes/transformations/testcases/ifstmt3.v
+                  line: 7
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: ../../test/passes/transformations/testcases/ifstmt3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
                       filename: ../../test/passes/transformations/testcases/ifstmt3.v
                       line: 12
-                      scope: ''
-                      statement:
-                        SystemCall:
-                          args:
-                          - StringConst:
-                              filename: ../../test/passes/transformations/testcases/ifstmt3.v
-                              line: 12
-                              value: 3
-                          filename: ../../test/passes/transformations/testcases/ifstmt3.v
-                          line: 12
-                          syscall: display
-          line: 1
-          name: ifstmt3
-      filename: ../../test/passes/transformations/testcases/ifstmt3.v
-      line: 1
-  filename: ../../test/passes/transformations/testcases/ifstmt3.v
+                      value: 3
+                  filename: ../../test/passes/transformations/testcases/ifstmt3.v
+                  line: 12
+                  syscall: display
   line: 1
-
+  name: ifstmt3

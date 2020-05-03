@@ -1,40 +1,31 @@
-Source:
-  description:
-    Description:
-      definitions:
-      - Module:
-          default_nettype: WIRE
+Module:
+  default_nettype: WIRE
+  filename: ../../test/passes/transformations/testcases/case2.v
+  items:
+  - Initial:
+      filename: ../../test/passes/transformations/testcases/case2.v
+      line: 3
+      statement:
+        Block:
           filename: ../../test/passes/transformations/testcases/case2.v
-          items:
-          - Initial:
+          line: 3
+          scope: ''
+          statements:
+          - SingleStatement:
+              delay:
+                DelayStatement: null
               filename: ../../test/passes/transformations/testcases/case2.v
-              line: 3
+              line: 11
+              scope: ''
               statement:
-                Block:
-                  filename: ../../test/passes/transformations/testcases/case2.v
-                  line: 3
-                  scope: ''
-                  statements:
-                  - SingleStatement:
-                      delay:
-                        DelayStatement: null
+                SystemCall:
+                  args:
+                  - StringConst:
                       filename: ../../test/passes/transformations/testcases/case2.v
                       line: 11
-                      scope: ''
-                      statement:
-                        SystemCall:
-                          args:
-                          - StringConst:
-                              filename: ../../test/passes/transformations/testcases/case2.v
-                              line: 11
-                              value: 4
-                          filename: ../../test/passes/transformations/testcases/case2.v
-                          line: 11
-                          syscall: display
-          line: 1
-          name: case2
-      filename: ../../test/passes/transformations/testcases/case2.v
-      line: 1
-  filename: ../../test/passes/transformations/testcases/case2.v
+                      value: 4
+                  filename: ../../test/passes/transformations/testcases/case2.v
+                  line: 11
+                  syscall: display
   line: 1
-
+  name: case2
