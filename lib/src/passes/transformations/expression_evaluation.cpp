@@ -143,6 +143,7 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_node(const AST::Node::Ptr node)
 				const auto &fcall = AST::cast_to<AST::FunctionCall>(node);
 				return FunctionEvaluation().evaluate(fcall, m_function_map);
 			}
+			LOG_DEBUG_N(node) << "No function definition given to evaluate expression";
 		}
 	}
 	return nullptr;

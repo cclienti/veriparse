@@ -12,13 +12,20 @@ namespace Passes {
 namespace Transformations {
 
 
-AST::Node::Ptr VariableFolding::get_state(const std::string &var_name)
+VariableFolding::VariableFolding(const FunctionMap &function_map):
+	m_function_map(function_map)
+{
+}
+
+AST::Node::Ptr VariableFolding::get_state(const std::string &var_name, bool &matched)
 {
 	const auto &it = m_state_map.find(var_name);
 	if (it != m_state_map.end()) {
+		matched = true;
 		return it->second->clone();
 	}
 
+	matched = false;
 	return nullptr;
 }
 
@@ -357,7 +364,7 @@ int VariableFolding::execute_call(AST::Node::Ptr node, AST::Node::Ptr parent)
 	if(args) {
 		for(auto arg: *args) {
 			ASTReplace::replace_identifier(arg, m_state_map, node);
-			auto expr = ExpressionEvaluation().evaluate_node(arg);
+			auto expr = ExpressionEvaluation(m_function_map).evaluate_node(arg);
 			if(expr) {
 				node->replace(arg, expr);
 			}
@@ -370,7 +377,7 @@ int VariableFolding::execute_call(AST::Node::Ptr node, AST::Node::Ptr parent)
 AST::Node::Ptr VariableFolding::analyze_rvalue(AST::Rvalue::Ptr rvalue)
 {
 	ASTReplace::replace_identifier(AST::to_node(rvalue), m_state_map);
-	AST::Node::Ptr expr = ExpressionEvaluation().evaluate_node(rvalue->get_var());
+	AST::Node::Ptr expr = ExpressionEvaluation(m_function_map).evaluate_node(rvalue->get_var());
 	return expr;
 }
 

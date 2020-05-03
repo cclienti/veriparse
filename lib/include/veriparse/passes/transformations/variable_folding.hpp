@@ -1,8 +1,9 @@
 #ifndef VERIPARSE_PASSES_TRANSFORMATIONS_VARIABLE_FOLDING
 #define VERIPARSE_PASSES_TRANSFORMATIONS_VARIABLE_FOLDING
 
-#include <veriparse/AST/nodes.hpp>
+#include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
+#include <veriparse/AST/nodes.hpp>
 #include <string>
 #include <map>
 
@@ -15,8 +16,13 @@ class VariableFolding: public TransformationBase
 {
 public:
 	using StateMap = std::map<std::string, AST::Node::Ptr>;
+	using FunctionMap = Analysis::Module::FunctionMap;
 
-	AST::Node::Ptr get_state(const std::string &var_name);
+	VariableFolding() = default;
+
+	VariableFolding(const FunctionMap &function_map);
+
+	AST::Node::Ptr get_state(const std::string &var_name, bool &matched);
 
 private:
 	/**
@@ -117,7 +123,7 @@ private:
 
 private:
 	StateMap m_state_map;
-
+	FunctionMap m_function_map;
 };
 
 }

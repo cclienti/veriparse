@@ -83,7 +83,17 @@ AST::Node::Ptr FunctionEvaluation::evaluate(const AST::FunctionCall::Ptr &functi
 	VariableFolding variable_folding;
 	variable_folding.run(initial);
 
-	return variable_folding.get_state(function_name);
+	bool res_found;
+	const auto &result = variable_folding.get_state(function_name, res_found);
+
+	if (res_found) {
+		return result;
+	}
+
+	LOG_WARNING_N(function_copy) << "No result found to replace function call line "
+	                             << function_call->get_line();
+
+	return nullptr;
 };
 
 
