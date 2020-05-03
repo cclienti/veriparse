@@ -1,4 +1,5 @@
 #include "../../helpers/helpers.hpp"
+#include "veriparse/passes/analysis/function.hpp"
 
 #include <veriparse/passes/transformations/function_evaluation.hpp>
 #include <veriparse/passes/analysis/module.hpp>
@@ -35,14 +36,9 @@ TEST(PassesTransformation_FunctionEvaluation, function2)
 	ASSERT_TRUE(functioncalls->size() == 1);
 	const auto &functioncall = functioncalls->front();
 
-	/* List all function declarations */
-	AST::Function::ListPtr functions =
-		Passes::Analysis::Module::get_function_nodes(modules_map[test_name]);
-
-	Passes::Transformations::FunctionEvaluation::FunctionMap function_map;
-	for (const auto &function: *functions) {
-		function_map[function->get_name()] = function;
-	}
+	/* Get the map of function definitions */
+	Passes::Analysis::Module::FunctionMap function_map;
+	Passes::Analysis::Module::get_function_dictionary(modules_map[test_name], function_map);
 
 	/* Process the function call */
 	Passes::Transformations::FunctionEvaluation function_eval(1);

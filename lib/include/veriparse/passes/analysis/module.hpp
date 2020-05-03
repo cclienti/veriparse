@@ -1,6 +1,7 @@
 #ifndef VERIPARSE_PASSES_ANALYSIS_MODULE
 #define VERIPARSE_PASSES_ANALYSIS_MODULE
 
+#include "veriparse/AST/function.hpp"
 #include <vector>
 #include <map>
 #include <string>
@@ -21,6 +22,7 @@ public:
 	Module() = delete;
 
 	using ModulesMap = std::map<std::string, AST::Module::Ptr>;
+	using FunctionMap = std::map<std::string, AST::Function::Ptr>;
 
 	/**
 	 * @brief Fill the map with all modules found in the
@@ -89,6 +91,24 @@ public:
 	 * @brief Return all localparams names.
 	 */
 	static std::vector<std::string> get_localparam_names(AST::Node::Ptr node);
+
+	/**
+	 * @brief Fill the map with all function definitions found in the
+	 * nodes.
+	 *
+	 * The key will be the function name string and the value
+	 * the function definition AST.
+	 */
+	static int get_function_dictionary(const AST::Node::ListPtr &node_list, FunctionMap &function_map);
+
+	/**
+	 * @brief Fill the map with all function definitions found in the
+	 * node.
+	 *
+	 * The key will be the function name string and the value
+	 * the function definition AST.
+	 */
+	static int get_function_dictionary(const AST::Node::Ptr &node, FunctionMap &function_map);
 
 	/**
 	 * @brief Return all functions nodes.

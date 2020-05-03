@@ -43,7 +43,6 @@ int Module::get_module_dictionary(const AST::Node::Ptr &node, ModulesMap &module
 	return 0;
 }
 
-
 AST::Node::ListPtr Module::get_port_nodes(AST::Node::Ptr node)
 {
 	const auto &modules = get_module_nodes(node);
@@ -146,6 +145,40 @@ std::vector<std::string> Module::get_localparam_names(AST::Node::Ptr node)
 }
 
 
+int Module::get_function_dictionary(const AST::Node::ListPtr &node_list, FunctionMap &function_map)
+{
+	if (!node_list) {
+		return 1;
+	}
+
+	for (const auto &node: *node_list) {
+		if (get_function_dictionary(node, function_map)) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+int Module::get_function_dictionary(const AST::Node::Ptr &node, FunctionMap &function_map)
+{
+	if (!node) {
+		return 0;
+	}
+
+	const auto &functions = get_function_nodes(node);
+	for (const auto &function: *functions) {
+		const auto &fct_name = function->get_name();
+		if (function_map.count(fct_name) != 0)	{
+			LOG_ERROR_N(function) << "function " << fct_name << " already declared";
+			LOG_ERROR_N(function_map[fct_name]) << "function " << fct_name << " was firstly found here";
+			return 1;
+		}
+		function_map.emplace(fct_name, function);
+	}
+
+	return 0;
+}
 
 AST::Function::ListPtr Module::get_function_nodes(AST::Node::Ptr node)
 {
