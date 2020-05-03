@@ -1,8 +1,10 @@
 #ifndef VERIPARSE_PASSES_TRANSFORMATIONS_EXPRESSION_EVALUATION
 #define VERIPARSE_PASSES_TRANSFORMATIONS_EXPRESSION_EVALUATION
 
+#include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/AST/nodes.hpp>
 #include <map>
+
 
 namespace Veriparse {
 namespace Passes {
@@ -20,7 +22,7 @@ public:
 	 * Map to get the function that corresponds to the function call
 	 * found during expression evaluations.
 	 */
-	using FunctionMap = std::map<std::string, AST::Function::Ptr>;
+	using FunctionMap = Analysis::Module::FunctionMap;
 
 
 public:
@@ -35,6 +37,12 @@ public:
 	 * string name) with the corresponding constant node.
 	 */
 	ExpressionEvaluation(const ReplaceMap &replace_map);
+
+	/**
+	 * Construct the ExpressionEvaluation and pass a map that
+	 * will be used to process function call in expressions.
+	 */
+	ExpressionEvaluation(const FunctionMap &function_map);
 
 	/**
 	 * Construct the ExpressionEvaluation and pass a replace map that

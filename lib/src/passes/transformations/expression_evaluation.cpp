@@ -1,13 +1,13 @@
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
+#include <veriparse/passes/transformations/function_evaluation.hpp>
 #include <veriparse/passes/transformations/expression_operators.hpp>
 #include <veriparse/passes/transformations/expression_operators_dispatcher.hpp>
 #include <veriparse/logger/logger.hpp>
+#include <veriparse/AST/nodes.hpp>
 
 #include <algorithm>
 #include <iterator>
 #include <functional>
-
-
 
 
 namespace Veriparse {
@@ -18,6 +18,9 @@ ExpressionEvaluation::ExpressionEvaluation()	{}
 
 ExpressionEvaluation::ExpressionEvaluation(const ReplaceMap &replace_map):
 	m_replace_map(replace_map) {}
+
+ExpressionEvaluation::ExpressionEvaluation(const FunctionMap &function_map):
+	m_function_map(function_map) {}
 
 ExpressionEvaluation::ExpressionEvaluation(const ReplaceMap &replace_map,
                                            const FunctionMap &function_map):
@@ -133,6 +136,12 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_node(const AST::Node::Ptr node)
 			ReplaceMap::const_iterator search = m_replace_map.find(value);
 			if(search != m_replace_map.cend()) {
 				return search->second->clone();
+			}
+		}
+		else if (node->is_node_type(AST::NodeType::FunctionCall)) {
+			if (!m_function_map.empty()) {
+				const auto &fcall = AST::cast_to<AST::FunctionCall>(node);
+				return FunctionEvaluation().evaluate(fcall, m_function_map);
 			}
 		}
 	}
