@@ -141,6 +141,18 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_node(const AST::Node::Ptr node)
 		else if (node->is_node_type(AST::NodeType::FunctionCall)) {
 			if (!m_function_map.empty()) {
 				const auto &fcall = AST::cast_to<AST::FunctionCall>(node);
+				const auto &fcall_copy = AST::cast_to<AST::FunctionCall>(node->clone());
+				const auto &fargs = fcall->get_args();
+				if (fargs) {
+					const auto &fargs_resolved = std::make_shared<AST::Node::List>();
+					for (const auto &farg: *fargs) {
+						const auto &resolved = evaluate_node(farg);
+						if (!resolved) return nullptr;
+						fargs_resolved->push_back(resolved);
+					}
+					fcall_copy->set_args(fargs_resolved);
+					return FunctionEvaluation().evaluate(fcall_copy, m_function_map);
+				}
 				return FunctionEvaluation().evaluate(fcall, m_function_map);
 			}
 			LOG_DEBUG_N(node) << "No function definition given to evaluate expression";
