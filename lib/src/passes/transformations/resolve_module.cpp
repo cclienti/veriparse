@@ -10,6 +10,7 @@
 #include <veriparse/passes/transformations/variable_folding.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
 #include <veriparse/passes/transformations/module_instance_normalizer.hpp>
+#include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
 
@@ -37,6 +38,11 @@ ResolveModule::ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
 
 int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
+	Analysis::Module::FunctionMap function_map;
+	if (Analysis::Module::get_function_dictionary(node, function_map)) {
+		return 1;
+	}
+
 	if (ModuleIONormalizer().run(node)) {
 		LOG_ERROR_N(node) << "Failed to normalized module I/Os";
 		return 1;
@@ -52,7 +58,7 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 		return 1;
 	}
 
-	if (ConstantFolding().run(node)) {
+	if (ConstantFolding(function_map).run(node)) {
 		LOG_ERROR_N(node) << "Failed to fold constants";
 		return 1;
 	}
@@ -67,7 +73,7 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 		return 1;
 	}
 
-	if (BranchSelection().run(node)) {
+	if (BranchSelection(function_map).run(node)) {
 		LOG_ERROR_N(node) << "Failed to select branches";
 		return 1;
 	}
@@ -77,12 +83,12 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 		return 1;
 	}
 
-	if (ConstantFolding().run(node)) {
+	if (ConstantFolding(function_map).run(node)) {
 		LOG_ERROR_N(node) << "Failed to fold constants";
 		return 1;
 	}
 
-	if (VariableFolding().run(node)) {
+	if (VariableFolding(function_map).run(node)) {
 		LOG_ERROR_N(node) << "Failed to fold variables";
 		return 1;
 	}
