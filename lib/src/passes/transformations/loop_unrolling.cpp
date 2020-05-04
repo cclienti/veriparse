@@ -45,6 +45,11 @@ std::string print_for_range(const Range &for_range)
 }
 
 
+LoopUnrolling::LoopUnrolling(const FunctionMap &function_map) :
+	m_function_map(function_map)
+{
+}
+
 int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
 	int ret;
@@ -188,7 +193,7 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 			scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
 		}
 
-		AST::Node::Ptr times_node = ExpressionEvaluation().evaluate_node(repeat_node->get_times());
+		AST::Node::Ptr times_node = ExpressionEvaluation(m_function_map).evaluate_node(repeat_node->get_times());
 		if(times_node && times_node->is_node_type(AST::NodeType::IntConstN)) {
 			AST::IntConstN::Ptr times = AST::cast_to<AST::IntConstN>(times_node);
 
@@ -366,15 +371,6 @@ LoopUnrolling::RangePtr LoopUnrolling::get_for_range(const AST::ForStatement::Pt
 		return nullptr;
 	}
 
-	AST::Node::Ptr loop_pre_rvalue = LoopUnrolling::get_cond_rvalue(pre_subst);
-	if(!loop_pre_rvalue) {
-		return nullptr;
-	}
-	if(!loop_pre_rvalue->is_node_category(AST::NodeType::Constant)) {
-		LOG_WARNING_N(for_node) << "pre-condition rvalue is not constant, could not unroll loop";
-		return nullptr;
-	}
-
 	const std::string loop_post_lvalue = LoopUnrolling::get_cond_lvalue(post_subst);
 	if(!loop_post_lvalue.size()) {
 		return nullptr;
@@ -386,8 +382,16 @@ LoopUnrolling::RangePtr LoopUnrolling::get_for_range(const AST::ForStatement::Pt
 		return nullptr;
 	}
 
+	AST::Node::Ptr loop_pre_rvalue =
+		ExpressionEvaluation(m_function_map).evaluate_node(LoopUnrolling::get_cond_rvalue(pre_subst));
+	if(!loop_pre_rvalue) {
+		LOG_WARNING_N(for_node) << "pre-condition rvalue is not constant, could not unroll loop";
+		return nullptr;
+	}
+
 	AST::Node::Ptr loop_post_rvalue = LoopUnrolling::get_cond_rvalue(post_subst);
 	if(!loop_post_rvalue) {
+		LOG_WARNING_N(for_node) << "no post condition given, could not unroll loop";
 		return nullptr;
 	}
 
@@ -397,8 +401,8 @@ LoopUnrolling::RangePtr LoopUnrolling::get_for_range(const AST::ForStatement::Pt
 	RangePtr range = std::make_shared<Range>();
 	range->first = loop_pre_lvalue;
 
-	while(true) {
-		AST::Node::Ptr cond_eval = ExpressionEvaluation(replace_map).evaluate_node(loop_cond);
+	while (true) {
+		AST::Node::Ptr cond_eval = ExpressionEvaluation(replace_map, m_function_map).evaluate_node(loop_cond);
 		if(!cond_eval) {
 			LOG_WARNING_N(for_node) << "could not evaluate condition, loop not unrolled";
 			return nullptr;
@@ -421,7 +425,7 @@ LoopUnrolling::RangePtr LoopUnrolling::get_for_range(const AST::ForStatement::Pt
 
 		if(cond) {
 			range->second.push_back(replace_map[loop_pre_lvalue]);
-			AST::Node::Ptr eval = ExpressionEvaluation(replace_map).evaluate_node(loop_post_rvalue);
+			AST::Node::Ptr eval = ExpressionEvaluation(replace_map, m_function_map).evaluate_node(loop_post_rvalue);
 			if(!eval) {
 				LOG_WARNING_N(for_node) << "could not evaluate post-condition, loop not unrolled";
 				return nullptr;
@@ -464,21 +468,10 @@ AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::P
 {
 	const AST::Rvalue::Ptr rvalue = subst->get_right();
 	if(!rvalue) {
+		LOG_WARNING_N(subst) << "Rvalue is empty";
 		return nullptr;
 	}
-
 	return rvalue->get_var();
-}
-
-AST::Node::Ptr LoopUnrolling::get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst,
-                                              const ExpressionEvaluation::ReplaceMap &map)
-{
-	const AST::Rvalue::Ptr rvalue = subst->get_right();
-	if(!rvalue) {
-		return nullptr;
-	}
-
-	return ExpressionEvaluation(map).evaluate_node(rvalue->get_var());
 }
 
 }

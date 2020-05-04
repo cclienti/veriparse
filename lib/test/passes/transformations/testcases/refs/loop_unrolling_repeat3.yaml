@@ -1,0 +1,287 @@
+Module:
+  default_nettype: WIRE
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+  items:
+  - Function:
+      automatic: false
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+      line: 3
+      name: myfunc
+      ports:
+      - Ioport:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+          first:
+            Input:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 3
+              name: value
+              sign: true
+          line: 3
+          second:
+            Integer:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 3
+              name: value
+              right:
+                Rvalue: null
+      retsign: true
+      rettype: INTEGER
+      statements:
+      - Block:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+          line: 4
+          scope: ''
+          statements:
+          - BlockingSubstitution:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 5
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 5
+                      name: myfunc
+                      scope:
+                        IdentifierScope: null
+              line: 5
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 5
+                  var:
+                    Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                          line: 5
+                          name: value
+                          scope:
+                            IdentifierScope: null
+                      line: 5
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 2
+          - BlockingSubstitution:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 6
+                      name: myfunc
+                      scope:
+                        IdentifierScope: null
+              line: 6
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 6
+                  var:
+                    Minus:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                          line: 6
+                          name: myfunc
+                          scope:
+                            IdentifierScope: null
+                      line: 6
+                      right:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                          line: 6
+                          name: value
+                          scope:
+                            IdentifierScope: null
+  - Initial:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+      line: 10
+      statement:
+        Block:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+          line: 10
+          scope: ''
+          statements:
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+          - SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+              line: 12
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                      line: 12
+                      value: repeat!
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/repeat3.v
+                  line: 12
+                  syscall: display
+  line: 1
+  name: repeat3
+

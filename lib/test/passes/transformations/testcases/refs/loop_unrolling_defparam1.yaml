@@ -1,312 +1,248 @@
-Source:
-  description:
-    Description:
-      definitions:
-      - Module:
-          default_nettype: WIRE
+Module:
+  default_nettype: WIRE
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+  items:
+  - Genvar:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+      line: 11
+      name: i
+  - GenerateStatement:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+      items:
+      - Instancelist:
           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-          items:
-          - Parameter:
+          instances:
+          - Instance:
+              array:
+                Length: null
               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-              line: 2
-              name: X
-              sign: false
-              type: NONE
-              value:
+              line: 15
+              module: parametrized
+              name: modinst_i_0
+          line: 15
+          module: parametrized
+      - Instancelist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          instances:
+          - Instance:
+              array:
+                Length: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+              line: 15
+              module: parametrized
+              name: modinst_i_1
+          line: 15
+          module: parametrized
+      - Instancelist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          instances:
+          - Instance:
+              array:
+                Length: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+              line: 15
+              module: parametrized
+              name: modinst_i_2
+          line: 15
+          module: parametrized
+      - Instancelist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          instances:
+          - Instance:
+              array:
+                Length: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+              line: 15
+              module: parametrized
+              name: modinst_i_3
+          line: 15
+          module: parametrized
+      - Instancelist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          instances:
+          - Instance:
+              array:
+                Length: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+              line: 15
+              module: parametrized
+              name: modinst_i_4
+          line: 15
+          module: parametrized
+      line: 13
+  - GenerateStatement:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+      items:
+      - Defparamlist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          line: 21
+          list:
+          - Defparam:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+              identifier:
+                Identifier:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  name: X
+                  scope:
+                    IdentifierScope:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                      labellist:
+                      - IdentifierScopeLabel:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                          line: 21
+                          loop: null
+                          scope: modinst_i_0
+                      line: 21
+              line: 21
+              right:
                 Rvalue:
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  line: 2
+                  line: 21
                   var:
                     IntConstN:
                       base: 10
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      line: 2
+                      line: 20
                       sign: false
                       size: -1
                       value: 0
-          - Initial:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-              line: 4
-              statement:
-                Block:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  line: 4
-                  scope: ''
-                  statements:
-                  - SingleStatement:
-                      delay:
-                        DelayStatement: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      line: 5
-                      scope: ''
-                      statement:
-                        SystemCall:
-                          args:
-                          - StringConst:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              line: 5
-                              value: X=%0d
-                          - Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              line: 5
-                              name: X
-                              scope:
-                                IdentifierScope: null
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 5
-                          syscall: display
-          line: 1
-          name: parametrized
-      - Module:
-          default_nettype: WIRE
+      - Defparamlist:
           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-          items:
-          - Genvar:
+          line: 21
+          list:
+          - Defparam:
               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-              line: 11
-              name: i
-          - GenerateStatement:
+              identifier:
+                Identifier:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  name: X
+                  scope:
+                    IdentifierScope:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                      labellist:
+                      - IdentifierScopeLabel:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                          line: 21
+                          loop: null
+                          scope: modinst_i_1
+                      line: 21
+              line: 21
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 1
+      - Defparamlist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          line: 21
+          list:
+          - Defparam:
               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-              items:
-              - Instancelist:
+              identifier:
+                Identifier:
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  instances:
-                  - Instance:
-                      array:
-                        Length: null
+                  line: 21
+                  name: X
+                  scope:
+                    IdentifierScope:
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      line: 15
-                      module: parametrized
-                      name: modinst_i_0
-                  line: 15
-                  module: parametrized
-              - Instancelist:
+                      labellist:
+                      - IdentifierScopeLabel:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+                          line: 21
+                          loop: null
+                          scope: modinst_i_2
+                      line: 21
+              line: 21
+              right:
+                Rvalue:
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  instances:
-                  - Instance:
-                      array:
-                        Length: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      line: 15
-                      module: parametrized
-                      name: modinst_i_1
-                  line: 15
-                  module: parametrized
-              - Instancelist:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  instances:
-                  - Instance:
-                      array:
-                        Length: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      line: 15
-                      module: parametrized
-                      name: modinst_i_2
-                  line: 15
-                  module: parametrized
-              - Instancelist:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  instances:
-                  - Instance:
-                      array:
-                        Length: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      line: 15
-                      module: parametrized
-                      name: modinst_i_3
-                  line: 15
-                  module: parametrized
-              - Instancelist:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  instances:
-                  - Instance:
-                      array:
-                        Length: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      line: 15
-                      module: parametrized
-                      name: modinst_i_4
-                  line: 15
-                  module: parametrized
-              line: 13
-          - GenerateStatement:
+                  line: 21
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 2
+      - Defparamlist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          line: 21
+          list:
+          - Defparam:
               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-              items:
-              - Defparamlist:
+              identifier:
+                Identifier:
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
                   line: 21
-                  list:
-                  - Defparam:
+                  name: X
+                  scope:
+                    IdentifierScope:
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      identifier:
-                        Identifier:
+                      labellist:
+                      - IdentifierScopeLabel:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
                           line: 21
-                          name: X
-                          scope:
-                            IdentifierScope:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              labellist:
-                              - IdentifierScopeLabel:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                                  line: 21
-                                  loop: null
-                                  scope: modinst_i_0
-                              line: 21
+                          loop: null
+                          scope: modinst_i_3
                       line: 21
-                      right:
-                        Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              line: 20
-                              sign: false
-                              size: -1
-                              value: 0
-              - Defparamlist:
+              line: 21
+              right:
+                Rvalue:
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
                   line: 21
-                  list:
-                  - Defparam:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      identifier:
-                        Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          name: X
-                          scope:
-                            IdentifierScope:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              labellist:
-                              - IdentifierScopeLabel:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                                  line: 21
-                                  loop: null
-                                  scope: modinst_i_1
-                              line: 21
-                      line: 21
-                      right:
-                        Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ''
-                              line: 0
-                              sign: false
-                              size: -1
-                              value: 1
-              - Defparamlist:
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+      - Defparamlist:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+          line: 21
+          list:
+          - Defparam:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
+              identifier:
+                Identifier:
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
                   line: 21
-                  list:
-                  - Defparam:
+                  name: X
+                  scope:
+                    IdentifierScope:
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      identifier:
-                        Identifier:
+                      labellist:
+                      - IdentifierScopeLabel:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
                           line: 21
-                          name: X
-                          scope:
-                            IdentifierScope:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              labellist:
-                              - IdentifierScopeLabel:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                                  line: 21
-                                  loop: null
-                                  scope: modinst_i_2
-                              line: 21
+                          loop: null
+                          scope: modinst_i_4
                       line: 21
-                      right:
-                        Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ''
-                              line: 0
-                              sign: false
-                              size: -1
-                              value: 2
-              - Defparamlist:
+              line: 21
+              right:
+                Rvalue:
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
                   line: 21
-                  list:
-                  - Defparam:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      identifier:
-                        Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          name: X
-                          scope:
-                            IdentifierScope:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              labellist:
-                              - IdentifierScopeLabel:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                                  line: 21
-                                  loop: null
-                                  scope: modinst_i_3
-                              line: 21
-                      line: 21
-                      right:
-                        Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ''
-                              line: 0
-                              sign: false
-                              size: -1
-                              value: 3
-              - Defparamlist:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                  line: 21
-                  list:
-                  - Defparam:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                      identifier:
-                        Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          name: X
-                          scope:
-                            IdentifierScope:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                              labellist:
-                              - IdentifierScopeLabel:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                                  line: 21
-                                  loop: null
-                                  scope: modinst_i_4
-                              line: 21
-                      line: 21
-                      right:
-                        Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-                          line: 21
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ''
-                              line: 0
-                              sign: false
-                              size: -1
-                              value: 4
-              line: 19
-          line: 10
-          name: defparam1
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-      line: 1
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam1.v
-  line: 1
-
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 4
+      line: 19
+  line: 10
+  name: defparam1

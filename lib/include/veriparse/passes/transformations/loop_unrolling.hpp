@@ -1,10 +1,11 @@
 #ifndef VERIPARSE_PASSES_TRANSFORMATIONS_LOOP_UNROLLING
 #define VERIPARSE_PASSES_TRANSFORMATIONS_LOOP_UNROLLING
 
-#include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
+#include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/AST/nodes.hpp>
 
 #include <string>
 #include <memory>
@@ -22,6 +23,13 @@ private:
 	using Range = std::pair<std::string, std::vector<AST::Node::Ptr>>;
 	using RangePtr = std::shared_ptr<Range>;
 	using ScopeMap = std::map<std::string, std::string>;
+	using FunctionMap = Analysis::Module::FunctionMap;
+
+public:
+	LoopUnrolling() = default;
+
+	LoopUnrolling(const FunctionMap &function_map);
+
 
 private:
 	/**
@@ -69,7 +77,7 @@ private:
 	 *
 	 * @return The range pointer.
 	 */
-	static RangePtr get_for_range(const AST::ForStatement::Ptr &for_node);
+	RangePtr get_for_range(const AST::ForStatement::Ptr &for_node);
 
 	/**
 	 * @brief Return the lvalue identifier name of a blocking
@@ -77,26 +85,19 @@ private:
 	 *
 	 * @return non-empty string on success.
 	 */
-	static std::string get_cond_lvalue(const AST::BlockingSubstitution::Ptr &subst);
+	std::string get_cond_lvalue(const AST::BlockingSubstitution::Ptr &subst);
 
 	/**
 	 * @brief Return the rvalue node of a blocking substitution.
 	 *
 	 * @return non-nullptr on success.
 	 */
-	static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst);
-
-	/**
-	 * @brief Return the rvalue node of a blocking substitution.
-	 *
-	 * @return non-nullptr on success.
-	 */
-	static AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst,
-	                                      const ExpressionEvaluation::ReplaceMap &map);
+	AST::Node::Ptr get_cond_rvalue(const AST::BlockingSubstitution::Ptr &subst);
 
 private:
 	Analysis::UniqueDeclaration::IdentifierSet m_scope_declared;
 	ScopeMap m_scope_map;
+	FunctionMap m_function_map;
 };
 
 

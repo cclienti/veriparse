@@ -1,0 +1,2392 @@
+Module:
+  default_nettype: WIRE
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+  items:
+  - Function:
+      automatic: true
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+      line: 3
+      name: inc
+      ports:
+      - Ioport:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          first:
+            Input:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 3
+              name: value
+              sign: true
+          line: 3
+          second:
+            Integer:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 3
+              name: value
+              right:
+                Rvalue: null
+      retsign: true
+      rettype: INTEGER
+      statements:
+      - Block:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 4
+          scope: ''
+          statements:
+          - BlockingSubstitution:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 5
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 5
+                      name: inc
+                      scope:
+                        IdentifierScope: null
+              line: 5
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 5
+                  var:
+                    Plus:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 5
+                          name: value
+                          scope:
+                            IdentifierScope: null
+                      line: 5
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 1
+  - Function:
+      automatic: true
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+      line: 9
+      name: dec
+      ports:
+      - Ioport:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          first:
+            Input:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 9
+              name: value
+              sign: true
+          line: 9
+          second:
+            Integer:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 9
+              name: value
+              right:
+                Rvalue: null
+      retsign: true
+      rettype: INTEGER
+      statements:
+      - Block:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 10
+          scope: ''
+          statements:
+          - BlockingSubstitution:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 11
+                      name: dec
+                      scope:
+                        IdentifierScope: null
+              line: 11
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 11
+                  var:
+                    Minus:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 11
+                          name: value
+                          scope:
+                            IdentifierScope: null
+                      line: 11
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 11
+                          sign: false
+                          size: -1
+                          value: 1
+  - Function:
+      automatic: true
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+      line: 15
+      name: less
+      ports:
+      - Ioport:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          first:
+            Input:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 15
+              name: a
+              sign: true
+          line: 15
+          second:
+            Integer:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 15
+              name: a
+              right:
+                Rvalue: null
+      - Ioport:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          first:
+            Input:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 15
+              name: b
+              sign: true
+          line: 15
+          second:
+            Integer:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 15
+              name: b
+              right:
+                Rvalue: null
+      retsign: true
+      rettype: INTEGER
+      statements:
+      - Block:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 16
+          scope: ''
+          statements:
+          - BlockingSubstitution:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 17
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 17
+                      name: less
+                      scope:
+                        IdentifierScope: null
+              line: 17
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 17
+                  var:
+                    LessThan:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 17
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                      line: 17
+                      right:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 17
+                          name: b
+                          scope:
+                            IdentifierScope: null
+  - Genvar:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+      line: 21
+      name: i
+  - Genvar:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+      line: 21
+      name: j
+  - GenerateStatement:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+      items:
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                          line: 23
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 5
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 4
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 6
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 3
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 7
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 2
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 8
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      - Initial:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+          line: 25
+          statement:
+            SingleStatement:
+              delay:
+                DelayStatement: null
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+              line: 25
+              scope: ''
+              statement:
+                SystemCall:
+                  args:
+                  - StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
+                      value: '%m'
+                  - Times:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 9
+                      line: 25
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: false
+                          size: -1
+                          value: 1
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
+      line: 22
+  line: 1
+  name: loop_unrolling3
+

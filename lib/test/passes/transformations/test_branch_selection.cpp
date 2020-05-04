@@ -25,7 +25,7 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	ASSERT_TRUE(modules_map.count(test_name) == 1);                              \
 	const auto &module = modules_map[test_name];                                 \
                                                                                 \
-	/* Get all modules in the file */                                            \
+	/* Get all functions in the file */                                          \
 	Passes::Analysis::Module::FunctionMap function_map;                          \
 	Passes::Analysis::Module::get_function_dictionary(module, function_map);     \
                                                                                 \
