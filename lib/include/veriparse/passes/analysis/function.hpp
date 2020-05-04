@@ -48,6 +48,11 @@ public:
 	 */
 	static std::vector<std::string> get_variable_names(AST::Node::Ptr node);
 
+	/**
+	 * Return true if the function is automatic or if it be considered
+	 * as such.
+	 */
+	static bool is_like_automatic(const AST::Function::Ptr &node);
 };
 
 }
