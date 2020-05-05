@@ -61,6 +61,14 @@ AST::Node::Ptr FunctionEvaluation::evaluate(const AST::FunctionCall::Ptr &functi
 		return nullptr;
 	}
 
+	const auto &function = it_function->second;
+	if (!Analysis::Function::is_like_automatic(function)) {
+		LOG_WARNING_N(function) << "function is not automatic or it can not be considered as such, "
+		                        << "function call line " << function_call->get_line() << " "
+		                        << "cannot be evaluated";
+		return nullptr;
+	}
+
 	const auto &function_copy = AST::cast_to<AST::Function>(it_function->second->clone());
 	const auto &main_block = std::make_shared<AST::Block>(function_copy->get_filename(),
 	                                                      function_copy->get_line());
@@ -90,8 +98,8 @@ AST::Node::Ptr FunctionEvaluation::evaluate(const AST::FunctionCall::Ptr &functi
 		return result;
 	}
 
-	LOG_WARNING_N(function_copy) << "No result found to replace function call line "
-	                             << function_call->get_line();
+	LOG_WARNING_N(function) << "No result found to replace function call line "
+	                        << function_call->get_line();
 
 	return nullptr;
 };
