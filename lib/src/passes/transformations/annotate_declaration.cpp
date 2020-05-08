@@ -98,10 +98,6 @@ int AnnotateDeclaration::get_declaration_names(const AST::Node::Ptr node, Replac
 
 	if (found_name) {
 		if (excluded_names.count(name) == 0) {
-			if (replace_dict.count(name) != 0) {
-				LOG_ERROR_N(node) << "redefinition of '" << name << "'";
-				return 1;
-			}
 			replace_dict[name] = std::regex_replace(name, m_search, m_replace);
 		}
 	}

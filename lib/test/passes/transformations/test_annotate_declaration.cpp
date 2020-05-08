@@ -43,3 +43,4 @@ TEST(PassesTransformation_AnnotateDeclaration, localparam0) {TEST_CORE;}
 TEST(PassesTransformation_AnnotateDeclaration, task0) {TEST_CORE;}
 TEST(PassesTransformation_AnnotateDeclaration, function0) {TEST_CORE;}
 TEST(PassesTransformation_AnnotateDeclaration, instance0) {TEST_CORE;}
+TEST(PassesTransformation_AnnotateDeclaration, ifvardecl0) {TEST_CORE;}
