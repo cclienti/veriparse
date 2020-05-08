@@ -63,9 +63,6 @@ int AnnotateScope::get_scope_names(const AST::Node::Ptr node, ReplaceDict &repla
 	}
 
 	if (found_scope) {
-		if (replace_dict.count(scope) != 0) {
-			LOG_WARNING_N(node) << "redefinition of '" << scope << "'";
-		}
 		replace_dict[scope] = std::regex_replace(scope, m_search, m_replace);
 	}
 
