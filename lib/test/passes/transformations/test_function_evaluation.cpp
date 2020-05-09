@@ -59,3 +59,4 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 
 TEST(PassesTransformation_FunctionEvaluation, function2) {TEST_CORE;}
 TEST(PassesTransformation_FunctionEvaluation, function3) {TEST_CORE;}
+TEST(PassesTransformation_FunctionEvaluation, function4) {TEST_CORE;}
