@@ -36,21 +36,21 @@ Source:
                       left:
                         Identifier:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 8
+                          line: 7
                           name: i
                           scope:
                             IdentifierScope: null
-                      line: 8
+                      line: 7
                       right:
                         IntConstN:
                           base: 10
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 8
+                          line: 7
                           sign: false
                           size: -1
                           value: 6
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                  line: 8
+                  line: 7
                   post:
                     BlockingSubstitution:
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
@@ -59,37 +59,37 @@ Source:
                       left:
                         Lvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 8
+                          line: 7
                           var:
                             Identifier:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 8
+                              line: 7
                               name: i
                               scope:
                                 IdentifierScope: null
-                      line: 8
+                      line: 7
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 8
+                          line: 7
                           var:
                             Plus:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                               left:
                                 Identifier:
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 8
+                                  line: 7
                                   name: i
                                   scope:
                                     IdentifierScope: null
-                              line: 8
+                              line: 7
                               right:
                                 IntConstN:
                                   base: 10
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 8
+                                  line: 7
                                   sign: false
                                   size: -1
                                   value: 1
@@ -101,225 +101,323 @@ Source:
                       left:
                         Lvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 8
+                          line: 7
                           var:
                             Identifier:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 8
+                              line: 7
                               name: i
                               scope:
                                 IdentifierScope: null
-                      line: 8
+                      line: 7
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 8
+                          line: 7
                           var:
                             IntConstN:
                               base: 10
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 8
+                              line: 7
                               sign: false
                               size: -1
                               value: 1
                   statement:
                     Block:
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                      line: 8
+                      line: 7
                       scope: GEN_LOOP_1
                       statements:
                       - Integer:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 11
+                          line: 9
                           name: SCOPE_1__x
                           right:
                             Rvalue:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 11
+                              line: 9
                               var:
                                 Times:
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                   left:
                                     Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 11
+                                      line: 9
                                       name: i
                                       scope:
                                         IdentifierScope: null
-                                  line: 11
+                                  line: 9
                                   right:
                                     IntConstN:
                                       base: 10
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 11
+                                      line: 9
                                       sign: false
                                       size: -1
                                       value: 3
                       - Initial:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 12
+                          line: 10
                           statement:
                             SingleStatement:
                               delay:
                                 DelayStatement: null
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 12
+                              line: 10
                               scope: ''
                               statement:
                                 SystemCall:
                                   args:
                                   - StringConst:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 12
-                                      value: '[GEN_LOOP_1[%0d].SCOPE_1]  x = %0d'
+                                      line: 10
+                                      value: '[SCOPE_1] [GEN_LOOP_1[%0d].SCOPE_1]  x
+                                        = %0d'
                                   - Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 12
+                                      line: 10
                                       name: i
                                       scope:
                                         IdentifierScope: null
                                   - Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 12
+                                      line: 10
                                       name: SCOPE_1__x
                                       scope:
                                         IdentifierScope: null
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 12
+                                  line: 10
                                   syscall: display
                       - Integer:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 16
+                          line: 13
                           name: SCOPE_2__x
                           right:
                             Rvalue:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 16
+                              line: 13
                               var:
                                 Times:
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                   left:
                                     Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 16
+                                      line: 13
                                       name: i
                                       scope:
                                         IdentifierScope: null
-                                  line: 16
+                                  line: 13
                                   right:
                                     IntConstN:
                                       base: 10
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 16
+                                      line: 13
                                       sign: false
                                       size: -1
                                       value: 2
                       - Initial:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 17
+                          line: 14
                           statement:
                             SingleStatement:
                               delay:
                                 DelayStatement: null
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 17
+                              line: 14
                               scope: ''
                               statement:
                                 SystemCall:
                                   args:
                                   - StringConst:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 17
-                                      value: '[GEN_LOOP_1[%0d].SCOPE_2]  x = %0d'
+                                      line: 14
+                                      value: '[SCOPE_2] [GEN_LOOP_1[%0d].SCOPE_2]  x
+                                        = %0d'
                                   - Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 17
+                                      line: 14
                                       name: i
                                       scope:
                                         IdentifierScope: null
                                   - Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 17
+                                      line: 14
                                       name: SCOPE_2__x
                                       scope:
                                         IdentifierScope: null
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 17
+                                  line: 14
                                   syscall: display
                       - Initial:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 18
+                          line: 15
                           statement:
                             SingleStatement:
                               delay:
                                 DelayStatement: null
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 18
+                              line: 15
                               scope: ''
                               statement:
                                 SystemCall:
                                   args:
                                   - StringConst:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 18
-                                      value: '[GEN_LOOP_1[%0d].SCOPE_2]  SCOPE_1.x
+                                      line: 15
+                                      value: '[SCOPE_2] [GEN_LOOP_1[%0d].SCOPE_2]  SCOPE_1.x
                                         = %0d'
                                   - Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 18
+                                      line: 15
                                       name: i
                                       scope:
                                         IdentifierScope: null
                                   - Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 18
+                                      line: 15
                                       name: SCOPE_1__x
                                       scope:
                                         IdentifierScope:
                                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                           labellist: []
-                                          line: 18
+                                          line: 15
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 18
+                                  line: 15
                                   syscall: display
                       - Integer:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 20
+                          line: 17
                           name: SCOPE_2__SCOPE_4__x
                           right:
                             Rvalue:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 20
+                              line: 17
                               var:
                                 Times:
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                   left:
                                     Identifier:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 20
+                                      line: 17
                                       name: i
                                       scope:
                                         IdentifierScope: null
-                                  line: 20
+                                  line: 17
                                   right:
                                     IntConstN:
                                       base: 10
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 20
+                                      line: 17
                                       sign: false
                                       size: -1
                                       value: 4
                       - Initial:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 23
+                          line: 20
                           statement:
                             Block:
                               filename: ''
                               line: 0
                               scope: ''
                               statements:
+                              - SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                  line: 22
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 22
+                                          value: '[SCOPE_3] [GEN_LOOP_1[%0d]]  SCOPE_1.x
+                                            = %0d'
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 22
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 22
+                                          name: SCOPE_1__x
+                                          scope:
+                                            IdentifierScope:
+                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                              labellist: []
+                                              line: 22
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                      line: 22
+                                      syscall: display
+                              - SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                  line: 23
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 23
+                                          value: '[SCOPE_3] [GEN_LOOP_1[%0d]]  SCOPE_2.x
+                                            = %0d'
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 23
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 23
+                                          name: SCOPE_2__x
+                                          scope:
+                                            IdentifierScope:
+                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                              labellist: []
+                                              line: 23
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                      line: 23
+                                      syscall: display
+                              - SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                  line: 24
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 24
+                                          value: '[SCOPE_3] [GEN_LOOP_1[%0d]]  SCOPE_2.SCOPE_4.x
+                                            = %0d'
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 24
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 24
+                                          name: SCOPE_2__SCOPE_4__x
+                                          scope:
+                                            IdentifierScope:
+                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                              labellist: []
+                                              line: 24
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                      line: 24
+                                      syscall: display
                               - SingleStatement:
                                   delay:
                                     DelayStatement: null
@@ -332,7 +430,8 @@ Source:
                                       - StringConst:
                                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                           line: 25
-                                          value: '[GEN_LOOP_1[%0d]]  SCOPE_1.x = %0d'
+                                          value: '[SCOPE_3] [GEN_LOOP_1[%0d]]  SCOPE_2.SCOPE_4.x
+                                            = %0d'
                                       - Identifier:
                                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                           line: 25
@@ -342,109 +441,25 @@ Source:
                                       - Identifier:
                                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                           line: 25
-                                          name: SCOPE_1__x
+                                          name: SCOPE_2__SCOPE_4__x
                                           scope:
                                             IdentifierScope:
                                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                              labellist: []
+                                              labellist:
+                                              - IdentifierScopeLabel:
+                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                                  line: 25
+                                                  loop:
+                                                    Identifier:
+                                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                                      line: 25
+                                                      name: i
+                                                      scope:
+                                                        IdentifierScope: null
+                                                  scope: GEN_LOOP_1
                                               line: 25
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                       line: 25
-                                      syscall: display
-                              - SingleStatement:
-                                  delay:
-                                    DelayStatement: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 26
-                                  scope: ''
-                                  statement:
-                                    SystemCall:
-                                      args:
-                                      - StringConst:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 26
-                                          value: '[GEN_LOOP_1[%0d]]  SCOPE_2.x = %0d'
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 26
-                                          name: i
-                                          scope:
-                                            IdentifierScope: null
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 26
-                                          name: SCOPE_2__x
-                                          scope:
-                                            IdentifierScope:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                              labellist: []
-                                              line: 26
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 26
-                                      syscall: display
-                              - SingleStatement:
-                                  delay:
-                                    DelayStatement: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 27
-                                  scope: ''
-                                  statement:
-                                    SystemCall:
-                                      args:
-                                      - StringConst:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 27
-                                          value: '[GEN_LOOP_1[%0d]]  SCOPE_2.SCOPE_4.x
-                                            = %0d'
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 27
-                                          name: i
-                                          scope:
-                                            IdentifierScope: null
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 27
-                                          name: SCOPE_2__SCOPE_4__x
-                                          scope:
-                                            IdentifierScope:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                              labellist: []
-                                              line: 27
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 27
-                                      syscall: display
-                              - SingleStatement:
-                                  delay:
-                                    DelayStatement: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 28
-                                  scope: ''
-                                  statement:
-                                    SystemCall:
-                                      args:
-                                      - StringConst:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 28
-                                          value: '[GEN_LOOP_1[%0d]]  SCOPE_2.SCOPE_4.x
-                                            = %0d'
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 28
-                                          name: i
-                                          scope:
-                                            IdentifierScope: null
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 28
-                                          name: SCOPE_2__SCOPE_4__x
-                                          scope:
-                                            IdentifierScope:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                              labellist: []
-                                              line: 28
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 28
                                       syscall: display
               line: 6
           - GenerateStatement:
@@ -457,21 +472,21 @@ Source:
                       left:
                         Identifier:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 36
+                          line: 32
                           name: i
                           scope:
                             IdentifierScope: null
-                      line: 36
+                      line: 32
                       right:
                         IntConstN:
                           base: 10
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 36
+                          line: 32
                           sign: false
                           size: -1
-                          value: 5
+                          value: 6
                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                  line: 36
+                  line: 32
                   post:
                     BlockingSubstitution:
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
@@ -480,37 +495,37 @@ Source:
                       left:
                         Lvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 36
+                          line: 32
                           var:
                             Identifier:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 36
+                              line: 32
                               name: i
                               scope:
                                 IdentifierScope: null
-                      line: 36
+                      line: 32
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 36
+                          line: 32
                           var:
                             Plus:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                               left:
                                 Identifier:
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 36
+                                  line: 32
                                   name: i
                                   scope:
                                     IdentifierScope: null
-                              line: 36
+                              line: 32
                               right:
                                 IntConstN:
                                   base: 10
                                   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 36
+                                  line: 32
                                   sign: false
                                   size: -1
                                   value: 1
@@ -522,44 +537,135 @@ Source:
                       left:
                         Lvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 36
+                          line: 32
                           var:
                             Identifier:
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 36
+                              line: 32
                               name: i
                               scope:
                                 IdentifierScope: null
-                      line: 36
+                      line: 32
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 36
+                          line: 32
                           var:
                             IntConstN:
                               base: 10
                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                              line: 36
+                              line: 32
                               sign: false
                               size: -1
-                              value: 0
+                              value: 1
                   statement:
                     Block:
                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                      line: 36
+                      line: 32
                       scope: GEN_LOOP_2
                       statements:
                       - Initial:
                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                          line: 37
+                          line: 33
                           statement:
                             Block:
                               filename: ''
                               line: 0
                               scope: ''
                               statements:
+                              - SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                  line: 34
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 34
+                                          value: '[GEN_LOOP_2]  GEN_LOOP_1[%0d].SCOPE_1.x
+                                            = %0d'
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 35
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 35
+                                          name: SCOPE_1__x
+                                          scope:
+                                            IdentifierScope:
+                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                              labellist:
+                                              - IdentifierScopeLabel:
+                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                                  line: 35
+                                                  loop: null
+                                                  scope: scope3
+                                              - IdentifierScopeLabel:
+                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                                  line: 35
+                                                  loop:
+                                                    Identifier:
+                                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                                      line: 35
+                                                      name: i
+                                                      scope:
+                                                        IdentifierScope: null
+                                                  scope: GEN_LOOP_1
+                                              line: 35
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                      line: 34
+                                      syscall: display
+                              - SingleStatement:
+                                  delay:
+                                    DelayStatement: null
+                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                  line: 36
+                                  scope: ''
+                                  statement:
+                                    SystemCall:
+                                      args:
+                                      - StringConst:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 36
+                                          value: '[GEN_LOOP_2]  GEN_LOOP_1[%0d].SCOPE_2.x
+                                            = %0d'
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 37
+                                          name: i
+                                          scope:
+                                            IdentifierScope: null
+                                      - Identifier:
+                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                          line: 37
+                                          name: SCOPE_2__x
+                                          scope:
+                                            IdentifierScope:
+                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                              labellist:
+                                              - IdentifierScopeLabel:
+                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                                  line: 37
+                                                  loop:
+                                                    Identifier:
+                                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                                      line: 37
+                                                      name: i
+                                                      scope:
+                                                        IdentifierScope: null
+                                                  scope: GEN_LOOP_1
+                                              line: 37
+                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
+                                      line: 36
+                                      syscall: display
                               - SingleStatement:
                                   delay:
                                     DelayStatement: null
@@ -572,7 +678,7 @@ Source:
                                       - StringConst:
                                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                           line: 38
-                                          value: '[GEN_LOOP_2]  GEN_LOOP_1[%0d].SCOPE_1.x
+                                          value: '[GEN_LOOP_2]  GEN_LOOP_1[%0d].SCOPE_2.SCOPE_4.x
                                             = %0d'
                                       - Identifier:
                                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
@@ -583,7 +689,7 @@ Source:
                                       - Identifier:
                                           filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                           line: 39
-                                          name: SCOPE_1__x
+                                          name: SCOPE_2__SCOPE_4__x
                                           scope:
                                             IdentifierScope:
                                               filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
@@ -603,93 +709,7 @@ Source:
                                       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
                                       line: 38
                                       syscall: display
-                              - SingleStatement:
-                                  delay:
-                                    DelayStatement: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 40
-                                  scope: ''
-                                  statement:
-                                    SystemCall:
-                                      args:
-                                      - StringConst:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 40
-                                          value: '[GEN_LOOP_2]  GEN_LOOP_1[%0d].SCOPE_2.x
-                                            = %0d'
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 41
-                                          name: i
-                                          scope:
-                                            IdentifierScope: null
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 41
-                                          name: SCOPE_2__x
-                                          scope:
-                                            IdentifierScope:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                              labellist:
-                                              - IdentifierScopeLabel:
-                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                                  line: 41
-                                                  loop:
-                                                    Identifier:
-                                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                                      line: 41
-                                                      name: i
-                                                      scope:
-                                                        IdentifierScope: null
-                                                  scope: GEN_LOOP_1
-                                              line: 41
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 40
-                                      syscall: display
-                              - SingleStatement:
-                                  delay:
-                                    DelayStatement: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                  line: 42
-                                  scope: ''
-                                  statement:
-                                    SystemCall:
-                                      args:
-                                      - StringConst:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 42
-                                          value: '[GEN_LOOP_2]  GEN_LOOP_1[%0d].SCOPE_2.SCOPE_4.x
-                                            = %0d'
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 43
-                                          name: i
-                                          scope:
-                                            IdentifierScope: null
-                                      - Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                          line: 43
-                                          name: SCOPE_2__SCOPE_4__x
-                                          scope:
-                                            IdentifierScope:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                              labellist:
-                                              - IdentifierScopeLabel:
-                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                                  line: 43
-                                                  loop:
-                                                    Identifier:
-                                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                                      line: 43
-                                                      name: i
-                                                      scope:
-                                                        IdentifierScope: null
-                                                  scope: GEN_LOOP_1
-                                              line: 43
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v
-                                      line: 42
-                                      syscall: display
-              line: 35
+              line: 31
           line: 1
           name: scope3
       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope3.v

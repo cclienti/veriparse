@@ -38,7 +38,7 @@ protected:
 	                                    const std::string &scope, LocalReplaceMap &replace_map);
 
 	virtual int rename_nested_identifiers(const AST::Node::Ptr &node, const AST::Node::Ptr &parent,
-	                                      const std::string &scope, const LocalReplaceMap &replace_map);
+	                                      const LocalReplaceMap &replace_map);
 
 	/**
 	 * @brief Remove the current stack state (in m_scope_stack) to the

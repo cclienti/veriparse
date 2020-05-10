@@ -40,3 +40,4 @@ TEST(PassesTransformation_ScopeElevator, scope0) {TEST_CORE;}
 TEST(PassesTransformation_ScopeElevator, scope1) {TEST_CORE;}
 TEST(PassesTransformation_ScopeElevator, scope2) {TEST_CORE;}
 TEST(PassesTransformation_ScopeElevator, scope3) {TEST_CORE;}
+TEST(PassesTransformation_ScopeElevator, scope4) {TEST_CORE;}

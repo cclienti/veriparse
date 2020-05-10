@@ -1,3 +1,4 @@
+#include "veriparse/AST/identifierscopelabel.hpp"
 #include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/ast_replace.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -88,6 +89,17 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
 	              };
 
 	switch (node->get_node_type()) {
+	case AST::NodeType::Module:
+		{
+			const auto &module = AST::cast_to<AST::Module>(node);
+			m_scope_stack.push_back(module->get_name());
+			if (recurse_in_childs(node, recfct)) {
+				ret += 1;
+			}
+			m_scope_stack.pop_back();
+		}
+		break;
+
 	case AST::NodeType::Block:
 		{
 			const auto &block = AST::cast_to<AST::Block>(node);
@@ -99,17 +111,22 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
 				                  << render_scope_stack(m_scope_stack);
 			}
 
-
 			if (recurse_in_childs(node, recfct)) {
 				LOG_ERROR_N(node) << "Error during managing scope '" << scope << "'";
 				ret += 1;
 			}
 
 			if (!scope.empty()) {
-				if (parent->is_node_type(AST::NodeType::Block)) {
+				if (parent->is_node_type(AST::NodeType::Block) ||
+				    parent->is_node_type(AST::NodeType::GenerateStatement)) {
 					LocalReplaceMap rmap;
+					// The rename_nested_* functions push the scope. We
+					// must avoid to push the same scope twice by popping
+					// the current scope.
+					m_scope_stack.pop_back();
 					rename_nested_variables(node, parent, scope, rmap);
-					rename_nested_identifiers(node, parent, scope, rmap);
+					rename_nested_identifiers(node, parent, rmap);
+					m_scope_stack.push_back(scope); // Restore the scope
 					pickup_statements(parent, node, block->get_statements());
 				}
 			}
@@ -121,6 +138,10 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
 				m_scope_stack.pop_back();
 			}
 		}
+		break;
+
+	case AST::NodeType::Task:
+	case AST::NodeType::Function:
 		break;
 
 	default:
@@ -143,6 +164,17 @@ int ScopeElevator::process_scoped_identifiers(const AST::Node::Ptr &node, AST::N
 	              };
 
 	switch (node->get_node_type()) {
+	case AST::NodeType::Module:
+		{
+			const auto &module = AST::cast_to<AST::Module>(node);
+			m_scope_stack.push_back(module->get_name());
+			if (recurse_in_childs(node, recfct)) {
+				ret += 1;
+			}
+			m_scope_stack.pop_back();
+		}
+		break;
+
 	case AST::NodeType::Block:
 		{
 			const auto &block = AST::cast_to<AST::Block>(node);
@@ -200,19 +232,20 @@ int ScopeElevator::process_scoped_identifiers(const AST::Node::Ptr &node, AST::N
 						LOG_DEBUG_N(node) << "matched id: " << matched_id;
 						id->set_name(matched_id);
 
-						// remove the last scope as the id matched
-						const auto &list = id->get_scope()->get_labellist();
-						list->pop_back();
-
-						// remove current scope at the beginning
-						auto scope_it = m_scope_stack.cbegin();
-						auto scope_end = m_scope_stack.cend();
-						while (!list->empty() && scope_it != scope_end) {
-							if (*scope_it == list->front()->get_scope()) {
-								list->pop_front();
+						// Rewrite the scope of the identifier use the one
+						// that matched.
+						const auto &labellist = id->get_scope()->get_labellist();
+						const auto &new_labellist = std::make_shared<AST::IdentifierScopeLabel::List>();
+						auto it_labellist = labellist->crbegin();
+						auto it_matched = matched_scope.crbegin();
+						while(it_labellist != labellist->crend() && it_matched != matched_scope.crend()) {
+							if (*it_matched == (*it_labellist)->get_scope()) {
+								new_labellist->push_front(*it_labellist);
+								++it_matched;
 							}
-							++scope_it;
+							++it_labellist;
 						}
+						id->get_scope()->set_labellist(new_labellist);
 
 						// The matched occured, we continue to search as we
 						// process only one scope level at a time.
@@ -231,6 +264,7 @@ int ScopeElevator::process_scoped_identifiers(const AST::Node::Ptr &node, AST::N
 	return ret;
 }
 
+
 int ScopeElevator::rename_nested_variables(const AST::Node::Ptr &node, const AST::Node::Ptr &parent,
                                            const std::string &scope, LocalReplaceMap &replace_map)
 {
@@ -241,33 +275,67 @@ int ScopeElevator::rename_nested_variables(const AST::Node::Ptr &node, const AST
 	}
 
 	if (node->is_node_category(AST::NodeType::Variable)) {
+		// Compute the new stack
+		const auto scope_stack_str = render_scope_stack(m_scope_stack);
+		ScopeStack new_scope_stack;
+		bool matched = false;
+		for (auto it = m_scope_stack.crbegin(); it != m_scope_stack.crend(); ++it) {
+			if (!matched && scope == *it) {
+				matched = true;
+			}
+			else {
+				new_scope_stack.push_front(*it);
+			}
+		}
+		const auto new_scope_stack_str = render_scope_stack(new_scope_stack);
+
+		// Get the new variable name
 		const auto &var = AST::cast_to<AST::Variable>(node);
 		const std::string var_name = var->get_name(); // no reference here.
-		const std::string &new_var_name = scope + "__" + var->get_name();
+		const std::string new_var_name = scope + "__" + var->get_name();
 
-		LOG_INFO_N(node) << "Removing scope " << scope
-		                 << ", renaming " << var_name << " to " << new_var_name;
+		LOG_INFO_N(node) << "Removing scope " << scope << ", renaming "
+		                 << scope_stack_str + "." +  var_name << " to "
+		                 <<  new_scope_stack_str + "." +  new_var_name;
 
+		// Replace the variable name by the new one
 		var->set_name(new_var_name);
 		replace_map.emplace(std::make_pair(var_name, new_var_name));
 
-		const auto &stack = render_scope_stack(m_scope_stack, true);
-
-		m_global_replace_map.emplace(stack + "." + scope + "." + var_name,
-		                             std::make_pair(m_scope_stack, new_var_name));
+		m_global_replace_map.emplace(scope_stack_str + "." +  var_name,
+		                             std::make_pair(new_scope_stack, new_var_name));
 	}
 	else {
+		// If the node is a block, keep track of the current stack
+		bool is_block = node->is_node_type(AST::NodeType::Block);
+		bool empty_scope = true;
+		if (is_block) {
+			const auto &block = AST::cast_to<AST::Block>(node);
+			const auto &scope = block->get_scope();
+			empty_scope = scope.empty();
+			if (!empty_scope) {
+				m_scope_stack.push_back(scope);
+			}
+		}
+
+		// Recurse in the AST
 		auto fct = [this, &scope, & replace_map](AST::Node::Ptr node, AST::Node::Ptr parent) -> int {
 			           return this->rename_nested_variables(node, parent, scope, replace_map);
 		           };
 		ret = recurse_in_childs(node, fct);
+
+		// Pop the stack if necessary
+		if (is_block && !empty_scope) {
+			m_scope_stack.pop_back();
+		}
+
 	}
 
 	return ret;
 }
 
 int ScopeElevator::rename_nested_identifiers(const AST::Node::Ptr &node, const AST::Node::Ptr &parent,
-                                             const std::string &scope, const LocalReplaceMap &replace_map)
+                                             const LocalReplaceMap &replace_map)
 {
 	int ret = 0;
 
@@ -285,8 +353,8 @@ int ScopeElevator::rename_nested_identifiers(const AST::Node::Ptr &node, const A
 		}
 	}
 	else {
-		auto fct = [this, &scope, & replace_map](AST::Node::Ptr node, AST::Node::Ptr parent) -> int {
-			           return this->rename_nested_identifiers(node, parent, scope, replace_map);
+		auto fct = [this, &replace_map](AST::Node::Ptr node, AST::Node::Ptr parent) -> int {
+			           return this->rename_nested_identifiers(node, parent, replace_map);
 		           };
 		ret = recurse_in_childs(node, fct);
 	}
