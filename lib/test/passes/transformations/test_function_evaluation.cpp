@@ -40,7 +40,9 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 	Passes::Analysis::Module::get_function_dictionary(modules_map[test_name], function_map); \
                                                                                             \
 	/* Process the function call */                                                          \
-	Passes::Transformations::FunctionEvaluation function_eval(1);                            \
+	Passes::Transformations::FunctionEvaluation::set_max_recurse(16);                        \
+	Passes::Transformations::FunctionEvaluation::reset_force_automatic();                    \
+	Passes::Transformations::FunctionEvaluation function_eval;                               \
 	const auto &node_result = function_eval.evaluate(functioncall, function_map);            \
 	ASSERT_TRUE(node_result != nullptr);                                                     \
                                                                                             \
