@@ -57,7 +57,7 @@ bool IdentifierScope::replace(Node::Ptr node, Node::Ptr new_node) {
 	bool found = false;
 	if (get_labellist()) {
 		IdentifierScopeLabel::ListPtr new_list = std::make_shared<IdentifierScopeLabel::List>();
-		for (IdentifierScopeLabel::Ptr lnode : *get_labellist()) {
+		for (const IdentifierScopeLabel::Ptr &lnode : *get_labellist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -93,7 +93,7 @@ bool IdentifierScope::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_labellist()) {
 		IdentifierScopeLabel::ListPtr new_list = std::make_shared<IdentifierScopeLabel::List>();
-		for (IdentifierScopeLabel::Ptr lnode : *get_labellist()) {
+		for (const IdentifierScopeLabel::Ptr &lnode : *get_labellist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -104,7 +104,7 @@ bool IdentifierScope::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "IdentifierScope::replace matches multiple times (list(IdentifierScopeLabel)::labellist)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<IdentifierScopeLabel>(n));
 					}
 					found = true;
@@ -130,7 +130,7 @@ IdentifierScope::ListPtr IdentifierScope::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<IdentifierScope>(p->clone()));
 		}
 	}
@@ -140,7 +140,7 @@ IdentifierScope::ListPtr IdentifierScope::clone_list(const ListPtr nodes) {
 Node::ListPtr IdentifierScope::get_children(void) const {
 	Node::ListPtr list = std::make_shared<Node::List>();
 	if (get_labellist()) {
-		for (const IdentifierScopeLabel::Ptr node : *get_labellist()) {
+		for (const IdentifierScopeLabel::Ptr &node : *get_labellist()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

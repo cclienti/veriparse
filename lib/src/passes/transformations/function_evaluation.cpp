@@ -196,7 +196,7 @@ AST::Node::ListPtr FunctionEvaluation::get_input_declarations(const AST::Functio
 			// Search in statements for the variable declaration
 			const auto &stmts = function_decl->get_statements();
 
-			for (const auto stmt: *stmts) {
+			for (const auto &stmt: *stmts) {
 				if (stmt->is_node_category(AST::NodeType::Variable)) {
 					const auto &var = AST::cast_to<AST::Variable>(stmt);
 					if (var->get_name() == input->get_name()) {

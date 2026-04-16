@@ -32,6 +32,7 @@ public:
 		delete loc;
 	};
 
+	using yyFlexLexer::yylex;
 	virtual int yylex(Veriparse::Parser::VerilogNumberParser::semantic_type * const lval,
 	                  Veriparse::Parser::VerilogNumberParser::location_type * location);
 	// YY_DECL defined in scanner.ll

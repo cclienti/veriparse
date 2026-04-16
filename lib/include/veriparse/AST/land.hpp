@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Land>::Ptr;
 	using List = typename NodePointers<Land>::List;
 	using ListPtr = typename NodePointers<Land>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Land.

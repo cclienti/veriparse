@@ -354,7 +354,7 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 		{
 			int ret = 0;
 			AST::Node::ListPtr children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret += flattener(child, node);
 			}
 			return ret;
@@ -531,7 +531,7 @@ bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
 	default:
 		{
 			const auto &children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret &= check_output_rvalue_wire(child);
 			}
 		}
@@ -553,7 +553,7 @@ int ModuleFlattener::convert_concat_to_lconcat(const AST::Node::Ptr &node, const
 	case AST::NodeType::Concat:
 		{
 			const auto &children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret += convert_concat_to_lconcat(child, node);
 			}
 
@@ -567,7 +567,7 @@ int ModuleFlattener::convert_concat_to_lconcat(const AST::Node::Ptr &node, const
 	default:
 		{
 			const auto &children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret += convert_concat_to_lconcat(child, node);
 			}
 		}
@@ -605,7 +605,7 @@ int ModuleFlattener::extract_defparam(const AST::Node::Ptr &node, const AST::Nod
 	default:
 		{
 			const auto &children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret += extract_defparam(child, node);
 			}
 		}
@@ -645,7 +645,7 @@ int ModuleFlattener::restore_defparam(const AST::Node::Ptr &node)
 	default:
 		{
 			const auto &children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret += restore_defparam(child);
 			}
 		}
@@ -695,7 +695,7 @@ int ModuleFlattener::replace_scoped_identifiers(const AST::Node::Ptr &node)
 	default:
 		{
 			const auto &children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret += replace_scoped_identifiers(child);
 			}
 		}

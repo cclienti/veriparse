@@ -29,7 +29,7 @@ int UniqueDeclaration::analyze(const AST::Node::Ptr &node, IdentifierSet &id_set
 
 	auto recurse = [&]() {
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			ret += analyze(child, id_set);
 		}
 	};

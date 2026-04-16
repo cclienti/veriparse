@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Rvalue>::Ptr;
 	using List = typename NodePointers<Rvalue>::List;
 	using ListPtr = typename NodePointers<Rvalue>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Rvalue.

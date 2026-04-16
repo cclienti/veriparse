@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<FloatConst>::Ptr;
 	using List = typename NodePointers<FloatConst>::List;
 	using ListPtr = typename NodePointers<FloatConst>::ListPtr;
+	using Constant::operator=;
+	using Constant::operator==;
+	using Constant::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::FloatConst.

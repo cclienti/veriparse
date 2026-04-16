@@ -87,7 +87,7 @@ Or::ListPtr Or::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Or>(p->clone()));
 		}
 	}

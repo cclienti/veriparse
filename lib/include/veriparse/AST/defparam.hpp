@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Defparam>::Ptr;
 	using List = typename NodePointers<Defparam>::List;
 	using ListPtr = typename NodePointers<Defparam>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Defparam.

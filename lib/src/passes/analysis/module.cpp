@@ -32,7 +32,7 @@ int Module::get_module_dictionary(const AST::Node::Ptr &node, ModulesMap &module
 	}
 
 	const auto &modules = get_module_nodes(node);
-	for (const auto module: *modules) {
+	for (const auto &module: *modules) {
 		if (modules_map.count(module->get_name()) != 0)	{
 			LOG_ERROR_N(module) << "module " << module->get_name() << " already declared";
 			LOG_ERROR_N(modules_map[module->get_name()]) << "module " << module->get_name() << " was firstly found here";

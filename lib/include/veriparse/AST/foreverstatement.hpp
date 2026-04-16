@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<ForeverStatement>::Ptr;
 	using List = typename NodePointers<ForeverStatement>::List;
 	using ListPtr = typename NodePointers<ForeverStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::ForeverStatement.

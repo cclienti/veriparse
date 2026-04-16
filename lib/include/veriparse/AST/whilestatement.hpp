@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<WhileStatement>::Ptr;
 	using List = typename NodePointers<WhileStatement>::List;
 	using ListPtr = typename NodePointers<WhileStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::WhileStatement.

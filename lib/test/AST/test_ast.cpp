@@ -147,7 +147,7 @@ TEST(ASTTest, CloneList) {
 	wire_list.reset();
 	ASSERT_FALSE(wire_list);
 
-	for(const AST::Wire::Ptr wc: *wire_list_cloned) {
+	for(const AST::Wire::Ptr &wc: *wire_list_cloned) {
 		if(wc->is_not_equal(*wc)) {
 			broken = true;
 		}

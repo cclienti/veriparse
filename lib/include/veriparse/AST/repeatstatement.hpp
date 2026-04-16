@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<RepeatStatement>::Ptr;
 	using List = typename NodePointers<RepeatStatement>::List;
 	using ListPtr = typename NodePointers<RepeatStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::RepeatStatement.

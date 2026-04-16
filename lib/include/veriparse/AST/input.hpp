@@ -21,6 +21,9 @@ public:
 	using Ptr = typename NodePointers<Input>::Ptr;
 	using List = typename NodePointers<Input>::List;
 	using ListPtr = typename NodePointers<Input>::ListPtr;
+	using IODir::operator=;
+	using IODir::operator==;
+	using IODir::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Input.

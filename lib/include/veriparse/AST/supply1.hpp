@@ -24,6 +24,9 @@ public:
 	using Ptr = typename NodePointers<Supply1>::Ptr;
 	using List = typename NodePointers<Supply1>::List;
 	using ListPtr = typename NodePointers<Supply1>::ListPtr;
+	using Net::operator=;
+	using Net::operator==;
+	using Net::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Supply1.

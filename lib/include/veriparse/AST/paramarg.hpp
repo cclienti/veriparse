@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<ParamArg>::Ptr;
 	using List = typename NodePointers<ParamArg>::List;
 	using ListPtr = typename NodePointers<ParamArg>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::ParamArg.

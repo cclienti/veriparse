@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Xnor>::Ptr;
 	using List = typename NodePointers<Xnor>::List;
 	using ListPtr = typename NodePointers<Xnor>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Xnor.

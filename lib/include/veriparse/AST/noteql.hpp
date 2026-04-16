@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<NotEql>::Ptr;
 	using List = typename NodePointers<NotEql>::List;
 	using ListPtr = typename NodePointers<NotEql>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::NotEql.

@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Uminus>::Ptr;
 	using List = typename NodePointers<Uminus>::List;
 	using ListPtr = typename NodePointers<Uminus>::ListPtr;
+	using UnaryOperator::operator=;
+	using UnaryOperator::operator==;
+	using UnaryOperator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Uminus.

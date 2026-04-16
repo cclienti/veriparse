@@ -22,6 +22,9 @@ public:
 	using Ptr = typename NodePointers<IntConstN>::Ptr;
 	using List = typename NodePointers<IntConstN>::List;
 	using ListPtr = typename NodePointers<IntConstN>::ListPtr;
+	using Constant::operator=;
+	using Constant::operator==;
+	using Constant::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::IntConstN.

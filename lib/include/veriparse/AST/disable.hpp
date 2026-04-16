@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Disable>::Ptr;
 	using List = typename NodePointers<Disable>::List;
 	using ListPtr = typename NodePointers<Disable>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Disable.

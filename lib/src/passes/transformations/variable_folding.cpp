@@ -105,7 +105,7 @@ int VariableFolding::execute_in_childs(AST::Node::Ptr node)
 {
 	int ret = 0;
 	AST::Node::ListPtr children = node->get_children();
-	for (AST::Node::Ptr child: *children) {
+	for (AST::Node::Ptr &child: *children) {
 		ret += execute(child, node);
 	}
 	return ret;

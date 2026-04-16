@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Ulnot>::Ptr;
 	using List = typename NodePointers<Ulnot>::List;
 	using ListPtr = typename NodePointers<Ulnot>::ListPtr;
+	using UnaryOperator::operator=;
+	using UnaryOperator::operator==;
+	using UnaryOperator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Ulnot.

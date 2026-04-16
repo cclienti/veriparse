@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Or>::Ptr;
 	using List = typename NodePointers<Or>::List;
 	using ListPtr = typename NodePointers<Or>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Or.

@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<Pragmalist>::Ptr;
 	using List = typename NodePointers<Pragmalist>::List;
 	using ListPtr = typename NodePointers<Pragmalist>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Pragmalist.

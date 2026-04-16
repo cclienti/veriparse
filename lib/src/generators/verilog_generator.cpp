@@ -39,7 +39,7 @@ std::string VerilogGenerator::render_description(const AST::Description::Ptr nod
 	if (node) {
 		const AST::Node::ListPtr definitions = node->get_definitions();
 		if (definitions) {
-			for(const AST::Node::Ptr def : *definitions) {
+			for(const AST::Node::Ptr &def : *definitions) {
 				result.append(render(def) + "\n");
 			}
 		}
@@ -61,7 +61,7 @@ std::string VerilogGenerator::render_pragmalist(const AST::Pragmalist::Ptr node)
 				}
 			}
 			result += " *)\n";
-			for (const auto stmt: *stmts) {
+			for (const auto &stmt: *stmts) {
 				result += render(stmt);
 			}
 		}
@@ -113,7 +113,7 @@ std::string VerilogGenerator::render_module(const AST::Module::Ptr node) const {
 		result += ";\n\n";
 
 		if (items) {
-			for(const AST::Node::Ptr item : *items) {
+			for(const AST::Node::Ptr &item : *items) {
 				if (item) {
 					result.append(indent(render(item)) + "\n");
 				}
@@ -1560,7 +1560,7 @@ std::string VerilogGenerator::variable_to_string(const char *variable, bool is_s
 	result.append(StringUtils::escape(name));
 
 	if (lengths) {
-		for(const AST::Length::Ptr length: *lengths) {
+		for(const AST::Length::Ptr &length: *lengths) {
 			length_str += StringUtils::remove_whitespace(render(length));
 		}
 
@@ -1613,7 +1613,7 @@ std::string VerilogGenerator::widths_list_to_string(const AST::Width::ListPtr wi
 	std::string result;
 
 	if (widths) {
-		for(const AST::Width::Ptr width: *widths) {
+		for(const AST::Width::Ptr &width: *widths) {
 			result += StringUtils::remove_whitespace(render(width));
 			result += " ";
 		}

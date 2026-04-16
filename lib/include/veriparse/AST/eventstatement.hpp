@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<EventStatement>::Ptr;
 	using List = typename NodePointers<EventStatement>::List;
 	using ListPtr = typename NodePointers<EventStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::EventStatement.

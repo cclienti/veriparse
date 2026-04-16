@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<GreaterThan>::Ptr;
 	using List = typename NodePointers<GreaterThan>::List;
 	using ListPtr = typename NodePointers<GreaterThan>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::GreaterThan.

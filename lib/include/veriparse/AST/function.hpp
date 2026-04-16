@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<Function>::Ptr;
 	using List = typename NodePointers<Function>::List;
 	using ListPtr = typename NodePointers<Function>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	enum class RettypeEnum {
 		INTEGER, 

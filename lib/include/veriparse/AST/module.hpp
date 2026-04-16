@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<Module>::Ptr;
 	using List = typename NodePointers<Module>::List;
 	using ListPtr = typename NodePointers<Module>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	enum class Default_nettypeEnum {
 		INTEGER, 

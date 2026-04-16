@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Plus>::Ptr;
 	using List = typename NodePointers<Plus>::List;
 	using ListPtr = typename NodePointers<Plus>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Plus.

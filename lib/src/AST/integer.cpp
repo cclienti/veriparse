@@ -61,7 +61,7 @@ bool Integer::replace(Node::Ptr node, Node::Ptr new_node) {
 	bool found = false;
 	if (get_lengths()) {
 		Length::ListPtr new_list = std::make_shared<Length::List>();
-		for (Length::Ptr lnode : *get_lengths()) {
+		for (const Length::Ptr &lnode : *get_lengths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -107,7 +107,7 @@ bool Integer::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_lengths()) {
 		Length::ListPtr new_list = std::make_shared<Length::List>();
-		for (Length::Ptr lnode : *get_lengths()) {
+		for (const Length::Ptr &lnode : *get_lengths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -118,7 +118,7 @@ bool Integer::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Integer::replace matches multiple times (list(Length)::lengths)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<Length>(n));
 					}
 					found = true;
@@ -144,7 +144,7 @@ Integer::ListPtr Integer::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Integer>(p->clone()));
 		}
 	}
@@ -154,7 +154,7 @@ Integer::ListPtr Integer::clone_list(const ListPtr nodes) {
 Node::ListPtr Integer::get_children(void) const {
 	Node::ListPtr list = std::make_shared<Node::List>();
 	if (get_lengths()) {
-		for (const Length::Ptr node : *get_lengths()) {
+		for (const Length::Ptr &node : *get_lengths()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

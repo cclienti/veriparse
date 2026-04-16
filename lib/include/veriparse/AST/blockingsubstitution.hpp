@@ -23,6 +23,9 @@ public:
 	using Ptr = typename NodePointers<BlockingSubstitution>::Ptr;
 	using List = typename NodePointers<BlockingSubstitution>::List;
 	using ListPtr = typename NodePointers<BlockingSubstitution>::ListPtr;
+	using Assign::operator=;
+	using Assign::operator==;
+	using Assign::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::BlockingSubstitution.

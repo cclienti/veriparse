@@ -98,8 +98,8 @@ int ParameterInliner::resolve_paramlist() {
 	// Inline parameters rvalue in all others parameters. The algorithm is
 	// in O(n^2). For each parameter, we replace the parameter rvalue
 	// in all other parameters.
-	for (AST::Parameter::Ptr pa: *m_paramlist) {
-		for (AST::Parameter::Ptr pb: *m_paramlist) {
+	for (AST::Parameter::Ptr &pa: *m_paramlist) {
+		for (AST::Parameter::Ptr &pb: *m_paramlist) {
 			if (pa->get_name() != pb->get_name()) {
 				auto val = pa->get_value();
 				if (val) {
@@ -132,7 +132,7 @@ int ParameterInliner::remove_parameter(AST::Node::Ptr node, std::string name, AS
 		default:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					remove_parameter(child, name, node);
 				}
 			}

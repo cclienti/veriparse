@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<FunctionCall>::Ptr;
 	using List = typename NodePointers<FunctionCall>::List;
 	using ListPtr = typename NodePointers<FunctionCall>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::FunctionCall.

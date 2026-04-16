@@ -12,7 +12,7 @@ namespace Transformations {
 int ModuleIONormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent) {
 	AST::Module::ListPtr module_nodes = Analysis::Module::get_module_nodes(node);
 
-	for(AST::Module::Ptr module: *module_nodes) {
+	for(AST::Module::Ptr &module: *module_nodes) {
 		AST::Parameter::ListPtr parameter_nodes = Analysis::Module::get_parameter_nodes(module);
 		AST::IODir::ListPtr iodir_nodes = Analysis::Module::get_iodir_nodes(module);
 		AST::Node::ListPtr ioport_nodes = std::make_shared<AST::Node::List>();
@@ -50,7 +50,7 @@ int ModuleIONormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent) {
 
 			// Search in the removed variables the corresponding name
 			bool found = false;
-			for(const AST::Variable::Ptr var: *removed_variable_nodes) {
+			for(const AST::Variable::Ptr &var: *removed_variable_nodes) {
 				if (var->get_name() == iodir->get_name()) {
 					ioport->set_second(var);
 					found = true;
@@ -109,7 +109,7 @@ void ModuleIONormalizer::remove_module_parameters(AST::Node::Ptr node, AST::Node
 		default:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					remove_module_parameters(child, node);
 				}
 			}
@@ -136,7 +136,7 @@ void ModuleIONormalizer::remove_module_iodirs(AST::Node::Ptr node, AST::Node::Pt
 		default:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					remove_module_iodirs(child, node);
 				}
 			}
@@ -161,7 +161,7 @@ void ModuleIONormalizer::remove_module_ioports(AST::Node::Ptr node, AST::Node::P
 		default:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					remove_module_ioports(child, node);
 				}
 			}
@@ -195,7 +195,7 @@ void ModuleIONormalizer::remove_module_variable(const std::string &variable,
 			default:
 				{
 					AST::Node::ListPtr children = node->get_children();
-					for (AST::Node::Ptr child: *children) {
+					for (AST::Node::Ptr &child: *children) {
 						remove_module_variable(variable, removed_variables, child, node);
 					}
 				}

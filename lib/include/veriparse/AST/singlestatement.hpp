@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<SingleStatement>::Ptr;
 	using List = typename NodePointers<SingleStatement>::List;
 	using ListPtr = typename NodePointers<SingleStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::SingleStatement.

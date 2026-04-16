@@ -104,7 +104,7 @@ bool {{ class_name }}::replace(Node::Ptr node, Node::Ptr new_node) {
 	{%- if is_type_list(ctype) %}
 	if (get_{{ cname }}()) {
 		{{ get_type(ctype) }} new_list = std::make_shared<{{ get_underlying_type(ctype) }}::List>();
-		for ({{ get_type(get_underlying_type(ctype)) }} lnode : *get_{{ cname }}()) {
+		for (const {{ get_type(get_underlying_type(ctype)) }} &lnode : *get_{{ cname }}()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -163,7 +163,7 @@ bool {{ class_name }}::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	{%- if is_type_list(ctype) %}
 	if (get_{{ cname }}()) {
 		{{ get_type(ctype) }} new_list = std::make_shared<{{ get_underlying_type(ctype) }}::List>();
-		for ({{ get_type(get_underlying_type(ctype)) }} lnode : *get_{{ cname }}()) {
+		for (const {{ get_type(get_underlying_type(ctype)) }} &lnode : *get_{{ cname }}()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -175,10 +175,10 @@ bool {{ class_name }}::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 					}
 					if(new_nodes) {
 						{%- if get_underlying_type(ctype) == "Node" %}
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(n);
 						{%- else %}
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<{{ get_underlying_type(ctype) }}>(n));
 						{%- endif %}
 					}
@@ -207,7 +207,7 @@ bool {{ class_name }}::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<{{ class_name }}>(p->clone()));
 		}
 	}
@@ -219,7 +219,7 @@ Node::ListPtr {{ class_name }}::get_children(void) const {
 	{%- for cname, ctype in children_dict_full.items() %}
 	{%- if is_type_list(ctype) %}
 	if (get_{{ cname }}()) {
-		for (const {{ get_type(get_underlying_type(ctype)) }} node : *get_{{ cname }}()) {
+		for (const {{ get_type(get_underlying_type(ctype)) }} &node : *get_{{ cname }}()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

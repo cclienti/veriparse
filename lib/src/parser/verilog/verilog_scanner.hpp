@@ -45,6 +45,7 @@ public:
 
 	virtual AST::Module::Default_nettypeEnum get_default_nettype() {return m_default_nettype;}
 
+	using yyFlexLexer::yylex;
 	virtual int yylex(Veriparse::Parser::VerilogParser::semantic_type * const lval,
 	                  Veriparse::Parser::VerilogParser::location_type * location);
 

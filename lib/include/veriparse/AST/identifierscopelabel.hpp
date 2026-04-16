@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<IdentifierScopeLabel>::Ptr;
 	using List = typename NodePointers<IdentifierScopeLabel>::List;
 	using ListPtr = typename NodePointers<IdentifierScopeLabel>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::IdentifierScopeLabel.

@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<PartselectMinusIndexed>::Ptr;
 	using List = typename NodePointers<PartselectMinusIndexed>::List;
 	using ListPtr = typename NodePointers<PartselectMinusIndexed>::ListPtr;
+	using PartselectIndexed::operator=;
+	using PartselectIndexed::operator==;
+	using PartselectIndexed::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::PartselectMinusIndexed.

@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Sll>::Ptr;
 	using List = typename NodePointers<Sll>::List;
 	using ListPtr = typename NodePointers<Sll>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Sll.

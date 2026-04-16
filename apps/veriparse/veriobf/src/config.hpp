@@ -2,6 +2,7 @@
 #define VERIOBF_CONFIG_HPP
 
 #include <ostream>
+#include <cstdint>
 #include <string>
 
 

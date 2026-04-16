@@ -22,6 +22,9 @@ public:
 	using Ptr = typename NodePointers<Real>::Ptr;
 	using List = typename NodePointers<Real>::List;
 	using ListPtr = typename NodePointers<Real>::ListPtr;
+	using Variable::operator=;
+	using Variable::operator==;
+	using Variable::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Real.

@@ -24,6 +24,9 @@ public:
 	using Ptr = typename NodePointers<Net>::Ptr;
 	using List = typename NodePointers<Net>::List;
 	using ListPtr = typename NodePointers<Net>::ListPtr;
+	using Variable::operator=;
+	using Variable::operator==;
+	using Variable::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Net.

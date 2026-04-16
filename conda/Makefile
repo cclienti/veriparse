@@ -2,9 +2,6 @@
 # Options
 ##################################################################
 
-# Sharpness Conda Repository
-SHARPNESS_REPOSITORY   ?= https://conda.wavecruncher.net/sharpness-1
-
 # Build type (release or debug)
 BUILD_TYPE             ?= release
 
@@ -46,41 +43,41 @@ NUM_CORES            = $(shell nproc)
 
 dev-env:
 	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
+	  eval "$$(mamba shell hook --shell bash)"; \
 	  deps=`grep -v "{{" recipe-release/meta.yaml | \
 	        $(CONDA_DISTRIB_PATH)/bin/python -c 'import yaml; import sys; \
                 d = yaml.load(sys.stdin, Loader=yaml.FullLoader);\
                 print(" ".join(d["requirements"]["build"]))'`; \
-	  conda create -y -n $(CONDA_DEV_ENVIRONMENT) -c $(SHARPNESS_REPOSITORY) $$deps
+	  mamba create -y -n $(CONDA_DEV_ENVIRONMENT) $$deps
 
 dev-cmake:
 	mkdir -p build
 	set -e; \
 	  cd build; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_DEV_ENVIRONMENT); \
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba activate $(CONDA_DEV_ENVIRONMENT); \
 	  cmake -DVERIPARSE_EXTERNAL_ROOT=${CONDA_PREFIX} \
 	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) ../..
 
 dev-build:
 	set -e; \
 	  cd build; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_DEV_ENVIRONMENT); \
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba activate $(CONDA_DEV_ENVIRONMENT); \
 	  make -j${NUM_CORES}
 
 dev-test:
 	set -e; \
 	  cd build; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_DEV_ENVIRONMENT); \
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba activate $(CONDA_DEV_ENVIRONMENT); \
 	  VERIPARSE_SOURCE_ROOT=$(realpath ..) ctest -j${NUM_CORES}
 
 dev-clean:
 	set -e; \
 	  rm -rf build; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda env remove -y -n $(CONDA_DEV_ENVIRONMENT)
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba env remove -y -n $(CONDA_DEV_ENVIRONMENT)
 
 
 ##################################################################

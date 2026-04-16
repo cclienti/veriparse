@@ -65,7 +65,7 @@ bool Module::replace(Node::Ptr node, Node::Ptr new_node) {
 	bool found = false;
 	if (get_params()) {
 		Parameter::ListPtr new_list = std::make_shared<Parameter::List>();
-		for (Parameter::Ptr lnode : *get_params()) {
+		for (const Parameter::Ptr &lnode : *get_params()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -96,7 +96,7 @@ bool Module::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_ports()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_ports()) {
+		for (const Node::Ptr &lnode : *get_ports()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -127,7 +127,7 @@ bool Module::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_items()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_items()) {
+		for (const Node::Ptr &lnode : *get_items()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -163,7 +163,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_params()) {
 		Parameter::ListPtr new_list = std::make_shared<Parameter::List>();
-		for (Parameter::Ptr lnode : *get_params()) {
+		for (const Parameter::Ptr &lnode : *get_params()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -174,7 +174,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Module::replace matches multiple times (list(Parameter)::params)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<Parameter>(n));
 					}
 					found = true;
@@ -195,7 +195,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	}
 	if (get_ports()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_ports()) {
+		for (const Node::Ptr &lnode : *get_ports()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -206,7 +206,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Module::replace matches multiple times (list(Node)::ports)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(n);
 					}
 					found = true;
@@ -227,7 +227,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	}
 	if (get_items()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_items()) {
+		for (const Node::Ptr &lnode : *get_items()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -238,7 +238,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Module::replace matches multiple times (list(Node)::items)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(n);
 					}
 					found = true;
@@ -264,7 +264,7 @@ Module::ListPtr Module::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Module>(p->clone()));
 		}
 	}
@@ -274,21 +274,21 @@ Module::ListPtr Module::clone_list(const ListPtr nodes) {
 Node::ListPtr Module::get_children(void) const {
 	Node::ListPtr list = std::make_shared<Node::List>();
 	if (get_params()) {
-		for (const Parameter::Ptr node : *get_params()) {
+		for (const Parameter::Ptr &node : *get_params()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
 		}
 	}
 	if (get_ports()) {
-		for (const Node::Ptr node : *get_ports()) {
+		for (const Node::Ptr &node : *get_ports()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
 		}
 	}
 	if (get_items()) {
-		for (const Node::Ptr node : *get_items()) {
+		for (const Node::Ptr &node : *get_items()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

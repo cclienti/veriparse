@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<IdentifierScope>::Ptr;
 	using List = typename NodePointers<IdentifierScope>::List;
 	using ListPtr = typename NodePointers<IdentifierScope>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::IdentifierScope.

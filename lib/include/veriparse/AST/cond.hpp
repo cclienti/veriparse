@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Cond>::Ptr;
 	using List = typename NodePointers<Cond>::List;
 	using ListPtr = typename NodePointers<Cond>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Cond.

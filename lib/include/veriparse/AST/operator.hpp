@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Operator>::Ptr;
 	using List = typename NodePointers<Operator>::List;
 	using ListPtr = typename NodePointers<Operator>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Operator.

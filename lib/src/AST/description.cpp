@@ -57,7 +57,7 @@ bool Description::replace(Node::Ptr node, Node::Ptr new_node) {
 	bool found = false;
 	if (get_definitions()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_definitions()) {
+		for (const Node::Ptr &lnode : *get_definitions()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -93,7 +93,7 @@ bool Description::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_definitions()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_definitions()) {
+		for (const Node::Ptr &lnode : *get_definitions()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -104,7 +104,7 @@ bool Description::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Description::replace matches multiple times (list(Node)::definitions)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(n);
 					}
 					found = true;
@@ -130,7 +130,7 @@ Description::ListPtr Description::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Description>(p->clone()));
 		}
 	}
@@ -140,7 +140,7 @@ Description::ListPtr Description::clone_list(const ListPtr nodes) {
 Node::ListPtr Description::get_children(void) const {
 	Node::ListPtr list = std::make_shared<Node::List>();
 	if (get_definitions()) {
-		for (const Node::Ptr node : *get_definitions()) {
+		for (const Node::Ptr &node : *get_definitions()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

@@ -24,6 +24,9 @@ public:
 	using Ptr = typename NodePointers<Tri>::Ptr;
 	using List = typename NodePointers<Tri>::List;
 	using ListPtr = typename NodePointers<Tri>::ListPtr;
+	using Net::operator=;
+	using Net::operator==;
+	using Net::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Tri.

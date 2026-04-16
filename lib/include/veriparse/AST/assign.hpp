@@ -21,6 +21,9 @@ public:
 	using Ptr = typename NodePointers<Assign>::Ptr;
 	using List = typename NodePointers<Assign>::List;
 	using ListPtr = typename NodePointers<Assign>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Assign.

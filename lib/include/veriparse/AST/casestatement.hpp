@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<CaseStatement>::Ptr;
 	using List = typename NodePointers<CaseStatement>::List;
 	using ListPtr = typename NodePointers<CaseStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::CaseStatement.

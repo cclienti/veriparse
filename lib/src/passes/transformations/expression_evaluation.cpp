@@ -118,7 +118,7 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_node(const AST::Node::Ptr node)
 			AST::Node::ListPtr syscall_args = syscall_node->get_args();
 			if (syscall_args) {
 				AST::Node::ListPtr args = std::make_shared<AST::Node::List>();
-				for (AST::Node::Ptr syscall_arg: *syscall_args) {
+				for (AST::Node::Ptr &syscall_arg: *syscall_args) {
 					args->push_back(evaluate_node(syscall_arg));
 				}
 				return evaluate_system_call(syscall_node->get_syscall(), args,

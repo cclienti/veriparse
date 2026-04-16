@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Xor>::Ptr;
 	using List = typename NodePointers<Xor>::List;
 	using ListPtr = typename NodePointers<Xor>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Xor.

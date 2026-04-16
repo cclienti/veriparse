@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Times>::Ptr;
 	using List = typename NodePointers<Times>::List;
 	using ListPtr = typename NodePointers<Times>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Times.

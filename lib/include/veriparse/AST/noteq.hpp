@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<NotEq>::Ptr;
 	using List = typename NodePointers<NotEq>::List;
 	using ListPtr = typename NodePointers<NotEq>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::NotEq.

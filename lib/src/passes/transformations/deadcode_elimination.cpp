@@ -97,7 +97,7 @@ int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifi
 		// Create a new identifiers and recurse
 		DSet new_identifiers;
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			rc += analyze_identifiers(child, new_identifiers);
 		}
 
@@ -116,7 +116,7 @@ int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifi
 		// Create a new identifiers and recurse
 		DSet new_identifiers;
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			rc += analyze_identifiers(child, new_identifiers);
 		}
 
@@ -147,7 +147,7 @@ int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifi
 	}
 	else {
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			rc += analyze_identifiers(child, identifiers);
 		}
 	}
@@ -234,7 +234,7 @@ int DeadcodeElimination::remove_deadstmt(const DeadcodeElimination::DSet &deadse
 
 	else {
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			rc |= remove_deadstmt(deadset, removedset, child, node);
 		}
 	}
@@ -266,7 +266,7 @@ int DeadcodeElimination::remove_deaddecl(const DeadcodeElimination::DSet &remove
 		}
 		else {
 			AST::Node::ListPtr children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				rc |= remove_deaddecl(removedset, child, node);
 			}
 		}
@@ -294,7 +294,7 @@ int DeadcodeElimination::remove_emptyblock(AST::Node::Ptr node, AST::Node::Ptr p
 		case AST::NodeType::Block:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					rc |= remove_emptyblock(child, node);
 				}
 
@@ -307,7 +307,7 @@ int DeadcodeElimination::remove_emptyblock(AST::Node::Ptr node, AST::Node::Ptr p
 
 		default:
 			AST::Node::ListPtr children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				rc |= remove_emptyblock(child, node);
 			}
 		}
@@ -331,7 +331,7 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 		case AST::NodeType::IfStatement:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					rc |= remove_emptystmt(child, node);
 				}
 
@@ -352,7 +352,7 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 		case AST::NodeType::Always:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					rc |= remove_emptystmt(child, node);
 				}
 
@@ -367,7 +367,7 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 		case AST::NodeType::ForStatement:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					rc |= remove_emptystmt(child, node);
 				}
 
@@ -382,7 +382,7 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 		case AST::NodeType::WhileStatement:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					rc |= remove_emptystmt(child, node);
 				}
 
@@ -396,7 +396,7 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 
 		default:
 			AST::Node::ListPtr children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				rc |= remove_emptystmt(child, node);
 			}
 		}
@@ -421,7 +421,7 @@ int DeadcodeElimination::remove_emptyattr(AST::Node::Ptr node, AST::Node::Ptr pa
 	}
 
 	AST::Node::ListPtr children = node->get_children();
-	for (AST::Node::Ptr child: *children) {
+	for (AST::Node::Ptr &child: *children) {
 		rc |= remove_emptyattr(child, node);
 	}
 
@@ -451,7 +451,7 @@ int DeadcodeElimination::remove_unused_decl(const DeadcodeElimination::DSet &ide
 	}
 	else {
 		const auto &children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			rc += remove_unused_decl(identifiers, iodirs, child, node);
 		}
 	}
@@ -475,7 +475,7 @@ int DeadcodeElimination::collect_identifier(DeadcodeElimination::DSet &identifie
 	}
 	else {
 		const auto &children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			rc |= collect_identifier(identifiers, child);
 		}
 	}

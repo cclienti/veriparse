@@ -21,6 +21,9 @@ public:
 	using Ptr = typename NodePointers<Localparam>::Ptr;
 	using List = typename NodePointers<Localparam>::List;
 	using ListPtr = typename NodePointers<Localparam>::ListPtr;
+	using Parameter::operator=;
+	using Parameter::operator==;
+	using Parameter::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Localparam.

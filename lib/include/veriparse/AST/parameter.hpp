@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<Parameter>::Ptr;
 	using List = typename NodePointers<Parameter>::List;
 	using ListPtr = typename NodePointers<Parameter>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	enum class TypeEnum {
 		INTEGER, 

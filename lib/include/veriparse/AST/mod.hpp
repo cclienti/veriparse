@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Mod>::Ptr;
 	using List = typename NodePointers<Mod>::List;
 	using ListPtr = typename NodePointers<Mod>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Mod.

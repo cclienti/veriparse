@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Eql>::Ptr;
 	using List = typename NodePointers<Eql>::List;
 	using ListPtr = typename NodePointers<Eql>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Eql.

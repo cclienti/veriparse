@@ -21,6 +21,9 @@ public:
 	using Ptr = typename NodePointers<Instance>::Ptr;
 	using List = typename NodePointers<Instance>::List;
 	using ListPtr = typename NodePointers<Instance>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Instance.

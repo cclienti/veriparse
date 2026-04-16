@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Block>::Ptr;
 	using List = typename NodePointers<Block>::List;
 	using ListPtr = typename NodePointers<Block>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Block.

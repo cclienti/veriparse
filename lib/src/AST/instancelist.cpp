@@ -61,7 +61,7 @@ bool Instancelist::replace(Node::Ptr node, Node::Ptr new_node) {
 	bool found = false;
 	if (get_parameterlist()) {
 		ParamArg::ListPtr new_list = std::make_shared<ParamArg::List>();
-		for (ParamArg::Ptr lnode : *get_parameterlist()) {
+		for (const ParamArg::Ptr &lnode : *get_parameterlist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -92,7 +92,7 @@ bool Instancelist::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_instances()) {
 		Instance::ListPtr new_list = std::make_shared<Instance::List>();
-		for (Instance::Ptr lnode : *get_instances()) {
+		for (const Instance::Ptr &lnode : *get_instances()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -128,7 +128,7 @@ bool Instancelist::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_parameterlist()) {
 		ParamArg::ListPtr new_list = std::make_shared<ParamArg::List>();
-		for (ParamArg::Ptr lnode : *get_parameterlist()) {
+		for (const ParamArg::Ptr &lnode : *get_parameterlist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -139,7 +139,7 @@ bool Instancelist::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Instancelist::replace matches multiple times (list(ParamArg)::parameterlist)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<ParamArg>(n));
 					}
 					found = true;
@@ -160,7 +160,7 @@ bool Instancelist::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	}
 	if (get_instances()) {
 		Instance::ListPtr new_list = std::make_shared<Instance::List>();
-		for (Instance::Ptr lnode : *get_instances()) {
+		for (const Instance::Ptr &lnode : *get_instances()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -171,7 +171,7 @@ bool Instancelist::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Instancelist::replace matches multiple times (list(Instance)::instances)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<Instance>(n));
 					}
 					found = true;
@@ -197,7 +197,7 @@ Instancelist::ListPtr Instancelist::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Instancelist>(p->clone()));
 		}
 	}
@@ -207,14 +207,14 @@ Instancelist::ListPtr Instancelist::clone_list(const ListPtr nodes) {
 Node::ListPtr Instancelist::get_children(void) const {
 	Node::ListPtr list = std::make_shared<Node::List>();
 	if (get_parameterlist()) {
-		for (const ParamArg::Ptr node : *get_parameterlist()) {
+		for (const ParamArg::Ptr &node : *get_parameterlist()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
 		}
 	}
 	if (get_instances()) {
-		for (const Instance::Ptr node : *get_instances()) {
+		for (const Instance::Ptr &node : *get_instances()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

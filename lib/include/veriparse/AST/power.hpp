@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Power>::Ptr;
 	using List = typename NodePointers<Power>::List;
 	using ListPtr = typename NodePointers<Power>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Power.

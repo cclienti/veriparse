@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<Always>::Ptr;
 	using List = typename NodePointers<Always>::List;
 	using ListPtr = typename NodePointers<Always>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Always.

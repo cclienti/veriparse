@@ -23,6 +23,9 @@ public:
 	using Ptr = typename NodePointers<NonblockingSubstitution>::Ptr;
 	using List = typename NodePointers<NonblockingSubstitution>::List;
 	using ListPtr = typename NodePointers<NonblockingSubstitution>::ListPtr;
+	using Assign::operator=;
+	using Assign::operator==;
+	using Assign::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::NonblockingSubstitution.

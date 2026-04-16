@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Sens>::Ptr;
 	using List = typename NodePointers<Sens>::List;
 	using ListPtr = typename NodePointers<Sens>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	enum class TypeEnum {
 		ALL, 

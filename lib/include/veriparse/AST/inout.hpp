@@ -21,6 +21,9 @@ public:
 	using Ptr = typename NodePointers<Inout>::Ptr;
 	using List = typename NodePointers<Inout>::List;
 	using ListPtr = typename NodePointers<Inout>::ListPtr;
+	using IODir::operator=;
+	using IODir::operator==;
+	using IODir::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Inout.

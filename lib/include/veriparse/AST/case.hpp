@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Case>::Ptr;
 	using List = typename NodePointers<Case>::List;
 	using ListPtr = typename NodePointers<Case>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Case.

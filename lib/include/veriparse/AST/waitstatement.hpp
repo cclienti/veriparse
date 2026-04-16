@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<WaitStatement>::Ptr;
 	using List = typename NodePointers<WaitStatement>::List;
 	using ListPtr = typename NodePointers<WaitStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::WaitStatement.

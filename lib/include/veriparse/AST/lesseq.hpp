@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<LessEq>::Ptr;
 	using List = typename NodePointers<LessEq>::List;
 	using ListPtr = typename NodePointers<LessEq>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::LessEq.

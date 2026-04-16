@@ -136,7 +136,7 @@ namespace Veriparse {
 					default:
 						{
 							AST::Node::ListPtr children = node->get_children();
-							for (AST::Node::Ptr n: *children) {
+							for (AST::Node::Ptr &n: *children) {
 								get_indirect_node_list(n, list, occur_depth);
 							}
 						}

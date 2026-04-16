@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<VariableBase>::Ptr;
 	using List = typename NodePointers<VariableBase>::List;
 	using ListPtr = typename NodePointers<VariableBase>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::VariableBase.

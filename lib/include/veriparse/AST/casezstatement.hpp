@@ -21,6 +21,9 @@ public:
 	using Ptr = typename NodePointers<CasezStatement>::Ptr;
 	using List = typename NodePointers<CasezStatement>::List;
 	using ListPtr = typename NodePointers<CasezStatement>::ListPtr;
+	using CaseStatement::operator=;
+	using CaseStatement::operator==;
+	using CaseStatement::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::CasezStatement.

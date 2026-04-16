@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Divide>::Ptr;
 	using List = typename NodePointers<Divide>::List;
 	using ListPtr = typename NodePointers<Divide>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Divide.

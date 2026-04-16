@@ -23,6 +23,9 @@ public:
 	using Ptr = typename NodePointers<Reg>::Ptr;
 	using List = typename NodePointers<Reg>::List;
 	using ListPtr = typename NodePointers<Reg>::ListPtr;
+	using Variable::operator=;
+	using Variable::operator==;
+	using Variable::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Reg.

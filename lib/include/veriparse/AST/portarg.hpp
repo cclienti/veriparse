@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<PortArg>::Ptr;
 	using List = typename NodePointers<PortArg>::List;
 	using ListPtr = typename NodePointers<PortArg>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::PortArg.

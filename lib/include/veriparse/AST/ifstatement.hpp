@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<IfStatement>::Ptr;
 	using List = typename NodePointers<IfStatement>::List;
 	using ListPtr = typename NodePointers<IfStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::IfStatement.

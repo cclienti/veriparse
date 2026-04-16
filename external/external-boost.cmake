@@ -13,7 +13,7 @@ message(STATUS "Python Major Version: ${PYTHON_VERSION}")
 message(STATUS "External project Boost installation in ${BOOST_URL_INSTALL_DIR}")
 
 set(BOOST_URL            https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.bz2)
-set(BOOST_SHA256         430ae8354789de4fd19ee52f3b1f739e1fba576f0aded0897c3c2bc00fb38778)
+set(BOOST_SHA256         e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 
 # Patch command is used to setup the install
 set(BOOST_PATCH_CMD

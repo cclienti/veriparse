@@ -67,7 +67,7 @@ bool CasexStatement::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_caselist()) {
 		Case::ListPtr new_list = std::make_shared<Case::List>();
-		for (Case::Ptr lnode : *get_caselist()) {
+		for (const Case::Ptr &lnode : *get_caselist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -103,7 +103,7 @@ bool CasexStatement::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_caselist()) {
 		Case::ListPtr new_list = std::make_shared<Case::List>();
-		for (Case::Ptr lnode : *get_caselist()) {
+		for (const Case::Ptr &lnode : *get_caselist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -114,7 +114,7 @@ bool CasexStatement::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "CasexStatement::replace matches multiple times (list(Case)::caselist)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<Case>(n));
 					}
 					found = true;
@@ -140,7 +140,7 @@ CasexStatement::ListPtr CasexStatement::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<CasexStatement>(p->clone()));
 		}
 	}
@@ -153,7 +153,7 @@ Node::ListPtr CasexStatement::get_children(void) const {
 		list->push_back(std::static_pointer_cast<Node>(get_comp()));
 	}
 	if (get_caselist()) {
-		for (const Case::Ptr node : *get_caselist()) {
+		for (const Case::Ptr &node : *get_caselist()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

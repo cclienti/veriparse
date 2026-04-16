@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<SystemCall>::Ptr;
 	using List = typename NodePointers<SystemCall>::List;
 	using ListPtr = typename NodePointers<SystemCall>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::SystemCall.

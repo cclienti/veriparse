@@ -75,7 +75,7 @@ bool Instance::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_parameterlist()) {
 		ParamArg::ListPtr new_list = std::make_shared<ParamArg::List>();
-		for (ParamArg::Ptr lnode : *get_parameterlist()) {
+		for (const ParamArg::Ptr &lnode : *get_parameterlist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -106,7 +106,7 @@ bool Instance::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_portlist()) {
 		PortArg::ListPtr new_list = std::make_shared<PortArg::List>();
-		for (PortArg::Ptr lnode : *get_portlist()) {
+		for (const PortArg::Ptr &lnode : *get_portlist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -142,7 +142,7 @@ bool Instance::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_parameterlist()) {
 		ParamArg::ListPtr new_list = std::make_shared<ParamArg::List>();
-		for (ParamArg::Ptr lnode : *get_parameterlist()) {
+		for (const ParamArg::Ptr &lnode : *get_parameterlist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -153,7 +153,7 @@ bool Instance::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Instance::replace matches multiple times (list(ParamArg)::parameterlist)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<ParamArg>(n));
 					}
 					found = true;
@@ -174,7 +174,7 @@ bool Instance::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	}
 	if (get_portlist()) {
 		PortArg::ListPtr new_list = std::make_shared<PortArg::List>();
-		for (PortArg::Ptr lnode : *get_portlist()) {
+		for (const PortArg::Ptr &lnode : *get_portlist()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -185,7 +185,7 @@ bool Instance::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Instance::replace matches multiple times (list(PortArg)::portlist)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<PortArg>(n));
 					}
 					found = true;
@@ -211,7 +211,7 @@ Instance::ListPtr Instance::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Instance>(p->clone()));
 		}
 	}
@@ -224,14 +224,14 @@ Node::ListPtr Instance::get_children(void) const {
 		list->push_back(std::static_pointer_cast<Node>(get_array()));
 	}
 	if (get_parameterlist()) {
-		for (const ParamArg::Ptr node : *get_parameterlist()) {
+		for (const ParamArg::Ptr &node : *get_parameterlist()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
 		}
 	}
 	if (get_portlist()) {
-		for (const PortArg::Ptr node : *get_portlist()) {
+		for (const PortArg::Ptr &node : *get_portlist()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

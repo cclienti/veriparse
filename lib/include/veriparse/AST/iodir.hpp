@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<IODir>::Ptr;
 	using List = typename NodePointers<IODir>::List;
 	using ListPtr = typename NodePointers<IODir>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::IODir.

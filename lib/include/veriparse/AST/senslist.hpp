@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<Senslist>::Ptr;
 	using List = typename NodePointers<Senslist>::List;
 	using ListPtr = typename NodePointers<Senslist>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Senslist.

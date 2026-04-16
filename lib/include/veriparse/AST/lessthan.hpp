@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<LessThan>::Ptr;
 	using List = typename NodePointers<LessThan>::List;
 	using ListPtr = typename NodePointers<LessThan>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::LessThan.

@@ -129,7 +129,7 @@ int ModuleInstanceNormalizer::split_lists(const AST::Node::Ptr &node, const AST:
 		{
 			int ret = 0;
 			AST::Node::ListPtr children = node->get_children();
-			for (AST::Node::Ptr child: *children) {
+			for (AST::Node::Ptr &child: *children) {
 				ret += split_lists(child, node);
 			}
 			return ret;
@@ -153,7 +153,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 	if (!node->is_node_type(AST::NodeType::Instancelist)) {
 		int ret = 0;
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			ret += split_array(child, node);
 		}
 		return ret;
@@ -346,7 +346,7 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node, cons
 	if (!node->is_node_type(AST::NodeType::Instancelist)) {
 		int ret = 0;
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			ret += set_portarg_names(child, node);
 		}
 		return ret;
@@ -524,7 +524,7 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node, con
 	if (!node->is_node_type(AST::NodeType::Instancelist)) {
 		int ret = 0;
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			ret += set_paramarg_names(child, node);
 		}
 		return ret;
@@ -691,7 +691,7 @@ int ModuleInstanceNormalizer::convert_to_lconcat(const AST::Node::Ptr &node, con
 	if (!node->is_node_type(AST::NodeType::Concat)) {
 		int ret = 0;
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			ret += convert_to_lconcat(child, node);
 		}
 		return ret;
@@ -724,7 +724,7 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 	if (!node->is_node_type(AST::NodeType::Instancelist)) {
 		int ret = 0;
 		AST::Node::ListPtr children = node->get_children();
-		for (AST::Node::Ptr child: *children) {
+		for (AST::Node::Ptr &child: *children) {
 			ret += replace_port_affectation(child, node);
 		}
 		return ret;

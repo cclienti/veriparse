@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Ioport>::Ptr;
 	using List = typename NodePointers<Ioport>::List;
 	using ListPtr = typename NodePointers<Ioport>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Ioport.

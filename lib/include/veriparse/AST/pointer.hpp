@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Pointer>::Ptr;
 	using List = typename NodePointers<Pointer>::List;
 	using ListPtr = typename NodePointers<Pointer>::ListPtr;
+	using Indirect::operator=;
+	using Indirect::operator==;
+	using Indirect::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Pointer.

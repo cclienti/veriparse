@@ -24,6 +24,9 @@ public:
 	using Ptr = typename NodePointers<Wire>::Ptr;
 	using List = typename NodePointers<Wire>::List;
 	using ListPtr = typename NodePointers<Wire>::ListPtr;
+	using Net::operator=;
+	using Net::operator==;
+	using Net::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Wire.

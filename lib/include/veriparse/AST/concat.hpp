@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Concat>::Ptr;
 	using List = typename NodePointers<Concat>::List;
 	using ListPtr = typename NodePointers<Concat>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Concat.

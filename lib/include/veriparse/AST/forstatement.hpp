@@ -19,6 +19,9 @@ public:
 	using Ptr = typename NodePointers<ForStatement>::Ptr;
 	using List = typename NodePointers<ForStatement>::List;
 	using ListPtr = typename NodePointers<ForStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::ForStatement.

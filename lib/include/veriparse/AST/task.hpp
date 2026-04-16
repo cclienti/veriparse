@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Task>::Ptr;
 	using List = typename NodePointers<Task>::List;
 	using ListPtr = typename NodePointers<Task>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Task.

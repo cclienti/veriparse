@@ -34,7 +34,7 @@ public:
 		auto node = make_ptr(get_value());
 
 		for (const auto &child: m_children) {
-			node->push_child(std::move(child->clone()));
+			node->push_child(child->clone());
 		}
 
 		return node;

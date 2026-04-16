@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<ParallelBlock>::Ptr;
 	using List = typename NodePointers<ParallelBlock>::List;
 	using ListPtr = typename NodePointers<ParallelBlock>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::ParallelBlock.

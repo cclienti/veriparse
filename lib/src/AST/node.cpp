@@ -67,7 +67,7 @@ namespace Veriparse {
 			if (get_node_type() == node_type) return true;
 
 			Node::ListPtr children = get_children();
-			for (Ptr node: *children) {
+			for (Ptr &node: *children) {
 				if(node->contains(node_type)) return true;
 			}
 
@@ -177,7 +177,7 @@ namespace Veriparse {
 		Node::ListPtr Node::clone_list(const ListPtr nodes)	{
 			if (nodes) {
 				ListPtr list = std::make_shared<List>();
-				for(const Ptr p : *nodes) {
+				for(const Ptr &p : *nodes) {
 					if (p) {
 						list->push_back(p->clone());
 					}

@@ -48,6 +48,9 @@ public:
 	using Ptr = typename NodePointers<{{ class_name }}>::Ptr;
 	using List = typename NodePointers<{{ class_name }}>::List;
 	using ListPtr = typename NodePointers<{{ class_name }}>::ListPtr;
+	using {{ base_class }}::operator=;
+	using {{ base_class }}::operator==;
+	using {{ base_class }}::operator!=;
 
 	{% for penum_name, penum_list in properties_user_enum.items() -%}
 	enum class {{ penum_name }} {

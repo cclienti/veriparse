@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Width>::Ptr;
 	using List = typename NodePointers<Width>::List;
 	using ListPtr = typename NodePointers<Width>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Width.

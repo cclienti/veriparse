@@ -100,7 +100,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ########################################
 
   set(OPENSSL_ROOT_DIR ${VERIPARSE_EXTERNAL_ROOT})
-  set(OPENSSL_USE_STATIC_LIBS      ON)
+  set(OPENSSL_USE_STATIC_LIBS      OFF)
   find_package(OpenSSL)
 
 
@@ -136,7 +136,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ########################################
 
   set(BOOST_ROOT ${VERIPARSE_EXTERNAL_ROOT})
-  set(Boost_USE_STATIC_LIBS        ON)
+  set(Boost_USE_STATIC_LIBS        OFF)
   set(Boost_USE_MULTITHREADED      ON)
   set(Boost_USE_STATIC_RUNTIME     OFF)
   find_package(Boost 1.72.0 REQUIRED

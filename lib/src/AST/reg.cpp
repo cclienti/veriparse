@@ -65,7 +65,7 @@ bool Reg::replace(Node::Ptr node, Node::Ptr new_node) {
 	bool found = false;
 	if (get_widths()) {
 		Width::ListPtr new_list = std::make_shared<Width::List>();
-		for (Width::Ptr lnode : *get_widths()) {
+		for (const Width::Ptr &lnode : *get_widths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -96,7 +96,7 @@ bool Reg::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_lengths()) {
 		Length::ListPtr new_list = std::make_shared<Length::List>();
-		for (Length::Ptr lnode : *get_lengths()) {
+		for (const Length::Ptr &lnode : *get_lengths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -142,7 +142,7 @@ bool Reg::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_widths()) {
 		Width::ListPtr new_list = std::make_shared<Width::List>();
-		for (Width::Ptr lnode : *get_widths()) {
+		for (const Width::Ptr &lnode : *get_widths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -153,7 +153,7 @@ bool Reg::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Reg::replace matches multiple times (list(Width)::widths)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<Width>(n));
 					}
 					found = true;
@@ -174,7 +174,7 @@ bool Reg::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	}
 	if (get_lengths()) {
 		Length::ListPtr new_list = std::make_shared<Length::List>();
-		for (Length::Ptr lnode : *get_lengths()) {
+		for (const Length::Ptr &lnode : *get_lengths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -185,7 +185,7 @@ bool Reg::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Reg::replace matches multiple times (list(Length)::lengths)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<Length>(n));
 					}
 					found = true;
@@ -211,7 +211,7 @@ Reg::ListPtr Reg::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Reg>(p->clone()));
 		}
 	}
@@ -221,14 +221,14 @@ Reg::ListPtr Reg::clone_list(const ListPtr nodes) {
 Node::ListPtr Reg::get_children(void) const {
 	Node::ListPtr list = std::make_shared<Node::List>();
 	if (get_widths()) {
-		for (const Width::Ptr node : *get_widths()) {
+		for (const Width::Ptr &node : *get_widths()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
 		}
 	}
 	if (get_lengths()) {
-		for (const Length::Ptr node : *get_lengths()) {
+		for (const Length::Ptr &node : *get_lengths()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}

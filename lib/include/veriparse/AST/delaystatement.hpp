@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<DelayStatement>::Ptr;
 	using List = typename NodePointers<DelayStatement>::List;
 	using ListPtr = typename NodePointers<DelayStatement>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::DelayStatement.

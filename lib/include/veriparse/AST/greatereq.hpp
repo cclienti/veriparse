@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<GreaterEq>::Ptr;
 	using List = typename NodePointers<GreaterEq>::List;
 	using ListPtr = typename NodePointers<GreaterEq>::ListPtr;
+	using Operator::operator=;
+	using Operator::operator==;
+	using Operator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::GreaterEq.

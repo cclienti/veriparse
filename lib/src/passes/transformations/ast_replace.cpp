@@ -55,7 +55,7 @@ int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replac
 
 				// Recurse in scopes
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					ret += replace_identifier(child, replace_map, node);
 				}
 			}
@@ -67,7 +67,7 @@ int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replac
 				                                         to_set(Analysis::Function::get_variable_names(node)));
 				ReplaceMap new_replace_map = remove_keys(replace_map, locals);
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					ret |= replace_identifier(child, new_replace_map);
 				}
 			}
@@ -79,7 +79,7 @@ int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replac
 				                                         to_set(Analysis::Task::get_variable_names(node)));
 				ReplaceMap new_replace_map = remove_keys(replace_map, locals);
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					ret |= replace_identifier(child, new_replace_map);
 				}
 			}
@@ -88,7 +88,7 @@ int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replac
 		default:
 			{
 				AST::Node::ListPtr children = node->get_children();
-				for (AST::Node::Ptr child: *children) {
+				for (AST::Node::Ptr &child: *children) {
 					ret += replace_identifier(child, replace_map, node);
 				}
 			}

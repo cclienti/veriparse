@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<PartselectPlusIndexed>::Ptr;
 	using List = typename NodePointers<PartselectPlusIndexed>::List;
 	using ListPtr = typename NodePointers<PartselectPlusIndexed>::ListPtr;
+	using PartselectIndexed::operator=;
+	using PartselectIndexed::operator==;
+	using PartselectIndexed::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::PartselectPlusIndexed.

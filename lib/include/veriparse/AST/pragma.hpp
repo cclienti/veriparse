@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<Pragma>::Ptr;
 	using List = typename NodePointers<Pragma>::List;
 	using ListPtr = typename NodePointers<Pragma>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Pragma.

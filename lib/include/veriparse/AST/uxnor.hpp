@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Uxnor>::Ptr;
 	using List = typename NodePointers<Uxnor>::List;
 	using ListPtr = typename NodePointers<Uxnor>::ListPtr;
+	using UnaryOperator::operator=;
+	using UnaryOperator::operator==;
+	using UnaryOperator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Uxnor.

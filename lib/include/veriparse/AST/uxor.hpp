@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Uxor>::Ptr;
 	using List = typename NodePointers<Uxor>::List;
 	using ListPtr = typename NodePointers<Uxor>::ListPtr;
+	using UnaryOperator::operator=;
+	using UnaryOperator::operator==;
+	using UnaryOperator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Uxor.

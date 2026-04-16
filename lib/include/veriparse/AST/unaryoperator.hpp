@@ -18,6 +18,9 @@ public:
 	using Ptr = typename NodePointers<UnaryOperator>::Ptr;
 	using List = typename NodePointers<UnaryOperator>::List;
 	using ListPtr = typename NodePointers<UnaryOperator>::ListPtr;
+	using Node::operator=;
+	using Node::operator==;
+	using Node::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::UnaryOperator.

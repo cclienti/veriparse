@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Uor>::Ptr;
 	using List = typename NodePointers<Uor>::List;
 	using ListPtr = typename NodePointers<Uor>::ListPtr;
+	using UnaryOperator::operator=;
+	using UnaryOperator::operator==;
+	using UnaryOperator::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Uor.

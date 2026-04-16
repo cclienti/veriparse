@@ -20,6 +20,9 @@ public:
 	using Ptr = typename NodePointers<Genvar>::Ptr;
 	using List = typename NodePointers<Genvar>::List;
 	using ListPtr = typename NodePointers<Genvar>::ListPtr;
+	using VariableBase::operator=;
+	using VariableBase::operator==;
+	using VariableBase::operator!=;
 
 	/**
 	 * Constructor, m_node_type is set to NodeType::Genvar.

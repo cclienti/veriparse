@@ -73,7 +73,7 @@ bool Function::replace(Node::Ptr node, Node::Ptr new_node) {
 	bool found = false;
 	if (get_retwidths()) {
 		Width::ListPtr new_list = std::make_shared<Width::List>();
-		for (Width::Ptr lnode : *get_retwidths()) {
+		for (const Width::Ptr &lnode : *get_retwidths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -104,7 +104,7 @@ bool Function::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_ports()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_ports()) {
+		for (const Node::Ptr &lnode : *get_ports()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -135,7 +135,7 @@ bool Function::replace(Node::Ptr node, Node::Ptr new_node) {
 	}
 	if (get_statements()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_statements()) {
+		for (const Node::Ptr &lnode : *get_statements()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -171,7 +171,7 @@ bool Function::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	bool found = false;
 	if (get_retwidths()) {
 		Width::ListPtr new_list = std::make_shared<Width::List>();
-		for (Width::Ptr lnode : *get_retwidths()) {
+		for (const Width::Ptr &lnode : *get_retwidths()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -182,7 +182,7 @@ bool Function::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Function::replace matches multiple times (list(Width)::retwidths)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(cast_to<Width>(n));
 					}
 					found = true;
@@ -203,7 +203,7 @@ bool Function::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	}
 	if (get_ports()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_ports()) {
+		for (const Node::Ptr &lnode : *get_ports()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -214,7 +214,7 @@ bool Function::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Function::replace matches multiple times (list(Node)::ports)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(n);
 					}
 					found = true;
@@ -235,7 +235,7 @@ bool Function::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 	}
 	if (get_statements()) {
 		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (Node::Ptr lnode : *get_statements()) {
+		for (const Node::Ptr &lnode : *get_statements()) {
 			if (lnode) {
 				if (lnode != node) {
 					new_list->push_back(lnode);
@@ -246,7 +246,7 @@ bool Function::replace(Node::Ptr node, Node::ListPtr new_nodes) {
 										<< "Function::replace matches multiple times (list(Node)::statements)";
 					}
 					if(new_nodes) {
-						for(Node::Ptr n: *new_nodes)
+						for(const Node::Ptr &n: *new_nodes)
 							new_list->push_back(n);
 					}
 					found = true;
@@ -272,7 +272,7 @@ Function::ListPtr Function::clone_list(const ListPtr nodes) {
 	ListPtr list;
 	if (nodes) {
 			 list = std::make_shared<List>();
-		for(const Ptr p : *nodes) {
+		for(const Ptr &p : *nodes) {
 			list->push_back(cast_to<Function>(p->clone()));
 		}
 	}
@@ -282,21 +282,21 @@ Function::ListPtr Function::clone_list(const ListPtr nodes) {
 Node::ListPtr Function::get_children(void) const {
 	Node::ListPtr list = std::make_shared<Node::List>();
 	if (get_retwidths()) {
-		for (const Width::Ptr node : *get_retwidths()) {
+		for (const Width::Ptr &node : *get_retwidths()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
 		}
 	}
 	if (get_ports()) {
-		for (const Node::Ptr node : *get_ports()) {
+		for (const Node::Ptr &node : *get_ports()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
 		}
 	}
 	if (get_statements()) {
-		for (const Node::Ptr node : *get_statements()) {
+		for (const Node::Ptr &node : *get_statements()) {
 			if (node) {
 				list->push_back(std::static_pointer_cast<Node>(node));
 			}
