@@ -46,10 +46,3 @@ add_subdirectory(lib)
 ########################################
 
 add_subdirectory(apps)
-
-
-########################################
-### licenses directory
-########################################
-
-add_subdirectory(licenses)

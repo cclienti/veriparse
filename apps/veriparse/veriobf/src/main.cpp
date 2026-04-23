@@ -1,7 +1,5 @@
 #include "config.hpp"
 
-#include <license/license_checker.hpp>
-
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/verilog.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
@@ -128,16 +126,7 @@ static int veriobf(int argc, char *argv[])
 
 
 	//---------------------------------------------------------
-	// Check license
-	//---------------------------------------------------------
-
-	if (license::check_license()) {
-		return 1;
-	}
-
-
-	//---------------------------------------------------------
-	// Flatten the selected module
+	// Obfuscate all modules
 	//---------------------------------------------------------
 
 	for (const auto &module: modules_map) {

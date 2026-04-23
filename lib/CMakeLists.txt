@@ -8,18 +8,6 @@ include (${CMAKE_CURRENT_LIST_DIR}/../cmake/common.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
 ########################################
-### License Library
-########################################
-
-add_library(license INTERFACE)
-target_include_directories(license SYSTEM INTERFACE ${OPENSSL_INCLUDE_DIR})
-if(MINGW)
-  target_link_libraries(license INTERFACE ${OPENSSL_LIBRARIES} z iphlpapi ws2_32)
-else()
-  target_link_libraries(license INTERFACE ${OPENSSL_LIBRARIES} dl)
-endif()
-
-########################################
 ### Manage Version in the Library
 ########################################
 

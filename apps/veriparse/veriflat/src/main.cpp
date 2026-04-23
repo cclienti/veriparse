@@ -1,8 +1,6 @@
 #include "config.hpp"
 #include "parameters_overloading.hpp"
 
-#include <license/license_checker.hpp>
-
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/verilog.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
@@ -150,15 +148,6 @@ static int veriflat(int argc, char *argv[])
 	bool overloaded;
 	Veriparse::AST::ParamArg::ListPtr param_args = overload_parameters(config.param_map, overloaded);
 	if (!overloaded) {
-		return 1;
-	}
-
-
-	//---------------------------------------------------------
-	// Check license
-	//---------------------------------------------------------
-
-	if (license::check_license()) {
 		return 1;
 	}
 

@@ -96,15 +96,6 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
 
   ########################################
-  ### OpenSSL
-  ########################################
-
-  set(OPENSSL_ROOT_DIR ${VERIPARSE_EXTERNAL_ROOT})
-  set(OPENSSL_USE_STATIC_LIBS      OFF)
-  find_package(OpenSSL)
-
-
-  ########################################
   ### GMP
   ########################################
 

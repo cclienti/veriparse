@@ -20,7 +20,6 @@ file (GLOB source_files
 ########################################
 
 add_executable (veriflat ${source_files})
-target_link_libraries (veriflat license)
 target_link_libraries (veriflat veriparse_static)
 target_link_libraries (veriflat ${Boost_LIBRARIES})
 

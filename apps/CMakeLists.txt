@@ -8,5 +8,4 @@ enable_testing()
 # Visit subdirs
 #----------------------------------------
 
-add_subdirectory(license)
 add_subdirectory(veriparse)

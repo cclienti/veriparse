@@ -19,7 +19,6 @@ file (GLOB source_files
 ########################################
 
 add_executable (veriobf ${source_files})
-target_link_libraries (veriobf license)
 target_link_libraries (veriobf veriparse_static)
 target_link_libraries (veriobf ${Boost_LIBRARIES})
 
