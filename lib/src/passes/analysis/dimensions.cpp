@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/analysis/dimensions.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/misc/math.hpp>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (C) 2013-2026 Christophe Clienti
 #include "veriparse/AST/identifierscopelabel.hpp"
 #include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/ast_replace.hpp>

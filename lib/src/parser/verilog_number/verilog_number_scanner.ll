@@ -31,6 +31,8 @@ using token = Veriparse::Parser::VerilogNumberParser::token;
 
 
 %{          /** Code executed at the beginning of yylex **/
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (C) 2013-2026 Christophe Clienti
    yylval = lval;
 %}
 

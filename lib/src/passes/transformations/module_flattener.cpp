@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/resolve_module.hpp>
 #include <veriparse/passes/transformations/annotate_declaration.hpp>
