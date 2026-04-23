@@ -1,11 +1,12 @@
 # Generic Veriflat Makefile
 # Copyright (C) 2013-2019 Christophe Clienti - All Rights Reserved
 
-VERIFLAT           = veriflat
-VERIFLAT_FLAGS    += --seed 0
-VERIFLAT_PREPROC   = $(TOP_MODULE)_pp.v
-VERIFLAT_OUTPUT    = $(TOP_MODULE)_flat.v
-VERIFLAT_TESTBENCH = $(TESTBENCH_MODULE)_flat
+VERIFLAT                  = veriflat
+VERIFLAT_FLAGS           += --seed 0
+VERIFLAT_PREPROC          = $(TOP_MODULE)_pp.v
+VERIFLAT_OUTPUT           = $(TOP_MODULE)_flat.v
+VERIFLAT_TESTBENCH        = $(TESTBENCH_MODULE)_flat
+VERIFLAT_TESTBENCH_FILE  ?= $(TESTBENCH_FILE)
 
 veriflat_check: $(VERIFLAT_TESTBENCH)
 	@echo -e "---- Test veriflat ----"
@@ -14,13 +15,13 @@ veriflat_check: $(VERIFLAT_TESTBENCH)
 
 $(VERIFLAT_TESTBENCH): $(VERIFLAT_OUTPUT)
 	$(IVERILOG) $(IVFLAGS) -s $(TESTBENCH_MODULE) -o $@ \
-		$(sort $^ $(TESTBENCH_DEPS) $(TESTBENCH_FILE))
+		$(sort $^ $(TESTBENCH_DEPS) $(VERIFLAT_TESTBENCH_FILE))
 
 $(VERIFLAT_OUTPUT): $(VERIFLAT_PREPROC)
 	$(VERIFLAT) $(VERIFLAT_FLAGS) --top-module $(TOP_MODULE) $^ --output $@
 
-$(VERIFLAT_PREPROC): $(sort $(TOP_DEPS) $(TOP_FILE))
-	$(IVERILOG) $(IVFLAGS) -E $^ -o $(VERIFLAT_PREPROC)
+$(VERIFLAT_PREPROC): $(TOP_FILE) $(TOP_DEPS)
+	$(IVERILOG) $(IVFLAGS) -E $(sort $^) -o $(VERIFLAT_PREPROC)
 
 clean:: veriflat_clean
 
