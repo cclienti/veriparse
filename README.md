@@ -259,6 +259,11 @@ python astgen.py
 
 ## License
 
+
+> **Relicensing notice:** All prior versions and commits of this repository
+> are retroactively relicensed under LGPLv3. See [RELICENSING.md](RELICENSING.md)
+> for details.
+
 Veriparse is distributed under the **GNU Lesser General Public License v3 (LGPLv3)**.
 See [licenses/LICENSE](licenses/LICENSE) for the full license text.
 
