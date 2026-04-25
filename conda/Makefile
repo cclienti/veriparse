@@ -16,7 +16,7 @@ CONDA_DEV_ENVIRONMENT ?= veriparse-dev
 CONDA_DEV_BUILD_TYPE  ?= Release # Debug
 
 # Conda Destination Repository Base Path
-CONDA_DEST_PATH        ?= /opt/veriparse-packages
+CONDA_DEST_PATH        ?= ~/veriparse-packages
 # Conda Destination Channel within the Base Path
 CONDA_DEST_CHANNEL     ?= veriparse-$(shell date +%Y)
 
@@ -28,7 +28,7 @@ CONDA_DEST_CHANNEL     ?= veriparse-$(shell date +%Y)
 CONDA_DEST_REPO      = $(CONDA_DEST_PATH)/$(CONDA_DEST_CHANNEL)
 
 CONDA_BUILD          = conda-build
-CONDA_BUILD_CHANNELS = -c $(CONDA_DEST_REPO) -c $(SHARPNESS_REPOSITORY)
+CONDA_BUILD_CHANNELS = -c conda-forge # $(CONDA_DEST_REPO) -c
 
 CONDA_VERIFY         = conda-verify
 
@@ -86,37 +86,37 @@ dev-clean:
 
 env:
 	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda create -y -n $(CONDA_BUILD_ENVIRONMENT) conda-build conda-verify
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba create -y -n $(CONDA_BUILD_ENVIRONMENT) conda-build conda-verify
 
 package:
 	mkdir -p $(CONDA_DEST_REPO)
 	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); \
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba activate $(CONDA_BUILD_ENVIRONMENT); \
 	  $(CONDA_BUILD) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) recipe-$(BUILD_TYPE)
 
 package-name:
 	@set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); \
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba activate $(CONDA_BUILD_ENVIRONMENT); \
 	  $(CONDA_BUILD) --output-folder $(CONDA_DEST_REPO) --output recipe-$(BUILD_TYPE) 2>/dev/null
 
 verify:
 	set -e; \
 	  CONDA_PACKAGE_NAME=`$(MAKE) -s package-name`; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); $(CONDA_VERIFY) $$CONDA_PACKAGE_NAME
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba activate $(CONDA_BUILD_ENVIRONMENT); $(CONDA_VERIFY) $$CONDA_PACKAGE_NAME
 
 index:
 	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); $(CONDA_INDEX) $(CONDA_DEST_REPO)
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba activate $(CONDA_BUILD_ENVIRONMENT); $(CONDA_INDEX) $(CONDA_DEST_REPO)
 
 clean:
 	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda env remove -y -n $(CONDA_BUILD_ENVIRONMENT); \
+	  eval "$$(mamba shell hook --shell bash)"; \
+	  mamba env remove -y -n $(CONDA_BUILD_ENVIRONMENT); \
 	  conda build purge
 
 

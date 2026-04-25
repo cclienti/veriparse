@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.9)
+cmake_minimum_required (VERSION 3.31)
 
 if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   set(VERIPARSE_COMMON_CMAKE TRUE)
@@ -130,6 +130,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   set(Boost_USE_STATIC_LIBS        OFF)
   set(Boost_USE_MULTITHREADED      ON)
   set(Boost_USE_STATIC_RUNTIME     OFF)
+  cmake_policy(SET CMP0167 NEW)
   find_package(Boost 1.72.0 REQUIRED
 	COMPONENTS system program_options thread filesystem date_time log log_setup)
   message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS}")

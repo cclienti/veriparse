@@ -12,7 +12,6 @@ build:
     - yaml-cpp
     - gmp
     - gtest
-    - openssl
 
 requirements:
   host:
@@ -31,7 +30,6 @@ requirements:
     - yaml-cpp=0.6.3
     - gmp=6.2.0
     - gtest=1.10.0
-    - openssl=1.1.1d
 
 about:
   home: https://www.wavecruncher.net

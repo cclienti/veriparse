@@ -2,10 +2,13 @@
 
 set -euxo pipefail
 
-mkdir build
-cd build
+# export CFLAGS="$(echo $CFLAGS | sed 's/-march=[^ ]*/-march=x86-64/g') -mtune=generic"
+# export CXXFLAGS="$(echo $CXXFLAGS | sed 's/-march=[^ ]*/-march=x86-64/g') -mtune=generic"
 
-cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_INSTALL_LIBDIR=lib -DVERIPARSE_EXTERNAL_ROOT=${PREFIX} -DCMAKE_BUILD_TYPE=Release ${SRC_DIR}
+mkdir build-pkg
+cd build-pkg
+
+cmake -DCMAKE_CXX_FLAGS="-march=x86-64 -mtune=generic" -DCMAKE_C_FLAGS="-march=x86-64 -mtune=generic" -DCMAKE_INSTALL_PREFIX=${PREFIX} -DVERIPARSE_EXTERNAL_ROOT=${PREFIX} -DCMAKE_BUILD_TYPE=Release ${SRC_DIR}
 
 make -j ${CPU_COUNT}
 
