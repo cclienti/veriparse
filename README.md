@@ -163,7 +163,7 @@ veriparse/
 
 ## Building
 
-Veriparse uses a **Conda-based development environment** managed via the `conda/Makefile`.
+Veriparse uses a **Conda-based development environment** managed via the `Makefile`.
 
 ### 1. Install micromamba
 
@@ -177,8 +177,8 @@ On other distributions, use the official installer:
 
 ### 2. Create the Development Environment
 
-    cd conda
     make dev-env
+
 
 This creates a conda environment named `veriparse-dev` with all required dependencies fetched from `conda-forge`.
 
@@ -190,7 +190,7 @@ To use a different mamba implementation (e.g. full `mamba`):
 
     make dev-cmake
 
-This runs CMake and generates build files in `conda/build/`.
+This runs CMake and generates build files in `build/`.
 
 ### 4. Build
 
@@ -222,7 +222,7 @@ Tests are organized into three labeled groups:
 
 You can also run ctest directly from the build directory:
 
-    cd conda/build
+    cd build
     ctest -L "unittest|verilator"   # fast tests
     ctest -L integration            # iverilog simulation only
     ctest                           # everything
@@ -257,11 +257,11 @@ For **integration** tests, install Icarus Verilog:
 
 ### Running a single test manually
 
-    cd conda/build/apps/veriparse/test/dclkfifolut/project0
+    cd build/apps/veriparse/test/dclkfifolut/project0
 
     make -f /path/to/veriparse/apps/veriparse/test/dclkfifolut/project0/Makefile \
-        VERIFLAT=/path/to/conda/build/apps/veriparse/veriflat/veriflat \
-        VERIOBF=/path/to/conda/build/apps/veriparse/veriobf/veriobf \
+        VERIFLAT=/path/to/build/apps/veriparse/veriflat/veriflat \
+        VERIOBF=/path/to/build/apps/veriparse/veriobf/veriobf \
         clean iverilog_check veriflat_check veriobf_check verilator_check
 
 Available make targets per test:
