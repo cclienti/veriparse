@@ -150,7 +150,7 @@ veriparse/
 | Dependency | Version | Purpose |
 |------------|---------|---------|
 | GCC / Clang | C++17 | Compiler |
-| CMake | ≥ 3.9 | Build system |
+| CMake | ≥ 3.10 | Build system |
 | Flex | any | Verilog scanner |
 | Bison | any | Verilog parser |
 | Boost | ≥ 1.72 | Program options, filesystem, logging |
