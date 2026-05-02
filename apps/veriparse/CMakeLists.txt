@@ -23,8 +23,6 @@ install(DIRECTORY test/tiny_aes_128
         DESTINATION share/veriparse/examples)
 install(DIRECTORY test/double_fpu-master
         DESTINATION share/veriparse/examples)
-install(FILES ../../conda/readme.txt
-        DESTINATION share/veriparse)
 install(FILES scripts/veriparse
         DESTINATION bin
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
@@ -56,17 +54,31 @@ if(NOT MINGW)
         set(VERIPARSE_APPS_TEST_NAME test_veriparse_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
         set(VERIPARSE_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME})
 
-        message(STATUS "Veriparse Apps: adding test ${VERIPARSE_APPS_TEST_NAME}")
+        message(STATUS "Veriparse Apps: adding integration test ${VERIPARSE_APPS_TEST_NAME}")
         file(MAKE_DIRECTORY ${VERIPARSE_WORKING_DIR})
 
         add_custom_target(${VERIPARSE_APPS_TEST_NAME} DEPENDS veriflat veriobf)
 
+        # Integration test (iverilog simulation)
         add_test(NAME ${VERIPARSE_APPS_TEST_NAME}
                  COMMAND make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME}/Makefile
                          VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
                          VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
                          clean iverilog_check veriflat_check veriobf_check
                  WORKING_DIRECTORY ${VERIPARSE_WORKING_DIR})
+        set_tests_properties(${VERIPARSE_APPS_TEST_NAME} PROPERTIES LABELS "integration")
+
+        # Verilator lint test
+        set(VERIPARSE_VERILATOR_TEST_NAME test_verilator_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
+        message(STATUS "Veriparse Apps: adding verilator test ${VERIPARSE_VERILATOR_TEST_NAME}")
+
+        add_test(NAME ${VERIPARSE_VERILATOR_TEST_NAME}
+                 COMMAND make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME}/Makefile
+                         VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
+                         VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
+                         verilator_check
+                 WORKING_DIRECTORY ${VERIPARSE_WORKING_DIR})
+        set_tests_properties(${VERIPARSE_VERILATOR_TEST_NAME} PROPERTIES LABELS "verilator")
 
       endif()
     endforeach()

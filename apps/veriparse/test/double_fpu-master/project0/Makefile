@@ -24,4 +24,5 @@ TOP_DEPS          = $(CURRENT_DIR)/../src/fpu_add.v \
 include $(CURRENT_DIR)/../../common/Makefiles/iverilog.mk
 include $(CURRENT_DIR)/../../common/Makefiles/veriflat.mk
 include $(CURRENT_DIR)/../../common/Makefiles/veriobf.mk
+include $(CURRENT_DIR)/../../common/Makefiles/verilator.mk
 include $(CURRENT_DIR)/../../common/Makefiles/common.mk
