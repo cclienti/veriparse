@@ -67,8 +67,7 @@ dev-cmake:
 	        -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=mold" \
 	        -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=mold" \
 	        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-	        -DCMAKE_INSTALL_PREFIX=$$HOME/veriparse \
-	        -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON $(REPO_ROOT)
+	        -DCMAKE_INSTALL_PREFIX=$$HOME/veriparse $(REPO_ROOT)
 
 dev-build:
 	set -e; \
