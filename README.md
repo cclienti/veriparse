@@ -165,84 +165,113 @@ veriparse/
 
 Veriparse uses a **Conda-based development environment** managed via the `conda/Makefile`.
 
-### 1. Install Miniconda
+### 1. Install micromamba
 
-```sh
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
-eval "$($HOME/miniconda/bin/conda shell.bash hook)"
-```
+On Fedora/RHEL:
+
+    sudo dnf install micromamba
+
+On other distributions, use the official installer:
+
+    "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
 
 ### 2. Create the Development Environment
 
-```sh
-cd conda
-make dev-env
-```
+    cd conda
+    make dev-env
 
-This creates a Conda environment named `veriparse-dev` with all required dependencies.
+This creates a conda environment named `veriparse-dev` with all required dependencies fetched from `conda-forge`.
+
+To use a different mamba implementation (e.g. full `mamba`):
+
+    make dev-env MAMBA=mamba
 
 ### 3. Configure with CMake
 
-```sh
-make dev-cmake
-```
+    make dev-cmake
 
 This runs CMake and generates build files in `conda/build/`.
 
 ### 4. Build
 
-```sh
-make dev-build
-```
+    make dev-build
 
 This compiles the library, tools, and tests using all available CPU cores.
 
 ### 5. Run Tests
 
-```sh
-make dev-test
-```
+Tests are organized into three labeled groups:
 
-This runs the full test suite using CTest (unit tests + integration tests).
+| Label | Description |
+|-------|-------------|
+| `unittest` | C++ unit tests (GoogleTest) |
+| `verilator` | Verilator lint check on flattened Verilog |
+| `integration` | Full iverilog simulation (slow) |
+
+    # Run unit tests and verilator lint (default, no iverilog required)
+    make dev-test
+
+    # Run only unit tests
+    make dev-test CTEST_LABELS=unittest
+
+    # Run only verilator lint tests
+    make dev-test CTEST_LABELS=verilator
+
+    # Run all tests including iverilog simulation
+    make dev-test-integration
+
+You can also run ctest directly from the build directory:
+
+    cd conda/build
+    ctest -L "unittest|verilator"   # fast tests
+    ctest -L integration            # iverilog simulation only
+    ctest                           # everything
 
 ### 6. Clean Up
 
-```sh
-make dev-clean
-```
+    make dev-clean
 
-This removes the build directory and the Conda environment.
+This removes the build directory and the conda environment.
 
 ---
 
-## Running the Integration Tests Manually
+## Running Tests Manually
 
-Integration tests use [Icarus Verilog](http://iverilog.icarus.com/) for simulation. Make sure `iverilog` and `vvp` are available in your `PATH`:
+### Prerequisites
 
-```sh
-# Debian/Ubuntu
-apt install iverilog
+For **verilator** lint tests, install verilator:
 
-# Fedora/RHEL
-yum install iverilog
-```
+    # Fedora/RHEL
+    sudo dnf install verilator
 
-To run a single test manually:
+    # Debian/Ubuntu
+    sudo apt install verilator
 
-```sh
-cd conda/build/apps/veriparse/test/dclkfifolut/project0
+For **integration** tests, install Icarus Verilog:
 
-make -f /path/to/veriparse/apps/veriparse/test/dclkfifolut/project0/Makefile \
-    VERIFLAT=/path/to/conda/build/apps/veriparse/veriflat/veriflat \
-    VERIOBF=/path/to/conda/build/apps/veriparse/veriobf/veriobf \
-    clean iverilog_check veriflat_check veriobf_check
-```
+    # Fedora/RHEL
+    sudo dnf install iverilog
 
-Each test runs three checks:
-- `iverilog_check` — simulate the original design
-- `veriflat_check` — simulate the flattened design
-- `veriobf_check` — simulate the obfuscated design
+    # Debian/Ubuntu
+    sudo apt install iverilog
+
+### Running a single test manually
+
+    cd conda/build/apps/veriparse/test/dclkfifolut/project0
+
+    make -f /path/to/veriparse/apps/veriparse/test/dclkfifolut/project0/Makefile \
+        VERIFLAT=/path/to/conda/build/apps/veriparse/veriflat/veriflat \
+        VERIOBF=/path/to/conda/build/apps/veriparse/veriobf/veriobf \
+        clean iverilog_check veriflat_check veriobf_check verilator_check
+
+Available make targets per test:
+
+| Target | Description |
+|--------|-------------|
+| `iverilog_check` | Simulate the original design with iverilog |
+| `veriflat_check` | Simulate the flattened design with iverilog |
+| `veriobf_check` | Simulate the obfuscated design with iverilog |
+| `verilator_check` | Lint the flattened design with verilator |
 
 ---
 
