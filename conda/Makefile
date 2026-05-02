@@ -35,6 +35,10 @@ CONDA_VERIFY         = conda-verify
 CONDA_INDEX          = conda-index --no-progress -n $(CONDA_DEST_CHANNEL)
 
 NUM_CORES            = $(shell nproc)
+MAMBA                = micromamba
+
+# CTest label filter for dev-test (unittest, verilator, integration, or regex)
+CTEST_LABELS ?= unittest|verilator
 
 
 ##################################################################
@@ -43,41 +47,48 @@ NUM_CORES            = $(shell nproc)
 
 dev-env:
 	set -e; \
-	  eval "$$(mamba shell hook --shell bash)"; \
-	  deps=`grep -v "{{" recipe-release/meta.yaml | \
-	        $(CONDA_DISTRIB_PATH)/bin/python -c 'import yaml; import sys; \
-                d = yaml.load(sys.stdin, Loader=yaml.FullLoader);\
-                print(" ".join(d["requirements"]["build"]))'`; \
-	  mamba create -y -n $(CONDA_DEV_ENVIRONMENT) $$deps
+	  eval "$$($(MAMBA) shell hook --shell bash)"; \
+	  deps=`sed -n '/^requirements:/,/^[^ ]/p' recipe-release/meta.yaml | \
+	        sed -n '/^  build:/,/^  [^ ]/p' | \
+	        grep '^ *- ' | grep -v '{{\|compiler' | \
+	        sed 's/^ *- //'`; \
+	  $(MAMBA) create -y -n $(CONDA_DEV_ENVIRONMENT) -c conda-forge $$deps
 
 dev-cmake:
 	mkdir -p build
 	set -e; \
 	  cd build; \
-	  eval "$$(mamba shell hook --shell bash)"; \
-	  mamba activate $(CONDA_DEV_ENVIRONMENT); \
-	  cmake -DVERIPARSE_EXTERNAL_ROOT=${CONDA_PREFIX} \
+	  eval "$$($(MAMBA) shell hook --shell bash)"; \
+	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
+	  cmake -DVERIPARSE_EXTERNAL_ROOT=$$CONDA_PREFIX \
 	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) ../..
 
 dev-build:
 	set -e; \
 	  cd build; \
-	  eval "$$(mamba shell hook --shell bash)"; \
-	  mamba activate $(CONDA_DEV_ENVIRONMENT); \
+	  eval "$$($(MAMBA) shell hook --shell bash)"; \
+	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
 	  make -j${NUM_CORES}
 
 dev-test:
 	set -e; \
 	  cd build; \
-	  eval "$$(mamba shell hook --shell bash)"; \
-	  mamba activate $(CONDA_DEV_ENVIRONMENT); \
+	  eval "$$($(MAMBA) shell hook --shell bash)"; \
+	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
+	  VERIPARSE_SOURCE_ROOT=$(realpath ..) ctest -j${NUM_CORES} -L '$(CTEST_LABELS)'
+
+dev-test-integration:
+	set -e; \
+	  cd build; \
+	  eval "$$($(MAMBA) shell hook --shell bash)"; \
+	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
 	  VERIPARSE_SOURCE_ROOT=$(realpath ..) ctest -j${NUM_CORES}
 
 dev-clean:
 	set -e; \
 	  rm -rf build; \
-	  eval "$$(mamba shell hook --shell bash)"; \
-	  mamba env remove -y -n $(CONDA_DEV_ENVIRONMENT)
+	  eval "$$($(MAMBA) shell hook --shell bash)"; \
+	  $(MAMBA) env remove -y -n $(CONDA_DEV_ENVIRONMENT)
 
 
 ##################################################################
@@ -128,3 +139,25 @@ distclean: clean dev-clean
 
 print-%:
 	@echo $*=$($*)
+
+help:
+	@echo "Dev Rules:"
+	@echo "  dev-env      Create the development conda environment"
+	@echo "  dev-cmake    Run CMake configuration in the dev environment"
+	@echo "  dev-build    Build the project in the dev environment"
+	@echo "  dev-test              Run tests (excl. integration) - override with CTEST_LABELS=..."
+	@echo "  dev-test-integration  Run all tests including iverilog integration tests"
+	@echo "  dev-clean             Remove build directory and dev conda environment"
+	@echo ""
+	@echo "Pkg Rules:"
+	@echo "  env          Create the conda build environment"
+	@echo "  package      Build the conda package"
+	@echo "  package-name Print the conda package name"
+	@echo "  verify       Verify the conda package"
+	@echo "  index        Index the conda destination repository"
+	@echo "  clean        Remove the build environment and purge conda build cache"
+	@echo ""
+	@echo "Common Rules:"
+	@echo "  distclean    Run clean and dev-clean"
+	@echo "  print-%%     Print the value of a Makefile variable"
+	@echo "  help         Show this help message"
