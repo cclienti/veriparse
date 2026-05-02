@@ -13,7 +13,7 @@ CONDA_BUILD_ENVIRONMENT ?= veriparse-$(BUILD_TYPE)
 # Name of the environment for development
 CONDA_DEV_ENVIRONMENT ?= veriparse-dev
 # Development build type
-CONDA_DEV_BUILD_TYPE  ?= Release # Debug
+CONDA_DEV_BUILD_TYPE  ?= RelWithDebInfo
 
 # Conda Destination Repository Base Path
 CONDA_DEST_PATH        ?= /opt/veriparse-packages
@@ -36,6 +36,8 @@ CONDA_INDEX          = conda-index --no-progress -n $(CONDA_DEST_CHANNEL)
 
 NUM_CORES            = $(shell nproc)
 MAMBA                = micromamba
+DEV_BUILD_DIR        = build
+REPO_ROOT            = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # CTest label filter for dev-test (unittest, verilator, integration, or regex)
 CTEST_LABELS ?= unittest|verilator
@@ -48,45 +50,50 @@ CTEST_LABELS ?= unittest|verilator
 dev-env:
 	set -e; \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  deps=`sed -n '/^requirements:/,/^[^ ]/p' recipe-release/meta.yaml | \
+	  deps=`sed -n '/^requirements:/,/^[^ ]/p' conda/recipe-release/meta.yaml | \
 	        sed -n '/^  build:/,/^  [^ ]/p' | \
-	        grep '^ *- ' | grep -v '{{\|compiler' | \
+	        grep '^ *- ' | grep -v '{{\|compiler\|mold' | \
 	        sed 's/^ *- //'`; \
 	  $(MAMBA) create -y -n $(CONDA_DEV_ENVIRONMENT) -c conda-forge $$deps
 
 dev-cmake:
-	mkdir -p build
+	mkdir -p $(DEV_BUILD_DIR)
 	set -e; \
-	  cd build; \
+	  cd $(DEV_BUILD_DIR); \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
 	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
 	  cmake -DVERIPARSE_EXTERNAL_ROOT=$$CONDA_PREFIX \
-	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) ../..
+	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) \
+	        -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=mold" \
+	        -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=mold" \
+	        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+	        -DCMAKE_INSTALL_PREFIX=$$HOME/veriparse \
+	        -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON $(REPO_ROOT)
 
 dev-build:
 	set -e; \
-	  cd build; \
+	  cd $(DEV_BUILD_DIR); \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
 	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
 	  make -j${NUM_CORES}
 
 dev-test:
 	set -e; \
-	  cd build; \
+	  cd $(DEV_BUILD_DIR); \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
 	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
-	  VERIPARSE_SOURCE_ROOT=$(realpath ..) ctest -j${NUM_CORES} -L '$(CTEST_LABELS)'
+	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L '$(CTEST_LABELS)'
 
 dev-test-integration:
 	set -e; \
-	  cd build; \
+	  cd $(DEV_BUILD_DIR); \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
 	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
-	  VERIPARSE_SOURCE_ROOT=$(realpath ..) ctest -j${NUM_CORES}
+	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES}
 
 dev-clean:
 	set -e; \
-	  rm -rf build; \
+	  rm -rf $(DEV_BUILD_DIR); \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
 	  $(MAMBA) env remove -y -n $(CONDA_DEV_ENVIRONMENT)
 
@@ -105,13 +112,13 @@ package:
 	set -e; \
 	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda activate $(CONDA_BUILD_ENVIRONMENT); \
-	  $(CONDA_BUILD) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) recipe-$(BUILD_TYPE)
+	  $(CONDA_BUILD) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) conda/recipe-$(BUILD_TYPE)
 
 package-name:
 	@set -e; \
 	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
 	  conda activate $(CONDA_BUILD_ENVIRONMENT); \
-	  $(CONDA_BUILD) --output-folder $(CONDA_DEST_REPO) --output recipe-$(BUILD_TYPE) 2>/dev/null
+	  $(CONDA_BUILD) --output-folder $(CONDA_DEST_REPO) --output conda/recipe-$(BUILD_TYPE) 2>/dev/null
 
 verify:
 	set -e; \
