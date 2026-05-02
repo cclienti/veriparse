@@ -25,6 +25,7 @@ requirements:
     - {{ compiler('cxx') }}
     - make
     - cmake
+    - mold
     - flex
     - bison
     - boost=1.72
