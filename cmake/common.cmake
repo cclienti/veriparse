@@ -101,26 +101,40 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
   find_path(GMP_INCLUDE_DIR
 	NAMES gmp.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include
+	NO_DEFAULT_PATH)
 
   find_library(GMP_LIBRARY
 	NAMES libgmp.so gmp  # Due to LGPLv3 we must use .so
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib
+	NO_DEFAULT_PATH)
 
   find_package_handle_standard_args(GMP DEFAULT_MSG GMP_INCLUDE_DIR GMP_LIBRARY)
   mark_as_advanced(GMP_INCLUDE_DIR GMP_LIBRARY)
 
   find_path(GMPXX_INCLUDE_DIR
 	NAMES gmpxx.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include
+	NO_DEFAULT_PATH)
 
   find_library(GMPXX_LIBRARY
 	NAMES libgmpxx.so gmpxx  # Due to LGPLv3 we must use .so
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib
+	NO_DEFAULT_PATH)
 
   find_package_handle_standard_args(GMPXX DEFAULT_MSG GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
   mark_as_advanced(GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
 
+
+  ########################################
+  ### RPATH configuration
+  ########################################
+
+  set(CMAKE_SKIP_BUILD_RPATH FALSE)
+  set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+  set(CMAKE_INSTALL_RPATH "${VERIPARSE_EXTERNAL_ROOT}/lib")
+  set(CMAKE_BUILD_RPATH "${VERIPARSE_EXTERNAL_ROOT}/lib")
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
   ########################################
   ### Boost configuration
