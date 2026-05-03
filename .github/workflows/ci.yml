@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install mold linker
         run: sudo apt-get install -y mold iverilog
@@ -25,7 +25,7 @@ jobs:
         run: make dev-env-file
 
       - name: Install micromamba and create environment
-        uses: mamba-org/setup-micromamba@v1
+        uses: mamba-org/setup-micromamba@v3
         with:
           environment-file: conda/environment.yml
           environment-name: veriparse-dev
