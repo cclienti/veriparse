@@ -41,7 +41,7 @@ DEV_BUILD_DIR        = build
 REPO_ROOT            = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # CTest label filter for dev-test (unittest, verilator, integration, or regex)
-CTEST_LABELS ?= unittest|verilator
+CTEST_LABELS ?= unittest
 DEV_LINKER_FLAGS     ?= -fuse-ld=mold
 
 
@@ -58,6 +58,8 @@ dev-env-file: conda/recipe-release/meta.yaml
 	  sed -n '/^  build:/,/^  [^ ]/p' | \
 	  grep '^ *- ' | grep -v '{{\|compiler\|mold' | \
 	  sed 's/^ *- /  - /' >> conda/environment.yml
+	@echo "  - iverilog"              >> conda/environment.yml
+	@echo "  - verilator"             >> conda/environment.yml
 
 dev-env: dev-env-file
 	set -e; \
@@ -96,7 +98,7 @@ dev-test-integration:
 	  cd $(DEV_BUILD_DIR); \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
 	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
-	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES}
+	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L 'verilator|integration'
 
 dev-clean:
 	set -e; \
@@ -160,8 +162,8 @@ help:
 	@echo "  dev-env      Create the development conda environment"
 	@echo "  dev-cmake    Run CMake configuration in the dev environment"
 	@echo "  dev-build    Build the project in the dev environment"
-	@echo "  dev-test              Run tests (excl. integration) - override with CTEST_LABELS=..."
-	@echo "  dev-test-integration  Run all tests including iverilog integration tests"
+	@echo "  dev-test              Run unittest tests (override with CTEST_LABELS=...)"
+	@echo "  dev-test-integration  Run verilator and integration tests"
 	@echo "  dev-clean             Remove build directory and dev conda environment"
 	@echo ""
 	@echo "Pkg Rules:"
