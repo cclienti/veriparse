@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 ##################################################################
 # Options
 ##################################################################
@@ -41,21 +42,28 @@ REPO_ROOT            = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIS
 
 # CTest label filter for dev-test (unittest, verilator, integration, or regex)
 CTEST_LABELS ?= unittest|verilator
+DEV_LINKER_FLAGS     ?= -fuse-ld=mold
+
 
 
 ##################################################################
 # Dev Rules
 ##################################################################
 
-dev-env:
+dev-env-file: conda/recipe-release/meta.yaml
+	@echo "channels:"                   > conda/environment.yml
+	@echo "  - conda-forge"            >> conda/environment.yml
+	@echo "dependencies:"              >> conda/environment.yml
+	@sed -n '/^requirements:/,/^[^ ]/p' conda/recipe-release/meta.yaml | \
+	  sed -n '/^  build:/,/^  [^ ]/p' | \
+	  grep '^ *- ' | grep -v '{{\|compiler\|mold' | \
+	  sed 's/^ *- /  - /' >> conda/environment.yml
+
+dev-env: dev-env-file
 	set -e; \
 	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  deps=`sed -n '/^requirements:/,/^[^ ]/p' conda/recipe-release/meta.yaml | \
-	        sed -n '/^  build:/,/^  [^ ]/p' | \
-	        grep '^ *- ' | grep -v '{{\|compiler\|mold' | \
-	        sed 's/^ *- //'`; \
-	  $(MAMBA) create -y -n $(CONDA_DEV_ENVIRONMENT) -c conda-forge $$deps
-
+	  $(MAMBA) create -y -n $(CONDA_DEV_ENVIRONMENT) \
+	    --file conda/environment.yml
 dev-cmake:
 	mkdir -p $(DEV_BUILD_DIR)
 	set -e; \
@@ -64,8 +72,8 @@ dev-cmake:
 	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
 	  cmake -DVERIPARSE_EXTERNAL_ROOT=$$CONDA_PREFIX \
 	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) \
-	        -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=mold" \
-	        -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=mold" \
+	        -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
+	        -DCMAKE_SHARED_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
 	        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
 	        -DCMAKE_INSTALL_PREFIX=$$HOME/veriparse $(REPO_ROOT)
 
@@ -148,6 +156,7 @@ print-%:
 
 help:
 	@echo "Dev Rules:"
+	@echo "  dev-env-file Generate conda/environment.yml from recipe deps"
 	@echo "  dev-env      Create the development conda environment"
 	@echo "  dev-cmake    Run CMake configuration in the dev environment"
 	@echo "  dev-build    Build the project in the dev environment"

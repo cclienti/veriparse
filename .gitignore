@@ -23,3 +23,6 @@ build*/
 compile_commands.json
 .ccls*
 __pycache__/
+
+### Generated files
+conda/environment.yml

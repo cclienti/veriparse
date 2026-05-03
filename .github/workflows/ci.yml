@@ -18,46 +18,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract conda deps from meta.yaml
-        run: |
-          deps=$(sed -n '/^requirements:/,/^[^ ]/p' conda/recipe-release/meta.yaml \
-                 | sed -n '/^  build:/,/^  [^ ]/p' \
-                 | grep '^ *- ' \
-                 | grep -v '{{\|compiler\|mold' \
-                 | sed 's/^ *- //')
-          echo "channels:" > ci-environment.yml
-          echo "  - conda-forge" >> ci-environment.yml
-          echo "dependencies:" >> ci-environment.yml
-          echo "$deps" | sed 's/^/  - /' >> ci-environment.yml
+      - name: Install mold linker
+        run: sudo apt-get install -y mold
+
+      - name: Generate conda environment file
+        run: make dev-env-file
 
       - name: Install micromamba and create environment
         uses: mamba-org/setup-micromamba@v1
         with:
-          environment-file: ci-environment.yml
+          environment-file: conda/environment.yml
           environment-name: veriparse-dev
           init-shell: bash
           cache-environment: true
 
       - name: Configure
-        run: |
-          mkdir -p build
-          cd build
-          cmake -DVERIPARSE_EXTERNAL_ROOT=$CONDA_PREFIX \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_INSTALL_PREFIX=$HOME/veriparse \
-                ..
+        run: make dev-cmake
 
       - name: Build
-        run: make -C build -j$(nproc)
+        run: make dev-build
 
       - name: Test (unit + verilator)
-        run: |
-          cd build
-          VERIPARSE_SOURCE_ROOT=$GITHUB_WORKSPACE \
-            ctest -j$(nproc) -L 'unittest|verilator' --output-on-failure
+        run: make dev-test
 
       - name: Test (integration)
-        run: |
-          cd build
-          VERIPARSE_SOURCE_ROOT=$GITHUB_WORKSPACE \
-            ctest -j$(nproc) -L integration --output-on-failure
+        run: make dev-test-integration
