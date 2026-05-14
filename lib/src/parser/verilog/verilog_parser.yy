@@ -579,6 +579,18 @@ param_start:    TK_PARAMETER param_assignment
                     $$->set_name($3->get_name());
                     $$->set_value($3->get_value());
                 }
+
+        |       TK_LOCALPARAM localparam_assignment
+                {
+                    $$ = AST::cast_to<AST::Parameter>($2);
+                }
+
+        |       TK_LOCALPARAM localparam_type localparam_assignment
+                {
+                    $$ = AST::cast_to<AST::Parameter>($2);
+                    $$->set_name($3->get_name());
+                    $$->set_value($3->get_value());
+                }
         ;
 
 
@@ -2725,6 +2737,28 @@ forpre:         blocking_assignment
                     $$->set_right($4);
                 }
 
+        |       TK_INT TK_IDENTIFIER TK_EQUALS rvalue TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
+                    AST::Identifier::Ptr id = std::make_shared<AST::Identifier>(scanner.get_filename(), @2.begin.line);
+                    id->set_name($2);
+                    AST::Lvalue::Ptr lv = std::make_shared<AST::Lvalue>(scanner.get_filename(), @2.begin.line);
+                    lv->set_var(AST::to_node(id));
+                    $$->set_left(lv);
+                    $$->set_right($4);
+                }
+
+
+        |       TK_INTEGER TK_IDENTIFIER TK_EQUALS rvalue TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
+                    AST::Identifier::Ptr id = std::make_shared<AST::Identifier>(scanner.get_filename(), @2.begin.line);
+                    id->set_name($2);
+                    AST::Lvalue::Ptr lv = std::make_shared<AST::Lvalue>(scanner.get_filename(), @2.begin.line);
+                    lv->set_var(AST::to_node(id));
+                    $$->set_left(lv);
+                    $$->set_right($4);
+                }
         |       TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
