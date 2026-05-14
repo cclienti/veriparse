@@ -117,11 +117,11 @@ endmodule
 
 AST before flattening (with generate loop):
 
-![AST before flattening](doc/images/nbit_reg_ast_before.svg)
+![AST before flattening](docs/images/nbit_reg_ast_before.svg)
 
 AST after flattening (unrolled):
 
-![AST after flattening](doc/images/nbit_reg_ast_after.svg)
+![AST after flattening](docs/images/nbit_reg_ast_after.svg)
 
 
 ### `veridump` — AST Dumper
