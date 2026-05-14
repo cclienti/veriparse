@@ -49,6 +49,13 @@ public:
 		return filename_path.string();
 	}
 
+	std::string get_sv_filename(const std::string &teststr)
+	{
+		auto filename = teststr + ".sv";
+		auto filename_path = m_testcases_path / boost::filesystem::path(filename);
+		return filename_path.string();
+	}
+
 	std::string get_yaml_filename(const std::string &teststr)
 	{
 		auto filename = teststr + ".yaml";
