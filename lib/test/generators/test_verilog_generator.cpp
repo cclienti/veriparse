@@ -228,3 +228,7 @@ TEST(VerilogGeneratorTest, sv_case1)        {TEST_CORE_SV;}
 TEST(VerilogGeneratorTest, sv_param0)       {TEST_CORE_SV;}
 TEST(VerilogGeneratorTest, sv_for0)         {TEST_CORE_SV;}
 TEST(VerilogGeneratorTest, sv_pragma0)      {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_generate0)        {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_deadcode0)        {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_io_normalizer0)   {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_variable_folding0){TEST_CORE_SV;}

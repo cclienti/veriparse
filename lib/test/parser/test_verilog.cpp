@@ -244,3 +244,7 @@ TEST(VerilogParserTest, sv_case1)       {TEST_CORE_SV;}
 TEST(VerilogParserTest, sv_param0)      {TEST_CORE_SV;}
 TEST(VerilogParserTest, sv_for0)        {TEST_CORE_SV;}
 TEST(VerilogParserTest, sv_pragma0)     {TEST_CORE_SV;}
+TEST(VerilogParserTest, sv_generate0)       {TEST_CORE_SV;}
+TEST(VerilogParserTest, sv_deadcode0)       {TEST_CORE_SV;}
+TEST(VerilogParserTest, sv_io_normalizer0)  {TEST_CORE_SV;}
+TEST(VerilogParserTest, sv_variable_folding0) {TEST_CORE_SV;}
