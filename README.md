@@ -47,6 +47,112 @@ iverilog -E -g2005 -I src/ src/top.v src/sub.v -o top_pp.v
 veriflat -p '{FIFO_WIDTH:}' --seed 0 --top-module top top_pp.v --output top_flat.v
 ```
 
+
+#### SystemVerilog Example: Generate Loop Flattening
+
+Consider a parametric N-bit register where each bit is handled by a dedicated
+`always_ff` block inside a `generate` loop:
+
+```systemverilog
+module nbit_reg
+  #(parameter int N = 4)
+  (input  logic         clk,
+   input  logic         rst_n,
+   input  logic [N-1:0] d,
+   output logic [N-1:0] q);
+
+  genvar i;
+  generate
+    for (i = 0; i < N; i = i + 1) begin : gen_bit
+      always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n)
+          q[i] <= 1'b0;
+        else
+          q[i] <= d[i];
+      end
+    end
+  endgenerate
+
+endmodule
+```
+
+Flatten with `veriflat` (inlines `N=4` by default):
+
+```sh
+veriflat --sv -t nbit_reg -o nbit_reg_flat.sv nbit_reg.sv
+```
+
+Result — the generate loop is unrolled into four independent `always_ff` blocks:
+
+```systemverilog
+module nbit_reg (input logic clk,
+                 input logic rst_n,
+                 input logic [3:0] d,
+                 output logic [3:0] q);
+
+  genvar i;
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if(!rst_n) q[0] <= 1'b0;
+    else       q[0] <= d[0];
+  end
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if(!rst_n) q[1] <= 1'b0;
+    else       q[1] <= d[1];
+  end
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if(!rst_n) q[2] <= 1'b0;
+    else       q[2] <= d[2];
+  end
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if(!rst_n) q[3] <= 1'b0;
+    else       q[3] <= d[3];
+  end
+
+endmodule
+```
+
+AST before flattening (with generate loop):
+
+![AST before flattening](doc/images/nbit_reg_ast_before.svg)
+
+AST after flattening (unrolled):
+
+![AST after flattening](doc/images/nbit_reg_ast_after.svg)
+
+
+### `veridump` — AST Dumper
+
+`veridump` parses a Verilog or SystemVerilog file and dumps its AST in YAML or
+Graphviz DOT format. This is useful for debugging, visualization, and scripting.
+
+```
+Usage: veridump [options] verilog-file [verilog-file ...]
+
+options:
+  -h [ --help ]         Produce help message
+  -v [ --version ]      Show the version and exit
+  -o [ --output ] arg   Output file
+  -f [ --format ] arg   Output format: yaml or dot (default: yaml)
+  --sv                  Enable SystemVerilog mode
+```
+
+**Examples:**
+
+```sh
+# Dump AST as YAML
+veridump --sv -f yaml -o design.yaml design.sv
+
+# Dump AST as DOT (render with graphviz)
+veridump --sv -f dot -o design.dot design.sv
+dot -Tsvg design.dot -o design.svg
+```
+
+---
+
 ---
 
 ### `veriobf` — Verilog Obfuscator

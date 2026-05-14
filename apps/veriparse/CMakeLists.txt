@@ -10,6 +10,7 @@ enable_testing()
 
 add_subdirectory(veriflat)
 add_subdirectory(veriobf)
+add_subdirectory(veridump)
 
 #----------------------------------------
 # Installation
