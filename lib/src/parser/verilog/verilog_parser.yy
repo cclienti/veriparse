@@ -737,7 +737,7 @@ ioport:         portdir portname
                     $$.direction = $1;
                     $$.net_type = $2;
                 }
-        ;
+
 
 
 reg_net_type:   TK_REG   {$$ = net_type_t::REG;}
