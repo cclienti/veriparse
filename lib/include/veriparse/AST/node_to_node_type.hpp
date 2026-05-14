@@ -42,6 +42,7 @@ template<> constexpr NodeType get_node_type<Tri>() {return NodeType::Tri;}
 template<> constexpr NodeType get_node_type<Wire>() {return NodeType::Wire;}
 template<> constexpr NodeType get_node_type<Supply0>() {return NodeType::Supply0;}
 template<> constexpr NodeType get_node_type<Supply1>() {return NodeType::Supply1;}
+template<> constexpr NodeType get_node_type<Logic>() {return NodeType::Logic;}
 template<> constexpr NodeType get_node_type<Reg>() {return NodeType::Reg;}
 template<> constexpr NodeType get_node_type<Ioport>() {return NodeType::Ioport;}
 template<> constexpr NodeType get_node_type<Parameter>() {return NodeType::Parameter;}
@@ -94,6 +95,9 @@ template<> constexpr NodeType get_node_type<Land>() {return NodeType::Land;}
 template<> constexpr NodeType get_node_type<Lor>() {return NodeType::Lor;}
 template<> constexpr NodeType get_node_type<Cond>() {return NodeType::Cond;}
 template<> constexpr NodeType get_node_type<Always>() {return NodeType::Always;}
+template<> constexpr NodeType get_node_type<AlwaysFF>() {return NodeType::AlwaysFF;}
+template<> constexpr NodeType get_node_type<AlwaysComb>() {return NodeType::AlwaysComb;}
+template<> constexpr NodeType get_node_type<AlwaysLatch>() {return NodeType::AlwaysLatch;}
 template<> constexpr NodeType get_node_type<Senslist>() {return NodeType::Senslist;}
 template<> constexpr NodeType get_node_type<Sens>() {return NodeType::Sens;}
 template<> constexpr NodeType get_node_type<Defparamlist>() {return NodeType::Defparamlist;}
@@ -108,6 +112,8 @@ template<> constexpr NodeType get_node_type<WhileStatement>() {return NodeType::
 template<> constexpr NodeType get_node_type<CaseStatement>() {return NodeType::CaseStatement;}
 template<> constexpr NodeType get_node_type<CasexStatement>() {return NodeType::CasexStatement;}
 template<> constexpr NodeType get_node_type<CasezStatement>() {return NodeType::CasezStatement;}
+template<> constexpr NodeType get_node_type<UniqueCaseStatement>() {return NodeType::UniqueCaseStatement;}
+template<> constexpr NodeType get_node_type<PriorityCaseStatement>() {return NodeType::PriorityCaseStatement;}
 template<> constexpr NodeType get_node_type<Case>() {return NodeType::Case;}
 template<> constexpr NodeType get_node_type<Block>() {return NodeType::Block;}
 template<> constexpr NodeType get_node_type<Initial>() {return NodeType::Initial;}

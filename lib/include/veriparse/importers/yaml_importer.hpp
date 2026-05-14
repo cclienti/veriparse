@@ -51,6 +51,7 @@ private:
 	AST::Node::Ptr convert_wire(const YAML::Node node) const;
 	AST::Node::Ptr convert_supply0(const YAML::Node node) const;
 	AST::Node::Ptr convert_supply1(const YAML::Node node) const;
+	AST::Node::Ptr convert_logic(const YAML::Node node) const;
 	AST::Node::Ptr convert_reg(const YAML::Node node) const;
 	AST::Node::Ptr convert_ioport(const YAML::Node node) const;
 	AST::Node::Ptr convert_parameter(const YAML::Node node) const;
@@ -103,6 +104,9 @@ private:
 	AST::Node::Ptr convert_lor(const YAML::Node node) const;
 	AST::Node::Ptr convert_cond(const YAML::Node node) const;
 	AST::Node::Ptr convert_always(const YAML::Node node) const;
+	AST::Node::Ptr convert_alwaysff(const YAML::Node node) const;
+	AST::Node::Ptr convert_alwayscomb(const YAML::Node node) const;
+	AST::Node::Ptr convert_alwayslatch(const YAML::Node node) const;
 	AST::Node::Ptr convert_senslist(const YAML::Node node) const;
 	AST::Node::Ptr convert_sens(const YAML::Node node) const;
 	AST::Node::Ptr convert_defparamlist(const YAML::Node node) const;
@@ -117,6 +121,8 @@ private:
 	AST::Node::Ptr convert_casestatement(const YAML::Node node) const;
 	AST::Node::Ptr convert_casexstatement(const YAML::Node node) const;
 	AST::Node::Ptr convert_casezstatement(const YAML::Node node) const;
+	AST::Node::Ptr convert_uniquecasestatement(const YAML::Node node) const;
+	AST::Node::Ptr convert_prioritycasestatement(const YAML::Node node) const;
 	AST::Node::Ptr convert_case(const YAML::Node node) const;
 	AST::Node::Ptr convert_block(const YAML::Node node) const;
 	AST::Node::Ptr convert_initial(const YAML::Node node) const;

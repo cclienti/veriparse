@@ -766,6 +766,45 @@ YAML::Node YAMLGenerator::render_supply1(const AST::Supply1::Ptr node) const {
 
 
 
+YAML::Node YAMLGenerator::render_logic(const AST::Logic::Ptr node) const {
+	YAML::Node node_logic;
+	YAML::Node content;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::Logic) return render(AST::cast_to<AST::Node>(node));
+
+		content["filename"] = node->get_filename();
+		content["line"] = node->get_line();
+		content["sign"] = node->get_sign();
+		content["name"] = node->get_name();
+
+		if (node->get_widths()) {
+			content["widths"] = YAML::Load("[]");
+			for(const AST::Width::Ptr &n: *node->get_widths()) {
+				content["widths"].push_back(render(n));
+			}
+		}
+
+		content["ldelay"] = render(node->get_ldelay());
+
+		content["rdelay"] = render(node->get_rdelay());
+
+		if (node->get_lengths()) {
+			content["lengths"] = YAML::Load("[]");
+			for(const AST::Length::Ptr &n: *node->get_lengths()) {
+				content["lengths"].push_back(render(n));
+			}
+		}
+
+		content["right"] = render(node->get_right());
+	}
+
+	node_logic["Logic"] = content;
+	return node_logic;
+}
+
+
+
 YAML::Node YAMLGenerator::render_reg(const AST::Reg::Ptr node) const {
 	YAML::Node node_reg;
 	YAML::Node content;
@@ -840,6 +879,24 @@ YAML::Node YAMLGenerator::render_parameter(const AST::Parameter::Ptr node) const
 		case Veriparse::AST::Parameter::TypeEnum::REAL:
 			content["type"] = "REAL";
 			break;
+		case Veriparse::AST::Parameter::TypeEnum::LOGIC:
+			content["type"] = "LOGIC";
+			break;
+		case Veriparse::AST::Parameter::TypeEnum::INT:
+			content["type"] = "INT";
+			break;
+		case Veriparse::AST::Parameter::TypeEnum::BIT:
+			content["type"] = "BIT";
+			break;
+		case Veriparse::AST::Parameter::TypeEnum::BYTE:
+			content["type"] = "BYTE";
+			break;
+		case Veriparse::AST::Parameter::TypeEnum::SHORTINT:
+			content["type"] = "SHORTINT";
+			break;
+		case Veriparse::AST::Parameter::TypeEnum::LONGINT:
+			content["type"] = "LONGINT";
+			break;
 		default: content["type"] = "NONE";
 		}
 
@@ -876,6 +933,24 @@ YAML::Node YAMLGenerator::render_localparam(const AST::Localparam::Ptr node) con
 			break;
 		case Veriparse::AST::Localparam::Parameter::TypeEnum::REAL:
 			content["type"] = "REAL";
+			break;
+		case Veriparse::AST::Localparam::Parameter::TypeEnum::LOGIC:
+			content["type"] = "LOGIC";
+			break;
+		case Veriparse::AST::Localparam::Parameter::TypeEnum::INT:
+			content["type"] = "INT";
+			break;
+		case Veriparse::AST::Localparam::Parameter::TypeEnum::BIT:
+			content["type"] = "BIT";
+			break;
+		case Veriparse::AST::Localparam::Parameter::TypeEnum::BYTE:
+			content["type"] = "BYTE";
+			break;
+		case Veriparse::AST::Localparam::Parameter::TypeEnum::SHORTINT:
+			content["type"] = "SHORTINT";
+			break;
+		case Veriparse::AST::Localparam::Parameter::TypeEnum::LONGINT:
+			content["type"] = "LONGINT";
 			break;
 		default: content["type"] = "NONE";
 		}
@@ -1892,6 +1967,69 @@ YAML::Node YAMLGenerator::render_always(const AST::Always::Ptr node) const {
 
 
 
+YAML::Node YAMLGenerator::render_alwaysff(const AST::AlwaysFF::Ptr node) const {
+	YAML::Node node_alwaysff;
+	YAML::Node content;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::AlwaysFF) return render(AST::cast_to<AST::Node>(node));
+
+		content["filename"] = node->get_filename();
+		content["line"] = node->get_line();
+
+		content["senslist"] = render(node->get_senslist());
+
+		content["statement"] = render(node->get_statement());
+	}
+
+	node_alwaysff["AlwaysFF"] = content;
+	return node_alwaysff;
+}
+
+
+
+YAML::Node YAMLGenerator::render_alwayscomb(const AST::AlwaysComb::Ptr node) const {
+	YAML::Node node_alwayscomb;
+	YAML::Node content;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::AlwaysComb) return render(AST::cast_to<AST::Node>(node));
+
+		content["filename"] = node->get_filename();
+		content["line"] = node->get_line();
+
+		content["senslist"] = render(node->get_senslist());
+
+		content["statement"] = render(node->get_statement());
+	}
+
+	node_alwayscomb["AlwaysComb"] = content;
+	return node_alwayscomb;
+}
+
+
+
+YAML::Node YAMLGenerator::render_alwayslatch(const AST::AlwaysLatch::Ptr node) const {
+	YAML::Node node_alwayslatch;
+	YAML::Node content;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::AlwaysLatch) return render(AST::cast_to<AST::Node>(node));
+
+		content["filename"] = node->get_filename();
+		content["line"] = node->get_line();
+
+		content["senslist"] = render(node->get_senslist());
+
+		content["statement"] = render(node->get_statement());
+	}
+
+	node_alwayslatch["AlwaysLatch"] = content;
+	return node_alwayslatch;
+}
+
+
+
 YAML::Node YAMLGenerator::render_senslist(const AST::Senslist::Ptr node) const {
 	YAML::Node node_senslist;
 	YAML::Node content;
@@ -2231,6 +2369,58 @@ YAML::Node YAMLGenerator::render_casezstatement(const AST::CasezStatement::Ptr n
 
 	node_casezstatement["CasezStatement"] = content;
 	return node_casezstatement;
+}
+
+
+
+YAML::Node YAMLGenerator::render_uniquecasestatement(const AST::UniqueCaseStatement::Ptr node) const {
+	YAML::Node node_uniquecasestatement;
+	YAML::Node content;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::UniqueCaseStatement) return render(AST::cast_to<AST::Node>(node));
+
+		content["filename"] = node->get_filename();
+		content["line"] = node->get_line();
+
+		content["comp"] = render(node->get_comp());
+
+		if (node->get_caselist()) {
+			content["caselist"] = YAML::Load("[]");
+			for(const AST::Case::Ptr &n: *node->get_caselist()) {
+				content["caselist"].push_back(render(n));
+			}
+		}
+	}
+
+	node_uniquecasestatement["UniqueCaseStatement"] = content;
+	return node_uniquecasestatement;
+}
+
+
+
+YAML::Node YAMLGenerator::render_prioritycasestatement(const AST::PriorityCaseStatement::Ptr node) const {
+	YAML::Node node_prioritycasestatement;
+	YAML::Node content;
+
+	if (node) {
+		if (node->get_node_type() != AST::NodeType::PriorityCaseStatement) return render(AST::cast_to<AST::Node>(node));
+
+		content["filename"] = node->get_filename();
+		content["line"] = node->get_line();
+
+		content["comp"] = render(node->get_comp());
+
+		if (node->get_caselist()) {
+			content["caselist"] = YAML::Load("[]");
+			for(const AST::Case::Ptr &n: *node->get_caselist()) {
+				content["caselist"].push_back(render(n));
+			}
+		}
+	}
+
+	node_prioritycasestatement["PriorityCaseStatement"] = content;
+	return node_prioritycasestatement;
 }
 
 

@@ -38,6 +38,7 @@ const char* NodeTypeToString(NodeType node_type) {
 	case NodeType::Wire: return "Wire";
 	case NodeType::Supply0: return "Supply0";
 	case NodeType::Supply1: return "Supply1";
+	case NodeType::Logic: return "Logic";
 	case NodeType::Reg: return "Reg";
 	case NodeType::Ioport: return "Ioport";
 	case NodeType::Parameter: return "Parameter";
@@ -90,6 +91,9 @@ const char* NodeTypeToString(NodeType node_type) {
 	case NodeType::Lor: return "Lor";
 	case NodeType::Cond: return "Cond";
 	case NodeType::Always: return "Always";
+	case NodeType::AlwaysFF: return "AlwaysFF";
+	case NodeType::AlwaysComb: return "AlwaysComb";
+	case NodeType::AlwaysLatch: return "AlwaysLatch";
 	case NodeType::Senslist: return "Senslist";
 	case NodeType::Sens: return "Sens";
 	case NodeType::Defparamlist: return "Defparamlist";
@@ -104,6 +108,8 @@ const char* NodeTypeToString(NodeType node_type) {
 	case NodeType::CaseStatement: return "CaseStatement";
 	case NodeType::CasexStatement: return "CasexStatement";
 	case NodeType::CasezStatement: return "CasezStatement";
+	case NodeType::UniqueCaseStatement: return "UniqueCaseStatement";
+	case NodeType::PriorityCaseStatement: return "PriorityCaseStatement";
 	case NodeType::Case: return "Case";
 	case NodeType::Block: return "Block";
 	case NodeType::Initial: return "Initial";

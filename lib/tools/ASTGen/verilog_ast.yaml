@@ -122,6 +122,7 @@ Tri:     {inherit: Net}
 Wire:    {inherit: Net}
 Supply0: {inherit: Net}
 Supply1: {inherit: Net}
+Logic:   {inherit: Net}
 
 Reg:
   inherit: Variable
@@ -140,7 +141,7 @@ Parameter:
   properties:
     name: "std::string"
     sign: bool
-    type: enum(INTEGER, REAL, NONE)
+    type: enum(INTEGER, REAL, LOGIC, INT, BIT, BYTE, SHORTINT, LONGINT, NONE)
   children:
     value: Node
     widths: list(Width)
@@ -258,6 +259,10 @@ Always:
     senslist: Senslist
     statement: Node
 
+AlwaysFF:    {inherit: Always}
+AlwaysComb:  {inherit: Always}
+AlwaysLatch: {inherit: Always}
+
 Senslist:
   properties:
   children:
@@ -326,6 +331,8 @@ CaseStatement:
 
 CasexStatement: {inherit: CaseStatement}
 CasezStatement: {inherit: CaseStatement}
+UniqueCaseStatement:   {inherit: CaseStatement}
+PriorityCaseStatement: {inherit: CaseStatement}
 
 Case:
   properties:

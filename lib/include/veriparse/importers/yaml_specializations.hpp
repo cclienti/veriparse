@@ -78,6 +78,12 @@ struct convert<Veriparse::AST::Parameter::TypeEnum> {
 		switch (rhs) {
 		case Veriparse::AST::Parameter::TypeEnum::INTEGER : return Node("INTEGER");
 		case Veriparse::AST::Parameter::TypeEnum::REAL : return Node("REAL");
+		case Veriparse::AST::Parameter::TypeEnum::LOGIC : return Node("LOGIC");
+		case Veriparse::AST::Parameter::TypeEnum::INT : return Node("INT");
+		case Veriparse::AST::Parameter::TypeEnum::BIT : return Node("BIT");
+		case Veriparse::AST::Parameter::TypeEnum::BYTE : return Node("BYTE");
+		case Veriparse::AST::Parameter::TypeEnum::SHORTINT : return Node("SHORTINT");
+		case Veriparse::AST::Parameter::TypeEnum::LONGINT : return Node("LONGINT");
 		default: return Node("NONE");
 		}
 	}
@@ -94,6 +100,36 @@ struct convert<Veriparse::AST::Parameter::TypeEnum> {
 		
 		if (node.as<std::string>() == "REAL") {
 			rhs = Veriparse::AST::Parameter::TypeEnum::REAL;
+			return true;
+		}
+		
+		if (node.as<std::string>() == "LOGIC") {
+			rhs = Veriparse::AST::Parameter::TypeEnum::LOGIC;
+			return true;
+		}
+		
+		if (node.as<std::string>() == "INT") {
+			rhs = Veriparse::AST::Parameter::TypeEnum::INT;
+			return true;
+		}
+		
+		if (node.as<std::string>() == "BIT") {
+			rhs = Veriparse::AST::Parameter::TypeEnum::BIT;
+			return true;
+		}
+		
+		if (node.as<std::string>() == "BYTE") {
+			rhs = Veriparse::AST::Parameter::TypeEnum::BYTE;
+			return true;
+		}
+		
+		if (node.as<std::string>() == "SHORTINT") {
+			rhs = Veriparse::AST::Parameter::TypeEnum::SHORTINT;
+			return true;
+		}
+		
+		if (node.as<std::string>() == "LONGINT") {
+			rhs = Veriparse::AST::Parameter::TypeEnum::LONGINT;
 			return true;
 		}
 		

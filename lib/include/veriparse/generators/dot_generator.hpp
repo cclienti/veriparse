@@ -43,6 +43,7 @@ private:
 	virtual std::string render_wire(const AST::Wire::Ptr node) const;
 	virtual std::string render_supply0(const AST::Supply0::Ptr node) const;
 	virtual std::string render_supply1(const AST::Supply1::Ptr node) const;
+	virtual std::string render_logic(const AST::Logic::Ptr node) const;
 	virtual std::string render_reg(const AST::Reg::Ptr node) const;
 	virtual std::string render_ioport(const AST::Ioport::Ptr node) const;
 	virtual std::string render_parameter(const AST::Parameter::Ptr node) const;
@@ -95,6 +96,9 @@ private:
 	virtual std::string render_lor(const AST::Lor::Ptr node) const;
 	virtual std::string render_cond(const AST::Cond::Ptr node) const;
 	virtual std::string render_always(const AST::Always::Ptr node) const;
+	virtual std::string render_alwaysff(const AST::AlwaysFF::Ptr node) const;
+	virtual std::string render_alwayscomb(const AST::AlwaysComb::Ptr node) const;
+	virtual std::string render_alwayslatch(const AST::AlwaysLatch::Ptr node) const;
 	virtual std::string render_senslist(const AST::Senslist::Ptr node) const;
 	virtual std::string render_sens(const AST::Sens::Ptr node) const;
 	virtual std::string render_defparamlist(const AST::Defparamlist::Ptr node) const;
@@ -109,6 +113,8 @@ private:
 	virtual std::string render_casestatement(const AST::CaseStatement::Ptr node) const;
 	virtual std::string render_casexstatement(const AST::CasexStatement::Ptr node) const;
 	virtual std::string render_casezstatement(const AST::CasezStatement::Ptr node) const;
+	virtual std::string render_uniquecasestatement(const AST::UniqueCaseStatement::Ptr node) const;
+	virtual std::string render_prioritycasestatement(const AST::PriorityCaseStatement::Ptr node) const;
 	virtual std::string render_case(const AST::Case::Ptr node) const;
 	virtual std::string render_block(const AST::Block::Ptr node) const;
 	virtual std::string render_initial(const AST::Initial::Ptr node) const;

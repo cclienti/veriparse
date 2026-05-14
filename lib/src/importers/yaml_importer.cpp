@@ -137,6 +137,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const {
 		if (node["Supply1"]) {
 			return convert_supply1(node["Supply1"]);
 		}
+		if (node["Logic"]) {
+			return convert_logic(node["Logic"]);
+		}
 		if (node["Reg"]) {
 			return convert_reg(node["Reg"]);
 		}
@@ -293,6 +296,15 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const {
 		if (node["Always"]) {
 			return convert_always(node["Always"]);
 		}
+		if (node["AlwaysFF"]) {
+			return convert_alwaysff(node["AlwaysFF"]);
+		}
+		if (node["AlwaysComb"]) {
+			return convert_alwayscomb(node["AlwaysComb"]);
+		}
+		if (node["AlwaysLatch"]) {
+			return convert_alwayslatch(node["AlwaysLatch"]);
+		}
 		if (node["Senslist"]) {
 			return convert_senslist(node["Senslist"]);
 		}
@@ -334,6 +346,12 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const {
 		}
 		if (node["CasezStatement"]) {
 			return convert_casezstatement(node["CasezStatement"]);
+		}
+		if (node["UniqueCaseStatement"]) {
+			return convert_uniquecasestatement(node["UniqueCaseStatement"]);
+		}
+		if (node["PriorityCaseStatement"]) {
+			return convert_prioritycasestatement(node["PriorityCaseStatement"]);
 		}
 		if (node["Case"]) {
 			return convert_case(node["Case"]);
@@ -2241,6 +2259,134 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const {
 
 	// Return the result
 	return AST::cast_to<AST::Supply1>(result);
+}
+
+
+AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const {
+	AST::Logic::Ptr result;
+	if (node.IsMap()) {
+		if (node["filename"]) {
+			if (node["filename"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::Logic>();
+				result->set_filename(node["filename"].as<std::string>());
+			}
+		}
+		if (node["line"]) {
+			if (node["line"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::Logic>();
+				result->set_line(node["line"].as<int>());
+			}
+		}
+		// Manage property sign
+		if (node["sign"]) {
+			if (node["sign"].IsScalar()) {
+				
+				if(!result) result = std::make_shared<AST::Logic>();
+				result->set_sign(node["sign"].as<bool>());
+			}
+		}
+		// Manage property name
+		if (node["name"]) {
+			if (node["name"].IsScalar()) {
+				
+				if(!result) result = std::make_shared<AST::Logic>();
+				result->set_name(node["name"].as<std::string>());
+			}
+		}
+
+		// Manage Child widths
+		if (node["widths"]) {
+			const YAML::Node node_widths = node["widths"];
+			// Fill the list of children
+			AST::Width::ListPtr widths_list (new AST::Width::List);
+			if (node_widths.IsSequence()) {
+				// The YAML node is a sequence
+				for(YAML::const_iterator it=node_widths.begin(); it !=  node_widths.end(); ++it) {
+					AST::Node::Ptr child = convert(*it);
+					if (child) {
+						AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
+						widths_list->push_back(child_cast);
+					}
+				}
+			}
+			else {
+				AST::Node::Ptr child = convert(node_widths);
+				if (child) {
+					AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
+					widths_list->push_back(child_cast);
+				}
+			}
+			// Set the list
+			if(!result) result = std::make_shared<AST::Logic>();
+			result->set_widths(widths_list);
+		}
+
+		// Manage Child ldelay
+		if (node["ldelay"]) {
+			const YAML::Node node_ldelay = node["ldelay"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_ldelay);
+			if (child) {
+				AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
+				if(!result) result = std::make_shared<AST::Logic>();
+				result->set_ldelay(child_cast);
+			}
+		}
+
+		// Manage Child rdelay
+		if (node["rdelay"]) {
+			const YAML::Node node_rdelay = node["rdelay"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_rdelay);
+			if (child) {
+				AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
+				if(!result) result = std::make_shared<AST::Logic>();
+				result->set_rdelay(child_cast);
+			}
+		}
+
+		// Manage Child lengths
+		if (node["lengths"]) {
+			const YAML::Node node_lengths = node["lengths"];
+			// Fill the list of children
+			AST::Length::ListPtr lengths_list (new AST::Length::List);
+			if (node_lengths.IsSequence()) {
+				// The YAML node is a sequence
+				for(YAML::const_iterator it=node_lengths.begin(); it !=  node_lengths.end(); ++it) {
+					AST::Node::Ptr child = convert(*it);
+					if (child) {
+						AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
+						lengths_list->push_back(child_cast);
+					}
+				}
+			}
+			else {
+				AST::Node::Ptr child = convert(node_lengths);
+				if (child) {
+					AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
+					lengths_list->push_back(child_cast);
+				}
+			}
+			// Set the list
+			if(!result) result = std::make_shared<AST::Logic>();
+			result->set_lengths(lengths_list);
+		}
+
+		// Manage Child right
+		if (node["right"]) {
+			const YAML::Node node_right = node["right"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_right);
+			if (child) {
+				AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
+				if(!result) result = std::make_shared<AST::Logic>();
+				result->set_right(child_cast);
+			}
+		}
+	}
+
+	// Return the result
+	return AST::cast_to<AST::Logic>(result);
 }
 
 
@@ -4582,6 +4728,141 @@ AST::Node::Ptr YAMLImporter::convert_always(const YAML::Node node) const {
 }
 
 
+AST::Node::Ptr YAMLImporter::convert_alwaysff(const YAML::Node node) const {
+	AST::AlwaysFF::Ptr result;
+	if (node.IsMap()) {
+		if (node["filename"]) {
+			if (node["filename"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::AlwaysFF>();
+				result->set_filename(node["filename"].as<std::string>());
+			}
+		}
+		if (node["line"]) {
+			if (node["line"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::AlwaysFF>();
+				result->set_line(node["line"].as<int>());
+			}
+		}
+
+		// Manage Child senslist
+		if (node["senslist"]) {
+			const YAML::Node node_senslist = node["senslist"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_senslist);
+			if (child) {
+				AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
+				if(!result) result = std::make_shared<AST::AlwaysFF>();
+				result->set_senslist(child_cast);
+			}
+		}
+
+		// Manage Child statement
+		if (node["statement"]) {
+			const YAML::Node node_statement = node["statement"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_statement);
+			if (child) {
+				if(!result) result = std::make_shared<AST::AlwaysFF>();
+				result->set_statement(child);
+			}
+		}
+	}
+
+	// Return the result
+	return AST::cast_to<AST::AlwaysFF>(result);
+}
+
+
+AST::Node::Ptr YAMLImporter::convert_alwayscomb(const YAML::Node node) const {
+	AST::AlwaysComb::Ptr result;
+	if (node.IsMap()) {
+		if (node["filename"]) {
+			if (node["filename"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::AlwaysComb>();
+				result->set_filename(node["filename"].as<std::string>());
+			}
+		}
+		if (node["line"]) {
+			if (node["line"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::AlwaysComb>();
+				result->set_line(node["line"].as<int>());
+			}
+		}
+
+		// Manage Child senslist
+		if (node["senslist"]) {
+			const YAML::Node node_senslist = node["senslist"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_senslist);
+			if (child) {
+				AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
+				if(!result) result = std::make_shared<AST::AlwaysComb>();
+				result->set_senslist(child_cast);
+			}
+		}
+
+		// Manage Child statement
+		if (node["statement"]) {
+			const YAML::Node node_statement = node["statement"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_statement);
+			if (child) {
+				if(!result) result = std::make_shared<AST::AlwaysComb>();
+				result->set_statement(child);
+			}
+		}
+	}
+
+	// Return the result
+	return AST::cast_to<AST::AlwaysComb>(result);
+}
+
+
+AST::Node::Ptr YAMLImporter::convert_alwayslatch(const YAML::Node node) const {
+	AST::AlwaysLatch::Ptr result;
+	if (node.IsMap()) {
+		if (node["filename"]) {
+			if (node["filename"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::AlwaysLatch>();
+				result->set_filename(node["filename"].as<std::string>());
+			}
+		}
+		if (node["line"]) {
+			if (node["line"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::AlwaysLatch>();
+				result->set_line(node["line"].as<int>());
+			}
+		}
+
+		// Manage Child senslist
+		if (node["senslist"]) {
+			const YAML::Node node_senslist = node["senslist"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_senslist);
+			if (child) {
+				AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
+				if(!result) result = std::make_shared<AST::AlwaysLatch>();
+				result->set_senslist(child_cast);
+			}
+		}
+
+		// Manage Child statement
+		if (node["statement"]) {
+			const YAML::Node node_statement = node["statement"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_statement);
+			if (child) {
+				if(!result) result = std::make_shared<AST::AlwaysLatch>();
+				result->set_statement(child);
+			}
+		}
+	}
+
+	// Return the result
+	return AST::cast_to<AST::AlwaysLatch>(result);
+}
+
+
 AST::Node::Ptr YAMLImporter::convert_senslist(const YAML::Node node) const {
 	AST::Senslist::Ptr result;
 	if (node.IsMap()) {
@@ -5365,6 +5646,126 @@ AST::Node::Ptr YAMLImporter::convert_casezstatement(const YAML::Node node) const
 
 	// Return the result
 	return AST::cast_to<AST::CasezStatement>(result);
+}
+
+
+AST::Node::Ptr YAMLImporter::convert_uniquecasestatement(const YAML::Node node) const {
+	AST::UniqueCaseStatement::Ptr result;
+	if (node.IsMap()) {
+		if (node["filename"]) {
+			if (node["filename"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::UniqueCaseStatement>();
+				result->set_filename(node["filename"].as<std::string>());
+			}
+		}
+		if (node["line"]) {
+			if (node["line"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::UniqueCaseStatement>();
+				result->set_line(node["line"].as<int>());
+			}
+		}
+
+		// Manage Child comp
+		if (node["comp"]) {
+			const YAML::Node node_comp = node["comp"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_comp);
+			if (child) {
+				if(!result) result = std::make_shared<AST::UniqueCaseStatement>();
+				result->set_comp(child);
+			}
+		}
+
+		// Manage Child caselist
+		if (node["caselist"]) {
+			const YAML::Node node_caselist = node["caselist"];
+			// Fill the list of children
+			AST::Case::ListPtr caselist_list (new AST::Case::List);
+			if (node_caselist.IsSequence()) {
+				// The YAML node is a sequence
+				for(YAML::const_iterator it=node_caselist.begin(); it !=  node_caselist.end(); ++it) {
+					AST::Node::Ptr child = convert(*it);
+					if (child) {
+						AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
+						caselist_list->push_back(child_cast);
+					}
+				}
+			}
+			else {
+				AST::Node::Ptr child = convert(node_caselist);
+				if (child) {
+					AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
+					caselist_list->push_back(child_cast);
+				}
+			}
+			// Set the list
+			if(!result) result = std::make_shared<AST::UniqueCaseStatement>();
+			result->set_caselist(caselist_list);
+		}
+	}
+
+	// Return the result
+	return AST::cast_to<AST::UniqueCaseStatement>(result);
+}
+
+
+AST::Node::Ptr YAMLImporter::convert_prioritycasestatement(const YAML::Node node) const {
+	AST::PriorityCaseStatement::Ptr result;
+	if (node.IsMap()) {
+		if (node["filename"]) {
+			if (node["filename"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::PriorityCaseStatement>();
+				result->set_filename(node["filename"].as<std::string>());
+			}
+		}
+		if (node["line"]) {
+			if (node["line"].IsScalar()) {
+				if(!result) result = std::make_shared<AST::PriorityCaseStatement>();
+				result->set_line(node["line"].as<int>());
+			}
+		}
+
+		// Manage Child comp
+		if (node["comp"]) {
+			const YAML::Node node_comp = node["comp"];
+			// Set the child
+			AST::Node::Ptr child = convert(node_comp);
+			if (child) {
+				if(!result) result = std::make_shared<AST::PriorityCaseStatement>();
+				result->set_comp(child);
+			}
+		}
+
+		// Manage Child caselist
+		if (node["caselist"]) {
+			const YAML::Node node_caselist = node["caselist"];
+			// Fill the list of children
+			AST::Case::ListPtr caselist_list (new AST::Case::List);
+			if (node_caselist.IsSequence()) {
+				// The YAML node is a sequence
+				for(YAML::const_iterator it=node_caselist.begin(); it !=  node_caselist.end(); ++it) {
+					AST::Node::Ptr child = convert(*it);
+					if (child) {
+						AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
+						caselist_list->push_back(child_cast);
+					}
+				}
+			}
+			else {
+				AST::Node::Ptr child = convert(node_caselist);
+				if (child) {
+					AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
+					caselist_list->push_back(child_cast);
+				}
+			}
+			// Set the list
+			if(!result) result = std::make_shared<AST::PriorityCaseStatement>();
+			result->set_caselist(caselist_list);
+		}
+	}
+
+	// Return the result
+	return AST::cast_to<AST::PriorityCaseStatement>(result);
 }
 
 

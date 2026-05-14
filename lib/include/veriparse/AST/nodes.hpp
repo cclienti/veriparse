@@ -32,6 +32,7 @@
 #include <veriparse/AST/wire.hpp>
 #include <veriparse/AST/supply0.hpp>
 #include <veriparse/AST/supply1.hpp>
+#include <veriparse/AST/logic.hpp>
 #include <veriparse/AST/reg.hpp>
 #include <veriparse/AST/ioport.hpp>
 #include <veriparse/AST/parameter.hpp>
@@ -84,6 +85,9 @@
 #include <veriparse/AST/lor.hpp>
 #include <veriparse/AST/cond.hpp>
 #include <veriparse/AST/always.hpp>
+#include <veriparse/AST/alwaysff.hpp>
+#include <veriparse/AST/alwayscomb.hpp>
+#include <veriparse/AST/alwayslatch.hpp>
 #include <veriparse/AST/senslist.hpp>
 #include <veriparse/AST/sens.hpp>
 #include <veriparse/AST/defparamlist.hpp>
@@ -98,6 +102,8 @@
 #include <veriparse/AST/casestatement.hpp>
 #include <veriparse/AST/casexstatement.hpp>
 #include <veriparse/AST/casezstatement.hpp>
+#include <veriparse/AST/uniquecasestatement.hpp>
+#include <veriparse/AST/prioritycasestatement.hpp>
 #include <veriparse/AST/case.hpp>
 #include <veriparse/AST/block.hpp>
 #include <veriparse/AST/initial.hpp>

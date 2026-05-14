@@ -227,6 +227,12 @@ std::ostream & operator<<(std::ostream &os, const Parameter::TypeEnum p) {
 	switch(p) {
 	case Parameter::TypeEnum::INTEGER: os << "INTEGER"; break;
 	case Parameter::TypeEnum::REAL: os << "REAL"; break;
+	case Parameter::TypeEnum::LOGIC: os << "LOGIC"; break;
+	case Parameter::TypeEnum::INT: os << "INT"; break;
+	case Parameter::TypeEnum::BIT: os << "BIT"; break;
+	case Parameter::TypeEnum::BYTE: os << "BYTE"; break;
+	case Parameter::TypeEnum::SHORTINT: os << "SHORTINT"; break;
+	case Parameter::TypeEnum::LONGINT: os << "LONGINT"; break;
 	case Parameter::TypeEnum::NONE: os << "NONE"; break;
 	default: break;
 	}

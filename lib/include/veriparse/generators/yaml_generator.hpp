@@ -40,6 +40,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node> {
 	virtual YAML::Node render_wire(const AST::Wire::Ptr node) const;
 	virtual YAML::Node render_supply0(const AST::Supply0::Ptr node) const;
 	virtual YAML::Node render_supply1(const AST::Supply1::Ptr node) const;
+	virtual YAML::Node render_logic(const AST::Logic::Ptr node) const;
 	virtual YAML::Node render_reg(const AST::Reg::Ptr node) const;
 	virtual YAML::Node render_ioport(const AST::Ioport::Ptr node) const;
 	virtual YAML::Node render_parameter(const AST::Parameter::Ptr node) const;
@@ -92,6 +93,9 @@ class YAMLGenerator : public GeneratorBase<YAML::Node> {
 	virtual YAML::Node render_lor(const AST::Lor::Ptr node) const;
 	virtual YAML::Node render_cond(const AST::Cond::Ptr node) const;
 	virtual YAML::Node render_always(const AST::Always::Ptr node) const;
+	virtual YAML::Node render_alwaysff(const AST::AlwaysFF::Ptr node) const;
+	virtual YAML::Node render_alwayscomb(const AST::AlwaysComb::Ptr node) const;
+	virtual YAML::Node render_alwayslatch(const AST::AlwaysLatch::Ptr node) const;
 	virtual YAML::Node render_senslist(const AST::Senslist::Ptr node) const;
 	virtual YAML::Node render_sens(const AST::Sens::Ptr node) const;
 	virtual YAML::Node render_defparamlist(const AST::Defparamlist::Ptr node) const;
@@ -106,6 +110,8 @@ class YAMLGenerator : public GeneratorBase<YAML::Node> {
 	virtual YAML::Node render_casestatement(const AST::CaseStatement::Ptr node) const;
 	virtual YAML::Node render_casexstatement(const AST::CasexStatement::Ptr node) const;
 	virtual YAML::Node render_casezstatement(const AST::CasezStatement::Ptr node) const;
+	virtual YAML::Node render_uniquecasestatement(const AST::UniqueCaseStatement::Ptr node) const;
+	virtual YAML::Node render_prioritycasestatement(const AST::PriorityCaseStatement::Ptr node) const;
 	virtual YAML::Node render_case(const AST::Case::Ptr node) const;
 	virtual YAML::Node render_block(const AST::Block::Ptr node) const;
 	virtual YAML::Node render_initial(const AST::Initial::Ptr node) const;

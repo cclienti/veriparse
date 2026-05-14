@@ -37,6 +37,7 @@ std::ostream & operator<<(std::ostream &os, const Node &p)
 	case NodeType::Wire: os << static_cast<const AST::Wire &>(p); break;
 	case NodeType::Supply0: os << static_cast<const AST::Supply0 &>(p); break;
 	case NodeType::Supply1: os << static_cast<const AST::Supply1 &>(p); break;
+	case NodeType::Logic: os << static_cast<const AST::Logic &>(p); break;
 	case NodeType::Reg: os << static_cast<const AST::Reg &>(p); break;
 	case NodeType::Ioport: os << static_cast<const AST::Ioport &>(p); break;
 	case NodeType::Parameter: os << static_cast<const AST::Parameter &>(p); break;
@@ -89,6 +90,9 @@ std::ostream & operator<<(std::ostream &os, const Node &p)
 	case NodeType::Lor: os << static_cast<const AST::Lor &>(p); break;
 	case NodeType::Cond: os << static_cast<const AST::Cond &>(p); break;
 	case NodeType::Always: os << static_cast<const AST::Always &>(p); break;
+	case NodeType::AlwaysFF: os << static_cast<const AST::AlwaysFF &>(p); break;
+	case NodeType::AlwaysComb: os << static_cast<const AST::AlwaysComb &>(p); break;
+	case NodeType::AlwaysLatch: os << static_cast<const AST::AlwaysLatch &>(p); break;
 	case NodeType::Senslist: os << static_cast<const AST::Senslist &>(p); break;
 	case NodeType::Sens: os << static_cast<const AST::Sens &>(p); break;
 	case NodeType::Defparamlist: os << static_cast<const AST::Defparamlist &>(p); break;
@@ -103,6 +107,8 @@ std::ostream & operator<<(std::ostream &os, const Node &p)
 	case NodeType::CaseStatement: os << static_cast<const AST::CaseStatement &>(p); break;
 	case NodeType::CasexStatement: os << static_cast<const AST::CasexStatement &>(p); break;
 	case NodeType::CasezStatement: os << static_cast<const AST::CasezStatement &>(p); break;
+	case NodeType::UniqueCaseStatement: os << static_cast<const AST::UniqueCaseStatement &>(p); break;
+	case NodeType::PriorityCaseStatement: os << static_cast<const AST::PriorityCaseStatement &>(p); break;
 	case NodeType::Case: os << static_cast<const AST::Case &>(p); break;
 	case NodeType::Block: os << static_cast<const AST::Block &>(p); break;
 	case NodeType::Initial: os << static_cast<const AST::Initial &>(p); break;

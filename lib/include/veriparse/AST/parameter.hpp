@@ -28,6 +28,12 @@ public:
 	enum class TypeEnum {
 		INTEGER, 
 		REAL, 
+		LOGIC, 
+		INT, 
+		BIT, 
+		BYTE, 
+		SHORTINT, 
+		LONGINT, 
 		NONE
 	};
 

@@ -126,6 +126,9 @@ public:
 			case AST::NodeType::Supply1:
 			return render_supply1(AST::cast_to<AST::Supply1>(node));
 			
+			case AST::NodeType::Logic:
+			return render_logic(AST::cast_to<AST::Logic>(node));
+			
 			case AST::NodeType::Reg:
 			return render_reg(AST::cast_to<AST::Reg>(node));
 			
@@ -282,6 +285,15 @@ public:
 			case AST::NodeType::Always:
 			return render_always(AST::cast_to<AST::Always>(node));
 			
+			case AST::NodeType::AlwaysFF:
+			return render_alwaysff(AST::cast_to<AST::AlwaysFF>(node));
+			
+			case AST::NodeType::AlwaysComb:
+			return render_alwayscomb(AST::cast_to<AST::AlwaysComb>(node));
+			
+			case AST::NodeType::AlwaysLatch:
+			return render_alwayslatch(AST::cast_to<AST::AlwaysLatch>(node));
+			
 			case AST::NodeType::Senslist:
 			return render_senslist(AST::cast_to<AST::Senslist>(node));
 			
@@ -323,6 +335,12 @@ public:
 			
 			case AST::NodeType::CasezStatement:
 			return render_casezstatement(AST::cast_to<AST::CasezStatement>(node));
+			
+			case AST::NodeType::UniqueCaseStatement:
+			return render_uniquecasestatement(AST::cast_to<AST::UniqueCaseStatement>(node));
+			
+			case AST::NodeType::PriorityCaseStatement:
+			return render_prioritycasestatement(AST::cast_to<AST::PriorityCaseStatement>(node));
 			
 			case AST::NodeType::Case:
 			return render_case(AST::cast_to<AST::Case>(node));
@@ -676,6 +694,16 @@ public:
 	 */
 	T render(const AST::Supply1::Ptr node) const {
 		return render_supply1(node);
+	}
+	
+	/**
+	 * Main rendering method for the Logic node, we
+	 * dispatch directly to the right rendering method.
+	 *
+	 * @see GeneratorBase::render_logic(const AST::Logic::Ptr &node)
+	 */
+	T render(const AST::Logic::Ptr node) const {
+		return render_logic(node);
 	}
 	
 	/**
@@ -1199,6 +1227,36 @@ public:
 	}
 	
 	/**
+	 * Main rendering method for the AlwaysFF node, we
+	 * dispatch directly to the right rendering method.
+	 *
+	 * @see GeneratorBase::render_alwaysff(const AST::AlwaysFF::Ptr &node)
+	 */
+	T render(const AST::AlwaysFF::Ptr node) const {
+		return render_alwaysff(node);
+	}
+	
+	/**
+	 * Main rendering method for the AlwaysComb node, we
+	 * dispatch directly to the right rendering method.
+	 *
+	 * @see GeneratorBase::render_alwayscomb(const AST::AlwaysComb::Ptr &node)
+	 */
+	T render(const AST::AlwaysComb::Ptr node) const {
+		return render_alwayscomb(node);
+	}
+	
+	/**
+	 * Main rendering method for the AlwaysLatch node, we
+	 * dispatch directly to the right rendering method.
+	 *
+	 * @see GeneratorBase::render_alwayslatch(const AST::AlwaysLatch::Ptr &node)
+	 */
+	T render(const AST::AlwaysLatch::Ptr node) const {
+		return render_alwayslatch(node);
+	}
+	
+	/**
 	 * Main rendering method for the Senslist node, we
 	 * dispatch directly to the right rendering method.
 	 *
@@ -1336,6 +1394,26 @@ public:
 	 */
 	T render(const AST::CasezStatement::Ptr node) const {
 		return render_casezstatement(node);
+	}
+	
+	/**
+	 * Main rendering method for the UniqueCaseStatement node, we
+	 * dispatch directly to the right rendering method.
+	 *
+	 * @see GeneratorBase::render_uniquecasestatement(const AST::UniqueCaseStatement::Ptr &node)
+	 */
+	T render(const AST::UniqueCaseStatement::Ptr node) const {
+		return render_uniquecasestatement(node);
+	}
+	
+	/**
+	 * Main rendering method for the PriorityCaseStatement node, we
+	 * dispatch directly to the right rendering method.
+	 *
+	 * @see GeneratorBase::render_prioritycasestatement(const AST::PriorityCaseStatement::Ptr &node)
+	 */
+	T render(const AST::PriorityCaseStatement::Ptr node) const {
+		return render_prioritycasestatement(node);
 	}
 	
 	/**
@@ -1793,6 +1871,14 @@ protected:
 	}
 	
 	/**
+	 * Render the Logic node. This method must be
+	 * overloaded in a derived class to your needs.
+	 */
+	virtual T render_logic(const AST::Logic::Ptr node) const {
+		return T();
+	}
+	
+	/**
 	 * Render the Reg node. This method must be
 	 * overloaded in a derived class to your needs.
 	 */
@@ -2209,6 +2295,30 @@ protected:
 	}
 	
 	/**
+	 * Render the AlwaysFF node. This method must be
+	 * overloaded in a derived class to your needs.
+	 */
+	virtual T render_alwaysff(const AST::AlwaysFF::Ptr node) const {
+		return T();
+	}
+	
+	/**
+	 * Render the AlwaysComb node. This method must be
+	 * overloaded in a derived class to your needs.
+	 */
+	virtual T render_alwayscomb(const AST::AlwaysComb::Ptr node) const {
+		return T();
+	}
+	
+	/**
+	 * Render the AlwaysLatch node. This method must be
+	 * overloaded in a derived class to your needs.
+	 */
+	virtual T render_alwayslatch(const AST::AlwaysLatch::Ptr node) const {
+		return T();
+	}
+	
+	/**
 	 * Render the Senslist node. This method must be
 	 * overloaded in a derived class to your needs.
 	 */
@@ -2317,6 +2427,22 @@ protected:
 	 * overloaded in a derived class to your needs.
 	 */
 	virtual T render_casezstatement(const AST::CasezStatement::Ptr node) const {
+		return T();
+	}
+	
+	/**
+	 * Render the UniqueCaseStatement node. This method must be
+	 * overloaded in a derived class to your needs.
+	 */
+	virtual T render_uniquecasestatement(const AST::UniqueCaseStatement::Ptr node) const {
+		return T();
+	}
+	
+	/**
+	 * Render the PriorityCaseStatement node. This method must be
+	 * overloaded in a derived class to your needs.
+	 */
+	virtual T render_prioritycasestatement(const AST::PriorityCaseStatement::Ptr node) const {
 		return T();
 	}
 	

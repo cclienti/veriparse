@@ -598,6 +598,35 @@ TEST(YAMLGenerator, Supply1) {
 	ASSERT_TRUE(yaml["Supply1"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
 
+TEST(YAMLGenerator, Logic) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.Logic.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Width::ListPtr c_widths(new AST::Width::List);
+	AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+	AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+	AST::Length::ListPtr c_lengths(new AST::Length::List);
+	AST::Rvalue::Ptr c_right(new AST::Rvalue);
+	bool p_sign = false;
+	std::string p_name = "ynbiqpmzjp";
+
+	AST::Logic::Ptr m_logic(new AST::Logic
+		(c_widths, c_ldelay, c_rdelay, c_lengths, c_right, p_sign, p_name, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_logic);
+
+	ASSERT_TRUE(yaml["Logic"]);
+	ASSERT_TRUE(yaml["Logic"]["widths"]);
+	ASSERT_TRUE(yaml["Logic"]["ldelay"]);
+	ASSERT_TRUE(yaml["Logic"]["rdelay"]);
+	ASSERT_TRUE(yaml["Logic"]["lengths"]);
+	ASSERT_TRUE(yaml["Logic"]["right"]);
+	ASSERT_TRUE(yaml["Logic"]["sign"].as<bool>() == false);
+	ASSERT_TRUE(yaml["Logic"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
 TEST(YAMLGenerator, Reg) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLGenerator.Reg.log");
@@ -652,7 +681,7 @@ TEST(YAMLGenerator, Parameter) {
 	AST::Width::ListPtr c_widths(new AST::Width::List);
 	std::string p_name = "mynbiqpmzj";
 	bool p_sign = false;
-	AST::Parameter::TypeEnum p_type = AST::Parameter::TypeEnum::REAL;
+	AST::Parameter::TypeEnum p_type = AST::Parameter::TypeEnum::BYTE;
 
 	AST::Parameter::Ptr m_parameter(new AST::Parameter
 		(c_value, c_widths, p_name, p_sign, p_type, "filename", 0));
@@ -664,7 +693,7 @@ TEST(YAMLGenerator, Parameter) {
 	ASSERT_TRUE(yaml["Parameter"]["widths"]);
 	ASSERT_TRUE(yaml["Parameter"]["name"].as<std::string>() == "mynbiqpmzj");
 	ASSERT_TRUE(yaml["Parameter"]["sign"].as<bool>() == false);
-	ASSERT_TRUE(yaml["Parameter"]["type"].as<AST::Parameter::TypeEnum>() == AST::Parameter::TypeEnum::REAL);
+	ASSERT_TRUE(yaml["Parameter"]["type"].as<AST::Parameter::TypeEnum>() == AST::Parameter::TypeEnum::BYTE);
 }
 
 TEST(YAMLGenerator, Localparam) {
@@ -677,7 +706,7 @@ TEST(YAMLGenerator, Localparam) {
 	AST::Width::ListPtr c_widths(new AST::Width::List);
 	std::string p_name = "mynbiqpmzj";
 	bool p_sign = false;
-	AST::Localparam::Parameter::TypeEnum p_type = AST::Localparam::Parameter::TypeEnum::REAL;
+	AST::Localparam::Parameter::TypeEnum p_type = AST::Localparam::Parameter::TypeEnum::BYTE;
 
 	AST::Localparam::Ptr m_localparam(new AST::Localparam
 		(c_value, c_widths, p_name, p_sign, p_type, "filename", 0));
@@ -689,7 +718,7 @@ TEST(YAMLGenerator, Localparam) {
 	ASSERT_TRUE(yaml["Localparam"]["widths"]);
 	ASSERT_TRUE(yaml["Localparam"]["name"].as<std::string>() == "mynbiqpmzj");
 	ASSERT_TRUE(yaml["Localparam"]["sign"].as<bool>() == false);
-	ASSERT_TRUE(yaml["Localparam"]["type"].as<AST::Localparam::Parameter::TypeEnum>() == AST::Localparam::Parameter::TypeEnum::REAL);
+	ASSERT_TRUE(yaml["Localparam"]["type"].as<AST::Localparam::Parameter::TypeEnum>() == AST::Localparam::Parameter::TypeEnum::BYTE);
 }
 
 TEST(YAMLGenerator, Concat) {
@@ -1582,6 +1611,63 @@ TEST(YAMLGenerator, Always) {
 	ASSERT_TRUE(yaml["Always"]["statement"]);
 }
 
+TEST(YAMLGenerator, AlwaysFF) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.AlwaysFF.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Senslist::Ptr c_senslist(new AST::Senslist);
+	AST::Node::Ptr c_statement(new AST::Node);
+
+	AST::AlwaysFF::Ptr m_alwaysff(new AST::AlwaysFF
+		(c_senslist, c_statement, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_alwaysff);
+
+	ASSERT_TRUE(yaml["AlwaysFF"]);
+	ASSERT_TRUE(yaml["AlwaysFF"]["senslist"]);
+	ASSERT_TRUE(yaml["AlwaysFF"]["statement"]);
+}
+
+TEST(YAMLGenerator, AlwaysComb) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.AlwaysComb.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Senslist::Ptr c_senslist(new AST::Senslist);
+	AST::Node::Ptr c_statement(new AST::Node);
+
+	AST::AlwaysComb::Ptr m_alwayscomb(new AST::AlwaysComb
+		(c_senslist, c_statement, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_alwayscomb);
+
+	ASSERT_TRUE(yaml["AlwaysComb"]);
+	ASSERT_TRUE(yaml["AlwaysComb"]["senslist"]);
+	ASSERT_TRUE(yaml["AlwaysComb"]["statement"]);
+}
+
+TEST(YAMLGenerator, AlwaysLatch) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.AlwaysLatch.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Senslist::Ptr c_senslist(new AST::Senslist);
+	AST::Node::Ptr c_statement(new AST::Node);
+
+	AST::AlwaysLatch::Ptr m_alwayslatch(new AST::AlwaysLatch
+		(c_senslist, c_statement, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_alwayslatch);
+
+	ASSERT_TRUE(yaml["AlwaysLatch"]);
+	ASSERT_TRUE(yaml["AlwaysLatch"]["senslist"]);
+	ASSERT_TRUE(yaml["AlwaysLatch"]["statement"]);
+}
+
 TEST(YAMLGenerator, Senslist) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLGenerator.Senslist.log");
@@ -1860,6 +1946,44 @@ TEST(YAMLGenerator, CasezStatement) {
 	ASSERT_TRUE(yaml["CasezStatement"]);
 	ASSERT_TRUE(yaml["CasezStatement"]["comp"]);
 	ASSERT_TRUE(yaml["CasezStatement"]["caselist"]);
+}
+
+TEST(YAMLGenerator, UniqueCaseStatement) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.UniqueCaseStatement.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Node::Ptr c_comp(new AST::Node);
+	AST::Case::ListPtr c_caselist(new AST::Case::List);
+
+	AST::UniqueCaseStatement::Ptr m_uniquecasestatement(new AST::UniqueCaseStatement
+		(c_comp, c_caselist, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_uniquecasestatement);
+
+	ASSERT_TRUE(yaml["UniqueCaseStatement"]);
+	ASSERT_TRUE(yaml["UniqueCaseStatement"]["comp"]);
+	ASSERT_TRUE(yaml["UniqueCaseStatement"]["caselist"]);
+}
+
+TEST(YAMLGenerator, PriorityCaseStatement) {
+	Logger::remove_all_sinks();
+	Logger::add_text_sink("YAMLGenerator.PriorityCaseStatement.log");
+	Logger::add_stdout_sink();
+
+	
+	AST::Node::Ptr c_comp(new AST::Node);
+	AST::Case::ListPtr c_caselist(new AST::Case::List);
+
+	AST::PriorityCaseStatement::Ptr m_prioritycasestatement(new AST::PriorityCaseStatement
+		(c_comp, c_caselist, "filename", 0));
+
+	YAML::Node yaml = Generators::YAMLGenerator().render(m_prioritycasestatement);
+
+	ASSERT_TRUE(yaml["PriorityCaseStatement"]);
+	ASSERT_TRUE(yaml["PriorityCaseStatement"]["comp"]);
+	ASSERT_TRUE(yaml["PriorityCaseStatement"]["caselist"]);
 }
 
 TEST(YAMLGenerator, Case) {
