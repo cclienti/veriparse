@@ -31,12 +31,13 @@ namespace Parser
 class VerilogScanner : public yyFlexLexer {
 public:
 
-	VerilogScanner(std::istream *in, const std::string &filename):
+	VerilogScanner(std::istream *in, const std::string &filename, bool sv_mode=false):
 		yyFlexLexer(in),
 		m_filename(filename)
 	{
 		loc = new Veriparse::Parser::VerilogParser::location_type();
 		m_default_nettype = AST::Module::Default_nettypeEnum::WIRE;
+		m_sv_mode = sv_mode;
 	};
 
 	virtual ~VerilogScanner() {
@@ -46,6 +47,7 @@ public:
 	virtual const std::string & get_filename() {return m_filename;}
 
 	virtual AST::Module::Default_nettypeEnum get_default_nettype() {return m_default_nettype;}
+	virtual bool get_sv_mode() {return m_sv_mode;}
 
 	using yyFlexLexer::yylex;
 	virtual int yylex(Veriparse::Parser::VerilogParser::semantic_type * const lval,
@@ -68,6 +70,8 @@ private:
 	AST::Module::Default_nettypeEnum m_default_nettype;
 
 	/* file name string */
+	/* SystemVerilog mode */
+	bool m_sv_mode {false};
 	std::string m_filename;
 };
 

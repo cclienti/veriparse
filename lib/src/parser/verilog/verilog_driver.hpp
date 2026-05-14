@@ -22,6 +22,12 @@ namespace Veriparse {
 		public:
 			VerilogDriver() = default;
 
+		/**
+		 * Enable SystemVerilog mode
+		 */
+		void set_sv_mode(bool sv_mode) {m_sv_mode = sv_mode;}
+		bool get_sv_mode() const {return m_sv_mode;}
+
 			virtual ~VerilogDriver();
 
 			/**
@@ -55,6 +61,7 @@ namespace Veriparse {
 
 		private:
 			VerilogParser  *parser = nullptr;
+		bool m_sv_mode {false};
 			VerilogScanner *scanner = nullptr;
 
 			AST::Node::Ptr m_source;

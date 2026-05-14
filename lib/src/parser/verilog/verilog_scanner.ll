@@ -95,6 +95,67 @@ using token = Veriparse::Parser::VerilogParser::token;
 "join"        {return token::TK_JOIN;}
 
 	/**************************************************
+	 * SystemVerilog Keywords (gated on sv_mode)
+	 **************************************************/
+
+"always_ff"   {
+                  if(m_sv_mode) return token::TK_ALWAYS_FF;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"always_comb" {
+                  if(m_sv_mode) return token::TK_ALWAYS_COMB;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"always_latch" {
+                  if(m_sv_mode) return token::TK_ALWAYS_LATCH;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"logic"       {
+                  if(m_sv_mode) return token::TK_LOGIC;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"int"         {
+                  if(m_sv_mode) return token::TK_INT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"bit"         {
+                  if(m_sv_mode) return token::TK_BIT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"byte"        {
+                  if(m_sv_mode) return token::TK_BYTE;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"shortint"    {
+                  if(m_sv_mode) return token::TK_SHORTINT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"longint"     {
+                  if(m_sv_mode) return token::TK_LONGINT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"unique"      {
+                  if(m_sv_mode) return token::TK_UNIQUE;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"priority"    {
+                  if(m_sv_mode) return token::TK_PRIORITY;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+
+
+	/**************************************************
 	 * Operators
 	 **************************************************/
 

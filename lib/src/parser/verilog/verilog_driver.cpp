@@ -38,7 +38,7 @@ int VerilogDriver::parse(std::istream &stream) {
 int VerilogDriver::parse_helper(std::istream &stream, const std::string &filename) {
 	delete(scanner);
 	try {
-		scanner = new VerilogScanner(&stream, filename);
+		scanner = new VerilogScanner(&stream, filename, m_sv_mode);
 	}
 	catch(std::bad_alloc &ba) {
 		LOG_FATAL << "Failed to allocate scanner: ("
