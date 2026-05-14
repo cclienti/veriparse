@@ -15,6 +15,8 @@ CONDA_BUILD_ENVIRONMENT ?= veriparse-$(BUILD_TYPE)
 CONDA_DEV_ENVIRONMENT ?= veriparse-dev
 # Development build type
 CONDA_DEV_BUILD_TYPE  ?= RelWithDebInfo
+# Development conda environment path (local, no root needed)
+CONDA_DEV_ENV_PATH    ?= $(CURDIR)/$(DEV_BUILD_DIR)/env
 
 # Conda Destination Repository Base Path
 CONDA_DEST_PATH        ?= /opt/veriparse-packages
@@ -63,15 +65,15 @@ dev-env-file: conda/recipe-release/meta.yaml
 
 dev-env: dev-env-file
 	set -e; \
-	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  $(MAMBA) create -y -n $(CONDA_DEV_ENVIRONMENT) \
+	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
+	  $(MAMBA) create -y -p $(CONDA_DEV_ENV_PATH) \
 	    --file conda/environment.yml
 dev-cmake:
 	mkdir -p $(DEV_BUILD_DIR)
 	set -e; \
 	  cd $(DEV_BUILD_DIR); \
-	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
+	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
+	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
 	  cmake -DVERIPARSE_EXTERNAL_ROOT=$$CONDA_PREFIX \
 	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) \
 	        -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
@@ -82,29 +84,28 @@ dev-cmake:
 dev-build:
 	set -e; \
 	  cd $(DEV_BUILD_DIR); \
-	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
+	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
+	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
 	  make -j${NUM_CORES}
 
 dev-test:
 	set -e; \
 	  cd $(DEV_BUILD_DIR); \
-	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
+	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
+	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
 	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L '$(CTEST_LABELS)'
 
 dev-test-integration:
 	set -e; \
 	  cd $(DEV_BUILD_DIR); \
-	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  $(MAMBA) activate $(CONDA_DEV_ENVIRONMENT); \
+	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
+	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
 	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L 'verilator|integration'
 
 dev-clean:
 	set -e; \
 	  rm -rf $(DEV_BUILD_DIR); \
-	  eval "$$($(MAMBA) shell hook --shell bash)"; \
-	  $(MAMBA) env remove -y -n $(CONDA_DEV_ENVIRONMENT)
+	  $(MAMBA) env remove -y -p $(CONDA_DEV_ENV_PATH)
 
 
 ##################################################################
