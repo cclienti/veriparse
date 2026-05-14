@@ -101,31 +101,25 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
   find_path(GMP_INCLUDE_DIR
 	NAMES gmp.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include
-	NO_DEFAULT_PATH)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
 
   find_library(GMP_LIBRARY
-	NAMES libgmp.so gmp  # Due to LGPLv3 we must use .so
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib
-	NO_DEFAULT_PATH)
+	NAMES libgmp.so gmp
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
 
   find_package_handle_standard_args(GMP DEFAULT_MSG GMP_INCLUDE_DIR GMP_LIBRARY)
   mark_as_advanced(GMP_INCLUDE_DIR GMP_LIBRARY)
 
   find_path(GMPXX_INCLUDE_DIR
 	NAMES gmpxx.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include
-	NO_DEFAULT_PATH)
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
 
   find_library(GMPXX_LIBRARY
-	NAMES libgmpxx.so gmpxx  # Due to LGPLv3 we must use .so
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib
-	NO_DEFAULT_PATH)
+	NAMES libgmpxx.so gmpxx
+	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
 
   find_package_handle_standard_args(GMPXX DEFAULT_MSG GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
   mark_as_advanced(GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
-
-
   ########################################
   ### RPATH configuration
   ########################################
