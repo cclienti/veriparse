@@ -334,6 +334,16 @@ std::string VerilogGenerator::render_supply1(const AST::Supply1::Ptr node) const
 	return result;
 }
 
+std::string VerilogGenerator::render_logic(const AST::Logic::Ptr node) const {
+	std::string result;
+	if (node) {
+		result = variable_to_string("logic", node->get_sign(), node->get_widths(), node->get_lengths(),
+		                            node->get_right(), node->get_name());
+		result.append(";");
+	}
+	return result;
+}
+
 std::string VerilogGenerator::render_integer(const AST::Integer::Ptr node) const {
 	std::string result;
 	if (node) {
@@ -872,6 +882,37 @@ std::string VerilogGenerator::render_always(const AST::Always::Ptr node) const {
 		if (senslist) {
 			result += " @(" + render(senslist) + ")";
 		}
+		result.append(block_or_single_statement_to_string(statement));
+	}
+	return result;
+}
+
+std::string VerilogGenerator::render_alwaysff(const AST::AlwaysFF::Ptr node) const {
+	std::string result = "\nalways_ff";
+	if (node) {
+		const AST::Senslist::Ptr senslist = node->get_senslist();
+		const AST::Node::Ptr statement = node->get_statement();
+		if (senslist) {
+			result += " @(" + render(senslist) + ")";
+		}
+		result.append(block_or_single_statement_to_string(statement));
+	}
+	return result;
+}
+
+std::string VerilogGenerator::render_alwayscomb(const AST::AlwaysComb::Ptr node) const {
+	std::string result = "\nalways_comb";
+	if (node) {
+		const AST::Node::Ptr statement = node->get_statement();
+		result.append(block_or_single_statement_to_string(statement));
+	}
+	return result;
+}
+
+std::string VerilogGenerator::render_alwayslatch(const AST::AlwaysLatch::Ptr node) const {
+	std::string result = "\nalways_latch";
+	if (node) {
+		const AST::Node::Ptr statement = node->get_statement();
 		result.append(block_or_single_statement_to_string(statement));
 	}
 	return result;

@@ -448,6 +448,16 @@ pragmalist:     TK_LATTR pragma TK_RATTR
                     $$ = std::make_shared<AST::Pragmalist>(scanner.get_filename(), @1.begin.line);
                     $$->set_pragmas($2);
                 }
+
+        |       pragmalist TK_LATTR pragma TK_RATTR
+                {
+                    $$ = $1;
+                    auto existing = $$->get_pragmas();
+                    if (!existing) existing = std::make_shared<AST::Pragma::List>();
+                    for (const auto &p : *$3) existing->push_back(p);
+                    $$->set_pragmas(existing);
+                }
+        ;
         ;
 
 pragma:         pragma TK_COMMA TK_IDENTIFIER TK_EQUALS expression
@@ -2704,6 +2714,17 @@ forpre:         blocking_assignment
                     $$ = $1;
                 }
 
+        |       TK_GENVAR TK_IDENTIFIER TK_EQUALS rvalue TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
+                    AST::Identifier::Ptr id = std::make_shared<AST::Identifier>(scanner.get_filename(), @2.begin.line);
+                    id->set_name($2);
+                    AST::Lvalue::Ptr lv = std::make_shared<AST::Lvalue>(scanner.get_filename(), @2.begin.line);
+                    lv->set_var(AST::to_node(id));
+                    $$->set_left(lv);
+                    $$->set_right($4);
+                }
+
         |       TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
@@ -2728,6 +2749,34 @@ forpost:        lvalue TK_EQUALS rvalue
                     $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
                     $$->set_left($1);
                     $$->set_right($3);
+                }
+
+        |       lvalue TK_PLUS TK_PLUS
+                {
+                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
+                    AST::Rvalue::Ptr rv = std::make_shared<AST::Rvalue>(scanner.get_filename(), @1.begin.line);
+                    AST::Plus::Ptr plus = std::make_shared<AST::Plus>(scanner.get_filename(), @1.begin.line);
+                    AST::IntConstN::Ptr one = std::make_shared<AST::IntConstN>(scanner.get_filename(), @1.begin.line);
+                    one->set_base(10); one->set_size(-1); one->set_sign(false); one->set_value(1);
+                    plus->set_left($1->get_var());
+                    plus->set_right(AST::to_node(one));
+                    rv->set_var(AST::to_node(plus));
+                    $$->set_left($1);
+                    $$->set_right(rv);
+                }
+
+        |       lvalue TK_MINUS TK_MINUS
+                {
+                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
+                    AST::Rvalue::Ptr rv = std::make_shared<AST::Rvalue>(scanner.get_filename(), @1.begin.line);
+                    AST::Minus::Ptr minus = std::make_shared<AST::Minus>(scanner.get_filename(), @1.begin.line);
+                    AST::IntConstN::Ptr one = std::make_shared<AST::IntConstN>(scanner.get_filename(), @1.begin.line);
+                    one->set_base(10); one->set_size(-1); one->set_sign(false); one->set_value(1);
+                    minus->set_left($1->get_var());
+                    minus->set_right(AST::to_node(one));
+                    rv->set_var(AST::to_node(minus));
+                    $$->set_left($1);
+                    $$->set_right(rv);
                 }
         ;
 

@@ -31,6 +31,7 @@ class VerilogGenerator : public GeneratorBase<std::string> {
 	virtual std::string render_tri(const AST::Tri::Ptr node) const;
 	virtual std::string render_wire(const AST::Wire::Ptr node) const;
 	virtual std::string render_reg(const AST::Reg::Ptr node) const;
+	virtual std::string render_logic(const AST::Logic::Ptr node) const;
 	virtual std::string render_supply0(const AST::Supply0::Ptr node) const;
 	virtual std::string render_supply1(const AST::Supply1::Ptr node) const;
 	virtual std::string render_integer(const AST::Integer::Ptr node) const;
@@ -82,6 +83,9 @@ class VerilogGenerator : public GeneratorBase<std::string> {
 	virtual std::string render_land(const AST::Land::Ptr node) const;
 	virtual std::string render_lor(const AST::Lor::Ptr node) const;
 	virtual std::string render_cond(const AST::Cond::Ptr node) const;
+	virtual std::string render_alwaysff(const AST::AlwaysFF::Ptr node) const;
+	virtual std::string render_alwayscomb(const AST::AlwaysComb::Ptr node) const;
+	virtual std::string render_alwayslatch(const AST::AlwaysLatch::Ptr node) const;
 	virtual std::string render_always(const AST::Always::Ptr node) const;
 	virtual std::string render_senslist(const AST::Senslist::Ptr node) const;
 	virtual std::string render_sens(const AST::Sens::Ptr node) const;

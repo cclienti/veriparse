@@ -66,7 +66,7 @@ if(NOT MINGW)
                          VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
                          clean iverilog_check veriflat_check veriobf_check
                  WORKING_DIRECTORY ${VERIPARSE_WORKING_DIR})
-        set_tests_properties(${VERIPARSE_APPS_TEST_NAME} PROPERTIES LABELS "integration")
+        set_tests_properties(${VERIPARSE_APPS_TEST_NAME} PROPERTIES LABELS "integration" RESOURCE_LOCK "${VERIPARSE_WORKING_DIR}")
 
         # Verilator lint test
         set(VERIPARSE_VERILATOR_TEST_NAME test_verilator_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
@@ -78,7 +78,7 @@ if(NOT MINGW)
                          VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
                          verilator_check
                  WORKING_DIRECTORY ${VERIPARSE_WORKING_DIR})
-        set_tests_properties(${VERIPARSE_VERILATOR_TEST_NAME} PROPERTIES LABELS "verilator")
+        set_tests_properties(${VERIPARSE_VERILATOR_TEST_NAME} PROPERTIES LABELS "verilator" RESOURCE_LOCK "${VERIPARSE_WORKING_DIR}")
 
       endif()
     endforeach()
