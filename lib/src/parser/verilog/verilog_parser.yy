@@ -42,7 +42,7 @@ class VerilogDriver;
 class VerilogScanner;
 
 enum class net_type_t {
-	 INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, NONE
+	 INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, LOGIC, NONE
 };
 
 enum class direction_t {
@@ -292,6 +292,9 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 
 %type   <AST::Node::Ptr>                     assignment
 %type   <AST::Always::Ptr>                   always
+%type   <AST::AlwaysFF::Ptr>                 always_ff
+%type   <AST::AlwaysComb::Ptr>               always_comb
+%type   <AST::AlwaysLatch::Ptr>              always_latch
 %type   <AST::Initial::Ptr>                  initial
 %type   <AST::Node::Ptr>                     initial_statement
 %type   <AST::Parameter::ListPtr>            params_block params param_assignment_list parameter_decl
@@ -341,6 +344,8 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::CaseStatement::Ptr>            case_statement
 %type   <AST::CasexStatement::Ptr>           casex_statement
 %type   <AST::CasezStatement::Ptr>           casez_statement
+%type   <AST::UniqueCaseStatement::Ptr>      unique_case_statement
+%type   <AST::PriorityCaseStatement::Ptr>    priority_case_statement
 %type   <AST::Node::Ptr>                     case_comp
 %type   <AST::Case::ListPtr>                 casecontent_statements
 %type   <AST::Case::Ptr>                     casecontent_statement
@@ -744,6 +749,7 @@ net_type:       TK_TRI      {$$ = net_type_t::TRI;}
         |       TK_WIRE     {$$ = net_type_t::WIRE;}
         |       TK_SUPPLY0  {$$ = net_type_t::SUPPLY0;}
         |       TK_SUPPLY1  {$$ = net_type_t::SUPPLY1;}
+        |       TK_LOGIC    {$$ = net_type_t::LOGIC;}
         ;
 
 
@@ -886,6 +892,24 @@ standard_item_base:
                 }
 
         |       always
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+
+        |       always_ff
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+
+        |       always_comb
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+
+        |       always_latch
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     $$->push_back(AST::to_node($1));
@@ -1210,6 +1234,70 @@ param_type:     widths
                     $$->set_widths(nullptr);
                     $$->set_type(AST::Parameter::TypeEnum::REAL);
                 }
+
+        |       TK_LOGIC widths
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths($2);
+                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
+                }
+
+        |       TK_LOGIC
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
+                }
+
+        |       TK_INT
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::INT);
+                }
+
+        |       TK_BIT widths
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths($2);
+                    $$->set_type(AST::Parameter::TypeEnum::BIT);
+                }
+
+        |       TK_BIT
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::BIT);
+                }
+
+        |       TK_BYTE
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::BYTE);
+                }
+
+        |       TK_SHORTINT
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::SHORTINT);
+                }
+
+        |       TK_LONGINT
+                {
+                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::LONGINT);
+                }
         ;
 
 
@@ -1251,6 +1339,70 @@ localparam_type:widths
                     $$->set_sign(true);
                     $$->set_widths(nullptr);
                     $$->set_type(AST::Parameter::TypeEnum::REAL);
+                }
+
+        |       TK_LOGIC widths
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths($2);
+                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
+                }
+
+        |       TK_LOGIC
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
+                }
+
+        |       TK_INT
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::INT);
+                }
+
+        |       TK_BIT widths
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths($2);
+                    $$->set_type(AST::Parameter::TypeEnum::BIT);
+                }
+
+        |       TK_BIT
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(false);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::BIT);
+                }
+
+        |       TK_BYTE
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::BYTE);
+                }
+
+        |       TK_SHORTINT
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::SHORTINT);
+                }
+
+        |       TK_LONGINT
+                {
+                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_sign(true);
+                    $$->set_widths(nullptr);
+                    $$->set_type(AST::Parameter::TypeEnum::LONGINT);
                 }
         ;
 
@@ -1936,6 +2088,47 @@ always:         TK_ALWAYS basic_statement
                 }
         ;
 
+always_ff:      TK_ALWAYS_FF basic_statement
+                {
+                    $$ = std::make_shared<AST::AlwaysFF>(scanner.get_filename(), @1.begin.line);
+                    if ($2->get_node_type() == AST::NodeType::EventStatement) {
+                        $$->set_senslist(AST::cast_to<AST::EventStatement>($2)->get_senslist());
+                        $$->set_statement(AST::cast_to<AST::EventStatement>($2)->get_statement());
+                    }
+                    else {
+                        $$->set_statement($2);
+                    }
+                }
+        ;
+
+always_comb:    TK_ALWAYS_COMB basic_statement
+                {
+                    $$ = std::make_shared<AST::AlwaysComb>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::Ptr s = std::make_shared<AST::Sens>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::ListPtr l = std::make_shared<AST::Sens::List>();
+                    s->set_type(AST::Sens::TypeEnum::ALL);
+                    l->push_back(s);
+                    AST::Senslist::Ptr sl = std::make_shared<AST::Senslist>(scanner.get_filename(), @1.begin.line);
+                    sl->set_list(l);
+                    $$->set_senslist(sl);
+                    $$->set_statement($2);
+                }
+        ;
+
+always_latch:   TK_ALWAYS_LATCH basic_statement
+                {
+                    $$ = std::make_shared<AST::AlwaysLatch>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::Ptr s = std::make_shared<AST::Sens>(scanner.get_filename(), @1.begin.line);
+                    AST::Sens::ListPtr l = std::make_shared<AST::Sens::List>();
+                    s->set_type(AST::Sens::TypeEnum::ALL);
+                    l->push_back(s);
+                    AST::Senslist::Ptr sl = std::make_shared<AST::Senslist>(scanner.get_filename(), @1.begin.line);
+                    sl->set_list(l);
+                    $$->set_senslist(sl);
+                    $$->set_statement($2);
+                }
+        ;
+
 
 senslist:       TK_AT TK_LPARENTHESIS edgesigs TK_RPARENTHESIS
                 {
@@ -2125,6 +2318,16 @@ basic_statement_base:
                 }
 
         |       casez_statement
+                {
+                    $$ = AST::to_node($1);
+                }
+
+        |       unique_case_statement
+                {
+                    $$ = AST::to_node($1);
+                }
+
+        |       priority_case_statement
                 {
                     $$ = AST::to_node($1);
                 }
@@ -2571,6 +2774,20 @@ casez_statement:
                 TK_CASEZ TK_LPARENTHESIS case_comp TK_RPARENTHESIS casecontent_statements TK_ENDCASE
                 {
                     $$ = std::make_shared<AST::CasezStatement>($3, $5, scanner.get_filename(), @1.begin.line);
+                }
+        ;
+
+unique_case_statement:
+                TK_UNIQUE TK_CASE TK_LPARENTHESIS case_comp TK_RPARENTHESIS casecontent_statements TK_ENDCASE
+                {
+                    $$ = std::make_shared<AST::UniqueCaseStatement>($4, $6, scanner.get_filename(), @1.begin.line);
+                }
+        ;
+
+priority_case_statement:
+                TK_PRIORITY TK_CASE TK_LPARENTHESIS case_comp TK_RPARENTHESIS casecontent_statements TK_ENDCASE
+                {
+                    $$ = std::make_shared<AST::PriorityCaseStatement>($4, $6, scanner.get_filename(), @1.begin.line);
                 }
         ;
 
@@ -4058,6 +4275,18 @@ namespace Veriparse {
                     supply1->set_ldelay(decl.ldelay);
                     supply1->set_rdelay(decl.rdelay);
                     node = std::static_pointer_cast<AST::Variable>(supply1);
+                } break;
+
+                case net_type_t::LOGIC: {
+                    AST::Logic::Ptr logic = std::make_shared<AST::Logic>(filename, line);
+                    logic->set_widths(widths);
+                    logic->set_name(decl.name);
+                    logic->set_lengths(decl.lengths);
+                    logic->set_sign(sign);
+                    logic->set_right(decl.rvalue);
+                    logic->set_ldelay(decl.ldelay);
+                    logic->set_rdelay(decl.rdelay);
+                    node = std::static_pointer_cast<AST::Variable>(logic);
                 } break;
 
                 default: break;
