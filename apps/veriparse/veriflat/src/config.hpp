@@ -17,6 +17,7 @@ struct Config
 	std::string param_map;
 	bool deadcode_at_end{false};
 	bool deadcode_during_flatten{false};
+	bool sv_mode{false};
 	std::uint64_t seed;
 };
 

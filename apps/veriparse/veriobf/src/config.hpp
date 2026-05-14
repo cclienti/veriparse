@@ -14,6 +14,7 @@ struct Config
 	std::string output;
 	std::uint64_t identifier_length;
 	bool hash;
+	bool sv_mode{false};
 	std::uint64_t seed;
 };
 

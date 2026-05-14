@@ -23,6 +23,14 @@ int Verilog::parse(std::istream &iss) {
 	return m_driver->parse(iss);
 }
 
+void Verilog::set_sv_mode(bool sv_mode) {
+	m_driver->set_sv_mode(sv_mode);
+}
+
+bool Verilog::get_sv_mode() const {
+	return m_driver->get_sv_mode();
+}
+
 AST::Node::Ptr Verilog::get_source() {
 	return m_driver->get_source_node();
 }

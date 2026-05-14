@@ -63,6 +63,8 @@ static int veriflat(int argc, char *argv[])
 		 "Remove deadcode after flatten pass")
 		("deadcode-during,d", boost::program_options::bool_switch(&config.deadcode_during_flatten),
 		 "Remove deadcode during flatten pass")
+		("sv", boost::program_options::bool_switch(&config.sv_mode),
+		 "Enable SystemVerilog mode")
 		("seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0), "Seed value")
 		;
 
@@ -130,6 +132,7 @@ static int veriflat(int argc, char *argv[])
 
 	for (const auto &input: config.inputs) {
 		Veriparse::Parser::Verilog verilog;
+		verilog.set_sv_mode(config.sv_mode);
 		verilog.parse(input);
 		auto source = verilog.get_source();
 		Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map);

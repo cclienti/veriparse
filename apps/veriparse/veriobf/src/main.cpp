@@ -50,6 +50,8 @@ static int veriobf(int argc, char *argv[])
 		 "Maximum length of obfuscated indentifiers")
 		("hash,a", boost::program_options::bool_switch(&config.hash),
 		 "Use hashed identifiers instead of random ones")
+		("sv", boost::program_options::bool_switch(&config.sv_mode),
+		 "Enable SystemVerilog mode")
 		("seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0), "Seed value");
 
 	boost::program_options::options_description hidden("positional");
@@ -122,6 +124,7 @@ static int veriobf(int argc, char *argv[])
 	Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
 
 	Veriparse::Parser::Verilog verilog;
+	verilog.set_sv_mode(config.sv_mode);
 	verilog.parse(config.input);
 	auto source = verilog.get_source();
 	Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map);

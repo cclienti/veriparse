@@ -26,6 +26,12 @@ public:
 	int parse(const std::string &filename);
 
 	/**
+	 * Enable SystemVerilog mode (must be called before parse)
+	 */
+	void set_sv_mode(bool sv_mode);
+	bool get_sv_mode() const;
+
+	/**
 	 * parse - parse from a c++ input stream
 	 * @param is - std::istream&, valid input stream
 	 */
