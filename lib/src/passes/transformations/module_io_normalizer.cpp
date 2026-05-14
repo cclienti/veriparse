@@ -192,7 +192,10 @@ void ModuleIONormalizer::remove_module_variable(const std::string &variable,
 			case AST::NodeType::Function: break;
 			case AST::NodeType::Task:     break;
 			case AST::NodeType::Initial:  break;
-			case AST::NodeType::Always:   break;
+			case AST::NodeType::Always:      break;
+			case AST::NodeType::AlwaysFF:    break;
+			case AST::NodeType::AlwaysComb:  break;
+			case AST::NodeType::AlwaysLatch: break;
 
 			default:
 				{

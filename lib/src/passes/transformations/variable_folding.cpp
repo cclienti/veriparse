@@ -73,6 +73,7 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
 			return execute_in_childs(node);
 
 		case AST::NodeType::Real:
+		case AST::NodeType::Logic:
 		case AST::NodeType::Reg:
 		case AST::NodeType::Integer:
 			return execute_variable_decl(AST::cast_to<AST::Variable>(node), parent);

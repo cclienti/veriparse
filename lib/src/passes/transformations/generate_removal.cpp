@@ -47,6 +47,9 @@ bool GenerateRemoval::is_generate_removable(const AST::Node::Ptr &node)
 	{
 	case AST::NodeType::Initial:
 	case AST::NodeType::Always:
+	case AST::NodeType::AlwaysFF:
+	case AST::NodeType::AlwaysComb:
+	case AST::NodeType::AlwaysLatch:
 	case AST::NodeType::Task:
 	case AST::NodeType::Function:
 		break;
@@ -58,6 +61,8 @@ bool GenerateRemoval::is_generate_removable(const AST::Node::Ptr &node)
 	case AST::NodeType::CaseStatement:
 	case AST::NodeType::CasexStatement:
 	case AST::NodeType::CasezStatement:
+	case AST::NodeType::UniqueCaseStatement:
+	case AST::NodeType::PriorityCaseStatement:
 		return false;
 
 	default:

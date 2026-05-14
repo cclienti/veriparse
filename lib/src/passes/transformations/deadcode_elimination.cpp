@@ -351,6 +351,9 @@ int DeadcodeElimination::remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr pa
 			}
 			break;
 
+		case AST::NodeType::AlwaysFF:
+		case AST::NodeType::AlwaysComb:
+		case AST::NodeType::AlwaysLatch:
 		case AST::NodeType::Always:
 			{
 				AST::Node::ListPtr children = node->get_children();
