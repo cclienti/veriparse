@@ -71,6 +71,8 @@ target_link_libraries(veriparse_static ${GMPXX_LIBRARY} ${GMP_LIBRARY})
 
 # Specific compilation flags
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
+set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_parser.cpp PROPERTIES COMPILE_FLAGS -Wno-unused-but-set-variable)
+set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog_number/verilog_number_parser.cpp PROPERTIES COMPILE_FLAGS -Wno-unused-but-set-variable)
 
 
 ########################################

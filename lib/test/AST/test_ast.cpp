@@ -116,7 +116,7 @@ TEST(ASTTest, CloneList) {
 	AST::Wire::List::const_iterator it = wire_list->begin();
 	AST::Wire::List::const_iterator itc = wire_list_cloned->begin();
 
-	for(int i=0; (it != wire_list->end()) && (itc != wire_list_cloned->end()); ++it, ++itc, ++i) {
+	for(; (it != wire_list->end()) && (itc != wire_list_cloned->end()); ++it, ++itc) {
 		AST::Wire::Ptr v = *it;
 		AST::Wire::Ptr vc = *itc;
 		ASSERT_TRUE(v->is_equal(*vc));
