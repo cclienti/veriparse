@@ -101,6 +101,8 @@ class VerilogGenerator : public GeneratorBase<std::string> {
 	virtual std::string render_casestatement(const AST::CaseStatement::Ptr node) const;
 	virtual std::string render_casexstatement(const AST::CasexStatement::Ptr node) const;
 	virtual std::string render_casezstatement(const AST::CasezStatement::Ptr node) const;
+	virtual std::string render_uniquecasestatement(const AST::UniqueCaseStatement::Ptr node) const;
+	virtual std::string render_prioritycasestatement(const AST::PriorityCaseStatement::Ptr node) const;
 	virtual std::string render_case(const AST::Case::Ptr node) const;
 	virtual std::string render_block(const AST::Block::Ptr node) const;
 	virtual std::string render_initial(const AST::Initial::Ptr node) const;

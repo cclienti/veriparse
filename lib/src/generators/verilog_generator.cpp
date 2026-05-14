@@ -398,6 +398,7 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const {
 		if (second) {
 			switch(second->get_node_type()) {
 			case AST::NodeType::Wire: variable.append(" wire"); break;
+			case AST::NodeType::Logic: variable.append(" logic"); break;
 			case AST::NodeType::Reg:  variable.append(" reg"); break;
 			case AST::NodeType::Tri:  variable.append(" tri"); break;
 			default: break;
@@ -422,6 +423,12 @@ std::string VerilogGenerator::render_parameter(const AST::Parameter::Ptr node) c
 
 		switch(node->get_type()){
 		case AST::Parameter::TypeEnum::INTEGER: variable = "integer "; sign = false; break;
+		case AST::Parameter::TypeEnum::INT:      variable = "int ";      sign = false;  break;
+		case AST::Parameter::TypeEnum::BIT:      variable = "bit ";      sign = false; break;
+		case AST::Parameter::TypeEnum::BYTE:     variable = "byte ";     sign = false;  break;
+		case AST::Parameter::TypeEnum::SHORTINT: variable = "shortint "; sign = false;  break;
+		case AST::Parameter::TypeEnum::LONGINT:  variable = "longint ";  sign = false;  break;
+		case AST::Parameter::TypeEnum::LOGIC:    variable = "logic ";    sign = false; break;
 		case AST::Parameter::TypeEnum::REAL: variable = "real "; sign = false; break;
 		default: sign = node->get_sign(); break;
 		}
@@ -445,6 +452,12 @@ std::string VerilogGenerator::render_localparam(const AST::Localparam::Ptr node)
 
 		switch(node->get_type()){
 		case AST::Localparam::TypeEnum::INTEGER: variable = "integer "; sign = false; break;
+		case AST::Localparam::TypeEnum::INT:      variable = "int ";      sign = false;  break;
+		case AST::Localparam::TypeEnum::BIT:      variable = "bit ";      sign = false; break;
+		case AST::Localparam::TypeEnum::BYTE:     variable = "byte ";     sign = false;  break;
+		case AST::Localparam::TypeEnum::SHORTINT: variable = "shortint "; sign = false;  break;
+		case AST::Localparam::TypeEnum::LONGINT:  variable = "longint ";  sign = false;  break;
+		case AST::Localparam::TypeEnum::LOGIC:    variable = "logic ";    sign = false; break;
 		case AST::Localparam::TypeEnum::REAL: variable = "real "; sign = false; break;
 		default: sign = node->get_sign(); break;
 		}
@@ -1146,6 +1159,40 @@ std::string VerilogGenerator::render_casezstatement(const AST::CasezStatement::P
 	return result;
 }
 
+
+std::string VerilogGenerator::render_uniquecasestatement(const AST::UniqueCaseStatement::Ptr node) const {
+	std::string result;
+	if (node) {
+		const AST::Case::ListPtr caselist = node->get_caselist();
+		std::string comp = StringUtils::delete_surrounding_brackets(render(node->get_comp()));
+		result = "unique case(" + comp + ")\n";
+
+		if (caselist) {
+			auto func = [&](const AST::Case::Ptr n){ return indent(render(n)) + "\n"; };
+			result += StringUtils::join<AST::Case::List, AST::Case::Ptr> (*caselist, func, func);
+		}
+
+		result += "endcase";
+	}
+	return result;
+}
+
+std::string VerilogGenerator::render_prioritycasestatement(const AST::PriorityCaseStatement::Ptr node) const {
+	std::string result;
+	if (node) {
+		const AST::Case::ListPtr caselist = node->get_caselist();
+		std::string comp = StringUtils::delete_surrounding_brackets(render(node->get_comp()));
+		result = "priority case(" + comp + ")\n";
+
+		if (caselist) {
+			auto func = [&](const AST::Case::Ptr n){ return indent(render(n)) + "\n"; };
+			result += StringUtils::join<AST::Case::List, AST::Case::Ptr> (*caselist, func, func);
+		}
+
+		result += "endcase";
+	}
+	return result;
+}
 std::string VerilogGenerator::render_case(const AST::Case::Ptr node) const {
 	std::string result;
 	if (node) {

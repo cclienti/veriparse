@@ -19,21 +19,21 @@ using namespace Veriparse;
 static TestHelpers test_helpers("lib/test/parser/testcases/");
 
 
-#define TEST_CORE                                                                                        \
+#define TEST_CORE                                                                                         \
 	const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info(); \
 	std::string test_name = test_info->name();                                                            \
 	std::string test_string = test_info->test_case_name() + std::string(".") + test_name;                 \
-                                                                                                         \
+                                                                                                          \
 	Logger::remove_all_sinks();                                                                           \
 	Logger::add_text_sink(test_string + ".log");                                                          \
 	Logger::add_stdout_sink();                                                                            \
-                                                                                                         \
+                                                                                                          \
 	/* Render the ref YAML file */                                                                        \
 	AST::Node::Ptr source_ref = Importers::YAMLImporter().import                                          \
-		                           (test_helpers.get_yaml_filename(test_name).c_str());                    \
+		                           (test_helpers.get_yaml_filename(test_name).c_str());                   \
 	ASSERT_TRUE(source_ref != nullptr);                                                                   \
 	test_helpers.render_node_to_verilog_file(source_ref, test_string + ".v");                             \
-                                                                                                         \
+                                                                                                          \
 	/* Parse the rendered file */                                                                         \
 	Parser::Verilog verilog;                                                                              \
 	verilog.parse(test_string + ".v");                                                                    \
@@ -41,10 +41,37 @@ static TestHelpers test_helpers("lib/test/parser/testcases/");
 	ASSERT_TRUE(source != nullptr);                                                                       \
 	test_helpers.render_node_to_yaml_file(source, test_string + "_parsed.yaml");                          \
 	test_helpers.render_node_to_dot_file(source, test_string + "_parsed.dot");                            \
-                                                                                                         \
+                                                                                                          \
 	/* Check that source is equal to source_ref */                                                        \
 	ASSERT_TRUE(source->is_equal(*source_ref))
 
+
+#define TEST_CORE_SV                                                                                      \
+	const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info(); \
+	std::string test_name = test_info->name();                                                            \
+	std::string test_string = test_info->test_case_name() + std::string(".") + test_name;                 \
+                                                                                                          \
+	Logger::remove_all_sinks();                                                                           \
+	Logger::add_text_sink(test_string + ".log");                                                          \
+	Logger::add_stdout_sink();                                                                            \
+                                                                                                          \
+	/* Render the ref YAML file */                                                                        \
+	AST::Node::Ptr source_ref = Importers::YAMLImporter().import                                          \
+		                           (test_helpers.get_yaml_filename(test_name).c_str());                   \
+	ASSERT_TRUE(source_ref != nullptr);                                                                   \
+	test_helpers.render_node_to_verilog_file(source_ref, test_string + ".sv");                            \
+                                                                                                          \
+	/* Parse the rendered file in SV mode */                                                              \
+	Parser::Verilog verilog;                                                                              \
+	verilog.set_sv_mode(true);                                                                            \
+	verilog.parse(test_string + ".sv");                                                                   \
+	AST::Node::Ptr source = verilog.get_source();                                                         \
+	ASSERT_TRUE(source != nullptr);                                                                       \
+	test_helpers.render_node_to_yaml_file(source, test_string + "_parsed.yaml");                          \
+	test_helpers.render_node_to_dot_file(source, test_string + "_parsed.dot");                            \
+                                                                                                          \
+	/* Check that source is equal to source_ref */                                                        \
+	ASSERT_TRUE(source->is_equal(*source_ref))
 
 TEST(VerilogGeneratorTest, module0)        {TEST_CORE;}
 TEST(VerilogGeneratorTest, module1)        {TEST_CORE;}
@@ -190,3 +217,14 @@ TEST(VerilogGeneratorTest, generate2)      {TEST_CORE;}
 TEST(VerilogGeneratorTest, generate3)      {TEST_CORE;}
 TEST(VerilogGeneratorTest, width0)         {TEST_CORE;}
 TEST(VerilogGeneratorTest, width1)         {TEST_CORE;}
+
+// SystemVerilog generator round-trip tests
+TEST(VerilogGeneratorTest, sv_logic0)       {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_always_ff0)   {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_always_comb0) {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_always_latch0){TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_case0)        {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_case1)        {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_param0)       {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_for0)         {TEST_CORE_SV;}
+TEST(VerilogGeneratorTest, sv_pragma0)      {TEST_CORE_SV;}
