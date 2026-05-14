@@ -107,6 +107,11 @@ dev-clean:
 	  rm -rf $(DEV_BUILD_DIR); \
 	  $(MAMBA) env remove -y -p $(CONDA_DEV_ENV_PATH)
 
+install-hooks:
+	cp scripts/pre-commit .git/hooks/pre-commit
+	@echo "pre-commit hook installed"
+
+
 
 ##################################################################
 # Pkg Rules
@@ -166,6 +171,7 @@ help:
 	@echo "  dev-test              Run unittest tests (override with CTEST_LABELS=...)"
 	@echo "  dev-test-integration  Run verilator and integration tests"
 	@echo "  dev-clean             Remove build directory and dev conda environment"
+	@echo "  install-hooks         Install git pre-commit hook (clang-format check)"
 	@echo ""
 	@echo "Pkg Rules:"
 	@echo "  env          Create the conda build environment"
