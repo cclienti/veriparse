@@ -126,7 +126,6 @@ veriparse/
 ├── cmake/                  # CMake modules and common settings
 ├── conda/                  # Conda build and dev environment
 │   └── Makefile            # Main build entry point
-├── external/               # External dependency build scripts
 ├── lib/
 │   ├── include/            # Public headers
 │   ├── src/                # Library source code
@@ -140,7 +139,6 @@ veriparse/
 │   ├── test/               # Unit tests
 │   └── tools/
 │       └── ASTGen/         # AST code generator (Python)
-└── licenses/               # License files
 ```
 
 ---
@@ -294,7 +292,7 @@ python astgen.py
 > for details.
 
 Veriparse is distributed under the **GNU Lesser General Public License v3 (LGPLv3)**.
-See [licenses/LICENSE](licenses/LICENSE) for the full license text.
+See [LICENSE](LICENSE) for the full license text.
 
 ### Note on Generated Output
 
@@ -306,5 +304,4 @@ original license of the input files.
 
 ### Third-Party Licenses
 
-- **GMP / GMPXX**: [LGPLv3](licenses/gnugmp-lgplv3.txt)
-- **OpenSSL / SSLeay**: [licenses/license-openssl-ssleay.txt](licenses/license-openssl-ssleay.txt)
+- **GMP / GMPXX**: LGPLv3 (dynamically linked)

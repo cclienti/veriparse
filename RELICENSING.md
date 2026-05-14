@@ -27,7 +27,7 @@ Copyright (C) 2013-2026 Christophe Clienti
 
 ## License
 
-See [licenses/LICENSE](licenses/LICENSE) for the full LGPLv3 license text.
+See [LICENSE](LICENSE) for the full LGPLv3 license text.
 
 ## Note on Generated Output
 
