@@ -28,6 +28,8 @@ requirements:
     - make
     - cmake
     - mold
+    - iverilog
+    - verilator
     - flex=2.6.4
     - bison=3.8.2
     - boost=1.85.0
