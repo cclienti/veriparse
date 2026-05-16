@@ -2,15 +2,9 @@
 
 set -euxo pipefail
 
-# Remove any stale build directory in the source tree
-rm -rf ${SRC_DIR}/conda/build
-
 rm -rf build
 mkdir -p build
 cd build
-
-export CXXFLAGS="${CXXFLAGS} -I${PREFIX}/include"
-export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
 
 cmake ${CMAKE_ARGS} \
   -DCMAKE_PREFIX_PATH=${PREFIX} \
