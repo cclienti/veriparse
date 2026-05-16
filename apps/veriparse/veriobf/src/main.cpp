@@ -11,6 +11,7 @@
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+#include <fstream>
 
 #include <string>
 

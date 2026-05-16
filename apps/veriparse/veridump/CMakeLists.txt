@@ -2,7 +2,7 @@
 ### Global options
 ########################################
 
-cmake_minimum_required (VERSION 3.9)
+cmake_minimum_required (VERSION 3.15...3.27)
 project (veridump)
 
 
@@ -20,6 +20,6 @@ file (GLOB source_files
 
 add_executable (veridump ${source_files})
 target_link_libraries (veridump veriparse_static)
-target_link_libraries (veridump ${Boost_LIBRARIES})
+target_link_libraries (veridump Boost::program_options Boost::filesystem)
 
 install (TARGETS veridump RUNTIME DESTINATION bin)

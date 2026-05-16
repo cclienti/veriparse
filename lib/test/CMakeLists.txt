@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required (VERSION 3.15...3.27)
 project (veriparse_lib_test)
 include(GoogleTest)
 enable_testing()
@@ -28,4 +28,4 @@ endforeach()
 
 add_custom_target(run_tests)
 add_dependencies(run_tests build_tests)
-add_custom_command(TARGET run_tests COMMAND ctest -C $<CONFIGURATION> --output-on-failure)
+add_custom_command(TARGET run_tests POST_BUILD COMMAND ctest -C $<CONFIGURATION> --output-on-failure)

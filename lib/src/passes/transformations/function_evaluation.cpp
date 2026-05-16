@@ -12,6 +12,7 @@
 #include <veriparse/AST/nodes.hpp>
 
 #include <set>
+#include <atomic>
 
 namespace Veriparse {
 namespace Passes {

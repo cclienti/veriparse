@@ -2,7 +2,7 @@
 ### Global options
 ########################################
 
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required (VERSION 3.15...3.27)
 project (veriparse)
 include (${CMAKE_CURRENT_LIST_DIR}/cmake/common.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
