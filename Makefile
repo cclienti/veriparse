@@ -20,7 +20,7 @@ CONDA_DEV_BUILD_TYPE  ?= RelWithDebInfo
 CONDA_DEV_ENV_PATH    ?= $(CURDIR)/$(DEV_BUILD_DIR)/env
 
 # Conda Destination Repository Base Path
-CONDA_DEST_PATH        ?= /opt/veriparse-packages
+CONDA_DEST_PATH        ?= $(HOME)/veriparse-packages
 # Conda Destination Channel within the Base Path
 CONDA_DEST_CHANNEL     ?= veriparse-$(shell date +%Y)
 
