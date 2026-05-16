@@ -39,8 +39,8 @@ requirements:
 
 about:
   home: https://www.wavecruncher.net
-  license: Christophe Clienti, All Rights Reserved.
-  license_file: ../../licenses/LICENSE
+  license: LGPL-3.0-only
+  license_file: ../../LICENSE
   summary: Verilog Design Flattenner and Obfuscater.
 
 test:
