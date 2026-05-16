@@ -4,7 +4,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   set(VERIPARSE_COMMON_CMAKE TRUE)
 
   message(STATUS "Using the veriparse common cmake listfile")
-  message(STATUS "VERIPARSE_EXTERNAL_ROOT=${VERIPARSE_EXTERNAL_ROOT}")
+  message(STATUS "CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}")
   include(FindPackageHandleStandardArgs)
 
 
@@ -57,8 +57,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   endif()
 
   if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-	set(LCOV_REMOVE_EXTRA "'${VERIPARSE_EXTERNAL_ROOT}/*'")
-	message(STATUS "Coverage: excluding ${LCOV_REMOVE_EXTRA}")
+	message(STATUS "Coverage: excluding ${CMAKE_PREFIX_PATH}")
 	setup_target_for_coverage(coverage "make run_tests" coverage)
   endif()
 
@@ -68,12 +67,10 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ########################################
 
   find_path(GTEST_INCLUDE_DIR
-	NAMES gtest/gtest.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
+	NAMES gtest/gtest.h)
 
   find_library(GTEST_LIBRARY
-	NAMES libgtest.a gtest
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
+	NAMES libgtest.a gtest)
 
   find_package_handle_standard_args(GTEST DEFAULT_MSG GTEST_INCLUDE_DIR GTEST_LIBRARY)
   mark_as_advanced(GTEST_INCLUDE_DIR GTEST_LIBRARY)
@@ -84,12 +81,10 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ########################################
 
   find_path(YAMLCPP_INCLUDE_DIR
-  	NAMES yaml-cpp/yaml.h
-  	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
+  	NAMES yaml-cpp/yaml.h)
 
   find_library(YAMLCPP_LIBRARY
-  	NAMES libyaml-cpp.a yaml-cpp
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
+  	NAMES libyaml-cpp.a yaml-cpp)
 
   find_package_handle_standard_args(YAMLCPP DEFAULT_MSG YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
   mark_as_advanced(YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
@@ -100,41 +95,35 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ########################################
 
   find_path(GMP_INCLUDE_DIR
-	NAMES gmp.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
+	NAMES gmp.h)
 
   find_library(GMP_LIBRARY
-	NAMES libgmp.so gmp
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
+	NAMES libgmp.so gmp)
 
   find_package_handle_standard_args(GMP DEFAULT_MSG GMP_INCLUDE_DIR GMP_LIBRARY)
   mark_as_advanced(GMP_INCLUDE_DIR GMP_LIBRARY)
 
   find_path(GMPXX_INCLUDE_DIR
-	NAMES gmpxx.h
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/include)
+	NAMES gmpxx.h)
 
   find_library(GMPXX_LIBRARY
-	NAMES libgmpxx.so gmpxx
-	HINTS ${VERIPARSE_EXTERNAL_ROOT}/lib)
+	NAMES libgmpxx.so gmpxx)
 
   find_package_handle_standard_args(GMPXX DEFAULT_MSG GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
   mark_as_advanced(GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
+
   ########################################
   ### RPATH configuration
   ########################################
 
   set(CMAKE_SKIP_BUILD_RPATH FALSE)
   set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-  set(CMAKE_INSTALL_RPATH "${VERIPARSE_EXTERNAL_ROOT}/lib")
-  set(CMAKE_BUILD_RPATH "${VERIPARSE_EXTERNAL_ROOT}/lib")
   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
   ########################################
   ### Boost configuration
   ########################################
 
-  set(BOOST_ROOT ${VERIPARSE_EXTERNAL_ROOT})
   find_package(Boost 1.85.0 CONFIG REQUIRED
 	COMPONENTS system filesystem log program_options)
   message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS}")
