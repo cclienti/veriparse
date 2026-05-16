@@ -28,3 +28,4 @@ __pycache__/
 conda/environment.yml
 docs/*.md
 pkg-build/
+conda/build/
