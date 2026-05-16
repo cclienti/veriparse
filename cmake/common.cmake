@@ -66,15 +66,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ### GTest
   ########################################
 
-  find_path(GTEST_INCLUDE_DIR
-	NAMES gtest/gtest.h)
-
-  find_library(GTEST_LIBRARY
-	NAMES libgtest.a gtest)
-
-  find_package_handle_standard_args(GTEST DEFAULT_MSG GTEST_INCLUDE_DIR GTEST_LIBRARY)
-  mark_as_advanced(GTEST_INCLUDE_DIR GTEST_LIBRARY)
-
+  find_package(GTest REQUIRED)
 
   ########################################
   ### YAML-CPP
