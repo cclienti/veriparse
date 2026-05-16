@@ -11,6 +11,7 @@ CONDA_DISTRIB_PATH      ?= $(shell conda info --base)
 # Name of the environment to build packages
 CONDA_BUILD_ENVIRONMENT ?= veriparse-$(BUILD_TYPE)
 CONDA_BUILD_ENV_PATH  ?= $(CURDIR)/$(DEV_BUILD_DIR)/env-build
+CONDA_BUILD_ROOT      ?= $(HOME)/veriparse-conda-bld
 
 # Name of the environment for development
 CONDA_DEV_ENVIRONMENT ?= veriparse-dev
@@ -123,18 +124,18 @@ env:
 package:
 	mkdir -p $(CONDA_DEST_REPO)
 	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) \
-	  $(CONDA_BUILD) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) conda/recipe-$(BUILD_TYPE)
+	  $(CONDA_BUILD) --croot $(CONDA_BUILD_ROOT) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) conda/recipe-$(BUILD_TYPE)
 
 package-name:
 	@$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) \
-	  $(CONDA_BUILD) --output-folder $(CONDA_DEST_REPO) --output conda/recipe-$(BUILD_TYPE) 2>/dev/null
+	  $(CONDA_BUILD) --croot $(CONDA_BUILD_ROOT) --output-folder $(CONDA_DEST_REPO) --output conda/recipe-$(BUILD_TYPE) 2>/dev/null
 
 index:
 	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) \
 	  $(CONDA_INDEX) $(CONDA_DEST_REPO)
 
 clean:
-	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) conda-build purge || true
+	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) conda-build --croot $(CONDA_BUILD_ROOT) purge || true
 	$(MAMBA) env remove -y -p $(CONDA_BUILD_ENV_PATH)
 
 
