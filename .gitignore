@@ -27,3 +27,4 @@ __pycache__/
 ### Generated files
 conda/environment.yml
 docs/*.md
+pkg-build/

@@ -10,7 +10,7 @@ BUILD_TYPE             ?= release
 CONDA_DISTRIB_PATH      ?= $(shell conda info --base)
 # Name of the environment to build packages
 CONDA_BUILD_ENVIRONMENT ?= veriparse-$(BUILD_TYPE)
-CONDA_BUILD_ENV_PATH  ?= $(CURDIR)/$(DEV_BUILD_DIR)/env-build
+CONDA_BUILD_ENV_PATH  ?= $(CURDIR)/pkg-build/env
 CONDA_BUILD_ROOT      ?= $(HOME)/veriparse-conda-bld
 
 # Name of the environment for development
@@ -137,6 +137,7 @@ index:
 clean:
 	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) conda-build --croot $(CONDA_BUILD_ROOT) purge || true
 	$(MAMBA) env remove -y -p $(CONDA_BUILD_ENV_PATH)
+	rm -rf pkg-build
 
 
 ##################################################################
