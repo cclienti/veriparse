@@ -31,11 +31,10 @@ CONDA_DEST_CHANNEL     ?= veriparse-$(shell date +%Y)
 CONDA_DEST_REPO      = $(CONDA_DEST_PATH)/$(CONDA_DEST_CHANNEL)
 
 CONDA_BUILD          = conda-build
-CONDA_BUILD_CHANNELS = -c $(CONDA_DEST_REPO) -c $(SHARPNESS_REPOSITORY)
+CONDA_BUILD_CHANNELS = -c $(CONDA_DEST_REPO) -c conda-forge
 
-CONDA_VERIFY         = conda-verify
 
-CONDA_INDEX          = conda-index --no-progress -n $(CONDA_DEST_CHANNEL)
+CONDA_INDEX          = micromamba index --no-progress -n $(CONDA_DEST_CHANNEL)
 
 NUM_CORES            = $(shell nproc)
 MAMBA                = micromamba
@@ -118,39 +117,24 @@ install-hooks:
 ##################################################################
 
 env:
-	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda create -y -n $(CONDA_BUILD_ENVIRONMENT) conda-build conda-verify
+	$(MAMBA) create -y -n $(CONDA_BUILD_ENVIRONMENT) -c conda-forge conda-build
 
 package:
 	mkdir -p $(CONDA_DEST_REPO)
-	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); \
+	$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) \
 	  $(CONDA_BUILD) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) conda/recipe-$(BUILD_TYPE)
 
 package-name:
-	@set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); \
+	@$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) \
 	  $(CONDA_BUILD) --output-folder $(CONDA_DEST_REPO) --output conda/recipe-$(BUILD_TYPE) 2>/dev/null
 
-verify:
-	set -e; \
-	  CONDA_PACKAGE_NAME=`$(MAKE) -s package-name`; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); $(CONDA_VERIFY) $$CONDA_PACKAGE_NAME
-
 index:
-	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda activate $(CONDA_BUILD_ENVIRONMENT); $(CONDA_INDEX) $(CONDA_DEST_REPO)
+	$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) \
+	  $(CONDA_INDEX) $(CONDA_DEST_REPO)
 
 clean:
-	set -e; \
-	  . $(CONDA_DISTRIB_PATH)/etc/profile.d/conda.sh; \
-	  conda env remove -y -n $(CONDA_BUILD_ENVIRONMENT); \
-	  conda build purge
+	$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) conda-build purge || true
+	$(MAMBA) env remove -y -n $(CONDA_BUILD_ENVIRONMENT)
 
 
 ##################################################################
@@ -177,7 +161,6 @@ help:
 	@echo "  env          Create the conda build environment"
 	@echo "  package      Build the conda package"
 	@echo "  package-name Print the conda package name"
-	@echo "  verify       Verify the conda package"
 	@echo "  index        Index the conda destination repository"
 	@echo "  clean        Remove the build environment and purge conda build cache"
 	@echo ""
