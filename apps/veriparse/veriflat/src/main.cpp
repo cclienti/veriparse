@@ -10,6 +10,7 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
+#include <veriparse/passes/transformations/wire_split.hpp>
 #include <veriparse/version.hpp>
 
 #include <boost/program_options.hpp>
@@ -178,6 +179,16 @@ static int veriflat(int argc, char *argv[])
 
 
 	//---------------------------------------------------------
+
+	//---------------------------------------------------------
+	// Wire split: separate inline wire declarations from assignments
+	//---------------------------------------------------------
+
+	{
+		Veriparse::Passes::Transformations::WireSplit wire_split;
+		wire_split.run(module);
+	}
+
 	// Write the result into the output file
 	//---------------------------------------------------------
 
