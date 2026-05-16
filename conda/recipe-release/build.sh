@@ -9,6 +9,9 @@ rm -rf build
 mkdir -p build
 cd build
 
+export CXXFLAGS="${CXXFLAGS} -I${PREFIX}/include"
+export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
+
 cmake ${CMAKE_ARGS} \
   -DCMAKE_PREFIX_PATH=${PREFIX} \
   -DCMAKE_FIND_ROOT_PATH=${PREFIX} \
