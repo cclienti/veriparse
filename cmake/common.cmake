@@ -80,14 +80,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ### YAML-CPP
   ########################################
 
-  find_path(YAMLCPP_INCLUDE_DIR
-  	NAMES yaml-cpp/yaml.h)
-
-  find_library(YAMLCPP_LIBRARY
-  	NAMES yaml-cpp)
-
-  find_package_handle_standard_args(YAMLCPP DEFAULT_MSG YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
-  mark_as_advanced(YAMLCPP_INCLUDE_DIR YAMLCPP_LIBRARY)
+  find_package(YAMLCPP REQUIRED)
 
   ########################################
   ### GMP

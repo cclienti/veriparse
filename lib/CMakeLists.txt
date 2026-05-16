@@ -58,12 +58,11 @@ add_library (veriparse_static STATIC
 
 
 target_include_directories (veriparse_static PUBLIC include)
-target_include_directories (veriparse_static SYSTEM PUBLIC ${YAMLCPP_INCLUDE_DIR})
 target_include_directories (veriparse_static SYSTEM PUBLIC ${BOOST_INCLUDE_DIRS})
 target_include_directories (veriparse_static PRIVATE src)
 target_include_directories (veriparse_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(veriparse_static ${YAMLCPP_LIBRARY})
+target_link_libraries(veriparse_static YAMLCPP::YAMLCPP)
 target_link_libraries(veriparse_static Boost::system Boost::filesystem Boost::log)
 target_link_libraries(veriparse_static GMP::GMPXX GMP::GMP)
 
