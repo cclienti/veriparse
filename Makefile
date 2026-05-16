@@ -10,6 +10,7 @@ BUILD_TYPE             ?= release
 CONDA_DISTRIB_PATH      ?= $(shell conda info --base)
 # Name of the environment to build packages
 CONDA_BUILD_ENVIRONMENT ?= veriparse-$(BUILD_TYPE)
+CONDA_BUILD_ENV_PATH  ?= $(CURDIR)/$(DEV_BUILD_DIR)/env-build
 
 # Name of the environment for development
 CONDA_DEV_ENVIRONMENT ?= veriparse-dev
@@ -117,24 +118,24 @@ install-hooks:
 ##################################################################
 
 env:
-	$(MAMBA) create -y -n $(CONDA_BUILD_ENVIRONMENT) -c conda-forge conda-build
+	$(MAMBA) create -y -p $(CONDA_BUILD_ENV_PATH) -c conda-forge conda-build
 
 package:
 	mkdir -p $(CONDA_DEST_REPO)
-	$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) \
+	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) \
 	  $(CONDA_BUILD) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) conda/recipe-$(BUILD_TYPE)
 
 package-name:
-	@$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) \
+	@$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) \
 	  $(CONDA_BUILD) --output-folder $(CONDA_DEST_REPO) --output conda/recipe-$(BUILD_TYPE) 2>/dev/null
 
 index:
-	$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) \
+	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) \
 	  $(CONDA_INDEX) $(CONDA_DEST_REPO)
 
 clean:
-	$(MAMBA) run -n $(CONDA_BUILD_ENVIRONMENT) conda-build purge || true
-	$(MAMBA) env remove -y -n $(CONDA_BUILD_ENVIRONMENT)
+	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) conda-build purge || true
+	$(MAMBA) env remove -y -p $(CONDA_BUILD_ENV_PATH)
 
 
 ##################################################################
