@@ -14,12 +14,12 @@ requirements:
   host:
     - gmp=6.3.0
     - boost=1.85.0
-    - yaml-cpp=0.6.3
+    - yaml-cpp=0.8.0
 
   run:
     - gmp=6.3.0
     - boost=1.85.0
-    - yaml-cpp=0.6.3
+    - yaml-cpp=0.8.0
 
   build:
     - {{ compiler('cxx') }}
@@ -29,7 +29,7 @@ requirements:
     - flex
     - bison
     - boost=1.85.0
-    - yaml-cpp=0.6.3
+    - yaml-cpp=0.8.0
     - gmp=6.3.0
     - gtest=1.10.0
 
