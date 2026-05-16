@@ -98,7 +98,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 	NAMES gmp.h)
 
   find_library(GMP_LIBRARY
-	NAMES libgmp.so gmp)
+	NAMES gmp)
 
   find_package_handle_standard_args(GMP DEFAULT_MSG GMP_INCLUDE_DIR GMP_LIBRARY)
   mark_as_advanced(GMP_INCLUDE_DIR GMP_LIBRARY)
@@ -107,7 +107,7 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 	NAMES gmpxx.h)
 
   find_library(GMPXX_LIBRARY
-	NAMES libgmpxx.so gmpxx)
+	NAMES gmpxx)
 
   find_package_handle_standard_args(GMPXX DEFAULT_MSG GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
   mark_as_advanced(GMPXX_INCLUDE_DIR GMPXX_LIBRARY)
