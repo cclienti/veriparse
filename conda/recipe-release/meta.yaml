@@ -13,6 +13,7 @@ build:
 requirements:
   host:
     - gmp=6.3.0
+    - gtest=1.17.0
     - boost=1.85.0
     - yaml-cpp=0.8.0
 
