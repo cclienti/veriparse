@@ -63,23 +63,17 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
 
   ########################################
-  ### GTest
+  ### Libraries
   ########################################
 
   find_package(GTest REQUIRED)
-
-  ########################################
-  ### YAML-CPP
-  ########################################
-
   find_package(YAMLCPP REQUIRED)
-
-  ########################################
-  ### GMP
-  ########################################
-
   find_package(GMP REQUIRED)
-  find_package(GMPXX REQUIRED)
+  find_package(Boost 1.85.0 CONFIG REQUIRED
+	COMPONENTS system filesystem log program_options)
+
+  message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS}")
+
 
   ########################################
   ### RPATH configuration
@@ -88,13 +82,5 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   set(CMAKE_SKIP_BUILD_RPATH FALSE)
   set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-  ########################################
-  ### Boost configuration
-  ########################################
-
-  find_package(Boost 1.85.0 CONFIG REQUIRED
-	COMPONENTS system filesystem log program_options)
-  message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS}")
 
 endif()
