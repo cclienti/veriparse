@@ -60,14 +60,12 @@ add_library (veriparse_static STATIC
 target_include_directories (veriparse_static PUBLIC include)
 target_include_directories (veriparse_static SYSTEM PUBLIC ${YAMLCPP_INCLUDE_DIR})
 target_include_directories (veriparse_static SYSTEM PUBLIC ${BOOST_INCLUDE_DIRS})
-target_include_directories (veriparse_static SYSTEM PUBLIC ${GMP_INCLUDE_DIR})
-target_include_directories (veriparse_static SYSTEM PUBLIC ${GMPXX_INCLUDE_DIR})
 target_include_directories (veriparse_static PRIVATE src)
 target_include_directories (veriparse_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(veriparse_static ${YAMLCPP_LIBRARY})
 target_link_libraries(veriparse_static Boost::system Boost::filesystem Boost::log)
-target_link_libraries(veriparse_static ${GMPXX_LIBRARY} ${GMP_LIBRARY})
+target_link_libraries(veriparse_static GMP::GMPXX GMP::GMP)
 
 # Specific compilation flags
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
