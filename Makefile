@@ -121,7 +121,7 @@ install-hooks:
 env:
 	$(MAMBA) create -y -p $(CONDA_BUILD_ENV_PATH) -c conda-forge conda-build
 
-package:
+package: env
 	mkdir -p $(CONDA_DEST_REPO)
 	$(MAMBA) run -p $(CONDA_BUILD_ENV_PATH) \
 	  $(CONDA_BUILD) --croot $(CONDA_BUILD_ROOT) $(CONDA_BUILD_CHANNELS) --output-folder $(CONDA_DEST_REPO) conda/recipe-$(BUILD_TYPE)
