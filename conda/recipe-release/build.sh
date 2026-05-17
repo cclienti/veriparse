@@ -13,6 +13,13 @@ else
   MOLD_FLAGS=""
 fi
 
+# clang on macOS rejects unused flags (e.g. -s injected by conda-build) as errors
+if [[ "${target_platform}" == osx-* ]]; then
+  EXTRA_FLAGS="-DCMAKE_C_FLAGS=-Wno-unused-command-line-argument -DCMAKE_CXX_FLAGS=-Wno-unused-command-line-argument"
+else
+  EXTRA_FLAGS=""
+fi
+
 cmake ${CMAKE_ARGS} \
   -DCMAKE_PREFIX_PATH=${PREFIX} \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -20,6 +27,7 @@ cmake ${CMAKE_ARGS} \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
   ${MOLD_FLAGS} \
+  ${EXTRA_FLAGS} \
   ${SRC_DIR}
 
 make -j ${CPU_COUNT}
