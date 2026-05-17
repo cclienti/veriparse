@@ -1,0 +1,25 @@
+@echo off
+setlocal enabledelayedexpansion
+
+rmdir /s /q build 2>nul
+mkdir build
+cd build
+
+cmake %CMAKE_ARGS% ^
+  -DCMAKE_PREFIX_PATH=%PREFIX% ^
+  -DCMAKE_INSTALL_PREFIX=%PREFIX% ^
+  -DCMAKE_INSTALL_LIBDIR=lib ^
+  -DCMAKE_BUILD_TYPE=Release ^
+  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON ^
+  %SRC_DIR%
+if errorlevel 1 exit 1
+
+cmake --build . --config Release --parallel %CPU_COUNT%
+if errorlevel 1 exit 1
+
+set VERIPARSE_SOURCE_ROOT=%SRC_DIR%
+cmake --build . --config Release --target test -- /p:CL_MPcount=%CPU_COUNT%
+if errorlevel 1 exit 1
+
+cmake --install . --config Release
+if errorlevel 1 exit 1

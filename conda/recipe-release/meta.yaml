@@ -27,7 +27,7 @@ requirements:
     - {{ compiler('cxx') }}
     - make
     - cmake
-    - mold
+    - mold  # [not win]
     - iverilog
     - verilator
     - flex=2.6.4
