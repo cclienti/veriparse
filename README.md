@@ -1,10 +1,10 @@
 # Veriparse
 
-Veriparse is a Verilog design processing toolkit that provides **flattening** and **obfuscation** of synthesizable Verilog designs. It is intended to help IP vendors protect their designs while still delivering functional, simulatable Verilog netlists.
+Veriparse is a **source-to-source transformation** toolkit for synthesizable Verilog and SystemVerilog designs. It provides **flattening** and **obfuscation** of hierarchical designs, supporting a significant subset of synthesizable SystemVerilog constructs (generate blocks, `always_ff`, `always_comb`, `logic` types, etc.). It is intended to help IP vendors protect their designs while still delivering functional, simulatable netlists.
 
 ## Overview
 
-Veriparse takes a hierarchical Verilog design, flattens it into a single module, optionally inlines parameters, eliminates dead code, and obfuscates identifiers. The resulting file is functionally equivalent to the original but is much harder to reverse-engineer.
+Veriparse takes a hierarchical Verilog or SystemVerilog design, flattens it into a single module, optionally inlines parameters, eliminates dead code, and obfuscates identifiers. The resulting file is functionally equivalent to the original but is much harder to reverse-engineer. The transformation is **source-to-source**: the output is a valid, human-readable Verilog/SystemVerilog file, not a gate-level netlist.
 
 The toolkit is built around a C++ library (`veriparse_static`) that implements:
 - A complete **Verilog parser** (Flex/Bison based)
