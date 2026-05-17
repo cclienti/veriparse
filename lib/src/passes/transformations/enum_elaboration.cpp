@@ -60,7 +60,7 @@ int EnumElaboration::elaborate_enumdef(const AST::EnumDef::Ptr &enumdef)
         } else {
             // Auto-increment — inject IntConstN
             auto injected = std::make_shared<AST::IntConstN>(
-                10, 32, false, counter, item->get_filename(), item->get_line());
+                10, -1, false, counter, item->get_filename(), item->get_line());
             item->set_value(injected);
         }
 
