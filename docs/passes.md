@@ -106,7 +106,27 @@ Evaluates constant expressions in-place using `ExpressionEvaluation`.
 - For every non-`Constant` node, attempts to evaluate the expression.
 - If successful, replaces the node with the folded constant.
 - Accepts an optional `FunctionMap` to evaluate function calls.
-- **Extension point for enum elaboration:** `EnumDef` items with explicit `= expr` values should be folded here; auto-increment items should be resolved by walking items in order after their predecessors are folded.
+- Folds explicit enum item values (e.g. `A = WIDTH-1`) so that `EnumElaboration` can read them as `IntConstN`.
+
+---
+
+### `EnumElaboration`
+Resolves enum item ordinal values in-place. **Must run after `ConstantFolding`.**
+
+- Walks every `EnumDef` node in declaration order.
+- If an item has an explicit `IntConstN` value, that value becomes the running counter base.
+- If an item has no value, injects an unsized `IntConstN` with the current counter value.
+- Increments the counter after each item.
+- Errors if an explicit value is not yet an `IntConstN` (i.e. `ConstantFolding` was not run first).
+
+---
+
+### `EnumInliner`
+Replaces enum item name identifiers with their resolved `IntConstN` constants throughout the AST. **Must run after `EnumElaboration`.**
+
+- Collects all `EnumDef` item name → `IntConstN` mappings in a single pass.
+- Replaces every simple `Identifier` (no scope qualifier) whose name matches an enum item with a clone of the constant.
+- Skips `EnumDef` subtrees to preserve typedef declarations intact.
 
 ---
 
@@ -230,12 +250,31 @@ Flattens a module hierarchy by inlining all sub-module instances.
 - Handles `defparam`.
 - Optionally runs dead-code elimination after flattening.
 - Builds an instance tree (`TreeNode`) recording the full hierarchy.
+- Calls `ResolveModule` internally for each sub-module before inlining.
 
 ---
 
 ### `ResolveModule`
-High-level pass that applies the full resolution pipeline to a module:
-`ParameterInliner` → `LocalparamInliner` → `ConstantFolding` → `BranchSelection` → `GenerateRemoval` → `LoopUnrolling` → `DeadcodeElimination` → `ModuleFlattener`.
+High-level pass that applies the full resolution pipeline to a single module.
+
+Exact pipeline order:
+
+```
+ModuleIONormalizer
+ParameterInliner
+LocalparamInliner
+ConstantFolding
+EnumElaboration       ← SV: fill auto-increment enum values
+EnumInliner           ← SV: replace enum names with IntConstN
+ScopeElevator
+LoopUnrolling
+BranchSelection
+GenerateRemoval
+ConstantFolding       ← second pass after branch/generate removal
+VariableFolding
+DeadcodeElimination   ← optional
+ModuleInstanceNormalizer
+```
 
 ---
 
@@ -260,7 +299,7 @@ into separate declaration and continuous assignment:
 wire [N:0] x;
 assign x = expr;
 ```
-Avoids forward-reference issues in flattened output.
+Applied **after** `ModuleFlattener` in `veriflat` (not inside `ResolveModule`) to fix forward-reference issues in the final flat output.
 
 ---
 
@@ -273,16 +312,12 @@ Renames all local identifiers (variables, instances, named blocks, tasks, functi
 
 ---
 
-## Pass Pipeline (typical order)
+## `veriflat` Top-Level Pipeline
 
 ```
-ParameterInliner
-LocalparamInliner
-ConstantFolding          ← enum value elaboration hooks here
-BranchSelection
-GenerateRemoval
-LoopUnrolling
-DeadcodeElimination
-ModuleFlattener
-  └─ per sub-module: ParameterInliner → ... → DeadcodeElimination
+ModuleFlattener                    ← flattens hierarchy
+  └─ per sub-module: ResolveModule ← full resolution pipeline
+DeadcodeElimination                ← optional (--deadcode-end)
+WireSplit                          ← post-flatten cleanup
+VerilogGenerator                   ← emit output file
 ```
