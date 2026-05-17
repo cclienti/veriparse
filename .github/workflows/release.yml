@@ -12,18 +12,22 @@ jobs:
         include:
           - os: ubuntu-latest
             platform: linux-64
+            shell: bash -el {0}
           - os: macos-latest
             platform: osx-64
+            shell: bash -el {0}
           - os: macos-14
             platform: osx-arm64
+            shell: bash -el {0}
           - os: windows-latest
             platform: win-64
+            shell: pwsh
 
     runs-on: ${{ matrix.os }}
 
     defaults:
       run:
-        shell: bash -el {0}
+        shell: ${{ matrix.shell }}
 
     steps:
       - name: Checkout
@@ -32,13 +36,9 @@ jobs:
       - name: Setup Micromamba
         uses: mamba-org/setup-micromamba@v3
         with:
-          init-shell: bash
-          micromamba-version: latest
+          init-shell: >-
+            ${{ runner.os == 'Windows' && 'powershell' || 'bash' }}
           post-cleanup: none
-
-      - name: Install make (Windows)
-        if: runner.os == 'Windows'
-        run: micromamba install -y -c conda-forge make
 
       - name: Build conda package
         run: make package
