@@ -1,6 +1,6 @@
 # Veriparse
 
-Veriparse is a **source-to-source transformation** toolkit for synthesizable Verilog and SystemVerilog designs. It provides **flattening** and **obfuscation** of hierarchical designs, supporting a significant subset of synthesizable SystemVerilog constructs (generate blocks, `always_ff`, `always_comb`, `logic` types, etc.). It is intended to help IP vendors protect their designs while still delivering functional, simulatable netlists.
+Veriparse is a **source-to-source transformation** toolkit for synthesizable Verilog and SystemVerilog designs. It provides **flattening** and **obfuscation** of hierarchical designs, supporting a significant subset of synthesizable SystemVerilog constructs (generate blocks, `always_ff`, `always_comb`, `logic` types, etc.). It is intended to help IP vendors protect their designs while still delivering functional, simulatable netlists. It also serves as an **RTL elaboration tool** to retarget generic, parametric designs for FPGA toolchains with limited synthesis support: for instance, complex ROM or LUT initialization expressed as Verilog functions or generate loops can be fully unrolled and constant-folded into plain, widely-supported RTL constructs.
 
 ## Overview
 
