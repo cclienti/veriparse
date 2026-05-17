@@ -421,6 +421,21 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["SingleStatement"]) {
             return convert_singlestatement(node["SingleStatement"]);
         }
+        if(node["EnumItem"]) {
+            return convert_enumitem(node["EnumItem"]);
+        }
+        if(node["EnumDef"]) {
+            return convert_enumdef(node["EnumDef"]);
+        }
+        if(node["Typedef"]) {
+            return convert_typedef(node["Typedef"]);
+        }
+        if(node["StructMember"]) {
+            return convert_structmember(node["StructMember"]);
+        }
+        if(node["StructDef"]) {
+            return convert_structdef(node["StructDef"]);
+        }
     }
 
     return AST::Node::Ptr(nullptr);
@@ -495,7 +510,8 @@ AST::Node::Ptr YAMLImporter::convert_description(const YAML::Node node) const
             AST::Node::ListPtr definitions_list(new AST::Node::List);
             if(node_definitions.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_definitions.begin(); it != node_definitions.end(); ++it) {
+                for(YAML::const_iterator it = node_definitions.begin();
+                    it != node_definitions.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         definitions_list->push_back(child);
@@ -544,7 +560,8 @@ AST::Node::Ptr YAMLImporter::convert_pragmalist(const YAML::Node node) const
             AST::Pragma::ListPtr pragmas_list(new AST::Pragma::List);
             if(node_pragmas.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_pragmas.begin(); it != node_pragmas.end(); ++it) {
+                for(YAML::const_iterator it = node_pragmas.begin(); it != node_pragmas.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Pragma::Ptr child_cast = AST::cast_to<AST::Pragma>(child);
@@ -571,7 +588,8 @@ AST::Node::Ptr YAMLImporter::convert_pragmalist(const YAML::Node node) const
             AST::Node::ListPtr statements_list(new AST::Node::List);
             if(node_statements.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_statements.begin(); it != node_statements.end(); ++it) {
+                for(YAML::const_iterator it = node_statements.begin(); it != node_statements.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         statements_list->push_back(child);
@@ -684,7 +702,7 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
             AST::Parameter::ListPtr params_list(new AST::Parameter::List);
             if(node_params.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_params.begin(); it != node_params.end(); ++it) {
+                for(YAML::const_iterator it = node_params.begin(); it != node_params.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Parameter::Ptr child_cast = AST::cast_to<AST::Parameter>(child);
@@ -711,7 +729,7 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
             AST::Node::ListPtr ports_list(new AST::Node::List);
             if(node_ports.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_ports.begin(); it != node_ports.end(); ++it) {
+                for(YAML::const_iterator it = node_ports.begin(); it != node_ports.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         ports_list->push_back(child);
@@ -736,7 +754,7 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
             AST::Node::ListPtr items_list(new AST::Node::List);
             if(node_items.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_items.begin(); it != node_items.end(); ++it) {
+                for(YAML::const_iterator it = node_items.begin(); it != node_items.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         items_list->push_back(child);
@@ -794,7 +812,7 @@ AST::Node::Ptr YAMLImporter::convert_port(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -1188,7 +1206,7 @@ AST::Node::Ptr YAMLImporter::convert_iodir(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -1257,7 +1275,7 @@ AST::Node::Ptr YAMLImporter::convert_input(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -1326,7 +1344,7 @@ AST::Node::Ptr YAMLImporter::convert_output(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -1395,7 +1413,7 @@ AST::Node::Ptr YAMLImporter::convert_inout(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -1521,7 +1539,8 @@ AST::Node::Ptr YAMLImporter::convert_variable(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -1603,7 +1622,7 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -1656,7 +1675,8 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -1729,7 +1749,8 @@ AST::Node::Ptr YAMLImporter::convert_integer(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -1802,7 +1823,8 @@ AST::Node::Ptr YAMLImporter::convert_real(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -1884,7 +1906,7 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -1937,7 +1959,8 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -2019,7 +2042,7 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -2072,7 +2095,8 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -2154,7 +2178,7 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -2207,7 +2231,8 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -2289,7 +2314,7 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -2342,7 +2367,8 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -2424,7 +2450,7 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -2477,7 +2503,8 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -2559,7 +2586,7 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -2586,7 +2613,8 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
             AST::Length::ListPtr lengths_list(new AST::Length::List);
             if(node_lengths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_lengths.begin(); it != node_lengths.end(); ++it) {
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
@@ -2739,7 +2767,7 @@ AST::Node::Ptr YAMLImporter::convert_parameter(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -2829,7 +2857,7 @@ AST::Node::Ptr YAMLImporter::convert_localparam(const YAML::Node node) const
             AST::Width::ListPtr widths_list(new AST::Width::List);
             if(node_widths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_widths.begin(); it != node_widths.end(); ++it) {
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -2880,7 +2908,7 @@ AST::Node::Ptr YAMLImporter::convert_concat(const YAML::Node node) const
             AST::Node::ListPtr list_list(new AST::Node::List);
             if(node_list.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_list.begin(); it != node_list.end(); ++it) {
+                for(YAML::const_iterator it = node_list.begin(); it != node_list.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         list_list->push_back(child);
@@ -2929,7 +2957,7 @@ AST::Node::Ptr YAMLImporter::convert_lconcat(const YAML::Node node) const
             AST::Node::ListPtr list_list(new AST::Node::List);
             if(node_list.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_list.begin(); it != node_list.end(); ++it) {
+                for(YAML::const_iterator it = node_list.begin(); it != node_list.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         list_list->push_back(child);
@@ -5226,7 +5254,7 @@ AST::Node::Ptr YAMLImporter::convert_senslist(const YAML::Node node) const
             AST::Sens::ListPtr list_list(new AST::Sens::List);
             if(node_list.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_list.begin(); it != node_list.end(); ++it) {
+                for(YAML::const_iterator it = node_list.begin(); it != node_list.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Sens::Ptr child_cast = AST::cast_to<AST::Sens>(child);
@@ -5322,7 +5350,7 @@ AST::Node::Ptr YAMLImporter::convert_defparamlist(const YAML::Node node) const
             AST::Defparam::ListPtr list_list(new AST::Defparam::List);
             if(node_list.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_list.begin(); it != node_list.end(); ++it) {
+                for(YAML::const_iterator it = node_list.begin(); it != node_list.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Defparam::Ptr child_cast = AST::cast_to<AST::Defparam>(child);
@@ -5895,7 +5923,8 @@ AST::Node::Ptr YAMLImporter::convert_casestatement(const YAML::Node node) const
             AST::Case::ListPtr caselist_list(new AST::Case::List);
             if(node_caselist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_caselist.begin(); it != node_caselist.end(); ++it) {
+                for(YAML::const_iterator it = node_caselist.begin(); it != node_caselist.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
@@ -5958,7 +5987,8 @@ AST::Node::Ptr YAMLImporter::convert_casexstatement(const YAML::Node node) const
             AST::Case::ListPtr caselist_list(new AST::Case::List);
             if(node_caselist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_caselist.begin(); it != node_caselist.end(); ++it) {
+                for(YAML::const_iterator it = node_caselist.begin(); it != node_caselist.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
@@ -6021,7 +6051,8 @@ AST::Node::Ptr YAMLImporter::convert_casezstatement(const YAML::Node node) const
             AST::Case::ListPtr caselist_list(new AST::Case::List);
             if(node_caselist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_caselist.begin(); it != node_caselist.end(); ++it) {
+                for(YAML::const_iterator it = node_caselist.begin(); it != node_caselist.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
@@ -6084,7 +6115,8 @@ AST::Node::Ptr YAMLImporter::convert_uniquecasestatement(const YAML::Node node) 
             AST::Case::ListPtr caselist_list(new AST::Case::List);
             if(node_caselist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_caselist.begin(); it != node_caselist.end(); ++it) {
+                for(YAML::const_iterator it = node_caselist.begin(); it != node_caselist.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
@@ -6147,7 +6179,8 @@ AST::Node::Ptr YAMLImporter::convert_prioritycasestatement(const YAML::Node node
             AST::Case::ListPtr caselist_list(new AST::Case::List);
             if(node_caselist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_caselist.begin(); it != node_caselist.end(); ++it) {
+                for(YAML::const_iterator it = node_caselist.begin(); it != node_caselist.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Case::Ptr child_cast = AST::cast_to<AST::Case>(child);
@@ -6198,7 +6231,7 @@ AST::Node::Ptr YAMLImporter::convert_case(const YAML::Node node) const
             AST::Node::ListPtr cond_list(new AST::Node::List);
             if(node_cond.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_cond.begin(); it != node_cond.end(); ++it) {
+                for(YAML::const_iterator it = node_cond.begin(); it != node_cond.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         cond_list->push_back(child);
@@ -6268,7 +6301,8 @@ AST::Node::Ptr YAMLImporter::convert_block(const YAML::Node node) const
             AST::Node::ListPtr statements_list(new AST::Node::List);
             if(node_statements.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_statements.begin(); it != node_statements.end(); ++it) {
+                for(YAML::const_iterator it = node_statements.begin(); it != node_statements.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         statements_list->push_back(child);
@@ -6531,7 +6565,8 @@ AST::Node::Ptr YAMLImporter::convert_instancelist(const YAML::Node node) const
             AST::ParamArg::ListPtr parameterlist_list(new AST::ParamArg::List);
             if(node_parameterlist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_parameterlist.begin(); it != node_parameterlist.end(); ++it) {
+                for(YAML::const_iterator it = node_parameterlist.begin();
+                    it != node_parameterlist.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::ParamArg::Ptr child_cast = AST::cast_to<AST::ParamArg>(child);
@@ -6558,7 +6593,8 @@ AST::Node::Ptr YAMLImporter::convert_instancelist(const YAML::Node node) const
             AST::Instance::ListPtr instances_list(new AST::Instance::List);
             if(node_instances.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_instances.begin(); it != node_instances.end(); ++it) {
+                for(YAML::const_iterator it = node_instances.begin(); it != node_instances.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Instance::Ptr child_cast = AST::cast_to<AST::Instance>(child);
@@ -6640,7 +6676,8 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
             AST::ParamArg::ListPtr parameterlist_list(new AST::ParamArg::List);
             if(node_parameterlist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_parameterlist.begin(); it != node_parameterlist.end(); ++it) {
+                for(YAML::const_iterator it = node_parameterlist.begin();
+                    it != node_parameterlist.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::ParamArg::Ptr child_cast = AST::cast_to<AST::ParamArg>(child);
@@ -6667,7 +6704,8 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
             AST::PortArg::ListPtr portlist_list(new AST::PortArg::List);
             if(node_portlist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_portlist.begin(); it != node_portlist.end(); ++it) {
+                for(YAML::const_iterator it = node_portlist.begin(); it != node_portlist.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::PortArg::Ptr child_cast = AST::cast_to<AST::PortArg>(child);
@@ -6844,7 +6882,8 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
             AST::Width::ListPtr retwidths_list(new AST::Width::List);
             if(node_retwidths.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_retwidths.begin(); it != node_retwidths.end(); ++it) {
+                for(YAML::const_iterator it = node_retwidths.begin(); it != node_retwidths.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
@@ -6871,7 +6910,7 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
             AST::Node::ListPtr ports_list(new AST::Node::List);
             if(node_ports.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_ports.begin(); it != node_ports.end(); ++it) {
+                for(YAML::const_iterator it = node_ports.begin(); it != node_ports.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         ports_list->push_back(child);
@@ -6896,7 +6935,8 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
             AST::Node::ListPtr statements_list(new AST::Node::List);
             if(node_statements.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_statements.begin(); it != node_statements.end(); ++it) {
+                for(YAML::const_iterator it = node_statements.begin(); it != node_statements.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         statements_list->push_back(child);
@@ -6954,7 +6994,7 @@ AST::Node::Ptr YAMLImporter::convert_functioncall(const YAML::Node node) const
             AST::Node::ListPtr args_list(new AST::Node::List);
             if(node_args.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_args.begin(); it != node_args.end(); ++it) {
+                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         args_list->push_back(child);
@@ -7021,7 +7061,7 @@ AST::Node::Ptr YAMLImporter::convert_task(const YAML::Node node) const
             AST::Node::ListPtr ports_list(new AST::Node::List);
             if(node_ports.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_ports.begin(); it != node_ports.end(); ++it) {
+                for(YAML::const_iterator it = node_ports.begin(); it != node_ports.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         ports_list->push_back(child);
@@ -7046,7 +7086,8 @@ AST::Node::Ptr YAMLImporter::convert_task(const YAML::Node node) const
             AST::Node::ListPtr statements_list(new AST::Node::List);
             if(node_statements.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_statements.begin(); it != node_statements.end(); ++it) {
+                for(YAML::const_iterator it = node_statements.begin(); it != node_statements.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         statements_list->push_back(child);
@@ -7104,7 +7145,7 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
             AST::Node::ListPtr args_list(new AST::Node::List);
             if(node_args.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_args.begin(); it != node_args.end(); ++it) {
+                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         args_list->push_back(child);
@@ -7153,7 +7194,7 @@ AST::Node::Ptr YAMLImporter::convert_generatestatement(const YAML::Node node) co
             AST::Node::ListPtr items_list(new AST::Node::List);
             if(node_items.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_items.begin(); it != node_items.end(); ++it) {
+                for(YAML::const_iterator it = node_items.begin(); it != node_items.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         items_list->push_back(child);
@@ -7211,7 +7252,7 @@ AST::Node::Ptr YAMLImporter::convert_systemcall(const YAML::Node node) const
             AST::Node::ListPtr args_list(new AST::Node::List);
             if(node_args.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_args.begin(); it != node_args.end(); ++it) {
+                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         args_list->push_back(child);
@@ -7305,7 +7346,8 @@ AST::Node::Ptr YAMLImporter::convert_identifierscope(const YAML::Node node) cons
             AST::IdentifierScopeLabel::ListPtr labellist_list(new AST::IdentifierScopeLabel::List);
             if(node_labellist.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_labellist.begin(); it != node_labellist.end(); ++it) {
+                for(YAML::const_iterator it = node_labellist.begin(); it != node_labellist.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         AST::IdentifierScopeLabel::Ptr child_cast =
@@ -7400,7 +7442,8 @@ AST::Node::Ptr YAMLImporter::convert_parallelblock(const YAML::Node node) const
             AST::Node::ListPtr statements_list(new AST::Node::List);
             if(node_statements.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_statements.begin(); it != node_statements.end(); ++it) {
+                for(YAML::const_iterator it = node_statements.begin(); it != node_statements.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         statements_list->push_back(child);
@@ -7479,6 +7522,334 @@ AST::Node::Ptr YAMLImporter::convert_singlestatement(const YAML::Node node) cons
 
     // Return the result
     return AST::cast_to<AST::SingleStatement>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_enumitem(const YAML::Node node) const
+{
+    AST::EnumItem::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::EnumItem>();
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::EnumItem>();
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result)
+                    result = std::make_shared<AST::EnumItem>();
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child value
+        if(node["value"]) {
+            const YAML::Node node_value = node["value"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_value);
+            if(child) {
+                if(!result)
+                    result = std::make_shared<AST::EnumItem>();
+                result->set_value(child);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::EnumItem>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_enumdef(const YAML::Node node) const
+{
+    AST::EnumDef::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::EnumDef>();
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::EnumDef>();
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property base_type
+        if(node["base_type"]) {
+            if(node["base_type"].IsScalar()) {
+
+                if(!result)
+                    result = std::make_shared<AST::EnumDef>();
+                result->set_base_type(node["base_type"].as<AST::EnumDef::Base_typeEnum>());
+            }
+        }
+        // Manage property sign
+        if(node["sign"]) {
+            if(node["sign"].IsScalar()) {
+
+                if(!result)
+                    result = std::make_shared<AST::EnumDef>();
+                result->set_sign(node["sign"].as<bool>());
+            }
+        }
+
+        // Manage Child widths
+        if(node["widths"]) {
+            const YAML::Node node_widths = node["widths"];
+            // Fill the list of children
+            AST::Width::ListPtr widths_list(new AST::Width::List);
+            if(node_widths.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
+                        widths_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_widths);
+                if(child) {
+                    AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
+                    widths_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result)
+                result = std::make_shared<AST::EnumDef>();
+            result->set_widths(widths_list);
+        }
+
+        // Manage Child items
+        if(node["items"]) {
+            const YAML::Node node_items = node["items"];
+            // Fill the list of children
+            AST::EnumItem::ListPtr items_list(new AST::EnumItem::List);
+            if(node_items.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_items.begin(); it != node_items.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::EnumItem::Ptr child_cast = AST::cast_to<AST::EnumItem>(child);
+                        items_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_items);
+                if(child) {
+                    AST::EnumItem::Ptr child_cast = AST::cast_to<AST::EnumItem>(child);
+                    items_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result)
+                result = std::make_shared<AST::EnumDef>();
+            result->set_items(items_list);
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::EnumDef>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_typedef(const YAML::Node node) const
+{
+    AST::Typedef::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::Typedef>();
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::Typedef>();
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result)
+                    result = std::make_shared<AST::Typedef>();
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child def
+        if(node["def"]) {
+            const YAML::Node node_def = node["def"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_def);
+            if(child) {
+                if(!result)
+                    result = std::make_shared<AST::Typedef>();
+                result->set_def(child);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Typedef>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
+{
+    AST::StructMember::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::StructMember>();
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::StructMember>();
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result)
+                    result = std::make_shared<AST::StructMember>();
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+        // Manage property sign
+        if(node["sign"]) {
+            if(node["sign"].IsScalar()) {
+
+                if(!result)
+                    result = std::make_shared<AST::StructMember>();
+                result->set_sign(node["sign"].as<bool>());
+            }
+        }
+
+        // Manage Child widths
+        if(node["widths"]) {
+            const YAML::Node node_widths = node["widths"];
+            // Fill the list of children
+            AST::Width::ListPtr widths_list(new AST::Width::List);
+            if(node_widths.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
+                        widths_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_widths);
+                if(child) {
+                    AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
+                    widths_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result)
+                result = std::make_shared<AST::StructMember>();
+            result->set_widths(widths_list);
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result)
+                    result = std::make_shared<AST::StructMember>();
+                result->set_type(child);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::StructMember>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_structdef(const YAML::Node node) const
+{
+    AST::StructDef::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::StructDef>();
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result)
+                    result = std::make_shared<AST::StructDef>();
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property packed
+        if(node["packed"]) {
+            if(node["packed"].IsScalar()) {
+
+                if(!result)
+                    result = std::make_shared<AST::StructDef>();
+                result->set_packed(node["packed"].as<bool>());
+            }
+        }
+
+        // Manage Child members
+        if(node["members"]) {
+            const YAML::Node node_members = node["members"];
+            // Fill the list of children
+            AST::StructMember::ListPtr members_list(new AST::StructMember::List);
+            if(node_members.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_members.begin(); it != node_members.end();
+                    ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::StructMember::Ptr child_cast = AST::cast_to<AST::StructMember>(child);
+                        members_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_members);
+                if(child) {
+                    AST::StructMember::Ptr child_cast = AST::cast_to<AST::StructMember>(child);
+                    members_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result)
+                result = std::make_shared<AST::StructDef>();
+            result->set_members(members_list);
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::StructDef>(result);
 }
 
 } // namespace Importers

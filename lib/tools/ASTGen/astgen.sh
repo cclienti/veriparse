@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ipython3 --pdb ./astgen.py -- -t templates -i ../../include/veriparse -c ../../src verilog_ast.yaml
+/usr/bin/python ./astgen.py -- -t templates -i ../../include/veriparse -c ../../src verilog_ast.yaml

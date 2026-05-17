@@ -167,6 +167,10 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_LONGINT      "'longint'"
 %token                  TK_UNIQUE       "'unique'"
 %token                  TK_PRIORITY     "'priority'"
+%token                  TK_TYPEDEF      "'typedef'"
+%token                  TK_ENUM         "'enum'"
+%token                  TK_STRUCT       "'struct'"
+%token                  TK_PACKED       "'packed'"
 %token                  TK_VPP_LINE     "`line'"
 %token                  TK_LATTR        "(*"
 %token                  TK_RATTR        "*)"
@@ -395,6 +399,13 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 
 %type   <AST::Disable::Ptr>                  disable
 %type   <bool>                               automatic
+%type   <AST::Typedef::Ptr>                  typedef_decl
+%type   <AST::EnumDef::Ptr>                  enum_def
+%type   <AST::EnumItem::ListPtr>             enum_items
+%type   <AST::EnumItem::Ptr>                 enum_item
+%type   <AST::StructDef::Ptr>                struct_def
+%type   <AST::StructMember::ListPtr>         struct_members
+%type   <AST::StructMember::Ptr>             struct_member
 
 
 %%
@@ -954,9 +965,241 @@ standard_item_base:
                     $$ = std::make_shared<AST::Node::List>();
                     $$->push_back(AST::to_node($1));
                 }
+
+        |       typedef_decl
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
         ;
 
 
+
+typedef_decl:
+                TK_TYPEDEF enum_def TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(AST::to_node($2));
+                    $$->set_name($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF struct_def TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(AST::to_node($2));
+                    $$->set_name($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+        ;
+
+enum_def:
+                TK_ENUM TK_LBRACE enum_items TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::EnumDef>();
+                    $$->set_base_type(AST::EnumDef::Base_typeEnum::NONE);
+                    $$->set_sign(false);
+                    $$->set_items($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_ENUM TK_LOGIC widths TK_LBRACE enum_items TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::EnumDef>();
+                    $$->set_base_type(AST::EnumDef::Base_typeEnum::LOGIC);
+                    $$->set_sign(false);
+                    $$->set_widths($3);
+                    $$->set_items($5);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_ENUM TK_LOGIC TK_LBRACE enum_items TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::EnumDef>();
+                    $$->set_base_type(AST::EnumDef::Base_typeEnum::LOGIC);
+                    $$->set_sign(false);
+                    $$->set_items($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_ENUM TK_BIT widths TK_LBRACE enum_items TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::EnumDef>();
+                    $$->set_base_type(AST::EnumDef::Base_typeEnum::BIT);
+                    $$->set_sign(false);
+                    $$->set_widths($3);
+                    $$->set_items($5);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_ENUM TK_BIT TK_LBRACE enum_items TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::EnumDef>();
+                    $$->set_base_type(AST::EnumDef::Base_typeEnum::BIT);
+                    $$->set_sign(false);
+                    $$->set_items($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_ENUM TK_INT TK_LBRACE enum_items TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::EnumDef>();
+                    $$->set_base_type(AST::EnumDef::Base_typeEnum::INT);
+                    $$->set_sign(false);
+                    $$->set_items($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+        ;
+
+enum_items:
+                enum_items TK_COMMA enum_item
+                {
+                    $$ = $1;
+                    $$->push_back($3);
+                }
+
+        |       enum_item
+                {
+                    $$ = std::make_shared<AST::EnumItem::List>();
+                    $$->push_back($1);
+                }
+        ;
+
+enum_item:
+                TK_IDENTIFIER TK_EQUALS expression
+                {
+                    $$ = std::make_shared<AST::EnumItem>();
+                    $$->set_name($1);
+                    $$->set_value(AST::to_node($3));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::EnumItem>();
+                    $$->set_name($1);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+        ;
+
+struct_def:
+                TK_STRUCT TK_PACKED TK_LBRACE struct_members TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::StructDef>();
+                    $$->set_packed(true);
+                    $$->set_members($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_STRUCT TK_LBRACE struct_members TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::StructDef>();
+                    $$->set_packed(false);
+                    $$->set_members($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+        ;
+
+struct_members:
+                struct_members struct_member
+                {
+                    $$ = $1;
+                    $$->push_back($2);
+                }
+
+        |       struct_member
+                {
+                    $$ = std::make_shared<AST::StructMember::List>();
+                    $$->push_back($1);
+                }
+        ;
+
+struct_member:
+                TK_LOGIC widths TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::StructMember>();
+                    $$->set_name($3);
+                    $$->set_sign(false);
+                    $$->set_widths($2);
+                    auto type = std::make_shared<AST::Identifier>();
+                    type->set_name("logic");
+                    type->set_filename(scanner.get_filename());
+                    type->set_line(@1.begin.line);
+                    $$->set_type(AST::to_node(type));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_LOGIC TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::StructMember>();
+                    $$->set_name($2);
+                    $$->set_sign(false);
+                    auto type = std::make_shared<AST::Identifier>();
+                    type->set_name("logic");
+                    type->set_filename(scanner.get_filename());
+                    type->set_line(@1.begin.line);
+                    $$->set_type(AST::to_node(type));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_BIT widths TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::StructMember>();
+                    $$->set_name($3);
+                    $$->set_sign(false);
+                    $$->set_widths($2);
+                    auto type = std::make_shared<AST::Identifier>();
+                    type->set_name("bit");
+                    type->set_filename(scanner.get_filename());
+                    type->set_line(@1.begin.line);
+                    $$->set_type(AST::to_node(type));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_BIT TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::StructMember>();
+                    $$->set_name($2);
+                    $$->set_sign(false);
+                    auto type = std::make_shared<AST::Identifier>();
+                    type->set_name("bit");
+                    type->set_filename(scanner.get_filename());
+                    type->set_line(@1.begin.line);
+                    $$->set_type(AST::to_node(type));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_INT TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::StructMember>();
+                    $$->set_name($2);
+                    $$->set_sign(false);
+                    auto type = std::make_shared<AST::Identifier>();
+                    type->set_name("int");
+                    type->set_filename(scanner.get_filename());
+                    type->set_line(@1.begin.line);
+                    $$->set_type(AST::to_node(type));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+        ;
+        ;
 net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Node::List>();

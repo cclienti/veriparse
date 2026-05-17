@@ -170,7 +170,8 @@ AST::Node::Ptr YAMLImporter::convert_{{ntype.lower()}}(const YAML::Node node) co
             _list(new AST::{{ctype_list}});
             if(node_{{cname}}.IsSequence()) {
                 // The YAML node is a sequence
-                for(auto it = node_{{cname}}.begin(); it != node_{{cname}}.end(); ++it) {
+                for(YAML::const_iterator it = node_{{cname}}.begin(); it != node_{{cname}}.end();
+                    ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
                         {

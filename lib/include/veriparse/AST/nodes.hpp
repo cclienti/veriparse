@@ -126,6 +126,11 @@
 #include <veriparse/AST/disable.hpp>
 #include <veriparse/AST/parallelblock.hpp>
 #include <veriparse/AST/singlestatement.hpp>
+#include <veriparse/AST/enumitem.hpp>
+#include <veriparse/AST/enumdef.hpp>
+#include <veriparse/AST/typedef.hpp>
+#include <veriparse/AST/structmember.hpp>
+#include <veriparse/AST/structdef.hpp>
 #include <veriparse/AST/node_operators.hpp>
 #include <veriparse/AST/node_cast.hpp>
 

@@ -153,6 +153,26 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"typedef"     {
+                  if(m_sv_mode) return token::TK_TYPEDEF;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"enum"        {
+                  if(m_sv_mode) return token::TK_ENUM;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"struct"      {
+                  if(m_sv_mode) return token::TK_STRUCT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"packed"      {
+                  if(m_sv_mode) return token::TK_PACKED;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 
 
 	/**************************************************

@@ -471,3 +471,37 @@ SingleStatement:
   children:
     statement: Node
     delay: DelayStatement
+
+EnumItem:
+  properties:
+    name: "std::string"
+  children:
+    value: Node
+
+EnumDef:
+  properties:
+    base_type: enum(LOGIC, BIT, INT, NONE)
+    sign: bool
+  children:
+    widths: list(Width)
+    items: list(EnumItem)
+
+Typedef:
+  properties:
+    name: "std::string"
+  children:
+    def: Node
+
+StructMember:
+  properties:
+    name: "std::string"
+    sign: bool
+  children:
+    widths: list(Width)
+    type: Node
+
+StructDef:
+  properties:
+    packed: bool
+  children:
+    members: list(StructMember)
