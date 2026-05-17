@@ -13,9 +13,9 @@ else
   MOLD_FLAGS=""
 fi
 
-# clang on macOS rejects unused flags (e.g. -s injected by conda-build) as errors
+# clang on macOS rejects unused flags and fields in generated code as errors
 if [[ "${target_platform}" == osx-* ]]; then
-  EXTRA_FLAGS="-DCMAKE_C_FLAGS=-Wno-unused-command-line-argument -DCMAKE_CXX_FLAGS=-Wno-unused-command-line-argument"
+  EXTRA_FLAGS="-DCMAKE_C_FLAGS=-Wno-unused-command-line-argument -DCMAKE_CXX_FLAGS='-Wno-unused-command-line-argument -Wno-unused-private-field'"
 else
   EXTRA_FLAGS=""
 fi
