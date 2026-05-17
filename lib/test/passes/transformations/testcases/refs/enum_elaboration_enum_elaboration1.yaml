@@ -1,6 +1,86 @@
 Module:
+  default_nettype: WIRE
   filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+  items:
+  - Typedef:
+      def:
+        EnumDef:
+          base_type: LOGIC
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+          items:
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+              line: 2
+              name: A
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 2
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+              line: 2
+              name: B
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+                  line: 2
+                  sign: false
+                  size: 32
+                  value: 3
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+              line: 2
+              name: C
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 5
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+              line: 2
+              name: D
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+                  line: 2
+                  sign: false
+                  size: 32
+                  value: 6
+          line: 2
+          sign: false
+          widths:
+          - Width:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+              line: 2
+              lsb:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 0
+              msb:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 2
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv
+      line: 2
+      name: state_t
   line: 1
   name: enum_elaboration1
-  default_nettype: WIRE
-  items: [{Typedef: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, name: state_t, def: {EnumDef: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, base_type: LOGIC, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, base: 10, size: -1, sign: false, value: 2}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, base: 10, size: -1, sign: false, value: 0}}}}], items: [{EnumItem: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, name: A, value: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, base: 10, size: -1, sign: false, value: 2}}}}, {EnumItem: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, name: B, value: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, base: 10, size: 32, sign: false, value: 3}}}}, {EnumItem: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, name: C, value: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, base: 10, size: -1, sign: false, value: 5}}}}, {EnumItem: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, name: D, value: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_elaboration1.sv, line: 2, base: 10, size: 32, sign: false, value: 6}}}}]}}}}]
+

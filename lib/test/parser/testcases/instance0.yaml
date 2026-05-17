@@ -129,6 +129,9 @@ Source:
                   name: mod_inst
                   portlist:
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance0.v
+                      line: 10
+                      name: clock
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance0.v
@@ -136,10 +139,10 @@ Source:
                           name: clock
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance0.v
-                      line: 10
-                      name: clock
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance0.v
+                      line: 11
+                      name: reset
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance0.v
@@ -147,10 +150,10 @@ Source:
                           name: reset
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance0.v
-                      line: 11
-                      name: reset
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance0.v
+                      line: 12
+                      name: in0
                       value:
                         Concat:
                           filename: ../../test/parser/testcases/instance0.v
@@ -208,10 +211,10 @@ Source:
                                   name: in0_i
                                   scope:
                                     IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance0.v
-                      line: 12
-                      name: in0
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance0.v
+                      line: 13
+                      name: in1
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance0.v
@@ -219,10 +222,10 @@ Source:
                           name: in1_i
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance0.v
-                      line: 13
-                      name: in1
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance0.v
+                      line: 14
+                      name: out
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance0.v
@@ -230,9 +233,6 @@ Source:
                           name: out_i
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance0.v
-                      line: 14
-                      name: out
               line: 8
               module: mod
           line: 1
@@ -586,3 +586,4 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/instance0.v
   line: 1
+

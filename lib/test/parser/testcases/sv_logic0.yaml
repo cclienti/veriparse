@@ -1,8 +1,403 @@
 Source:
-  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
-  line: 1
   description:
     Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+          items:
+          - Logic:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              ldelay:
+                DelayStatement: null
+              line: 10
+              name: reg0
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 10
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 1
+          - Logic:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              ldelay:
+                DelayStatement: null
+              line: 11
+              name: reg1
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 11
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 11
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    Minus:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 11
+                          name: WIDTH
+                          scope:
+                            IdentifierScope: null
+                      line: 11
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 11
+                          sign: false
+                          size: -1
+                          value: 1
+          - Logic:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              ldelay:
+                DelayStatement: null
+              line: 12
+              name: valid
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+          - Assign:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 14
+                      name: data_out
+                      scope:
+                        IdentifierScope: null
+              line: 14
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 14
+                      name: reg1
+                      scope:
+                        IdentifierScope: null
+          line: 1
+          name: sv_logic0
+          params:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              line: 2
+              name: WIDTH
+              sign: true
+              type: INT
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 8
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              line: 3
+              name: SIGNED
+              sign: false
+              type: BIT
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+          - Localparam:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              line: 4
+              name: DEPTH
+              sign: true
+              type: INT
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 4
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 16
+          ports:
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 5
+                  name: clk
+                  sign: false
+              line: 5
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 6
+                  name: rst_n
+                  sign: false
+              line: 6
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 6
+                  name: rst_n
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 7
+                  name: data_in
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          left:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 7
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 7
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 7
+                  name: data_in
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          left:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 7
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 1
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+              first:
+                Output:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  line: 8
+                  name: data_out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          left:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 8
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
+              line: 8
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 8
+                  name: data_out
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        Minus:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                          left:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 8
+                              name: WIDTH
+                              scope:
+                                IdentifierScope: null
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
       filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
       line: 1
-      definitions: [{Module: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 1, name: sv_logic0, default_nettype: WIRE, params: [{Parameter: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 2, name: WIDTH, sign: true, type: INT, value: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 2, var: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 2, base: 10, size: -1, sign: false, value: 8}}}}}}, {Parameter: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 3, name: SIGNED, sign: false, type: BIT, value: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 3, var: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 3, base: 10, size: -1, sign: false, value: 0}}}}}}, {Localparam: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 4, name: DEPTH, sign: true, type: INT, value: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 4, var: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 4, base: 10, size: -1, sign: false, value: 16}}}}}}], ports: [{Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 5, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 5, name: clk, sign: false}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 5, sign: false, name: clk, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 6, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 6, name: rst_n, sign: false}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 6, sign: false, name: rst_n, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, name: data_in, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, msb: {Minus: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, name: WIDTH, scope: {IdentifierScope: ~}}}, right: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, base: 10, size: -1, sign: false, value: 1}}}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, sign: false, name: data_in, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, msb: {Minus: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, name: WIDTH, scope: {IdentifierScope: ~}}}, right: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, base: 10, size: -1, sign: false, value: 1}}}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 7, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, first: {Output: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, name: data_out, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, msb: {Minus: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, name: WIDTH, scope: {IdentifierScope: ~}}}, right: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, base: 10, size: -1, sign: false, value: 1}}}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, sign: false, name: data_out, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, msb: {Minus: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, name: WIDTH, scope: {IdentifierScope: ~}}}, right: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, base: 10, size: -1, sign: false, value: 1}}}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 8, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}], items: [{Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 10, sign: false, name: reg0, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 10, msb: {Minus: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 10, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 10, name: WIDTH, scope: {IdentifierScope: ~}}}, right: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 10, base: 10, size: -1, sign: false, value: 1}}}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 10, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 11, sign: false, name: reg1, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 11, msb: {Minus: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 11, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 11, name: WIDTH, scope: {IdentifierScope: ~}}}, right: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 11, base: 10, size: -1, sign: false, value: 1}}}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 11, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 12, sign: false, name: valid, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {Assign: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 14, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 14, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 14, name: data_out, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 14, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv, line: 14, name: reg1, scope: {IdentifierScope: ~}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}]}}]
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_logic0.sv
+  line: 1
+

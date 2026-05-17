@@ -1,8 +1,248 @@
 Source:
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
-  line: 1
   description:
     Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+          items:
+          - Parameter:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              line: 3
+              name: X
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 6
+                              value: X=%0d
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 6
+                              name: X
+                              scope:
+                                IdentifierScope: null
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                          line: 6
+                          syscall: display
+          line: 1
+          name: parametrized
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+          items:
+          - Instancelist:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              instances:
+              - Instance:
+                  array:
+                    Length: null
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 14
+                  module: parametrized
+                  name: pinst
+              line: 14
+              module: parametrized
+          line: 11
+          name: forward
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+          items:
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 6
+                              value: X=%0d
+                          - IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 37
+                              sign: false
+                              size: -1
+                              value: 0
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                          line: 6
+                          syscall: display
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 6
+                              value: X=%0d
+                          - IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 39
+                              sign: false
+                              size: -1
+                              value: 1
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                          line: 6
+                          syscall: display
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 6
+                              value: X=%0d
+                          - IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 41
+                              sign: false
+                              size: -1
+                              value: 2
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                          line: 6
+                          syscall: display
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 6
+                              value: X=%0d
+                          - IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 43
+                              sign: false
+                              size: -1
+                              value: 3
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                          line: 6
+                          syscall: display
+          - Initial:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+              line: 5
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                      line: 6
+                      scope: ''
+                      statement:
+                        SystemCall:
+                          args:
+                          - StringConst:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 6
+                              value: X=%0d
+                          - IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                              line: 45
+                              sign: false
+                              size: -1
+                              value: 4
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+                          line: 6
+                          syscall: display
+          line: 18
+          name: defparam4
       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
       line: 1
-      definitions: [{Module: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 1, name: parametrized, default_nettype: WIRE, items: [{Parameter: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 3, name: X, sign: false, type: NONE, value: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 3, var: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 3, base: 10, size: -1, sign: false, value: 0}}}}}}, {Initial: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, scope: "", statements: [{SingleStatement: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, scope: "", statement: {SystemCall: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, syscall: display, args: [{StringConst: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, value: X=%0d}}, {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, name: X, scope: {IdentifierScope: ~}}}]}}, delay: {DelayStatement: ~}}}]}}}}]}}, {Module: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 11, name: forward, default_nettype: WIRE, items: [{Instancelist: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 14, module: parametrized, instances: [{Instance: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 14, module: parametrized, name: pinst, array: {Length: ~}}}]}}]}}, {Module: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 18, name: defparam4, default_nettype: WIRE, items: [{Initial: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, scope: "", statements: [{SingleStatement: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, scope: "", statement: {SystemCall: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, syscall: display, args: [{StringConst: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, value: X=%0d}}, {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 37, base: 10, size: -1, sign: false, value: 0}}]}}, delay: {DelayStatement: ~}}}]}}}}, {Initial: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, scope: "", statements: [{SingleStatement: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, scope: "", statement: {SystemCall: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, syscall: display, args: [{StringConst: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, value: X=%0d}}, {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 39, base: 10, size: -1, sign: false, value: 1}}]}}, delay: {DelayStatement: ~}}}]}}}}, {Initial: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, scope: "", statements: [{SingleStatement: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, scope: "", statement: {SystemCall: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, syscall: display, args: [{StringConst: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, value: X=%0d}}, {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 41, base: 10, size: -1, sign: false, value: 2}}]}}, delay: {DelayStatement: ~}}}]}}}}, {Initial: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, scope: "", statements: [{SingleStatement: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, scope: "", statement: {SystemCall: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, syscall: display, args: [{StringConst: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, value: X=%0d}}, {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 43, base: 10, size: -1, sign: false, value: 3}}]}}, delay: {DelayStatement: ~}}}]}}}}, {Initial: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 5, scope: "", statements: [{SingleStatement: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, scope: "", statement: {SystemCall: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, syscall: display, args: [{StringConst: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 6, value: X=%0d}}, {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v, line: 45, base: 10, size: -1, sign: false, value: 4}}]}}, delay: {DelayStatement: ~}}}]}}}}]}}]
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/defparam4.v
+  line: 1
+

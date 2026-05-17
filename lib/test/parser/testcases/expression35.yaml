@@ -69,16 +69,7 @@ Source:
                                   sign: false
                                   size: -1
                                   value: 0
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/expression35.v
-                              line: 8
-                              sign: false
-                              size: -1
-                              value: 1
                           filename: ../../test/parser/testcases/expression35.v
-                          line: 8
                           left:
                             IntConstN:
                               base: 10
@@ -87,6 +78,15 @@ Source:
                               sign: false
                               size: -1
                               value: 2
+                          line: 8
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/expression35.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 1
           line: 1
           name: expression35
           params:
@@ -317,3 +317,4 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/expression35.v
   line: 1
+

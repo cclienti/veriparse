@@ -165,6 +165,9 @@ Source:
                   name: mod_inst
                   parameterlist:
                   - ParamArg:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 11
+                      name: INPUT_WIDTH
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
@@ -172,10 +175,10 @@ Source:
                           name: L_INPUT_WIDTH
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 11
-                      name: INPUT_WIDTH
                   - ParamArg:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 12
+                      name: OUTPUT_WIDTH
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
@@ -183,11 +186,11 @@ Source:
                           name: L_OUTPUT_WIDTH
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 12
-                      name: OUTPUT_WIDTH
                   portlist:
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 13
+                      name: clock
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
@@ -195,10 +198,10 @@ Source:
                           name: clock
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 13
-                      name: clock
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 14
+                      name: reset
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
@@ -206,10 +209,10 @@ Source:
                           name: reset
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 14
-                      name: reset
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 15
+                      name: in0
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
@@ -217,10 +220,10 @@ Source:
                           name: in0_i
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 15
-                      name: in0
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 16
+                      name: in1
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
@@ -228,10 +231,10 @@ Source:
                           name: in1_i
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 16
-                      name: in1
                   - PortArg:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 17
+                      name: out
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
@@ -239,13 +242,13 @@ Source:
                           name: out_i
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 17
-                      name: out
               line: 11
               module: mod
               parameterlist:
               - ParamArg:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 11
+                  name: INPUT_WIDTH
                   value:
                     Identifier:
                       filename: ../../test/parser/testcases/instance1.v
@@ -253,10 +256,10 @@ Source:
                       name: L_INPUT_WIDTH
                       scope:
                         IdentifierScope: null
-                  filename: ../../test/parser/testcases/instance1.v
-                  line: 11
-                  name: INPUT_WIDTH
               - ParamArg:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 12
+                  name: OUTPUT_WIDTH
                   value:
                     Identifier:
                       filename: ../../test/parser/testcases/instance1.v
@@ -264,9 +267,6 @@ Source:
                       name: L_OUTPUT_WIDTH
                       scope:
                         IdentifierScope: null
-                  filename: ../../test/parser/testcases/instance1.v
-                  line: 12
-                  name: OUTPUT_WIDTH
           line: 1
           name: instance1
       - Module:
@@ -915,3 +915,4 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/instance1.v
   line: 1
+

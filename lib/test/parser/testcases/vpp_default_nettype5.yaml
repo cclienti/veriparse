@@ -363,6 +363,9 @@ Source:
                   name: p0
                   parameterlist:
                   - ParamArg:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 18
+                      name: ''
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -370,11 +373,11 @@ Source:
                           name: M
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
-                      line: 18
-                      name: ''
                   portlist:
                   - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
                       value:
                         Concat:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -392,10 +395,10 @@ Source:
                               name: t0
                               scope:
                                 IdentifierScope: null
+                  - PortArg:
                       filename: ''
                       line: 0
                       name: ''
-                  - PortArg:
                       value:
                         Concat:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -413,10 +416,10 @@ Source:
                               name: in0
                               scope:
                                 IdentifierScope: null
+                  - PortArg:
                       filename: ''
                       line: 0
                       name: ''
-                  - PortArg:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -424,9 +427,6 @@ Source:
                           name: clk
                           scope:
                             IdentifierScope: null
-                      filename: ''
-                      line: 0
-                      name: ''
               - Instance:
                   array:
                     Length:
@@ -465,6 +465,9 @@ Source:
                   name: p1
                   parameterlist:
                   - ParamArg:
+                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      line: 18
+                      name: ''
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -472,11 +475,11 @@ Source:
                           name: M
                           scope:
                             IdentifierScope: null
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
-                      line: 18
-                      name: ''
                   portlist:
                   - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
                       value:
                         Concat:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -494,10 +497,10 @@ Source:
                               name: t1
                               scope:
                                 IdentifierScope: null
+                  - PortArg:
                       filename: ''
                       line: 0
                       name: ''
-                  - PortArg:
                       value:
                         Concat:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -515,10 +518,10 @@ Source:
                               name: in1
                               scope:
                                 IdentifierScope: null
+                  - PortArg:
                       filename: ''
                       line: 0
                       name: ''
-                  - PortArg:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -526,13 +529,13 @@ Source:
                           name: clk
                           scope:
                             IdentifierScope: null
-                      filename: ''
-                      line: 0
-                      name: ''
               line: 18
               module: dffn
               parameterlist:
               - ParamArg:
+                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  line: 18
+                  name: ''
                   value:
                     Identifier:
                       filename: ../../test/parser/testcases/vpp_default_nettype5.v
@@ -540,9 +543,6 @@ Source:
                       name: M
                       scope:
                         IdentifierScope: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
-                  line: 18
-                  name: ''
           line: 3
           name: MxN_pipeline
           ports:
@@ -575,3 +575,4 @@ Source:
       line: 3
   filename: ../../test/parser/testcases/vpp_default_nettype5.v
   line: 3
+

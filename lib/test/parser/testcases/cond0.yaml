@@ -74,6 +74,15 @@ Source:
                                       sign: false
                                       size: -1
                                       value: 0
+                              filename: ../../test/parser/testcases/cond0.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/cond0.v
+                                  line: 10
+                                  name: in0
+                                  scope:
+                                    IdentifierScope: null
+                              line: 10
                               right:
                                 Cond:
                                   cond:
@@ -95,6 +104,15 @@ Source:
                                           sign: false
                                           size: -1
                                           value: 1
+                                  filename: ../../test/parser/testcases/cond0.v
+                                  left:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/cond0.v
+                                      line: 11
+                                      name: in1
+                                      scope:
+                                        IdentifierScope: null
+                                  line: 11
                                   right:
                                     Cond:
                                       cond:
@@ -116,15 +134,7 @@ Source:
                                               sign: false
                                               size: -1
                                               value: 2
-                                      right:
-                                        Identifier:
-                                          filename: ../../test/parser/testcases/cond0.v
-                                          line: 12
-                                          name: in3
-                                          scope:
-                                            IdentifierScope: null
                                       filename: ../../test/parser/testcases/cond0.v
-                                      line: 12
                                       left:
                                         Plus:
                                           filename: ../../test/parser/testcases/cond0.v
@@ -144,24 +154,14 @@ Source:
                                               sign: false
                                               size: -1
                                               value: 1
-                                  filename: ../../test/parser/testcases/cond0.v
-                                  line: 11
-                                  left:
-                                    Identifier:
-                                      filename: ../../test/parser/testcases/cond0.v
-                                      line: 11
-                                      name: in1
-                                      scope:
-                                        IdentifierScope: null
-                              filename: ../../test/parser/testcases/cond0.v
-                              line: 10
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/cond0.v
-                                  line: 10
-                                  name: in0
-                                  scope:
-                                    IdentifierScope: null
+                                      line: 12
+                                      right:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/cond0.v
+                                          line: 12
+                                          name: in3
+                                          scope:
+                                            IdentifierScope: null
           line: 1
           name: if2
           ports:
@@ -573,3 +573,4 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/cond0.v
   line: 1
+

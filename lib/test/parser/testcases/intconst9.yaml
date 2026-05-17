@@ -50,10 +50,10 @@ Source:
                       line: 7
                       var:
                         IntConstN:
+                          base: 16
                           filename: ../../test/parser/testcases/intconst9.v
                           line: 7
                           sign: false
-                          base: 16
                           size: 32
                           value: 4294967295
           line: 1
@@ -223,3 +223,4 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/intconst9.v
   line: 1
+

@@ -1,8 +1,455 @@
 Source:
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
-  line: 3
   description:
     Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+          items:
+          - Wire:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              line: 9
+              name: x
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 9
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 9
+                      sign: false
+                      size: -1
+                      value: 7
+          - Wire:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              line: 10
+              name: sum
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 8
+          - Assign:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 10
+                      name: sum
+                      scope:
+                        IdentifierScope: null
+              line: 10
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 10
+                  var:
+                    Plus:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      left:
+                        Concat:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 10
+                          list:
+                          - IntConstN:
+                              base: 2
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                              line: 10
+                              sign: false
+                              size: 1
+                              value: 0
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                              line: 10
+                              name: a
+                              scope:
+                                IdentifierScope: null
+                      line: 10
+                      right:
+                        Concat:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 10
+                          list:
+                          - IntConstN:
+                              base: 2
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                              line: 10
+                              sign: false
+                              size: 1
+                              value: 0
+                          - Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                              line: 10
+                              name: b
+                              scope:
+                                IdentifierScope: null
+          - Wire:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              line: 11
+              name: y
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 11
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 11
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 11
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 11
+                      name: y
+                      scope:
+                        IdentifierScope: null
+              line: 11
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 11
+                  var:
+                    And:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 11
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                      line: 11
+                      right:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 11
+                          name: b
+                          scope:
+                            IdentifierScope: null
+          - Wire:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              line: 12
+              name: z
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 7
+          - Assign:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 12
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 12
+                      name: z
+                      scope:
+                        IdentifierScope: null
+              line: 12
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 12
+                  var:
+                    Or:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 12
+                          name: x
+                          scope:
+                            IdentifierScope: null
+                      line: 12
+                      right:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 12
+                          name: y
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 14
+                      name: x
+                      scope:
+                        IdentifierScope: null
+              line: 14
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 14
+                  var:
+                    Xor:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      left:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 14
+                          name: a
+                          scope:
+                            IdentifierScope: null
+                      line: 14
+                      right:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 14
+                          name: b
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 15
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 15
+                      name: result
+                      scope:
+                        IdentifierScope: null
+              line: 15
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 15
+                  var:
+                    Identifier:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 15
+                      name: sum
+                      scope:
+                        IdentifierScope: null
+          line: 3
+          name: wire_split0
+          ports:
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 4
+                  name: clk
+                  sign: false
+              line: 4
+              second:
+                Variable: null
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 5
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Variable: null
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 6
+                  name: b
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 6
+              second:
+                Variable: null
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+              first:
+                Output:
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                  line: 7
+                  name: result
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                      line: 7
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 8
+              line: 7
+              second:
+                Variable: null
       filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
       line: 3
-      definitions: [{Module: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 3, name: wire_split0, default_nettype: WIRE, ports: [{Ioport: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 4, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 4, name: clk, sign: false}}, second: {Variable: ~}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 5, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 5, name: a, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 5, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 5, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 5, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Variable: ~}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 6, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 6, name: b, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 6, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 6, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 6, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Variable: ~}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 7, first: {Output: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 7, name: result, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 7, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 7, base: 10, size: -1, sign: false, value: 8}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 7, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Variable: ~}}}], items: [{Wire: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 9, sign: false, name: x, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 9, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 9, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 9, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {Wire: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, sign: false, name: sum, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, base: 10, size: -1, sign: false, value: 8}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {Assign: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, name: sum, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, var: {Plus: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, left: {Concat: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, list: [{IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, base: 2, size: 1, sign: false, value: 0}}, {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, name: a, scope: {IdentifierScope: ~}}}]}}, right: {Concat: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, list: [{IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, base: 2, size: 1, sign: false, value: 0}}, {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 10, name: b, scope: {IdentifierScope: ~}}}]}}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Wire: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, sign: false, name: y, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {Assign: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, name: y, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, var: {And: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, name: a, scope: {IdentifierScope: ~}}}, right: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 11, name: b, scope: {IdentifierScope: ~}}}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Wire: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, sign: false, name: z, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {Assign: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, name: z, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, var: {Or: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, name: x, scope: {IdentifierScope: ~}}}, right: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 12, name: y, scope: {IdentifierScope: ~}}}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Assign: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 14, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 14, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 14, name: x, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 14, var: {Xor: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 14, left: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 14, name: a, scope: {IdentifierScope: ~}}}, right: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 14, name: b, scope: {IdentifierScope: ~}}}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Assign: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 15, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 15, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 15, name: result, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 15, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v, line: 15, name: sum, scope: {IdentifierScope: ~}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}]}}]
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/wire_split0.v
+  line: 3
+

@@ -1,7 +1,8 @@
 IntConstN:
-  filename: ""
-  line: 0
   base: 10
-  size: -1
+  filename: ''
+  line: 0
   sign: false
+  size: -1
   value: 6
+

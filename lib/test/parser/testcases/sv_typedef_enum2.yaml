@@ -1,8 +1,571 @@
 Source:
-  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-  line: 1
   description:
     Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+          items:
+          - Typedef:
+              def:
+                EnumDef:
+                  base_type: NONE
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  items:
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 8
+                      name: NONE0
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 8
+                      name: NONE1
+                      value: null
+                  line: 8
+                  sign: false
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              line: 8
+              name: plain_t
+          - Typedef:
+              def:
+                EnumDef:
+                  base_type: LOGIC
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  items:
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 9
+                      name: LG0
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 9
+                      name: LG1
+                      value: null
+                  line: 9
+                  sign: false
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              line: 9
+              name: logic1_t
+          - Typedef:
+              def:
+                EnumDef:
+                  base_type: BIT
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  items:
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B0
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B1
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B2
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B3
+                      value: null
+                  line: 10
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 1
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              line: 10
+              name: bit2_t
+          - Typedef:
+              def:
+                EnumDef:
+                  base_type: BIT
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  items:
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 11
+                      name: BIT0
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 11
+                      name: BIT1
+                      value: null
+                  line: 11
+                  sign: false
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              line: 11
+              name: bit1_t
+          - Typedef:
+              def:
+                EnumDef:
+                  base_type: INT
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  items:
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 12
+                      name: I0
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 12
+                      name: I1
+                      value: null
+                  - EnumItem:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 12
+                      name: I2
+                      value: null
+                  line: 12
+                  sign: false
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              line: 12
+              name: int_t
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 14
+                      name: a
+                      scope:
+                        IdentifierScope: null
+              line: 14
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 14
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 14
+                      sign: false
+                      size: 2
+                      value: 0
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 15
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 15
+                      name: b
+                      scope:
+                        IdentifierScope: null
+              line: 15
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 15
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 15
+                      sign: false
+                      size: 1
+                      value: 0
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 16
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 16
+                      name: c
+                      scope:
+                        IdentifierScope: null
+              line: 16
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 16
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 16
+                      sign: false
+                      size: 2
+                      value: 0
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 17
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 17
+                      name: d
+                      scope:
+                        IdentifierScope: null
+              line: 17
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 17
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 17
+                      sign: false
+                      size: 2
+                      value: 0
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 18
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 18
+                      name: e
+                      scope:
+                        IdentifierScope: null
+              line: 18
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 18
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 18
+                      sign: false
+                      size: 2
+                      value: 0
+          line: 1
+          name: sv_typedef_enum2
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 2
+                  name: a
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 2
+              second:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: a
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 3
+                  name: b
+                  sign: false
+              line: 3
+              second:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: b
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 4
+                  name: c
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 4
+              second:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: c
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 5
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 5
+              second:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 6
+                  name: e
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 6
+              second:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 6
+                  name: e
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 6
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 1
       filename: lib/test/parser/testcases/sv_typedef_enum2.sv
       line: 1
-      definitions: [{Module: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 1, name: sv_typedef_enum2, default_nettype: WIRE, ports: [{Ioport: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, first: {Output: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, name: a, sign: false, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, sign: false, name: a, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 2, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 3, first: {Output: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 3, name: b, sign: false}}, second: {Logic: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 3, sign: false, name: b, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, first: {Output: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, name: c, sign: false, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, sign: false, name: c, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 4, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, first: {Output: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, name: d, sign: false, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, sign: false, name: d, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 5, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, first: {Output: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, name: e, sign: false, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, sign: false, name: e, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 6, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}], items: [{Typedef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 8, name: plain_t, def: {EnumDef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 8, base_type: NONE, sign: false, items: [{EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 8, name: NONE0, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 8, name: NONE1, value: ~}}]}}}}, {Typedef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 9, name: logic1_t, def: {EnumDef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 9, base_type: LOGIC, sign: false, items: [{EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 9, name: LG0, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 9, name: LG1, value: ~}}]}}}}, {Typedef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, name: bit2_t, def: {EnumDef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, base_type: BIT, sign: false, widths: [{Width: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, msb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, base: 10, size: -1, sign: false, value: 1}}, lsb: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, base: 10, size: -1, sign: false, value: 0}}}}], items: [{EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, name: B0, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, name: B1, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, name: B2, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 10, name: B3, value: ~}}]}}}}, {Typedef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 11, name: bit1_t, def: {EnumDef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 11, base_type: BIT, sign: false, items: [{EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 11, name: BIT0, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 11, name: BIT1, value: ~}}]}}}}, {Typedef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 12, name: int_t, def: {EnumDef: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 12, base_type: INT, sign: false, items: [{EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 12, name: I0, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 12, name: I1, value: ~}}, {EnumItem: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 12, name: I2, value: ~}}]}}}}, {Assign: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 14, left: {Lvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 14, var: {Identifier: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 14, name: a, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 14, var: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 14, base: 16, size: 2, sign: false, value: 0}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Assign: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 15, left: {Lvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 15, var: {Identifier: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 15, name: b, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 15, var: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 15, base: 16, size: 1, sign: false, value: 0}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Assign: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 16, left: {Lvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 16, var: {Identifier: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 16, name: c, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 16, var: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 16, base: 16, size: 2, sign: false, value: 0}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Assign: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 17, left: {Lvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 17, var: {Identifier: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 17, name: d, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 17, var: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 17, base: 16, size: 2, sign: false, value: 0}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, {Assign: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 18, left: {Lvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 18, var: {Identifier: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 18, name: e, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 18, var: {IntConstN: {filename: lib/test/parser/testcases/sv_typedef_enum2.sv, line: 18, base: 16, size: 2, sign: false, value: 0}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}]}}]
+  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+  line: 1
+

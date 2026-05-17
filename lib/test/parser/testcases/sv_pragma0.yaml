@@ -1,8 +1,299 @@
 Source:
-  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
-  line: 1
   description:
     Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+          items:
+          - Pragmalist:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+              line: 6
+              pragmas:
+              - Pragma:
+                  expression:
+                    StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 6
+                      value: distributed
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  line: 6
+                  name: ram_style
+              - Pragma:
+                  expression:
+                    StringConst:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 7
+                      value: logic
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  line: 7
+                  name: ramstyle
+              statements:
+              - Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  ldelay:
+                    DelayStatement: null
+                  lengths:
+                  - Length:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 15
+                  line: 8
+                  name: mem
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 8
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
+          - AlwaysFF:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+              line: 10
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  line: 10
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 10
+                      sig:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 10
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  line: 10
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      ldelay:
+                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 11
+                          var:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                              line: 11
+                              name: q
+                              scope:
+                                IdentifierScope: null
+                      line: 11
+                      rdelay:
+                        DelayStatement: null
+                      right:
+                        Rvalue:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 11
+                          var:
+                            Pointer:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                              line: 11
+                              ptr:
+                                IntConstN:
+                                  base: 10
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                                  line: 11
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                                  line: 11
+                                  name: mem
+                                  scope:
+                                    IdentifierScope: null
+          line: 1
+          name: sv_pragma0
+          ports:
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  line: 2
+                  name: clk
+                  sign: false
+              line: 2
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  line: 3
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 3
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+              first:
+                Output:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  line: 4
+                  name: q
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: q
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
       filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
       line: 1
-      definitions: [{Module: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 1, name: sv_pragma0, default_nettype: WIRE, ports: [{Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 2, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 2, name: clk, sign: false}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 2, sign: false, name: clk, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, name: d, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, sign: false, name: d, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 3, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, first: {Output: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, name: q, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, sign: false, name: q, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 4, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}], items: [{Pragmalist: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 6, pragmas: [{Pragma: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 6, name: ram_style, expression: {StringConst: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 6, value: distributed}}}}, {Pragma: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 7, name: ramstyle, expression: {StringConst: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 7, value: logic}}}}], statements: [{Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 8, sign: false, name: mem, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 8, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 8, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 8, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, lengths: [{Length: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 8, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 8, base: 10, size: -1, sign: false, value: 15}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 8, base: 10, size: -1, sign: false, value: 0}}}}], right: {Rvalue: ~}}}]}}, {AlwaysFF: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 10, senslist: {Senslist: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 10, list: [{Sens: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 10, type: POSEDGE, sig: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 10, name: clk, scope: {IdentifierScope: ~}}}}}]}}, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 10, scope: "", statements: [{NonblockingSubstitution: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 11, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 11, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 11, name: q, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 11, var: {Pointer: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 11, ptr: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 11, base: 10, size: -1, sign: false, value: 0}}, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv, line: 11, name: mem, scope: {IdentifierScope: ~}}}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}]}}}}]}}]
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_pragma0.sv
+  line: 1
+

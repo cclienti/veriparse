@@ -218,6 +218,9 @@ Source:
                   name: inst
                   portlist:
                   - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance3.v
@@ -225,10 +228,10 @@ Source:
                           name: a
                           scope:
                             IdentifierScope: null
+                  - PortArg:
                       filename: ''
                       line: 0
                       name: ''
-                  - PortArg:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance3.v
@@ -236,10 +239,10 @@ Source:
                           name: b
                           scope:
                             IdentifierScope: null
+                  - PortArg:
                       filename: ''
                       line: 0
                       name: ''
-                  - PortArg:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance3.v
@@ -247,9 +250,6 @@ Source:
                           name: c
                           scope:
                             IdentifierScope: null
-                      filename: ''
-                      line: 0
-                      name: ''
               line: 10
               module: my_module
           line: 7
@@ -274,3 +274,4 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/instance3.v
   line: 1
+

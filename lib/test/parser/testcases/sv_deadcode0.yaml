@@ -1,8 +1,322 @@
 Source:
-  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
-  line: 1
   description:
     Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+          items:
+          - Logic:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+              ldelay:
+                DelayStatement: null
+              line: 7
+              name: unused_wire
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 7
+          - AlwaysFF:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+              line: 9
+              senslist:
+                Senslist:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  line: 9
+                  list:
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 9
+                      sig:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 9
+                          name: clk
+                          scope:
+                            IdentifierScope: null
+                      type: POSEDGE
+                  - Sens:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 9
+                      sig:
+                        Identifier:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 9
+                          name: rst_n
+                          scope:
+                            IdentifierScope: null
+                      type: NEGEDGE
+              statement:
+                Block:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  line: 9
+                  scope: ''
+                  statements:
+                  - IfStatement:
+                      cond:
+                        Ulnot:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 10
+                          right:
+                            Identifier:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                              line: 10
+                              name: rst_n
+                              scope:
+                                IdentifierScope: null
+                      false_statement:
+                        NonblockingSubstitution:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                              line: 13
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                                  line: 13
+                                  name: q
+                                  scope:
+                                    IdentifierScope: null
+                          line: 13
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                              line: 13
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                                  line: 13
+                                  name: d
+                                  scope:
+                                    IdentifierScope: null
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 10
+                      true_statement:
+                        NonblockingSubstitution:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          ldelay:
+                            DelayStatement: null
+                          left:
+                            Lvalue:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                                  line: 11
+                                  name: q
+                                  scope:
+                                    IdentifierScope: null
+                          line: 11
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue:
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                              line: 11
+                              var:
+                                IntConstN:
+                                  base: 16
+                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                                  line: 11
+                                  sign: false
+                                  size: 8
+                                  value: 0
+          line: 1
+          name: sv_deadcode0
+          ports:
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  line: 2
+                  name: clk
+                  sign: false
+              line: 2
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: clk
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  line: 3
+                  name: rst_n
+                  sign: false
+              line: 3
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: rst_n
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+              first:
+                Input:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  line: 4
+                  name: d
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 4
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: d
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 7
+          - Ioport:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+              first:
+                Output:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  line: 5
+                  name: q
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 5
+              second:
+                Logic:
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: q
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                      line: 5
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 7
       filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
       line: 1
-      definitions: [{Module: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 1, name: sv_deadcode0, default_nettype: WIRE, ports: [{Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 2, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 2, name: clk, sign: false}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 2, sign: false, name: clk, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 3, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 3, name: rst_n, sign: false}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 3, sign: false, name: rst_n, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, first: {Input: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, name: d, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, sign: false, name: d, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 4, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}, {Ioport: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, first: {Output: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, name: q, sign: false, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, base: 10, size: -1, sign: false, value: 0}}}}]}}, second: {Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, sign: false, name: q, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 5, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}}}], items: [{Logic: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 7, sign: false, name: unused_wire, widths: [{Width: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 7, msb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 7, base: 10, size: -1, sign: false, value: 7}}, lsb: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 7, base: 10, size: -1, sign: false, value: 0}}}}], ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}, right: {Rvalue: ~}}}, {AlwaysFF: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 9, senslist: {Senslist: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 9, list: [{Sens: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 9, type: POSEDGE, sig: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 9, name: clk, scope: {IdentifierScope: ~}}}}}, {Sens: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 9, type: NEGEDGE, sig: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 9, name: rst_n, scope: {IdentifierScope: ~}}}}}]}}, statement: {Block: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 9, scope: "", statements: [{IfStatement: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 10, cond: {Ulnot: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 10, right: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 10, name: rst_n, scope: {IdentifierScope: ~}}}}}, true_statement: {NonblockingSubstitution: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 11, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 11, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 11, name: q, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 11, var: {IntConstN: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 11, base: 16, size: 8, sign: false, value: 0}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}, false_statement: {NonblockingSubstitution: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 13, left: {Lvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 13, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 13, name: q, scope: {IdentifierScope: ~}}}}}, right: {Rvalue: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 13, var: {Identifier: {filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv, line: 13, name: d, scope: {IdentifierScope: ~}}}}}, ldelay: {DelayStatement: ~}, rdelay: {DelayStatement: ~}}}}}]}}}}]}}]
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_deadcode0.sv
+  line: 1
+
