@@ -33,6 +33,7 @@ jobs:
         uses: mamba-org/setup-micromamba@v3
         with:
           init-shell: bash
+          micromamba-version: latest
 
       - name: Install make (Windows)
         if: runner.os == 'Windows'
