@@ -29,6 +29,7 @@ options:
   -p [ --param-map ] arg   YAML parameter map
   -e [ --deadcode-end ]    Remove dead code after flatten pass
   -d [ --deadcode-during ] Remove dead code during flatten pass
+  --sv                     Enable SystemVerilog mode
   -s [ --seed ] arg        Seed value (default: 0)
 ```
 
