@@ -62,3 +62,12 @@ Functional
 
 #. 2018-10-02: Add an analysis method (or dedicated pass ?) that checks consistency of all assignation widths regarding
    declaration.
+
+#. 2025-01-01: [SV typedef/struct] DeadcodeElimination could be extended to remove truly unused Typedef nodes.
+   Currently Typedef is not in the VariableBase category so it is never removed, which is safe but conservative.
+   Dead typedefs are harmless so this is low priority.
+
+#. 2025-01-01: [SV typedef/struct] AnnotateDeclaration and ModuleObfuscator do not rename typedef names (e.g.
+   my_struct_t) because they are stored as plain string attributes in the AST, not as Identifier subtrees.
+   If obfuscation or systematic renaming of type names is ever required, a dedicated typedef-name rename path
+   must be added to both passes.
