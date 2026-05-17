@@ -18,7 +18,7 @@ cmake --build . --config Release --parallel %CPU_COUNT%
 if errorlevel 1 exit 1
 
 set VERIPARSE_SOURCE_ROOT=%SRC_DIR%
-cmake --build . --config Release --target test -- /p:CL_MPcount=%CPU_COUNT%
+ctest --test-dir . -j %CPU_COUNT% -L unittest
 if errorlevel 1 exit 1
 
 cmake --install . --config Release
