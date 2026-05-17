@@ -6,7 +6,19 @@ on:
 
 jobs:
   build-conda-package:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux-64
+          - os: macos-latest
+            platform: osx-64
+          - os: macos-14
+            platform: osx-arm64
+          - os: windows-latest
+            platform: win-64
+
+    runs-on: ${{ matrix.os }}
 
     defaults:
       run:
@@ -20,6 +32,10 @@ jobs:
         uses: mamba-org/setup-micromamba@v3
         with:
           init-shell: bash
+
+      - name: Install make (Windows)
+        if: runner.os == 'Windows'
+        run: micromamba install -y -c conda-forge make
 
       - name: Build conda package
         run: make package
