@@ -1,0 +1,169 @@
+Module:
+  default_nettype: WIRE
+  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+  items:
+  - Typedef:
+      def:
+        EnumDef:
+          base_type: LOGIC
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+          items:
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 2
+              name: A
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 2
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 2
+              name: B
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 3
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 2
+              name: C
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 5
+          - EnumItem:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 2
+              name: D
+              value:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 6
+          line: 2
+          sign: false
+          widths:
+          - Width:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 2
+              lsb:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 0
+              msb:
+                IntConstN:
+                  base: 10
+                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+                  line: 2
+                  sign: false
+                  size: -1
+                  value: 2
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+      line: 2
+      name: state_t
+  - Logic:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+      ldelay:
+        DelayStatement: null
+      line: 3
+      name: x
+      rdelay:
+        DelayStatement: null
+      right:
+        Rvalue: null
+      sign: false
+      widths:
+      - Width:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+          line: 3
+          lsb:
+            IntConstN:
+              base: 10
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 3
+              sign: false
+              size: -1
+              value: 0
+          msb:
+            IntConstN:
+              base: 10
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 3
+              sign: false
+              size: -1
+              value: 2
+  - Assign:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+      ldelay:
+        DelayStatement: null
+      left:
+        Lvalue:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+          line: 4
+          var:
+            Identifier:
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 4
+              name: x
+              scope:
+                IdentifierScope: null
+      line: 4
+      rdelay:
+        DelayStatement: null
+      right:
+        Rvalue:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+          line: 4
+          var:
+            IntConstN:
+              base: 10
+              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+              line: 2
+              sign: false
+              size: -1
+              value: 3
+  line: 1
+  name: enum_inliner1
+  ports:
+  - Ioport:
+      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+      first:
+        Input:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+          line: 1
+          name: clk
+          sign: false
+      line: 1
+      second:
+        Logic:
+          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner1.sv
+          ldelay:
+            DelayStatement: null
+          line: 1
+          name: clk
+          rdelay:
+            DelayStatement: null
+          right:
+            Rvalue: null
+          sign: false
+
