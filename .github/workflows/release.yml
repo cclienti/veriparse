@@ -8,6 +8,7 @@ on:
 jobs:
   build-conda-package:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
@@ -19,7 +20,7 @@ jobs:
           - os: macos-14
             platform: osx-arm64
             shell: bash -el {0}
-          - os: windows-latest
+          - os: windows-2022
             platform: win-64
             shell: pwsh
 
