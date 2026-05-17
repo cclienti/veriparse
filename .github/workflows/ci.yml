@@ -21,16 +21,16 @@ jobs:
       - name: Install mold linker
         run: sudo apt-get install -y mold iverilog
 
+      - name: Install micromamba
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          init-shell: bash
+
       - name: Generate conda environment file
         run: make dev-env-file
 
-      - name: Install micromamba and create environment
-        uses: mamba-org/setup-micromamba@v3
-        with:
-          environment-file: conda/environment.yml
-          environment-name: veriparse-dev
-          init-shell: bash
-          cache-environment: true
+      - name: Create dev environment
+        run: make dev-env
 
       - name: Configure
         run: make dev-cmake

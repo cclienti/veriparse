@@ -1,0 +1,36 @@
+name: Release - Build Conda Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-conda-package:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Micromamba
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          init-shell: bash
+
+      - name: Build conda package
+        run: make package
+
+      - name: Get package filename
+        id: pkg
+        run: echo "path=$(make package-name)" >> $GITHUB_OUTPUT
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: ${{ steps.pkg.outputs.path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
