@@ -256,12 +256,12 @@ veriparse/
 |------------|---------|---------|
 | GCC / Clang | C++17 | Compiler |
 | CMake | ≥ 3.10 | Build system |
-| Flex | any | Verilog scanner |
-| Bison | any | Verilog parser |
-| Boost | ≥ 1.72 | Program options, filesystem, logging |
-| yaml-cpp | 0.6.3 | YAML parameter map parsing |
-| GMP / GMPXX | 6.2.0 | Arbitrary precision arithmetic |
-| GoogleTest | 1.10.0 | Unit testing |
+| Flex | 2.6.4 | Verilog scanner |
+| Bison | 3.8.2 | Verilog parser |
+| Boost | 1.85.0 | Program options, filesystem, logging |
+| yaml-cpp | 0.8.0 | YAML parameter map parsing |
+| GMP / GMPXX | 6.3.0 | Arbitrary precision arithmetic |
+| GoogleTest | 1.17.0 | Unit testing |
 | iverilog | any | Verilog pre-processing (runtime) |
 
 ---
