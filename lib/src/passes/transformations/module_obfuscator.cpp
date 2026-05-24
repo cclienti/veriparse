@@ -9,6 +9,7 @@
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <random>
@@ -20,6 +21,26 @@ namespace Passes
 {
 namespace Transformations
 {
+
+namespace
+{
+
+// FNV-1a 64-bit. std::hash is implementation-defined and produces different
+// output on libstdc++ vs libc++, breaking obfuscator reproducibility across
+// platforms. FNV-1a is fully specified and deterministic.
+std::uint64_t portable_hash(const std::string &s)
+{
+    constexpr std::uint64_t offset_basis = 0xcbf29ce484222325ull;
+    constexpr std::uint64_t prime = 0x100000001b3ull;
+    std::uint64_t h = offset_basis;
+    for(unsigned char c : s) {
+        h ^= c;
+        h *= prime;
+    }
+    return h;
+}
+
+} // namespace
 
 int ModuleObfuscator::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
@@ -76,13 +97,12 @@ int ModuleObfuscator::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 std::string ModuleObfuscator::push_decl(AST::Node::Ptr decl, const std::string &decl_name,
                                         bool override_collision)
 {
-    std::hash<std::string> hash;
     std::string obf_name;
 
     auto id = std::make_shared<AST::Identifier>(decl->get_filename(), decl->get_line());
 
     if(m_use_hash) {
-        obf_name = std::to_string(hash(decl_name));
+        obf_name = std::to_string(portable_hash(decl_name));
         obf_name.insert(0, "h_");
         if(m_unique_id.count(obf_name)) {
             LOG_DEBUG_N(decl) << "Collision for name: " << decl_name << " hash:" << obf_name;

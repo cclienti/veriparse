@@ -28,7 +28,11 @@ namespace Analysis
  */
 class UniqueDeclaration
 {
-    using RandGen = std::default_random_engine;
+    // std::default_random_engine is implementation-defined, so the same seed
+    // produces different sequences on libstdc++ vs libc++. mt19937 is fully
+    // specified by the standard; use it explicitly for cross-platform
+    // reproducibility of obfuscator output.
+    using RandGen = std::mt19937;
 
 public:
     using IdentifierSet = std::set<std::string>;

@@ -88,8 +88,9 @@ std::string UniqueDeclaration::get_unique_identifier(const std::string &identifi
         return identifier_basename;
     }
 
-    std::uniform_int_distribution<int> distribution(97, 122);
-
+    // std::uniform_int_distribution's output is implementation-defined; use
+    // modulo on the raw engine output for portable reproducibility. The bias
+    // from non-power-of-2 ranges is irrelevant for identifier generation.
     std::stringstream ss;
 
     do {
@@ -99,7 +100,7 @@ std::string UniqueDeclaration::get_unique_identifier(const std::string &identifi
         ss << identifier_basename << "_";
 
         for(std::size_t i = 0; i < digits; i++) {
-            ss << static_cast<char>(distribution(s_generator));
+            ss << static_cast<char>(static_cast<int>(s_generator() % 26) + 97);
         }
     } while(identifier_declaration_exists(ss.str(), id_set));
 
