@@ -68,7 +68,10 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
 
   find_package(GTest REQUIRED)
   find_package(YAMLCPP REQUIRED)
-  find_package(GMP REQUIRED)
+  # GMP is built from source (see cmake/external_gmp.cmake) so we have a
+  # single code path across Linux/macOS/Windows. conda-forge's win-64 gmp
+  # has no gmpxx, so find_package(GMP) cannot be made to work there.
+  include(${CMAKE_CURRENT_LIST_DIR}/external_gmp.cmake)
   find_package(Boost 1.85.0 CONFIG REQUIRED
 	COMPONENTS system filesystem log program_options)
 

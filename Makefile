@@ -60,6 +60,7 @@ dev-env-file: conda/recipe-release/meta.yaml
 	@sed -n '/^requirements:/,/^[^ ]/p' conda/recipe-release/meta.yaml | \
 	  sed -n '/^  build:/,/^  [^ ]/p' | \
 	  grep '^ *- ' | grep -v '{{\|compiler\|mold' | \
+	  grep -v '# *\[win\]' | \
 	  sed 's/^ *- /  - /' >> conda/environment.yml
 	@echo "  - iverilog"              >> conda/environment.yml
 	@echo "  - verilator"             >> conda/environment.yml
