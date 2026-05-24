@@ -29,6 +29,20 @@ endif()
 find_package(BISON)
 find_package(FLEX)
 
+# winflexbison installs FlexLexer.h at a non-standard location
+# (Library/share/winflexbison/FlexLexer.h instead of Library/include/),
+# so the C++ scanner sources can't find it on their own. Derive the path
+# from FLEX_EXECUTABLE and expose it via an INTERFACE target.
+add_library(veriparse_flex_lexer_h INTERFACE)
+if(WIN32 AND FLEX_EXECUTABLE)
+  get_filename_component(_flex_bin_dir ${FLEX_EXECUTABLE} DIRECTORY)
+  get_filename_component(_flex_prefix  ${_flex_bin_dir}   DIRECTORY)
+  set(_flex_lexer_dir ${_flex_prefix}/share/winflexbison)
+  if(EXISTS ${_flex_lexer_dir}/FlexLexer.h)
+    target_include_directories(veriparse_flex_lexer_h INTERFACE ${_flex_lexer_dir})
+  endif()
+endif()
+
 # Verilog parser
 set(FLEX_BISON_VERILOG_DIR ${CMAKE_CURRENT_BINARY_DIR}/verilog)
 file(MAKE_DIRECTORY ${FLEX_BISON_VERILOG_DIR})
@@ -71,6 +85,7 @@ target_include_directories (veriparse_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 target_link_libraries(veriparse_static YAMLCPP::YAMLCPP)
 target_link_libraries(veriparse_static Boost::system Boost::filesystem Boost::log)
 target_link_libraries(veriparse_static GMP::GMPXX GMP::GMP)
+target_link_libraries(veriparse_static veriparse_flex_lexer_h)
 
 # Specific compilation flags
 set(_parser_flags "-Wno-unused-but-set-variable")
