@@ -45,13 +45,21 @@ set(VERIPARSE_GMP_CONFIG_ENV
     "CXXFLAGS=${_gmp_cxxflags}"
 )
 
+# On Windows, the configure script is a POSIX shell script that the MinGW
+# Makefiles generator can't exec directly; run it through bash (provided by
+# m2-bash from the conda env).
+set(VERIPARSE_GMP_CONFIGURE_CMD <SOURCE_DIR>/configure)
+if(WIN32)
+  set(VERIPARSE_GMP_CONFIGURE_CMD bash <SOURCE_DIR>/configure)
+endif()
+
 ExternalProject_Add(veriparse_gmp_external
   PREFIX            ${VERIPARSE_GMP_PREFIX}
   URL               ${VERIPARSE_GMP_URLS}
   URL_HASH          SHA256=${VERIPARSE_GMP_SHA256}
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
   CONFIGURE_COMMAND ${VERIPARSE_GMP_CONFIG_ENV}
-                    <SOURCE_DIR>/configure
+                    ${VERIPARSE_GMP_CONFIGURE_CMD}
                       --prefix=${VERIPARSE_GMP_INSTALL}
                       --enable-static
                       --enable-cxx

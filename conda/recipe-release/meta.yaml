@@ -26,8 +26,13 @@ requirements:
     - yaml-cpp=0.8.0
 
   build:
-    - {{ compiler('cxx') }}
-    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}  # [not win]
+    - {{ compiler('c') }}    # [not win]
+    # Windows: use the MinGW (gcc/g++) toolchain instead of MSVC. autotools
+    # (GMP's build system) doesn't work with MSVC, and conda-forge's gmp on
+    # win-64 ships without gmpxx for that same reason.
+    - gcc_win-64             # [win]
+    - gxx_win-64             # [win]
     - cmake
     - mold             # [not win]
     # Autotools toolchain to build GMP. The m2-* variants are MSYS2 builds
