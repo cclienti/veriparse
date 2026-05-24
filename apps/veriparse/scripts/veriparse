@@ -79,11 +79,9 @@ while true; do
     esac
 done
 
-declare -A OPT_IN_FILES
-for i in "$@"
-do
-    OPT_IN_FILES["$i"]=$i
-done
+# Plain indexed array; associative arrays would require bash 4+, which
+# macOS does not ship (Apple is stuck on bash 3.2).
+OPT_IN_FILES=("$@")
 
 if [[ -z "${OPT_IN_FILES[@]}" ]]; then
     echo -e "No input file(s) given"
