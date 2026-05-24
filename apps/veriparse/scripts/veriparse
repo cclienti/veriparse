@@ -12,9 +12,6 @@ OPT_HASH=""
 OPT_NO_OBFUSCATE="0"
 OPT_IVFLAGS="-Wall -Wno-sensitivity-entire-array -g2005"
 
-SHORT_OPTS='hvo:t:I:p:eds:l:an'
-LONG_OPTS='help,version,output:,top-module:,include-dir:param-map:,deadcode-end,deadcode-during,seed:,id-length:,hash,no-obfuscate'
-
 function usage() {
     echo -e "usage: $(basename $0) [OPTIONS]... VERILOG_FILES[...]"
     echo -e "\nPreprocess, flatten and obfuscate input files into one output file."
@@ -45,37 +42,25 @@ function usage() {
     echo -e ""
 }
 
-ARGS=$(getopt -o ${SHORT_OPTS} --long ${LONG_OPTS} -- "$@") || exit
-eval "set -- $ARGS"
-
-while true; do
+# Manual option parsing. GNU getopt isn't available on macOS (BSD getopt
+# rejects --long), and bash's built-in getopts doesn't support long options.
+while [[ $# -gt 0 ]]; do
     case $1 in
-        (-o|--output)
-            OPT_OUTPUT="$2"; shift 2;;
-        (-t|--top-module)
-            OPT_TOP_MODULE="$2"; shift 2;;
-        (-h|--help)
-            usage; exit 0;;
-        (-v|--version)
-            veriflat --version --output /dev/null --top null; exit 0;;
-        (-I|--include-dir)
-            OPT_INCLUDE_DIRS="${OPT_INCLUDE_DIRS}-I$2 "; shift 2;;
-        (-p|--param-map)
-            OPT_PARAM_MAP="--param-map $2"; shift 2;;
-        (-e|--deadcode-end)
-            OPT_DEADCODE_END="--deadcode-end"; shift;;
-        (-d|--deadcode-during)
-            OPT_DEADCODE_DURING="--deadcode-during"; shift;;
-        (-s|--seed)
-            OPT_SEED="--seed $2"; shift 2;;
-        (-l|--id-length)
-            OPT_ID_LENGTH="--id-length $2"; shift 2;;
-        (-a|--hash)
-            OPT_HASH="--hash"; shift;;
-        (-n|--no-obfuscate)
-            OPT_NO_OBFUSCATE=1; shift;;
-        (--)  shift; break;;
-        (*)   exit 1;;
+        -o|--output)         OPT_OUTPUT="$2"; shift 2;;
+        -t|--top-module)     OPT_TOP_MODULE="$2"; shift 2;;
+        -h|--help)           usage; exit 0;;
+        -v|--version)        veriflat --version --output /dev/null --top null; exit 0;;
+        -I|--include-dir)    OPT_INCLUDE_DIRS="${OPT_INCLUDE_DIRS}-I$2 "; shift 2;;
+        -p|--param-map)      OPT_PARAM_MAP="--param-map $2"; shift 2;;
+        -e|--deadcode-end)   OPT_DEADCODE_END="--deadcode-end"; shift;;
+        -d|--deadcode-during) OPT_DEADCODE_DURING="--deadcode-during"; shift;;
+        -s|--seed)           OPT_SEED="--seed $2"; shift 2;;
+        -l|--id-length)      OPT_ID_LENGTH="--id-length $2"; shift 2;;
+        -a|--hash)           OPT_HASH="--hash"; shift;;
+        -n|--no-obfuscate)   OPT_NO_OBFUSCATE=1; shift;;
+        --)                  shift; break;;
+        -*)                  echo "Unknown option: $1" >&2; usage; exit 1;;
+        *)                   break;;
     esac
 done
 
