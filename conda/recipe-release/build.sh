@@ -17,11 +17,12 @@ if [[ "${target_platform}" == linux-* ]]; then
   )
 fi
 
-# clang on macOS rejects unused flags and fields in generated code as errors
+# clang complains about some of conda's injected toolchain flags
+# (e.g. -fdebug-prefix-map) being unused for C++; with -Werror that's fatal.
 if [[ "${target_platform}" == osx-* ]]; then
   EXTRA_CMAKE_OPTS+=(
     -DCMAKE_C_FLAGS=-Wno-unused-command-line-argument
-    "-DCMAKE_CXX_FLAGS=-Wno-unused-command-line-argument -Wno-unused-private-field"
+    -DCMAKE_CXX_FLAGS=-Wno-unused-command-line-argument
   )
 fi
 

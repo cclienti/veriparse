@@ -67,9 +67,18 @@ target_link_libraries(veriparse_static Boost::system Boost::filesystem Boost::lo
 target_link_libraries(veriparse_static GMP::GMPXX GMP::GMP)
 
 # Specific compilation flags
+set(_parser_flags "-Wno-unused-but-set-variable")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # Bison generates a parser class with an unused private `driver` field; clang
+  # flags it under -Wunused-private-field, which -Wall (re-)enables after our
+  # global CXX_FLAGS. Source-level COMPILE_FLAGS land after -Wall, so suppress
+  # it here.
+  string(APPEND _parser_flags " -Wno-unused-private-field")
+endif()
+
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
-set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_parser.cpp PROPERTIES COMPILE_FLAGS -Wno-unused-but-set-variable)
-set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog_number/verilog_number_parser.cpp PROPERTIES COMPILE_FLAGS -Wno-unused-but-set-variable)
+set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
+set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog_number/verilog_number_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
 
 
 ########################################
