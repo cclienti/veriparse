@@ -37,6 +37,6 @@ cmake ${CMAKE_ARGS} \
 
 make -j ${CPU_COUNT}
 
-VERIPARSE_SOURCE_ROOT=${SRC_DIR} make ARGS="-j${CPU_COUNT} -L unittest" test
+VERIPARSE_SOURCE_ROOT=${SRC_DIR} ctest -j${CPU_COUNT} -L unittest --output-on-failure
 
 make install

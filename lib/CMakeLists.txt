@@ -20,6 +20,12 @@ set(veriparse_version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
 ### Veriparse Library
 ########################################
 
+# conda-forge's winflexbison ships the binaries as win_bison.exe / win_flex.exe.
+# Hint find_package to those names before falling back to the standard ones.
+if(WIN32)
+  find_program(BISON_EXECUTABLE NAMES win_bison bison)
+  find_program(FLEX_EXECUTABLE  NAMES win_flex  flex)
+endif()
 find_package(BISON)
 find_package(FLEX)
 
