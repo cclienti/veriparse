@@ -39,6 +39,9 @@ jobs:
       - name: Setup Micromamba
         uses: mamba-org/setup-micromamba@v3
         with:
+          # micromamba 2.6.1 crashes (ACCESS_VIOLATION) during `shell init`
+          # on the windows-2022 runner; pin to a known-good version.
+          micromamba-version: '2.0.5-0'
           init-shell: >-
             ${{ runner.os == 'Windows' && 'powershell' || 'bash' }}
           post-cleanup: none

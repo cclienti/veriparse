@@ -6,18 +6,23 @@ rm -rf build
 mkdir -p build
 cd build
 
+# Use a bash array so flags containing spaces survive expansion intact.
+EXTRA_CMAKE_OPTS=()
+
 # mold linker is only supported on Linux
 if [[ "${target_platform}" == linux-* ]]; then
-  MOLD_FLAGS="-DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=mold -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=mold"
-else
-  MOLD_FLAGS=""
+  EXTRA_CMAKE_OPTS+=(
+    -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=mold
+    -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=mold
+  )
 fi
 
 # clang on macOS rejects unused flags and fields in generated code as errors
 if [[ "${target_platform}" == osx-* ]]; then
-  EXTRA_FLAGS="-DCMAKE_C_FLAGS=-Wno-unused-command-line-argument -DCMAKE_CXX_FLAGS='-Wno-unused-command-line-argument -Wno-unused-private-field'"
-else
-  EXTRA_FLAGS=""
+  EXTRA_CMAKE_OPTS+=(
+    -DCMAKE_C_FLAGS=-Wno-unused-command-line-argument
+    "-DCMAKE_CXX_FLAGS=-Wno-unused-command-line-argument -Wno-unused-private-field"
+  )
 fi
 
 cmake ${CMAKE_ARGS} \
@@ -26,8 +31,7 @@ cmake ${CMAKE_ARGS} \
   -DCMAKE_INSTALL_LIBDIR=lib \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
-  ${MOLD_FLAGS} \
-  ${EXTRA_FLAGS} \
+  "${EXTRA_CMAKE_OPTS[@]}" \
   ${SRC_DIR}
 
 make -j ${CPU_COUNT}
