@@ -14,7 +14,14 @@ include(ExternalProject)
 include(GNUInstallDirs)
 
 set(VERIPARSE_GMP_VERSION 6.3.0)
-set(VERIPARSE_GMP_URL https://gmplib.org/download/gmp/gmp-${VERIPARSE_GMP_VERSION}.tar.bz2)
+# Multiple URLs; CMake tries each in order until one succeeds. gmplib.org's
+# CDN has been unreachable from some CI runners (notably GitHub Actions
+# windows-2022), so list the GNU mirror first for reliability.
+set(VERIPARSE_GMP_URLS
+  https://ftp.gnu.org/gnu/gmp/gmp-${VERIPARSE_GMP_VERSION}.tar.bz2
+  https://ftpmirror.gnu.org/gmp/gmp-${VERIPARSE_GMP_VERSION}.tar.bz2
+  https://gmplib.org/download/gmp/gmp-${VERIPARSE_GMP_VERSION}.tar.bz2
+)
 set(VERIPARSE_GMP_SHA256 ac28211a7cfb609bae2e2c8d6058d66c8fe96434f740cf6fe2e47b000d1c20cb)
 
 set(VERIPARSE_GMP_PREFIX  ${CMAKE_BINARY_DIR}/external/gmp)
@@ -40,7 +47,7 @@ set(VERIPARSE_GMP_CONFIG_ENV
 
 ExternalProject_Add(veriparse_gmp_external
   PREFIX            ${VERIPARSE_GMP_PREFIX}
-  URL               ${VERIPARSE_GMP_URL}
+  URL               ${VERIPARSE_GMP_URLS}
   URL_HASH          SHA256=${VERIPARSE_GMP_SHA256}
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
   CONFIGURE_COMMAND ${VERIPARSE_GMP_CONFIG_ENV}
