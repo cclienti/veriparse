@@ -37,13 +37,26 @@ jobs:
       run:
         shell: ${{ matrix.shell }}
 
+    # Per-job env: compute once whether macOS should be built. macOS runners
+    # cost ~10x Linux, so skip the heavy steps unless a release is being
+    # published or workflow_dispatch was passed include_macos=true. The
+    # runner still allocates (~30s) but no actual build runs.
+    env:
+      SKIP_OSX: ${{ contains(matrix.platform, 'osx') && github.event_name != 'release' && github.event.inputs.include_macos != 'true' }}
+
     steps:
+      - name: Skip notice (macOS not opted-in)
+        if: env.SKIP_OSX == 'true'
+        run: echo "Skipping macOS build on this trigger; opt in with workflow_dispatch include_macos=true or publish a release."
+
       - name: Checkout
+        if: env.SKIP_OSX != 'true'
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup Micromamba
+        if: env.SKIP_OSX != 'true'
         uses: mamba-org/setup-micromamba@v3
         with:
           # micromamba 2.6.1 crashes (ACCESS_VIOLATION) during `shell init`
@@ -54,9 +67,11 @@ jobs:
           post-cleanup: none
 
       - name: Build conda package
+        if: env.SKIP_OSX != 'true'
         run: make package
 
       - name: Get package filename
+        if: env.SKIP_OSX != 'true'
         id: pkg
         run: echo "path=$(make package-name)" >> $GITHUB_OUTPUT
 

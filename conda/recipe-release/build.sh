@@ -31,7 +31,13 @@ fi
 # so the conda env's tools (cmake, gcc, make, ...) win over MSYS2's.
 if [[ "${target_platform}" == win-* ]]; then
   EXTRA_CMAKE_OPTS+=(-G "Unix Makefiles")
+  EXTRA_CMAKE_OPTS+=(-DCMAKE_VERBOSE_MAKEFILE=ON)
   export PATH="${PREFIX}/Library/bin:${PREFIX}/bin:${PATH}"
+  # Dump conda's injected toolchain envs for diagnostics.
+  echo "--- LDFLAGS:   ${LDFLAGS:-}"
+  echo "--- LDFLAGS_LD:${LDFLAGS_LD:-}"
+  echo "--- CFLAGS:    ${CFLAGS:-}"
+  echo "--- CXXFLAGS:  ${CXXFLAGS:-}"
 fi
 
 cmake ${CMAKE_ARGS} \
