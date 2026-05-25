@@ -4,33 +4,12 @@
   "version-string": "0.0.0",
   "builtin-baseline": "b02e341c927f16d991edbd915d8ea43eac52096c",
   "dependencies": [
-    {
-      "name": "gmp",
-      "version>=": "6.3.0"
-    },
-    {
-      "name": "boost-system",
-      "version>=": "1.85.0"
-    },
-    {
-      "name": "boost-filesystem",
-      "version>=": "1.85.0"
-    },
-    {
-      "name": "boost-log",
-      "version>=": "1.85.0"
-    },
-    {
-      "name": "boost-program-options",
-      "version>=": "1.85.0"
-    },
-    {
-      "name": "yaml-cpp",
-      "version>=": "0.8.0"
-    },
-    {
-      "name": "gtest",
-      "version>=": "1.17.0"
-    }
+    "gmp",
+    "boost-system",
+    "boost-filesystem",
+    "boost-log",
+    "boost-program-options",
+    "yaml-cpp",
+    "gtest"
   ]
 }
