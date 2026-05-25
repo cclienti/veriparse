@@ -104,17 +104,35 @@ jobs:
       - name: Install winflexbison
         run: choco install winflexbison3 -y --no-progress
 
-      # vcpkg via the official action: handles bootstrap, manifest install,
-      # and GitHub Actions cache integration via VCPKG_BINARY_SOURCES. The
-      # commit pin makes the dependency set reproducible.
+      # vcpkg via the official action: handles bootstrap (clone + build of
+      # the vcpkg tool) at the pinned commit. We DISABLE its built-in
+      # GHA-cache binary source because vcpkg invoked inside cmake's
+      # Configure step doesn't get the ACTIONS_RUNTIME_TOKEN/CACHE_URL env
+      # vars that the GHA backend requires.
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          # Pin to a recent vcpkg commit; update via Renovate or by hand.
+          # Keep in sync with builtin-baseline in vcpkg.json.
           vcpkgGitCommitId: 'b02e341c927f16d991edbd915d8ea43eac52096c'
           vcpkgJsonGlob: 'vcpkg.json'
+          # Don't run vcpkg install in this step; cmake's vcpkg integration
+          # will do it during configure, picking up the file-based cache.
+          runVcpkgInstall: false
+
+      # File-based vcpkg binary cache, persisted across runs by actions/cache.
+      # Restore before configure (where vcpkg actually runs); save after,
+      # always(), so even a failed build still preserves the built ports.
+      - name: Restore vcpkg binary cache
+        id: vcpkg-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/vcpkg-cache
+          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
+          restore-keys: vcpkg-win64-
 
       - name: Configure
+        env:
+          VCPKG_BINARY_SOURCES: 'clear;files,${{ runner.temp }}/vcpkg-cache,readwrite'
         run: |
           cmake -S . -B build `
             -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
@@ -132,6 +150,15 @@ jobs:
 
       - name: Install
         run: cmake --install build --config Release
+
+      # Save the vcpkg cache even if subsequent steps fail, so the next
+      # iteration doesn't re-build every port from scratch.
+      - name: Save vcpkg binary cache
+        if: always() && steps.vcpkg-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/vcpkg-cache
+          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
 
       - name: Compute zip name
         id: zipname
