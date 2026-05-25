@@ -16,6 +16,13 @@ foreach(subdir ${SUBDIRS})
     add_executable(${testname} "${test_source_files}")
     add_dependencies(build_tests ${testname})
     target_link_libraries(${testname} veriparse_static GTest::gtest GTest::gtest_main)
+    # On MinGW the static veriparse_static archive's transitive
+    # INTERFACE_LINK_LIBRARIES aren't always re-resolved against DLL imports
+    # for test executables (boost-log symbols stay __imp__ undefined). Re-link
+    # boost::log explicitly to force the import lib into linkLibs.rsp.
+    if(MINGW)
+      target_link_libraries(${testname} Boost::log)
+    endif()
     if(CMAKE_CROSSCOMPILING)
       add_test(${testname} wine ${testname}${CMAKE_EXECUTABLE_SUFFIX})
       set_tests_properties(${testname} PROPERTIES LABELS "unittest")
