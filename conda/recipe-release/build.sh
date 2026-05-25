@@ -32,12 +32,13 @@ fi
 if [[ "${target_platform}" == win-* ]]; then
   EXTRA_CMAKE_OPTS+=(-G "Unix Makefiles")
   EXTRA_CMAKE_OPTS+=(-DCMAKE_VERBOSE_MAKEFILE=ON)
+  # LTO requires the binutils LTO plugin so `ar` can index symbols in
+  # LTO-fat object files. conda-forge's mingw-w64 toolchain doesn't wire
+  # the plugin into the cross binutils correctly, so `ar` fails on the
+  # intermediate objects.a archive that CMake's MinGW link script builds.
+  # Disable LTO on Windows for now; relevant only for the apps' final size.
+  EXTRA_CMAKE_OPTS+=(-DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF)
   export PATH="${PREFIX}/Library/bin:${PREFIX}/bin:${PATH}"
-  # Dump conda's injected toolchain envs for diagnostics.
-  echo "--- LDFLAGS:   ${LDFLAGS:-}"
-  echo "--- LDFLAGS_LD:${LDFLAGS_LD:-}"
-  echo "--- CFLAGS:    ${CFLAGS:-}"
-  echo "--- CXXFLAGS:  ${CXXFLAGS:-}"
 fi
 
 cmake ${CMAKE_ARGS} \
