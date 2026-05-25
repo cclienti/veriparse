@@ -391,6 +391,33 @@ python astgen.py
 
 ---
 
+## Continuous Integration & Releases
+
+Veriparse uses two GitHub Actions workflows:
+
+| Workflow | Trigger | What runs |
+|----------|---------|-----------|
+| `ci.yml` | Push / PR on `master` | Dev-environment build + unit tests on `ubuntu-latest`. Fast smoke check. |
+| `release.yml` | See table below | Full conda-build pipeline producing the release `.conda` packages. |
+
+The `release.yml` workflow gates which platforms run based on the event,
+to avoid burning expensive macOS minutes (~10× Linux) on every iteration:
+
+| How `release.yml` was triggered | linux-64 | win-64 | osx-64 / osx-arm64 | Uploads to a GitHub Release |
+|---------------------------------|:--------:|:------:|:-----------------:|:---------------------------:|
+| Push to `master`                | ✓        | ✓      | —                 | no  |
+| `gh workflow run release.yml`   | ✓        | ✓      | —                 | no  |
+| `gh workflow run release.yml -f include_macos=true` | ✓ | ✓ | ✓     | no  |
+| GitHub Release published (`gh release create vX.Y.Z`) | ✓ | ✓ | ✓ | yes |
+
+In short:
+
+- **Day-to-day iteration**: just `git push` — CI verifies `linux-64` + `win-64` cheaply.
+- **Before tagging a release**: run `gh workflow run release.yml -f include_macos=true` once for a full 4-platform verification, without uploading anything.
+- **Actual release**: `gh release create vX.Y.Z ...` builds all four platforms and uploads the `.conda` packages to the release page.
+
+---
+
 ## License
 
 

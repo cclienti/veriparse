@@ -4,9 +4,24 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      include_macos:
+        description: 'Also build macOS (osx-64, osx-arm64). Defaults to false to avoid burning expensive macOS minutes during iteration.'
+        type: boolean
+        default: false
+  push:
+    branches: [master]
 
 jobs:
   build-conda-package:
+    # macOS runners cost ~10x Linux. Skip them by default; build them only
+    # when cutting a release or when explicitly requested via workflow_dispatch.
+    if: >-
+      ${{
+        !contains(matrix.platform, 'osx')
+        || github.event_name == 'release'
+        || (github.event_name == 'workflow_dispatch' && inputs.include_macos)
+      }}
     strategy:
       fail-fast: false
       matrix:
