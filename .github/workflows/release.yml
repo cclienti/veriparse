@@ -118,6 +118,10 @@ jobs:
           # Don't run vcpkg install in this step; cmake's vcpkg integration
           # will do it during configure, picking up the file-based cache.
           runVcpkgInstall: false
+          # Force a short root path. Boost's buildtree filenames push past
+          # Windows' 260-char MAX_PATH limit when vcpkg lives under the
+          # default deep checkout dir (D:\a\veriparse\veriparse\vcpkg\...).
+          vcpkgDirectory: 'C:\v'
 
       # File-based vcpkg binary cache, persisted across runs by actions/cache.
       # Restore before configure (where vcpkg actually runs); save after,
