@@ -1,30 +1,26 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rmdir /s /q build 2>nul
-mkdir build
-cd build
+REM Drive the build through MSYS2's bash so the full conda activation
+REM (including gcc_win-64 / m2w64-sysroot LDFLAGS, PATH, etc.) is in
+REM effect. This mirrors conda-forge gmp-feedstock's bld.bat.
+REM
+REM Generate a temporary conda_build.sh that activates the conda env
+REM inside bash, then appends our cross-platform build.sh.
 
-REM Use the MinGW Makefiles generator: GMP's autotools build (via
-REM cmake/external_gmp.cmake) requires a POSIX shell + GCC, not MSVC.
-REM gcc_win-64/gxx_win-64 (conda-forge) provide the MinGW toolchain.
-cmake %CMAKE_ARGS% ^
-  -G "MinGW Makefiles" ^
-  -DCMAKE_VERBOSE_MAKEFILE=ON ^
-  -DCMAKE_PREFIX_PATH=%PREFIX% ^
-  -DCMAKE_INSTALL_PREFIX=%PREFIX% ^
-  -DCMAKE_INSTALL_LIBDIR=lib ^
-  -DCMAKE_BUILD_TYPE=Release ^
-  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON ^
-  %SRC_DIR%
-if errorlevel 1 exit 1
+echo source %SYS_PREFIX:\=/%/etc/profile.d/conda.sh    > conda_build.sh
+echo conda activate "${PREFIX}"                       >> conda_build.sh
+echo conda activate --stack "${BUILD_PREFIX}"         >> conda_build.sh
+echo CONDA_PREFIX=${CONDA_PREFIX//\\//}               >> conda_build.sh
+type "%RECIPE_DIR%\build.sh"                          >> conda_build.sh
 
-cmake --build . --config Release --parallel %CPU_COUNT%
-if errorlevel 1 exit 1
+set PREFIX=%PREFIX:\=/%
+set BUILD_PREFIX=%BUILD_PREFIX:\=/%
+set CONDA_PREFIX=%CONDA_PREFIX:\=/%
+set SRC_DIR=%SRC_DIR:\=/%
+set MSYSTEM=UCRT64
+set MSYS2_PATH_TYPE=inherit
+set CHERE_INVOKING=1
 
-set VERIPARSE_SOURCE_ROOT=%SRC_DIR%
-ctest --test-dir . -j %CPU_COUNT% -L unittest --output-on-failure
-if errorlevel 1 exit 1
-
-cmake --install . --config Release
+bash -lc "./conda_build.sh"
 if errorlevel 1 exit 1

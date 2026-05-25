@@ -26,6 +26,14 @@ if [[ "${target_platform}" == osx-* ]]; then
   )
 fi
 
+# Windows runs inside MSYS2 UCRT64 via bld.bat. Force the Unix Makefiles
+# generator (otherwise CMake may try Visual Studio) and prepend $PREFIX/bin
+# so the conda env's tools (cmake, gcc, make, ...) win over MSYS2's.
+if [[ "${target_platform}" == win-* ]]; then
+  EXTRA_CMAKE_OPTS+=(-G "Unix Makefiles")
+  export PATH="${PREFIX}/Library/bin:${PREFIX}/bin:${PATH}"
+fi
+
 cmake ${CMAKE_ARGS} \
   -DCMAKE_PREFIX_PATH=${PREFIX} \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \

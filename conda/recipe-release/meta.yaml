@@ -26,29 +26,27 @@ requirements:
     - yaml-cpp=0.8.0
 
   build:
-    - {{ compiler('cxx') }}  # [not win]
-    - {{ compiler('c') }}    # [not win]
-    # Windows: use the MinGW (gcc/g++) toolchain instead of MSVC. autotools
-    # (GMP's build system) doesn't work with MSVC, and conda-forge's gmp on
-    # win-64 ships without gmpxx for that same reason.
-    - gcc_win-64             # [win]
-    - gxx_win-64             # [win]
+    # Compiler selection on Windows is steered by conda_build_config.yaml
+    # to use the MinGW (gcc/g++) toolchain instead of MSVC, since GMP's
+    # autotools build doesn't work with MSVC.
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - cmake
-    - mold             # [not win]
-    # Autotools toolchain to build GMP. The m2-* variants are MSYS2 builds
-    # used inside conda-build's Windows env.
-    - make             # [not win]
-    - autoconf         # [not win]
-    - automake         # [not win]
-    - libtool          # [not win]
-    - m4               # [not win]
-    - m2-make          # [win]
-    - m2-autoconf      # [win]
-    - m2-automake-wrapper  # [win]
-    - m2-libtool       # [win]
-    - m2-m4            # [win]
-    - m2-bash          # [win]
-    - m2-msys2-runtime # [win]
+    - mold             # [linux]
+    # GMP is built from source by ExternalProject (autotools-based). On
+    # native Windows builds we run that inside MSYS2 (see bld.bat), hence
+    # the m2-* equivalents of the GNU build tools. Cross-builds from Linux
+    # use Linux-native autotools (no m2- prefix), so key these selectors on
+    # build_platform.
+    - make             # [not build_platform.startswith("win-")]
+    - m4               # [not build_platform.startswith("win-")]
+    - m2-make          # [build_platform.startswith("win-")]
+    - m2-m4            # [build_platform.startswith("win-")]
+    - m2-base          # [build_platform.startswith("win-")]
+    - m2-diffutils     # [build_platform.startswith("win-")]
+    # Refreshed config.guess / config.sub for modern host triplets.
+    - gnuconfig
     - flex=2.6.4       # [not win]
     - bison=3.8.2      # [not win]
     # conda-forge's m2-bison is stuck at the old msys2 epoch and unsolvable;
