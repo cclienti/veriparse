@@ -8,6 +8,7 @@ SpaceBeforeParens: Never
 IndentCaseLabels: false
 PointerAlignment: Right
 SortIncludes: false
+InsertBraces: true
 AccessModifierOffset: -4
 BreakBeforeBraces: Custom
 BraceWrapping:
