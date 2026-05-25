@@ -1,0 +1,7 @@
+{
+  "name": "veriparse",
+  "version-string": "1.2.0",
+  "dependencies": [
+    "gmp"
+  ]
+}

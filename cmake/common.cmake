@@ -72,15 +72,12 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   # import lib, which the module path doesn't pick up cleanly.
   find_package(GTest CONFIG REQUIRED)
   find_package(YAMLCPP REQUIRED)
-  # GMP is built from source (see cmake/external_gmp.cmake) so we have a
-  # single code path across Linux/macOS/Windows. conda-forge's win-64 gmp
-  # has no gmpxx, so find_package(GMP) cannot be made to work there.
-  include(${CMAKE_CURRENT_LIST_DIR}/external_gmp.cmake)
-  # On Windows, conda-forge's BoostConfig defaults to static-linking variants
-  # of each component, but the compile flags it injects assume DYN_LINK (so
-  # headers reference symbols as __imp_*). Force the shared variant to keep
-  # both sides consistent. Linux/macOS already use shared by default.
-  set(Boost_USE_STATIC_LIBS OFF)
+  # GMP comes from different sources per platform:
+  #  - Linux/macOS: conda-forge `gmp` (host: requirement in meta.yaml).
+  #  - Windows: vcpkg `gmp` port (declared in vcpkg.json, installed by
+  #    bld.bat; the vcpkg toolchain file makes find_package(GMP) work).
+  # conda-forge's win-64 gmp ships only the C library (no gmpxx).
+  find_package(GMP REQUIRED)
   find_package(Boost 1.85.0 CONFIG REQUIRED
 	COMPONENTS system filesystem log program_options)
 

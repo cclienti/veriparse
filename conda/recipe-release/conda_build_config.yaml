@@ -1,8 +1,0 @@
-# Steer conda-build's {{ compiler() }} macros to the MinGW toolchain on
-# Windows. GMP's autotools build is incompatible with MSVC, so the entire
-# stack uses MinGW.
-
-c_compiler:        # [win]
-  - gcc            # [win]
-cxx_compiler:      # [win]
-  - gxx            # [win]

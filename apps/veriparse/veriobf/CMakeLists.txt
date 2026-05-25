@@ -22,9 +22,4 @@ add_executable (veriobf ${source_files})
 target_link_libraries (veriobf veriparse_static)
 target_link_libraries (veriobf Boost::program_options Boost::filesystem)
 
-# See comment in veriflat/CMakeLists.txt about -mconsole on MinGW.
-if(MINGW)
-  set_target_properties(veriobf PROPERTIES LINK_FLAGS "-mconsole")
-endif()
-
 install (TARGETS veriobf RUNTIME DESTINATION bin)

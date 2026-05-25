@@ -12,8 +12,9 @@ build:
 
 requirements:
   host:
-    # GMP is built from source via ExternalProject (cmake/external_gmp.cmake)
-    # so it is intentionally not listed here. See that file for the rationale.
+    # GMP comes from conda-forge on Unix; on Windows we use vcpkg's gmp port
+    # (declared in vcpkg.json) because conda-forge's win-64 gmp lacks gmpxx.
+    - gmp=6.3.0        # [not win]
     - flex=2.6.4       # [not win]
     - winflexbison     # [win]
     - gtest=1.17.0
@@ -21,39 +22,26 @@ requirements:
     - yaml-cpp=0.8.0
 
   run:
-    # GMP shared lib is bundled in the package (via install rule).
+    - gmp=6.3.0        # [not win]
     - boost=1.85.0
     - yaml-cpp=0.8.0
 
   build:
-    # Compiler selection on Windows is steered by conda_build_config.yaml
-    # to use the MinGW (gcc/g++) toolchain instead of MSVC, since GMP's
-    # autotools build doesn't work with MSVC. We omit {{ stdlib('c') }}
-    # because resolving it needs conda-forge's central pinnings, which we
-    # don't inherit — the compiler() macros pull the sysroot transitively.
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
+    - make             # [not win]
     - mold             # [linux]
-    # GMP is built from source by ExternalProject (autotools-based). On
-    # native Windows builds we run that inside MSYS2 (see bld.bat), hence
-    # the m2-* equivalents of the GNU build tools. Cross-builds from Linux
-    # use Linux-native autotools (no m2- prefix), so key these selectors on
-    # build_platform.
-    - make             # [not build_platform.startswith("win-")]
-    - m4               # [not build_platform.startswith("win-")]
-    - m2-make          # [build_platform.startswith("win-")]
-    - m2-m4            # [build_platform.startswith("win-")]
-    - m2-base          # [build_platform.startswith("win-")]
-    - m2-diffutils     # [build_platform.startswith("win-")]
-    # Refreshed config.guess / config.sub for modern host triplets.
-    - gnuconfig
     - flex=2.6.4       # [not win]
     - bison=3.8.2      # [not win]
     # conda-forge's m2-bison is stuck at the old msys2 epoch and unsolvable;
     # winflexbison (lexxmark/winflexbison) bundles bison 3.7.4 + flex 2.6.4
     # as win_bison.exe / win_flex.exe.
     - winflexbison     # [win]
+    # On Windows we drive GMP through vcpkg; git is needed to clone the
+    # vcpkg repo in bld.bat.
+    - git              # [win]
+    - gmp=6.3.0        # [not win]
     - boost=1.85.0
     - yaml-cpp=0.8.0
     - gtest=1.17.0
