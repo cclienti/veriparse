@@ -76,6 +76,11 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   # single code path across Linux/macOS/Windows. conda-forge's win-64 gmp
   # has no gmpxx, so find_package(GMP) cannot be made to work there.
   include(${CMAKE_CURRENT_LIST_DIR}/external_gmp.cmake)
+  # On Windows, conda-forge's BoostConfig defaults to static-linking variants
+  # of each component, but the compile flags it injects assume DYN_LINK (so
+  # headers reference symbols as __imp_*). Force the shared variant to keep
+  # both sides consistent. Linux/macOS already use shared by default.
+  set(Boost_USE_STATIC_LIBS OFF)
   find_package(Boost 1.85.0 CONFIG REQUIRED
 	COMPONENTS system filesystem log program_options)
 
