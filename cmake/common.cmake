@@ -35,17 +35,32 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ### Compiler flags
   ########################################
 
-  if(MINGW)
-    string(APPEND CMAKE_CXX_FLAGS " -Wa,-mbig-obj -std=c++17 -Wall")
+  if(MSVC)
+    # MSVC doesn't speak GCC-style flags. Standard is set via CMAKE_CXX_STANDARD
+    # below, /W3 is the default warning level. Skip /WX (warnings as errors)
+    # because MSVC warns about a different set than GCC and a clean -Wall
+    # Windows build is a separate effort.
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_EXTENSIONS OFF)
+    string(APPEND CMAKE_CXX_FLAGS " /EHsc /bigobj")
+    set(CMAKE_CXX_FLAGS_DEBUG  "/Zi /Od /DDEBUG")
+    set(CMAKE_CXX_FLAGS_FULLDEBUG  "/Zi /Od /DDEBUG /DFULL_DEBUG")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/Zi /O2 /DDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
   else()
-    string(APPEND CMAKE_CXX_FLAGS " -std=c++17 -Wall")
-  endif()
+    if(MINGW)
+      string(APPEND CMAKE_CXX_FLAGS " -Wa,-mbig-obj -std=c++17 -Wall")
+    else()
+      string(APPEND CMAKE_CXX_FLAGS " -std=c++17 -Wall")
+    endif()
 
-  set(CMAKE_CXX_FLAGS_DEBUG  "-g3 -DDEBUG")
-  set(CMAKE_CXX_FLAGS_FULLDEBUG  "-g3 -DDEBUG -DFULL_DEBUG")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Werror -g3 -O3 -DDEBUG")
-  set(CMAKE_CXX_FLAGS_RELEASE "-Werror -s -O3")
-  set(CMAKE_CXX_FLAGS_COVERAGE "-g3 -DDEBUG -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_FLAGS_DEBUG  "-g3 -DDEBUG")
+    set(CMAKE_CXX_FLAGS_FULLDEBUG  "-g3 -DDEBUG -DFULL_DEBUG")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Werror -g3 -O3 -DDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "-Werror -s -O3")
+    set(CMAKE_CXX_FLAGS_COVERAGE "-g3 -DDEBUG -fprofile-arcs -ftest-coverage")
+  endif()
 
 
   ########################################
