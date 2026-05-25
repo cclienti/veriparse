@@ -70,9 +70,14 @@ jobs:
       # vcpkg builds GMP from source (~10+ min on Windows). Cache the binary
       # archives so subsequent runs reuse the built package and complete in
       # seconds. Only relevant on win-64 (Unix gets GMP from conda-forge).
-      - name: Cache vcpkg binary archives
+      #
+      # Use split restore/save so the cache is saved even when the build step
+      # fails (the combined action's post-step is skipped on failure, which
+      # was preventing the cache from ever being populated during iteration).
+      - name: Restore vcpkg binary archives
+        id: vcpkg-cache
         if: matrix.platform == 'win-64'
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ~/AppData/Local/vcpkg/archives
           key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
@@ -80,6 +85,13 @@ jobs:
 
       - name: Build conda package
         run: make package
+
+      - name: Save vcpkg binary archives
+        if: always() && matrix.platform == 'win-64' && steps.vcpkg-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/AppData/Local/vcpkg/archives
+          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
 
       - name: Get package filename
         id: pkg
