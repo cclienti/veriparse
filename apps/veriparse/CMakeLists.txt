@@ -41,7 +41,7 @@ set(VERIPARSE_APPS_TESTS
   "double_fpu-master")
 
 
-if(NOT MINGW)
+if(NOT WIN32)
 
   # Iterate over all tests
   foreach(VERIPARSE_APPS_TEST ${VERIPARSE_APPS_TESTS})
