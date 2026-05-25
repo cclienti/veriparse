@@ -112,8 +112,9 @@ jobs:
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          # Keep in sync with builtin-baseline in vcpkg.json.
-          vcpkgGitCommitId: 'b02e341c927f16d991edbd915d8ea43eac52096c'
+          # Pinned to vcpkg release 2026.04.27. Keep in sync with
+          # builtin-baseline in vcpkg.json (both reference the same commit).
+          vcpkgGitCommitId: '56bb2411609227288b70117ead2c47585ba07713'
           vcpkgJsonGlob: 'vcpkg.json'
           # Don't run vcpkg install in this step; cmake's vcpkg integration
           # will do it during configure, picking up the file-based cache.
