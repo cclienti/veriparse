@@ -267,7 +267,7 @@ template <class T> struct power : public binary_operator<T>
         }
 
         T result{1};
-        while(_y) {
+        while(_y != T{0}) {
             if((_y & T{1}) != T{0}) {
                 result *= _x;
             }
