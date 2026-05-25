@@ -67,6 +67,17 @@ jobs:
             ${{ runner.os == 'Windows' && 'powershell' || 'bash' }}
           post-cleanup: none
 
+      # vcpkg builds GMP from source (~10+ min on Windows). Cache the binary
+      # archives so subsequent runs reuse the built package and complete in
+      # seconds. Only relevant on win-64 (Unix gets GMP from conda-forge).
+      - name: Cache vcpkg binary archives
+        if: matrix.platform == 'win-64'
+        uses: actions/cache@v4
+        with:
+          path: ~/AppData/Local/vcpkg/archives
+          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
+          restore-keys: vcpkg-win64-
+
       - name: Build conda package
         run: make package
 
