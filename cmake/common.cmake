@@ -66,7 +66,11 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   ### Libraries
   ########################################
 
-  find_package(GTest REQUIRED)
+  # Prefer the upstream GTestConfig.cmake (CONFIG mode) over CMake's
+  # built-in FindGTest module: the conda-forge gtest package on Windows
+  # ships GTestConfig with the right IMPORTED_IMPLIB path to the DLL's
+  # import lib, which the module path doesn't pick up cleanly.
+  find_package(GTest CONFIG REQUIRED)
   find_package(YAMLCPP REQUIRED)
   # GMP is built from source (see cmake/external_gmp.cmake) so we have a
   # single code path across Linux/macOS/Windows. conda-forge's win-64 gmp

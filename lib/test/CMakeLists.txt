@@ -15,7 +15,7 @@ foreach(subdir ${SUBDIRS})
 
     add_executable(${testname} "${test_source_files}")
     add_dependencies(build_tests ${testname})
-    target_link_libraries(${testname} veriparse_static GTest::GTest GTest::Main)
+    target_link_libraries(${testname} veriparse_static GTest::gtest GTest::gtest_main)
     if(CMAKE_CROSSCOMPILING)
       add_test(${testname} wine ${testname}${CMAKE_EXECUTABLE_SUFFIX})
       set_tests_properties(${testname} PROPERTIES LABELS "unittest")
