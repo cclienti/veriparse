@@ -7,22 +7,20 @@ source:
 
 build:
   number: 0
+  skip: true  # [win]
   ignore_run_exports:
     - gtest
 
 requirements:
   host:
-    # GMP comes from conda-forge on Unix; on Windows we use vcpkg's gmp port
-    # (declared in vcpkg.json) because conda-forge's win-64 gmp lacks gmpxx.
-    - gmp=6.3.0        # [not win]
-    - flex=2.6.4       # [not win]
-    - winflexbison     # [win]
+    - gmp=6.3.0
+    - flex=2.6.4
     - gtest=1.17.0
     - boost=1.85.0
     - yaml-cpp=0.8.0
 
   run:
-    - gmp=6.3.0        # [not win]
+    - gmp=6.3.0
     - boost=1.85.0
     - yaml-cpp=0.8.0
 
@@ -30,18 +28,11 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
-    - make             # [not win]
+    - make
     - mold             # [linux]
-    - flex=2.6.4       # [not win]
-    - bison=3.8.2      # [not win]
-    # conda-forge's m2-bison is stuck at the old msys2 epoch and unsolvable;
-    # winflexbison (lexxmark/winflexbison) bundles bison 3.7.4 + flex 2.6.4
-    # as win_bison.exe / win_flex.exe.
-    - winflexbison     # [win]
-    # On Windows we drive GMP through vcpkg; git is needed to clone the
-    # vcpkg repo in bld.bat.
-    - git              # [win]
-    - gmp=6.3.0        # [not win]
+    - flex=2.6.4
+    - bison=3.8.2
+    - gmp=6.3.0
     - boost=1.85.0
     - yaml-cpp=0.8.0
     - gtest=1.17.0

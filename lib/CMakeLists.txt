@@ -29,18 +29,24 @@ endif()
 find_package(BISON)
 find_package(FLEX)
 
-# winflexbison installs FlexLexer.h at a non-standard location
-# (Library/share/winflexbison/FlexLexer.h instead of Library/include/),
-# so the C++ scanner sources can't find it on their own. Derive the path
-# from FLEX_EXECUTABLE and expose it via an INTERFACE target.
+# winflexbison ships FlexLexer.h outside the default include path. The
+# location varies by distribution: chocolatey installs it next to
+# win_flex.exe in `tools/`, conda-forge puts it under
+# `Library/share/winflexbison/`. Probe both relative to FLEX_EXECUTABLE
+# and add whichever exists to the include path.
 add_library(veriparse_flex_lexer_h INTERFACE)
 if(WIN32 AND FLEX_EXECUTABLE)
   get_filename_component(_flex_bin_dir ${FLEX_EXECUTABLE} DIRECTORY)
   get_filename_component(_flex_prefix  ${_flex_bin_dir}   DIRECTORY)
-  set(_flex_lexer_dir ${_flex_prefix}/share/winflexbison)
-  if(EXISTS ${_flex_lexer_dir}/FlexLexer.h)
-    target_include_directories(veriparse_flex_lexer_h INTERFACE ${_flex_lexer_dir})
-  endif()
+  foreach(_candidate
+      ${_flex_bin_dir}
+      ${_flex_prefix}/share/winflexbison
+      ${_flex_prefix}/tools)
+    if(EXISTS ${_candidate}/FlexLexer.h)
+      target_include_directories(veriparse_flex_lexer_h INTERFACE ${_candidate})
+      break()
+    endif()
+  endforeach()
 endif()
 
 # Verilog parser

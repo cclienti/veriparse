@@ -1,4 +1,4 @@
-name: Release - Build Conda Package
+name: Release - Build Packages
 
 on:
   release:
@@ -15,7 +15,8 @@ on:
 jobs:
   # Emit the matrix at runtime so macOS entries are omitted entirely when
   # not needed. This avoids allocating macOS runners (~10x Linux cost) for
-  # iterations where only linux+windows verification is wanted.
+  # iterations where only linux verification is wanted. Windows is built by
+  # a separate (cmake + vcpkg + MSVC, zip) job below, not via conda-build.
   matrix:
     runs-on: ubuntu-latest
     outputs:
@@ -28,8 +29,7 @@ jobs:
           {
             echo 'matrix<<EOF'
             echo '{"include":['
-            echo '{"os":"ubuntu-latest","platform":"linux-64","shell":"bash -el {0}"},'
-            echo '{"os":"windows-2022","platform":"win-64","shell":"pwsh"}'
+            echo '{"os":"ubuntu-latest","platform":"linux-64","shell":"bash -el {0}"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
               echo '{"os":"macos-latest","platform":"osx-64","shell":"bash -el {0}"},'
@@ -39,6 +39,7 @@ jobs:
             echo EOF
           } >> "$GITHUB_OUTPUT"
 
+  # Linux + macOS: build a conda package via conda-build.
   build-conda-package:
     needs: matrix
     strategy:
@@ -63,35 +64,11 @@ jobs:
           # micromamba 2.6.1 crashes (ACCESS_VIOLATION) during `shell init`
           # on the windows-2022 runner; pin to a known-good version.
           micromamba-version: '2.0.5-0'
-          init-shell: >-
-            ${{ runner.os == 'Windows' && 'powershell' || 'bash' }}
+          init-shell: bash
           post-cleanup: none
-
-      # vcpkg builds GMP from source (~10+ min on Windows). Cache the binary
-      # archives so subsequent runs reuse the built package and complete in
-      # seconds. Only relevant on win-64 (Unix gets GMP from conda-forge).
-      #
-      # Use split restore/save so the cache is saved even when the build step
-      # fails (the combined action's post-step is skipped on failure, which
-      # was preventing the cache from ever being populated during iteration).
-      - name: Restore vcpkg binary archives
-        id: vcpkg-cache
-        if: matrix.platform == 'win-64'
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/AppData/Local/vcpkg/archives
-          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
-          restore-keys: vcpkg-win64-
 
       - name: Build conda package
         run: make package
-
-      - name: Save vcpkg binary archives
-        if: always() && matrix.platform == 'win-64' && steps.vcpkg-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: ~/AppData/Local/vcpkg/archives
-          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
 
       - name: Get package filename
         id: pkg
@@ -102,5 +79,80 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: ${{ steps.pkg.outputs.path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Windows: build directly with MSVC + vcpkg, no conda. The result is a
+  # self-contained zip. conda-forge's win-64 ecosystem doesn't ship gmpxx
+  # and is MSVC-built while veriparse uses C++ libraries with the same
+  # ABI requirement; building via vcpkg keeps the toolchain coherent and
+  # iteration friction much lower than the conda-build sandbox.
+  build-windows-zip:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # vcpkg doesn't have a flex/bison port; chocolatey ships winflexbison
+      # (lexxmark/winflexbison) which provides win_flex.exe + win_bison.exe.
+      - name: Install winflexbison
+        run: choco install winflexbison3 -y --no-progress
+
+      # vcpkg via the official action: handles bootstrap, manifest install,
+      # and GitHub Actions cache integration via VCPKG_BINARY_SOURCES. The
+      # commit pin makes the dependency set reproducible.
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          # Pin to a recent vcpkg commit; update via Renovate or by hand.
+          vcpkgGitCommitId: 'b02e341c927f16d991edbd915d8ea43eac52096c'
+          vcpkgJsonGlob: 'vcpkg.json'
+
+      - name: Configure
+        run: |
+          cmake -S . -B build `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
+            -DVCPKG_TARGET_TRIPLET=x64-windows `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/install"
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Test (unittest)
+        env:
+          VERIPARSE_SOURCE_ROOT: ${{ github.workspace }}
+        run: ctest --test-dir build -j 4 -L unittest --output-on-failure -C Release
+
+      - name: Install
+        run: cmake --install build --config Release
+
+      - name: Compute zip name
+        id: zipname
+        run: |
+          $version = "$(git describe --tags --always --dirty)"
+          $name = "veriparse-${version}-win64.zip"
+          echo "name=$name" >> $env:GITHUB_OUTPUT
+
+      - name: Zip
+        run: Compress-Archive -Path install/* -DestinationPath ${{ steps.zipname.outputs.name }}
+
+      - name: Upload artifact (every run, for download from the run page)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.zipname.outputs.name }}
+          path: ${{ steps.zipname.outputs.name }}
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v3
+        with:
+          files: ${{ steps.zipname.outputs.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,7 +1,35 @@
 {
+  "$comment": "Manifest consumed by vcpkg only; not a published port. The name/version-string fields are required by the schema but unused at build time. The veriparse artifact version comes from `git describe` at packaging time, not from this file.",
   "name": "veriparse",
-  "version-string": "1.2.0",
+  "version-string": "0.0.0",
   "dependencies": [
-    "gmp"
+    {
+      "name": "gmp",
+      "version>=": "6.3.0"
+    },
+    {
+      "name": "boost-system",
+      "version>=": "1.85.0"
+    },
+    {
+      "name": "boost-filesystem",
+      "version>=": "1.85.0"
+    },
+    {
+      "name": "boost-log",
+      "version>=": "1.85.0"
+    },
+    {
+      "name": "boost-program-options",
+      "version>=": "1.85.0"
+    },
+    {
+      "name": "yaml-cpp",
+      "version>=": "0.8.0"
+    },
+    {
+      "name": "gtest",
+      "version>=": "1.17.0"
+    }
   ]
 }
