@@ -38,9 +38,11 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
   if(MINGW)
     string(APPEND CMAKE_CXX_FLAGS " -Wa,-mbig-obj -std=c++17 -Wall")
     # Force the console subsystem so the linker resolves main() rather than
-    # WinMain(); the conda-forge gcc_win-64 activation injects LDFLAGS that
-    # otherwise pull in the Windows-GUI startup (crtexewin.c).
-    string(APPEND CMAKE_EXE_LINKER_FLAGS " -mconsole")
+    # WinMain(). Use the direct linker flag (-Wl,--subsystem,console) instead
+    # of -mconsole: when an INTERFACE_LINK_OPTIONS on a linked target adds
+    # -mwindows (Boost on MinGW does, in some builds), only the last
+    # --subsystem on the ld line wins.
+    string(APPEND CMAKE_EXE_LINKER_FLAGS " -Wl,--subsystem,console")
   else()
     string(APPEND CMAKE_CXX_FLAGS " -std=c++17 -Wall")
   endif()

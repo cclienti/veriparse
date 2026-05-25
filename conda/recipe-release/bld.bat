@@ -10,6 +10,7 @@ REM cmake/external_gmp.cmake) requires a POSIX shell + GCC, not MSVC.
 REM gcc_win-64/gxx_win-64 (conda-forge) provide the MinGW toolchain.
 cmake %CMAKE_ARGS% ^
   -G "MinGW Makefiles" ^
+  -DCMAKE_VERBOSE_MAKEFILE=ON ^
   -DCMAKE_PREFIX_PATH=%PREFIX% ^
   -DCMAKE_INSTALL_PREFIX=%PREFIX% ^
   -DCMAKE_INSTALL_LIBDIR=lib ^
