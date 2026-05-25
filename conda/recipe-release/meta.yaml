@@ -28,8 +28,9 @@ requirements:
   build:
     # Compiler selection on Windows is steered by conda_build_config.yaml
     # to use the MinGW (gcc/g++) toolchain instead of MSVC, since GMP's
-    # autotools build doesn't work with MSVC.
-    - {{ stdlib('c') }}
+    # autotools build doesn't work with MSVC. We omit {{ stdlib('c') }}
+    # because resolving it needs conda-forge's central pinnings, which we
+    # don't inherit — the compiler() macros pull the sysroot transitively.
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
