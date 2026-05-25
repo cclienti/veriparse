@@ -339,7 +339,7 @@ AST::IntConstN::Ptr power<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
             res = 0;
         } else {
             res = 1;
-            while(val_y) {
+            while(val_y != 0) {
                 if((val_y & mpz_class(1)) == 1) {
                     res *= val_x;
                 }

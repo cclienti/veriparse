@@ -72,7 +72,7 @@ int BranchSelection::process(AST::Node::Ptr node, AST::Node::Ptr parent)
                     if(!result->is_node_type(AST::NodeType::IntConstN)) {
                         continue;
                     }
-                    if(AST::cast_to<AST::IntConstN>(result)->get_value()) {
+                    if(AST::cast_to<AST::IntConstN>(result)->get_value() != 0) {
                         stop = true;
                         break;
                     }
