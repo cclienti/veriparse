@@ -3,13 +3,14 @@ setlocal enabledelayedexpansion
 
 REM Veriparse Windows build pipeline.
 REM
-REM Toolchain: MSVC (the default conda-build compiler on Windows). conda-
-REM forge provides MSVC-built libboost, yaml-cpp, gtest, etc. — so the
-REM whole stack stays on a single C++ ABI.
+REM Toolchain: MSVC (the default conda-build compiler on Windows).
+REM conda-forge provides MSVC-built libboost, yaml-cpp, gtest, etc.,
+REM so the whole stack stays on a single C++ ABI.
 REM
-REM GMP comes from vcpkg's `gmp` port (declared in vcpkg.json). The
-REM conda-forge `gmp` package on win-64 doesn't ship gmpxx, so we install
-REM GMP+gmpxx via vcpkg and let CMake pick it up via the vcpkg toolchain.
+REM GMP comes from vcpkg's gmp port (declared in vcpkg.json). The
+REM conda-forge gmp package on win-64 does not ship gmpxx, so we
+REM install GMP+gmpxx via vcpkg and let CMake pick it up via the
+REM vcpkg toolchain.
 
 set "VCPKG_ROOT=%SRC_DIR%\vcpkg"
 
