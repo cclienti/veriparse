@@ -38,7 +38,7 @@ CONDA_BUILD_CHANNELS = -c $(CONDA_DEST_REPO) -c conda-forge
 
 CONDA_INDEX          = micromamba index --no-progress -n $(CONDA_DEST_CHANNEL)
 
-NUM_CORES            = $(shell nproc)
+NUM_CORES            = $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
 MAMBA                = micromamba
 DEV_BUILD_DIR        = build
 REPO_ROOT            = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
