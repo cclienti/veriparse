@@ -49,21 +49,29 @@ add_subdirectory(apps)
 
 
 ########################################
-### Bundle vcpkg runtime DLLs on Windows
+### Bundle runtime DLLs on Windows
 ########################################
 
-# On Windows we link against vcpkg-supplied GMP (dynamic). Ship the DLLs
-# alongside our binaries so the conda package is self-contained. vcpkg's
-# CMake integration enables VCPKG_APPLOCAL_DEPS by default for x64-windows
-# (copies DLLs into the build tree next to executables), but install(TARGETS)
-# only installs the .exe, not adjacent DLLs. Explicitly install everything
-# in vcpkg's bin dir for our triplet.
-if(WIN32 AND DEFINED VCPKG_TARGET_TRIPLET)
-  set(_veriparse_vcpkg_bin
-      ${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/bin)
-  if(EXISTS ${_veriparse_vcpkg_bin})
-    install(DIRECTORY ${_veriparse_vcpkg_bin}/
-            DESTINATION bin
-            FILES_MATCHING PATTERN "*.dll")
+# Make the .zip self-contained on a clean Windows install:
+#   - MSVC runtime (vcruntime140, msvcp140, ...) via the CMake helper;
+#     these usually ship with Windows Update but not on a vanilla install.
+#   - vcpkg-supplied DLLs (boost, gmp, yaml-cpp, ...) from the build's
+#     vcpkg_installed bin dir. install(TARGETS) only handles the .exe.
+# Filter out gtest/gmock DLLs: they live in the same vcpkg bin dir but
+# the shipping executables don't link them.
+if(WIN32)
+  include(InstallRequiredSystemLibraries)
+
+  if(DEFINED VCPKG_TARGET_TRIPLET)
+    set(_veriparse_vcpkg_bin
+        ${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/bin)
+    if(EXISTS ${_veriparse_vcpkg_bin})
+      install(DIRECTORY ${_veriparse_vcpkg_bin}/
+              DESTINATION bin
+              FILES_MATCHING
+              PATTERN "*.dll"
+              PATTERN "gtest*.dll" EXCLUDE
+              PATTERN "gmock*.dll" EXCLUDE)
+    endif()
   endif()
 endif()
