@@ -34,7 +34,10 @@
       "configuration": "Release",
       "output": { "outputOnFailure": true },
       "filter": { "include": { "label": "unittest" } },
-      "execution": { "jobs": 4 }
+      "execution": { "jobs": 4 },
+      "environment": {
+        "VERIPARSE_SOURCE_ROOT": "${sourceDir}"
+      }
     }
   ],
   "workflowPresets": [
