@@ -105,7 +105,7 @@ jobs:
 
       - name: Restore vcpkg binary cache
         id: vcpkg-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ runner.temp }}/vcpkg-cache
           key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
@@ -118,7 +118,7 @@ jobs:
 
       - name: Save vcpkg binary cache
         if: always() && steps.vcpkg-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ runner.temp }}/vcpkg-cache
           key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
@@ -137,7 +137,7 @@ jobs:
         run: Compress-Archive -Path install/windows-release/* -DestinationPath ${{ steps.zipname.outputs.name }}
 
       - name: Upload artifact (every run, for download from the run page)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.zipname.outputs.name }}
           path: ${{ steps.zipname.outputs.name }}
