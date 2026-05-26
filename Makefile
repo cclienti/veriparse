@@ -62,7 +62,7 @@ dev-env-file: conda/recipe-release/meta.yaml
 	  grep '^ *- ' | grep -v '{{\|compiler\|stdlib\|mold' | \
 	  grep -vE '# *\[(win|build_platform.startswith\("win-"\))\]' | \
 	  sed 's/^ *- /  - /' >> conda/environment.yml
-	@echo "  - iverilog"              >> conda/environment.yml
+	@if [ "$$(uname -s)" = "Linux" ]; then echo "  - iverilog" >> conda/environment.yml; fi
 	@echo "  - verilator"             >> conda/environment.yml
 
 dev-env: dev-env-file
