@@ -1025,6 +1025,53 @@ partselect_plus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
     }
 }
 
+// Force MSVC to emit external symbols for these explicitly-specialized templates.
+// Without this, MSVC archives the .obj into veriparse_static.lib but the
+// specialized operator() symbols aren't externally visible, breaking downstream
+// link. GCC/Clang already emit them; this is a no-op for them.
+#define VP_INST(NAME) template struct NAME<AST::IntConstN::Ptr>
+VP_INST(unsigned_fct);
+VP_INST(signed_fct);
+VP_INST(clog2);
+VP_INST(uplus);
+VP_INST(uminus);
+VP_INST(ulnot);
+VP_INST(unot);
+VP_INST(uand);
+VP_INST(unand);
+VP_INST(uor);
+VP_INST(unor);
+VP_INST(uxor);
+VP_INST(uxnor);
+VP_INST(pointer);
+VP_INST(partselect);
+VP_INST(partselect_plus);
+VP_INST(partselect_minus);
+VP_INST(power);
+VP_INST(times);
+VP_INST(divide);
+VP_INST(mod);
+VP_INST(plus);
+VP_INST(minus);
+VP_INST(sll);
+VP_INST(sra);
+VP_INST(srl);
+VP_INST(logical_and);
+VP_INST(logical_or);
+VP_INST(less_than);
+VP_INST(less_equal);
+VP_INST(greater_than);
+VP_INST(greater_equal);
+VP_INST(equal);
+VP_INST(not_equal);
+VP_INST(case_equal);
+VP_INST(case_not_equal);
+VP_INST(bitwise_and);
+VP_INST(bitwise_or);
+VP_INST(bitwise_xor);
+VP_INST(bitwise_xnor);
+#undef VP_INST
+
 } // namespace Transformations
 } // namespace Passes
 } // namespace Veriparse

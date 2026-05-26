@@ -102,6 +102,16 @@ AST::FloatConst::Ptr ternary<AST::FloatConst::Ptr, AST::FloatConst::Ptr>::operat
     }
 }
 
+// MSVC symbol emission workaround; see expression_operators_intconst.cpp.
+#define VP_INST(C, T) template struct ternary<C, T>
+VP_INST(AST::IntConstN::Ptr, AST::Node::Ptr);
+VP_INST(AST::FloatConst::Ptr, AST::Node::Ptr);
+VP_INST(AST::IntConstN::Ptr, AST::IntConstN::Ptr);
+VP_INST(AST::IntConstN::Ptr, AST::FloatConst::Ptr);
+VP_INST(AST::FloatConst::Ptr, AST::IntConstN::Ptr);
+VP_INST(AST::FloatConst::Ptr, AST::FloatConst::Ptr);
+#undef VP_INST
+
 } // namespace Transformations
 } // namespace Passes
 } // namespace Veriparse

@@ -218,6 +218,27 @@ logical_or<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
     }
 }
 
+// MSVC symbol emission workaround; see expression_operators_intconst.cpp.
+#define VP_INST(NAME) template struct NAME<AST::FloatConst::Ptr>
+VP_INST(clog2);
+VP_INST(uplus);
+VP_INST(uminus);
+VP_INST(power);
+VP_INST(times);
+VP_INST(divide);
+VP_INST(mod);
+VP_INST(plus);
+VP_INST(minus);
+VP_INST(logical_and);
+VP_INST(logical_or);
+VP_INST(less_than);
+VP_INST(less_equal);
+VP_INST(greater_than);
+VP_INST(greater_equal);
+VP_INST(equal);
+VP_INST(not_equal);
+#undef VP_INST
+
 } // namespace Transformations
 } // namespace Passes
 } // namespace Veriparse
