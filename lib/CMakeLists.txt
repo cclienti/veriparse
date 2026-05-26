@@ -30,23 +30,30 @@ find_package(BISON)
 find_package(FLEX)
 
 # winflexbison ships FlexLexer.h outside the default include path. The
-# location varies by distribution: chocolatey installs it next to
-# win_flex.exe in `tools/`, conda-forge puts it under
-# `Library/share/winflexbison/`. Probe both relative to FLEX_EXECUTABLE
-# and add whichever exists to the include path.
+# location varies by distribution: chocolatey installs it under
+# `lib/winflexbison3/tools/` (the bin entry is a shim that doesn't sit
+# next to the header), conda-forge puts it under
+# `Library/share/winflexbison/`. Use find_path with explicit hints for
+# both layouts.
 add_library(veriparse_flex_lexer_h INTERFACE)
 if(WIN32 AND FLEX_EXECUTABLE)
   get_filename_component(_flex_bin_dir ${FLEX_EXECUTABLE} DIRECTORY)
   get_filename_component(_flex_prefix  ${_flex_bin_dir}   DIRECTORY)
-  foreach(_candidate
+  find_path(FLEX_INCLUDE_DIR
+    NAMES FlexLexer.h
+    HINTS
+      "$ENV{ProgramData}/chocolatey/lib/winflexbison3/tools"
+      "$ENV{ChocolateyInstall}/lib/winflexbison3/tools"
+      "C:/ProgramData/chocolatey/lib/winflexbison3/tools"
       ${_flex_bin_dir}
       ${_flex_prefix}/share/winflexbison
-      ${_flex_prefix}/tools)
-    if(EXISTS ${_candidate}/FlexLexer.h)
-      target_include_directories(veriparse_flex_lexer_h INTERFACE ${_candidate})
-      break()
-    endif()
-  endforeach()
+      ${_flex_prefix}/tools
+  )
+  if(FLEX_INCLUDE_DIR)
+    target_include_directories(veriparse_flex_lexer_h INTERFACE ${FLEX_INCLUDE_DIR})
+  else()
+    message(FATAL_ERROR "FlexLexer.h not found; checked chocolatey and conda-forge layouts.")
+  endif()
 endif()
 
 # Verilog parser
