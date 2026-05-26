@@ -1,4 +1,4 @@
-name: Release - Build Packages
+name: Release
 
 # Release workflow: packaging only. Code verification lives in ci.yml.
 # Triggered explicitly on a published release, or manually via the Actions UI.
