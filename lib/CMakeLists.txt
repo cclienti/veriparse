@@ -29,30 +29,17 @@ endif()
 find_package(BISON)
 find_package(FLEX)
 
-# winflexbison ships FlexLexer.h outside the default include path. The
-# location varies by distribution: chocolatey installs it under
-# `lib/winflexbison3/tools/` (the bin entry is a shim that doesn't sit
-# next to the header), conda-forge puts it under
-# `Library/share/winflexbison/`. Use find_path with explicit hints for
-# both layouts.
+# FlexLexer.h is required by the generated C++ scanner. vcpkg's flex port
+# installs it under <vcpkg_installed>/<triplet>/include/, which the vcpkg
+# toolchain already adds to CMAKE_PREFIX_PATH, so a plain find_path picks
+# it up without further hints.
 add_library(veriparse_flex_lexer_h INTERFACE)
-if(WIN32 AND FLEX_EXECUTABLE)
-  get_filename_component(_flex_bin_dir ${FLEX_EXECUTABLE} DIRECTORY)
-  get_filename_component(_flex_prefix  ${_flex_bin_dir}   DIRECTORY)
-  find_path(FLEX_INCLUDE_DIR
-    NAMES FlexLexer.h
-    HINTS
-      "$ENV{ProgramData}/chocolatey/lib/winflexbison3/tools"
-      "$ENV{ChocolateyInstall}/lib/winflexbison3/tools"
-      "C:/ProgramData/chocolatey/lib/winflexbison3/tools"
-      ${_flex_bin_dir}
-      ${_flex_prefix}/share/winflexbison
-      ${_flex_prefix}/tools
-  )
+if(WIN32)
+  find_path(FLEX_INCLUDE_DIR NAMES FlexLexer.h)
   if(FLEX_INCLUDE_DIR)
     target_include_directories(veriparse_flex_lexer_h INTERFACE ${FLEX_INCLUDE_DIR})
   else()
-    message(FATAL_ERROR "FlexLexer.h not found; checked chocolatey and conda-forge layouts.")
+    message(FATAL_ERROR "FlexLexer.h not found in vcpkg include path.")
   endif()
 endif()
 
@@ -100,19 +87,21 @@ target_link_libraries(veriparse_static Boost::system Boost::filesystem Boost::lo
 target_link_libraries(veriparse_static GMP::GMPXX GMP::GMP)
 target_link_libraries(veriparse_static veriparse_flex_lexer_h)
 
-# Specific compilation flags
-set(_parser_flags "-Wno-unused-but-set-variable")
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  # Bison generates a parser class with an unused private `driver` field; clang
-  # flags it under -Wunused-private-field, which -Wall (re-)enables after our
-  # global CXX_FLAGS. Source-level COMPILE_FLAGS land after -Wall, so suppress
-  # it here.
-  string(APPEND _parser_flags " -Wno-unused-private-field")
-endif()
+# Specific compilation flags (GCC/Clang only; MSVC rejects -W... flags)
+if(NOT MSVC)
+  set(_parser_flags "-Wno-unused-but-set-variable")
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # Bison generates a parser class with an unused private `driver` field; clang
+    # flags it under -Wunused-private-field, which -Wall (re-)enables after our
+    # global CXX_FLAGS. Source-level COMPILE_FLAGS land after -Wall, so suppress
+    # it here.
+    string(APPEND _parser_flags " -Wno-unused-private-field")
+  endif()
 
-set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
-set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
-set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog_number/verilog_number_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
+  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
+  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
+  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog_number/verilog_number_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
+endif()
 
 
 ########################################
