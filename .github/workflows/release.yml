@@ -25,11 +25,11 @@ jobs:
           {
             echo 'matrix<<EOF'
             echo '{"include":['
-            echo '{"os":"ubuntu-latest","platform":"linux-64","shell":"bash -el {0}"}'
+            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","shell":"bash -el {0}"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
-              echo '{"os":"macos-latest","platform":"osx-64","shell":"bash -el {0}"},'
-              echo '{"os":"macos-14","platform":"osx-arm64","shell":"bash -el {0}"}'
+              echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","shell":"bash -el {0}"},'
+              echo '{"os":"macos-14","platform":"osx-arm64","name":"macOS arm64","shell":"bash -el {0}"}'
             fi
             echo ']}'
             echo EOF
@@ -38,6 +38,7 @@ jobs:
   # Linux + macOS: build the conda package via conda-build.
   build-conda-package:
     needs: matrix
+    name: Build ${{ matrix.name }} (conda)
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
@@ -81,6 +82,7 @@ jobs:
   # Windows: build directly with MSVC + vcpkg via the same CMake workflow
   # preset CI uses, then install + zip + upload.
   build-windows-zip:
+    name: Build Windows x86_64 (zip)
     runs-on: windows-2022
     defaults:
       run:

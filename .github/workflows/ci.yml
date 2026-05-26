@@ -32,11 +32,11 @@ jobs:
           {
             echo 'matrix<<EOF'
             echo '{"include":['
-            echo '{"os":"ubuntu-latest","platform":"linux-64","linker":"-fuse-ld=mold","apt":"mold iverilog"}'
+            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","linker":"-fuse-ld=mold","apt":"mold iverilog"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
-              echo '{"os":"macos-latest","platform":"osx-64","linker":"","apt":""},'
-              echo '{"os":"macos-14","platform":"osx-arm64","linker":"","apt":""}'
+              echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","linker":"","apt":""},'
+              echo '{"os":"macos-14","platform":"osx-arm64","name":"macOS arm64","linker":"","apt":""}'
             fi
             echo ']}'
             echo EOF
@@ -48,6 +48,7 @@ jobs:
   # in release.yml).
   build-unix:
     needs: matrix
+    name: Build ${{ matrix.name }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
@@ -96,6 +97,7 @@ jobs:
   # Same single command (`cmake --workflow --preset windows-release`) that a
   # Windows developer runs locally, so dev == CI.
   build-windows:
+    name: Build Windows x86_64
     runs-on: windows-2022
     defaults:
       run:
