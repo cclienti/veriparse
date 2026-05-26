@@ -1,22 +1,18 @@
 name: Release - Build Packages
 
+# Release workflow: packaging only. Code verification lives in ci.yml.
+# Triggered explicitly on a published release, or manually via the Actions UI.
 on:
   release:
     types: [published]
   workflow_dispatch:
     inputs:
       include_macos:
-        description: 'Also build macOS (osx-64, osx-arm64). Defaults to false to avoid burning expensive macOS minutes during iteration.'
+        description: 'Also build macOS conda packages (osx-64, osx-arm64).'
         type: boolean
-        default: false
-  push:
-    branches: [master]
+        default: true
 
 jobs:
-  # Emit the matrix at runtime so macOS entries are omitted entirely when
-  # not needed. This avoids allocating macOS runners (~10x Linux cost) for
-  # iterations where only linux verification is wanted. Windows is built by
-  # a separate (cmake + vcpkg + MSVC, zip) job below, not via conda-build.
   matrix:
     runs-on: ubuntu-latest
     outputs:
@@ -39,7 +35,7 @@ jobs:
             echo EOF
           } >> "$GITHUB_OUTPUT"
 
-  # Linux + macOS: build a conda package via conda-build.
+  # Linux + macOS: build the conda package via conda-build.
   build-conda-package:
     needs: matrix
     strategy:
@@ -82,11 +78,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Windows: build directly with MSVC + vcpkg, no conda. The result is a
-  # self-contained zip. conda-forge's win-64 ecosystem doesn't ship gmpxx
-  # and is MSVC-built while veriparse uses C++ libraries with the same
-  # ABI requirement; building via vcpkg keeps the toolchain coherent and
-  # iteration friction much lower than the conda-build sandbox.
+  # Windows: build directly with MSVC + vcpkg via the same CMake workflow
+  # preset CI uses, then install + zip + upload.
   build-windows-zip:
     runs-on: windows-2022
     defaults:
@@ -99,34 +92,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      # vcpkg doesn't have a flex/bison port; chocolatey ships winflexbison
-      # (lexxmark/winflexbison) which provides win_flex.exe + win_bison.exe.
       - name: Install winflexbison
         run: choco install winflexbison3 -y --no-progress
 
-      # vcpkg via the official action: handles bootstrap (clone + build of
-      # the vcpkg tool) at the pinned commit. We DISABLE its built-in
-      # GHA-cache binary source because vcpkg invoked inside cmake's
-      # Configure step doesn't get the ACTIONS_RUNTIME_TOKEN/CACHE_URL env
-      # vars that the GHA backend requires.
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          # Pinned to vcpkg release 2026.04.27. Keep in sync with
-          # builtin-baseline in vcpkg.json (both reference the same commit).
           vcpkgGitCommitId: '56bb2411609227288b70117ead2c47585ba07713'
           vcpkgJsonGlob: 'vcpkg.json'
-          # Don't run vcpkg install in this step; cmake's vcpkg integration
-          # will do it during configure, picking up the file-based cache.
           runVcpkgInstall: false
-          # Force a short root path. Boost's buildtree filenames push past
-          # Windows' 260-char MAX_PATH limit when vcpkg lives under the
-          # default deep checkout dir (D:\a\veriparse\veriparse\vcpkg\...).
           vcpkgDirectory: 'C:\v'
 
-      # File-based vcpkg binary cache, persisted across runs by actions/cache.
-      # Restore before configure (where vcpkg actually runs); save after,
-      # always(), so even a failed build still preserves the built ports.
       - name: Restore vcpkg binary cache
         id: vcpkg-cache
         uses: actions/cache/restore@v4
@@ -135,35 +111,20 @@ jobs:
           key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
           restore-keys: vcpkg-win64-
 
-      - name: Configure
+      - name: Configure + Build + Test
         env:
           VCPKG_BINARY_SOURCES: 'clear;files,${{ runner.temp }}/vcpkg-cache,readwrite'
-        run: |
-          cmake -S . -B build `
-            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
-            -DVCPKG_TARGET_TRIPLET=x64-windows `
-            -DCMAKE_BUILD_TYPE=Release `
-            -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/install"
+        run: cmake --workflow --preset windows-release
 
-      - name: Build
-        run: cmake --build build --config Release --parallel
-
-      - name: Test (unittest)
-        env:
-          VERIPARSE_SOURCE_ROOT: ${{ github.workspace }}
-        run: ctest --test-dir build -j 4 -L unittest --output-on-failure -C Release
-
-      - name: Install
-        run: cmake --install build --config Release
-
-      # Save the vcpkg cache even if subsequent steps fail, so the next
-      # iteration doesn't re-build every port from scratch.
       - name: Save vcpkg binary cache
         if: always() && steps.vcpkg-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: ${{ runner.temp }}/vcpkg-cache
           key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
+
+      - name: Install
+        run: cmake --install build/windows-release --config Release
 
       - name: Compute zip name
         id: zipname
@@ -173,7 +134,7 @@ jobs:
           echo "name=$name" >> $env:GITHUB_OUTPUT
 
       - name: Zip
-        run: Compress-Archive -Path install/* -DestinationPath ${{ steps.zipname.outputs.name }}
+        run: Compress-Archive -Path install/windows-release/* -DestinationPath ${{ steps.zipname.outputs.name }}
 
       - name: Upload artifact (every run, for download from the run page)
         uses: actions/upload-artifact@v4

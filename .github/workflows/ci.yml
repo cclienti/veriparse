@@ -5,10 +5,54 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  schedule:
+    # Keep the vcpkg binary cache warm (GitHub evicts at 7 days) and catch
+    # macOS regressions periodically. Every 5 days gives a 2-day safety margin.
+    - cron: '0 6 */5 * *'
+  workflow_dispatch:
+    inputs:
+      include_macos:
+        description: 'Also run macOS jobs (osx-64, osx-arm64)'
+        type: boolean
+        default: false
 
 jobs:
-  build-and-test:
+  # Emit the matrix at runtime so macOS entries are omitted on PR runs
+  # (macOS runner minutes cost ~10x linux). macOS still runs on push:master,
+  # schedule, and when manually requested.
+  matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - id: set
+        env:
+          INCLUDE_MACOS: ${{ github.event_name == 'schedule' || github.event_name == 'push' || github.event.inputs.include_macos == 'true' }}
+        run: |
+          {
+            echo 'matrix<<EOF'
+            echo '{"include":['
+            echo '{"os":"ubuntu-latest","platform":"linux-64","linker":"-fuse-ld=mold","apt":"mold iverilog"}'
+            if [[ "$INCLUDE_MACOS" == "true" ]]; then
+              echo ','
+              echo '{"os":"macos-latest","platform":"osx-64","linker":"","apt":""},'
+              echo '{"os":"macos-14","platform":"osx-arm64","linker":"","apt":""}'
+            fi
+            echo ']}'
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+  # Unix build via the same `make dev-*` flow that local developers use:
+  # micromamba bootstraps a conda env from the recipe's deps, then cmake
+  # + make + ctest. This is verification only, no packaging (that lives
+  # in release.yml).
+  build-unix:
+    needs: matrix
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
+
+    runs-on: ${{ matrix.os }}
 
     defaults:
       run:
@@ -17,9 +61,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-      - name: Install mold linker
-        run: sudo apt-get install -y mold iverilog
+      - name: Install platform tools
+        if: matrix.apt != ''
+        run: sudo apt-get install -y ${{ matrix.apt }}
 
       - name: Install micromamba
         uses: mamba-org/setup-micromamba@v3
@@ -33,7 +80,7 @@ jobs:
         run: make dev-env
 
       - name: Configure
-        run: make dev-cmake
+        run: make dev-cmake DEV_LINKER_FLAGS="${{ matrix.linker }}"
 
       - name: Build
         run: make dev-build
@@ -42,4 +89,51 @@ jobs:
         run: make dev-test
 
       - name: Test (verilator + integration)
+        if: matrix.platform == 'linux-64'
         run: make dev-test-integration
+
+  # Windows build via the CMake workflow preset declared in CMakePresets.json.
+  # Same single command (`cmake --workflow --preset windows-release`) that a
+  # Windows developer runs locally, so dev == CI.
+  build-windows:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install winflexbison
+        run: choco install winflexbison3 -y --no-progress
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: '56bb2411609227288b70117ead2c47585ba07713'
+          vcpkgJsonGlob: 'vcpkg.json'
+          runVcpkgInstall: false
+          vcpkgDirectory: 'C:\v'
+
+      - name: Restore vcpkg binary cache
+        id: vcpkg-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/vcpkg-cache
+          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
+          restore-keys: vcpkg-win64-
+
+      - name: Configure + Build + Test
+        env:
+          VCPKG_BINARY_SOURCES: 'clear;files,${{ runner.temp }}/vcpkg-cache,readwrite'
+        run: cmake --workflow --preset windows-release
+
+      - name: Save vcpkg binary cache
+        if: always() && steps.vcpkg-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/vcpkg-cache
+          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
