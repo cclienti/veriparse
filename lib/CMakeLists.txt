@@ -29,17 +29,30 @@ endif()
 find_package(BISON)
 find_package(FLEX)
 
-# FlexLexer.h is required by the generated C++ scanner. vcpkg's flex port
-# installs it under <vcpkg_installed>/<triplet>/include/, which the vcpkg
-# toolchain already adds to CMAKE_PREFIX_PATH, so a plain find_path picks
-# it up without further hints.
+# winflexbison ships FlexLexer.h outside the default include path. The
+# location varies by distribution: chocolatey installs it under
+# `lib/winflexbison3/tools/` (the bin entry is a shim that doesn't sit
+# next to the header), conda-forge puts it under
+# `Library/share/winflexbison/`. Use find_path with explicit hints for
+# both layouts.
 add_library(veriparse_flex_lexer_h INTERFACE)
-if(WIN32)
-  find_path(FLEX_INCLUDE_DIR NAMES FlexLexer.h)
+if(WIN32 AND FLEX_EXECUTABLE)
+  get_filename_component(_flex_bin_dir ${FLEX_EXECUTABLE} DIRECTORY)
+  get_filename_component(_flex_prefix  ${_flex_bin_dir}   DIRECTORY)
+  find_path(FLEX_INCLUDE_DIR
+    NAMES FlexLexer.h
+    HINTS
+      "$ENV{ProgramData}/chocolatey/lib/winflexbison3/tools"
+      "$ENV{ChocolateyInstall}/lib/winflexbison3/tools"
+      "C:/ProgramData/chocolatey/lib/winflexbison3/tools"
+      ${_flex_bin_dir}
+      ${_flex_prefix}/share/winflexbison
+      ${_flex_prefix}/tools
+  )
   if(FLEX_INCLUDE_DIR)
     target_include_directories(veriparse_flex_lexer_h INTERFACE ${FLEX_INCLUDE_DIR})
   else()
-    message(FATAL_ERROR "FlexLexer.h not found in vcpkg include path.")
+    message(FATAL_ERROR "FlexLexer.h not found; checked chocolatey and conda-forge layouts.")
   endif()
 endif()
 

@@ -99,6 +99,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      # vcpkg doesn't have a flex/bison port; chocolatey ships winflexbison
+      # (lexxmark/winflexbison) which provides win_flex.exe + win_bison.exe.
+      - name: Install winflexbison
+        run: choco install winflexbison3 -y --no-progress
+
       # vcpkg via the official action: handles bootstrap (clone + build of
       # the vcpkg tool) at the pinned commit. We DISABLE its built-in
       # GHA-cache binary source because vcpkg invoked inside cmake's

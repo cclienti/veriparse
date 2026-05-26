@@ -10,8 +10,6 @@
     "boost-log",
     "boost-program-options",
     "yaml-cpp",
-    "gtest",
-    { "name": "bison", "host": true },
-    { "name": "flex",  "host": true }
+    "gtest"
   ]
 }
