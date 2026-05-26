@@ -12,7 +12,6 @@ namespace Passes
 namespace Transformations
 {
 
-template <>
 AST::FloatConst::Ptr clog2<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x) const
 {
     if(x) {
@@ -23,7 +22,6 @@ AST::FloatConst::Ptr clog2<AST::FloatConst::Ptr>::operator()(const AST::FloatCon
     }
 }
 
-template <>
 AST::FloatConst::Ptr uplus<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x) const
 {
     if(x) {
@@ -34,7 +32,6 @@ AST::FloatConst::Ptr uplus<AST::FloatConst::Ptr>::operator()(const AST::FloatCon
     }
 }
 
-template <>
 AST::FloatConst::Ptr uminus<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x) const
 {
     if(x) {
@@ -45,7 +42,6 @@ AST::FloatConst::Ptr uminus<AST::FloatConst::Ptr>::operator()(const AST::FloatCo
     }
 }
 
-template <>
 AST::FloatConst::Ptr power<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                              const AST::FloatConst::Ptr y) const
 {
@@ -57,7 +53,6 @@ AST::FloatConst::Ptr power<AST::FloatConst::Ptr>::operator()(const AST::FloatCon
     }
 }
 
-template <>
 AST::FloatConst::Ptr times<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                              const AST::FloatConst::Ptr y) const
 {
@@ -69,7 +64,6 @@ AST::FloatConst::Ptr times<AST::FloatConst::Ptr>::operator()(const AST::FloatCon
     }
 }
 
-template <>
 AST::FloatConst::Ptr divide<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                               const AST::FloatConst::Ptr y) const
 {
@@ -81,7 +75,6 @@ AST::FloatConst::Ptr divide<AST::FloatConst::Ptr>::operator()(const AST::FloatCo
     }
 }
 
-template <>
 AST::FloatConst::Ptr mod<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                            const AST::FloatConst::Ptr y) const
 {
@@ -93,7 +86,6 @@ AST::FloatConst::Ptr mod<AST::FloatConst::Ptr>::operator()(const AST::FloatConst
     }
 }
 
-template <>
 AST::FloatConst::Ptr plus<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                             const AST::FloatConst::Ptr y) const
 {
@@ -105,7 +97,6 @@ AST::FloatConst::Ptr plus<AST::FloatConst::Ptr>::operator()(const AST::FloatCons
     }
 }
 
-template <>
 AST::FloatConst::Ptr minus<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                              const AST::FloatConst::Ptr y) const
 {
@@ -117,7 +108,6 @@ AST::FloatConst::Ptr minus<AST::FloatConst::Ptr>::operator()(const AST::FloatCon
     }
 }
 
-template <>
 AST::FloatConst::Ptr less_than<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                                  const AST::FloatConst::Ptr y) const
 {
@@ -129,7 +119,6 @@ AST::FloatConst::Ptr less_than<AST::FloatConst::Ptr>::operator()(const AST::Floa
     }
 }
 
-template <>
 AST::FloatConst::Ptr
 greater_than<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                const AST::FloatConst::Ptr y) const
@@ -142,7 +131,6 @@ greater_than<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
     }
 }
 
-template <>
 AST::FloatConst::Ptr
 less_equal<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                              const AST::FloatConst::Ptr y) const
@@ -155,7 +143,6 @@ less_equal<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
     }
 }
 
-template <>
 AST::FloatConst::Ptr
 greater_equal<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                 const AST::FloatConst::Ptr y) const
@@ -168,7 +155,6 @@ greater_equal<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
     }
 }
 
-template <>
 AST::FloatConst::Ptr equal<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                              const AST::FloatConst::Ptr y) const
 {
@@ -180,7 +166,6 @@ AST::FloatConst::Ptr equal<AST::FloatConst::Ptr>::operator()(const AST::FloatCon
     }
 }
 
-template <>
 AST::FloatConst::Ptr not_equal<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                                                  const AST::FloatConst::Ptr y) const
 {
@@ -192,7 +177,6 @@ AST::FloatConst::Ptr not_equal<AST::FloatConst::Ptr>::operator()(const AST::Floa
     }
 }
 
-template <>
 AST::FloatConst::Ptr
 logical_and<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                               const AST::FloatConst::Ptr y) const
@@ -205,7 +189,6 @@ logical_and<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
     }
 }
 
-template <>
 AST::FloatConst::Ptr
 logical_or<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
                                              const AST::FloatConst::Ptr y) const
@@ -217,27 +200,6 @@ logical_or<AST::FloatConst::Ptr>::operator()(const AST::FloatConst::Ptr x,
         return AST::FloatConst::Ptr();
     }
 }
-
-// MSVC symbol emission workaround; see expression_operators_intconst.cpp.
-#define VP_INST(NAME) template struct NAME<AST::FloatConst::Ptr>
-VP_INST(clog2);
-VP_INST(uplus);
-VP_INST(uminus);
-VP_INST(power);
-VP_INST(times);
-VP_INST(divide);
-VP_INST(mod);
-VP_INST(plus);
-VP_INST(minus);
-VP_INST(logical_and);
-VP_INST(logical_or);
-VP_INST(less_than);
-VP_INST(less_equal);
-VP_INST(greater_than);
-VP_INST(greater_equal);
-VP_INST(equal);
-VP_INST(not_equal);
-#undef VP_INST
 
 } // namespace Transformations
 } // namespace Passes

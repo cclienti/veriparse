@@ -12,7 +12,6 @@ namespace Passes
 namespace Transformations
 {
 
-template <>
 AST::IntConstN::Ptr unsigned_fct<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -42,7 +41,6 @@ AST::IntConstN::Ptr unsigned_fct<AST::IntConstN::Ptr>::operator()(const AST::Int
     }
 }
 
-template <>
 AST::IntConstN::Ptr signed_fct<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -74,7 +72,6 @@ AST::IntConstN::Ptr signed_fct<AST::IntConstN::Ptr>::operator()(const AST::IntCo
     }
 }
 
-template <>
 AST::IntConstN::Ptr clog2<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -94,7 +91,6 @@ AST::IntConstN::Ptr clog2<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr uplus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -114,7 +110,6 @@ AST::IntConstN::Ptr uplus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr uminus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -134,7 +129,6 @@ AST::IntConstN::Ptr uminus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN
     }
 }
 
-template <>
 AST::IntConstN::Ptr ulnot<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -154,7 +148,6 @@ AST::IntConstN::Ptr ulnot<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr unot<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -174,7 +167,6 @@ AST::IntConstN::Ptr unot<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::
     }
 }
 
-template <>
 AST::IntConstN::Ptr uand<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -208,7 +200,6 @@ AST::IntConstN::Ptr uand<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::
     }
 }
 
-template <>
 AST::IntConstN::Ptr unand<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -222,7 +213,6 @@ AST::IntConstN::Ptr unand<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr uor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -239,7 +229,6 @@ AST::IntConstN::Ptr uor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
     }
 }
 
-template <>
 AST::IntConstN::Ptr unor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -253,7 +242,6 @@ AST::IntConstN::Ptr unor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::
     }
 }
 
-template <>
 AST::IntConstN::Ptr uxor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -285,7 +273,6 @@ AST::IntConstN::Ptr uxor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::
     }
 }
 
-template <>
 AST::IntConstN::Ptr uxnor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x) const
 {
     if(x) {
@@ -299,7 +286,6 @@ AST::IntConstN::Ptr uxnor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr pointer<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                              const AST::IntConstN::Ptr y) const
 {
@@ -315,7 +301,6 @@ AST::IntConstN::Ptr pointer<AST::IntConstN::Ptr>::operator()(const AST::IntConst
     }
 }
 
-template <>
 AST::IntConstN::Ptr power<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                            const AST::IntConstN::Ptr y) const
 {
@@ -354,7 +339,6 @@ AST::IntConstN::Ptr power<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr times<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                            const AST::IntConstN::Ptr y) const
 {
@@ -380,7 +364,6 @@ AST::IntConstN::Ptr times<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr divide<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                             const AST::IntConstN::Ptr y) const
 {
@@ -406,7 +389,6 @@ AST::IntConstN::Ptr divide<AST::IntConstN::Ptr>::operator()(const AST::IntConstN
     }
 }
 
-template <>
 AST::IntConstN::Ptr mod<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                          const AST::IntConstN::Ptr y) const
 {
@@ -432,7 +414,6 @@ AST::IntConstN::Ptr mod<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
     }
 }
 
-template <>
 AST::IntConstN::Ptr plus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                           const AST::IntConstN::Ptr y) const
 {
@@ -458,7 +439,6 @@ AST::IntConstN::Ptr plus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::
     }
 }
 
-template <>
 AST::IntConstN::Ptr minus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                            const AST::IntConstN::Ptr y) const
 {
@@ -484,7 +464,6 @@ AST::IntConstN::Ptr minus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr sll<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                          const AST::IntConstN::Ptr y) const
 {
@@ -511,7 +490,6 @@ AST::IntConstN::Ptr sll<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
     }
 }
 
-template <>
 AST::IntConstN::Ptr srl<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                          const AST::IntConstN::Ptr y) const
 {
@@ -550,7 +528,6 @@ AST::IntConstN::Ptr srl<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
     }
 }
 
-template <>
 AST::IntConstN::Ptr sra<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                          const AST::IntConstN::Ptr y) const
 {
@@ -577,7 +554,6 @@ AST::IntConstN::Ptr sra<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
     }
 }
 
-template <>
 AST::IntConstN::Ptr less_than<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                const AST::IntConstN::Ptr y) const
 {
@@ -603,7 +579,6 @@ AST::IntConstN::Ptr less_than<AST::IntConstN::Ptr>::operator()(const AST::IntCon
     }
 }
 
-template <>
 AST::IntConstN::Ptr greater_than<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                   const AST::IntConstN::Ptr y) const
 {
@@ -629,7 +604,6 @@ AST::IntConstN::Ptr greater_than<AST::IntConstN::Ptr>::operator()(const AST::Int
     }
 }
 
-template <>
 AST::IntConstN::Ptr less_equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                 const AST::IntConstN::Ptr y) const
 {
@@ -655,7 +629,6 @@ AST::IntConstN::Ptr less_equal<AST::IntConstN::Ptr>::operator()(const AST::IntCo
     }
 }
 
-template <>
 AST::IntConstN::Ptr
 greater_equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                const AST::IntConstN::Ptr y) const
@@ -682,7 +655,6 @@ greater_equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
     }
 }
 
-template <>
 AST::IntConstN::Ptr equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                            const AST::IntConstN::Ptr y) const
 {
@@ -708,7 +680,6 @@ AST::IntConstN::Ptr equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN:
     }
 }
 
-template <>
 AST::IntConstN::Ptr not_equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                const AST::IntConstN::Ptr y) const
 {
@@ -734,7 +705,6 @@ AST::IntConstN::Ptr not_equal<AST::IntConstN::Ptr>::operator()(const AST::IntCon
     }
 }
 
-template <>
 AST::IntConstN::Ptr case_equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                 const AST::IntConstN::Ptr y) const
 {
@@ -760,7 +730,6 @@ AST::IntConstN::Ptr case_equal<AST::IntConstN::Ptr>::operator()(const AST::IntCo
     }
 }
 
-template <>
 AST::IntConstN::Ptr
 case_not_equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                 const AST::IntConstN::Ptr y) const
@@ -787,7 +756,6 @@ case_not_equal<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
     }
 }
 
-template <>
 AST::IntConstN::Ptr bitwise_and<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                  const AST::IntConstN::Ptr y) const
 {
@@ -813,7 +781,6 @@ AST::IntConstN::Ptr bitwise_and<AST::IntConstN::Ptr>::operator()(const AST::IntC
     }
 }
 
-template <>
 AST::IntConstN::Ptr bitwise_xor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                  const AST::IntConstN::Ptr y) const
 {
@@ -839,7 +806,6 @@ AST::IntConstN::Ptr bitwise_xor<AST::IntConstN::Ptr>::operator()(const AST::IntC
     }
 }
 
-template <>
 AST::IntConstN::Ptr bitwise_xnor<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                   const AST::IntConstN::Ptr y) const
 {
@@ -865,7 +831,6 @@ AST::IntConstN::Ptr bitwise_xnor<AST::IntConstN::Ptr>::operator()(const AST::Int
     }
 }
 
-template <>
 AST::IntConstN::Ptr bitwise_or<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                 const AST::IntConstN::Ptr y) const
 {
@@ -891,7 +856,6 @@ AST::IntConstN::Ptr bitwise_or<AST::IntConstN::Ptr>::operator()(const AST::IntCo
     }
 }
 
-template <>
 AST::IntConstN::Ptr logical_and<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                  const AST::IntConstN::Ptr y) const
 {
@@ -917,7 +881,6 @@ AST::IntConstN::Ptr logical_and<AST::IntConstN::Ptr>::operator()(const AST::IntC
     }
 }
 
-template <>
 AST::IntConstN::Ptr logical_or<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                 const AST::IntConstN::Ptr y) const
 {
@@ -943,7 +906,6 @@ AST::IntConstN::Ptr logical_or<AST::IntConstN::Ptr>::operator()(const AST::IntCo
     }
 }
 
-template <>
 AST::IntConstN::Ptr partselect<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                                 const AST::IntConstN::Ptr msb,
                                                                 const AST::IntConstN::Ptr lsb) const
@@ -969,7 +931,6 @@ AST::IntConstN::Ptr partselect<AST::IntConstN::Ptr>::operator()(const AST::IntCo
     }
 }
 
-template <>
 AST::IntConstN::Ptr
 partselect_minus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                   const AST::IntConstN::Ptr msb,
@@ -997,7 +958,6 @@ partselect_minus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
     }
 }
 
-template <>
 AST::IntConstN::Ptr
 partselect_plus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
                                                  const AST::IntConstN::Ptr lsb,
@@ -1024,53 +984,6 @@ partselect_plus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
         return AST::IntConstN::Ptr();
     }
 }
-
-// Force MSVC to emit external symbols for these explicitly-specialized templates.
-// Without this, MSVC archives the .obj into veriparse_static.lib but the
-// specialized operator() symbols aren't externally visible, breaking downstream
-// link. GCC/Clang already emit them; this is a no-op for them.
-#define VP_INST(NAME) template struct NAME<AST::IntConstN::Ptr>
-VP_INST(unsigned_fct);
-VP_INST(signed_fct);
-VP_INST(clog2);
-VP_INST(uplus);
-VP_INST(uminus);
-VP_INST(ulnot);
-VP_INST(unot);
-VP_INST(uand);
-VP_INST(unand);
-VP_INST(uor);
-VP_INST(unor);
-VP_INST(uxor);
-VP_INST(uxnor);
-VP_INST(pointer);
-VP_INST(partselect);
-VP_INST(partselect_plus);
-VP_INST(partselect_minus);
-VP_INST(power);
-VP_INST(times);
-VP_INST(divide);
-VP_INST(mod);
-VP_INST(plus);
-VP_INST(minus);
-VP_INST(sll);
-VP_INST(sra);
-VP_INST(srl);
-VP_INST(logical_and);
-VP_INST(logical_or);
-VP_INST(less_than);
-VP_INST(less_equal);
-VP_INST(greater_than);
-VP_INST(greater_equal);
-VP_INST(equal);
-VP_INST(not_equal);
-VP_INST(case_equal);
-VP_INST(case_not_equal);
-VP_INST(bitwise_and);
-VP_INST(bitwise_or);
-VP_INST(bitwise_xor);
-VP_INST(bitwise_xnor);
-#undef VP_INST
 
 } // namespace Transformations
 } // namespace Passes

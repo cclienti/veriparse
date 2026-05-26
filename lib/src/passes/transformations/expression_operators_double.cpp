@@ -12,7 +12,7 @@ namespace Passes
 namespace Transformations
 {
 
-template <> double clog2<double>::operator()(const double x) const
+double clog2<double>::operator()(const double x) const
 {
     if(x == 0) {
         return 0;
@@ -20,22 +20,9 @@ template <> double clog2<double>::operator()(const double x) const
     return std::ceil(std::log2(x));
 }
 
-template <> double power<double>::operator()(const double x, const double y) const
-{
-    return std::pow(x, y);
-}
+double power<double>::operator()(const double x, const double y) const { return std::pow(x, y); }
 
-template <> double mod<double>::operator()(const double x, const double y) const
-{
-    return std::fmod(x, y);
-}
-
-// MSVC symbol emission workaround; see expression_operators_intconst.cpp.
-#define VP_INST(NAME) template struct NAME<double>
-VP_INST(clog2);
-VP_INST(power);
-VP_INST(mod);
-#undef VP_INST
+double mod<double>::operator()(const double x, const double y) const { return std::fmod(x, y); }
 
 } // namespace Transformations
 } // namespace Passes

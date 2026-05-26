@@ -12,7 +12,6 @@ namespace Passes
 namespace Transformations
 {
 
-template <>
 AST::Node::Ptr ternary<AST::IntConstN::Ptr, AST::Node::Ptr>::operator()(
     const AST::IntConstN::Ptr x, const AST::Node::Ptr y, const AST::Node::Ptr z) const
 {
@@ -27,7 +26,6 @@ AST::Node::Ptr ternary<AST::IntConstN::Ptr, AST::Node::Ptr>::operator()(
     }
 }
 
-template <>
 AST::Node::Ptr ternary<AST::FloatConst::Ptr, AST::Node::Ptr>::operator()(
     const AST::FloatConst::Ptr x, const AST::Node::Ptr y, const AST::Node::Ptr z) const
 {
@@ -42,7 +40,6 @@ AST::Node::Ptr ternary<AST::FloatConst::Ptr, AST::Node::Ptr>::operator()(
     }
 }
 
-template <>
 AST::IntConstN::Ptr ternary<AST::IntConstN::Ptr, AST::IntConstN::Ptr>::operator()(
     const AST::IntConstN::Ptr x, const AST::IntConstN::Ptr y, const AST::IntConstN::Ptr z) const
 {
@@ -57,7 +54,6 @@ AST::IntConstN::Ptr ternary<AST::IntConstN::Ptr, AST::IntConstN::Ptr>::operator(
     }
 }
 
-template <>
 AST::FloatConst::Ptr ternary<AST::IntConstN::Ptr, AST::FloatConst::Ptr>::operator()(
     const AST::IntConstN::Ptr x, const AST::FloatConst::Ptr y, const AST::FloatConst::Ptr z) const
 {
@@ -72,7 +68,6 @@ AST::FloatConst::Ptr ternary<AST::IntConstN::Ptr, AST::FloatConst::Ptr>::operato
     }
 }
 
-template <>
 AST::IntConstN::Ptr ternary<AST::FloatConst::Ptr, AST::IntConstN::Ptr>::operator()(
     const AST::FloatConst::Ptr x, const AST::IntConstN::Ptr y, const AST::IntConstN::Ptr z) const
 {
@@ -87,7 +82,6 @@ AST::IntConstN::Ptr ternary<AST::FloatConst::Ptr, AST::IntConstN::Ptr>::operator
     }
 }
 
-template <>
 AST::FloatConst::Ptr ternary<AST::FloatConst::Ptr, AST::FloatConst::Ptr>::operator()(
     const AST::FloatConst::Ptr x, const AST::FloatConst::Ptr y, const AST::FloatConst::Ptr z) const
 {
@@ -101,16 +95,6 @@ AST::FloatConst::Ptr ternary<AST::FloatConst::Ptr, AST::FloatConst::Ptr>::operat
         return nullptr;
     }
 }
-
-// MSVC symbol emission workaround; see expression_operators_intconst.cpp.
-#define VP_INST(C, T) template struct ternary<C, T>
-VP_INST(AST::IntConstN::Ptr, AST::Node::Ptr);
-VP_INST(AST::FloatConst::Ptr, AST::Node::Ptr);
-VP_INST(AST::IntConstN::Ptr, AST::IntConstN::Ptr);
-VP_INST(AST::IntConstN::Ptr, AST::FloatConst::Ptr);
-VP_INST(AST::FloatConst::Ptr, AST::IntConstN::Ptr);
-VP_INST(AST::FloatConst::Ptr, AST::FloatConst::Ptr);
-#undef VP_INST
 
 } // namespace Transformations
 } // namespace Passes
