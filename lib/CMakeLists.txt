@@ -65,6 +65,14 @@ bison_target (Veriparse_VerilogParser src/parser/verilog/verilog_parser.yy  ${FL
               COMPILE_FLAGS "-v")
 add_flex_bison_dependency (Veriparse_VerilogScanner Veriparse_VerilogParser)
 
+# Verilog preprocessor (Flex only — directive grammar is regular)
+set(FLEX_PREPROCESSOR_DIR ${CMAKE_CURRENT_BINARY_DIR}/preprocessor)
+file(MAKE_DIRECTORY ${FLEX_PREPROCESSOR_DIR})
+flex_target (Veriparse_PreprocessorScanner
+             src/parser/preprocessor/pp_scanner.ll
+             ${FLEX_PREPROCESSOR_DIR}/pp_scanner.cpp
+             COMPILE_FLAGS "-P Preprocessor")
+
 # Verilog Number parser
 set(FLEX_BISON_VERILOG_NUMBER_DIR ${CMAKE_CURRENT_BINARY_DIR}/verilog_number)
 file(MAKE_DIRECTORY ${FLEX_BISON_VERILOG_NUMBER_DIR})
@@ -87,7 +95,8 @@ add_library (veriparse_static STATIC
   ${BISON_Veriparse_VerilogParser_OUTPUTS}
   ${FLEX_Veriparse_VerilogScanner_OUTPUTS}
   ${BISON_Veriparse_VerilogNumberParser_OUTPUTS}
-  ${FLEX_Veriparse_VerilogNumberScanner_OUTPUTS})
+  ${FLEX_Veriparse_VerilogNumberScanner_OUTPUTS}
+  ${FLEX_Veriparse_PreprocessorScanner_OUTPUTS})
 
 
 target_include_directories (veriparse_static PUBLIC include)
@@ -114,6 +123,7 @@ if(NOT MSVC)
   set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
   set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog/verilog_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
   set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/verilog_number/verilog_number_parser.cpp PROPERTIES COMPILE_FLAGS "${_parser_flags}")
+  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/preprocessor/pp_scanner.cpp PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
 endif()
 
 
