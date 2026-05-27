@@ -44,26 +44,60 @@ const std::set<std::string> &pass_through_directives()
 /// this on the same macro almost certainly indicates infinite recursion.
 constexpr int kMaxExpansionDepth = 64;
 
-/// Identifier-aware textual substitution of formal arguments. §22.5.1
-/// requires that substitution be purely textual but not occur inside
-/// string literals — and identifiers must be matched as whole tokens,
-/// not as substrings.
-std::string substitute_formals(const Macro &macro, const std::vector<std::string> &actuals)
+/// Textual processing of a macro body before it gets pushed back into
+/// the input stream:
+///   - identifier-aware substitution of formal arguments (§22.5.1)
+///   - SV-only body escapes:
+///       `"        emits a plain "  (synthetic string delimiter, §22.5.1)
+///       `\`"      emits \"          (escaped quote inside a synthetic string)
+///       ``        emits nothing     (token paste, no whitespace introduced)
+///
+/// Regular string literals "..." inside the body are copied verbatim
+/// per §22.5.1 ("Macro substitution and argument substitution shall not
+/// occur within string literals.") so a formal whose name happens to
+/// appear inside a "..." is not substituted.
+///
+/// Known limitation: a nested macro reference appearing inside a
+/// `" ... `" synthetic string is not re-expanded after substitution.
+/// The spec allows that case; we defer it as a corner-case.
+std::string expand_body(const Macro &macro, const std::vector<std::string> &actuals, bool sv_mode)
 {
-    if(!macro.has_args || macro.formals.empty()) {
-        return macro.body;
-    }
-
     const std::string &body = macro.body;
+    const std::vector<Formal> &formals = macro.formals;
+    const bool has_formals = macro.has_args && !formals.empty();
+
     std::string out;
     out.reserve(body.size() * 2);
-    const std::vector<std::string> &formals = macro.formals;
 
     size_t i = 0;
     while(i < body.size()) {
         const char c = body[i];
 
-        // String literal — copy verbatim; no substitution inside.
+        // SV-only body escapes (§22.5.1). Checked before regular-string
+        // handling so a leading `" opens a synthetic-string region
+        // rather than being treated as a stray backtick + " sequence.
+        if(sv_mode && c == '`' && i + 1 < body.size()) {
+            // `\`" — 4 chars: ` \ ` " → emit \"
+            if(body[i + 1] == '\\' && i + 3 < body.size() && body[i + 2] == '`' &&
+               body[i + 3] == '"') {
+                out += "\\\"";
+                i += 4;
+                continue;
+            }
+            // `" — emit a plain quote (synthetic string delimiter).
+            if(body[i + 1] == '"') {
+                out += '"';
+                i += 2;
+                continue;
+            }
+            // `` — token paste, no character emitted.
+            if(body[i + 1] == '`') {
+                i += 2;
+                continue;
+            }
+        }
+
+        // Regular string literal — copy verbatim; no substitution inside.
         if(c == '"') {
             out += c;
             ++i;
@@ -103,12 +137,15 @@ std::string substitute_formals(const Macro &macro, const std::vector<std::string
                 ++i;
             }
             const std::string ident = body.substr(start, i - start);
-            const auto it = std::find(formals.begin(), formals.end(), ident);
-            if(it != formals.end()) {
-                out += actuals[static_cast<size_t>(it - formals.begin())];
-            } else {
-                out += ident;
+            if(has_formals) {
+                const auto it = std::find_if(formals.begin(), formals.end(),
+                                             [&](const Formal &f) { return f.name == ident; });
+                if(it != formals.end()) {
+                    out += actuals[static_cast<size_t>(it - formals.begin())];
+                    continue;
+                }
             }
+            out += ident;
             continue;
         }
 
@@ -201,6 +238,26 @@ void PreprocessorScanner::handle_backtick(const char *name_after_tick)
         begin_include_arg();
         return;
     }
+    if(name == "__FILE__") {
+        // §22.13: SV-only. Expand to the path of the current input
+        // file, as a quoted string literal.
+        if(!m_driver.get_sv_mode()) {
+            LOG_WARNING << "file \"" << m_filename << "\", line " << yylineno
+                        << ": `__FILE__ is SystemVerilog-only (§22.13)";
+        }
+        emit(std::string("\"") + m_filename + "\"");
+        return;
+    }
+    if(name == "__LINE__") {
+        // §22.13: SV-only. Expand to the current input line number, as
+        // a simple decimal number.
+        if(!m_driver.get_sv_mode()) {
+            LOG_WARNING << "file \"" << m_filename << "\", line " << yylineno
+                        << ": `__LINE__ is SystemVerilog-only (§22.13)";
+        }
+        emit(std::to_string(yylineno));
+        return;
+    }
     if(name == "undefineall") {
         // §22.5.3, SV-only.
         if(!m_driver.get_sv_mode()) {
@@ -242,15 +299,16 @@ void PreprocessorScanner::handle_backtick(const char *name_after_tick)
             begin_macro_call_pre();
             return;
         }
-        // Object-like: substitute body verbatim. No formals so use the
-        // body as-is.
+        // Object-like: route through expand_body so SV body escapes
+        // (`", `\`", ``) are processed even without formals.
         if(m->expansion_depth >= kMaxExpansionDepth) {
             LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '" << name
                       << "' expansion depth exceeded " << kMaxExpansionDepth
                       << " — likely infinite recursion";
             return;
         }
-        auto stream = std::make_unique<std::istringstream>(m->body);
+        const std::string expanded = expand_body(*m, /*actuals*/ {}, m_driver.get_sv_mode());
+        auto stream = std::make_unique<std::istringstream>(expanded);
         push_buffer(std::move(stream), m_filename, m);
         return;
     }
@@ -365,12 +423,42 @@ bool PreprocessorScanner::macro_call_arg_close(char c)
             m_call_actuals.clear();
         }
 
-        if(m_call_actuals.size() != m->formals.size()) {
+        // §22.5.1: too many actuals is always an error.
+        if(m_call_actuals.size() > m->formals.size()) {
             LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
                       << m->name << "' expects " << m->formals.size() << " argument(s), got "
                       << m_call_actuals.size();
             m_call_actuals.clear();
             return true;
+        }
+
+        // §22.5.1 default-argument rules:
+        //   - if an actual is empty/whitespace-only and the formal has
+        //     a default, substitute the default
+        //   - if an actual is missing (fewer actuals than formals) and
+        //     the formal has a default, substitute the default
+        //   - missing actual with no default => error
+        std::vector<std::string> resolved;
+        resolved.reserve(m->formals.size());
+        for(size_t i = 0; i < m->formals.size(); ++i) {
+            const Formal &f = m->formals[i];
+            if(i >= m_call_actuals.size()) {
+                if(!f.has_default) {
+                    LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
+                              << m->name << "' missing argument '" << f.name
+                              << "' (no default specified)";
+                    m_call_actuals.clear();
+                    return true;
+                }
+                resolved.push_back(f.default_text);
+                continue;
+            }
+            const std::string &actual = m_call_actuals[i];
+            if(actual.empty() && f.has_default) {
+                resolved.push_back(f.default_text);
+            } else {
+                resolved.push_back(actual);
+            }
         }
 
         if(m->expansion_depth >= kMaxExpansionDepth) {
@@ -381,7 +469,7 @@ bool PreprocessorScanner::macro_call_arg_close(char c)
             return true;
         }
 
-        const std::string expanded = substitute_formals(*m, m_call_actuals);
+        const std::string expanded = expand_body(*m, resolved, m_driver.get_sv_mode());
         m_call_actuals.clear();
         auto stream = std::make_unique<std::istringstream>(expanded);
         push_buffer(std::move(stream), m_filename, m);
@@ -458,6 +546,40 @@ void PreprocessorScanner::include_open(const char *quoted_or_angled)
         m_driver.emit_line_marker(*m_output, 1, resolved, 1);
     }
     push_buffer(std::move(stream), resolved, nullptr);
+}
+
+void PreprocessorScanner::include_expand_macro(const char *name_after_tick)
+{
+    // §22.5.1 last paragraph: `include can be followed by a macro that
+    // expands to the quoted (or angle-bracket) filename. SV-only, and
+    // we only support object-like macros here; a function-like macro
+    // would require gathering arguments mid-INCLUDE_ARG state which is
+    // out of scope.
+    const std::string name(name_after_tick);
+    if(!m_driver.get_sv_mode()) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno
+                  << ": macro-as-filename in `include is SystemVerilog-only (§22.5.1)";
+        return;
+    }
+    Macro *m = m_driver.macros().find(name);
+    if(!m) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": undefined macro '"
+                  << name << "' in `include argument";
+        return;
+    }
+    if(m->has_args) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": function-like macro '"
+                  << name << "' is not supported as an `include argument";
+        return;
+    }
+    if(m->expansion_depth >= kMaxExpansionDepth) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '" << name
+                  << "' expansion depth exceeded " << kMaxExpansionDepth;
+        return;
+    }
+    const std::string expanded = expand_body(*m, /*actuals*/ {}, m_driver.get_sv_mode());
+    auto stream = std::make_unique<std::istringstream>(expanded);
+    push_buffer(std::move(stream), m_filename, m);
 }
 
 void PreprocessorScanner::cond_apply_name(const char *name)

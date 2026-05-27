@@ -9,9 +9,8 @@ namespace Veriparse
 namespace Parser
 {
 
-void MacroTable::define(const std::string &name, bool has_args,
-                        const std::vector<std::string> &formals, const std::string &body,
-                        const std::string &filename, int line)
+void MacroTable::define(const std::string &name, bool has_args, const std::vector<Formal> &formals,
+                        const std::string &body, const std::string &filename, int line)
 {
     auto it = m_macros.find(name);
     if(it != m_macros.end()) {

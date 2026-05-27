@@ -14,6 +14,16 @@ namespace Veriparse
 namespace Parser
 {
 
+/// One formal argument of a function-like macro. The default_text /
+/// has_default fields encode SV-only default arguments (§22.5.1):
+///   `define X(a=5, b=, c) body
+struct Formal
+{
+    std::string name;
+    std::string default_text;
+    bool has_default{false};
+};
+
 struct Macro
 {
     std::string name;
@@ -22,7 +32,7 @@ struct Macro
     /// matters at use time (§22.5.1): function-like usage REQUIRES
     /// parens; object-like must NOT consume following parens.
     bool has_args{false};
-    std::vector<std::string> formals;
+    std::vector<Formal> formals;
     std::string body;
     std::string defined_filename;
     int defined_line{0};
@@ -38,7 +48,7 @@ struct Macro
 class MacroTable
 {
 public:
-    void define(const std::string &name, bool has_args, const std::vector<std::string> &formals,
+    void define(const std::string &name, bool has_args, const std::vector<Formal> &formals,
                 const std::string &body, const std::string &filename, int line);
     void undef(const std::string &name);
     void undef_all();

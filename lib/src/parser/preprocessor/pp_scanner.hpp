@@ -14,6 +14,8 @@
 #include <FlexLexer.h>
 #endif
 
+#include <parser/preprocessor/pp_macro.hpp>
+
 #include <iostream>
 #include <memory>
 #include <string>
@@ -30,7 +32,6 @@ namespace Parser
 {
 
 class PreprocessorDriver;
-struct Macro;
 
 class PreprocessorScanner : public yyFlexLexer
 {
@@ -73,7 +74,35 @@ public:
         m_pending_has_args = true;
         m_pending_formals.clear();
     }
-    void define_add_formal(const char *name) { m_pending_formals.emplace_back(name); }
+    void define_add_formal(const char *name)
+    {
+        Formal f;
+        f.name = name;
+        m_pending_formals.push_back(std::move(f));
+    }
+    void define_mark_formal_default()
+    {
+        if(!m_pending_formals.empty()) {
+            m_pending_formals.back().has_default = true;
+        }
+        m_pending_default_depth = 0;
+    }
+    void define_append_default(const char *text)
+    {
+        if(!m_pending_formals.empty()) {
+            m_pending_formals.back().default_text.append(text);
+        }
+    }
+    void define_append_default_char(char c)
+    {
+        if(!m_pending_formals.empty()) {
+            m_pending_formals.back().default_text.push_back(c);
+        }
+    }
+    int default_depth() const { return m_pending_default_depth; }
+    void default_inc_depth() { ++m_pending_default_depth; }
+    void default_dec_depth() { --m_pending_default_depth; }
+
     void define_append_body(const char *text) { m_pending_body += text; }
     void define_append_body_char(char c) { m_pending_body += c; }
     void define_finish();
@@ -92,6 +121,10 @@ public:
 
     // `include arg (INCLUDE_ARG rule).
     void include_open(const char *quoted_or_angled);
+    /// Object-like macro use inside an `include argument (§22.5.1).
+    /// Pushes the macro expansion onto the buffer stack so the
+    /// subsequent INCLUDE_ARG rules match the expanded "..." literal.
+    void include_expand_macro(const char *name_after_tick);
 
     // `ifdef/`ifndef/`elsif NAME (COND_NAME rule).
     void cond_set_kind_ifdef() { m_pending_cond_kind = CondKind::Ifdef; }
@@ -112,6 +145,9 @@ public:
     // directive handlers in pp_scanner_impl.cpp.
     void begin_initial();
     void begin_define_name();
+    void begin_define_formals();
+    void begin_define_formal_default();
+    void begin_define_formal_default_string();
     void begin_undef_name();
     void begin_include_arg();
     void begin_cond_name();
@@ -146,8 +182,9 @@ private:
     // Pending state for multi-token directives.
     std::string m_pending_name;
     std::string m_pending_body;
-    std::vector<std::string> m_pending_formals;
+    std::vector<Formal> m_pending_formals;
     bool m_pending_has_args{false};
+    int m_pending_default_depth{0}; ///< bracket depth inside a default value
     CondKind m_pending_cond_kind{CondKind::Ifdef};
 
     // Pending state for a function-like macro call being parsed.

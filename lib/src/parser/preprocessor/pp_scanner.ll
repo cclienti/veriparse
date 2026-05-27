@@ -22,6 +22,8 @@
 %x LINE_COMMENT
 %x DEFINE_NAME
 %x DEFINE_FORMALS
+%x DEFINE_FORMAL_DEFAULT
+%x DEFINE_FORMAL_DEFAULT_STRING
 %x DEFINE_BODY_LEAD
 %x DEFINE_BODY
 %x DEFINE_BODY_STRING
@@ -76,19 +78,57 @@ ID  [a-zA-Z_][a-zA-Z0-9_$]*
                        BEGIN(SKIP_TO_EOL);}
 
 	/* Formal arg list of a function-like macro. §22.5.1: simple
-	 * identifiers separated by commas, enclosed in parentheses. */
-<DEFINE_FORMALS>"("   {/* eat the opener */}
+	 * identifiers separated by commas, enclosed in parentheses. SV
+	 * additionally allows `name = default_text` for each formal. */
+<DEFINE_FORMALS>"("    {/* eat the opener */}
 <DEFINE_FORMALS>[ \t]+ {/* skip */}
-<DEFINE_FORMALS>{ID}  {define_add_formal(yytext);}
-<DEFINE_FORMALS>","   {/* next formal */}
-<DEFINE_FORMALS>")"   {BEGIN(DEFINE_BODY_LEAD);}
-<DEFINE_FORMALS>\n    {LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
-                                 << ": newline in `define formal-argument list";
-                       BEGIN(INITIAL);}
-<DEFINE_FORMALS>.     {LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
-                                 << ": invalid character '" << yytext
-                                 << "' in `define formal-argument list";
-                       BEGIN(SKIP_TO_EOL);}
+<DEFINE_FORMALS>{ID}   {define_add_formal(yytext);}
+<DEFINE_FORMALS>"="    {if(!m_driver.get_sv_mode()) {
+                          LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
+                                    << ": default macro argument values are SystemVerilog-only (§22.5.1)";
+                          BEGIN(SKIP_TO_EOL);
+                       } else {
+                          define_mark_formal_default();
+                          BEGIN(DEFINE_FORMAL_DEFAULT);
+                       }}
+<DEFINE_FORMALS>","    {/* next formal */}
+<DEFINE_FORMALS>")"    {BEGIN(DEFINE_BODY_LEAD);}
+<DEFINE_FORMALS>\n     {LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
+                                  << ": newline in `define formal-argument list";
+                        BEGIN(INITIAL);}
+<DEFINE_FORMALS>.      {LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
+                                  << ": invalid character '" << yytext
+                                  << "' in `define formal-argument list";
+                        BEGIN(SKIP_TO_EOL);}
+
+	/* SV default-value text for the current formal (§22.5.1). Same
+	 * matched-pair counting rule as actual arguments: comma or ')' at
+	 * depth-0 ends the current default. */
+<DEFINE_FORMAL_DEFAULT>"("  {define_append_default_char('('); default_inc_depth();}
+<DEFINE_FORMAL_DEFAULT>"["  {define_append_default_char('['); default_inc_depth();}
+<DEFINE_FORMAL_DEFAULT>"{"  {define_append_default_char('{'); default_inc_depth();}
+<DEFINE_FORMAL_DEFAULT>")"  {if(default_depth() == 0) {
+                                BEGIN(DEFINE_BODY_LEAD);
+                             } else {
+                                define_append_default_char(')'); default_dec_depth();
+                             }}
+<DEFINE_FORMAL_DEFAULT>"]"  {define_append_default_char(']'); default_dec_depth();}
+<DEFINE_FORMAL_DEFAULT>"}"  {define_append_default_char('}'); default_dec_depth();}
+<DEFINE_FORMAL_DEFAULT>","  {if(default_depth() == 0) {
+                                BEGIN(DEFINE_FORMALS);
+                             } else {
+                                define_append_default_char(',');
+                             }}
+<DEFINE_FORMAL_DEFAULT>"\""             {define_append_default_char('"'); BEGIN(DEFINE_FORMAL_DEFAULT_STRING);}
+<DEFINE_FORMAL_DEFAULT>\\[^ \t\r\n]+    {define_append_default(yytext);}
+<DEFINE_FORMAL_DEFAULT>\n               {define_append_default_char('\n');}
+<DEFINE_FORMAL_DEFAULT>.                {define_append_default_char(yytext[0]);}
+
+<DEFINE_FORMAL_DEFAULT_STRING>\\\"  {define_append_default(yytext);}
+<DEFINE_FORMAL_DEFAULT_STRING>\\\\  {define_append_default(yytext);}
+<DEFINE_FORMAL_DEFAULT_STRING>"\""  {define_append_default_char('"'); BEGIN(DEFINE_FORMAL_DEFAULT);}
+<DEFINE_FORMAL_DEFAULT_STRING>\n    {define_append_default_char('\n');}
+<DEFINE_FORMAL_DEFAULT_STRING>.     {define_append_default_char(yytext[0]);}
 
 	/* Strip whitespace and stripped // comments between the macro name
 	 * and the actual body. The spec example "`define wordsize 8" sets
@@ -140,6 +180,7 @@ ID  [a-zA-Z_][a-zA-Z0-9_$]*
 <INCLUDE_ARG>[ \t]+            {/* skip */}
 <INCLUDE_ARG>"\""[^"\n]*"\""   {m_pending_name = yytext; BEGIN(INCLUDE_TAIL);}
 <INCLUDE_ARG>"<"[^>\n]*">"     {m_pending_name = yytext; BEGIN(INCLUDE_TAIL);}
+<INCLUDE_ARG>"`"{ID}           {include_expand_macro(yytext + 1);}
 <INCLUDE_ARG>\n                {LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
                                           << ": missing `include argument";
                                 BEGIN(INITIAL);}
@@ -228,13 +269,16 @@ ID  [a-zA-Z_][a-zA-Z0-9_$]*
 namespace Veriparse {
 namespace Parser {
 
-void PreprocessorScanner::begin_initial()         {BEGIN(INITIAL);}
-void PreprocessorScanner::begin_define_name()     {BEGIN(DEFINE_NAME);}
-void PreprocessorScanner::begin_undef_name()      {BEGIN(UNDEF_NAME);}
-void PreprocessorScanner::begin_include_arg()     {BEGIN(INCLUDE_ARG);}
-void PreprocessorScanner::begin_cond_name()       {BEGIN(COND_NAME);}
-void PreprocessorScanner::begin_skip_to_eol()     {BEGIN(SKIP_TO_EOL);}
-void PreprocessorScanner::begin_macro_call_pre()  {BEGIN(MACRO_CALL_PRE);}
+void PreprocessorScanner::begin_initial()                       {BEGIN(INITIAL);}
+void PreprocessorScanner::begin_define_name()                   {BEGIN(DEFINE_NAME);}
+void PreprocessorScanner::begin_define_formals()                {BEGIN(DEFINE_FORMALS);}
+void PreprocessorScanner::begin_define_formal_default()         {BEGIN(DEFINE_FORMAL_DEFAULT);}
+void PreprocessorScanner::begin_define_formal_default_string()  {BEGIN(DEFINE_FORMAL_DEFAULT_STRING);}
+void PreprocessorScanner::begin_undef_name()                    {BEGIN(UNDEF_NAME);}
+void PreprocessorScanner::begin_include_arg()                   {BEGIN(INCLUDE_ARG);}
+void PreprocessorScanner::begin_cond_name()                     {BEGIN(COND_NAME);}
+void PreprocessorScanner::begin_skip_to_eol()                   {BEGIN(SKIP_TO_EOL);}
+void PreprocessorScanner::begin_macro_call_pre()                {BEGIN(MACRO_CALL_PRE);}
 
 }
 }
