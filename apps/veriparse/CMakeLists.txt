@@ -24,11 +24,15 @@ install(DIRECTORY test/tiny_aes_128
         DESTINATION share/veriparse/examples)
 install(DIRECTORY test/double_fpu-master
         DESTINATION share/veriparse/examples)
-install(FILES scripts/veriparse
-        DESTINATION bin
-        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-                    GROUP_EXECUTE GROUP_READ
-	            WORLD_EXECUTE WORLD_READ)
+if(WIN32)
+  install(FILES scripts/veriparse.ps1 scripts/veriparse.cmd DESTINATION bin)
+else()
+  install(FILES scripts/veriparse
+          DESTINATION bin
+          PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                      GROUP_EXECUTE GROUP_READ
+                      WORLD_EXECUTE WORLD_READ)
+endif()
 #----------------------------------------
 # Handle common test of veriflat and
 # veriobf
