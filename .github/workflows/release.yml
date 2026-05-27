@@ -71,6 +71,12 @@ jobs:
         id: pkg
         run: echo "path=$(make package-name)" >> $GITHUB_OUTPUT
 
+      - name: Upload artifact (every run, for download from the run page)
+        uses: actions/upload-artifact@v6
+        with:
+          name: veriparse-${{ matrix.platform }}-conda
+          path: ${{ steps.pkg.outputs.path }}
+
       - name: Upload to release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v3
