@@ -3,8 +3,7 @@
 #ifndef VERIPARSE_GENERATORS_YAML_SPECIALIZATION_HPP
 #define VERIPARSE_GENERATORS_YAML_SPECIALIZATION_HPP
 
-#include <gmp.h>
-#include <gmpxx.h>
+#include <veriparse/misc/bignum.hpp>
 #include <yaml-cpp/yaml.h>
 #include <sstream>
 
@@ -294,7 +293,7 @@ template <> struct convert<Veriparse::AST::EnumDef::Base_typeEnum>
 
 template <> struct convert<mpz_class>
 {
-    static Node encode(const mpz_class &rhs) { return Node(rhs.get_str(10)); }
+    static Node encode(const mpz_class &rhs) { return Node(rhs.str()); }
 
     static bool decode(const Node &node, mpz_class &rhs)
     {

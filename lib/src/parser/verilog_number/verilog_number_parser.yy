@@ -31,7 +31,7 @@
 #include <cstdint>
 #include <vector>
 #include <string>
-#include <gmpxx.h>
+#include <veriparse/misc/bignum.hpp>
 
 
 namespace Veriparse {

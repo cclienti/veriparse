@@ -48,30 +48,3 @@ add_subdirectory(lib)
 add_subdirectory(apps)
 
 
-########################################
-### Bundle runtime DLLs on Windows
-########################################
-
-# Make the .zip self-contained on a clean Windows install:
-#   - MSVC runtime (vcruntime140, msvcp140, ...) via the CMake helper;
-#     these usually ship with Windows Update but not on a vanilla install.
-#   - vcpkg-supplied DLLs (boost, gmp, yaml-cpp, ...) from the build's
-#     vcpkg_installed bin dir. install(TARGETS) only handles the .exe.
-# Filter out gtest/gmock DLLs: they live in the same vcpkg bin dir but
-# the shipping executables don't link them.
-if(WIN32)
-  include(InstallRequiredSystemLibraries)
-
-  if(DEFINED VCPKG_TARGET_TRIPLET)
-    set(_veriparse_vcpkg_bin
-        ${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/bin)
-    if(EXISTS ${_veriparse_vcpkg_bin})
-      install(DIRECTORY ${_veriparse_vcpkg_bin}/
-              DESTINATION bin
-              FILES_MATCHING
-              PATTERN "*.dll"
-              PATTERN "gtest*.dll" EXCLUDE
-              PATTERN "gmock*.dll" EXCLUDE)
-    endif()
-  endif()
-endif()

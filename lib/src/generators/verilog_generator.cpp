@@ -3,6 +3,7 @@
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/passes/transformations/expression_operators.hpp>
 #include <veriparse/misc/string_utils.hpp>
+#include <veriparse/misc/math.hpp>
 #include <veriparse/logger/logger.hpp>
 
 #include <iostream>
@@ -24,8 +25,9 @@ typedef std::numeric_limits<double> dbl;
 
 std::string VerilogGenerator::render_node(const AST::Node::Ptr node) const
 {
-    if(node->get_node_type() != AST::NodeType::Node)
+    if(node->get_node_type() != AST::NodeType::Node) {
         return render(AST::to_node(node));
+    }
 
     return std::string();
 }
@@ -225,7 +227,7 @@ std::string VerilogGenerator::render_intconstn(const AST::IntConstN::Ptr node) c
         }
 
         if(size < 0) {
-            ss << value.get_str(10);
+            ss << value.str();
         } else {
             char base_str = (base == 10) ? 'd' : (base == 16) ? 'h' : (base == 8) ? 'o' : 'b';
 
@@ -241,7 +243,7 @@ std::string VerilogGenerator::render_intconstn(const AST::IntConstN::Ptr node) c
                 ss << 's';
             }
 
-            ss << base_str << value.get_str(base);
+            ss << base_str << Veriparse::Misc::bignum_to_str(value, base);
         }
     }
 
@@ -463,8 +465,9 @@ std::string VerilogGenerator::render_parameter(const AST::Parameter::Ptr node) c
         AST::Node::Ptr value = node->get_value();
         std::string value_str;
 
-        if(value)
+        if(value) {
             value_str = " = " + render(value);
+        }
 
         switch(node->get_type()) {
         case AST::Parameter::TypeEnum::INTEGER:
@@ -520,8 +523,9 @@ std::string VerilogGenerator::render_localparam(const AST::Localparam::Ptr node)
         AST::Node::Ptr value = node->get_value();
         std::string value_str;
 
-        if(value)
+        if(value) {
             value_str = " = " + render(value);
+        }
 
         switch(node->get_type()) {
         case AST::Localparam::TypeEnum::INTEGER:
@@ -1140,12 +1144,14 @@ VerilogGenerator::render_blockingsubstitution(const AST::BlockingSubstitution::P
         const AST::DelayStatement::Ptr rdelay = node->get_rdelay();
 
         std::string ldelay_str = render(ldelay);
-        if(ldelay)
+        if(ldelay) {
             ldelay_str.append(" ");
+        }
 
         std::string rdelay_str = render(rdelay);
-        if(rdelay)
+        if(rdelay) {
             rdelay_str.append(" ");
+        }
 
         result = ldelay_str + render(lvalue) + " = " + rdelay_str + render(rvalue) + ";";
     }
@@ -1163,12 +1169,14 @@ VerilogGenerator::render_nonblockingsubstitution(const AST::NonblockingSubstitut
         const AST::DelayStatement::Ptr rdelay = node->get_rdelay();
 
         std::string ldelay_str = render(ldelay);
-        if(ldelay)
+        if(ldelay) {
             ldelay_str.append(" ");
+        }
 
         std::string rdelay_str = render(rdelay);
-        if(rdelay)
+        if(rdelay) {
             rdelay_str.append(" ");
+        }
 
         result = ldelay_str + render(lvalue) + " <= " + rdelay_str + render(rvalue) + ";";
     }
@@ -1543,8 +1551,9 @@ std::string VerilogGenerator::render_function(const AST::Function::Ptr node) con
     std::string result;
     if(node) {
         result = "\nfunction ";
-        if(node->get_automatic())
+        if(node->get_automatic()) {
             result += "automatic ";
+        }
 
         result += widths_list_to_string(node->get_retwidths());
 
@@ -1606,8 +1615,9 @@ std::string VerilogGenerator::render_task(const AST::Task::Ptr node) const
     if(node) {
         result = "\ntask ";
 
-        if(node->get_automatic())
+        if(node->get_automatic()) {
             result += "automatic ";
+        }
 
         result += StringUtils::escape(node->get_name());
 
@@ -1975,8 +1985,9 @@ std::string VerilogGenerator::render_enumdef(const AST::EnumDef::Ptr node) const
         if(items) {
             bool first = true;
             for(const AST::EnumItem::Ptr &item : *items) {
-                if(!first)
+                if(!first) {
                     result += ", ";
+                }
                 result += render(item);
                 first = false;
             }
