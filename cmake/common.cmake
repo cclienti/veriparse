@@ -18,8 +18,15 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
     # COFF's 65k-section ceiling without it.
     # NOMINMAX: drops windows.h's min/max macros that collide with Boost
     # template names; WIN32_LEAN_AND_MEAN trims the rest of windows.h.
+    # _CRT_SECURE_NO_WARNINGS + _CRT_NONSTDC_NO_DEPRECATE silence MSVC's
+    # deprecation warnings on portable C/POSIX names (getenv, getpid, ...);
+    # they fire on every cross-platform test helper otherwise.
     add_compile_options(/EHsc /bigobj)
-    add_compile_definitions(NOMINMAX WIN32_LEAN_AND_MEAN)
+    add_compile_definitions(
+      NOMINMAX
+      WIN32_LEAN_AND_MEAN
+      _CRT_SECURE_NO_WARNINGS
+      _CRT_NONSTDC_NO_DEPRECATE)
     set(CMAKE_CXX_FLAGS_DEBUG          "/Zi /Od /DDEBUG")
     set(CMAKE_CXX_FLAGS_FULLDEBUG      "/Zi /Od /DDEBUG /DFULL_DEBUG")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/Zi /O2 /DDEBUG")
