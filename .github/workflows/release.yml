@@ -30,15 +30,15 @@ jobs:
           {
             echo 'matrix<<EOF'
             echo '{"include":['
-            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","shell":"bash -el {0}"}'
+            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","shell":"bash -el {0}","init_shell":"bash"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
-              echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","shell":"bash -el {0}"},'
-              echo '{"os":"macos-14","platform":"osx-arm64","name":"macOS arm64","shell":"bash -el {0}"}'
+              echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","shell":"bash -el {0}","init_shell":"bash"},'
+              echo '{"os":"macos-14","platform":"osx-arm64","name":"macOS arm64","shell":"bash -el {0}","init_shell":"bash"}'
             fi
             if [[ "$INCLUDE_WINDOWS" == "true" ]]; then
               echo ','
-              echo '{"os":"windows-latest","platform":"win-64","name":"Windows x86_64","shell":"bash -el {0}"}'
+              echo '{"os":"windows-latest","platform":"win-64","name":"Windows x86_64","shell":"bash -el {0}","init_shell":"bash powershell"}'
             fi
             echo ']}'
             echo EOF
@@ -69,7 +69,7 @@ jobs:
           # micromamba 2.6.1 crashes (ACCESS_VIOLATION) during `shell init`
           # on the windows-2022 runner; pin to a known-good version.
           micromamba-version: '2.0.5-0'
-          init-shell: bash
+          init-shell: ${{ matrix.init_shell }}
           post-cleanup: none
 
       # GNU make is pre-installed on ubuntu/macos runners but not on Windows.
@@ -78,12 +78,17 @@ jobs:
         shell: pwsh
         run: choco install make -y --no-progress
 
-      # Keep conda-build's work tree short on Windows to avoid MAX_PATH;
-      # the default $HOME/veriparse-conda-bld resolves to a long path under
-      # C:\Users\runneradmin and trips MSBuild/CMake on deeply nested files.
-      - name: Set Windows conda-build root
+      # On Windows, give conda-build short, all-forward-slash paths:
+      #   - keeps the work tree out of MAX_PATH territory (default
+      #     $HOME/veriparse-conda-bld is long under C:\Users\runneradmin)
+      #   - avoids backslash-escape mangling when conda-build's `--output`
+      #     path is captured back through make + bash (\U and \r vanish,
+      #     turning C:\Users\runneradmin into C:Usersrunneradmin).
+      - name: Set Windows conda-build paths
         if: matrix.platform == 'win-64'
-        run: echo "CONDA_BUILD_ROOT=C:\\b" >> "$GITHUB_ENV"
+        run: |
+          echo "CONDA_BUILD_ROOT=C:/b" >> "$GITHUB_ENV"
+          echo "CONDA_DEST_PATH=C:/p" >> "$GITHUB_ENV"
 
       - name: Build conda package
         run: make package
@@ -97,6 +102,7 @@ jobs:
         with:
           name: veriparse-${{ matrix.platform }}-conda
           path: ${{ steps.pkg.outputs.path }}
+          if-no-files-found: error
 
       - name: Upload to release
         if: github.event_name == 'release'
