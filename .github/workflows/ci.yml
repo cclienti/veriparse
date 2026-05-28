@@ -116,6 +116,10 @@ jobs:
           micromamba-version: '2.0.5-0'
           environment-name: build
           init-shell: bash powershell
+          # Skip post-job cleanup: the runner is ephemeral, and the
+          # default cleanup path trips a "powershell is not supported"
+          # warning on Windows during environment teardown.
+          post-cleanup: none
           create-args: >-
             cmake
             winflexbison
