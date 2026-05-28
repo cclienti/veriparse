@@ -26,6 +26,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
+    - ninja            # [not win]
     - make             # used by dev-test-integration project Makefiles
     - mold             # [linux]
     - flex=2.6.4

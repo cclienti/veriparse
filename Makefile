@@ -76,7 +76,8 @@ dev-cmake:
 	  cd $(DEV_BUILD_DIR); \
 	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
 	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
-	  cmake -DCMAKE_PREFIX_PATH=$$CONDA_PREFIX \
+	  cmake -G Ninja \
+	        -DCMAKE_PREFIX_PATH=$$CONDA_PREFIX \
 	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) \
 	        -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
 	        -DCMAKE_SHARED_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
@@ -88,7 +89,7 @@ dev-build:
 	  cd $(DEV_BUILD_DIR); \
 	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
 	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
-	  make -j${NUM_CORES}
+	  cmake --build . --parallel $(NUM_CORES)
 
 dev-test:
 	set -e; \
