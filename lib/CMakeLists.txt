@@ -29,12 +29,8 @@ endif()
 find_package(BISON)
 find_package(FLEX)
 
-# winflexbison ships FlexLexer.h outside the default include path. The
-# location varies by distribution: chocolatey installs it under
-# `lib/winflexbison3/tools/` (the bin entry is a shim that doesn't sit
-# next to the header), conda-forge puts it under
-# `Library/share/winflexbison/`. Use find_path with explicit hints for
-# both layouts.
+# winflexbison ships FlexLexer.h outside the default include path. On
+# conda-forge for win-64 it lives under Library/share/winflexbison/.
 add_library(veriparse_flex_lexer_h INTERFACE)
 if(WIN32 AND FLEX_EXECUTABLE)
   get_filename_component(_flex_bin_dir ${FLEX_EXECUTABLE} DIRECTORY)
@@ -42,17 +38,13 @@ if(WIN32 AND FLEX_EXECUTABLE)
   find_path(FLEX_INCLUDE_DIR
     NAMES FlexLexer.h
     HINTS
-      "$ENV{ProgramData}/chocolatey/lib/winflexbison3/tools"
-      "$ENV{ChocolateyInstall}/lib/winflexbison3/tools"
-      "C:/ProgramData/chocolatey/lib/winflexbison3/tools"
-      ${_flex_bin_dir}
       ${_flex_prefix}/share/winflexbison
-      ${_flex_prefix}/tools
+      ${_flex_bin_dir}
   )
   if(FLEX_INCLUDE_DIR)
     target_include_directories(veriparse_flex_lexer_h INTERFACE ${FLEX_INCLUDE_DIR})
   else()
-    message(FATAL_ERROR "FlexLexer.h not found; checked chocolatey and conda-forge layouts.")
+    message(FATAL_ERROR "FlexLexer.h not found near ${FLEX_EXECUTABLE}.")
   endif()
 endif()
 
@@ -105,8 +97,7 @@ target_include_directories (veriparse_static PRIVATE src)
 target_include_directories (veriparse_static PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(veriparse_static YAMLCPP::YAMLCPP)
-target_link_libraries(veriparse_static Boost::system Boost::filesystem Boost::log)
-target_link_libraries(veriparse_static GMP::GMPXX GMP::GMP)
+target_link_libraries(veriparse_static Boost::filesystem Boost::log)
 target_link_libraries(veriparse_static veriparse_flex_lexer_h)
 
 # Specific compilation flags (GCC/Clang only; MSVC rejects -W... flags)

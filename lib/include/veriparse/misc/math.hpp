@@ -3,12 +3,15 @@
 #ifndef VERIPARSE_MISC_MATH
 #define VERIPARSE_MISC_MATH
 
-#include <gmpxx.h>
+#include <veriparse/misc/bignum.hpp>
 #include <cstdint>
 
-namespace Veriparse {
-namespace Misc {
-namespace Math {
+namespace Veriparse
+{
+namespace Misc
+{
+namespace Math
+{
 
 /**
  * Return the decimal log of x
@@ -25,8 +28,8 @@ mpz_class u64_to_mpz(std::uint64_t num);
  */
 mpz_class i64_to_mpz(std::int64_t num);
 
-}
-}
-}
+} // namespace Math
+} // namespace Misc
+} // namespace Veriparse
 
 #endif

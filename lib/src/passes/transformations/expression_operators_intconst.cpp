@@ -477,7 +477,7 @@ AST::IntConstN::Ptr sll<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
         // int size_y = y->get_size();
         // bool sign_y = y->get_sign();
         mpz_class val_y = y->get_value();
-        uint64_t shift = val_y.get_ui();
+        uint64_t shift = val_y.convert_to<unsigned long>();
 
         int base_res = base_x;
         int size_res = (size_x == -1) ? -1 : size_x + shift;
@@ -503,7 +503,7 @@ AST::IntConstN::Ptr srl<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
         // int size_y = y->get_size();
         // bool sign_y = y->get_sign();
         mpz_class val_y = y->get_value();
-        uint64_t shift = val_y.get_ui();
+        uint64_t shift = val_y.convert_to<unsigned long>();
 
         int base_res = base_x;
         int size_res = (size_x == -1) ? -1 : size_x - shift;
@@ -511,12 +511,11 @@ AST::IntConstN::Ptr srl<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
         mpz_class res = val_x;
 
         if(res < 0) {
-            // mpz_t variables represent integers using sign
-            // and magnitude. We need to "cast" the signed
-            // number into an unsigned number by applying an
-            // offset (mpz_t does not use the two's
-            // complement number format).
-            size_t s = mpz_sizeinbase(val_x.get_mpz_t(), 2);
+            // cpp_int (and the former mpz_t) stores signed integers using
+            // sign+magnitude. To shift a logically-negative number as if
+            // it were two's-complement, recompute it as max + res first.
+            const mpz_class abs_val = -val_x;
+            const size_t s = boost::multiprecision::msb(abs_val) + 1;
             mpz_class max = mpz_class(1) << (s + 1);
             res = max + res;
         }
@@ -541,7 +540,7 @@ AST::IntConstN::Ptr sra<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::P
         // int size_y = y->get_size();
         // bool sign_y = y->get_sign();
         mpz_class val_y = y->get_value();
-        uint64_t shift = val_y.get_ui();
+        uint64_t shift = val_y.convert_to<unsigned long>();
 
         int base_res = base_x;
         int size_res = (size_x == -1) ? -1 : size_x - shift;
@@ -916,8 +915,8 @@ AST::IntConstN::Ptr partselect<AST::IntConstN::Ptr>::operator()(const AST::IntCo
         // bool sign_x = x->get_sign();
         mpz_class val_x = x->get_value();
 
-        int val_msb = msb->get_value().get_ui();
-        int val_lsb = lsb->get_value().get_ui();
+        int val_msb = msb->get_value().convert_to<unsigned long>();
+        int val_lsb = lsb->get_value().convert_to<unsigned long>();
 
         int base_res = base_x;
         int size_res = val_msb - val_lsb + 1;
@@ -942,8 +941,8 @@ partselect_minus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
         // bool sign_x = x->get_sign();
         mpz_class val_x = x->get_value();
 
-        int val_msb = msb->get_value().get_ui();
-        int val_index = index->get_value().get_ui();
+        int val_msb = msb->get_value().convert_to<unsigned long>();
+        int val_index = index->get_value().convert_to<unsigned long>();
         int val_lsb = val_msb - val_index + 1;
 
         int base_res = base_x;
@@ -969,8 +968,8 @@ partselect_plus<AST::IntConstN::Ptr>::operator()(const AST::IntConstN::Ptr x,
         // bool sign_x = x->get_sign();
         mpz_class val_x = x->get_value();
 
-        int val_lsb = lsb->get_value().get_ui();
-        int val_index = index->get_value().get_ui();
+        int val_lsb = lsb->get_value().convert_to<unsigned long>();
+        int val_index = index->get_value().convert_to<unsigned long>();
         int val_msb = val_lsb + val_index - 1;
 
         int base_res = base_x;

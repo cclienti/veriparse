@@ -7,7 +7,7 @@
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/logger/logger.hpp>
 
-#include <gmpxx.h>
+#include <veriparse/misc/bignum.hpp>
 
 namespace Veriparse
 {

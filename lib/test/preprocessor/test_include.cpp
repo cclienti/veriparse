@@ -4,8 +4,6 @@
 #include <gtest/gtest.h>
 #include <veriparse/parser/preprocessor.hpp>
 
-#include <unistd.h>
-
 #include <filesystem>
 #include <fstream>
 #include <sstream>
