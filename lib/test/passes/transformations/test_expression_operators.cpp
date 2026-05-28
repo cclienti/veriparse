@@ -1619,7 +1619,7 @@ TEST(MiscBignum, SignedUnsignedComparison)
 {
     const mpz_class neg(-1);
     const unsigned int u_small = 1u;
-    const unsigned long u_huge = 0xFFFFFFFFFFFFFFFFull;
+    const unsigned long long u_huge = 0xFFFFFFFFFFFFFFFFull;
 
     // A negative bignum is less than any unsigned, no matter how large.
     ASSERT_TRUE(neg < u_small);

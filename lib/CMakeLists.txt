@@ -100,8 +100,11 @@ target_link_libraries(veriparse_static YAMLCPP::YAMLCPP)
 target_link_libraries(veriparse_static Boost::filesystem Boost::log)
 target_link_libraries(veriparse_static veriparse_flex_lexer_h)
 
-# Specific compilation flags (GCC/Clang only; MSVC rejects -W... flags)
-if(NOT MSVC)
+# GCC, plain Clang (Linux/macOS) and clang-cl (Windows in MSVC mode) all
+# accept the -W... source-level flags below. Only legacy cl.exe rejects
+# them; the explicit `CMAKE_CXX_COMPILER_ID == "Clang"` check catches
+# clang-cl, which sets MSVC=1 and would otherwise be excluded by NOT MSVC.
+if(NOT MSVC OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(_parser_flags "-Wno-unused-but-set-variable")
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # Bison generates a parser class with an unused private `driver` field; clang
