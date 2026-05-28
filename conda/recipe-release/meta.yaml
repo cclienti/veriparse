@@ -7,13 +7,13 @@ source:
 
 build:
   number: 0
-  skip: true  # [win]
   ignore_run_exports:
     - gtest
 
 requirements:
   host:
-    - flex=2.6.4
+    - flex=2.6.4              # [not win]
+    - winflexbison            # [win]
     - gtest=1.17.0
     - libboost-devel=1.90.0
     - yaml-cpp=0.8.0
@@ -27,10 +27,11 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake
     - ninja            # [not win]
-    - make             # used by dev-test-integration project Makefiles
+    - make             # [not win]   used by dev-test-integration Makefiles
     - mold             # [linux]
-    - flex=2.6.4
-    - bison=3.8.2
+    - flex=2.6.4       # [not win]
+    - bison=3.8.2      # [not win]
+    - winflexbison     # [win]
     - libboost-devel=1.90.0
     - yaml-cpp=0.8.0
     - gtest=1.17.0

@@ -11,6 +11,10 @@ on:
         description: 'Also build macOS conda packages (osx-64, osx-arm64).'
         type: boolean
         default: true
+      include_windows:
+        description: 'Also build Windows conda package (win-64).'
+        type: boolean
+        default: true
 
 jobs:
   matrix:
@@ -21,6 +25,7 @@ jobs:
       - id: set
         env:
           INCLUDE_MACOS: ${{ github.event_name == 'release' || github.event.inputs.include_macos == 'true' }}
+          INCLUDE_WINDOWS: ${{ github.event_name == 'release' || github.event.inputs.include_windows == 'true' }}
         run: |
           {
             echo 'matrix<<EOF'
@@ -31,11 +36,14 @@ jobs:
               echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","shell":"bash -el {0}"},'
               echo '{"os":"macos-14","platform":"osx-arm64","name":"macOS arm64","shell":"bash -el {0}"}'
             fi
+            if [[ "$INCLUDE_WINDOWS" == "true" ]]; then
+              echo ','
+              echo '{"os":"windows-latest","platform":"win-64","name":"Windows x86_64","shell":"bash -el {0}"}'
+            fi
             echo ']}'
             echo EOF
           } >> "$GITHUB_OUTPUT"
 
-  # Linux + macOS: build the conda package via conda-build.
   build-conda-package:
     needs: matrix
     name: Build ${{ matrix.name }} (conda)
@@ -64,6 +72,19 @@ jobs:
           init-shell: bash
           post-cleanup: none
 
+      # GNU make is pre-installed on ubuntu/macos runners but not on Windows.
+      - name: Install GNU make (Windows)
+        if: matrix.platform == 'win-64'
+        shell: pwsh
+        run: choco install make -y --no-progress
+
+      # Keep conda-build's work tree short on Windows to avoid MAX_PATH;
+      # the default $HOME/veriparse-conda-bld resolves to a long path under
+      # C:\Users\runneradmin and trips MSBuild/CMake on deeply nested files.
+      - name: Set Windows conda-build root
+        if: matrix.platform == 'win-64'
+        run: echo "CONDA_BUILD_ROOT=C:\\b" >> "$GITHUB_ENV"
+
       - name: Build conda package
         run: make package
 
@@ -82,78 +103,5 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: ${{ steps.pkg.outputs.path }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Windows: build directly with MSVC + vcpkg via the same CMake workflow
-  # preset CI uses, then install + zip + upload.
-  build-windows-zip:
-    name: Build Windows x86_64 (zip)
-    runs-on: windows-2022
-    defaults:
-      run:
-        shell: pwsh
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Install winflexbison
-        run: choco install winflexbison3 -y --no-progress
-
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: '56bb2411609227288b70117ead2c47585ba07713'
-          vcpkgJsonGlob: 'vcpkg.json'
-          runVcpkgInstall: false
-          vcpkgDirectory: 'C:\v'
-
-      - name: Restore vcpkg binary cache
-        id: vcpkg-cache
-        uses: actions/cache/restore@v5
-        with:
-          path: ${{ runner.temp }}/vcpkg-cache
-          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
-          restore-keys: vcpkg-win64-
-
-      - name: Configure + Build + Test
-        env:
-          VCPKG_BINARY_SOURCES: 'clear;files,${{ runner.temp }}/vcpkg-cache,readwrite'
-        run: cmake --workflow --preset windows-release
-
-      - name: Save vcpkg binary cache
-        if: always() && steps.vcpkg-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
-        with:
-          path: ${{ runner.temp }}/vcpkg-cache
-          key: vcpkg-win64-${{ hashFiles('vcpkg.json') }}
-
-      - name: Install
-        run: cmake --install build/windows-release --config Release
-
-      - name: Compute zip name
-        id: zipname
-        run: |
-          $version = "$(git describe --tags --always --dirty)"
-          $name = "veriparse-${version}-win64.zip"
-          echo "name=$name" >> $env:GITHUB_OUTPUT
-
-      - name: Zip
-        run: Compress-Archive -Path install/windows-release/* -DestinationPath ${{ steps.zipname.outputs.name }}
-
-      - name: Upload artifact (every run, for download from the run page)
-        uses: actions/upload-artifact@v6
-        with:
-          name: ${{ steps.zipname.outputs.name }}
-          path: ${{ steps.zipname.outputs.name }}
-
-      - name: Upload to release
-        if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v3
-        with:
-          files: ${{ steps.zipname.outputs.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
