@@ -27,6 +27,7 @@ if [[ "${target_platform}" == osx-* ]]; then
 fi
 
 cmake ${CMAKE_ARGS} \
+  -G Ninja \
   -DCMAKE_PREFIX_PATH=${PREFIX} \
   -DCMAKE_INSTALL_PREFIX=${PREFIX} \
   -DCMAKE_INSTALL_LIBDIR=lib \
@@ -35,8 +36,8 @@ cmake ${CMAKE_ARGS} \
   "${EXTRA_CMAKE_OPTS[@]}" \
   ${SRC_DIR}
 
-make -j ${CPU_COUNT}
+cmake --build . --parallel ${CPU_COUNT}
 
 VERIPARSE_SOURCE_ROOT=${SRC_DIR} ctest -j${CPU_COUNT} -L unittest --output-on-failure
 
-make install
+cmake --install .
