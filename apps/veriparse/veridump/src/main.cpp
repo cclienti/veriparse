@@ -1,19 +1,22 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 
-#include <veriparse/logger/logger.hpp>
-#include <veriparse/parser/verilog.hpp>
-#include <veriparse/generators/yaml_generator.hpp>
-#include <yaml-cpp/yaml.h>
 #include <veriparse/generators/dot_generator.hpp>
+#include <veriparse/generators/yaml_generator.hpp>
+#include <veriparse/logger/logger.hpp>
+#include <veriparse/parser/preprocessor.hpp>
+#include <veriparse/parser/verilog.hpp>
 #include <veriparse/version.hpp>
+#include <yaml-cpp/yaml.h>
 
-#include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
 
 static void show_usage(char const *const progname,
                        boost::program_options::options_description const &desc)
@@ -42,6 +45,9 @@ static int veridump(int argc, char *argv[])
     std::string format;
     bool sv_mode = false;
     std::vector<std::string> inputs;
+    std::vector<std::string> include_dirs;
+    std::vector<std::string> defines;
+    std::vector<std::string> undefs;
 
     boost::program_options::options_description options("options");
     options.add_options()("help,h", "Produce help message")("version,v",
@@ -49,7 +55,13 @@ static int veridump(int argc, char *argv[])
         "output,o", boost::program_options::value<std::string>(&output)->required(), "Output file")(
         "format,f", boost::program_options::value<std::string>(&format)->default_value("yaml"),
         "Output format: yaml or dot")("sv", boost::program_options::bool_switch(&sv_mode),
-                                      "Enable SystemVerilog mode");
+                                      "Enable SystemVerilog mode")(
+        "include-dir,I", boost::program_options::value<std::vector<std::string>>(&include_dirs),
+        "Add directory to `include search path (repeatable)")(
+        "define,D", boost::program_options::value<std::vector<std::string>>(&defines),
+        "Predefine a macro as NAME or NAME=BODY (repeatable)")(
+        "undef,U", boost::program_options::value<std::vector<std::string>>(&undefs),
+        "Cancel a predefine NAME (repeatable)");
 
     boost::program_options::options_description hidden("positional");
     hidden.add_options()("verilog-file",
@@ -106,15 +118,43 @@ static int veridump(int argc, char *argv[])
              << Veriparse::Version::get_sha1();
 
     //-----------------------------------------------------------
+    // Preprocess all inputs into a single in-memory stream.
+    // Backward-compatible: input that has already been processed
+    // by another preprocessor (e.g. iverilog -E) round-trips
+    // through veripp untouched.
+    //-----------------------------------------------------------
+
+    std::stringstream preprocessed;
+    {
+        Veriparse::Parser::Preprocessor pp;
+        pp.set_sv_mode(sv_mode);
+        for(const auto &dir : include_dirs) {
+            pp.add_include_dir(dir);
+        }
+        for(const auto &spec : defines) {
+            const auto eq = spec.find('=');
+            if(eq == std::string::npos) {
+                pp.define(spec);
+            } else {
+                pp.define(spec.substr(0, eq), spec.substr(eq + 1));
+            }
+        }
+        for(const auto &name : undefs) {
+            pp.undef(name);
+        }
+        if(pp.preprocess(inputs, preprocessed) != 0) {
+            LOG_ERROR << "preprocessing failed";
+            return 1;
+        }
+    }
+
+    //-----------------------------------------------------------
     // Parse all input files into a single AST
     //-----------------------------------------------------------
 
     Veriparse::Parser::Verilog verilog;
     verilog.set_sv_mode(sv_mode);
-
-    for(const auto &input : inputs) {
-        verilog.parse(input);
-    }
+    verilog.parse(preprocessed);
 
     auto source = verilog.get_source();
     if(!source) {
