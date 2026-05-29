@@ -4,6 +4,7 @@
 #include "parameters_overloading.hpp"
 
 #include <veriparse/logger/logger.hpp>
+#include <veriparse/parser/preprocessor.hpp>
 #include <veriparse/parser/verilog.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/passes/analysis/module.hpp>
@@ -16,6 +17,7 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 #include <fstream>
+#include <sstream>
 
 #include <string>
 #include <cstdint>
@@ -64,6 +66,13 @@ static int veriflat(int argc, char *argv[])
         "deadcode-during,d", boost::program_options::bool_switch(&config.deadcode_during_flatten),
         "Remove deadcode during flatten pass")(
         "sv", boost::program_options::bool_switch(&config.sv_mode), "Enable SystemVerilog mode")(
+        "include-dir,I",
+        boost::program_options::value<std::vector<std::string>>(&config.include_dirs),
+        "Add directory to `include search path (repeatable)")(
+        "define,D", boost::program_options::value<std::vector<std::string>>(&config.defines),
+        "Predefine a macro as NAME or NAME=BODY (repeatable)")(
+        "undef,U", boost::program_options::value<std::vector<std::string>>(&config.undefs),
+        "Cancel a predefine NAME (repeatable)")(
         "seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0),
         "Seed value");
 
@@ -122,15 +131,46 @@ static int veriflat(int argc, char *argv[])
     LOG_INFO << "Command line: " << config;
 
     //---------------------------------------------------------
+    // Preprocess all inputs into a single in-memory stream.
+    // Backward-compatible: input that has already been processed
+    // by another preprocessor (e.g. iverilog -E) round-trips
+    // through veripp untouched.
+    //---------------------------------------------------------
+
+    std::stringstream preprocessed;
+    {
+        Veriparse::Parser::Preprocessor pp;
+        pp.set_sv_mode(config.sv_mode);
+        for(const auto &dir : config.include_dirs) {
+            pp.add_include_dir(dir);
+        }
+        for(const auto &spec : config.defines) {
+            const auto eq = spec.find('=');
+            if(eq == std::string::npos) {
+                pp.define(spec);
+            } else {
+                pp.define(spec.substr(0, eq), spec.substr(eq + 1));
+            }
+        }
+        for(const auto &name : config.undefs) {
+            pp.undef(name);
+        }
+        if(pp.preprocess(config.inputs, preprocessed) != 0) {
+            LOG_ERROR << "preprocessing failed";
+            return 1;
+        }
+    }
+
+    //---------------------------------------------------------
     // Create a map of all modules
     //---------------------------------------------------------
 
     Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
 
-    for(const auto &input : config.inputs) {
+    {
         Veriparse::Parser::Verilog verilog;
         verilog.set_sv_mode(config.sv_mode);
-        verilog.parse(input);
+        verilog.parse(preprocessed);
         auto source = verilog.get_source();
         Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map);
     }
