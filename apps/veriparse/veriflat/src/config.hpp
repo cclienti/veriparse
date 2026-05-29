@@ -12,6 +12,9 @@
 struct Config
 {
     std::vector<std::string> inputs;
+    std::vector<std::string> include_dirs;
+    std::vector<std::string> defines;
+    std::vector<std::string> undefs;
     std::string output;
     std::string top_module;
     std::string param_map;
