@@ -338,6 +338,25 @@ You can also run ctest directly from the build directory:
 
 This removes the build directory and the conda environment.
 
+### On Windows
+
+Windows uses `dev.ps1` instead of the Makefile (PowerShell-native,
+no MSYS/git-bash dependency). It shares `conda/recipe-release/meta.yaml`
+as the single source of truth for the dev environment. Prerequisite:
+[micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html)
+on PATH (e.g. `winget install Anaconda.Micromamba`).
+
+    .\dev.ps1 env       # generate environment.yml + create build\env
+    .\dev.ps1 cmake     # configure with VS17 2022 + ClangCL
+    .\dev.ps1 build     # build the active configuration
+    .\dev.ps1 test      # run ctest -L unittest
+    .\dev.ps1 all       # env -> cmake -> build -> test
+    .\dev.ps1 clean     # remove build\
+
+In Visual Studio or VS Code: open the repo folder, the included
+`CMakePresets.json` lets the IDE configure and build directly once
+`.\dev.ps1 env` has populated `build\env`.
+
 ---
 
 ## Running Tests Manually

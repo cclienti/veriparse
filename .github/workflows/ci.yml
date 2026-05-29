@@ -93,15 +93,15 @@ jobs:
         if: matrix.platform == 'linux-64'
         run: make dev-test-integration
 
-  # Windows build via the CMake workflow preset declared in CMakePresets.json.
-  # Same single command (`cmake --workflow --preset windows-release`) that a
-  # Windows developer runs locally, so dev == CI.
+  # Windows build via dev.ps1 — the same PowerShell entry point
+  # that local Windows devs use, sharing meta.yaml as the conda source
+  # of truth. Dev == IDE == CI.
   build-windows:
     name: Build Windows x86_64
     runs-on: windows-2022
     defaults:
       run:
-        shell: bash -el {0}
+        shell: pwsh
 
     steps:
       - name: Checkout
@@ -109,34 +109,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install micromamba + build env
+      - name: Install micromamba
         uses: mamba-org/setup-micromamba@v3
         with:
           # micromamba 2.6.1 hits ACCESS_VIOLATION on windows-2022; pin.
           micromamba-version: '2.0.5-0'
-          environment-name: build
-          init-shell: bash powershell
-          # Skip post-job cleanup: the runner is ephemeral, and the
-          # default cleanup path trips a "powershell is not supported"
-          # warning on Windows during environment teardown.
+          init-shell: powershell
           post-cleanup: none
-          create-args: >-
-            cmake
-            winflexbison
-            libboost-devel=1.90.0
-            yaml-cpp=0.8.0
-            gtest=1.17.0
+
+      - name: Create dev environment
+        run: .\dev.ps1 env
 
       - name: Configure
-        run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -T ClangCL \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_PREFIX_PATH="$CONDA_PREFIX/Library"
+        run: .\dev.ps1 cmake
 
       - name: Build
-        run: cmake --build build --config Release --parallel
+        run: .\dev.ps1 build
 
       - name: Test (unittest)
-        env:
-          VERIPARSE_SOURCE_ROOT: ${{ github.workspace }}
-        run: ctest --test-dir build -j 4 -L unittest --output-on-failure -C Release
+        run: .\dev.ps1 test
