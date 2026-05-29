@@ -3,13 +3,17 @@
 #ifndef VERIOBF_CONFIG_HPP
 #define VERIOBF_CONFIG_HPP
 
-#include <ostream>
 #include <cstdint>
+#include <ostream>
 #include <string>
+#include <vector>
 
 struct Config
 {
     std::string input;
+    std::vector<std::string> include_dirs;
+    std::vector<std::string> defines;
+    std::vector<std::string> undefs;
     std::string output;
     std::uint64_t identifier_length;
     bool hash;
