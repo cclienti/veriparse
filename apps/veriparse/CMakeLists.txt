@@ -35,146 +35,155 @@ else()
                       WORLD_EXECUTE WORLD_READ)
 endif()
 #----------------------------------------
-# Handle common test of veriflat and
-# veriobf
+# Cosim tests (label "cosim") — verilator-built C++ model of the design
+# (optionally via veriflat), GoogleTest harness drives it. Each test
+# opt-ins by shipping a test/<name>/cosim/test_<top>.cpp harness.
 #----------------------------------------
 
-set(VERIPARSE_APPS_TESTS
-  "tiny_aes_128" "tiny_aes_192" "tiny_aes_256"
-  "hynoc_5p"
-  "dclkfifolut"
-  "double_fpu-master")
-
-
 if(NOT WIN32)
-
-  # cosim tests (label "cosim"): verilator generates a C++ model of the
-  # flattened design, a GoogleTest harness drives it. Coexists with the
-  # iverilog/verilator-lint tests below during the migration.
   find_package(verilator CONFIG QUIET)
-  if(verilator_FOUND)
-    include(${CMAKE_SOURCE_DIR}/cmake/modules/add_cosim_test.cmake)
-  else()
+  if(NOT verilator_FOUND)
     message(STATUS "Veriparse Apps: verilator not found, skipping cosim tests")
-  endif()
+  else()
+    include(${CMAKE_SOURCE_DIR}/cmake/modules/add_cosim_test.cmake)
 
-  # Iterate over all tests
-  foreach(VERIPARSE_APPS_TEST ${VERIPARSE_APPS_TESTS})
-    file(GLOB VERIPARSE_PROJECT_TEST_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/project*)
-
-    # Iterate over all project within a test
-    foreach(VERIPARSE_PROJECT_TEST_DIR ${VERIPARSE_PROJECT_TEST_DIRS})
-      if(IS_DIRECTORY ${VERIPARSE_PROJECT_TEST_DIR})
-        get_filename_component(VERIPARSE_PROJECT_NAME ${VERIPARSE_PROJECT_TEST_DIR} NAME)
-
-        set(VERIPARSE_APPS_TEST_NAME test_veriparse_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
-        set(VERIPARSE_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME})
-
-        message(STATUS "Veriparse Apps: adding integration test ${VERIPARSE_APPS_TEST_NAME}")
-        file(MAKE_DIRECTORY ${VERIPARSE_WORKING_DIR})
-
-        add_custom_target(${VERIPARSE_APPS_TEST_NAME} DEPENDS veriflat veriobf)
-
-        # Integration test (iverilog simulation)
-        add_test(NAME ${VERIPARSE_APPS_TEST_NAME}
-                 COMMAND make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME}/Makefile
-                         VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
-                         VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
-                         clean iverilog_check veriflat_check veriobf_check
-                 WORKING_DIRECTORY ${VERIPARSE_WORKING_DIR})
-        set_tests_properties(${VERIPARSE_APPS_TEST_NAME} PROPERTIES LABELS "integration" RESOURCE_LOCK "${VERIPARSE_WORKING_DIR}")
-
-        # Verilator lint test
-        set(VERIPARSE_VERILATOR_TEST_NAME test_verilator_${VERIPARSE_APPS_TEST}_${VERIPARSE_PROJECT_NAME})
-        message(STATUS "Veriparse Apps: adding verilator test ${VERIPARSE_VERILATOR_TEST_NAME}")
-
-        add_test(NAME ${VERIPARSE_VERILATOR_TEST_NAME}
-                 COMMAND make -f ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/${VERIPARSE_PROJECT_NAME}/Makefile
-                         VERIFLAT=${CMAKE_CURRENT_BINARY_DIR}/veriflat/veriflat
-                         VERIOBF=${CMAKE_CURRENT_BINARY_DIR}/veriobf/veriobf
-                         verilator_check
-                 WORKING_DIRECTORY ${VERIPARSE_WORKING_DIR})
-        set_tests_properties(${VERIPARSE_VERILATOR_TEST_NAME} PROPERTIES LABELS "verilator" RESOURCE_LOCK "${VERIPARSE_WORKING_DIR}")
-
-      endif()
-    endforeach()
-  endforeach()
-
-  #----------------------------------------
-  # Cosim tests — registered separately as designs get migrated. Each test
-  # opt-ins by shipping a test/<name>/cosim/test_<top>.cpp harness.
-  #----------------------------------------
-  if(verilator_FOUND)
     foreach(_aes_width 128 192 256)
+      set(_aes_sources
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/aes_${_aes_width}.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/round.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/table.v)
+      set(_aes_harness
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/cosim/test_aes_${_aes_width}.cpp)
+
       add_cosim_test(
-        NAME test_cosim_tiny_aes_${_aes_width}
+        NAME test_cosim_tiny_aes_${_aes_width}_dut
         TOP_MODULE aes_${_aes_width}
-        VERILOG_SOURCES
-          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/aes_${_aes_width}.v
-          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/round.v
-          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/table.v
-        HARNESS
-          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/cosim/test_aes_${_aes_width}.cpp
+        NO_VERIFLAT
+        VERILOG_SOURCES ${_aes_sources}
+        HARNESS ${_aes_harness}
+      )
+      add_cosim_test(
+        NAME test_cosim_tiny_aes_${_aes_width}_flat
+        TOP_MODULE aes_${_aes_width}
+        VERILOG_SOURCES ${_aes_sources}
+        HARNESS ${_aes_harness}
       )
     endforeach()
 
+    set(_fpu_sources
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_double.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_add.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_div.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_exceptions.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_mul.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_round.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_sub.v)
+    set(_fpu_harness
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/cosim/test_fpu.cpp)
+
     add_cosim_test(
-      NAME test_cosim_double_fpu
+      NAME test_cosim_double_fpu_dut
       TOP_MODULE fpu
-      VERILOG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_double.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_add.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_div.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_exceptions.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_mul.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_round.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_sub.v
-      HARNESS
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/cosim/test_fpu.cpp
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_fpu_sources}
+      HARNESS ${_fpu_harness}
     )
+    add_cosim_test(
+      NAME test_cosim_double_fpu_flat
+      TOP_MODULE fpu
+      VERILOG_SOURCES ${_fpu_sources}
+      HARNESS ${_fpu_harness}
+    )
+
+    set(_dclkfifo_sources
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/dclkfifolut.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/bin2gray.v
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/gray2bin.v)
+    set(_dclkfifo_harness
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/cosim/test_dclkfifolut.cpp)
 
     add_cosim_test(
-      NAME test_cosim_dclkfifolut
+      NAME test_cosim_dclkfifolut_dut
       TOP_MODULE dclkfifolut
-      VERILOG_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/dclkfifolut.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/bin2gray.v
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/gray2bin.v
-      HARNESS
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/cosim/test_dclkfifolut.cpp
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_dclkfifo_sources}
+      HARNESS ${_dclkfifo_harness}
+    )
+    add_cosim_test(
+      NAME test_cosim_dclkfifolut_flat_inlined
+      TOP_MODULE dclkfifolut
+      VERILOG_SOURCES ${_dclkfifo_sources}
+      HARNESS ${_dclkfifo_harness}
+    )
+    add_cosim_test(
+      NAME test_cosim_dclkfifolut_flat_keep_fifo_width
+      TOP_MODULE dclkfifolut
+      VERIFLAT_ARGS -p "{FIFO_WIDTH:}"
+      VERILOG_SOURCES ${_dclkfifo_sources}
+      HARNESS ${_dclkfifo_harness}
     )
 
-    # hynoc_5p — veriflat targets hynoc_router_5p; verilator's top is a
-    # thin Verilog topology wrapper (2 routers + 8 LIs, no writers/readers)
-    # so the C++ noc_traffic kit can drive every local interface.
+    # hynoc_5p — three cosim variants mirror the legacy iverilog surface
+    # (modulo veriobf):
+    #   * _dut          — original hierarchical DUT, no veriflat
+    #   * _flat_inlined — veriflat with all parameters inlined (project0/1)
+    #   * _flat_payload — veriflat keeping PAYLOAD_WIDTH/FLIT_WIDTH params
+    #                     (project2/3)
+    # All three share the same topology wrapper + noc_traffic kit harness.
     set(_hynoc_src ${CMAKE_CURRENT_SOURCE_DIR}/test/hynoc_5p/src)
     set(_hynoc_cosim ${CMAKE_CURRENT_SOURCE_DIR}/test/hynoc_5p/cosim)
     add_library(hynoc_noc_traffic STATIC ${_hynoc_cosim}/kit/noc_traffic.cpp)
     target_include_directories(hynoc_noc_traffic PUBLIC ${_hynoc_cosim}/kit)
 
+    set(_hynoc_dut_sources
+      ${_hynoc_src}/hynoc_router_5p.v
+      ${_hynoc_src}/hynoc_router_base.v
+      ${_hynoc_src}/hynoc_egress.v
+      ${_hynoc_src}/hynoc_ingress.v
+      ${_hynoc_src}/hynoc_ingress_routing_mcast.v
+      ${_hynoc_src}/hynoc_ingress_routing_ucast.v
+      ${_hynoc_src}/hynoc_prra.v
+      ${_hynoc_src}/prra_lut.v)
+
+    set(_hynoc_topology_sources
+      ${_hynoc_cosim}/topology.v
+      ${_hynoc_src}/hynoc_local_interface.v
+      ${_hynoc_src}/dclkfifolut.v
+      ${_hynoc_src}/sclkfifolut.v
+      ${_hynoc_src}/bin2gray.v
+      ${_hynoc_src}/gray2bin.v)
+
     add_cosim_test(
-      NAME test_cosim_hynoc_router_5p
+      NAME test_cosim_hynoc_router_5p_dut
+      TOP_MODULE hynoc_router_5p
+      VERILATOR_TOP hynoc_topology
+      NO_VERIFLAT
+      VERILATOR_ARGS -I${_hynoc_src}
+      VERILOG_SOURCES ${_hynoc_dut_sources}
+      VERILATOR_EXTRA_SOURCES ${_hynoc_topology_sources}
+      HARNESS ${_hynoc_cosim}/test_hynoc_router_5p.cpp
+      EXTRA_LINK_LIBS hynoc_noc_traffic
+    )
+
+    add_cosim_test(
+      NAME test_cosim_hynoc_router_5p_flat_inlined
       TOP_MODULE hynoc_router_5p
       VERILATOR_TOP hynoc_topology
       VERIFLAT_ARGS -I ${_hynoc_src}
-      VERILOG_SOURCES
-        ${_hynoc_src}/hynoc_router_5p.v
-        ${_hynoc_src}/hynoc_router_base.v
-        ${_hynoc_src}/hynoc_egress.v
-        ${_hynoc_src}/hynoc_ingress.v
-        ${_hynoc_src}/hynoc_ingress_routing_mcast.v
-        ${_hynoc_src}/hynoc_ingress_routing_ucast.v
-        ${_hynoc_src}/hynoc_prra.v
-        ${_hynoc_src}/prra_lut.v
-      VERILATOR_EXTRA_SOURCES
-        ${_hynoc_cosim}/topology.v
-        ${_hynoc_src}/hynoc_local_interface.v
-        ${_hynoc_src}/dclkfifolut.v
-        ${_hynoc_src}/sclkfifolut.v
-        ${_hynoc_src}/bin2gray.v
-        ${_hynoc_src}/gray2bin.v
-      HARNESS
-        ${_hynoc_cosim}/test_hynoc_router_5p.cpp
+      VERILOG_SOURCES ${_hynoc_dut_sources}
+      VERILATOR_EXTRA_SOURCES ${_hynoc_topology_sources}
+      HARNESS ${_hynoc_cosim}/test_hynoc_router_5p.cpp
+      EXTRA_LINK_LIBS hynoc_noc_traffic
+    )
+
+    add_cosim_test(
+      NAME test_cosim_hynoc_router_5p_flat_payload
+      TOP_MODULE hynoc_router_5p
+      VERILATOR_TOP hynoc_topology
+      VERIFLAT_ARGS -I ${_hynoc_src} -p "{PAYLOAD_WIDTH: null, FLIT_WIDTH: null}"
+      VERILOG_SOURCES ${_hynoc_dut_sources}
+      VERILATOR_EXTRA_SOURCES ${_hynoc_topology_sources}
+      HARNESS ${_hynoc_cosim}/test_hynoc_router_5p.cpp
       EXTRA_LINK_LIBS hynoc_noc_traffic
     )
   endif()
