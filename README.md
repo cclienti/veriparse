@@ -416,28 +416,26 @@ Veriparse uses two GitHub Actions workflows:
 
 | Workflow | Trigger | What runs |
 |----------|---------|-----------|
-| `ci.yml` | Push / PR on `master` | Dev-environment build + unit tests on `ubuntu-latest`. Fast smoke check. |
-| `release.yml` | See table below | Linux/macOS conda packages + a Windows zip. |
+| `ci.yml` | Push / PR on `master`, weekly schedule, manual | Build + unit tests on `linux-64` (via `make dev-*`) and `win-64` (via `.\dev.ps1`) on every push/PR. `osx-64` + `osx-arm64` join on push to master, weekly schedule, and when manually requested. |
+| `release.yml` | Published GitHub release, manual | Conda packages for `linux-64`, `osx-64`, `osx-arm64`, and `win-64` (`win-64` is built with `conda/recipe-release/bld.bat` using VS17 2022 + ClangCL). |
 
-The Windows artifact is a standalone **zip** (built with MSVC + vcpkg), not
-a conda package: conda-forge's `win-64` ecosystem doesn't ship `gmpxx` and
-mixing toolchains across it cost too much friction to be worth maintaining.
+`release.yml` exposes `include_macos` and `include_windows` toggles for
+`workflow_dispatch` runs so you can spot-check a single platform
+without burning runner minutes on the others (macOS runners cost ~10×
+Linux). On a published release, all four platforms always run and their
+`.conda` artifacts are attached to the release page.
 
-`release.yml` gates macOS to avoid burning expensive macOS minutes
-(~10× Linux) on every iteration:
-
-| How `release.yml` was triggered | linux-64 (`.conda`) | win-64 (`.zip`) | osx-64 / osx-arm64 (`.conda`) | Uploads to a GitHub Release |
-|---------------------------------|:-------------------:|:---------------:|:-----------------------------:|:---------------------------:|
-| Push to `master`                | ✓                   | ✓               | —                             | no  |
-| `gh workflow run release.yml`   | ✓                   | ✓               | —                             | no  |
-| `gh workflow run release.yml -f include_macos=true` | ✓ | ✓     | ✓                             | no  |
-| GitHub Release published (`gh release create vX.Y.Z`) | ✓ | ✓ | ✓                             | yes |
+| How `release.yml` was triggered | linux-64 | osx-64 / osx-arm64 | win-64 | Uploads to a GitHub Release |
+|---------------------------------|:--------:|:-------------------:|:------:|:---------------------------:|
+| `gh workflow run release.yml`                                                 | ✓ | ✓ | ✓ | no  |
+| `gh workflow run release.yml -f include_macos=false -f include_windows=true`  | ✓ | — | ✓ | no  |
+| GitHub Release published (`gh release create vX.Y.Z`)                         | ✓ | ✓ | ✓ | yes |
 
 In short:
 
 - **Day-to-day iteration**: just `git push` — CI verifies `linux-64` + `win-64` cheaply.
-- **Before tagging a release**: run `gh workflow run release.yml -f include_macos=true` once for a full verification, without uploading anything.
-- **Actual release**: `gh release create vX.Y.Z ...` builds all four platforms and uploads the artifacts (3 × `.conda` + 1 × `.zip`) to the release page.
+- **Before tagging a release**: run `gh workflow run release.yml` for a full four-platform smoke test (artifacts uploaded to the run page, not attached to a release).
+- **Actual release**: `gh release create vX.Y.Z ...` builds all four platforms and attaches the `.conda` packages to the release page.
 
 ---
 
