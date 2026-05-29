@@ -15,148 +15,137 @@
 
 #include <string>
 
-
-static void show_usage(char const * const progname, boost::program_options::options_description const &desc)
+static void show_usage(char const *const progname,
+                       boost::program_options::options_description const &desc)
 {
-	boost::filesystem::path p(progname);
-	std::cout << "Usage: " << p.filename().string() << " [options] verilog-file"
-	          << std::endl;
-	std::cout << desc << std::endl;
+    boost::filesystem::path p(progname);
+    std::cout << "Usage: " << p.filename().string() << " [options] verilog-file" << std::endl;
+    std::cout << desc << std::endl;
 }
-
 
 static int veriobf(int argc, char *argv[])
 {
-	//---------------------------------------------------------
-	// Prepare logger
-	//---------------------------------------------------------
+    //---------------------------------------------------------
+    // Prepare logger
+    //---------------------------------------------------------
 
-	Veriparse::Logger::remove_all_sinks();
-	Veriparse::Logger::add_text_sink("veriobf.log");
-	Veriparse::Logger::add_stdout_sink();
+    Veriparse::Logger::remove_all_sinks();
+    Veriparse::Logger::add_text_sink("veriobf.log");
+    Veriparse::Logger::add_stdout_sink();
 
+    //---------------------------------------------------------
+    // Parse command line
+    //---------------------------------------------------------
 
-	//---------------------------------------------------------
-	// Parse command line
-	//---------------------------------------------------------
+    Config config;
 
-	Config config;
+    boost::program_options::options_description options("options");
+    options.add_options()("help,h", "Produce help message")("version,v",
+                                                            "Show the version and exit")(
+        "output,o", boost::program_options::value<std::string>(&config.output)->required(),
+        "Output file")(
+        "id-length,l",
+        boost::program_options::value<std::uint64_t>(&config.identifier_length)->default_value(16),
+        "Maximum length of obfuscated indentifiers")(
+        "hash,a", boost::program_options::bool_switch(&config.hash),
+        "Use hashed identifiers instead of random ones")(
+        "sv", boost::program_options::bool_switch(&config.sv_mode), "Enable SystemVerilog mode")(
+        "seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0),
+        "Seed value");
 
-	boost::program_options::options_description options("options");
-	options.add_options()
-		("help,h", "Produce help message")
-		("version,v", "Show the version and exit")
-		("output,o", boost::program_options::value<std::string>(&config.output)->required(), "Output file")
-		("id-length,l", boost::program_options::value<std::uint64_t>(&config.identifier_length)->default_value(16),
-		 "Maximum length of obfuscated indentifiers")
-		("hash,a", boost::program_options::bool_switch(&config.hash),
-		 "Use hashed identifiers instead of random ones")
-		("sv", boost::program_options::bool_switch(&config.sv_mode),
-		 "Enable SystemVerilog mode")
-		("seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0), "Seed value");
+    boost::program_options::options_description hidden("positional");
+    hidden.add_options()("verilog-file", boost::program_options::value<std::string>(&config.input),
+                         "verilog file");
 
-	boost::program_options::options_description hidden("positional");
-	hidden.add_options()
-		("verilog-file", boost::program_options::value<std::string> (&config.input), "verilog file");
+    boost::program_options::options_description desc;
+    desc.add(options);
 
-	boost::program_options::options_description desc;
-	desc.add(options);
+    boost::program_options::options_description desc_all;
+    desc_all.add(desc).add(hidden);
 
-	boost::program_options::options_description desc_all;
-	desc_all.add(desc).add(hidden);
+    boost::program_options::positional_options_description pos;
+    pos.add("verilog-file", -1);
 
-	boost::program_options::positional_options_description pos;
-	pos.add("verilog-file", -1);
+    boost::program_options::variables_map vm;
 
-	boost::program_options::variables_map vm;
+    boost::program_options::command_line_parser parser(argc, argv);
+    auto parsed = parser.options(desc_all).positional(pos).run();
+    boost::program_options::store(parsed, vm);
 
-	boost::program_options::command_line_parser parser(argc, argv);
-	auto parsed = parser.options(desc_all).positional(pos).run();
-	boost::program_options::store(parsed, vm);
+    if(vm.count("help")) {
+        show_usage(argv[0], desc);
+        return 0;
+    }
 
-	if (vm.count("help")) {
-		show_usage(argv[0], desc);
-		return 0;
-	}
+    if(vm.count("version")) {
+        std::cout << Veriparse::Version::get_version() << "\n"
+                  << Veriparse::Version::get_sha1() << std::endl;
+        return 0;
+    }
 
-	if (vm.count("version")) {
-		std::cout << Veriparse::Version::get_version() << "\n"
-		          << Veriparse::Version::get_sha1() << std::endl;
-		return 0;
-	}
+    try {
+        boost::program_options::notify(vm);
+    } catch(std::exception &e) {
+        LOG_ERROR << e.what();
+        show_usage(argv[0], desc);
+        return 1;
+    } catch(...) {
+        LOG_ERROR << "Unknown error!";
+        show_usage(argv[0], desc);
+        return 1;
+    }
 
-	try {
-		boost::program_options::notify(vm);
-	}
-	catch(std::exception& e) {
-		LOG_ERROR << e.what();
-		show_usage(argv[0], desc);
-		return 1;
-	}
-	catch(...) {
-		LOG_ERROR << "Unknown error!";
-		show_usage(argv[0], desc);
-		return 1;
-	}
+    if(vm.count("verilog-file") == 0) {
+        LOG_ERROR << "missing verilog file";
+        show_usage(argv[0], desc);
+        return 1;
+    }
 
-	if (vm.count("verilog-file") == 0) {
-		LOG_ERROR << "missing verilog file";
-		show_usage(argv[0], desc);
-		return 1;
-	}
+    LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version() << " - "
+             << Veriparse::Version::get_sha1();
 
-	LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version()
-	         << " - " << Veriparse::Version::get_sha1();
+    LOG_INFO << "Command line: " << config;
 
-	LOG_INFO << "Command line: " << config;
+    //---------------------------------------------------------
+    // Set seed
+    //---------------------------------------------------------
 
+    Veriparse::Passes::Analysis::UniqueDeclaration::seed(config.seed);
 
-	//---------------------------------------------------------
-	// Set seed
-	//---------------------------------------------------------
+    //---------------------------------------------------------
+    // Create a map of all modules
+    //---------------------------------------------------------
 
-	Veriparse::Passes::Analysis::UniqueDeclaration::seed(config.seed);
+    Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
 
+    Veriparse::Parser::Verilog verilog;
+    verilog.set_sv_mode(config.sv_mode);
+    verilog.parse(config.input);
+    auto source = verilog.get_source();
+    Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map);
 
-	//---------------------------------------------------------
-	// Create a map of all modules
-	//---------------------------------------------------------
+    //---------------------------------------------------------
+    // Obfuscate all modules
+    //---------------------------------------------------------
 
-	Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
+    for(const auto &module : modules_map) {
+        Veriparse::Passes::Transformations::ModuleObfuscator obfuscator(config.identifier_length,
+                                                                        config.hash);
+        obfuscator.run(module.second);
+    }
 
-	Veriparse::Parser::Verilog verilog;
-	verilog.set_sv_mode(config.sv_mode);
-	verilog.parse(config.input);
-	auto source = verilog.get_source();
-	Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map);
+    //---------------------------------------------------------
+    // Write the result into the output file
+    //---------------------------------------------------------
 
+    std::ofstream fout(config.output);
 
-	//---------------------------------------------------------
-	// Obfuscate all modules
-	//---------------------------------------------------------
+    for(const auto &module : modules_map) {
+        const std::string str = Veriparse::Generators::VerilogGenerator().render(module.second);
+        fout << str << std::endl;
+    }
 
-	for (const auto &module: modules_map) {
-		Veriparse::Passes::Transformations::ModuleObfuscator obfuscator(config.identifier_length, config.hash);
-		obfuscator.run(module.second);
-	}
-
-
-	//---------------------------------------------------------
-	// Write the result into the output file
-	//---------------------------------------------------------
-
-	std::ofstream fout(config.output);
-
-	for (const auto &module: modules_map) {
-		const std::string str = Veriparse::Generators::VerilogGenerator().render(module.second);
-		fout << str << std::endl;
-	}
-
-	return 0;
+    return 0;
 }
 
-
-int main(int argc, char *argv[])
-{
-	return veriobf(argc, argv);
-}
+int main(int argc, char *argv[]) { return veriobf(argc, argv); }
