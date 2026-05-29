@@ -60,4 +60,43 @@ TEST(PreprocessorSkeleton, BacktickInsideLineCommentIsNotADirective)
     EXPECT_NE(out.find("wire w;"), std::string::npos);
 }
 
+// Input shaped like a preprocessor's output (iverilog -E style): only
+// `line markers and plain Verilog, no `define / `include / `ifdef.
+// veripp must pass it through unchanged so a pipeline that already
+// preprocessed its source upstream stays valid.
+TEST(PreprocessorSkeleton, IverilogPreprocessedStylePassesThrough)
+{
+    const std::string src = "`line 1 \"foo.v\" 0\n"
+                            "module foo;\n"
+                            "endmodule\n"
+                            "`line 1 \"bar.v\" 1\n"
+                            "module bar;\n"
+                            "endmodule\n"
+                            "`line 5 \"foo.v\" 2\n";
+    const std::string out = preprocess_inline(src, "wrapper.v");
+    EXPECT_NE(out.find("`line 1 \"foo.v\" 0"), std::string::npos);
+    EXPECT_NE(out.find("`line 1 \"bar.v\" 1"), std::string::npos);
+    EXPECT_NE(out.find("`line 5 \"foo.v\" 2"), std::string::npos);
+    EXPECT_NE(out.find("module foo;"), std::string::npos);
+    EXPECT_NE(out.find("module bar;"), std::string::npos);
+}
+
+// Re-running the preprocessor on its own output must not consume or
+// re-resolve anything: by the time we reach pass 2, every `define and
+// macro reference is gone, and the substituted Verilog is intact.
+TEST(PreprocessorSkeleton, OutputIsStableUnderASecondPass)
+{
+    const std::string src = "`define W 8\n"
+                            "wire [`W-1:0] x;\n";
+    const std::string pass1 = preprocess_inline(src, "f.v");
+    const std::string pass2 = preprocess_inline(pass1, "f.v");
+
+    EXPECT_EQ(pass1.find("`define"), std::string::npos);
+    EXPECT_EQ(pass2.find("`define"), std::string::npos);
+    EXPECT_EQ(pass1.find("`W"), std::string::npos);
+    EXPECT_EQ(pass2.find("`W"), std::string::npos);
+    EXPECT_NE(pass1.find("wire [8-1:0] x;"), std::string::npos);
+    EXPECT_NE(pass2.find("wire [8-1:0] x;"), std::string::npos);
+}
+
 } // namespace
