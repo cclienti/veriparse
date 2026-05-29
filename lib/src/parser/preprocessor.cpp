@@ -24,6 +24,25 @@ void Preprocessor::define(const std::string &name, const std::string &body)
 }
 void Preprocessor::undef(const std::string &name) { m_driver->undef(name); }
 
+void Preprocessor::apply(const PreprocessorOptions &opts)
+{
+    set_sv_mode(opts.sv_mode);
+    for(const auto &dir : opts.include_dirs) {
+        add_include_dir(dir);
+    }
+    for(const auto &spec : opts.defines) {
+        const auto eq = spec.find('=');
+        if(eq == std::string::npos) {
+            define(spec);
+        } else {
+            define(spec.substr(0, eq), spec.substr(eq + 1));
+        }
+    }
+    for(const auto &name : opts.undefs) {
+        undef(name);
+    }
+}
+
 int Preprocessor::preprocess(const std::string &filename, std::ostream &out)
 {
     return m_driver->preprocess(filename, out);

@@ -130,22 +130,13 @@ static int veriobf(int argc, char *argv[])
 
     std::stringstream preprocessed;
     {
+        Veriparse::Parser::PreprocessorOptions opts;
+        opts.sv_mode = config.sv_mode;
+        opts.include_dirs = config.include_dirs;
+        opts.defines = config.defines;
+        opts.undefs = config.undefs;
         Veriparse::Parser::Preprocessor pp;
-        pp.set_sv_mode(config.sv_mode);
-        for(const auto &dir : config.include_dirs) {
-            pp.add_include_dir(dir);
-        }
-        for(const auto &spec : config.defines) {
-            const auto eq = spec.find('=');
-            if(eq == std::string::npos) {
-                pp.define(spec);
-            } else {
-                pp.define(spec.substr(0, eq), spec.substr(eq + 1));
-            }
-        }
-        for(const auto &name : config.undefs) {
-            pp.undef(name);
-        }
+        pp.apply(opts);
         if(pp.preprocess(config.input, preprocessed) != 0) {
             LOG_ERROR << "preprocessing failed";
             return 1;
