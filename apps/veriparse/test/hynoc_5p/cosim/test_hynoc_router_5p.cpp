@@ -7,19 +7,6 @@
 // in C++ (see noc_traffic.{hpp,cpp}) so the test is independent of
 // Verilog $random semantics.
 //
-// STATUS: harness + kit + topology wrapper all build and run end to
-// end against the verilated, veriflat'd design. The test currently
-// FAILS because the readers observe the writer's first payload where
-// they expect the ID flit — i.e. an extra flit is being consumed by
-// the network before the reader sees anything. Likely candidates:
-//   - the router strips the address AND ID flits per hop (so a 2-hop
-//     multicast strips two flits, not one); the rebuilt reader needs
-//     to skip them
-//   - the writer's address flit encoding misroutes the first cycle
-//     and the router consumes an extra flit to recover
-//   - the noc_traffic kit advances its LCG one extra time per packet
-// Re-disable the test or fix the off-by-one before pushing.
-//
 // Topology (matches the TB):
 //   writer 0 -> LI0 -> router0:P0
 //   writer 1 -> LI1 -> router1:P0
@@ -162,9 +149,7 @@ constexpr uint32_t kWriter0Dest = 0b0000'0000'0000'0000'1000'0011'0001u;
 constexpr uint32_t kWriter1Dest = 0b0000'0000'0000'0000'1000'1111'0001u;
 constexpr uint32_t kWriter2Dest = 0b0000'0000'0000'0000'0100'1100'0001u;
 
-// Disabled until the ID/address handshake mismatch is sorted out
-// (see top-of-file STATUS block).
-TEST(HynocRouter5pCosim, DISABLED_MulticastRoutingDeliversAllPacketsInOrder)
+TEST(HynocRouter5pCosim, MulticastRoutingDeliversAllPacketsInOrder)
 {
     Vhynoc_topology dut;
 
@@ -253,20 +238,14 @@ TEST(HynocRouter5pCosim, DISABLED_MulticastRoutingDeliversAllPacketsInOrder)
         dut.local_clk = 0x00;
         dut.eval();
 
-        // 4) Advance the writer/reader FSMs and feed observed data to
-        // any reader that asserted read_en when the FIFO had data.
+        // egress_data must be sampled PRE-edge: the registered LI FIFO
+        // makes the next-cycle ren pop the following flit at this edge.
         for(int i = 0; i < 8; ++i) {
             if(writer_at[i] != nullptr) {
                 writer_at[i]->posedge(snaps[i].full);
             }
-            // data_valid one cycle later: we sampled empty pre-edge, then
-            // asserted read_en; if !empty, the FIFO popped on this edge.
             const bool data_valid = pending_read[i];
-            uint64_t observed = 0;
-            if(data_valid) {
-                const auto post = snapshot(dut, i);
-                observed = post.egress_data;
-            }
+            const uint64_t observed = data_valid ? snaps[i].egress_data : 0;
             readers[i]->posedge(data_valid, observed);
             pending_read[i] = ((dut.local_egress_read >> i) & 1u) && !snaps[i].empty;
         }
