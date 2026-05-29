@@ -27,7 +27,7 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake
     - ninja            # [not win]
-    - make             # [not win]   used by dev-test-integration Makefiles
+    - make             # [not win]
     - mold             # [linux]
     - flex=2.6.4       # [not win]
     - bison=3.8.2      # [not win]

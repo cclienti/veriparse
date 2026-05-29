@@ -262,7 +262,8 @@ veriparse/
 | yaml-cpp | 0.8.0 | YAML parameter map parsing |
 | GMP / GMPXX | 6.3.0 | Arbitrary precision arithmetic |
 | GoogleTest | 1.17.0 | Unit testing |
-| iverilog | any | Verilog pre-processing (runtime) |
+| Verilator | 5.x | Cosim test suite (build-time) |
+| iverilog | any | Verilog pre-processing for the `veriparse` script (runtime) |
 
 ---
 
@@ -305,31 +306,27 @@ This compiles the library, tools, and tests using all available CPU cores.
 
 ### 5. Run Tests
 
-Tests are organized into three labeled groups:
+Tests are organized into two labeled groups:
 
 | Label | Description |
 |-------|-------------|
 | `unittest` | C++ unit tests (GoogleTest) |
-| `verilator` | Verilator lint check on flattened Verilog |
-| `integration` | Full iverilog simulation (slow) |
+| `cosim` | Verilator-built C++ model of the design (optionally piped through veriflat), driven by a GoogleTest harness |
 
-    # Run unit tests and verilator lint (default, no iverilog required)
+    # Run unit tests (default)
     make dev-test
 
     # Run only unit tests
     make dev-test CTEST_LABELS=unittest
 
-    # Run only verilator lint tests
-    make dev-test CTEST_LABELS=verilator
-
-    # Run all tests including iverilog simulation
-    make dev-test-integration
+    # Run the cosim suite
+    make dev-test-cosim
 
 You can also run ctest directly from the build directory:
 
     cd build
-    ctest -L "unittest|verilator"   # fast tests
-    ctest -L integration            # iverilog simulation only
+    ctest -L unittest               # C++ unit tests
+    ctest -L cosim                  # cosim tests
     ctest                           # everything
 
 ### 6. Clean Up
@@ -346,12 +343,14 @@ as the single source of truth for the dev environment. Prerequisite:
 [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html)
 on PATH (e.g. `winget install Anaconda.Micromamba`).
 
-    .\dev.ps1 env       # generate environment.yml + create build\env
-    .\dev.ps1 cmake     # configure with VS17 2022 + ClangCL
-    .\dev.ps1 build     # build the active configuration
-    .\dev.ps1 test      # run ctest -L unittest
-    .\dev.ps1 all       # env -> cmake -> build -> test
-    .\dev.ps1 clean     # remove build\
+    .\dev.ps1 env        # generate environment.yml + create build\env
+    .\dev.ps1 cmake      # configure with VS17 2022 + ClangCL
+    .\dev.ps1 build      # build the active configuration
+    .\dev.ps1 test       # run ctest -L unittest
+    .\dev.ps1 test-cosim # run ctest -L cosim (no-op on Windows: verilator
+                         # is not on conda-forge for win-64)
+    .\dev.ps1 all        # env -> cmake -> build -> test
+    .\dev.ps1 clean      # remove build\
 
 In Visual Studio or VS Code: open the repo folder, the included
 `CMakePresets.json` lets the IDE configure and build directly once
@@ -359,43 +358,14 @@ In Visual Studio or VS Code: open the repo folder, the included
 
 ---
 
-## Running Tests Manually
+## Running a Single Cosim Test
 
-### Prerequisites
+The cosim binaries live under `build/apps/veriparse/test_cosim_*` and can
+be invoked directly (useful for `--gtest_filter`, attaching a debugger,
+or running with extra Verilator runtime flags):
 
-For **verilator** lint tests, install verilator:
-
-    # Fedora/RHEL
-    sudo dnf install verilator
-
-    # Debian/Ubuntu
-    sudo apt install verilator
-
-For **integration** tests, install Icarus Verilog:
-
-    # Fedora/RHEL
-    sudo dnf install iverilog
-
-    # Debian/Ubuntu
-    sudo apt install iverilog
-
-### Running a single test manually
-
-    cd build/apps/veriparse/test/dclkfifolut/project0
-
-    make -f /path/to/veriparse/apps/veriparse/test/dclkfifolut/project0/Makefile \
-        VERIFLAT=/path/to/build/apps/veriparse/veriflat/veriflat \
-        VERIOBF=/path/to/build/apps/veriparse/veriobf/veriobf \
-        clean iverilog_check veriflat_check veriobf_check verilator_check
-
-Available make targets per test:
-
-| Target | Description |
-|--------|-------------|
-| `iverilog_check` | Simulate the original design with iverilog |
-| `veriflat_check` | Simulate the flattened design with iverilog |
-| `veriobf_check` | Simulate the obfuscated design with iverilog |
-| `verilator_check` | Lint the flattened design with verilator |
+    ./build/apps/veriparse/test_cosim_dclkfifolut_flat_inlined
+    ./build/apps/veriparse/test_cosim_hynoc_router_5p_dut --gtest_filter='*Multicast*'
 
 ---
 

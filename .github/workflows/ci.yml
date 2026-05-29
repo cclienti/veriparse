@@ -32,7 +32,7 @@ jobs:
           {
             echo 'matrix<<EOF'
             echo '{"include":['
-            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","linker":"-fuse-ld=mold","apt":"mold iverilog"}'
+            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","linker":"-fuse-ld=mold","apt":"mold"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
               echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","linker":"","apt":""},'
@@ -89,9 +89,8 @@ jobs:
       - name: Test (unittest)
         run: make dev-test
 
-      - name: Test (verilator + integration)
-        if: matrix.platform == 'linux-64'
-        run: make dev-test-integration
+      - name: Test (cosim)
+        run: make dev-test-cosim
 
   # Windows build via dev.ps1 — the same PowerShell entry point
   # that local Windows devs use, sharing meta.yaml as the conda source
