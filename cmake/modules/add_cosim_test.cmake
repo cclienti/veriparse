@@ -1,16 +1,23 @@
 # add_cosim_test(NAME <test_name>
 #                TOP_MODULE <verilog_top>
 #                VERILOG_SOURCES <src1.v> [<src2.v> ...]
-#                HARNESS <harness.cpp>
+#                HARNESS <harness.cpp> [<more.cpp> ...]
+#                [VERILATOR_TOP <verilog_top>]
+#                [VERILATOR_EXTRA_SOURCES <src.v> ...]
+#                [EXTRA_LINK_LIBS <target> ...]
+#                [EXTRA_INCLUDE_DIRS <dir> ...]
 #                [SEED <int>]
 #                [VERIFLAT_ARGS <arg> ...]
 #                [VERILATOR_ARGS <arg> ...])
 #
 # Pipeline (all build-time, no iverilog dependency):
-#   1. veriflat       raw Verilog -> flat .v
-#   2. verilator      flat .v     -> V<top>__ALL.a + headers (own build)
-#   3. add_executable harness.cpp linked against the verilated archive,
-#      cosim_helpers, GoogleTest, and Verilator's runtime sources.
+#   1. veriflat       VERILOG_SOURCES + TOP_MODULE -> flat .v
+#   2. verilator      (flat .v + VERILATOR_EXTRA_SOURCES) -> static archive
+#                     and runtime archive, top = VERILATOR_TOP (defaults
+#                     to TOP_MODULE)
+#   3. add_executable HARNESS sources linked against the verilated
+#      archives, cosim_helpers, GoogleTest, EXTRA_LINK_LIBS, and the
+#      verilator runtime
 #   4. add_test       label "cosim"
 #
 # verilate() from verilator-config.cmake is intentionally NOT used: it
@@ -25,8 +32,15 @@ include_guard(GLOBAL)
 
 function(add_cosim_test)
     set(options)
-    set(one_value_args NAME TOP_MODULE HARNESS SEED)
-    set(multi_value_args VERILOG_SOURCES VERIFLAT_ARGS VERILATOR_ARGS)
+    set(one_value_args NAME TOP_MODULE VERILATOR_TOP SEED)
+    set(multi_value_args
+        VERILOG_SOURCES
+        VERILATOR_EXTRA_SOURCES
+        HARNESS
+        EXTRA_LINK_LIBS
+        EXTRA_INCLUDE_DIRS
+        VERIFLAT_ARGS
+        VERILATOR_ARGS)
     cmake_parse_arguments(ACT
         "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
@@ -39,13 +53,16 @@ function(add_cosim_test)
     if(NOT DEFINED ACT_SEED)
         set(ACT_SEED 0)
     endif()
+    if(NOT ACT_VERILATOR_TOP)
+        set(ACT_VERILATOR_TOP ${ACT_TOP_MODULE})
+    endif()
 
     # The executable is created in CMAKE_CURRENT_BINARY_DIR/<NAME>, so the
     # work dir for verilated artefacts uses a distinct suffix to avoid a
     # path collision with that binary.
     set(_work_dir ${CMAKE_CURRENT_BINARY_DIR}/${ACT_NAME}.dir)
     set(_v_dir ${_work_dir}/verilated)
-    set(_v_prefix V${ACT_TOP_MODULE})
+    set(_v_prefix V${ACT_VERILATOR_TOP})
     set(_flat_v ${_work_dir}/${ACT_TOP_MODULE}_flat.v)
     set(_v_archive ${_v_dir}/lib${_v_prefix}.a)
     set(_v_runtime ${_v_dir}/libverilated.a)
@@ -83,13 +100,14 @@ function(add_cosim_test)
                 --cc --build --build-jobs 1
                 --prefix ${_v_prefix}
                 --Mdir ${_v_dir}
-                --top-module ${ACT_TOP_MODULE}
+                --top-module ${ACT_VERILATOR_TOP}
                 -Wno-fatal
                 ${ACT_VERILATOR_ARGS}
                 ${_flat_v}
-        DEPENDS ${_flat_v}
+                ${ACT_VERILATOR_EXTRA_SOURCES}
+        DEPENDS ${_flat_v} ${ACT_VERILATOR_EXTRA_SOURCES}
         WORKING_DIRECTORY ${_work_dir}
-        COMMENT "verilating ${ACT_TOP_MODULE} -> ${_v_archive}"
+        COMMENT "verilating ${ACT_VERILATOR_TOP} -> ${_v_archive}"
         VERBATIM
     )
 
@@ -102,7 +120,7 @@ function(add_cosim_test)
     # do not propagate into verilator-generated and verilator-runtime
     # headers (sign-compare and similar trip there).
     target_include_directories(${ACT_NAME}
-        PRIVATE ${_v_dir}
+        PRIVATE ${_v_dir} ${ACT_EXTRA_INCLUDE_DIRS}
     )
     target_include_directories(${ACT_NAME} SYSTEM
         PRIVATE
@@ -117,6 +135,7 @@ function(add_cosim_test)
             GTest::gtest
             GTest::gtest_main
             Threads::Threads
+            ${ACT_EXTRA_LINK_LIBS}
     )
 
     add_test(NAME ${ACT_NAME}

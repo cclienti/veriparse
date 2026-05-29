@@ -143,6 +143,40 @@ if(NOT WIN32)
       HARNESS
         ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/cosim/test_dclkfifolut.cpp
     )
+
+    # hynoc_5p — veriflat targets hynoc_router_5p; verilator's top is a
+    # thin Verilog topology wrapper (2 routers + 8 LIs, no writers/readers)
+    # so the C++ noc_traffic kit can drive every local interface.
+    set(_hynoc_src ${CMAKE_CURRENT_SOURCE_DIR}/test/hynoc_5p/src)
+    set(_hynoc_cosim ${CMAKE_CURRENT_SOURCE_DIR}/test/hynoc_5p/cosim)
+    add_library(hynoc_noc_traffic STATIC ${_hynoc_cosim}/kit/noc_traffic.cpp)
+    target_include_directories(hynoc_noc_traffic PUBLIC ${_hynoc_cosim}/kit)
+
+    add_cosim_test(
+      NAME test_cosim_hynoc_router_5p
+      TOP_MODULE hynoc_router_5p
+      VERILATOR_TOP hynoc_topology
+      VERIFLAT_ARGS -I ${_hynoc_src}
+      VERILOG_SOURCES
+        ${_hynoc_src}/hynoc_router_5p.v
+        ${_hynoc_src}/hynoc_router_base.v
+        ${_hynoc_src}/hynoc_egress.v
+        ${_hynoc_src}/hynoc_ingress.v
+        ${_hynoc_src}/hynoc_ingress_routing_mcast.v
+        ${_hynoc_src}/hynoc_ingress_routing_ucast.v
+        ${_hynoc_src}/hynoc_prra.v
+        ${_hynoc_src}/prra_lut.v
+      VERILATOR_EXTRA_SOURCES
+        ${_hynoc_cosim}/topology.v
+        ${_hynoc_src}/hynoc_local_interface.v
+        ${_hynoc_src}/dclkfifolut.v
+        ${_hynoc_src}/sclkfifolut.v
+        ${_hynoc_src}/bin2gray.v
+        ${_hynoc_src}/gray2bin.v
+      HARNESS
+        ${_hynoc_cosim}/test_hynoc_router_5p.cpp
+      EXTRA_LINK_LIBS hynoc_noc_traffic
+    )
   endif()
 
 endif()
