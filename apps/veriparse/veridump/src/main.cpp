@@ -126,22 +126,13 @@ static int veridump(int argc, char *argv[])
 
     std::stringstream preprocessed;
     {
+        Veriparse::Parser::PreprocessorOptions opts;
+        opts.sv_mode = sv_mode;
+        opts.include_dirs = include_dirs;
+        opts.defines = defines;
+        opts.undefs = undefs;
         Veriparse::Parser::Preprocessor pp;
-        pp.set_sv_mode(sv_mode);
-        for(const auto &dir : include_dirs) {
-            pp.add_include_dir(dir);
-        }
-        for(const auto &spec : defines) {
-            const auto eq = spec.find('=');
-            if(eq == std::string::npos) {
-                pp.define(spec);
-            } else {
-                pp.define(spec.substr(0, eq), spec.substr(eq + 1));
-            }
-        }
-        for(const auto &name : undefs) {
-            pp.undef(name);
-        }
+        pp.apply(opts);
         if(pp.preprocess(inputs, preprocessed) != 0) {
             LOG_ERROR << "preprocessing failed";
             return 1;

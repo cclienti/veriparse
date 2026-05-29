@@ -30,22 +30,19 @@ static int veripp(int argc, char *argv[])
     //-----------------------------------------------------------
 
     std::string output;
-    bool sv_mode = false;
-    std::vector<std::string> include_dirs;
-    std::vector<std::string> defines;
-    std::vector<std::string> undefs;
+    Veriparse::Parser::PreprocessorOptions opts;
     std::vector<std::string> inputs;
 
     po::options_description options("options");
     options.add_options()("help,h", "Produce help message")(
         "version,v", "Show the version and exit")("output,o", po::value<std::string>(&output),
                                                   "Output file (default: stdout)")(
-        "include-dir,I", po::value<std::vector<std::string>>(&include_dirs),
+        "include-dir,I", po::value<std::vector<std::string>>(&opts.include_dirs),
         "Add directory to `include search path (repeatable)")(
-        "define,D", po::value<std::vector<std::string>>(&defines),
+        "define,D", po::value<std::vector<std::string>>(&opts.defines),
         "Predefine a macro as NAME or NAME=BODY (repeatable)")(
-        "undef,U", po::value<std::vector<std::string>>(&undefs),
-        "Cancel a predefine NAME (repeatable)")("sv", po::bool_switch(&sv_mode),
+        "undef,U", po::value<std::vector<std::string>>(&opts.undefs),
+        "Cancel a predefine NAME (repeatable)")("sv", po::bool_switch(&opts.sv_mode),
                                                 "Enable SystemVerilog mode");
 
     po::options_description hidden("positional");
@@ -102,29 +99,11 @@ static int veripp(int argc, char *argv[])
              << Veriparse::Version::get_sha1();
 
     //-----------------------------------------------------------
-    // Configure the preprocessor
+    // Run and emit
     //-----------------------------------------------------------
 
     Veriparse::Parser::Preprocessor pp;
-    pp.set_sv_mode(sv_mode);
-    for(const auto &dir : include_dirs) {
-        pp.add_include_dir(dir);
-    }
-    for(const auto &spec : defines) {
-        const auto eq = spec.find('=');
-        if(eq == std::string::npos) {
-            pp.define(spec);
-        } else {
-            pp.define(spec.substr(0, eq), spec.substr(eq + 1));
-        }
-    }
-    for(const auto &name : undefs) {
-        pp.undef(name);
-    }
-
-    //-----------------------------------------------------------
-    // Run and emit
-    //-----------------------------------------------------------
+    pp.apply(opts);
 
     std::ofstream fout;
     std::ostream *out = &std::cout;

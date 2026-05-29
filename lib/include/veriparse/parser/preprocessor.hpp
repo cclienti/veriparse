@@ -15,6 +15,19 @@ namespace Parser
 
 class PreprocessorDriver;
 
+/**
+ * CLI-shaped configuration for the preprocessor. `defines` entries
+ * are in the standard "NAME" or "NAME=BODY" form, matching the -D
+ * convention; `undefs` are bare names matching -U.
+ */
+struct PreprocessorOptions
+{
+    bool sv_mode = false;
+    std::vector<std::string> include_dirs;
+    std::vector<std::string> defines;
+    std::vector<std::string> undefs;
+};
+
 class Preprocessor
 {
 public:
@@ -41,6 +54,13 @@ public:
      */
     void define(const std::string &name, const std::string &body = "");
     void undef(const std::string &name);
+
+    /**
+     * Apply a parsed set of CLI options in one call. Calls set_sv_mode,
+     * add_include_dir for each entry, define for each "NAME[=BODY]"
+     * spec, and undef for each name.
+     */
+    void apply(const PreprocessorOptions &opts);
 
     /**
      * Preprocess one file. Writes the preprocessed text to out. Returns
