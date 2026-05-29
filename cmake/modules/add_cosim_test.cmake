@@ -2,6 +2,7 @@
 #                TOP_MODULE <verilog_top>
 #                VERILOG_SOURCES <src1.v> [<src2.v> ...]
 #                HARNESS <harness.cpp> [<more.cpp> ...]
+#                [NO_VERIFLAT]
 #                [VERILATOR_TOP <verilog_top>]
 #                [VERILATOR_EXTRA_SOURCES <src.v> ...]
 #                [EXTRA_LINK_LIBS <target> ...]
@@ -12,9 +13,11 @@
 #
 # Pipeline (all build-time, no iverilog dependency):
 #   1. veriflat       VERILOG_SOURCES + TOP_MODULE -> flat .v
-#   2. verilator      (flat .v + VERILATOR_EXTRA_SOURCES) -> static archive
-#                     and runtime archive, top = VERILATOR_TOP (defaults
-#                     to TOP_MODULE)
+#                     (skipped when NO_VERIFLAT is set; VERILOG_SOURCES
+#                     are fed straight to verilator instead)
+#   2. verilator      (flat .v or VERILOG_SOURCES) + VERILATOR_EXTRA_SOURCES
+#                     -> static archive and runtime archive, top =
+#                     VERILATOR_TOP (defaults to TOP_MODULE)
 #   3. add_executable HARNESS sources linked against the verilated
 #      archives, cosim_helpers, GoogleTest, EXTRA_LINK_LIBS, and the
 #      verilator runtime
@@ -31,7 +34,7 @@
 include_guard(GLOBAL)
 
 function(add_cosim_test)
-    set(options)
+    set(options NO_VERIFLAT)
     set(one_value_args NAME TOP_MODULE VERILATOR_TOP SEED)
     set(multi_value_args
         VERILOG_SOURCES
@@ -63,7 +66,6 @@ function(add_cosim_test)
     set(_work_dir ${CMAKE_CURRENT_BINARY_DIR}/${ACT_NAME}.dir)
     set(_v_dir ${_work_dir}/verilated)
     set(_v_prefix V${ACT_VERILATOR_TOP})
-    set(_flat_v ${_work_dir}/${ACT_TOP_MODULE}_flat.v)
     set(_v_archive ${_v_dir}/lib${_v_prefix}.a)
     set(_v_runtime ${_v_dir}/libverilated.a)
     set(_v_main_h ${_v_dir}/${_v_prefix}.h)
@@ -71,19 +73,27 @@ function(add_cosim_test)
     file(MAKE_DIRECTORY ${_work_dir})
     file(MAKE_DIRECTORY ${_v_dir})
 
-    add_custom_command(
-        OUTPUT ${_flat_v}
-        COMMAND $<TARGET_FILE:veriflat>
-                --seed ${ACT_SEED}
-                --top-module ${ACT_TOP_MODULE}
-                --output ${_flat_v}
-                ${ACT_VERIFLAT_ARGS}
-                ${ACT_VERILOG_SOURCES}
-        DEPENDS veriflat ${ACT_VERILOG_SOURCES}
-        WORKING_DIRECTORY ${_work_dir}
-        COMMENT "veriflat ${ACT_TOP_MODULE} -> ${_flat_v}"
-        VERBATIM
-    )
+    if(ACT_NO_VERIFLAT)
+        set(_verilator_dut_sources ${ACT_VERILOG_SOURCES})
+        set(_verilator_dut_depends ${ACT_VERILOG_SOURCES})
+    else()
+        set(_flat_v ${_work_dir}/${ACT_TOP_MODULE}_flat.v)
+        add_custom_command(
+            OUTPUT ${_flat_v}
+            COMMAND $<TARGET_FILE:veriflat>
+                    --seed ${ACT_SEED}
+                    --top-module ${ACT_TOP_MODULE}
+                    --output ${_flat_v}
+                    ${ACT_VERIFLAT_ARGS}
+                    ${ACT_VERILOG_SOURCES}
+            DEPENDS veriflat ${ACT_VERILOG_SOURCES}
+            WORKING_DIRECTORY ${_work_dir}
+            COMMENT "veriflat ${ACT_TOP_MODULE} -> ${_flat_v}"
+            VERBATIM
+        )
+        set(_verilator_dut_sources ${_flat_v})
+        set(_verilator_dut_depends ${_flat_v})
+    endif()
 
     # Verilator's `--build` invokes the conda toolchain ar/c++ via the
     # prefixed names (x86_64-conda-linux-gnu-ar etc.) that live in the
@@ -103,9 +113,9 @@ function(add_cosim_test)
                 --top-module ${ACT_VERILATOR_TOP}
                 -Wno-fatal
                 ${ACT_VERILATOR_ARGS}
-                ${_flat_v}
+                ${_verilator_dut_sources}
                 ${ACT_VERILATOR_EXTRA_SOURCES}
-        DEPENDS ${_flat_v} ${ACT_VERILATOR_EXTRA_SOURCES}
+        DEPENDS ${_verilator_dut_depends} ${ACT_VERILATOR_EXTRA_SOURCES}
         WORKING_DIRECTORY ${_work_dir}
         COMMENT "verilating ${ACT_VERILATOR_TOP} -> ${_v_archive}"
         VERBATIM
