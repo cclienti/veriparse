@@ -11,8 +11,8 @@
 #   cmake           Configure the project with VS17 2022 + ClangCL.
 #   build           Build the active configuration.
 #   test            Run ctest with -L <Labels> (default: unittest).
-#   test-integration  ctest with -L 'verilator|integration' (mostly stubbed
-#                     on Windows: iverilog/verilator are Linux/macOS only).
+#   test-cosim      ctest with -L cosim (no-op on Windows: verilator is
+#                   only packaged for Linux/macOS on conda-forge).
 #   clean           Remove .\build (env + cmake state).
 #   all             env -> cmake -> build -> test.
 #
@@ -22,7 +22,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Position = 0, Mandatory = $true)]
-    [ValidateSet('env-file', 'env', 'cmake', 'build', 'test', 'test-integration', 'clean', 'all')]
+    [ValidateSet('env-file', 'env', 'cmake', 'build', 'test', 'test-cosim', 'clean', 'all')]
     [string]$Target,
 
     [string]$BuildType = 'RelWithDebInfo',
@@ -153,7 +153,7 @@ switch ($Target) {
     'cmake'            { Invoke-CmakeConfigure }
     'build'            { Invoke-CmakeBuild }
     'test'             { Invoke-Ctest }
-    'test-integration' { $Labels = 'verilator|integration'; Invoke-Ctest }
+    'test-cosim'       { $Labels = 'cosim'; Invoke-Ctest }
     'clean'            { Remove-DevBuild }
     'all'              {
         New-CondaEnv

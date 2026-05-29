@@ -43,7 +43,7 @@ MAMBA                = micromamba
 DEV_BUILD_DIR        = build
 REPO_ROOT            = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-# CTest label filter for dev-test (unittest, verilator, integration, or regex)
+# CTest label filter for dev-test (unittest, cosim, or regex)
 CTEST_LABELS ?= unittest
 DEV_LINKER_FLAGS     ?= -fuse-ld=mold
 
@@ -62,7 +62,6 @@ dev-env-file: conda/recipe-release/meta.yaml
 	  grep '^ *- ' | grep -v '{{\|compiler\|stdlib\|mold' | \
 	  grep -vE '# *\[(win|build_platform.startswith\("win-"\))\]' | \
 	  sed 's/^ *- /  - /' >> conda/environment.yml
-	@if [ "$$(uname -s)" = "Linux" ]; then echo "  - iverilog" >> conda/environment.yml; fi
 	@echo "  - verilator"             >> conda/environment.yml
 
 dev-env: dev-env-file
@@ -107,12 +106,12 @@ dev-test:
 	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
 	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L '$(CTEST_LABELS)'
 
-dev-test-integration:
+dev-test-cosim:
 	set -e; \
 	  cd $(DEV_BUILD_DIR); \
 	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
 	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
-	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L 'verilator|integration'
+	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L 'cosim'
 
 dev-clean:
 	set -e; \
@@ -167,7 +166,7 @@ help:
 	@echo "  dev-cmake    Run CMake configuration in the dev environment"
 	@echo "  dev-build    Build the project in the dev environment"
 	@echo "  dev-test              Run unittest tests (override with CTEST_LABELS=...)"
-	@echo "  dev-test-integration  Run verilator and integration tests"
+	@echo "  dev-test-cosim        Run verilator-based cosim tests"
 	@echo "  dev-clean             Remove build directory and dev conda environment"
 	@echo "  install-hooks         Install git pre-commit hook (clang-format check)"
 	@echo ""
