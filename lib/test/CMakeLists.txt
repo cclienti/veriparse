@@ -9,6 +9,12 @@ include(../../cmake/modules/subdirs.cmake)
 subdirlist(SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 foreach(subdir ${SUBDIRS})
+  # cosim/ is a header-only helper library, not a bundled unit-test
+  # executable. It is registered explicitly below via add_subdirectory().
+  if(subdir STREQUAL "cosim")
+    continue()
+  endif()
+
   file(GLOB_RECURSE test_source_files ${subdir}/*.cpp)
   if (test_source_files)
     set(testname test_veriparse_${subdir})
@@ -24,6 +30,8 @@ foreach(subdir ${SUBDIRS})
     endif()
   endif()
 endforeach()
+
+add_subdirectory(cosim)
 
 add_custom_target(run_tests)
 add_dependencies(run_tests build_tests)

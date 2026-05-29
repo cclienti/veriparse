@@ -48,6 +48,16 @@ set(VERIPARSE_APPS_TESTS
 
 if(NOT WIN32)
 
+  # cosim tests (label "cosim"): verilator generates a C++ model of the
+  # flattened design, a GoogleTest harness drives it. Coexists with the
+  # iverilog/verilator-lint tests below during the migration.
+  find_package(verilator CONFIG QUIET)
+  if(verilator_FOUND)
+    include(${CMAKE_SOURCE_DIR}/cmake/modules/add_cosim_test.cmake)
+  else()
+    message(STATUS "Veriparse Apps: verilator not found, skipping cosim tests")
+  endif()
+
   # Iterate over all tests
   foreach(VERIPARSE_APPS_TEST ${VERIPARSE_APPS_TESTS})
     file(GLOB VERIPARSE_PROJECT_TEST_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/test/${VERIPARSE_APPS_TEST}/project*)
@@ -89,5 +99,50 @@ if(NOT WIN32)
       endif()
     endforeach()
   endforeach()
+
+  #----------------------------------------
+  # Cosim tests — registered separately as designs get migrated. Each test
+  # opt-ins by shipping a test/<name>/cosim/test_<top>.cpp harness.
+  #----------------------------------------
+  if(verilator_FOUND)
+    foreach(_aes_width 128 192 256)
+      add_cosim_test(
+        NAME test_cosim_tiny_aes_${_aes_width}
+        TOP_MODULE aes_${_aes_width}
+        VERILOG_SOURCES
+          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/aes_${_aes_width}.v
+          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/round.v
+          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/src/table.v
+        HARNESS
+          ${CMAKE_CURRENT_SOURCE_DIR}/test/tiny_aes_${_aes_width}/cosim/test_aes_${_aes_width}.cpp
+      )
+    endforeach()
+
+    add_cosim_test(
+      NAME test_cosim_double_fpu
+      TOP_MODULE fpu
+      VERILOG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_double.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_add.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_div.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_exceptions.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_mul.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_round.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/src/fpu_sub.v
+      HARNESS
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/double_fpu-master/cosim/test_fpu.cpp
+    )
+
+    add_cosim_test(
+      NAME test_cosim_dclkfifolut
+      TOP_MODULE dclkfifolut
+      VERILOG_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/dclkfifolut.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/bin2gray.v
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/src/gray2bin.v
+      HARNESS
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/dclkfifolut/cosim/test_dclkfifolut.cpp
+    )
+  endif()
 
 endif()
