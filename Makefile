@@ -76,7 +76,16 @@ dev-cmake:
 	  cd $(DEV_BUILD_DIR); \
 	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
 	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
+	  CC=$$(ls $$CONDA_PREFIX/bin/*-cc 2>/dev/null | head -1); \
+	  CXX=$$(ls $$CONDA_PREFIX/bin/*-c++ 2>/dev/null | head -1); \
+	  if [ -z "$$CC" ] || [ -z "$$CXX" ]; then \
+	    echo "ERROR: conda toolchain *-cc / *-c++ not found in $$CONDA_PREFIX/bin"; \
+	    exit 1; \
+	  fi; \
+	  export CC CXX; \
 	  cmake -G Ninja \
+	        -DCMAKE_C_COMPILER=$$CC \
+	        -DCMAKE_CXX_COMPILER=$$CXX \
 	        -DCMAKE_PREFIX_PATH=$$CONDA_PREFIX \
 	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) \
 	        -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
