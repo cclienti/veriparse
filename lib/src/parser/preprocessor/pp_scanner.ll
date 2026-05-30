@@ -32,9 +32,6 @@
 %x INCLUDE_TAIL
 %x COND_NAME
 %x SKIP_TO_EOL
-%x MACRO_CALL_PRE
-%x MACRO_CALL_ARGS
-%x MACRO_CALL_STRING
 
 ID  [a-zA-Z_][a-zA-Z0-9_$]*
 
@@ -218,54 +215,11 @@ ID  [a-zA-Z_][a-zA-Z0-9_$]*
 <SKIP_TO_EOL>\n    {BEGIN(INITIAL);}
 <SKIP_TO_EOL>.     {/* discard */}
 
-	/* Function-like macro call: between the backtick name and '('
-	 * §22.5.1 allows whitespace. Newlines are not addressed by the
-	 * spec; for regular calls we accept them (lenient) so multi-line
-	 * invocations work — but when the call came from inside an
-	 * `include argument the directive line ends at the newline, so
-	 * '(' will never arrive and we must surface that as an error
-	 * before the next line's first token gets eaten by the `.` rule
-	 * below. */
-<MACRO_CALL_PRE>[ \t]+ {/* skip */}
-<MACRO_CALL_PRE>\n     {if (m_call_from_include) {
-                          LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
-                                    << ": function-like macro requires '(' after its name";
-                          m_call_macro = nullptr;
-                          m_call_actuals.clear();
-                          m_call_depth = 0;
-                          m_call_from_include = false;
-                          emit("\n");
-                          BEGIN(INITIAL);
-                       }
-                       /* else: allow newline before '(' for regular calls */}
-<MACRO_CALL_PRE>"("    {BEGIN(MACRO_CALL_ARGS); m_call_actuals.clear(); m_call_actuals.emplace_back(); m_call_depth = 0;}
-<MACRO_CALL_PRE>.      {LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
-                                  << ": function-like macro requires '(' after its name";
-                        if (macro_call_abort()) BEGIN(INITIAL);}
-
-	/* Inside a macro call arg list. Matched-pair-aware counting per
-	 * §22.5.1: comma at depth-0 separates actuals, ')' at depth-0
-	 * terminates the call. (), [], {}, "", and \<id> all hide commas
-	 * and closing-parens from the separator logic. */
-<MACRO_CALL_ARGS>"("   {macro_call_arg_open('(');}
-<MACRO_CALL_ARGS>")"   {if (macro_call_arg_close(')')) BEGIN(INITIAL);}
-<MACRO_CALL_ARGS>","   {macro_call_arg_comma();}
-<MACRO_CALL_ARGS>"["   {macro_call_arg_open('[');}
-<MACRO_CALL_ARGS>"]"   {(void)macro_call_arg_close(']');}
-<MACRO_CALL_ARGS>"{"   {macro_call_arg_open('{');}
-<MACRO_CALL_ARGS>"}"   {(void)macro_call_arg_close('}');}
-<MACRO_CALL_ARGS>"\""  {macro_call_arg_char('"'); BEGIN(MACRO_CALL_STRING);}
-<MACRO_CALL_ARGS>\\[^ \t\r\n]+  {macro_call_arg_text(yytext);}
-<MACRO_CALL_ARGS>\n    {macro_call_arg_char('\n');}
-<MACRO_CALL_ARGS>.     {macro_call_arg_char(yytext[0]);}
-
-	/* String literal inside a macro-call argument list — commas and
-	 * parens inside are part of the actual, not separators. */
-<MACRO_CALL_STRING>\\\"  {macro_call_arg_text(yytext);}
-<MACRO_CALL_STRING>\\\\  {macro_call_arg_text(yytext);}
-<MACRO_CALL_STRING>"\""  {macro_call_arg_char('"'); BEGIN(MACRO_CALL_ARGS);}
-<MACRO_CALL_STRING>\n    {macro_call_arg_char('\n');}
-<MACRO_CALL_STRING>.     {macro_call_arg_char(yytext[0]);}
+	/* Function-like macro calls (regular and `include arguments) no
+	 * longer have dedicated start conditions: handle_backtick /
+	 * include_expand_macro pull the '(...)' from the live input with
+	 * yyinput() and split it with the shared scan_actuals grammar (see
+	 * expand_macro_call in pp_scanner_impl.cpp). */
 
 	/* End of input on any buffer — pop if there is a pushed buffer,
 	 * terminate otherwise. */
@@ -292,7 +246,6 @@ void PreprocessorScanner::begin_undef_name()                    {BEGIN(UNDEF_NAM
 void PreprocessorScanner::begin_include_arg()                   {BEGIN(INCLUDE_ARG);}
 void PreprocessorScanner::begin_cond_name()                     {BEGIN(COND_NAME);}
 void PreprocessorScanner::begin_skip_to_eol()                   {BEGIN(SKIP_TO_EOL);}
-void PreprocessorScanner::begin_macro_call_pre()                {BEGIN(MACRO_CALL_PRE);}
 
 }
 }

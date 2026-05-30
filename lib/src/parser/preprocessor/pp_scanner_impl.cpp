@@ -624,12 +624,9 @@ void PreprocessorScanner::handle_backtick(const char *name_after_tick)
     Macro *m = m_driver.macros().find(name);
     if(m) {
         if(m->has_args) {
-            // Function-like: must be followed by '(' (whitespace OK).
-            // Capture the macro and switch to MACRO_CALL_PRE.
-            m_call_macro = m;
-            m_call_actuals.clear();
-            m_call_depth = 0;
-            begin_macro_call_pre();
+            // Function-like: collect '(...)' from the live input and
+            // expand it synchronously (see expand_macro_call).
+            expand_macro_call(m, /*from_include*/ false);
             return;
         }
         // Object-like: route through expand_body so SV body escapes
@@ -667,135 +664,122 @@ void PreprocessorScanner::define_finish()
 }
 
 // ---------------------------------------------------------------------
-// Function-like macro call argument collection.
+// Function-like macro call: collect the actual-argument list directly
+// from the live input and expand it synchronously.
 //
-// On entry to MACRO_CALL_PRE we have m_call_macro pointing at the macro
-// being invoked and m_call_actuals empty. The Flex rules consume the
-// arg list character by character, invoking the helpers below. The
-// invariant we maintain is m_call_depth = number of unmatched ( / [ /
-// { that have been opened since the outer call's '(' — so a ',' or
-// ')' is a separator/terminator iff m_call_depth == 0 (§22.5.1: actual
-// args may not contain comma or right-paren outside matched pairs).
+// This pulls characters with yyinput() — which keeps yylineno correct
+// across multi-line calls and pops nothing on its own — and splits them
+// with the shared scan_actuals grammar (the same one expand_body uses
+// for nested synthetic-string calls). It replaces the former
+// MACRO_CALL_PRE / MACRO_CALL_ARGS / MACRO_CALL_STRING Flex states so
+// the §22.5.1 arg-list grammar lives in exactly one place.
+//
+// `from_include` is set when the call is the argument of an `include
+// (§22.5.1 last paragraph): error recovery drops the rest of the
+// directive line, and the successful expansion is fed back through
+// INCLUDE_ARG rather than INITIAL.
 // ---------------------------------------------------------------------
 
-void PreprocessorScanner::macro_call_start(Macro *m)
+void PreprocessorScanner::expand_macro_call(Macro *m, bool from_include)
 {
-    m_call_macro = m;
-    m_call_actuals.clear();
-    m_call_actuals.emplace_back();
-    m_call_depth = 0;
-}
+    // Character source over the live buffer. yyinput() returns 0 at the
+    // end of the current buffer; pop to the parent (mirroring the old
+    // <<EOF>> rule the MACRO_CALL states relied on) so a call whose '('
+    // or actuals sit beyond a macro-expansion boundary still resolves,
+    // and surface a genuine top-level EOF as -1.
+    const auto next = [this]() -> int {
+        for(;;) {
+            const int c = yyinput();
+            if(c != 0) {
+                return c;
+            }
+            if(!on_eof()) {
+                return -1;
+            }
+        }
+    };
 
-void PreprocessorScanner::macro_call_arg_char(char c)
-{
-    if(m_call_actuals.empty()) {
-        m_call_actuals.emplace_back();
+    // §22.5.1 allows whitespace between the macro name and '('. Regular
+    // calls are additionally lenient about newlines (multi-line
+    // invocation); inside an `include argument the directive line ends at
+    // the newline, so a newline before '(' is an error.
+    int c = next();
+    while(c == ' ' || c == '\t' || (c == '\n' && !from_include)) {
+        c = next();
     }
-    m_call_actuals.back().push_back(c);
-}
-
-void PreprocessorScanner::macro_call_arg_text(const char *t)
-{
-    if(m_call_actuals.empty()) {
-        m_call_actuals.emplace_back();
+    if(c != '(') {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": function-like macro '"
+                  << m->name << "' requires '(' after its name";
+        if(c == '\n') {
+            // Newline before '(' — reachable only for an `include call;
+            // the directive line ends here. Emit it and return to INITIAL
+            // (the old MACRO_CALL_PRE from-include `\n` rule did the same)
+            // so the next line is scanned as ordinary source rather than a
+            // continued `include argument.
+            emit("\n");
+            begin_initial();
+        } else if(from_include) {
+            // Stray token on an `include line: drop the rest of it so it
+            // does not leak into the output (matches INCLUDE_TAIL).
+            begin_skip_to_eol();
+        }
+        // Regular call: the offending char is dropped and scanning
+        // resumes in INITIAL, exactly as the old MACRO_CALL_PRE '.' rule.
+        return;
     }
-    m_call_actuals.back().append(t);
-}
 
-void PreprocessorScanner::macro_call_arg_open(char c)
-{
-    macro_call_arg_char(c);
-    ++m_call_depth;
-}
-
-bool PreprocessorScanner::macro_call_arg_close(char c)
-{
-    if(m_call_depth == 0) {
-        if(c != ')') {
-            // Mismatched ] or } at depth 0 — just include as text.
-            macro_call_arg_char(c);
-            return false;
+    std::vector<std::string> raw;
+    if(scan_actuals(next, raw) != ArgScan::Ok) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno
+                  << ": unterminated call to '" << m->name << "'";
+        if(from_include) {
+            begin_skip_to_eol();
         }
-        // Outer ')' — finish the call.
-        Macro *m = m_call_macro;
-        m_call_macro = nullptr;
-
-        if(!m) {
-            return macro_call_abort(); // defensive
-        }
-
-        // §22.5.1 actual-resolution shared with expand_body's
-        // synthetic-string textual recursion. Diagnostics use the
-        // use-site (current file/line) since that's where the bad
-        // call was written.
-        auto rr = resolve_actuals(*m, std::move(m_call_actuals));
-        m_call_actuals.clear(); // restore the moved-from vector
-        if(rr.status == ResolveActualsResult::Status::TooMany) {
-            LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
-                      << m->name << "' expects " << m->formals.size() << " argument(s), got "
-                      << rr.actual_count;
-            return macro_call_abort();
-        }
-        if(rr.status == ResolveActualsResult::Status::MissingNoDefault) {
-            LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
-                      << m->name << "' missing argument '" << rr.missing_formal
-                      << "' (no default specified)";
-            return macro_call_abort();
-        }
-
-        if(m->expansion_depth >= kMaxExpansionDepth) {
-            LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
-                      << m->name << "' expansion depth exceeded " << kMaxExpansionDepth
-                      << " — likely infinite recursion";
-            return macro_call_abort();
-        }
-
-        const std::string expanded =
-            expand_body(*m, rr.resolved, m_driver.get_sv_mode(), &m_driver.macros());
-        auto stream = std::make_unique<std::istringstream>(expanded);
-        push_buffer(std::move(stream), m_filename, m);
-        // §22.5.1 last paragraph: when the call came from inside an
-        // `include argument, the expansion (which is supposed to be a
-        // "..." or <...> string) must be re-fed to INCLUDE_ARG rather
-        // than INITIAL. Returning false here keeps the Flex rule from
-        // forcing BEGIN(INITIAL); we set the state ourselves.
-        if(m_call_from_include) {
-            m_call_from_include = false;
-            begin_include_arg();
-            return false;
-        }
-        return true;
+        return;
     }
-    macro_call_arg_char(c);
-    --m_call_depth;
-    return false;
-}
 
-void PreprocessorScanner::macro_call_arg_comma()
-{
-    if(m_call_depth == 0) {
-        m_call_actuals.emplace_back();
-    } else {
-        macro_call_arg_char(',');
+    // §22.5.1 actual-resolution shared with expand_body's synthetic-string
+    // textual recursion. Diagnostics use the use-site (current file/line)
+    // since that is where the bad call was written. On any error the
+    // collected '(...)' has already been consumed; an `include call drops
+    // the rest of the line, a regular call just returns to INITIAL.
+    auto rr = resolve_actuals(*m, std::move(raw));
+    if(rr.status == ResolveActualsResult::Status::TooMany) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '" << m->name
+                  << "' expects " << m->formals.size() << " argument(s), got " << rr.actual_count;
+        if(from_include) {
+            begin_skip_to_eol();
+        }
+        return;
     }
-}
+    if(rr.status == ResolveActualsResult::Status::MissingNoDefault) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '" << m->name
+                  << "' missing argument '" << rr.missing_formal << "' (no default specified)";
+        if(from_include) {
+            begin_skip_to_eol();
+        }
+        return;
+    }
 
-bool PreprocessorScanner::macro_call_abort()
-{
-    const bool from_include = m_call_from_include;
-    m_call_macro = nullptr;
-    m_call_actuals.clear();
-    m_call_depth = 0;
-    m_call_from_include = false;
+    if(m->expansion_depth >= kMaxExpansionDepth) {
+        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '" << m->name
+                  << "' expansion depth exceeded " << kMaxExpansionDepth
+                  << " — likely infinite recursion";
+        if(from_include) {
+            begin_skip_to_eol();
+        }
+        return;
+    }
+
+    const std::string expanded =
+        expand_body(*m, rr.resolved, m_driver.get_sv_mode(), &m_driver.macros());
+    auto stream = std::make_unique<std::istringstream>(expanded);
+    push_buffer(std::move(stream), m_filename, m);
+    // §22.5.1 last paragraph: a call that came from an `include argument
+    // feeds its "..."/<...> expansion back through INCLUDE_ARG.
     if(from_include) {
-        // Errors during an `include `MACRO(...) sequence: drop the
-        // rest of the directive line so trailing whitespace, comments,
-        // or stray tokens don't leak into the emitted stream — matches
-        // INCLUDE_TAIL's behaviour for malformed directive arguments.
-        begin_skip_to_eol();
-        return false;
+        begin_include_arg();
     }
-    return true;
 }
 
 void PreprocessorScanner::undef_apply(const char *name) { m_driver.macros().undef(name); }
@@ -854,10 +838,9 @@ void PreprocessorScanner::include_expand_macro(const char *name_after_tick)
 {
     // §22.5.1 last paragraph: `include can be followed by a macro that
     // expands to the quoted (or angle-bracket) filename. SV-only.
-    // Object-like is resolved inline; function-like routes through the
-    // MACRO_CALL_PRE/MACRO_CALL_ARGS state machine and comes back via
-    // macro_call_arg_close, which puts us back in INCLUDE_ARG with the
-    // expansion pushed as a buffer.
+    // Object-like is resolved inline; function-like is collected and
+    // expanded by expand_macro_call, which feeds the resulting "..."/<...>
+    // back through INCLUDE_ARG.
     // Recovery for any early-return error path: stay out of INCLUDE_ARG
     // so the next token on the directive line isn't re-classified as
     // another `include argument and reported a second time.
@@ -883,14 +866,10 @@ void PreprocessorScanner::include_expand_macro(const char *name_after_tick)
         return;
     }
     if(m->has_args) {
-        // Function-like: arm the call-collection state and switch into
-        // MACRO_CALL_PRE. We come back to INCLUDE_ARG once the matching
-        // ')' fires macro_call_arg_close.
-        m_call_macro = m;
-        m_call_actuals.clear();
-        m_call_depth = 0;
-        m_call_from_include = true;
-        begin_macro_call_pre();
+        // Function-like (§22.5.1 last paragraph): collect '(...)' from the
+        // live input and expand it; expand_macro_call feeds the resulting
+        // "..."/<...> back through INCLUDE_ARG.
+        expand_macro_call(m, /*from_include*/ true);
         return;
     }
     const std::string expanded =

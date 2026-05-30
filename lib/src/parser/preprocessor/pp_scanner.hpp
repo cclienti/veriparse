@@ -107,19 +107,6 @@ public:
     void define_append_body_char(char c) { m_pending_body += c; }
     void define_finish();
 
-    // Function-like macro call argument collection.
-    void macro_call_start(Macro *m);
-    void macro_call_arg_char(char c);
-    void macro_call_arg_text(const char *t);
-    void macro_call_arg_open(char c);
-    bool macro_call_arg_close(char c); ///< returns true on outer ')'
-    void macro_call_arg_comma();
-    /// Called on any error mid-call. Returns true if the Flex rule
-    /// should still force BEGIN(INITIAL); false if we have already
-    /// chosen a recovery state (e.g. SKIP_TO_EOL for an `include
-    /// call) and the rule must leave it alone.
-    bool macro_call_abort();
-
     // `undef NAME (UNDEF_NAME rule).
     void undef_apply(const char *name);
 
@@ -156,9 +143,14 @@ public:
     void begin_include_arg();
     void begin_cond_name();
     void begin_skip_to_eol();
-    void begin_macro_call_pre();
 
 private:
+    /// Collect a function-like macro call's '(...)' from the live input
+    /// (via yyinput()) and expand it, pushing the result onto the buffer
+    /// stack. `from_include` routes the expansion back through INCLUDE_ARG
+    /// and drops the directive line on error (§22.5.1 last paragraph).
+    void expand_macro_call(Macro *m, bool from_include);
+
     enum class CondKind
     {
         Ifdef,
@@ -190,16 +182,6 @@ private:
     bool m_pending_has_args{false};
     int m_pending_default_depth{0}; ///< bracket depth inside a default value
     CondKind m_pending_cond_kind{CondKind::Ifdef};
-
-    // Pending state for a function-like macro call being parsed.
-    Macro *m_call_macro{nullptr};
-    std::vector<std::string> m_call_actuals;
-    int m_call_depth{0}; ///< nesting depth inside the outer (
-    /// True when the current MACRO_CALL_ARGS run was entered from
-    /// INCLUDE_ARG (§22.5.1 last paragraph: `include `MACRO(...)).
-    /// On close, the expansion is pushed back through INCLUDE_ARG
-    /// rather than INITIAL.
-    bool m_call_from_include{false};
 };
 
 } // namespace Parser
