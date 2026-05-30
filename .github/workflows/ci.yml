@@ -16,6 +16,13 @@ on:
         type: boolean
         default: false
 
+# Cancel any in-flight run for the same workflow + ref. Force-pushes on a
+# PR branch (or rapid pushes to master) auto-cancel the older run instead
+# of letting both burn runner minutes in parallel.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # Emit the matrix at runtime so macOS entries are omitted on PR runs
   # (macOS runner minutes cost ~10x linux). macOS still runs on push:master,
