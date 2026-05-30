@@ -114,7 +114,11 @@ public:
     void macro_call_arg_open(char c);
     bool macro_call_arg_close(char c); ///< returns true on outer ')'
     void macro_call_arg_comma();
-    void macro_call_abort(); ///< called on error mid-call
+    /// Called on any error mid-call. Returns true if the Flex rule
+    /// should still force BEGIN(INITIAL); false if we have already
+    /// chosen a recovery state (e.g. SKIP_TO_EOL for an `include
+    /// call) and the rule must leave it alone.
+    bool macro_call_abort();
 
     // `undef NAME (UNDEF_NAME rule).
     void undef_apply(const char *name);
@@ -191,6 +195,11 @@ private:
     Macro *m_call_macro{nullptr};
     std::vector<std::string> m_call_actuals;
     int m_call_depth{0}; ///< nesting depth inside the outer (
+    /// True when the current MACRO_CALL_ARGS run was entered from
+    /// INCLUDE_ARG (§22.5.1 last paragraph: `include `MACRO(...)).
+    /// On close, the expansion is pushed back through INCLUDE_ARG
+    /// rather than INITIAL.
+    bool m_call_from_include{false};
 };
 
 } // namespace Parser

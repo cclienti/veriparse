@@ -44,6 +44,182 @@ const std::set<std::string> &pass_through_directives()
 /// this on the same macro almost certainly indicates infinite recursion.
 constexpr int kMaxExpansionDepth = 64;
 
+std::string trim_ws(const std::string &s)
+{
+    const auto is_ws = [](unsigned char c) { return std::isspace(c); };
+    auto start = s.begin();
+    while(start != s.end() && is_ws(static_cast<unsigned char>(*start))) {
+        ++start;
+    }
+    auto end = s.end();
+    while(end != start && is_ws(static_cast<unsigned char>(*(end - 1)))) {
+        --end;
+    }
+    return std::string(start, end);
+}
+
+/// Result of resolve_actuals: status discriminates the three §22.5.1
+/// outcomes. The Ok arm populates `resolved`; the error arms populate
+/// the diagnostic fields the caller needs to log a contextual message.
+struct ResolveActualsResult
+{
+    enum class Status
+    {
+        Ok,
+        TooMany,
+        MissingNoDefault,
+    };
+    Status status{Status::Ok};
+    /// Number of raw actuals after trimming/collapsing — what the
+    /// caller wants to report in a "too many" diagnostic.
+    size_t actual_count{0};
+    /// Name of the missing formal — populated when Status::MissingNoDefault.
+    std::string missing_formal;
+    /// Final resolved actuals, one per formal — populated when Status::Ok.
+    std::vector<std::string> resolved;
+};
+
+/// Apply §22.5.1 actual-resolution rules in one place so the
+/// Flex-driven call path (macro_call_arg_close) and the textual call
+/// path (expand_body's synthetic-string recursion) cannot drift:
+///   - trim each raw actual (whitespace between commas/parens is part
+///     of the separator, not the actual);
+///   - `X()` with no formals collapses to the zero-actual case;
+///   - too many actuals is an error;
+///   - whitespace-only actual against a defaulted formal uses the
+///     default; missing actual against a defaulted formal uses the
+///     default; missing actual against a non-defaulted formal is an
+///     error.
+/// Caller logs the diagnostic so the file/line context fits its scope
+/// (use-site `m_filename`/`yylineno` vs. defining-site of an outer
+/// macro currently being expanded).
+ResolveActualsResult resolve_actuals(const Macro &m, std::vector<std::string> raw_actuals)
+{
+    ResolveActualsResult r;
+    for(auto &a : raw_actuals) {
+        a = trim_ws(a);
+    }
+    if(raw_actuals.size() == 1 && raw_actuals.front().empty() && m.formals.empty()) {
+        raw_actuals.clear();
+    }
+    r.actual_count = raw_actuals.size();
+    if(raw_actuals.size() > m.formals.size()) {
+        r.status = ResolveActualsResult::Status::TooMany;
+        return r;
+    }
+    r.resolved.reserve(m.formals.size());
+    for(size_t i = 0; i < m.formals.size(); ++i) {
+        const Formal &f = m.formals[i];
+        if(i >= raw_actuals.size()) {
+            if(!f.has_default) {
+                r.status = ResolveActualsResult::Status::MissingNoDefault;
+                r.missing_formal = f.name;
+                return r;
+            }
+            r.resolved.push_back(f.default_text);
+            continue;
+        }
+        const std::string &actual = raw_actuals[i];
+        if(actual.empty() && f.has_default) {
+            r.resolved.push_back(f.default_text);
+        } else {
+            r.resolved.push_back(actual);
+        }
+    }
+    return r;
+}
+
+/// Collect actuals of a function-like macro call from a body string,
+/// starting at `start` (one past the opening '('). Mirrors the Flex
+/// MACRO_CALL_ARGS rules without driving Flex: matched-pair counting
+/// across () [] {}, opaque "..." regular strings, escaped identifiers
+/// \foo; a comma at depth 0 separates actuals, ')' at depth 0 ends
+/// the call. On success `*end_pos` is set to one past that ')'.
+/// Returns false if the body ends before the matching ')'.
+///
+/// What this deliberately does NOT mirror (and would need to, if the
+/// Flex side ever gains the same semantics inside an arg list):
+///   - synthetic-string delimiters `" ... `" : an actual containing
+///     these is treated character-by-character — the `" sequence is
+///     two chars (backtick + quote opener for a regular string),
+///     which happens to balance correctly today because the closing
+///     `" pair re-opens-then-closes a regular string. Brittle.
+///   - token-paste `` : the two backticks have no special meaning
+///     here. Inside an actual it just becomes two backtick characters
+///     in the captured text, then the recursive expand_body will deal
+///     with them when it processes the substituted body.
+/// In practice neither construct shows up inside a macro call's
+/// actuals in real RTL, but a future spec extension or a more lenient
+/// parser would expose the drift.
+bool collect_actuals_textual(const std::string &body, size_t start,
+                             std::vector<std::string> &actuals, size_t *end_pos)
+{
+    actuals.clear();
+    actuals.emplace_back();
+    int depth = 0;
+    size_t i = start;
+    while(i < body.size()) {
+        const char c = body[i];
+        if(c == '(' || c == '[' || c == '{') {
+            actuals.back().push_back(c);
+            ++depth;
+            ++i;
+            continue;
+        }
+        if(c == ')') {
+            if(depth == 0) {
+                *end_pos = i + 1;
+                return true;
+            }
+            actuals.back().push_back(c);
+            --depth;
+            ++i;
+            continue;
+        }
+        if(c == ']' || c == '}') {
+            actuals.back().push_back(c);
+            if(depth > 0) {
+                --depth;
+            }
+            ++i;
+            continue;
+        }
+        if(c == ',' && depth == 0) {
+            actuals.emplace_back();
+            ++i;
+            continue;
+        }
+        if(c == '"') {
+            actuals.back().push_back(c);
+            ++i;
+            while(i < body.size()) {
+                const char d = body[i];
+                actuals.back().push_back(d);
+                ++i;
+                if(d == '\\' && i < body.size()) {
+                    actuals.back().push_back(body[i]);
+                    ++i;
+                } else if(d == '"') {
+                    break;
+                }
+            }
+            continue;
+        }
+        if(c == '\\') {
+            actuals.back().push_back(c);
+            ++i;
+            while(i < body.size() && !std::isspace(static_cast<unsigned char>(body[i]))) {
+                actuals.back().push_back(body[i]);
+                ++i;
+            }
+            continue;
+        }
+        actuals.back().push_back(c);
+        ++i;
+    }
+    return false;
+}
+
 /// Textual processing of a macro body before it gets pushed back into
 /// the input stream:
 ///   - identifier-aware substitution of formal arguments (§22.5.1)
@@ -51,20 +227,41 @@ constexpr int kMaxExpansionDepth = 64;
 ///       `"        emits a plain "  (synthetic string delimiter, §22.5.1)
 ///       `\`"      emits \"          (escaped quote inside a synthetic string)
 ///       ``        emits nothing     (token paste, no whitespace introduced)
+///   - SV-only nested-macro re-expansion inside `" ... `" synthetic
+///     strings (§22.5.1): an inner `IDENT is looked up in the macro
+///     table and its body inlined. Outside synthetic strings, nested
+///     `IDENT references are left in the emitted body so the Flex
+///     scanner picks them up on re-scan — but inside a synthetic
+///     string the result reaches the main scanner as a regular "..."
+///     literal which is opaque to directive scanning, so we must
+///     resolve here.
 ///
 /// Regular string literals "..." inside the body are copied verbatim
 /// per §22.5.1 ("Macro substitution and argument substitution shall not
 /// occur within string literals.") so a formal whose name happens to
 /// appear inside a "..." is not substituted.
 ///
-/// Known limitation: a nested macro reference appearing inside a
-/// `" ... `" synthetic string is not re-expanded after substitution.
-/// The spec allows that case; we defer it as a corner-case.
-std::string expand_body(const Macro &macro, const std::vector<std::string> &actuals, bool sv_mode)
+/// Function-like nested refs inside a synthetic string are also
+/// expanded here, using collect_actuals_textual to mirror the Flex
+/// MACRO_CALL_ARGS rules on the body string.
+std::string expand_body(const Macro &macro, const std::vector<std::string> &actuals, bool sv_mode,
+                        MacroTable *table = nullptr, int recursion_depth = 0,
+                        bool textual_expand_refs = false)
 {
     const std::string &body = macro.body;
     const std::vector<Formal> &formals = macro.formals;
     const bool has_formals = macro.has_args && !formals.empty();
+    bool in_synthetic = false;
+    // When expanding a nested macro inside a synthetic string the result
+    // gets inlined as text instead of going back through Flex re-scan,
+    // so we have to resolve every `IDENT here — not just the ones that
+    // happen to sit inside a `"..."` region of the nested body.
+    const auto must_expand_ref = [&]() { return in_synthetic || textual_expand_refs; };
+
+    const auto isid_start = [](unsigned char ch) { return std::isalpha(ch) || ch == '_'; };
+    const auto isid_cont = [](unsigned char ch) {
+        return std::isalnum(ch) || ch == '_' || ch == '$';
+    };
 
     std::string out;
     out.reserve(body.size() * 2);
@@ -77,22 +274,143 @@ std::string expand_body(const Macro &macro, const std::vector<std::string> &actu
         // handling so a leading `" opens a synthetic-string region
         // rather than being treated as a stray backtick + " sequence.
         if(sv_mode && c == '`' && i + 1 < body.size()) {
-            // `\`" — 4 chars: ` \ ` " → emit \"
+            // `\`" — 4 chars: ` \ ` " → emit \" (does not toggle the
+            // synthetic-string region — that's exactly what makes it
+            // an *escape*).
             if(body[i + 1] == '\\' && i + 3 < body.size() && body[i + 2] == '`' &&
                body[i + 3] == '"') {
                 out += "\\\"";
                 i += 4;
                 continue;
             }
-            // `" — emit a plain quote (synthetic string delimiter).
+            // `" — emit a plain quote and toggle the synthetic-string
+            // region. The open and close use the same delimiter
+            // (§22.5.1), so a simple toggle is faithful.
             if(body[i + 1] == '"') {
                 out += '"';
                 i += 2;
+                in_synthetic = !in_synthetic;
                 continue;
             }
             // `` — token paste, no character emitted.
             if(body[i + 1] == '`') {
                 i += 2;
+                continue;
+            }
+            // Inside a synthetic-string region (or once we have already
+            // descended into a textual recursion), `IDENT is a nested
+            // macro reference. Look it up and inline the body
+            // (recursive, depth-capped). Object-like is substituted
+            // directly; function-like looks ahead for '(' and runs the
+            // textual arg collector below.
+            if(must_expand_ref() && table != nullptr &&
+               isid_start(static_cast<unsigned char>(body[i + 1]))) {
+                size_t j = i + 1;
+                while(j < body.size() && isid_cont(static_cast<unsigned char>(body[j]))) {
+                    ++j;
+                }
+                const std::string ident = body.substr(i + 1, j - (i + 1));
+                Macro *nested = table->find(ident);
+                if(nested == nullptr) {
+                    // Unknown reference — leave it literal; the spec
+                    // allows the parser to surface the issue.
+                    out += '`';
+                    out += ident;
+                    i = j;
+                    continue;
+                }
+                if(nested->has_args) {
+                    // Look ahead past whitespace for the opening '('.
+                    // §22.5.1 permits whitespace between the macro name
+                    // and the parenthesis. If '(' is absent the use is
+                    // degenerate; emit literally and move on.
+                    size_t k = j;
+                    while(k < body.size() && std::isspace(static_cast<unsigned char>(body[k]))) {
+                        ++k;
+                    }
+                    if(k >= body.size() || body[k] != '(') {
+                        LOG_WARNING << "file \"" << macro.defined_filename << "\", line "
+                                    << macro.defined_line << ": in body of macro '" << macro.name
+                                    << "', function-like macro '" << ident
+                                    << "' inside a synthetic string is missing its '('";
+                        out += '`';
+                        out += ident;
+                        i = j;
+                        continue;
+                    }
+
+                    // Gather raw actuals from after the '('. The
+                    // collector mirrors the Flex MACRO_CALL_ARGS rules
+                    // textually so commas inside matched pairs or
+                    // string literals don't split actuals.
+                    std::vector<std::string> raw_actuals;
+                    size_t end_pos = 0;
+                    if(!collect_actuals_textual(body, k + 1, raw_actuals, &end_pos)) {
+                        LOG_ERROR << "file \"" << macro.defined_filename << "\", line "
+                                  << macro.defined_line << ": in body of macro '" << macro.name
+                                  << "', unterminated call to '" << ident
+                                  << "' inside a synthetic string";
+                        out += '`';
+                        out += ident;
+                        i = j;
+                        continue;
+                    }
+
+                    // §22.5.1 actual-resolution shared with the
+                    // Flex-driven call path. Diagnostics use the
+                    // defining-site of the outer macro since that's the
+                    // location of the actual textual error.
+                    auto rr = resolve_actuals(*nested, std::move(raw_actuals));
+                    if(rr.status == ResolveActualsResult::Status::TooMany) {
+                        LOG_ERROR << "file \"" << macro.defined_filename << "\", line "
+                                  << macro.defined_line << ": in body of macro '" << macro.name
+                                  << "', macro '" << ident << "' expects " << nested->formals.size()
+                                  << " argument(s), got " << rr.actual_count;
+                        out += '`';
+                        out += ident;
+                        i = end_pos;
+                        continue;
+                    }
+                    if(rr.status == ResolveActualsResult::Status::MissingNoDefault) {
+                        LOG_ERROR << "file \"" << macro.defined_filename << "\", line "
+                                  << macro.defined_line << ": in body of macro '" << macro.name
+                                  << "', macro '" << ident << "' missing argument '"
+                                  << rr.missing_formal << "' (no default specified)";
+                        out += '`';
+                        out += ident;
+                        i = end_pos;
+                        continue;
+                    }
+                    if(recursion_depth + 1 >= kMaxExpansionDepth) {
+                        LOG_ERROR << "file \"" << macro.defined_filename << "\", line "
+                                  << macro.defined_line << ": in body of macro '" << macro.name
+                                  << "', macro '" << ident << "' synthetic-string expansion "
+                                  << "depth exceeded " << kMaxExpansionDepth
+                                  << " — likely infinite recursion";
+                        out += '`';
+                        out += ident;
+                        i = end_pos;
+                        continue;
+                    }
+                    out += expand_body(*nested, rr.resolved, sv_mode, table, recursion_depth + 1,
+                                       /*textual_expand_refs*/ true);
+                    i = end_pos;
+                    continue;
+                }
+                if(recursion_depth + 1 >= kMaxExpansionDepth) {
+                    LOG_ERROR << "file \"" << macro.defined_filename << "\", line "
+                              << macro.defined_line << ": in body of macro '" << macro.name
+                              << "', macro '" << ident << "' synthetic-string expansion depth "
+                              << "exceeded " << kMaxExpansionDepth
+                              << " — likely infinite recursion";
+                    out += '`';
+                    out += ident;
+                    i = j;
+                    continue;
+                }
+                out += expand_body(*nested, /*actuals*/ {}, sv_mode, table, recursion_depth + 1,
+                                   /*textual_expand_refs*/ true);
+                i = j;
                 continue;
             }
         }
@@ -127,10 +445,6 @@ std::string expand_body(const Macro &macro, const std::vector<std::string> &actu
         }
 
         // Identifier — candidate for formal substitution.
-        const auto isid_start = [](unsigned char ch) { return std::isalpha(ch) || ch == '_'; };
-        const auto isid_cont = [](unsigned char ch) {
-            return std::isalnum(ch) || ch == '_' || ch == '$';
-        };
         if(isid_start(static_cast<unsigned char>(c))) {
             const size_t start = i;
             while(i < body.size() && isid_cont(static_cast<unsigned char>(body[i]))) {
@@ -307,7 +621,8 @@ void PreprocessorScanner::handle_backtick(const char *name_after_tick)
                       << " — likely infinite recursion";
             return;
         }
-        const std::string expanded = expand_body(*m, /*actuals*/ {}, m_driver.get_sv_mode());
+        const std::string expanded =
+            expand_body(*m, /*actuals*/ {}, m_driver.get_sv_mode(), &m_driver.macros());
         auto stream = std::make_unique<std::istringstream>(expanded);
         push_buffer(std::move(stream), m_filename, m);
         return;
@@ -374,25 +689,6 @@ void PreprocessorScanner::macro_call_arg_open(char c)
     ++m_call_depth;
 }
 
-namespace
-{
-
-std::string trim_ws(const std::string &s)
-{
-    const auto is_ws = [](unsigned char c) { return std::isspace(c); };
-    auto start = s.begin();
-    while(start != s.end() && is_ws(static_cast<unsigned char>(*start))) {
-        ++start;
-    }
-    auto end = s.end();
-    while(end != start && is_ws(static_cast<unsigned char>(*(end - 1)))) {
-        --end;
-    }
-    return std::string(start, end);
-}
-
-} // namespace
-
 bool PreprocessorScanner::macro_call_arg_close(char c)
 {
     if(m_call_depth == 0) {
@@ -406,73 +702,49 @@ bool PreprocessorScanner::macro_call_arg_close(char c)
         m_call_macro = nullptr;
 
         if(!m) {
-            return true; // defensive
+            return macro_call_abort(); // defensive
         }
 
-        // §22.5.1 says actuals are substituted "literally", but the
-        // spec examples (`max(p+q, r+s) etc.) imply the whitespace
-        // adjacent to commas/parens is part of the *separator*, not
-        // the actual. Trim each captured actual accordingly.
-        for(auto &a : m_call_actuals) {
-            a = trim_ws(a);
-        }
-
-        // Empty actual list (`X()) maps to zero actuals when the macro
-        // was declared with no formals.
-        if(m_call_actuals.size() == 1 && m_call_actuals.front().empty() && m->formals.empty()) {
-            m_call_actuals.clear();
-        }
-
-        // §22.5.1: too many actuals is always an error.
-        if(m_call_actuals.size() > m->formals.size()) {
+        // §22.5.1 actual-resolution shared with expand_body's
+        // synthetic-string textual recursion. Diagnostics use the
+        // use-site (current file/line) since that's where the bad
+        // call was written.
+        auto rr = resolve_actuals(*m, std::move(m_call_actuals));
+        m_call_actuals.clear(); // restore the moved-from vector
+        if(rr.status == ResolveActualsResult::Status::TooMany) {
             LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
                       << m->name << "' expects " << m->formals.size() << " argument(s), got "
-                      << m_call_actuals.size();
-            m_call_actuals.clear();
-            return true;
+                      << rr.actual_count;
+            return macro_call_abort();
         }
-
-        // §22.5.1 default-argument rules:
-        //   - if an actual is empty/whitespace-only and the formal has
-        //     a default, substitute the default
-        //   - if an actual is missing (fewer actuals than formals) and
-        //     the formal has a default, substitute the default
-        //   - missing actual with no default => error
-        std::vector<std::string> resolved;
-        resolved.reserve(m->formals.size());
-        for(size_t i = 0; i < m->formals.size(); ++i) {
-            const Formal &f = m->formals[i];
-            if(i >= m_call_actuals.size()) {
-                if(!f.has_default) {
-                    LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
-                              << m->name << "' missing argument '" << f.name
-                              << "' (no default specified)";
-                    m_call_actuals.clear();
-                    return true;
-                }
-                resolved.push_back(f.default_text);
-                continue;
-            }
-            const std::string &actual = m_call_actuals[i];
-            if(actual.empty() && f.has_default) {
-                resolved.push_back(f.default_text);
-            } else {
-                resolved.push_back(actual);
-            }
+        if(rr.status == ResolveActualsResult::Status::MissingNoDefault) {
+            LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
+                      << m->name << "' missing argument '" << rr.missing_formal
+                      << "' (no default specified)";
+            return macro_call_abort();
         }
 
         if(m->expansion_depth >= kMaxExpansionDepth) {
             LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '"
                       << m->name << "' expansion depth exceeded " << kMaxExpansionDepth
                       << " — likely infinite recursion";
-            m_call_actuals.clear();
-            return true;
+            return macro_call_abort();
         }
 
-        const std::string expanded = expand_body(*m, resolved, m_driver.get_sv_mode());
-        m_call_actuals.clear();
+        const std::string expanded =
+            expand_body(*m, rr.resolved, m_driver.get_sv_mode(), &m_driver.macros());
         auto stream = std::make_unique<std::istringstream>(expanded);
         push_buffer(std::move(stream), m_filename, m);
+        // §22.5.1 last paragraph: when the call came from inside an
+        // `include argument, the expansion (which is supposed to be a
+        // "..." or <...> string) must be re-fed to INCLUDE_ARG rather
+        // than INITIAL. Returning false here keeps the Flex rule from
+        // forcing BEGIN(INITIAL); we set the state ourselves.
+        if(m_call_from_include) {
+            m_call_from_include = false;
+            begin_include_arg();
+            return false;
+        }
         return true;
     }
     macro_call_arg_char(c);
@@ -489,11 +761,22 @@ void PreprocessorScanner::macro_call_arg_comma()
     }
 }
 
-void PreprocessorScanner::macro_call_abort()
+bool PreprocessorScanner::macro_call_abort()
 {
+    const bool from_include = m_call_from_include;
     m_call_macro = nullptr;
     m_call_actuals.clear();
     m_call_depth = 0;
+    m_call_from_include = false;
+    if(from_include) {
+        // Errors during an `include `MACRO(...) sequence: drop the
+        // rest of the directive line so trailing whitespace, comments,
+        // or stray tokens don't leak into the emitted stream — matches
+        // INCLUDE_TAIL's behaviour for malformed directive arguments.
+        begin_skip_to_eol();
+        return false;
+    }
+    return true;
 }
 
 void PreprocessorScanner::undef_apply(const char *name) { m_driver.macros().undef(name); }
@@ -551,33 +834,48 @@ void PreprocessorScanner::include_open(const char *quoted_or_angled)
 void PreprocessorScanner::include_expand_macro(const char *name_after_tick)
 {
     // §22.5.1 last paragraph: `include can be followed by a macro that
-    // expands to the quoted (or angle-bracket) filename. SV-only, and
-    // we only support object-like macros here; a function-like macro
-    // would require gathering arguments mid-INCLUDE_ARG state which is
-    // out of scope.
+    // expands to the quoted (or angle-bracket) filename. SV-only.
+    // Object-like is resolved inline; function-like routes through the
+    // MACRO_CALL_PRE/MACRO_CALL_ARGS state machine and comes back via
+    // macro_call_arg_close, which puts us back in INCLUDE_ARG with the
+    // expansion pushed as a buffer.
+    // Recovery for any early-return error path: stay out of INCLUDE_ARG
+    // so the next token on the directive line isn't re-classified as
+    // another `include argument and reported a second time.
+    const auto bail = [this]() { begin_skip_to_eol(); };
     const std::string name(name_after_tick);
     if(!m_driver.get_sv_mode()) {
         LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno
                   << ": macro-as-filename in `include is SystemVerilog-only (§22.5.1)";
+        bail();
         return;
     }
     Macro *m = m_driver.macros().find(name);
     if(!m) {
         LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": undefined macro '"
                   << name << "' in `include argument";
-        return;
-    }
-    if(m->has_args) {
-        LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": function-like macro '"
-                  << name << "' is not supported as an `include argument";
+        bail();
         return;
     }
     if(m->expansion_depth >= kMaxExpansionDepth) {
         LOG_ERROR << "file \"" << m_filename << "\", line " << yylineno << ": macro '" << name
                   << "' expansion depth exceeded " << kMaxExpansionDepth;
+        bail();
         return;
     }
-    const std::string expanded = expand_body(*m, /*actuals*/ {}, m_driver.get_sv_mode());
+    if(m->has_args) {
+        // Function-like: arm the call-collection state and switch into
+        // MACRO_CALL_PRE. We come back to INCLUDE_ARG once the matching
+        // ')' fires macro_call_arg_close.
+        m_call_macro = m;
+        m_call_actuals.clear();
+        m_call_depth = 0;
+        m_call_from_include = true;
+        begin_macro_call_pre();
+        return;
+    }
+    const std::string expanded =
+        expand_body(*m, /*actuals*/ {}, m_driver.get_sv_mode(), &m_driver.macros());
     auto stream = std::make_unique<std::istringstream>(expanded);
     push_buffer(std::move(stream), m_filename, m);
 }

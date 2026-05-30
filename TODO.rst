@@ -54,20 +54,6 @@ Functional
 
 #. 2018-12-04: How to manage inout during module flatten binding.
 
-#. 2026-05-27: [preprocessor] Re-expand nested macro references inside a SV synthetic
-   string ``\`"..."``. Currently expand_body substitutes formals inside the synthetic
-   region but does not recursively re-expand macro references; the resulting "..."
-   reaches the main scanner as a plain string with no further expansion. Spec
-   (§22.5.1) allows the case; we deferred it as a corner-case for synthesizable RTL.
-   Removing the limitation requires either token-provenance tracking through
-   substitution or a recursive expansion pass over the body before push.
-
-#. 2026-05-27: [preprocessor] Support a function-like macro as the argument of
-   ``\`include`` (§22.5.1 last paragraph). Currently include_expand_macro rejects
-   function-like macros because gathering args mid-INCLUDE_ARG state would require
-   suspending and resuming the state. Spec example is
-   ``\`include \`home(myfile)``.
-
 #. 2026-05-27: [preprocessor] Support ``\`begin_keywords``/``\`end_keywords`` (§22.14).
    Requires refactoring the main scanner (lib/src/parser/verilog/verilog_scanner.ll:101–175)
    to use a keyword-version stack instead of the single m_sv_mode flag. Essentially
