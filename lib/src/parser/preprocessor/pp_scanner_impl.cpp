@@ -129,76 +129,72 @@ ResolveActualsResult resolve_actuals(const Macro &m, std::vector<std::string> ra
     return r;
 }
 
-/// Collect actuals of a function-like macro call from a body string,
-/// starting at `start` (one past the opening '('). Mirrors the Flex
-/// MACRO_CALL_ARGS rules without driving Flex: matched-pair counting
-/// across () [] {}, opaque "..." regular strings, escaped identifiers
-/// \foo; a comma at depth 0 separates actuals, ')' at depth 0 ends
-/// the call. On success `*end_pos` is set to one past that ')'.
-/// Returns false if the body ends before the matching ')'.
+/// Source-agnostic scanner for a function-like macro call's actual-argument
+/// list, per the §22.5.1 grammar. Pulls characters from `next`, which
+/// returns the next input character or -1 at end-of-input, starting one
+/// character past the opening '('. It splits actuals on a depth-0 comma and
+/// stops after consuming the matching depth-0 ')'. Counting is matched-pair
+/// aware across () [] {}; "..." regular strings (with \-escapes) are opaque,
+/// as are \escaped-identifiers, so neither hides a separator nor leaks one.
 ///
-/// What this deliberately does NOT mirror (and would need to, if the
-/// Flex side ever gains the same semantics inside an arg list):
-///   - synthetic-string delimiters `" ... `" : an actual containing
-///     these is treated character-by-character — the `" sequence is
-///     two chars (backtick + quote opener for a regular string),
-///     which happens to balance correctly today because the closing
-///     `" pair re-opens-then-closes a regular string. Brittle.
-///   - token-paste `` : the two backticks have no special meaning
-///     here. Inside an actual it just becomes two backtick characters
-///     in the captured text, then the recursive expand_body will deal
-///     with them when it processes the substituted body.
-/// In practice neither construct shows up inside a macro call's
-/// actuals in real RTL, but a future spec extension or a more lenient
-/// parser would expose the drift.
-bool collect_actuals_textual(const std::string &body, size_t start,
-                             std::vector<std::string> &actuals, size_t *end_pos)
+/// Returns ArgScan::Ok once the closing ')' has been consumed (the caller's
+/// cursor is then positioned one past it), or ArgScan::Unterminated if the
+/// input ends first. This is the single source of truth for the arg-list
+/// grammar: feed it a string cursor (collect_actuals_textual, below) or, in
+/// the future, a yyinput()-backed cursor to retire the Flex MACRO_CALL_ARGS
+/// states — both then share one implementation and cannot drift.
+///
+/// What this deliberately does NOT model (and would need to, if a caller
+/// ever fed it text containing these): synthetic-string delimiters `" ... `"
+/// and token-paste `` carry no special meaning here — they fall through as
+/// ordinary backtick/quote characters. Neither appears inside a real macro
+/// call's actuals, but a future spec extension could expose the gap.
+enum class ArgScan
+{
+    Ok,
+    Unterminated,
+};
+
+template <class Next> ArgScan scan_actuals(Next &&next, std::vector<std::string> &actuals)
 {
     actuals.clear();
     actuals.emplace_back();
     int depth = 0;
-    size_t i = start;
-    while(i < body.size()) {
-        const char c = body[i];
+    for(int c = next(); c != -1; c = next()) {
         if(c == '(' || c == '[' || c == '{') {
-            actuals.back().push_back(c);
+            actuals.back().push_back(static_cast<char>(c));
             ++depth;
-            ++i;
             continue;
         }
         if(c == ')') {
             if(depth == 0) {
-                *end_pos = i + 1;
-                return true;
+                return ArgScan::Ok; // ')' consumed; caller cursor is now past it
             }
-            actuals.back().push_back(c);
+            actuals.back().push_back(static_cast<char>(c));
             --depth;
-            ++i;
             continue;
         }
         if(c == ']' || c == '}') {
-            actuals.back().push_back(c);
+            actuals.back().push_back(static_cast<char>(c));
             if(depth > 0) {
                 --depth;
             }
-            ++i;
             continue;
         }
         if(c == ',' && depth == 0) {
             actuals.emplace_back();
-            ++i;
             continue;
         }
         if(c == '"') {
-            actuals.back().push_back(c);
-            ++i;
-            while(i < body.size()) {
-                const char d = body[i];
-                actuals.back().push_back(d);
-                ++i;
-                if(d == '\\' && i < body.size()) {
-                    actuals.back().push_back(body[i]);
-                    ++i;
+            actuals.back().push_back('"');
+            for(int d = next(); d != -1; d = next()) {
+                actuals.back().push_back(static_cast<char>(d));
+                if(d == '\\') {
+                    const int e = next();
+                    if(e == -1) {
+                        break;
+                    }
+                    actuals.back().push_back(static_cast<char>(e));
                 } else if(d == '"') {
                     break;
                 }
@@ -206,18 +202,41 @@ bool collect_actuals_textual(const std::string &body, size_t start,
             continue;
         }
         if(c == '\\') {
-            actuals.back().push_back(c);
-            ++i;
-            while(i < body.size() && !std::isspace(static_cast<unsigned char>(body[i]))) {
-                actuals.back().push_back(body[i]);
-                ++i;
+            // \escaped-identifier runs to the next whitespace (§22.5.1).
+            // The terminating whitespace is captured into the actual, just
+            // as the earlier index-based scan left it for the following
+            // iteration to append — trimming drops it later, so this is
+            // faithful.
+            actuals.back().push_back('\\');
+            for(int d = next(); d != -1; d = next()) {
+                actuals.back().push_back(static_cast<char>(d));
+                if(std::isspace(static_cast<unsigned char>(d))) {
+                    break;
+                }
             }
             continue;
         }
-        actuals.back().push_back(c);
-        ++i;
+        actuals.back().push_back(static_cast<char>(c));
     }
-    return false;
+    return ArgScan::Unterminated;
+}
+
+/// Thin string-cursor adapter over scan_actuals: collects the actuals of a
+/// function-like call embedded in `body`, starting at `start` (one past the
+/// opening '('). On success `*end_pos` is set one past the matching ')'.
+/// Returns false if the body ends before that ')'.
+bool collect_actuals_textual(const std::string &body, size_t start,
+                             std::vector<std::string> &actuals, size_t *end_pos)
+{
+    size_t i = start;
+    const auto next = [&]() -> int {
+        return i < body.size() ? static_cast<unsigned char>(body[i++]) : -1;
+    };
+    if(scan_actuals(next, actuals) != ArgScan::Ok) {
+        return false;
+    }
+    *end_pos = i; // next() has consumed through the closing ')'
+    return true;
 }
 
 /// Textual processing of a macro body before it gets pushed back into
