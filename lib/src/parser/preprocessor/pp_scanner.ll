@@ -220,14 +220,28 @@ ID  [a-zA-Z_][a-zA-Z0-9_$]*
 
 	/* Function-like macro call: between the backtick name and '('
 	 * §22.5.1 allows whitespace. Newlines are not addressed by the
-	 * spec; we accept them (lenient) so multi-line invocations work. */
+	 * spec; for regular calls we accept them (lenient) so multi-line
+	 * invocations work — but when the call came from inside an
+	 * `include argument the directive line ends at the newline, so
+	 * '(' will never arrive and we must surface that as an error
+	 * before the next line's first token gets eaten by the `.` rule
+	 * below. */
 <MACRO_CALL_PRE>[ \t]+ {/* skip */}
-<MACRO_CALL_PRE>\n     {/* allow newline before '(' */}
+<MACRO_CALL_PRE>\n     {if (m_call_from_include) {
+                          LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
+                                    << ": function-like macro requires '(' after its name";
+                          m_call_macro = nullptr;
+                          m_call_actuals.clear();
+                          m_call_depth = 0;
+                          m_call_from_include = false;
+                          emit("\n");
+                          BEGIN(INITIAL);
+                       }
+                       /* else: allow newline before '(' for regular calls */}
 <MACRO_CALL_PRE>"("    {BEGIN(MACRO_CALL_ARGS); m_call_actuals.clear(); m_call_actuals.emplace_back(); m_call_depth = 0;}
 <MACRO_CALL_PRE>.      {LOG_ERROR << "file \"" << get_filename() << "\", line " << yylineno
                                   << ": function-like macro requires '(' after its name";
-                        macro_call_abort();
-                        BEGIN(INITIAL);}
+                        if (macro_call_abort()) BEGIN(INITIAL);}
 
 	/* Inside a macro call arg list. Matched-pair-aware counting per
 	 * §22.5.1: comma at depth-0 separates actuals, ')' at depth-0
