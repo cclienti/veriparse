@@ -202,6 +202,20 @@ TEST(PreprocessorSvMacro, FunctionLikeInSyntheticTooManyActualsRecovers)
     EXPECT_NE(out.find("-tail\";"), std::string::npos);
 }
 
+// The actual-argument list of a function-like call may sit beyond the
+// macro-expansion buffer that produced the macro name: here `M expands
+// to "`foo" (its own pushed buffer) and the "(x)" follows in the parent
+// buffer. expand_macro_call pulls characters with yyinput() and pops the
+// exhausted buffer via on_eof() to keep reading, mirroring the old
+// MACRO_CALL <<EOF>> behaviour. Regression guard for that buffer-cross.
+TEST(PreprocessorSvMacro, FunctionLikeCallArgsCrossBufferBoundary)
+{
+    const std::string out = run("`define foo(a) [a]\n"
+                                "`define M `foo\n"
+                                "v = `M(x);\n");
+    EXPECT_NE(out.find("v = [x];"), std::string::npos);
+}
+
 TEST(PreprocessorSvMacro, TokenPasteJoinsIdentifiers)
 {
     // Spec example: `define append(f) f``_master
