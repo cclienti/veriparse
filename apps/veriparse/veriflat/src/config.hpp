@@ -18,6 +18,7 @@ struct Config
     std::string output;
     std::string top_module;
     std::string param_map;
+    std::string log_file; ///< empty: log to console (stderr); else log to this file
     bool deadcode_at_end{false};
     bool deadcode_during_flatten{false};
     bool sv_mode{false};
@@ -39,6 +40,7 @@ static inline std::ostream &operator<<(std::ostream &os, const Config &config)
        << "output: '" << config.output << "', "
        << "top_module: '" << config.top_module << "', "
        << "param_map: " << config.param_map << ", "
+       << "log_file: '" << config.log_file << "', "
        << "seed: " << config.seed << "}";
 
     return os;

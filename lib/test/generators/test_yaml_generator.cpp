@@ -13,7 +13,7 @@ TEST(YAMLGenerator, Source)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Source.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Description::Ptr c_description(new AST::Description);
 
@@ -29,7 +29,7 @@ TEST(YAMLGenerator, Description)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Description.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_definitions(new AST::Node::List);
 
@@ -45,7 +45,7 @@ TEST(YAMLGenerator, Pragmalist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Pragmalist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Pragma::ListPtr c_pragmas(new AST::Pragma::List);
     AST::Node::ListPtr c_statements(new AST::Node::List);
@@ -63,7 +63,7 @@ TEST(YAMLGenerator, Pragma)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Pragma.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_expression(new AST::Node);
     std::string p_name = "mynbiqpmzj";
@@ -81,7 +81,7 @@ TEST(YAMLGenerator, Module)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Module.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Parameter::ListPtr c_params(new AST::Parameter::List);
     AST::Node::ListPtr c_ports(new AST::Node::List);
@@ -107,7 +107,7 @@ TEST(YAMLGenerator, Port)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Port.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     std::string p_name = "mynbiqpmzj";
@@ -125,7 +125,7 @@ TEST(YAMLGenerator, Width)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Width.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_msb(new AST::Node);
     AST::Node::Ptr c_lsb(new AST::Node);
@@ -143,7 +143,7 @@ TEST(YAMLGenerator, Length)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Length.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_msb(new AST::Node);
     AST::Node::Ptr c_lsb(new AST::Node);
@@ -161,7 +161,7 @@ TEST(YAMLGenerator, Identifier)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Identifier.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::IdentifierScope::Ptr c_scope(new AST::IdentifierScope);
     std::string p_name = "mynbiqpmzj";
@@ -179,7 +179,7 @@ TEST(YAMLGenerator, Constant)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Constant.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Constant::Ptr m_constant(new AST::Constant("filename", 0));
 
@@ -192,7 +192,7 @@ TEST(YAMLGenerator, StringConst)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.StringConst.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     std::string p_value = "mynbiqpmzj";
 
@@ -208,7 +208,7 @@ TEST(YAMLGenerator, IntConst)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.IntConst.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     std::string p_value = "mynbiqpmzj";
 
@@ -224,7 +224,7 @@ TEST(YAMLGenerator, IntConstN)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.IntConstN.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     int p_base = 98;
     int p_size = 107;
@@ -247,7 +247,7 @@ TEST(YAMLGenerator, FloatConst)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.FloatConst.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     double p_value = 98;
 
@@ -263,7 +263,7 @@ TEST(YAMLGenerator, IODir)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.IODir.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     std::string p_name = "mynbiqpmzj";
@@ -283,7 +283,7 @@ TEST(YAMLGenerator, Input)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Input.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     std::string p_name = "mynbiqpmzj";
@@ -303,7 +303,7 @@ TEST(YAMLGenerator, Output)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Output.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     std::string p_name = "mynbiqpmzj";
@@ -323,7 +323,7 @@ TEST(YAMLGenerator, Inout)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Inout.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     std::string p_name = "mynbiqpmzj";
@@ -343,7 +343,7 @@ TEST(YAMLGenerator, VariableBase)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.VariableBase.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     std::string p_name = "mynbiqpmzj";
 
@@ -359,7 +359,7 @@ TEST(YAMLGenerator, Genvar)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Genvar.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     std::string p_name = "mynbiqpmzj";
 
@@ -375,7 +375,7 @@ TEST(YAMLGenerator, Variable)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Variable.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
@@ -395,7 +395,7 @@ TEST(YAMLGenerator, Net)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Net.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
@@ -424,7 +424,7 @@ TEST(YAMLGenerator, Integer)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Integer.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
@@ -444,7 +444,7 @@ TEST(YAMLGenerator, Real)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Real.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
@@ -464,7 +464,7 @@ TEST(YAMLGenerator, Tri)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Tri.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
@@ -493,7 +493,7 @@ TEST(YAMLGenerator, Wire)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Wire.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
@@ -522,7 +522,7 @@ TEST(YAMLGenerator, Supply0)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Supply0.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
@@ -551,7 +551,7 @@ TEST(YAMLGenerator, Supply1)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Supply1.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
@@ -580,7 +580,7 @@ TEST(YAMLGenerator, Logic)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Logic.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
@@ -609,7 +609,7 @@ TEST(YAMLGenerator, Reg)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Reg.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
@@ -633,7 +633,7 @@ TEST(YAMLGenerator, Ioport)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Ioport.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::IODir::Ptr c_first(new AST::IODir);
     AST::Variable::Ptr c_second(new AST::Variable);
@@ -651,7 +651,7 @@ TEST(YAMLGenerator, Parameter)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Parameter.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_value(new AST::Node);
     AST::Width::ListPtr c_widths(new AST::Width::List);
@@ -677,7 +677,7 @@ TEST(YAMLGenerator, Localparam)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Localparam.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_value(new AST::Node);
     AST::Width::ListPtr c_widths(new AST::Width::List);
@@ -703,7 +703,7 @@ TEST(YAMLGenerator, Concat)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Concat.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_list(new AST::Node::List);
 
@@ -719,7 +719,7 @@ TEST(YAMLGenerator, Lconcat)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Lconcat.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_list(new AST::Node::List);
 
@@ -735,7 +735,7 @@ TEST(YAMLGenerator, Repeat)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Repeat.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_value(new AST::Node);
     AST::Node::Ptr c_times(new AST::Node);
@@ -753,7 +753,7 @@ TEST(YAMLGenerator, Indirect)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Indirect.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_var(new AST::Node);
 
@@ -769,7 +769,7 @@ TEST(YAMLGenerator, Partselect)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Partselect.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_msb(new AST::Node);
     AST::Node::Ptr c_lsb(new AST::Node);
@@ -789,7 +789,7 @@ TEST(YAMLGenerator, PartselectIndexed)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.PartselectIndexed.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_index(new AST::Node);
     AST::Node::Ptr c_size(new AST::Node);
@@ -810,7 +810,7 @@ TEST(YAMLGenerator, PartselectPlusIndexed)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.PartselectPlusIndexed.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_index(new AST::Node);
     AST::Node::Ptr c_size(new AST::Node);
@@ -831,7 +831,7 @@ TEST(YAMLGenerator, PartselectMinusIndexed)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.PartselectMinusIndexed.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_index(new AST::Node);
     AST::Node::Ptr c_size(new AST::Node);
@@ -852,7 +852,7 @@ TEST(YAMLGenerator, Pointer)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Pointer.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_ptr(new AST::Node);
     AST::Node::Ptr c_var(new AST::Node);
@@ -870,7 +870,7 @@ TEST(YAMLGenerator, Lvalue)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Lvalue.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_var(new AST::Node);
 
@@ -886,7 +886,7 @@ TEST(YAMLGenerator, Rvalue)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Rvalue.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_var(new AST::Node);
 
@@ -902,7 +902,7 @@ TEST(YAMLGenerator, UnaryOperator)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.UnaryOperator.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -918,7 +918,7 @@ TEST(YAMLGenerator, Uplus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Uplus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -934,7 +934,7 @@ TEST(YAMLGenerator, Uminus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Uminus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -950,7 +950,7 @@ TEST(YAMLGenerator, Ulnot)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Ulnot.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -966,7 +966,7 @@ TEST(YAMLGenerator, Unot)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Unot.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -982,7 +982,7 @@ TEST(YAMLGenerator, Uand)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Uand.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -998,7 +998,7 @@ TEST(YAMLGenerator, Unand)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Unand.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -1014,7 +1014,7 @@ TEST(YAMLGenerator, Uor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Uor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -1030,7 +1030,7 @@ TEST(YAMLGenerator, Unor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Unor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -1046,7 +1046,7 @@ TEST(YAMLGenerator, Uxor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Uxor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -1062,7 +1062,7 @@ TEST(YAMLGenerator, Uxnor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Uxnor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_right(new AST::Node);
 
@@ -1078,7 +1078,7 @@ TEST(YAMLGenerator, Operator)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Operator.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1096,7 +1096,7 @@ TEST(YAMLGenerator, Power)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Power.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1114,7 +1114,7 @@ TEST(YAMLGenerator, Times)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Times.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1132,7 +1132,7 @@ TEST(YAMLGenerator, Divide)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Divide.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1150,7 +1150,7 @@ TEST(YAMLGenerator, Mod)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Mod.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1168,7 +1168,7 @@ TEST(YAMLGenerator, Plus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Plus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1186,7 +1186,7 @@ TEST(YAMLGenerator, Minus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Minus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1204,7 +1204,7 @@ TEST(YAMLGenerator, Sll)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Sll.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1222,7 +1222,7 @@ TEST(YAMLGenerator, Srl)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Srl.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1240,7 +1240,7 @@ TEST(YAMLGenerator, Sra)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Sra.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1258,7 +1258,7 @@ TEST(YAMLGenerator, LessThan)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.LessThan.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1276,7 +1276,7 @@ TEST(YAMLGenerator, GreaterThan)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.GreaterThan.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1294,7 +1294,7 @@ TEST(YAMLGenerator, LessEq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.LessEq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1312,7 +1312,7 @@ TEST(YAMLGenerator, GreaterEq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.GreaterEq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1330,7 +1330,7 @@ TEST(YAMLGenerator, Eq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Eq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1348,7 +1348,7 @@ TEST(YAMLGenerator, NotEq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.NotEq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1366,7 +1366,7 @@ TEST(YAMLGenerator, Eql)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Eql.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1384,7 +1384,7 @@ TEST(YAMLGenerator, NotEql)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.NotEql.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1402,7 +1402,7 @@ TEST(YAMLGenerator, And)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.And.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1420,7 +1420,7 @@ TEST(YAMLGenerator, Xor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Xor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1438,7 +1438,7 @@ TEST(YAMLGenerator, Xnor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Xnor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1456,7 +1456,7 @@ TEST(YAMLGenerator, Or)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Or.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1474,7 +1474,7 @@ TEST(YAMLGenerator, Land)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Land.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1492,7 +1492,7 @@ TEST(YAMLGenerator, Lor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Lor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_left(new AST::Node);
     AST::Node::Ptr c_right(new AST::Node);
@@ -1510,7 +1510,7 @@ TEST(YAMLGenerator, Cond)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Cond.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_cond(new AST::Node);
     AST::Node::Ptr c_left(new AST::Node);
@@ -1530,7 +1530,7 @@ TEST(YAMLGenerator, Always)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Always.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Senslist::Ptr c_senslist(new AST::Senslist);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1548,7 +1548,7 @@ TEST(YAMLGenerator, AlwaysFF)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.AlwaysFF.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Senslist::Ptr c_senslist(new AST::Senslist);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1566,7 +1566,7 @@ TEST(YAMLGenerator, AlwaysComb)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.AlwaysComb.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Senslist::Ptr c_senslist(new AST::Senslist);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1584,7 +1584,7 @@ TEST(YAMLGenerator, AlwaysLatch)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.AlwaysLatch.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Senslist::Ptr c_senslist(new AST::Senslist);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1603,7 +1603,7 @@ TEST(YAMLGenerator, Senslist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Senslist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Sens::ListPtr c_list(new AST::Sens::List);
 
@@ -1619,7 +1619,7 @@ TEST(YAMLGenerator, Sens)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Sens.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_sig(new AST::Node);
     AST::Sens::TypeEnum p_type = AST::Sens::TypeEnum::NONE;
@@ -1637,7 +1637,7 @@ TEST(YAMLGenerator, Defparamlist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Defparamlist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Defparam::ListPtr c_list(new AST::Defparam::List);
 
@@ -1653,7 +1653,7 @@ TEST(YAMLGenerator, Defparam)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Defparam.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Identifier::Ptr c_identifier(new AST::Identifier);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
@@ -1671,7 +1671,7 @@ TEST(YAMLGenerator, Assign)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Assign.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Lvalue::Ptr c_left(new AST::Lvalue);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
@@ -1693,7 +1693,7 @@ TEST(YAMLGenerator, BlockingSubstitution)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.BlockingSubstitution.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Lvalue::Ptr c_left(new AST::Lvalue);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
@@ -1716,7 +1716,7 @@ TEST(YAMLGenerator, NonblockingSubstitution)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.NonblockingSubstitution.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Lvalue::Ptr c_left(new AST::Lvalue);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
@@ -1739,7 +1739,7 @@ TEST(YAMLGenerator, IfStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.IfStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_cond(new AST::Node);
     AST::Node::Ptr c_true_statement(new AST::Node);
@@ -1760,7 +1760,7 @@ TEST(YAMLGenerator, RepeatStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.RepeatStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_times(new AST::Node);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1779,7 +1779,7 @@ TEST(YAMLGenerator, ForStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.ForStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::BlockingSubstitution::Ptr c_pre(new AST::BlockingSubstitution);
     AST::Node::Ptr c_cond(new AST::Node);
@@ -1802,7 +1802,7 @@ TEST(YAMLGenerator, WhileStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.WhileStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_cond(new AST::Node);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1821,7 +1821,7 @@ TEST(YAMLGenerator, CaseStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.CaseStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_comp(new AST::Node);
     AST::Case::ListPtr c_caselist(new AST::Case::List);
@@ -1840,7 +1840,7 @@ TEST(YAMLGenerator, CasexStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.CasexStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_comp(new AST::Node);
     AST::Case::ListPtr c_caselist(new AST::Case::List);
@@ -1859,7 +1859,7 @@ TEST(YAMLGenerator, CasezStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.CasezStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_comp(new AST::Node);
     AST::Case::ListPtr c_caselist(new AST::Case::List);
@@ -1878,7 +1878,7 @@ TEST(YAMLGenerator, UniqueCaseStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.UniqueCaseStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_comp(new AST::Node);
     AST::Case::ListPtr c_caselist(new AST::Case::List);
@@ -1897,7 +1897,7 @@ TEST(YAMLGenerator, PriorityCaseStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.PriorityCaseStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_comp(new AST::Node);
     AST::Case::ListPtr c_caselist(new AST::Case::List);
@@ -1916,7 +1916,7 @@ TEST(YAMLGenerator, Case)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Case.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_cond(new AST::Node::List);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1934,7 +1934,7 @@ TEST(YAMLGenerator, Block)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Block.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_statements(new AST::Node::List);
     std::string p_scope = "mynbiqpmzj";
@@ -1952,7 +1952,7 @@ TEST(YAMLGenerator, Initial)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Initial.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_statement(new AST::Node);
 
@@ -1968,7 +1968,7 @@ TEST(YAMLGenerator, EventStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.EventStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Senslist::Ptr c_senslist(new AST::Senslist);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -1987,7 +1987,7 @@ TEST(YAMLGenerator, WaitStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.WaitStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_cond(new AST::Node);
     AST::Node::Ptr c_statement(new AST::Node);
@@ -2006,7 +2006,7 @@ TEST(YAMLGenerator, ForeverStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.ForeverStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_statement(new AST::Node);
 
@@ -2023,7 +2023,7 @@ TEST(YAMLGenerator, DelayStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.DelayStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_delay(new AST::Node);
 
@@ -2039,7 +2039,7 @@ TEST(YAMLGenerator, Instancelist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Instancelist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::ParamArg::ListPtr c_parameterlist(new AST::ParamArg::List);
     AST::Instance::ListPtr c_instances(new AST::Instance::List);
@@ -2060,7 +2060,7 @@ TEST(YAMLGenerator, Instance)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Instance.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Length::Ptr c_array(new AST::Length);
     AST::ParamArg::ListPtr c_parameterlist(new AST::ParamArg::List);
@@ -2085,7 +2085,7 @@ TEST(YAMLGenerator, ParamArg)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.ParamArg.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_value(new AST::Node);
     std::string p_name = "mynbiqpmzj";
@@ -2103,7 +2103,7 @@ TEST(YAMLGenerator, PortArg)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.PortArg.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_value(new AST::Node);
     std::string p_name = "mynbiqpmzj";
@@ -2121,7 +2121,7 @@ TEST(YAMLGenerator, Function)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Function.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_retwidths(new AST::Width::List);
     AST::Node::ListPtr c_ports(new AST::Node::List);
@@ -2152,7 +2152,7 @@ TEST(YAMLGenerator, FunctionCall)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.FunctionCall.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_args(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
@@ -2170,7 +2170,7 @@ TEST(YAMLGenerator, Task)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Task.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_ports(new AST::Node::List);
     AST::Node::ListPtr c_statements(new AST::Node::List);
@@ -2192,7 +2192,7 @@ TEST(YAMLGenerator, TaskCall)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.TaskCall.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_args(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
@@ -2210,7 +2210,7 @@ TEST(YAMLGenerator, GenerateStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.GenerateStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_items(new AST::Node::List);
 
@@ -2227,7 +2227,7 @@ TEST(YAMLGenerator, SystemCall)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.SystemCall.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_args(new AST::Node::List);
     std::string p_syscall = "mynbiqpmzj";
@@ -2245,7 +2245,7 @@ TEST(YAMLGenerator, IdentifierScopeLabel)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.IdentifierScopeLabel.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_loop(new AST::Node);
     std::string p_scope = "mynbiqpmzj";
@@ -2264,7 +2264,7 @@ TEST(YAMLGenerator, IdentifierScope)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.IdentifierScope.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::IdentifierScopeLabel::ListPtr c_labellist(new AST::IdentifierScopeLabel::List);
 
@@ -2281,7 +2281,7 @@ TEST(YAMLGenerator, Disable)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Disable.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     std::string p_dest = "mynbiqpmzj";
 
@@ -2297,7 +2297,7 @@ TEST(YAMLGenerator, ParallelBlock)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.ParallelBlock.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::ListPtr c_statements(new AST::Node::List);
     std::string p_scope = "mynbiqpmzj";
@@ -2316,7 +2316,7 @@ TEST(YAMLGenerator, SingleStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.SingleStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_statement(new AST::Node);
     AST::DelayStatement::Ptr c_delay(new AST::DelayStatement);
@@ -2337,7 +2337,7 @@ TEST(YAMLGenerator, EnumItem)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.EnumItem.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_value(new AST::Node);
     std::string p_name = "mynbiqpmzj";
@@ -2355,7 +2355,7 @@ TEST(YAMLGenerator, EnumDef)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.EnumDef.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::EnumItem::ListPtr c_items(new AST::EnumItem::List);
@@ -2379,7 +2379,7 @@ TEST(YAMLGenerator, Typedef)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.Typedef.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Node::Ptr c_def(new AST::Node);
     std::string p_name = "mynbiqpmzj";
@@ -2397,7 +2397,7 @@ TEST(YAMLGenerator, StructMember)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.StructMember.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::Node::Ptr c_type(new AST::Node);
@@ -2420,7 +2420,7 @@ TEST(YAMLGenerator, StructDef)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLGenerator.StructDef.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     AST::StructMember::ListPtr c_members(new AST::StructMember::List);
     bool p_packed = false;

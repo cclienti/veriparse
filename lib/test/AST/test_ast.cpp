@@ -12,7 +12,7 @@ using namespace Veriparse;
 TEST(ASTTest, Clone) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("ASTTest.Clone.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 	AST::Parameter::ListPtr params1;
 	AST::Node::ListPtr ports1;
@@ -58,7 +58,7 @@ TEST(ASTTest, Clone) {
 TEST(ASTTest, CloneList) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("ASTTest.CloneList.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 	AST::IntConst::Ptr width_msb = std::make_shared<AST::IntConst>("filename.v", 3);
 	width_msb->set_value("7");
@@ -162,7 +162,7 @@ TEST(ASTTest, CloneList) {
 TEST(ASTTest, UpdateChildren) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("ASTTest.UpdateChildren.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 
 	AST::Parameter::ListPtr params1 = std::make_shared<AST::Parameter::List>();

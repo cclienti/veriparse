@@ -78,12 +78,18 @@ function(add_cosim_test)
         set(_verilator_dut_depends ${ACT_VERILOG_SOURCES})
     else()
         set(_flat_v ${_work_dir}/${ACT_TOP_MODULE}_flat.v)
+        # Route veriflat's diagnostics to a per-test log file rather than
+        # the build console: ${_work_dir} is unique per test (<NAME>.dir),
+        # so ${ACT_NAME}.log never collides across the suite and a failing
+        # run leaves its log right next to the generated netlist.
+        set(_veriflat_log ${_work_dir}/${ACT_NAME}.log)
         add_custom_command(
             OUTPUT ${_flat_v}
             COMMAND $<TARGET_FILE:veriflat>
                     --seed ${ACT_SEED}
                     --top-module ${ACT_TOP_MODULE}
                     --output ${_flat_v}
+                    --log ${_veriflat_log}
                     ${ACT_VERIFLAT_ARGS}
                     ${ACT_VERILOG_SOURCES}
             DEPENDS veriflat ${ACT_VERILOG_SOURCES}

@@ -15,6 +15,7 @@ struct Config
     std::vector<std::string> defines;
     std::vector<std::string> undefs;
     std::string output;
+    std::string log_file; ///< empty: log to stderr; else log to this file
     std::uint64_t identifier_length;
     bool hash;
     bool sv_mode{false};
@@ -26,6 +27,7 @@ static inline std::ostream &operator<<(std::ostream &os, const Config &config)
     os << "{"
        << "input: '" << config.input << "', "
        << "output: '" << config.output << "', "
+       << "log_file: '" << config.log_file << "', "
        << "identifier_length: " << config.identifier_length << ", "
        << "hash: " << config.hash << ", "
        << "seed: " << config.seed << "}";
