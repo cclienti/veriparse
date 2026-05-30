@@ -39,6 +39,9 @@ CONDA_BUILD_CHANNELS = -c $(CONDA_DEST_REPO) -c conda-forge
 CONDA_INDEX          = micromamba index --no-progress -n $(CONDA_DEST_CHANNEL)
 
 NUM_CORES            = $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+# ctest picks this up natively — override with `make dev-test CTEST_PARALLEL_LEVEL=N`
+# or `CTEST_PARALLEL_LEVEL=N make dev-test`. `?=` honors both.
+CTEST_PARALLEL_LEVEL ?= $(NUM_CORES)
 MAMBA                = micromamba
 DEV_BUILD_DIR        = build
 REPO_ROOT            = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
@@ -69,49 +72,29 @@ dev-env: dev-env-file
 	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
 	  $(MAMBA) create -y -p $(CONDA_DEV_ENV_PATH) \
 	    --file conda/environment.yml
-dev-cmake:
-	mkdir -p $(DEV_BUILD_DIR)
-	set -e; \
-	  cd $(DEV_BUILD_DIR); \
-	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
-	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
-	  CC=$$(ls $$CONDA_PREFIX/bin/*-cc 2>/dev/null | head -1); \
-	  CXX=$$(ls $$CONDA_PREFIX/bin/*-c++ 2>/dev/null | head -1); \
-	  if [ -z "$$CC" ] || [ -z "$$CXX" ]; then \
-	    echo "ERROR: conda toolchain *-cc / *-c++ not found in $$CONDA_PREFIX/bin"; \
-	    exit 1; \
-	  fi; \
-	  export CC CXX; \
-	  cmake -G Ninja \
-	        -DCMAKE_C_COMPILER=$$CC \
-	        -DCMAKE_CXX_COMPILER=$$CXX \
-	        -DCMAKE_PREFIX_PATH=$$CONDA_PREFIX \
-	        -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) \
-	        -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
-	        -DCMAKE_SHARED_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
-	        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-	        -DCMAKE_INSTALL_PREFIX=$$HOME/veriparse $(REPO_ROOT)
+DEV_RUN = $(MAMBA) run -p $(CONDA_DEV_ENV_PATH)
 
+dev-cmake:
+	$(DEV_RUN) cmake -G Ninja \
+	      -S $(REPO_ROOT) -B $(DEV_BUILD_DIR) \
+	      -DCMAKE_PREFIX_PATH=$(CONDA_DEV_ENV_PATH) \
+	      -DCMAKE_BUILD_TYPE=$(CONDA_DEV_BUILD_TYPE) \
+	      -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
+	      -DCMAKE_SHARED_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
+	      -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+	      -DCMAKE_INSTALL_PREFIX=$(HOME)/veriparse
+
+# Ninja saturates available cores by default — no --parallel needed.
 dev-build:
-	set -e; \
-	  cd $(DEV_BUILD_DIR); \
-	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
-	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
-	  cmake --build . --parallel $(NUM_CORES)
+	$(DEV_RUN) cmake --build $(DEV_BUILD_DIR)
 
 dev-test:
-	set -e; \
-	  cd $(DEV_BUILD_DIR); \
-	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
-	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
-	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L '$(CTEST_LABELS)'
+	$(DEV_RUN) env CTEST_PARALLEL_LEVEL=$(CTEST_PARALLEL_LEVEL) VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) \
+	  ctest --test-dir $(DEV_BUILD_DIR) -L '$(CTEST_LABELS)'
 
 dev-test-cosim:
-	set -e; \
-	  cd $(DEV_BUILD_DIR); \
-	  export PATH=$(CONDA_DEV_ENV_PATH)/bin:$$PATH; \
-	  export CONDA_PREFIX=$(CONDA_DEV_ENV_PATH); \
-	  VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) ctest -j${NUM_CORES} -L 'cosim'
+	$(DEV_RUN) env CTEST_PARALLEL_LEVEL=$(CTEST_PARALLEL_LEVEL) VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) \
+	  ctest --test-dir $(DEV_BUILD_DIR) -L 'cosim'
 
 dev-clean:
 	set -e; \
