@@ -60,7 +60,9 @@
 	// Forward-declares a global logger with a custom initialization
 	BOOST_LOG_GLOBAL_LOGGER(logger, boost::log::sources::severity_logger_mt<boost::log::trivial::severity_level>)
 
-	void add_stdout_sink(void);
+	/// Log records to the standard error stream (std::clog), keeping
+	/// stdout free for a tool's actual data output.
+	void add_stderr_sink(void);
 	void add_stream_sink(std::shared_ptr<std::ostringstream> oss);
 	void add_text_sink(std::string const &filename);
 	void flush(void);

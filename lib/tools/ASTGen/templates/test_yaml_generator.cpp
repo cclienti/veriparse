@@ -13,7 +13,7 @@ using namespace Veriparse;
 TEST(YAMLGenerator, {{ ntype }}) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLGenerator.{{ ntype }}.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 	{%  set inherited_flat = flatten_inherited(ndict['inherited']) %}
 	{%- set children_dict_full = merge_dict(ndict['children'], inherited_flat['children']) -%}

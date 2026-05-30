@@ -14,7 +14,7 @@ TEST(YAMLImporter, MySource)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.MySource.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
 
     std::string str("Source:\n"
                     "  filename:  test.v\n"
@@ -67,7 +67,7 @@ TEST(YAMLImporter, Source)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Source.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Source:\n"
                     "  filename: source.v\n"
                     "  line: 6\n"
@@ -86,7 +86,7 @@ TEST(YAMLImporter, Description)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Description.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Description:\n"
                     "  filename: description.v\n"
                     "  line: 11\n"
@@ -105,7 +105,7 @@ TEST(YAMLImporter, Pragmalist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Pragmalist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Pragmalist:\n"
                     "  filename: pragmalist.v\n"
                     "  line: 10\n"
@@ -126,7 +126,7 @@ TEST(YAMLImporter, Pragma)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Pragma.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Pragma:\n"
                     "  filename: pragma.v\n"
                     "  line: 6\n"
@@ -147,7 +147,7 @@ TEST(YAMLImporter, Module)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Module.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Module:\n"
                     "  filename: module.v\n"
                     "  line: 6\n"
@@ -175,7 +175,7 @@ TEST(YAMLImporter, Port)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Port.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Port:\n"
                     "  filename: port.v\n"
                     "  line: 4\n"
@@ -196,7 +196,7 @@ TEST(YAMLImporter, Width)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Width.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Width:\n"
                     "  filename: width.v\n"
                     "  line: 5\n"
@@ -217,7 +217,7 @@ TEST(YAMLImporter, Length)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Length.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Length:\n"
                     "  filename: length.v\n"
                     "  line: 6\n"
@@ -238,7 +238,7 @@ TEST(YAMLImporter, Identifier)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Identifier.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Identifier:\n"
                     "  filename: identifier.v\n"
                     "  line: 10\n"
@@ -259,7 +259,7 @@ TEST(YAMLImporter, Constant)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Constant.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Constant:\n"
                     "  filename: constant.v\n"
                     "  line: 8\n");
@@ -276,7 +276,7 @@ TEST(YAMLImporter, StringConst)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.StringConst.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("StringConst:\n"
                     "  filename: stringconst.v\n"
                     "  line: 11\n"
@@ -295,7 +295,7 @@ TEST(YAMLImporter, IntConst)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.IntConst.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("IntConst:\n"
                     "  filename: intconst.v\n"
                     "  line: 8\n"
@@ -314,7 +314,7 @@ TEST(YAMLImporter, IntConstN)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.IntConstN.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("IntConstN:\n"
                     "  filename: intconstn.v\n"
                     "  line: 9\n"
@@ -339,7 +339,7 @@ TEST(YAMLImporter, FloatConst)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.FloatConst.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("FloatConst:\n"
                     "  filename: floatconst.v\n"
                     "  line: 10\n"
@@ -358,7 +358,7 @@ TEST(YAMLImporter, IODir)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.IODir.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("IODir:\n"
                     "  filename: iodir.v\n"
                     "  line: 5\n"
@@ -381,7 +381,7 @@ TEST(YAMLImporter, Input)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Input.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Input:\n"
                     "  filename: input.v\n"
                     "  line: 5\n"
@@ -404,7 +404,7 @@ TEST(YAMLImporter, Output)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Output.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Output:\n"
                     "  filename: output.v\n"
                     "  line: 6\n"
@@ -427,7 +427,7 @@ TEST(YAMLImporter, Inout)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Inout.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Inout:\n"
                     "  filename: inout.v\n"
                     "  line: 5\n"
@@ -450,7 +450,7 @@ TEST(YAMLImporter, VariableBase)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.VariableBase.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("VariableBase:\n"
                     "  filename: variablebase.v\n"
                     "  line: 12\n"
@@ -469,7 +469,7 @@ TEST(YAMLImporter, Genvar)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Genvar.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Genvar:\n"
                     "  filename: genvar.v\n"
                     "  line: 6\n"
@@ -488,7 +488,7 @@ TEST(YAMLImporter, Variable)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Variable.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Variable:\n"
                     "  filename: variable.v\n"
                     "  line: 8\n"
@@ -511,7 +511,7 @@ TEST(YAMLImporter, Net)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Net.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Net:\n"
                     "  filename: net.v\n"
                     "  line: 3\n"
@@ -542,7 +542,7 @@ TEST(YAMLImporter, Integer)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Integer.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Integer:\n"
                     "  filename: integer.v\n"
                     "  line: 7\n"
@@ -565,7 +565,7 @@ TEST(YAMLImporter, Real)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Real.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Real:\n"
                     "  filename: real.v\n"
                     "  line: 4\n"
@@ -588,7 +588,7 @@ TEST(YAMLImporter, Tri)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Tri.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Tri:\n"
                     "  filename: tri.v\n"
                     "  line: 3\n"
@@ -619,7 +619,7 @@ TEST(YAMLImporter, Wire)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Wire.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Wire:\n"
                     "  filename: wire.v\n"
                     "  line: 4\n"
@@ -650,7 +650,7 @@ TEST(YAMLImporter, Supply0)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Supply0.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Supply0:\n"
                     "  filename: supply0.v\n"
                     "  line: 7\n"
@@ -681,7 +681,7 @@ TEST(YAMLImporter, Supply1)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Supply1.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Supply1:\n"
                     "  filename: supply1.v\n"
                     "  line: 7\n"
@@ -712,7 +712,7 @@ TEST(YAMLImporter, Logic)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Logic.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Logic:\n"
                     "  filename: logic.v\n"
                     "  line: 5\n"
@@ -743,7 +743,7 @@ TEST(YAMLImporter, Reg)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Reg.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Reg:\n"
                     "  filename: reg.v\n"
                     "  line: 3\n"
@@ -770,7 +770,7 @@ TEST(YAMLImporter, Ioport)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Ioport.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Ioport:\n"
                     "  filename: ioport.v\n"
                     "  line: 6\n"
@@ -791,7 +791,7 @@ TEST(YAMLImporter, Parameter)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Parameter.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Parameter:\n"
                     "  filename: parameter.v\n"
                     "  line: 9\n"
@@ -819,7 +819,7 @@ TEST(YAMLImporter, Localparam)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Localparam.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Localparam:\n"
                     "  filename: localparam.v\n"
                     "  line: 10\n"
@@ -847,7 +847,7 @@ TEST(YAMLImporter, Concat)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Concat.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Concat:\n"
                     "  filename: concat.v\n"
                     "  line: 6\n"
@@ -866,7 +866,7 @@ TEST(YAMLImporter, Lconcat)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Lconcat.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Lconcat:\n"
                     "  filename: lconcat.v\n"
                     "  line: 7\n"
@@ -885,7 +885,7 @@ TEST(YAMLImporter, Repeat)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Repeat.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Repeat:\n"
                     "  filename: repeat.v\n"
                     "  line: 6\n"
@@ -906,7 +906,7 @@ TEST(YAMLImporter, Indirect)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Indirect.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Indirect:\n"
                     "  filename: indirect.v\n"
                     "  line: 8\n"
@@ -925,7 +925,7 @@ TEST(YAMLImporter, Partselect)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Partselect.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Partselect:\n"
                     "  filename: partselect.v\n"
                     "  line: 10\n"
@@ -948,7 +948,7 @@ TEST(YAMLImporter, PartselectIndexed)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.PartselectIndexed.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("PartselectIndexed:\n"
                     "  filename: partselectindexed.v\n"
                     "  line: 17\n"
@@ -971,7 +971,7 @@ TEST(YAMLImporter, PartselectPlusIndexed)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.PartselectPlusIndexed.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("PartselectPlusIndexed:\n"
                     "  filename: partselectplusindexed.v\n"
                     "  line: 21\n"
@@ -995,7 +995,7 @@ TEST(YAMLImporter, PartselectMinusIndexed)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.PartselectMinusIndexed.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("PartselectMinusIndexed:\n"
                     "  filename: partselectminusindexed.v\n"
                     "  line: 22\n"
@@ -1019,7 +1019,7 @@ TEST(YAMLImporter, Pointer)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Pointer.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Pointer:\n"
                     "  filename: pointer.v\n"
                     "  line: 7\n"
@@ -1040,7 +1040,7 @@ TEST(YAMLImporter, Lvalue)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Lvalue.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Lvalue:\n"
                     "  filename: lvalue.v\n"
                     "  line: 6\n"
@@ -1059,7 +1059,7 @@ TEST(YAMLImporter, Rvalue)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Rvalue.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Rvalue:\n"
                     "  filename: rvalue.v\n"
                     "  line: 6\n"
@@ -1078,7 +1078,7 @@ TEST(YAMLImporter, UnaryOperator)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.UnaryOperator.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("UnaryOperator:\n"
                     "  filename: unaryoperator.v\n"
                     "  line: 13\n"
@@ -1097,7 +1097,7 @@ TEST(YAMLImporter, Uplus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Uplus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Uplus:\n"
                     "  filename: uplus.v\n"
                     "  line: 5\n"
@@ -1116,7 +1116,7 @@ TEST(YAMLImporter, Uminus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Uminus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Uminus:\n"
                     "  filename: uminus.v\n"
                     "  line: 6\n"
@@ -1135,7 +1135,7 @@ TEST(YAMLImporter, Ulnot)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Ulnot.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Ulnot:\n"
                     "  filename: ulnot.v\n"
                     "  line: 5\n"
@@ -1154,7 +1154,7 @@ TEST(YAMLImporter, Unot)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Unot.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Unot:\n"
                     "  filename: unot.v\n"
                     "  line: 4\n"
@@ -1173,7 +1173,7 @@ TEST(YAMLImporter, Uand)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Uand.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Uand:\n"
                     "  filename: uand.v\n"
                     "  line: 4\n"
@@ -1192,7 +1192,7 @@ TEST(YAMLImporter, Unand)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Unand.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Unand:\n"
                     "  filename: unand.v\n"
                     "  line: 5\n"
@@ -1211,7 +1211,7 @@ TEST(YAMLImporter, Uor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Uor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Uor:\n"
                     "  filename: uor.v\n"
                     "  line: 3\n"
@@ -1230,7 +1230,7 @@ TEST(YAMLImporter, Unor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Unor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Unor:\n"
                     "  filename: unor.v\n"
                     "  line: 4\n"
@@ -1249,7 +1249,7 @@ TEST(YAMLImporter, Uxor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Uxor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Uxor:\n"
                     "  filename: uxor.v\n"
                     "  line: 4\n"
@@ -1268,7 +1268,7 @@ TEST(YAMLImporter, Uxnor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Uxnor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Uxnor:\n"
                     "  filename: uxnor.v\n"
                     "  line: 5\n"
@@ -1287,7 +1287,7 @@ TEST(YAMLImporter, Operator)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Operator.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Operator:\n"
                     "  filename: operator.v\n"
                     "  line: 8\n"
@@ -1308,7 +1308,7 @@ TEST(YAMLImporter, Power)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Power.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Power:\n"
                     "  filename: power.v\n"
                     "  line: 5\n"
@@ -1329,7 +1329,7 @@ TEST(YAMLImporter, Times)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Times.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Times:\n"
                     "  filename: times.v\n"
                     "  line: 5\n"
@@ -1350,7 +1350,7 @@ TEST(YAMLImporter, Divide)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Divide.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Divide:\n"
                     "  filename: divide.v\n"
                     "  line: 6\n"
@@ -1371,7 +1371,7 @@ TEST(YAMLImporter, Mod)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Mod.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Mod:\n"
                     "  filename: mod.v\n"
                     "  line: 3\n"
@@ -1392,7 +1392,7 @@ TEST(YAMLImporter, Plus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Plus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Plus:\n"
                     "  filename: plus.v\n"
                     "  line: 4\n"
@@ -1413,7 +1413,7 @@ TEST(YAMLImporter, Minus)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Minus.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Minus:\n"
                     "  filename: minus.v\n"
                     "  line: 5\n"
@@ -1434,7 +1434,7 @@ TEST(YAMLImporter, Sll)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Sll.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Sll:\n"
                     "  filename: sll.v\n"
                     "  line: 3\n"
@@ -1455,7 +1455,7 @@ TEST(YAMLImporter, Srl)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Srl.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Srl:\n"
                     "  filename: srl.v\n"
                     "  line: 3\n"
@@ -1476,7 +1476,7 @@ TEST(YAMLImporter, Sra)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Sra.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Sra:\n"
                     "  filename: sra.v\n"
                     "  line: 3\n"
@@ -1497,7 +1497,7 @@ TEST(YAMLImporter, LessThan)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.LessThan.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("LessThan:\n"
                     "  filename: lessthan.v\n"
                     "  line: 8\n"
@@ -1518,7 +1518,7 @@ TEST(YAMLImporter, GreaterThan)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.GreaterThan.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("GreaterThan:\n"
                     "  filename: greaterthan.v\n"
                     "  line: 11\n"
@@ -1539,7 +1539,7 @@ TEST(YAMLImporter, LessEq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.LessEq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("LessEq:\n"
                     "  filename: lesseq.v\n"
                     "  line: 6\n"
@@ -1560,7 +1560,7 @@ TEST(YAMLImporter, GreaterEq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.GreaterEq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("GreaterEq:\n"
                     "  filename: greatereq.v\n"
                     "  line: 9\n"
@@ -1581,7 +1581,7 @@ TEST(YAMLImporter, Eq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Eq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Eq:\n"
                     "  filename: eq.v\n"
                     "  line: 2\n"
@@ -1602,7 +1602,7 @@ TEST(YAMLImporter, NotEq)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.NotEq.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("NotEq:\n"
                     "  filename: noteq.v\n"
                     "  line: 5\n"
@@ -1623,7 +1623,7 @@ TEST(YAMLImporter, Eql)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Eql.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Eql:\n"
                     "  filename: eql.v\n"
                     "  line: 3\n"
@@ -1644,7 +1644,7 @@ TEST(YAMLImporter, NotEql)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.NotEql.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("NotEql:\n"
                     "  filename: noteql.v\n"
                     "  line: 6\n"
@@ -1665,7 +1665,7 @@ TEST(YAMLImporter, And)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.And.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("And:\n"
                     "  filename: and.v\n"
                     "  line: 3\n"
@@ -1686,7 +1686,7 @@ TEST(YAMLImporter, Xor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Xor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Xor:\n"
                     "  filename: xor.v\n"
                     "  line: 3\n"
@@ -1707,7 +1707,7 @@ TEST(YAMLImporter, Xnor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Xnor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Xnor:\n"
                     "  filename: xnor.v\n"
                     "  line: 4\n"
@@ -1728,7 +1728,7 @@ TEST(YAMLImporter, Or)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Or.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Or:\n"
                     "  filename: or.v\n"
                     "  line: 2\n"
@@ -1749,7 +1749,7 @@ TEST(YAMLImporter, Land)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Land.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Land:\n"
                     "  filename: land.v\n"
                     "  line: 4\n"
@@ -1770,7 +1770,7 @@ TEST(YAMLImporter, Lor)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Lor.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Lor:\n"
                     "  filename: lor.v\n"
                     "  line: 3\n"
@@ -1791,7 +1791,7 @@ TEST(YAMLImporter, Cond)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Cond.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Cond:\n"
                     "  filename: cond.v\n"
                     "  line: 4\n"
@@ -1814,7 +1814,7 @@ TEST(YAMLImporter, Always)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Always.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Always:\n"
                     "  filename: always.v\n"
                     "  line: 6\n"
@@ -1835,7 +1835,7 @@ TEST(YAMLImporter, AlwaysFF)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.AlwaysFF.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("AlwaysFF:\n"
                     "  filename: alwaysff.v\n"
                     "  line: 8\n"
@@ -1856,7 +1856,7 @@ TEST(YAMLImporter, AlwaysComb)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.AlwaysComb.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("AlwaysComb:\n"
                     "  filename: alwayscomb.v\n"
                     "  line: 10\n"
@@ -1877,7 +1877,7 @@ TEST(YAMLImporter, AlwaysLatch)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.AlwaysLatch.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("AlwaysLatch:\n"
                     "  filename: alwayslatch.v\n"
                     "  line: 11\n"
@@ -1898,7 +1898,7 @@ TEST(YAMLImporter, Senslist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Senslist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Senslist:\n"
                     "  filename: senslist.v\n"
                     "  line: 8\n"
@@ -1917,7 +1917,7 @@ TEST(YAMLImporter, Sens)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Sens.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Sens:\n"
                     "  filename: sens.v\n"
                     "  line: 4\n"
@@ -1938,7 +1938,7 @@ TEST(YAMLImporter, Defparamlist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Defparamlist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Defparamlist:\n"
                     "  filename: defparamlist.v\n"
                     "  line: 12\n"
@@ -1957,7 +1957,7 @@ TEST(YAMLImporter, Defparam)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Defparam.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Defparam:\n"
                     "  filename: defparam.v\n"
                     "  line: 8\n"
@@ -1978,7 +1978,7 @@ TEST(YAMLImporter, Assign)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Assign.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Assign:\n"
                     "  filename: assign.v\n"
                     "  line: 6\n"
@@ -2003,7 +2003,7 @@ TEST(YAMLImporter, BlockingSubstitution)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.BlockingSubstitution.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("BlockingSubstitution:\n"
                     "  filename: blockingsubstitution.v\n"
                     "  line: 20\n"
@@ -2029,7 +2029,7 @@ TEST(YAMLImporter, NonblockingSubstitution)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.NonblockingSubstitution.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("NonblockingSubstitution:\n"
                     "  filename: nonblockingsubstitution.v\n"
                     "  line: 23\n"
@@ -2055,7 +2055,7 @@ TEST(YAMLImporter, IfStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.IfStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("IfStatement:\n"
                     "  filename: ifstatement.v\n"
                     "  line: 11\n"
@@ -2078,7 +2078,7 @@ TEST(YAMLImporter, RepeatStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.RepeatStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("RepeatStatement:\n"
                     "  filename: repeatstatement.v\n"
                     "  line: 15\n"
@@ -2099,7 +2099,7 @@ TEST(YAMLImporter, ForStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.ForStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("ForStatement:\n"
                     "  filename: forstatement.v\n"
                     "  line: 12\n"
@@ -2124,7 +2124,7 @@ TEST(YAMLImporter, WhileStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.WhileStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("WhileStatement:\n"
                     "  filename: whilestatement.v\n"
                     "  line: 14\n"
@@ -2145,7 +2145,7 @@ TEST(YAMLImporter, CaseStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.CaseStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("CaseStatement:\n"
                     "  filename: casestatement.v\n"
                     "  line: 13\n"
@@ -2166,7 +2166,7 @@ TEST(YAMLImporter, CasexStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.CasexStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("CasexStatement:\n"
                     "  filename: casexstatement.v\n"
                     "  line: 14\n"
@@ -2187,7 +2187,7 @@ TEST(YAMLImporter, CasezStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.CasezStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("CasezStatement:\n"
                     "  filename: casezstatement.v\n"
                     "  line: 14\n"
@@ -2208,7 +2208,7 @@ TEST(YAMLImporter, UniqueCaseStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.UniqueCaseStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("UniqueCaseStatement:\n"
                     "  filename: uniquecasestatement.v\n"
                     "  line: 19\n"
@@ -2230,7 +2230,7 @@ TEST(YAMLImporter, PriorityCaseStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.PriorityCaseStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("PriorityCaseStatement:\n"
                     "  filename: prioritycasestatement.v\n"
                     "  line: 21\n"
@@ -2252,7 +2252,7 @@ TEST(YAMLImporter, Case)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Case.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Case:\n"
                     "  filename: case.v\n"
                     "  line: 4\n"
@@ -2273,7 +2273,7 @@ TEST(YAMLImporter, Block)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Block.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Block:\n"
                     "  filename: block.v\n"
                     "  line: 5\n"
@@ -2294,7 +2294,7 @@ TEST(YAMLImporter, Initial)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Initial.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Initial:\n"
                     "  filename: initial.v\n"
                     "  line: 7\n"
@@ -2313,7 +2313,7 @@ TEST(YAMLImporter, EventStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.EventStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("EventStatement:\n"
                     "  filename: eventstatement.v\n"
                     "  line: 14\n"
@@ -2334,7 +2334,7 @@ TEST(YAMLImporter, WaitStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.WaitStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("WaitStatement:\n"
                     "  filename: waitstatement.v\n"
                     "  line: 13\n"
@@ -2355,7 +2355,7 @@ TEST(YAMLImporter, ForeverStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.ForeverStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("ForeverStatement:\n"
                     "  filename: foreverstatement.v\n"
                     "  line: 16\n"
@@ -2374,7 +2374,7 @@ TEST(YAMLImporter, DelayStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.DelayStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("DelayStatement:\n"
                     "  filename: delaystatement.v\n"
                     "  line: 14\n"
@@ -2393,7 +2393,7 @@ TEST(YAMLImporter, Instancelist)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Instancelist.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Instancelist:\n"
                     "  filename: instancelist.v\n"
                     "  line: 12\n"
@@ -2416,7 +2416,7 @@ TEST(YAMLImporter, Instance)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Instance.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Instance:\n"
                     "  filename: instance.v\n"
                     "  line: 8\n"
@@ -2443,7 +2443,7 @@ TEST(YAMLImporter, ParamArg)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.ParamArg.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("ParamArg:\n"
                     "  filename: paramarg.v\n"
                     "  line: 8\n"
@@ -2464,7 +2464,7 @@ TEST(YAMLImporter, PortArg)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.PortArg.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("PortArg:\n"
                     "  filename: portarg.v\n"
                     "  line: 7\n"
@@ -2485,7 +2485,7 @@ TEST(YAMLImporter, Function)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Function.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Function:\n"
                     "  filename: function.v\n"
                     "  line: 8\n"
@@ -2517,7 +2517,7 @@ TEST(YAMLImporter, FunctionCall)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.FunctionCall.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("FunctionCall:\n"
                     "  filename: functioncall.v\n"
                     "  line: 12\n"
@@ -2538,7 +2538,7 @@ TEST(YAMLImporter, Task)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Task.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Task:\n"
                     "  filename: task.v\n"
                     "  line: 4\n"
@@ -2563,7 +2563,7 @@ TEST(YAMLImporter, TaskCall)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.TaskCall.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("TaskCall:\n"
                     "  filename: taskcall.v\n"
                     "  line: 8\n"
@@ -2584,7 +2584,7 @@ TEST(YAMLImporter, GenerateStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.GenerateStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("GenerateStatement:\n"
                     "  filename: generatestatement.v\n"
                     "  line: 17\n"
@@ -2603,7 +2603,7 @@ TEST(YAMLImporter, SystemCall)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.SystemCall.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("SystemCall:\n"
                     "  filename: systemcall.v\n"
                     "  line: 10\n"
@@ -2624,7 +2624,7 @@ TEST(YAMLImporter, IdentifierScopeLabel)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.IdentifierScopeLabel.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("IdentifierScopeLabel:\n"
                     "  filename: identifierscopelabel.v\n"
                     "  line: 20\n"
@@ -2646,7 +2646,7 @@ TEST(YAMLImporter, IdentifierScope)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.IdentifierScope.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("IdentifierScope:\n"
                     "  filename: identifierscope.v\n"
                     "  line: 15\n"
@@ -2665,7 +2665,7 @@ TEST(YAMLImporter, Disable)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Disable.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Disable:\n"
                     "  filename: disable.v\n"
                     "  line: 7\n"
@@ -2684,7 +2684,7 @@ TEST(YAMLImporter, ParallelBlock)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.ParallelBlock.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("ParallelBlock:\n"
                     "  filename: parallelblock.v\n"
                     "  line: 13\n"
@@ -2705,7 +2705,7 @@ TEST(YAMLImporter, SingleStatement)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.SingleStatement.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("SingleStatement:\n"
                     "  filename: singlestatement.v\n"
                     "  line: 15\n"
@@ -2728,7 +2728,7 @@ TEST(YAMLImporter, EnumItem)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.EnumItem.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("EnumItem:\n"
                     "  filename: enumitem.v\n"
                     "  line: 8\n"
@@ -2749,7 +2749,7 @@ TEST(YAMLImporter, EnumDef)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.EnumDef.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("EnumDef:\n"
                     "  filename: enumdef.v\n"
                     "  line: 7\n"
@@ -2775,7 +2775,7 @@ TEST(YAMLImporter, Typedef)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.Typedef.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("Typedef:\n"
                     "  filename: typedef.v\n"
                     "  line: 7\n"
@@ -2796,7 +2796,7 @@ TEST(YAMLImporter, StructMember)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.StructMember.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("StructMember:\n"
                     "  filename: structmember.v\n"
                     "  line: 12\n"
@@ -2821,7 +2821,7 @@ TEST(YAMLImporter, StructDef)
 {
     Logger::remove_all_sinks();
     Logger::add_text_sink("YAMLImporter.StructDef.log");
-    Logger::add_stdout_sink();
+    Logger::add_stderr_sink();
     std::string str("StructDef:\n"
                     "  filename: structdef.v\n"
                     "  line: 9\n"

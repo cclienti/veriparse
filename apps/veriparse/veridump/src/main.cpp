@@ -30,18 +30,11 @@ static void show_usage(char const *const progname,
 static int veridump(int argc, char *argv[])
 {
     //-----------------------------------------------------------
-    // Prepare logger
-    //-----------------------------------------------------------
-
-    Veriparse::Logger::remove_all_sinks();
-    Veriparse::Logger::add_text_sink("veridump.log");
-    Veriparse::Logger::add_stdout_sink();
-
-    //-----------------------------------------------------------
     // Parse command line
     //-----------------------------------------------------------
 
     std::string output;
+    std::string log_file;
     std::string format;
     bool sv_mode = false;
     std::vector<std::string> inputs;
@@ -61,7 +54,9 @@ static int veridump(int argc, char *argv[])
         "define,D", boost::program_options::value<std::vector<std::string>>(&defines),
         "Predefine a macro as NAME or NAME=BODY (repeatable)")(
         "undef,U", boost::program_options::value<std::vector<std::string>>(&undefs),
-        "Cancel a predefine NAME (repeatable)");
+        "Cancel a predefine NAME (repeatable)")(
+        "log", boost::program_options::value<std::string>(&log_file),
+        "Log to FILE instead of stderr");
 
     boost::program_options::options_description hidden("positional");
     hidden.add_options()("verilog-file",
@@ -83,6 +78,19 @@ static int veridump(int argc, char *argv[])
                       .positional(pos)
                       .run();
     boost::program_options::store(parsed, vm);
+
+    //-----------------------------------------------------------
+    // Prepare logger: --log FILE captures the log into FILE; otherwise
+    // records go to stderr. Read vm directly so logging is ready before
+    // the notify() below can raise.
+    //-----------------------------------------------------------
+
+    Veriparse::Logger::remove_all_sinks();
+    if(vm.count("log")) {
+        Veriparse::Logger::add_text_sink(vm["log"].as<std::string>());
+    } else {
+        Veriparse::Logger::add_stderr_sink();
+    }
 
     if(vm.count("help")) {
         show_usage(argv[0], desc);

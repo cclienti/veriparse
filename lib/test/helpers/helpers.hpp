@@ -21,7 +21,7 @@
 	  \
 	Logger::remove_all_sinks(); \
 	Logger::add_text_sink(test_string + ".log"); \
-	Logger::add_stdout_sink(); \
+	Logger::add_stderr_sink(); \
 	\
 	LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version() \
 	         << " - " << Veriparse::Version::get_sha1()

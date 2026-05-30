@@ -14,7 +14,7 @@ using namespace Veriparse;
 TEST(YAMLImporter, MySource) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLImporter.MySource.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 	std::string str("Source:\n"
 	                "  filename:  test.v\n"
@@ -71,7 +71,7 @@ TEST(YAMLImporter, MySource) {
 TEST(YAMLImporter, {{ ntype }}) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("YAMLImporter.{{ ntype }}.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 	{%- set seed = random_seed(0) %}
 	std::string str (

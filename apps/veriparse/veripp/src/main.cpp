@@ -30,6 +30,7 @@ static int veripp(int argc, char *argv[])
     //-----------------------------------------------------------
 
     std::string output;
+    std::string log_file;
     Veriparse::Parser::PreprocessorOptions opts;
     std::vector<std::string> inputs;
 
@@ -43,7 +44,8 @@ static int veripp(int argc, char *argv[])
         "Predefine a macro as NAME or NAME=BODY (repeatable)")(
         "undef,U", po::value<std::vector<std::string>>(&opts.undefs),
         "Cancel a predefine NAME (repeatable)")("sv", po::bool_switch(&opts.sv_mode),
-                                                "Enable SystemVerilog mode");
+                                                "Enable SystemVerilog mode")(
+        "log", po::value<std::string>(&log_file), "Log to FILE instead of stderr");
 
     po::options_description hidden("positional");
     hidden.add_options()("verilog-file", po::value<std::vector<std::string>>(&inputs),
@@ -87,13 +89,17 @@ static int veripp(int argc, char *argv[])
     }
 
     //-----------------------------------------------------------
-    // Prepare logger — keep stdout clean for the preprocessed
-    // stream when -o is omitted; route diagnostics to veripp.log
-    // only.
+    // Prepare logger — keep stdout clean for the preprocessed stream
+    // (emitted to stdout when -o is omitted): diagnostics go to stderr
+    // by default, or to FILE when --log FILE is given.
     //-----------------------------------------------------------
 
     Veriparse::Logger::remove_all_sinks();
-    Veriparse::Logger::add_text_sink("veripp.log");
+    if(!log_file.empty()) {
+        Veriparse::Logger::add_text_sink(log_file);
+    } else {
+        Veriparse::Logger::add_stderr_sink();
+    }
 
     LOG_INFO << "Veriparse version: " << Veriparse::Version::get_version() << " - "
              << Veriparse::Version::get_sha1();

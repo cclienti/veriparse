@@ -56,8 +56,8 @@ BOOST_LOG_GLOBAL_LOGGER_INIT(logger, boost::log::sources::severity_logger_mt)
     return logger;
 }
 
-// add stdout sink
-void add_stdout_sink(void)
+// add stderr sink (std::clog)
+void add_stderr_sink(void)
 {
     typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend> ostream_sink_t;
     boost::shared_ptr<ostream_sink_t> ostream_sink = boost::make_shared<ostream_sink_t>();

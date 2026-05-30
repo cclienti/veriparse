@@ -28,14 +28,6 @@ static void show_usage(char const *const progname,
 static int veriobf(int argc, char *argv[])
 {
     //---------------------------------------------------------
-    // Prepare logger
-    //---------------------------------------------------------
-
-    Veriparse::Logger::remove_all_sinks();
-    Veriparse::Logger::add_text_sink("veriobf.log");
-    Veriparse::Logger::add_stdout_sink();
-
-    //---------------------------------------------------------
     // Parse command line
     //---------------------------------------------------------
 
@@ -60,7 +52,8 @@ static int veriobf(int argc, char *argv[])
         "undef,U", boost::program_options::value<std::vector<std::string>>(&config.undefs),
         "Cancel a predefine NAME (repeatable)")(
         "seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0),
-        "Seed value");
+        "Seed value")("log", boost::program_options::value<std::string>(&config.log_file),
+                      "Log to FILE instead of stderr");
 
     boost::program_options::options_description hidden("positional");
     hidden.add_options()("verilog-file", boost::program_options::value<std::string>(&config.input),
@@ -80,6 +73,19 @@ static int veriobf(int argc, char *argv[])
     boost::program_options::command_line_parser parser(argc, argv);
     auto parsed = parser.options(desc_all).positional(pos).run();
     boost::program_options::store(parsed, vm);
+
+    //---------------------------------------------------------
+    // Prepare logger: --log FILE captures the log into FILE; otherwise
+    // records go to stderr. Read vm directly so logging is ready before
+    // the notify() below can raise.
+    //---------------------------------------------------------
+
+    Veriparse::Logger::remove_all_sinks();
+    if(vm.count("log")) {
+        Veriparse::Logger::add_text_sink(vm["log"].as<std::string>());
+    } else {
+        Veriparse::Logger::add_stderr_sink();
+    }
 
     if(vm.count("help")) {
         show_usage(argv[0], desc);

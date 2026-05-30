@@ -9,7 +9,7 @@ using namespace Veriparse;
 TEST(NodeTest, ConstructorTest) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("NodeTest.ConstructorTest.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 	AST::Wire wire1;
 	AST::Wire wire2("test", 5);
@@ -34,7 +34,7 @@ TEST(NodeTest, ConstructorTest) {
 TEST(NodeTest, OperatorEqualOrNot) {
 	Logger::remove_all_sinks();
 	Logger::add_text_sink("NodeTest.OperatorEqualOrNot.log");
-	Logger::add_stdout_sink();
+	Logger::add_stderr_sink();
 
 	AST::Reg node1(nullptr, nullptr, nullptr, false, "reg");
 	AST::Reg node2(nullptr, nullptr, nullptr, false, "reg");

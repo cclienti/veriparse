@@ -25,7 +25,7 @@ static TestHelpers test_helpers("lib/test/parser/testcases/");
                                                                                                    \
     Logger::remove_all_sinks();                                                                    \
     Logger::add_text_sink(test_string + ".log");                                                   \
-    Logger::add_stdout_sink();                                                                     \
+    Logger::add_stderr_sink();                                                                     \
                                                                                                    \
     /* Render the ref YAML file */                                                                 \
     AST::Node::Ptr source_ref =                                                                    \
@@ -52,7 +52,7 @@ static TestHelpers test_helpers("lib/test/parser/testcases/");
                                                                                                    \
     Logger::remove_all_sinks();                                                                    \
     Logger::add_text_sink(test_string + ".log");                                                   \
-    Logger::add_stdout_sink();                                                                     \
+    Logger::add_stderr_sink();                                                                     \
                                                                                                    \
     /* Render the ref YAML file */                                                                 \
     AST::Node::Ptr source_ref =                                                                    \
