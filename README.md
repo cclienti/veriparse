@@ -41,11 +41,8 @@ options:
 
 **Example:**
 ```sh
-# Pre-process with iverilog
-iverilog -E -g2005 -I src/ src/top.v src/sub.v -o top_pp.v
-
-# Flatten, keeping FIFO_WIDTH as a parameter
-veriflat -p '{FIFO_WIDTH:}' --seed 0 --top-module top top_pp.v --output top_flat.v
+# Flatten, keeping FIFO_WIDTH as a parameter (preprocessing is built in)
+veriflat -p '{FIFO_WIDTH:}' --seed 0 --top-module top -I src/ src/top.v src/sub.v --output top_flat.v
 ```
 
 
@@ -179,19 +176,6 @@ veriobf --id-length 16 --seed 0 top_flat.v --output top_obf.v
 
 ---
 
-### `veriparse` — All-in-One Script
-
-A convenience shell script that chains the pre-processing (iverilog), flattening (veriflat), and obfuscation (veriobf) steps into a single command.
-
-```sh
-veriparse -o output.v \
-          -t top_module \
-          -p '{FIFO_WIDTH:}' \
-          src/*.v
-```
-
----
-
 ## Transformation Passes
 
 The library implements the following transformation passes:
@@ -263,7 +247,6 @@ veriparse/
 | GMP / GMPXX | 6.3.0 | Arbitrary precision arithmetic |
 | GoogleTest | 1.17.0 | Unit testing |
 | Verilator | 5.x | Cosim test suite (build-time) |
-| iverilog | any | Verilog pre-processing for the `veriparse` script (runtime) |
 
 ---
 
