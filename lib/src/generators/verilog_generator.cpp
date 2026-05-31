@@ -168,6 +168,16 @@ std::string VerilogGenerator::render_import(const AST::Import::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_scopedref(const AST::ScopedRef::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result =
+            StringUtils::escape(node->get_package()) + "::" + StringUtils::escape(node->get_name());
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_port(const AST::Port::Ptr node) const
 {
     std::string result;
