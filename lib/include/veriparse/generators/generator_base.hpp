@@ -425,6 +425,12 @@ public:
             case AST::NodeType::StructDef:
                 return render_structdef(AST::cast_to<AST::StructDef>(node));
 
+            case AST::NodeType::Package:
+                return render_package(AST::cast_to<AST::Package>(node));
+
+            case AST::NodeType::Import:
+                return render_import(AST::cast_to<AST::Import>(node));
+
             default:
                 return render_node(node);
             }
@@ -1478,6 +1484,22 @@ public:
      */
     T render(const AST::StructDef::Ptr node) const { return render_structdef(node); }
 
+    /**
+     * Main rendering method for the Package node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_package(const AST::Package::Ptr &node)
+     */
+    T render(const AST::Package::Ptr node) const { return render_package(node); }
+
+    /**
+     * Main rendering method for the Import node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_import(const AST::Import::Ptr &node)
+     */
+    T render(const AST::Import::Ptr node) const { return render_import(node); }
+
 protected:
     /**
      * Render the Node base class. This method must be overloaded
@@ -2267,6 +2289,18 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_structdef(const AST::StructDef::Ptr node) const { return T(); }
+
+    /**
+     * Render the Package node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_package(const AST::Package::Ptr node) const { return T(); }
+
+    /**
+     * Render the Import node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_import(const AST::Import::Ptr node) const { return T(); }
 
 private:
     std::string m_indent_str;

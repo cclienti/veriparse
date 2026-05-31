@@ -392,6 +392,12 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::StructDef:
         os << static_cast<const AST::StructDef &>(p);
         break;
+    case NodeType::Package:
+        os << static_cast<const AST::Package &>(p);
+        break;
+    case NodeType::Import:
+        os << static_cast<const AST::Import &>(p);
+        break;
     default:
         os << "Node: {}";
     }

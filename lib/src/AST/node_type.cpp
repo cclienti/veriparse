@@ -267,6 +267,10 @@ const char *NodeTypeToString(NodeType node_type)
         return "StructMember";
     case NodeType::StructDef:
         return "StructDef";
+    case NodeType::Package:
+        return "Package";
+    case NodeType::Import:
+        return "Import";
     default:
         return "Unknown NodeType";
     }
@@ -283,8 +287,9 @@ std::ostream &operator<<(std::ostream &os, const std::vector<NodeType> &node_cat
     os << "[";
     for(const NodeType &cat : node_categories) {
         os << NodeTypeToString(cat);
-        if(cat != node_categories.back())
+        if(cat != node_categories.back()) {
             os << ", ";
+        }
     }
     os << "]";
     return os;

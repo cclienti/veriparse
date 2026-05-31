@@ -436,6 +436,12 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["StructDef"]) {
             return convert_structdef(node["StructDef"]);
         }
+        if(node["Package"]) {
+            return convert_package(node["Package"]);
+        }
+        if(node["Import"]) {
+            return convert_import(node["Import"]);
+        }
     }
 
     return AST::Node::Ptr(nullptr);
@@ -453,15 +459,17 @@ AST::Node::Ptr YAMLImporter::convert_source(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Source>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Source>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -473,8 +481,9 @@ AST::Node::Ptr YAMLImporter::convert_source(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_description);
             if(child) {
                 AST::Description::Ptr child_cast = AST::cast_to<AST::Description>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Source>();
+                }
                 result->set_description(child_cast);
             }
         }
@@ -490,15 +499,17 @@ AST::Node::Ptr YAMLImporter::convert_description(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Description>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Description>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -524,8 +535,9 @@ AST::Node::Ptr YAMLImporter::convert_description(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Description>();
+            }
             result->set_definitions(definitions_list);
         }
     }
@@ -540,15 +552,17 @@ AST::Node::Ptr YAMLImporter::convert_pragmalist(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pragmalist>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pragmalist>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -576,8 +590,9 @@ AST::Node::Ptr YAMLImporter::convert_pragmalist(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Pragmalist>();
+            }
             result->set_pragmas(pragmas_list);
         }
 
@@ -602,8 +617,9 @@ AST::Node::Ptr YAMLImporter::convert_pragmalist(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Pragmalist>();
+            }
             result->set_statements(statements_list);
         }
     }
@@ -618,15 +634,17 @@ AST::Node::Ptr YAMLImporter::convert_pragma(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pragma>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pragma>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -634,8 +652,9 @@ AST::Node::Ptr YAMLImporter::convert_pragma(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pragma>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -646,8 +665,9 @@ AST::Node::Ptr YAMLImporter::convert_pragma(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_expression);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pragma>();
+                }
                 result->set_expression(child);
             }
         }
@@ -663,15 +683,17 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Module>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Module>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -679,8 +701,9 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Module>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -688,8 +711,9 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
         if(node["default_nettype"]) {
             if(node["default_nettype"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Module>();
+                }
                 result->set_default_nettype(
                     node["default_nettype"].as<AST::Module::Default_nettypeEnum>());
             }
@@ -717,8 +741,9 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Module>();
+            }
             result->set_params(params_list);
         }
 
@@ -742,8 +767,9 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Module>();
+            }
             result->set_ports(ports_list);
         }
 
@@ -767,8 +793,9 @@ AST::Node::Ptr YAMLImporter::convert_module(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Module>();
+            }
             result->set_items(items_list);
         }
     }
@@ -783,15 +810,17 @@ AST::Node::Ptr YAMLImporter::convert_port(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Port>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Port>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -799,8 +828,9 @@ AST::Node::Ptr YAMLImporter::convert_port(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Port>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -827,8 +857,9 @@ AST::Node::Ptr YAMLImporter::convert_port(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Port>();
+            }
             result->set_widths(widths_list);
         }
     }
@@ -843,15 +874,17 @@ AST::Node::Ptr YAMLImporter::convert_width(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Width>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Width>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -862,8 +895,9 @@ AST::Node::Ptr YAMLImporter::convert_width(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_msb);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Width>();
+                }
                 result->set_msb(child);
             }
         }
@@ -874,8 +908,9 @@ AST::Node::Ptr YAMLImporter::convert_width(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_lsb);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Width>();
+                }
                 result->set_lsb(child);
             }
         }
@@ -891,15 +926,17 @@ AST::Node::Ptr YAMLImporter::convert_length(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Length>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Length>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -910,8 +947,9 @@ AST::Node::Ptr YAMLImporter::convert_length(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_msb);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Length>();
+                }
                 result->set_msb(child);
             }
         }
@@ -922,8 +960,9 @@ AST::Node::Ptr YAMLImporter::convert_length(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_lsb);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Length>();
+                }
                 result->set_lsb(child);
             }
         }
@@ -939,15 +978,17 @@ AST::Node::Ptr YAMLImporter::convert_identifier(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Identifier>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Identifier>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -955,8 +996,9 @@ AST::Node::Ptr YAMLImporter::convert_identifier(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Identifier>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -968,8 +1010,9 @@ AST::Node::Ptr YAMLImporter::convert_identifier(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_scope);
             if(child) {
                 AST::IdentifierScope::Ptr child_cast = AST::cast_to<AST::IdentifierScope>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Identifier>();
+                }
                 result->set_scope(child_cast);
             }
         }
@@ -985,15 +1028,17 @@ AST::Node::Ptr YAMLImporter::convert_constant(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Constant>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Constant>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1009,15 +1054,17 @@ AST::Node::Ptr YAMLImporter::convert_stringconst(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StringConst>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StringConst>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1025,8 +1072,9 @@ AST::Node::Ptr YAMLImporter::convert_stringconst(const YAML::Node node) const
         if(node["value"]) {
             if(node["value"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StringConst>();
+                }
                 result->set_value(node["value"].as<std::string>());
             }
         }
@@ -1042,15 +1090,17 @@ AST::Node::Ptr YAMLImporter::convert_intconst(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConst>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConst>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1058,8 +1108,9 @@ AST::Node::Ptr YAMLImporter::convert_intconst(const YAML::Node node) const
         if(node["value"]) {
             if(node["value"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConst>();
+                }
                 result->set_value(node["value"].as<std::string>());
             }
         }
@@ -1075,15 +1126,17 @@ AST::Node::Ptr YAMLImporter::convert_intconstn(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConstN>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConstN>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1091,8 +1144,9 @@ AST::Node::Ptr YAMLImporter::convert_intconstn(const YAML::Node node) const
         if(node["base"]) {
             if(node["base"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConstN>();
+                }
                 result->set_base(node["base"].as<int>());
             }
         }
@@ -1100,8 +1154,9 @@ AST::Node::Ptr YAMLImporter::convert_intconstn(const YAML::Node node) const
         if(node["size"]) {
             if(node["size"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConstN>();
+                }
                 result->set_size(node["size"].as<int>());
             }
         }
@@ -1109,8 +1164,9 @@ AST::Node::Ptr YAMLImporter::convert_intconstn(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConstN>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -1118,8 +1174,9 @@ AST::Node::Ptr YAMLImporter::convert_intconstn(const YAML::Node node) const
         if(node["value"]) {
             if(node["value"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IntConstN>();
+                }
                 result->set_value(node["value"].as<mpz_class>());
             }
         }
@@ -1135,15 +1192,17 @@ AST::Node::Ptr YAMLImporter::convert_floatconst(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::FloatConst>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::FloatConst>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1151,8 +1210,9 @@ AST::Node::Ptr YAMLImporter::convert_floatconst(const YAML::Node node) const
         if(node["value"]) {
             if(node["value"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::FloatConst>();
+                }
                 result->set_value(node["value"].as<double>());
             }
         }
@@ -1168,15 +1228,17 @@ AST::Node::Ptr YAMLImporter::convert_iodir(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IODir>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IODir>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1184,8 +1246,9 @@ AST::Node::Ptr YAMLImporter::convert_iodir(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IODir>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1193,8 +1256,9 @@ AST::Node::Ptr YAMLImporter::convert_iodir(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IODir>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -1221,8 +1285,9 @@ AST::Node::Ptr YAMLImporter::convert_iodir(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::IODir>();
+            }
             result->set_widths(widths_list);
         }
     }
@@ -1237,15 +1302,17 @@ AST::Node::Ptr YAMLImporter::convert_input(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Input>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Input>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1253,8 +1320,9 @@ AST::Node::Ptr YAMLImporter::convert_input(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Input>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1262,8 +1330,9 @@ AST::Node::Ptr YAMLImporter::convert_input(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Input>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -1290,8 +1359,9 @@ AST::Node::Ptr YAMLImporter::convert_input(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Input>();
+            }
             result->set_widths(widths_list);
         }
     }
@@ -1306,15 +1376,17 @@ AST::Node::Ptr YAMLImporter::convert_output(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Output>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Output>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1322,8 +1394,9 @@ AST::Node::Ptr YAMLImporter::convert_output(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Output>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1331,8 +1404,9 @@ AST::Node::Ptr YAMLImporter::convert_output(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Output>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -1359,8 +1433,9 @@ AST::Node::Ptr YAMLImporter::convert_output(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Output>();
+            }
             result->set_widths(widths_list);
         }
     }
@@ -1375,15 +1450,17 @@ AST::Node::Ptr YAMLImporter::convert_inout(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Inout>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Inout>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1391,8 +1468,9 @@ AST::Node::Ptr YAMLImporter::convert_inout(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Inout>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1400,8 +1478,9 @@ AST::Node::Ptr YAMLImporter::convert_inout(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Inout>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -1428,8 +1507,9 @@ AST::Node::Ptr YAMLImporter::convert_inout(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Inout>();
+            }
             result->set_widths(widths_list);
         }
     }
@@ -1444,15 +1524,17 @@ AST::Node::Ptr YAMLImporter::convert_variablebase(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::VariableBase>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::VariableBase>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1460,8 +1542,9 @@ AST::Node::Ptr YAMLImporter::convert_variablebase(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::VariableBase>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1477,15 +1560,17 @@ AST::Node::Ptr YAMLImporter::convert_genvar(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Genvar>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Genvar>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1493,8 +1578,9 @@ AST::Node::Ptr YAMLImporter::convert_genvar(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Genvar>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1510,15 +1596,17 @@ AST::Node::Ptr YAMLImporter::convert_variable(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Variable>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Variable>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1526,8 +1614,9 @@ AST::Node::Ptr YAMLImporter::convert_variable(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Variable>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1555,8 +1644,9 @@ AST::Node::Ptr YAMLImporter::convert_variable(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Variable>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -1567,8 +1657,9 @@ AST::Node::Ptr YAMLImporter::convert_variable(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Variable>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -1584,15 +1675,17 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Net>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Net>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1600,8 +1693,9 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Net>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -1609,8 +1703,9 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Net>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1637,8 +1732,9 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Net>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -1649,8 +1745,9 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Net>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -1662,8 +1759,9 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Net>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -1691,8 +1789,9 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Net>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -1703,8 +1802,9 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Net>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -1720,15 +1820,17 @@ AST::Node::Ptr YAMLImporter::convert_integer(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Integer>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Integer>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1736,8 +1838,9 @@ AST::Node::Ptr YAMLImporter::convert_integer(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Integer>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1765,8 +1868,9 @@ AST::Node::Ptr YAMLImporter::convert_integer(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Integer>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -1777,8 +1881,9 @@ AST::Node::Ptr YAMLImporter::convert_integer(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Integer>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -1794,15 +1899,17 @@ AST::Node::Ptr YAMLImporter::convert_real(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Real>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Real>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1810,8 +1917,9 @@ AST::Node::Ptr YAMLImporter::convert_real(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Real>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1839,8 +1947,9 @@ AST::Node::Ptr YAMLImporter::convert_real(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Real>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -1851,8 +1960,9 @@ AST::Node::Ptr YAMLImporter::convert_real(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Real>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -1868,15 +1978,17 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Tri>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Tri>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -1884,8 +1996,9 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Tri>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -1893,8 +2006,9 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Tri>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -1921,8 +2035,9 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Tri>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -1933,8 +2048,9 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Tri>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -1946,8 +2062,9 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Tri>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -1975,8 +2092,9 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Tri>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -1987,8 +2105,9 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Tri>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -2004,15 +2123,17 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Wire>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Wire>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2020,8 +2141,9 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Wire>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -2029,8 +2151,9 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Wire>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -2057,8 +2180,9 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Wire>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -2069,8 +2193,9 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Wire>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -2082,8 +2207,9 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Wire>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -2111,8 +2237,9 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Wire>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -2123,8 +2250,9 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Wire>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -2140,15 +2268,17 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply0>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply0>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2156,8 +2286,9 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply0>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -2165,8 +2296,9 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply0>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -2193,8 +2325,9 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Supply0>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -2205,8 +2338,9 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply0>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -2218,8 +2352,9 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply0>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -2247,8 +2382,9 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Supply0>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -2259,8 +2395,9 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply0>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -2276,15 +2413,17 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply1>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply1>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2292,8 +2431,9 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply1>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -2301,8 +2441,9 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply1>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -2329,8 +2470,9 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Supply1>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -2341,8 +2483,9 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply1>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -2354,8 +2497,9 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply1>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -2383,8 +2527,9 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Supply1>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -2395,8 +2540,9 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Supply1>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -2412,15 +2558,17 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Logic>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Logic>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2428,8 +2576,9 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Logic>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -2437,8 +2586,9 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Logic>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -2465,8 +2615,9 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Logic>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -2477,8 +2628,9 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Logic>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -2490,8 +2642,9 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Logic>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -2519,8 +2672,9 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Logic>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -2531,8 +2685,9 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Logic>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -2548,15 +2703,17 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Reg>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Reg>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2564,8 +2721,9 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Reg>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -2573,8 +2731,9 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Reg>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -2601,8 +2760,9 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Reg>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -2629,8 +2789,9 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Reg>();
+            }
             result->set_lengths(lengths_list);
         }
 
@@ -2641,8 +2802,9 @@ AST::Node::Ptr YAMLImporter::convert_reg(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Reg>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -2658,15 +2820,17 @@ AST::Node::Ptr YAMLImporter::convert_ioport(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Ioport>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Ioport>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2678,8 +2842,9 @@ AST::Node::Ptr YAMLImporter::convert_ioport(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_first);
             if(child) {
                 AST::IODir::Ptr child_cast = AST::cast_to<AST::IODir>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Ioport>();
+                }
                 result->set_first(child_cast);
             }
         }
@@ -2691,8 +2856,9 @@ AST::Node::Ptr YAMLImporter::convert_ioport(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_second);
             if(child) {
                 AST::Variable::Ptr child_cast = AST::cast_to<AST::Variable>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Ioport>();
+                }
                 result->set_second(child_cast);
             }
         }
@@ -2708,15 +2874,17 @@ AST::Node::Ptr YAMLImporter::convert_parameter(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Parameter>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Parameter>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2724,8 +2892,9 @@ AST::Node::Ptr YAMLImporter::convert_parameter(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Parameter>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -2733,8 +2902,9 @@ AST::Node::Ptr YAMLImporter::convert_parameter(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Parameter>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -2742,8 +2912,9 @@ AST::Node::Ptr YAMLImporter::convert_parameter(const YAML::Node node) const
         if(node["type"]) {
             if(node["type"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Parameter>();
+                }
                 result->set_type(node["type"].as<AST::Parameter::TypeEnum>());
             }
         }
@@ -2754,8 +2925,9 @@ AST::Node::Ptr YAMLImporter::convert_parameter(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_value);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Parameter>();
+                }
                 result->set_value(child);
             }
         }
@@ -2782,8 +2954,9 @@ AST::Node::Ptr YAMLImporter::convert_parameter(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Parameter>();
+            }
             result->set_widths(widths_list);
         }
     }
@@ -2798,15 +2971,17 @@ AST::Node::Ptr YAMLImporter::convert_localparam(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Localparam>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Localparam>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2814,8 +2989,9 @@ AST::Node::Ptr YAMLImporter::convert_localparam(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Localparam>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -2823,8 +2999,9 @@ AST::Node::Ptr YAMLImporter::convert_localparam(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Localparam>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -2832,8 +3009,9 @@ AST::Node::Ptr YAMLImporter::convert_localparam(const YAML::Node node) const
         if(node["type"]) {
             if(node["type"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Localparam>();
+                }
                 result->set_type(node["type"].as<AST::Parameter::TypeEnum>());
             }
         }
@@ -2844,8 +3022,9 @@ AST::Node::Ptr YAMLImporter::convert_localparam(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_value);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Localparam>();
+                }
                 result->set_value(child);
             }
         }
@@ -2872,8 +3051,9 @@ AST::Node::Ptr YAMLImporter::convert_localparam(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Localparam>();
+            }
             result->set_widths(widths_list);
         }
     }
@@ -2888,15 +3068,17 @@ AST::Node::Ptr YAMLImporter::convert_concat(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Concat>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Concat>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2921,8 +3103,9 @@ AST::Node::Ptr YAMLImporter::convert_concat(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Concat>();
+            }
             result->set_list(list_list);
         }
     }
@@ -2937,15 +3120,17 @@ AST::Node::Ptr YAMLImporter::convert_lconcat(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lconcat>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lconcat>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -2970,8 +3155,9 @@ AST::Node::Ptr YAMLImporter::convert_lconcat(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Lconcat>();
+            }
             result->set_list(list_list);
         }
     }
@@ -2986,15 +3172,17 @@ AST::Node::Ptr YAMLImporter::convert_repeat(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Repeat>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Repeat>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3005,8 +3193,9 @@ AST::Node::Ptr YAMLImporter::convert_repeat(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_value);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Repeat>();
+                }
                 result->set_value(child);
             }
         }
@@ -3017,8 +3206,9 @@ AST::Node::Ptr YAMLImporter::convert_repeat(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_times);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Repeat>();
+                }
                 result->set_times(child);
             }
         }
@@ -3034,15 +3224,17 @@ AST::Node::Ptr YAMLImporter::convert_indirect(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Indirect>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Indirect>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3053,8 +3245,9 @@ AST::Node::Ptr YAMLImporter::convert_indirect(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Indirect>();
+                }
                 result->set_var(child);
             }
         }
@@ -3070,15 +3263,17 @@ AST::Node::Ptr YAMLImporter::convert_partselect(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Partselect>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Partselect>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3089,8 +3284,9 @@ AST::Node::Ptr YAMLImporter::convert_partselect(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_msb);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Partselect>();
+                }
                 result->set_msb(child);
             }
         }
@@ -3101,8 +3297,9 @@ AST::Node::Ptr YAMLImporter::convert_partselect(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_lsb);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Partselect>();
+                }
                 result->set_lsb(child);
             }
         }
@@ -3113,8 +3310,9 @@ AST::Node::Ptr YAMLImporter::convert_partselect(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Partselect>();
+                }
                 result->set_var(child);
             }
         }
@@ -3130,15 +3328,17 @@ AST::Node::Ptr YAMLImporter::convert_partselectindexed(const YAML::Node node) co
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectIndexed>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectIndexed>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3149,8 +3349,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectindexed(const YAML::Node node) co
             // Set the child
             AST::Node::Ptr child = convert(node_index);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectIndexed>();
+                }
                 result->set_index(child);
             }
         }
@@ -3161,8 +3362,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectindexed(const YAML::Node node) co
             // Set the child
             AST::Node::Ptr child = convert(node_size);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectIndexed>();
+                }
                 result->set_size(child);
             }
         }
@@ -3173,8 +3375,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectindexed(const YAML::Node node) co
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectIndexed>();
+                }
                 result->set_var(child);
             }
         }
@@ -3190,15 +3393,17 @@ AST::Node::Ptr YAMLImporter::convert_partselectplusindexed(const YAML::Node node
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectPlusIndexed>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectPlusIndexed>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3209,8 +3414,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectplusindexed(const YAML::Node node
             // Set the child
             AST::Node::Ptr child = convert(node_index);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectPlusIndexed>();
+                }
                 result->set_index(child);
             }
         }
@@ -3221,8 +3427,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectplusindexed(const YAML::Node node
             // Set the child
             AST::Node::Ptr child = convert(node_size);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectPlusIndexed>();
+                }
                 result->set_size(child);
             }
         }
@@ -3233,8 +3440,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectplusindexed(const YAML::Node node
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectPlusIndexed>();
+                }
                 result->set_var(child);
             }
         }
@@ -3250,15 +3458,17 @@ AST::Node::Ptr YAMLImporter::convert_partselectminusindexed(const YAML::Node nod
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectMinusIndexed>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectMinusIndexed>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3269,8 +3479,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectminusindexed(const YAML::Node nod
             // Set the child
             AST::Node::Ptr child = convert(node_index);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectMinusIndexed>();
+                }
                 result->set_index(child);
             }
         }
@@ -3281,8 +3492,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectminusindexed(const YAML::Node nod
             // Set the child
             AST::Node::Ptr child = convert(node_size);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectMinusIndexed>();
+                }
                 result->set_size(child);
             }
         }
@@ -3293,8 +3505,9 @@ AST::Node::Ptr YAMLImporter::convert_partselectminusindexed(const YAML::Node nod
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PartselectMinusIndexed>();
+                }
                 result->set_var(child);
             }
         }
@@ -3310,15 +3523,17 @@ AST::Node::Ptr YAMLImporter::convert_pointer(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pointer>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pointer>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3329,8 +3544,9 @@ AST::Node::Ptr YAMLImporter::convert_pointer(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_ptr);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pointer>();
+                }
                 result->set_ptr(child);
             }
         }
@@ -3341,8 +3557,9 @@ AST::Node::Ptr YAMLImporter::convert_pointer(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Pointer>();
+                }
                 result->set_var(child);
             }
         }
@@ -3358,15 +3575,17 @@ AST::Node::Ptr YAMLImporter::convert_lvalue(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lvalue>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lvalue>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3377,8 +3596,9 @@ AST::Node::Ptr YAMLImporter::convert_lvalue(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lvalue>();
+                }
                 result->set_var(child);
             }
         }
@@ -3394,15 +3614,17 @@ AST::Node::Ptr YAMLImporter::convert_rvalue(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Rvalue>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Rvalue>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3413,8 +3635,9 @@ AST::Node::Ptr YAMLImporter::convert_rvalue(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_var);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Rvalue>();
+                }
                 result->set_var(child);
             }
         }
@@ -3430,15 +3653,17 @@ AST::Node::Ptr YAMLImporter::convert_unaryoperator(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::UnaryOperator>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::UnaryOperator>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3449,8 +3674,9 @@ AST::Node::Ptr YAMLImporter::convert_unaryoperator(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::UnaryOperator>();
+                }
                 result->set_right(child);
             }
         }
@@ -3466,15 +3692,17 @@ AST::Node::Ptr YAMLImporter::convert_uplus(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uplus>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uplus>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3485,8 +3713,9 @@ AST::Node::Ptr YAMLImporter::convert_uplus(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uplus>();
+                }
                 result->set_right(child);
             }
         }
@@ -3502,15 +3731,17 @@ AST::Node::Ptr YAMLImporter::convert_uminus(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uminus>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uminus>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3521,8 +3752,9 @@ AST::Node::Ptr YAMLImporter::convert_uminus(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uminus>();
+                }
                 result->set_right(child);
             }
         }
@@ -3538,15 +3770,17 @@ AST::Node::Ptr YAMLImporter::convert_ulnot(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Ulnot>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Ulnot>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3557,8 +3791,9 @@ AST::Node::Ptr YAMLImporter::convert_ulnot(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Ulnot>();
+                }
                 result->set_right(child);
             }
         }
@@ -3574,15 +3809,17 @@ AST::Node::Ptr YAMLImporter::convert_unot(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unot>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unot>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3593,8 +3830,9 @@ AST::Node::Ptr YAMLImporter::convert_unot(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unot>();
+                }
                 result->set_right(child);
             }
         }
@@ -3610,15 +3848,17 @@ AST::Node::Ptr YAMLImporter::convert_uand(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uand>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uand>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3629,8 +3869,9 @@ AST::Node::Ptr YAMLImporter::convert_uand(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uand>();
+                }
                 result->set_right(child);
             }
         }
@@ -3646,15 +3887,17 @@ AST::Node::Ptr YAMLImporter::convert_unand(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unand>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unand>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3665,8 +3908,9 @@ AST::Node::Ptr YAMLImporter::convert_unand(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unand>();
+                }
                 result->set_right(child);
             }
         }
@@ -3682,15 +3926,17 @@ AST::Node::Ptr YAMLImporter::convert_uor(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uor>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uor>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3701,8 +3947,9 @@ AST::Node::Ptr YAMLImporter::convert_uor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uor>();
+                }
                 result->set_right(child);
             }
         }
@@ -3718,15 +3965,17 @@ AST::Node::Ptr YAMLImporter::convert_unor(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unor>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unor>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3737,8 +3986,9 @@ AST::Node::Ptr YAMLImporter::convert_unor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Unor>();
+                }
                 result->set_right(child);
             }
         }
@@ -3754,15 +4004,17 @@ AST::Node::Ptr YAMLImporter::convert_uxor(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uxor>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uxor>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3773,8 +4025,9 @@ AST::Node::Ptr YAMLImporter::convert_uxor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uxor>();
+                }
                 result->set_right(child);
             }
         }
@@ -3790,15 +4043,17 @@ AST::Node::Ptr YAMLImporter::convert_uxnor(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uxnor>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uxnor>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3809,8 +4064,9 @@ AST::Node::Ptr YAMLImporter::convert_uxnor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Uxnor>();
+                }
                 result->set_right(child);
             }
         }
@@ -3826,15 +4082,17 @@ AST::Node::Ptr YAMLImporter::convert_operator(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Operator>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Operator>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3845,8 +4103,9 @@ AST::Node::Ptr YAMLImporter::convert_operator(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Operator>();
+                }
                 result->set_left(child);
             }
         }
@@ -3857,8 +4116,9 @@ AST::Node::Ptr YAMLImporter::convert_operator(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Operator>();
+                }
                 result->set_right(child);
             }
         }
@@ -3874,15 +4134,17 @@ AST::Node::Ptr YAMLImporter::convert_power(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Power>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Power>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3893,8 +4155,9 @@ AST::Node::Ptr YAMLImporter::convert_power(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Power>();
+                }
                 result->set_left(child);
             }
         }
@@ -3905,8 +4168,9 @@ AST::Node::Ptr YAMLImporter::convert_power(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Power>();
+                }
                 result->set_right(child);
             }
         }
@@ -3922,15 +4186,17 @@ AST::Node::Ptr YAMLImporter::convert_times(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Times>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Times>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3941,8 +4207,9 @@ AST::Node::Ptr YAMLImporter::convert_times(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Times>();
+                }
                 result->set_left(child);
             }
         }
@@ -3953,8 +4220,9 @@ AST::Node::Ptr YAMLImporter::convert_times(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Times>();
+                }
                 result->set_right(child);
             }
         }
@@ -3970,15 +4238,17 @@ AST::Node::Ptr YAMLImporter::convert_divide(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Divide>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Divide>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -3989,8 +4259,9 @@ AST::Node::Ptr YAMLImporter::convert_divide(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Divide>();
+                }
                 result->set_left(child);
             }
         }
@@ -4001,8 +4272,9 @@ AST::Node::Ptr YAMLImporter::convert_divide(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Divide>();
+                }
                 result->set_right(child);
             }
         }
@@ -4018,15 +4290,17 @@ AST::Node::Ptr YAMLImporter::convert_mod(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Mod>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Mod>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4037,8 +4311,9 @@ AST::Node::Ptr YAMLImporter::convert_mod(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Mod>();
+                }
                 result->set_left(child);
             }
         }
@@ -4049,8 +4324,9 @@ AST::Node::Ptr YAMLImporter::convert_mod(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Mod>();
+                }
                 result->set_right(child);
             }
         }
@@ -4066,15 +4342,17 @@ AST::Node::Ptr YAMLImporter::convert_plus(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Plus>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Plus>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4085,8 +4363,9 @@ AST::Node::Ptr YAMLImporter::convert_plus(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Plus>();
+                }
                 result->set_left(child);
             }
         }
@@ -4097,8 +4376,9 @@ AST::Node::Ptr YAMLImporter::convert_plus(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Plus>();
+                }
                 result->set_right(child);
             }
         }
@@ -4114,15 +4394,17 @@ AST::Node::Ptr YAMLImporter::convert_minus(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Minus>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Minus>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4133,8 +4415,9 @@ AST::Node::Ptr YAMLImporter::convert_minus(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Minus>();
+                }
                 result->set_left(child);
             }
         }
@@ -4145,8 +4428,9 @@ AST::Node::Ptr YAMLImporter::convert_minus(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Minus>();
+                }
                 result->set_right(child);
             }
         }
@@ -4162,15 +4446,17 @@ AST::Node::Ptr YAMLImporter::convert_sll(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sll>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sll>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4181,8 +4467,9 @@ AST::Node::Ptr YAMLImporter::convert_sll(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sll>();
+                }
                 result->set_left(child);
             }
         }
@@ -4193,8 +4480,9 @@ AST::Node::Ptr YAMLImporter::convert_sll(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sll>();
+                }
                 result->set_right(child);
             }
         }
@@ -4210,15 +4498,17 @@ AST::Node::Ptr YAMLImporter::convert_srl(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Srl>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Srl>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4229,8 +4519,9 @@ AST::Node::Ptr YAMLImporter::convert_srl(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Srl>();
+                }
                 result->set_left(child);
             }
         }
@@ -4241,8 +4532,9 @@ AST::Node::Ptr YAMLImporter::convert_srl(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Srl>();
+                }
                 result->set_right(child);
             }
         }
@@ -4258,15 +4550,17 @@ AST::Node::Ptr YAMLImporter::convert_sra(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sra>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sra>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4277,8 +4571,9 @@ AST::Node::Ptr YAMLImporter::convert_sra(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sra>();
+                }
                 result->set_left(child);
             }
         }
@@ -4289,8 +4584,9 @@ AST::Node::Ptr YAMLImporter::convert_sra(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sra>();
+                }
                 result->set_right(child);
             }
         }
@@ -4306,15 +4602,17 @@ AST::Node::Ptr YAMLImporter::convert_lessthan(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessThan>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessThan>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4325,8 +4623,9 @@ AST::Node::Ptr YAMLImporter::convert_lessthan(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessThan>();
+                }
                 result->set_left(child);
             }
         }
@@ -4337,8 +4636,9 @@ AST::Node::Ptr YAMLImporter::convert_lessthan(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessThan>();
+                }
                 result->set_right(child);
             }
         }
@@ -4354,15 +4654,17 @@ AST::Node::Ptr YAMLImporter::convert_greaterthan(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterThan>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterThan>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4373,8 +4675,9 @@ AST::Node::Ptr YAMLImporter::convert_greaterthan(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterThan>();
+                }
                 result->set_left(child);
             }
         }
@@ -4385,8 +4688,9 @@ AST::Node::Ptr YAMLImporter::convert_greaterthan(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterThan>();
+                }
                 result->set_right(child);
             }
         }
@@ -4402,15 +4706,17 @@ AST::Node::Ptr YAMLImporter::convert_lesseq(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessEq>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessEq>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4421,8 +4727,9 @@ AST::Node::Ptr YAMLImporter::convert_lesseq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessEq>();
+                }
                 result->set_left(child);
             }
         }
@@ -4433,8 +4740,9 @@ AST::Node::Ptr YAMLImporter::convert_lesseq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::LessEq>();
+                }
                 result->set_right(child);
             }
         }
@@ -4450,15 +4758,17 @@ AST::Node::Ptr YAMLImporter::convert_greatereq(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterEq>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterEq>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4469,8 +4779,9 @@ AST::Node::Ptr YAMLImporter::convert_greatereq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterEq>();
+                }
                 result->set_left(child);
             }
         }
@@ -4481,8 +4792,9 @@ AST::Node::Ptr YAMLImporter::convert_greatereq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GreaterEq>();
+                }
                 result->set_right(child);
             }
         }
@@ -4498,15 +4810,17 @@ AST::Node::Ptr YAMLImporter::convert_eq(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eq>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eq>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4517,8 +4831,9 @@ AST::Node::Ptr YAMLImporter::convert_eq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eq>();
+                }
                 result->set_left(child);
             }
         }
@@ -4529,8 +4844,9 @@ AST::Node::Ptr YAMLImporter::convert_eq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eq>();
+                }
                 result->set_right(child);
             }
         }
@@ -4546,15 +4862,17 @@ AST::Node::Ptr YAMLImporter::convert_noteq(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEq>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEq>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4565,8 +4883,9 @@ AST::Node::Ptr YAMLImporter::convert_noteq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEq>();
+                }
                 result->set_left(child);
             }
         }
@@ -4577,8 +4896,9 @@ AST::Node::Ptr YAMLImporter::convert_noteq(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEq>();
+                }
                 result->set_right(child);
             }
         }
@@ -4594,15 +4914,17 @@ AST::Node::Ptr YAMLImporter::convert_eql(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eql>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eql>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4613,8 +4935,9 @@ AST::Node::Ptr YAMLImporter::convert_eql(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eql>();
+                }
                 result->set_left(child);
             }
         }
@@ -4625,8 +4948,9 @@ AST::Node::Ptr YAMLImporter::convert_eql(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Eql>();
+                }
                 result->set_right(child);
             }
         }
@@ -4642,15 +4966,17 @@ AST::Node::Ptr YAMLImporter::convert_noteql(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEql>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEql>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4661,8 +4987,9 @@ AST::Node::Ptr YAMLImporter::convert_noteql(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEql>();
+                }
                 result->set_left(child);
             }
         }
@@ -4673,8 +5000,9 @@ AST::Node::Ptr YAMLImporter::convert_noteql(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NotEql>();
+                }
                 result->set_right(child);
             }
         }
@@ -4690,15 +5018,17 @@ AST::Node::Ptr YAMLImporter::convert_and(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::And>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::And>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4709,8 +5039,9 @@ AST::Node::Ptr YAMLImporter::convert_and(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::And>();
+                }
                 result->set_left(child);
             }
         }
@@ -4721,8 +5052,9 @@ AST::Node::Ptr YAMLImporter::convert_and(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::And>();
+                }
                 result->set_right(child);
             }
         }
@@ -4738,15 +5070,17 @@ AST::Node::Ptr YAMLImporter::convert_xor(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xor>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xor>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4757,8 +5091,9 @@ AST::Node::Ptr YAMLImporter::convert_xor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xor>();
+                }
                 result->set_left(child);
             }
         }
@@ -4769,8 +5104,9 @@ AST::Node::Ptr YAMLImporter::convert_xor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xor>();
+                }
                 result->set_right(child);
             }
         }
@@ -4786,15 +5122,17 @@ AST::Node::Ptr YAMLImporter::convert_xnor(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xnor>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xnor>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4805,8 +5143,9 @@ AST::Node::Ptr YAMLImporter::convert_xnor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xnor>();
+                }
                 result->set_left(child);
             }
         }
@@ -4817,8 +5156,9 @@ AST::Node::Ptr YAMLImporter::convert_xnor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Xnor>();
+                }
                 result->set_right(child);
             }
         }
@@ -4834,15 +5174,17 @@ AST::Node::Ptr YAMLImporter::convert_or(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Or>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Or>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4853,8 +5195,9 @@ AST::Node::Ptr YAMLImporter::convert_or(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Or>();
+                }
                 result->set_left(child);
             }
         }
@@ -4865,8 +5208,9 @@ AST::Node::Ptr YAMLImporter::convert_or(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Or>();
+                }
                 result->set_right(child);
             }
         }
@@ -4882,15 +5226,17 @@ AST::Node::Ptr YAMLImporter::convert_land(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Land>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Land>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4901,8 +5247,9 @@ AST::Node::Ptr YAMLImporter::convert_land(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Land>();
+                }
                 result->set_left(child);
             }
         }
@@ -4913,8 +5260,9 @@ AST::Node::Ptr YAMLImporter::convert_land(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Land>();
+                }
                 result->set_right(child);
             }
         }
@@ -4930,15 +5278,17 @@ AST::Node::Ptr YAMLImporter::convert_lor(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lor>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lor>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4949,8 +5299,9 @@ AST::Node::Ptr YAMLImporter::convert_lor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lor>();
+                }
                 result->set_left(child);
             }
         }
@@ -4961,8 +5312,9 @@ AST::Node::Ptr YAMLImporter::convert_lor(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Lor>();
+                }
                 result->set_right(child);
             }
         }
@@ -4978,15 +5330,17 @@ AST::Node::Ptr YAMLImporter::convert_cond(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Cond>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Cond>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -4997,8 +5351,9 @@ AST::Node::Ptr YAMLImporter::convert_cond(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_cond);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Cond>();
+                }
                 result->set_cond(child);
             }
         }
@@ -5009,8 +5364,9 @@ AST::Node::Ptr YAMLImporter::convert_cond(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_left);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Cond>();
+                }
                 result->set_left(child);
             }
         }
@@ -5021,8 +5377,9 @@ AST::Node::Ptr YAMLImporter::convert_cond(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_right);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Cond>();
+                }
                 result->set_right(child);
             }
         }
@@ -5038,15 +5395,17 @@ AST::Node::Ptr YAMLImporter::convert_always(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Always>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Always>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5058,8 +5417,9 @@ AST::Node::Ptr YAMLImporter::convert_always(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_senslist);
             if(child) {
                 AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Always>();
+                }
                 result->set_senslist(child_cast);
             }
         }
@@ -5070,8 +5430,9 @@ AST::Node::Ptr YAMLImporter::convert_always(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Always>();
+                }
                 result->set_statement(child);
             }
         }
@@ -5087,15 +5448,17 @@ AST::Node::Ptr YAMLImporter::convert_alwaysff(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysFF>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysFF>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5107,8 +5470,9 @@ AST::Node::Ptr YAMLImporter::convert_alwaysff(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_senslist);
             if(child) {
                 AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysFF>();
+                }
                 result->set_senslist(child_cast);
             }
         }
@@ -5119,8 +5483,9 @@ AST::Node::Ptr YAMLImporter::convert_alwaysff(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysFF>();
+                }
                 result->set_statement(child);
             }
         }
@@ -5136,15 +5501,17 @@ AST::Node::Ptr YAMLImporter::convert_alwayscomb(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysComb>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysComb>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5156,8 +5523,9 @@ AST::Node::Ptr YAMLImporter::convert_alwayscomb(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_senslist);
             if(child) {
                 AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysComb>();
+                }
                 result->set_senslist(child_cast);
             }
         }
@@ -5168,8 +5536,9 @@ AST::Node::Ptr YAMLImporter::convert_alwayscomb(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysComb>();
+                }
                 result->set_statement(child);
             }
         }
@@ -5185,15 +5554,17 @@ AST::Node::Ptr YAMLImporter::convert_alwayslatch(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysLatch>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysLatch>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5205,8 +5576,9 @@ AST::Node::Ptr YAMLImporter::convert_alwayslatch(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_senslist);
             if(child) {
                 AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysLatch>();
+                }
                 result->set_senslist(child_cast);
             }
         }
@@ -5217,8 +5589,9 @@ AST::Node::Ptr YAMLImporter::convert_alwayslatch(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::AlwaysLatch>();
+                }
                 result->set_statement(child);
             }
         }
@@ -5234,15 +5607,17 @@ AST::Node::Ptr YAMLImporter::convert_senslist(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Senslist>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Senslist>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5269,8 +5644,9 @@ AST::Node::Ptr YAMLImporter::convert_senslist(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Senslist>();
+            }
             result->set_list(list_list);
         }
     }
@@ -5285,15 +5661,17 @@ AST::Node::Ptr YAMLImporter::convert_sens(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sens>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sens>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5301,8 +5679,9 @@ AST::Node::Ptr YAMLImporter::convert_sens(const YAML::Node node) const
         if(node["type"]) {
             if(node["type"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sens>();
+                }
                 result->set_type(node["type"].as<AST::Sens::TypeEnum>());
             }
         }
@@ -5313,8 +5692,9 @@ AST::Node::Ptr YAMLImporter::convert_sens(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_sig);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Sens>();
+                }
                 result->set_sig(child);
             }
         }
@@ -5330,15 +5710,17 @@ AST::Node::Ptr YAMLImporter::convert_defparamlist(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Defparamlist>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Defparamlist>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5365,8 +5747,9 @@ AST::Node::Ptr YAMLImporter::convert_defparamlist(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Defparamlist>();
+            }
             result->set_list(list_list);
         }
     }
@@ -5381,15 +5764,17 @@ AST::Node::Ptr YAMLImporter::convert_defparam(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Defparam>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Defparam>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5401,8 +5786,9 @@ AST::Node::Ptr YAMLImporter::convert_defparam(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_identifier);
             if(child) {
                 AST::Identifier::Ptr child_cast = AST::cast_to<AST::Identifier>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Defparam>();
+                }
                 result->set_identifier(child_cast);
             }
         }
@@ -5414,8 +5800,9 @@ AST::Node::Ptr YAMLImporter::convert_defparam(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Defparam>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -5431,15 +5818,17 @@ AST::Node::Ptr YAMLImporter::convert_assign(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Assign>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Assign>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5451,8 +5840,9 @@ AST::Node::Ptr YAMLImporter::convert_assign(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_left);
             if(child) {
                 AST::Lvalue::Ptr child_cast = AST::cast_to<AST::Lvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Assign>();
+                }
                 result->set_left(child_cast);
             }
         }
@@ -5464,8 +5854,9 @@ AST::Node::Ptr YAMLImporter::convert_assign(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Assign>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -5477,8 +5868,9 @@ AST::Node::Ptr YAMLImporter::convert_assign(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Assign>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -5490,8 +5882,9 @@ AST::Node::Ptr YAMLImporter::convert_assign(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Assign>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -5507,15 +5900,17 @@ AST::Node::Ptr YAMLImporter::convert_blockingsubstitution(const YAML::Node node)
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::BlockingSubstitution>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::BlockingSubstitution>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5527,8 +5922,9 @@ AST::Node::Ptr YAMLImporter::convert_blockingsubstitution(const YAML::Node node)
             AST::Node::Ptr child = convert(node_left);
             if(child) {
                 AST::Lvalue::Ptr child_cast = AST::cast_to<AST::Lvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::BlockingSubstitution>();
+                }
                 result->set_left(child_cast);
             }
         }
@@ -5540,8 +5936,9 @@ AST::Node::Ptr YAMLImporter::convert_blockingsubstitution(const YAML::Node node)
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::BlockingSubstitution>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -5553,8 +5950,9 @@ AST::Node::Ptr YAMLImporter::convert_blockingsubstitution(const YAML::Node node)
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::BlockingSubstitution>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -5566,8 +5964,9 @@ AST::Node::Ptr YAMLImporter::convert_blockingsubstitution(const YAML::Node node)
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::BlockingSubstitution>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -5583,15 +5982,17 @@ AST::Node::Ptr YAMLImporter::convert_nonblockingsubstitution(const YAML::Node no
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NonblockingSubstitution>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NonblockingSubstitution>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5603,8 +6004,9 @@ AST::Node::Ptr YAMLImporter::convert_nonblockingsubstitution(const YAML::Node no
             AST::Node::Ptr child = convert(node_left);
             if(child) {
                 AST::Lvalue::Ptr child_cast = AST::cast_to<AST::Lvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NonblockingSubstitution>();
+                }
                 result->set_left(child_cast);
             }
         }
@@ -5616,8 +6018,9 @@ AST::Node::Ptr YAMLImporter::convert_nonblockingsubstitution(const YAML::Node no
             AST::Node::Ptr child = convert(node_right);
             if(child) {
                 AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NonblockingSubstitution>();
+                }
                 result->set_right(child_cast);
             }
         }
@@ -5629,8 +6032,9 @@ AST::Node::Ptr YAMLImporter::convert_nonblockingsubstitution(const YAML::Node no
             AST::Node::Ptr child = convert(node_ldelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NonblockingSubstitution>();
+                }
                 result->set_ldelay(child_cast);
             }
         }
@@ -5642,8 +6046,9 @@ AST::Node::Ptr YAMLImporter::convert_nonblockingsubstitution(const YAML::Node no
             AST::Node::Ptr child = convert(node_rdelay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::NonblockingSubstitution>();
+                }
                 result->set_rdelay(child_cast);
             }
         }
@@ -5659,15 +6064,17 @@ AST::Node::Ptr YAMLImporter::convert_ifstatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IfStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IfStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5678,8 +6085,9 @@ AST::Node::Ptr YAMLImporter::convert_ifstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_cond);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IfStatement>();
+                }
                 result->set_cond(child);
             }
         }
@@ -5690,8 +6098,9 @@ AST::Node::Ptr YAMLImporter::convert_ifstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_true_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IfStatement>();
+                }
                 result->set_true_statement(child);
             }
         }
@@ -5702,8 +6111,9 @@ AST::Node::Ptr YAMLImporter::convert_ifstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_false_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IfStatement>();
+                }
                 result->set_false_statement(child);
             }
         }
@@ -5719,15 +6129,17 @@ AST::Node::Ptr YAMLImporter::convert_repeatstatement(const YAML::Node node) cons
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::RepeatStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::RepeatStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5738,8 +6150,9 @@ AST::Node::Ptr YAMLImporter::convert_repeatstatement(const YAML::Node node) cons
             // Set the child
             AST::Node::Ptr child = convert(node_times);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::RepeatStatement>();
+                }
                 result->set_times(child);
             }
         }
@@ -5750,8 +6163,9 @@ AST::Node::Ptr YAMLImporter::convert_repeatstatement(const YAML::Node node) cons
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::RepeatStatement>();
+                }
                 result->set_statement(child);
             }
         }
@@ -5767,15 +6181,17 @@ AST::Node::Ptr YAMLImporter::convert_forstatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5788,8 +6204,9 @@ AST::Node::Ptr YAMLImporter::convert_forstatement(const YAML::Node node) const
             if(child) {
                 AST::BlockingSubstitution::Ptr child_cast =
                     AST::cast_to<AST::BlockingSubstitution>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForStatement>();
+                }
                 result->set_pre(child_cast);
             }
         }
@@ -5800,8 +6217,9 @@ AST::Node::Ptr YAMLImporter::convert_forstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_cond);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForStatement>();
+                }
                 result->set_cond(child);
             }
         }
@@ -5814,8 +6232,9 @@ AST::Node::Ptr YAMLImporter::convert_forstatement(const YAML::Node node) const
             if(child) {
                 AST::BlockingSubstitution::Ptr child_cast =
                     AST::cast_to<AST::BlockingSubstitution>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForStatement>();
+                }
                 result->set_post(child_cast);
             }
         }
@@ -5826,8 +6245,9 @@ AST::Node::Ptr YAMLImporter::convert_forstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForStatement>();
+                }
                 result->set_statement(child);
             }
         }
@@ -5843,15 +6263,17 @@ AST::Node::Ptr YAMLImporter::convert_whilestatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WhileStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WhileStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5862,8 +6284,9 @@ AST::Node::Ptr YAMLImporter::convert_whilestatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_cond);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WhileStatement>();
+                }
                 result->set_cond(child);
             }
         }
@@ -5874,8 +6297,9 @@ AST::Node::Ptr YAMLImporter::convert_whilestatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WhileStatement>();
+                }
                 result->set_statement(child);
             }
         }
@@ -5891,15 +6315,17 @@ AST::Node::Ptr YAMLImporter::convert_casestatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CaseStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CaseStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5910,8 +6336,9 @@ AST::Node::Ptr YAMLImporter::convert_casestatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_comp);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CaseStatement>();
+                }
                 result->set_comp(child);
             }
         }
@@ -5939,8 +6366,9 @@ AST::Node::Ptr YAMLImporter::convert_casestatement(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::CaseStatement>();
+            }
             result->set_caselist(caselist_list);
         }
     }
@@ -5955,15 +6383,17 @@ AST::Node::Ptr YAMLImporter::convert_casexstatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CasexStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CasexStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -5974,8 +6404,9 @@ AST::Node::Ptr YAMLImporter::convert_casexstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_comp);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CasexStatement>();
+                }
                 result->set_comp(child);
             }
         }
@@ -6003,8 +6434,9 @@ AST::Node::Ptr YAMLImporter::convert_casexstatement(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::CasexStatement>();
+            }
             result->set_caselist(caselist_list);
         }
     }
@@ -6019,15 +6451,17 @@ AST::Node::Ptr YAMLImporter::convert_casezstatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CasezStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CasezStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6038,8 +6472,9 @@ AST::Node::Ptr YAMLImporter::convert_casezstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_comp);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::CasezStatement>();
+                }
                 result->set_comp(child);
             }
         }
@@ -6067,8 +6502,9 @@ AST::Node::Ptr YAMLImporter::convert_casezstatement(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::CasezStatement>();
+            }
             result->set_caselist(caselist_list);
         }
     }
@@ -6083,15 +6519,17 @@ AST::Node::Ptr YAMLImporter::convert_uniquecasestatement(const YAML::Node node) 
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::UniqueCaseStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::UniqueCaseStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6102,8 +6540,9 @@ AST::Node::Ptr YAMLImporter::convert_uniquecasestatement(const YAML::Node node) 
             // Set the child
             AST::Node::Ptr child = convert(node_comp);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::UniqueCaseStatement>();
+                }
                 result->set_comp(child);
             }
         }
@@ -6131,8 +6570,9 @@ AST::Node::Ptr YAMLImporter::convert_uniquecasestatement(const YAML::Node node) 
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::UniqueCaseStatement>();
+            }
             result->set_caselist(caselist_list);
         }
     }
@@ -6147,15 +6587,17 @@ AST::Node::Ptr YAMLImporter::convert_prioritycasestatement(const YAML::Node node
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PriorityCaseStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PriorityCaseStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6166,8 +6608,9 @@ AST::Node::Ptr YAMLImporter::convert_prioritycasestatement(const YAML::Node node
             // Set the child
             AST::Node::Ptr child = convert(node_comp);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PriorityCaseStatement>();
+                }
                 result->set_comp(child);
             }
         }
@@ -6195,8 +6638,9 @@ AST::Node::Ptr YAMLImporter::convert_prioritycasestatement(const YAML::Node node
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::PriorityCaseStatement>();
+            }
             result->set_caselist(caselist_list);
         }
     }
@@ -6211,15 +6655,17 @@ AST::Node::Ptr YAMLImporter::convert_case(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Case>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Case>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6244,8 +6690,9 @@ AST::Node::Ptr YAMLImporter::convert_case(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Case>();
+            }
             result->set_cond(cond_list);
         }
 
@@ -6255,8 +6702,9 @@ AST::Node::Ptr YAMLImporter::convert_case(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Case>();
+                }
                 result->set_statement(child);
             }
         }
@@ -6272,15 +6720,17 @@ AST::Node::Ptr YAMLImporter::convert_block(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Block>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Block>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6288,8 +6738,9 @@ AST::Node::Ptr YAMLImporter::convert_block(const YAML::Node node) const
         if(node["scope"]) {
             if(node["scope"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Block>();
+                }
                 result->set_scope(node["scope"].as<std::string>());
             }
         }
@@ -6315,8 +6766,9 @@ AST::Node::Ptr YAMLImporter::convert_block(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Block>();
+            }
             result->set_statements(statements_list);
         }
     }
@@ -6331,15 +6783,17 @@ AST::Node::Ptr YAMLImporter::convert_initial(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Initial>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Initial>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6350,8 +6804,9 @@ AST::Node::Ptr YAMLImporter::convert_initial(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Initial>();
+                }
                 result->set_statement(child);
             }
         }
@@ -6367,15 +6822,17 @@ AST::Node::Ptr YAMLImporter::convert_eventstatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EventStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EventStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6387,8 +6844,9 @@ AST::Node::Ptr YAMLImporter::convert_eventstatement(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_senslist);
             if(child) {
                 AST::Senslist::Ptr child_cast = AST::cast_to<AST::Senslist>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EventStatement>();
+                }
                 result->set_senslist(child_cast);
             }
         }
@@ -6399,8 +6857,9 @@ AST::Node::Ptr YAMLImporter::convert_eventstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EventStatement>();
+                }
                 result->set_statement(child);
             }
         }
@@ -6416,15 +6875,17 @@ AST::Node::Ptr YAMLImporter::convert_waitstatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WaitStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WaitStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6435,8 +6896,9 @@ AST::Node::Ptr YAMLImporter::convert_waitstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_cond);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WaitStatement>();
+                }
                 result->set_cond(child);
             }
         }
@@ -6447,8 +6909,9 @@ AST::Node::Ptr YAMLImporter::convert_waitstatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::WaitStatement>();
+                }
                 result->set_statement(child);
             }
         }
@@ -6464,15 +6927,17 @@ AST::Node::Ptr YAMLImporter::convert_foreverstatement(const YAML::Node node) con
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForeverStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForeverStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6483,8 +6948,9 @@ AST::Node::Ptr YAMLImporter::convert_foreverstatement(const YAML::Node node) con
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ForeverStatement>();
+                }
                 result->set_statement(child);
             }
         }
@@ -6500,15 +6966,17 @@ AST::Node::Ptr YAMLImporter::convert_delaystatement(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::DelayStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::DelayStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6519,8 +6987,9 @@ AST::Node::Ptr YAMLImporter::convert_delaystatement(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_delay);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::DelayStatement>();
+                }
                 result->set_delay(child);
             }
         }
@@ -6536,15 +7005,17 @@ AST::Node::Ptr YAMLImporter::convert_instancelist(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instancelist>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instancelist>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6552,8 +7023,9 @@ AST::Node::Ptr YAMLImporter::convert_instancelist(const YAML::Node node) const
         if(node["module"]) {
             if(node["module"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instancelist>();
+                }
                 result->set_module(node["module"].as<std::string>());
             }
         }
@@ -6581,8 +7053,9 @@ AST::Node::Ptr YAMLImporter::convert_instancelist(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Instancelist>();
+            }
             result->set_parameterlist(parameterlist_list);
         }
 
@@ -6609,8 +7082,9 @@ AST::Node::Ptr YAMLImporter::convert_instancelist(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Instancelist>();
+            }
             result->set_instances(instances_list);
         }
     }
@@ -6625,15 +7099,17 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instance>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instance>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6641,8 +7117,9 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
         if(node["module"]) {
             if(node["module"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instance>();
+                }
                 result->set_module(node["module"].as<std::string>());
             }
         }
@@ -6650,8 +7127,9 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instance>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -6663,8 +7141,9 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
             AST::Node::Ptr child = convert(node_array);
             if(child) {
                 AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Instance>();
+                }
                 result->set_array(child_cast);
             }
         }
@@ -6692,8 +7171,9 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Instance>();
+            }
             result->set_parameterlist(parameterlist_list);
         }
 
@@ -6720,8 +7200,9 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Instance>();
+            }
             result->set_portlist(portlist_list);
         }
     }
@@ -6736,15 +7217,17 @@ AST::Node::Ptr YAMLImporter::convert_paramarg(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ParamArg>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ParamArg>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6752,8 +7235,9 @@ AST::Node::Ptr YAMLImporter::convert_paramarg(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ParamArg>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -6764,8 +7248,9 @@ AST::Node::Ptr YAMLImporter::convert_paramarg(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_value);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ParamArg>();
+                }
                 result->set_value(child);
             }
         }
@@ -6781,15 +7266,17 @@ AST::Node::Ptr YAMLImporter::convert_portarg(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PortArg>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PortArg>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6797,8 +7284,9 @@ AST::Node::Ptr YAMLImporter::convert_portarg(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PortArg>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -6809,8 +7297,9 @@ AST::Node::Ptr YAMLImporter::convert_portarg(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_value);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::PortArg>();
+                }
                 result->set_value(child);
             }
         }
@@ -6826,15 +7315,17 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Function>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Function>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6842,8 +7333,9 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Function>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -6851,8 +7343,9 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
         if(node["automatic"]) {
             if(node["automatic"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Function>();
+                }
                 result->set_automatic(node["automatic"].as<bool>());
             }
         }
@@ -6860,8 +7353,9 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
         if(node["rettype"]) {
             if(node["rettype"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Function>();
+                }
                 result->set_rettype(node["rettype"].as<AST::Function::RettypeEnum>());
             }
         }
@@ -6869,8 +7363,9 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
         if(node["retsign"]) {
             if(node["retsign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Function>();
+                }
                 result->set_retsign(node["retsign"].as<bool>());
             }
         }
@@ -6898,8 +7393,9 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Function>();
+            }
             result->set_retwidths(retwidths_list);
         }
 
@@ -6923,8 +7419,9 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Function>();
+            }
             result->set_ports(ports_list);
         }
 
@@ -6949,8 +7446,9 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Function>();
+            }
             result->set_statements(statements_list);
         }
     }
@@ -6965,15 +7463,17 @@ AST::Node::Ptr YAMLImporter::convert_functioncall(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::FunctionCall>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::FunctionCall>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -6981,8 +7481,9 @@ AST::Node::Ptr YAMLImporter::convert_functioncall(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::FunctionCall>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -7007,8 +7508,9 @@ AST::Node::Ptr YAMLImporter::convert_functioncall(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::FunctionCall>();
+            }
             result->set_args(args_list);
         }
     }
@@ -7023,15 +7525,17 @@ AST::Node::Ptr YAMLImporter::convert_task(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Task>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Task>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7039,8 +7543,9 @@ AST::Node::Ptr YAMLImporter::convert_task(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Task>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -7048,8 +7553,9 @@ AST::Node::Ptr YAMLImporter::convert_task(const YAML::Node node) const
         if(node["automatic"]) {
             if(node["automatic"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Task>();
+                }
                 result->set_automatic(node["automatic"].as<bool>());
             }
         }
@@ -7074,8 +7580,9 @@ AST::Node::Ptr YAMLImporter::convert_task(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Task>();
+            }
             result->set_ports(ports_list);
         }
 
@@ -7100,8 +7607,9 @@ AST::Node::Ptr YAMLImporter::convert_task(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::Task>();
+            }
             result->set_statements(statements_list);
         }
     }
@@ -7116,15 +7624,17 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::TaskCall>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::TaskCall>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7132,8 +7642,9 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::TaskCall>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -7158,8 +7669,9 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::TaskCall>();
+            }
             result->set_args(args_list);
         }
     }
@@ -7174,15 +7686,17 @@ AST::Node::Ptr YAMLImporter::convert_generatestatement(const YAML::Node node) co
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GenerateStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::GenerateStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7207,8 +7721,9 @@ AST::Node::Ptr YAMLImporter::convert_generatestatement(const YAML::Node node) co
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::GenerateStatement>();
+            }
             result->set_items(items_list);
         }
     }
@@ -7223,15 +7738,17 @@ AST::Node::Ptr YAMLImporter::convert_systemcall(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SystemCall>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SystemCall>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7239,8 +7756,9 @@ AST::Node::Ptr YAMLImporter::convert_systemcall(const YAML::Node node) const
         if(node["syscall"]) {
             if(node["syscall"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SystemCall>();
+                }
                 result->set_syscall(node["syscall"].as<std::string>());
             }
         }
@@ -7265,8 +7783,9 @@ AST::Node::Ptr YAMLImporter::convert_systemcall(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::SystemCall>();
+            }
             result->set_args(args_list);
         }
     }
@@ -7281,15 +7800,17 @@ AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node)
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IdentifierScopeLabel>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IdentifierScopeLabel>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7297,8 +7818,9 @@ AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node)
         if(node["scope"]) {
             if(node["scope"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IdentifierScopeLabel>();
+                }
                 result->set_scope(node["scope"].as<std::string>());
             }
         }
@@ -7309,8 +7831,9 @@ AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node)
             // Set the child
             AST::Node::Ptr child = convert(node_loop);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IdentifierScopeLabel>();
+                }
                 result->set_loop(child);
             }
         }
@@ -7326,15 +7849,17 @@ AST::Node::Ptr YAMLImporter::convert_identifierscope(const YAML::Node node) cons
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IdentifierScope>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::IdentifierScope>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7364,8 +7889,9 @@ AST::Node::Ptr YAMLImporter::convert_identifierscope(const YAML::Node node) cons
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::IdentifierScope>();
+            }
             result->set_labellist(labellist_list);
         }
     }
@@ -7380,15 +7906,17 @@ AST::Node::Ptr YAMLImporter::convert_disable(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Disable>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Disable>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7396,8 +7924,9 @@ AST::Node::Ptr YAMLImporter::convert_disable(const YAML::Node node) const
         if(node["dest"]) {
             if(node["dest"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Disable>();
+                }
                 result->set_dest(node["dest"].as<std::string>());
             }
         }
@@ -7413,15 +7942,17 @@ AST::Node::Ptr YAMLImporter::convert_parallelblock(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ParallelBlock>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ParallelBlock>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7429,8 +7960,9 @@ AST::Node::Ptr YAMLImporter::convert_parallelblock(const YAML::Node node) const
         if(node["scope"]) {
             if(node["scope"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::ParallelBlock>();
+                }
                 result->set_scope(node["scope"].as<std::string>());
             }
         }
@@ -7456,8 +7988,9 @@ AST::Node::Ptr YAMLImporter::convert_parallelblock(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::ParallelBlock>();
+            }
             result->set_statements(statements_list);
         }
     }
@@ -7472,15 +8005,17 @@ AST::Node::Ptr YAMLImporter::convert_singlestatement(const YAML::Node node) cons
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SingleStatement>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SingleStatement>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7488,8 +8023,9 @@ AST::Node::Ptr YAMLImporter::convert_singlestatement(const YAML::Node node) cons
         if(node["scope"]) {
             if(node["scope"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SingleStatement>();
+                }
                 result->set_scope(node["scope"].as<std::string>());
             }
         }
@@ -7500,8 +8036,9 @@ AST::Node::Ptr YAMLImporter::convert_singlestatement(const YAML::Node node) cons
             // Set the child
             AST::Node::Ptr child = convert(node_statement);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SingleStatement>();
+                }
                 result->set_statement(child);
             }
         }
@@ -7513,8 +8050,9 @@ AST::Node::Ptr YAMLImporter::convert_singlestatement(const YAML::Node node) cons
             AST::Node::Ptr child = convert(node_delay);
             if(child) {
                 AST::DelayStatement::Ptr child_cast = AST::cast_to<AST::DelayStatement>(child);
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::SingleStatement>();
+                }
                 result->set_delay(child_cast);
             }
         }
@@ -7530,15 +8068,17 @@ AST::Node::Ptr YAMLImporter::convert_enumitem(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumItem>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumItem>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7546,8 +8086,9 @@ AST::Node::Ptr YAMLImporter::convert_enumitem(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumItem>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -7558,8 +8099,9 @@ AST::Node::Ptr YAMLImporter::convert_enumitem(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_value);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumItem>();
+                }
                 result->set_value(child);
             }
         }
@@ -7575,15 +8117,17 @@ AST::Node::Ptr YAMLImporter::convert_enumdef(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumDef>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumDef>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7591,8 +8135,9 @@ AST::Node::Ptr YAMLImporter::convert_enumdef(const YAML::Node node) const
         if(node["base_type"]) {
             if(node["base_type"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumDef>();
+                }
                 result->set_base_type(node["base_type"].as<AST::EnumDef::Base_typeEnum>());
             }
         }
@@ -7600,8 +8145,9 @@ AST::Node::Ptr YAMLImporter::convert_enumdef(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::EnumDef>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -7628,8 +8174,9 @@ AST::Node::Ptr YAMLImporter::convert_enumdef(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::EnumDef>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -7655,8 +8202,9 @@ AST::Node::Ptr YAMLImporter::convert_enumdef(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::EnumDef>();
+            }
             result->set_items(items_list);
         }
     }
@@ -7671,15 +8219,17 @@ AST::Node::Ptr YAMLImporter::convert_typedef(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Typedef>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Typedef>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7687,8 +8237,9 @@ AST::Node::Ptr YAMLImporter::convert_typedef(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Typedef>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -7699,8 +8250,9 @@ AST::Node::Ptr YAMLImporter::convert_typedef(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_def);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::Typedef>();
+                }
                 result->set_def(child);
             }
         }
@@ -7716,15 +8268,17 @@ AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructMember>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructMember>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7732,8 +8286,9 @@ AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
         if(node["name"]) {
             if(node["name"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructMember>();
+                }
                 result->set_name(node["name"].as<std::string>());
             }
         }
@@ -7741,8 +8296,9 @@ AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
         if(node["sign"]) {
             if(node["sign"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructMember>();
+                }
                 result->set_sign(node["sign"].as<bool>());
             }
         }
@@ -7769,8 +8325,9 @@ AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::StructMember>();
+            }
             result->set_widths(widths_list);
         }
 
@@ -7780,8 +8337,9 @@ AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
             // Set the child
             AST::Node::Ptr child = convert(node_type);
             if(child) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructMember>();
+                }
                 result->set_type(child);
             }
         }
@@ -7797,15 +8355,17 @@ AST::Node::Ptr YAMLImporter::convert_structdef(const YAML::Node node) const
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructDef>();
+                }
                 result->set_filename(node["filename"].as<std::string>());
             }
         }
         if(node["line"]) {
             if(node["line"].IsScalar()) {
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructDef>();
+                }
                 result->set_line(node["line"].as<int>());
             }
         }
@@ -7813,8 +8373,9 @@ AST::Node::Ptr YAMLImporter::convert_structdef(const YAML::Node node) const
         if(node["packed"]) {
             if(node["packed"].IsScalar()) {
 
-                if(!result)
+                if(!result) {
                     result = std::make_shared<AST::StructDef>();
+                }
                 result->set_packed(node["packed"].as<bool>());
             }
         }
@@ -7842,14 +8403,123 @@ AST::Node::Ptr YAMLImporter::convert_structdef(const YAML::Node node) const
                 }
             }
             // Set the list
-            if(!result)
+            if(!result) {
                 result = std::make_shared<AST::StructDef>();
+            }
             result->set_members(members_list);
         }
     }
 
     // Return the result
     return AST::cast_to<AST::StructDef>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_package(const YAML::Node node) const
+{
+    AST::Package::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Package>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Package>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Package>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child items
+        if(node["items"]) {
+            const YAML::Node node_items = node["items"];
+            // Fill the list of children
+            AST::Node::ListPtr items_list(new AST::Node::List);
+            if(node_items.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_items.begin(); it != node_items.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        items_list->push_back(child);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_items);
+                if(child) {
+                    items_list->push_back(child);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Package>();
+            }
+            result->set_items(items_list);
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Package>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_import(const YAML::Node node) const
+{
+    AST::Import::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Import>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Import>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property package
+        if(node["package"]) {
+            if(node["package"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Import>();
+                }
+                result->set_package(node["package"].as<std::string>());
+            }
+        }
+        // Manage property symbol
+        if(node["symbol"]) {
+            if(node["symbol"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Import>();
+                }
+                result->set_symbol(node["symbol"].as<std::string>());
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Import>(result);
 }
 
 } // namespace Importers
