@@ -35,6 +35,14 @@ requirements:
     - libboost-devel=1.90.0
     - yaml-cpp=0.8.0
     - gtest=1.17.0
+    # AST code generation (lib/tools/ASTGen/astgen.py). Also pulled into the
+    # dev env by `make dev-env-file`, which feeds `make ast-gen` / `ast-check`.
+    # NOTE: clang-format output is version-sensitive — if its version changes,
+    # the committed generated AST tree must be regenerated to match.
+    - python
+    - jinja2
+    - pyyaml
+    - clang-format
 
 about:
   home: https://www.wavecruncher.net

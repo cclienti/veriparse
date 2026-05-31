@@ -96,6 +96,25 @@ dev-test-cosim:
 	$(DEV_RUN) env CTEST_PARALLEL_LEVEL=$(CTEST_PARALLEL_LEVEL) VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) \
 	  ctest --test-dir $(DEV_BUILD_DIR) -L 'cosim'
 
+# Paths that astgen.py (re)writes from lib/tools/ASTGen/verilog_ast.yaml.
+AST_GEN_PATHS = lib/include/veriparse/AST lib/src/AST \
+                lib/include/veriparse/generators lib/src/generators \
+                lib/include/veriparse/importers lib/src/importers \
+                lib/test/generators lib/test/importers
+
+# Regenerate the C++ AST classes (+ YAML/dot generators, importers, tests)
+# from verilog_ast.yaml. --clang-format makes the output match the committed
+# (clang-formatted) tree; astgen's format-aware compare leaves unchanged
+# files (and their mtimes) untouched.
+ast-gen:
+	$(DEV_RUN) python lib/tools/ASTGen/astgen.py --clang-format
+
+# CI guard: fail if the committed generated AST is out of sync with
+# verilog_ast.yaml or the templates (regenerate, then check for any diff).
+ast-check: ast-gen
+	@git diff --exit-code -- $(AST_GEN_PATHS) \
+	  || { echo "Generated AST is stale vs verilog_ast.yaml — run 'make ast-gen' and commit."; exit 1; }
+
 dev-clean:
 	set -e; \
 	  rm -rf $(DEV_BUILD_DIR); \
@@ -150,6 +169,8 @@ help:
 	@echo "  dev-build    Build the project in the dev environment"
 	@echo "  dev-test              Run unittest tests (override with CTEST_LABELS=...)"
 	@echo "  dev-test-cosim        Run verilator-based cosim tests"
+	@echo "  ast-gen               Regenerate the C++ AST from verilog_ast.yaml (clang-format)"
+	@echo "  ast-check             Fail if the committed generated AST is stale vs the yaml"
 	@echo "  dev-clean             Remove build directory and dev conda environment"
 	@echo "  install-hooks         Install git pre-commit hook (clang-format check)"
 	@echo ""
