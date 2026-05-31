@@ -517,3 +517,9 @@ Import:
     package: "std::string" # package name, left of ::
     symbol: "std::string"  # imported item; "*" for a wildcard import
   children:
+
+ScopedRef:
+  properties:
+    package: "std::string" # package name, left of ::
+    name: "std::string"    # referenced symbol, right of ::
+  children:

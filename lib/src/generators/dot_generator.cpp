@@ -6006,5 +6006,31 @@ std::string DotGenerator::render_import(const AST::Import::Ptr node) const
     return ss.str();
 }
 
+std::string DotGenerator::render_scopedref(const AST::ScopedRef::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ScopedRef) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">ScopedRef</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">package: " << node->get_package()
+           << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+    }
+
+    return ss.str();
+}
+
 } // namespace Generators
 } // namespace Veriparse

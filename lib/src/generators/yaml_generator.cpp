@@ -3295,5 +3295,25 @@ YAML::Node YAMLGenerator::render_import(const AST::Import::Ptr node) const
     return node_import;
 }
 
+YAML::Node YAMLGenerator::render_scopedref(const AST::ScopedRef::Ptr node) const
+{
+    YAML::Node node_scopedref;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ScopedRef) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["package"] = node->get_package();
+        content["name"] = node->get_name();
+    }
+
+    node_scopedref["ScopedRef"] = content;
+    return node_scopedref;
+}
+
 } // namespace Generators
 } // namespace Veriparse

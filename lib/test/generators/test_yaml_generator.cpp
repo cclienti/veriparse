@@ -2469,3 +2469,21 @@ TEST(YAMLGenerator, Import)
     ASSERT_TRUE(yaml["Import"]["package"].as<std::string>() == "mynbiqpmzj");
     ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
 }
+
+TEST(YAMLGenerator, ScopedRef)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ScopedRef.log");
+    Logger::add_stderr_sink();
+
+    std::string p_package = "mynbiqpmzj";
+    std::string p_name = "plsgqejeyd";
+
+    AST::ScopedRef::Ptr m_scopedref(new AST::ScopedRef(p_package, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_scopedref);
+
+    ASSERT_TRUE(yaml["ScopedRef"]);
+    ASSERT_TRUE(yaml["ScopedRef"]["package"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["ScopedRef"]["name"].as<std::string>() == "plsgqejeyd");
+}

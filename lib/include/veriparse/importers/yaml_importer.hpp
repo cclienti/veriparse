@@ -153,6 +153,7 @@ private:
     AST::Node::Ptr convert_structdef(const YAML::Node node) const;
     AST::Node::Ptr convert_package(const YAML::Node node) const;
     AST::Node::Ptr convert_import(const YAML::Node node) const;
+    AST::Node::Ptr convert_scopedref(const YAML::Node node) const;
 };
 
 } // namespace Importers

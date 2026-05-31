@@ -133,6 +133,7 @@
 #include <veriparse/AST/structdef.hpp>
 #include <veriparse/AST/package.hpp>
 #include <veriparse/AST/import.hpp>
+#include <veriparse/AST/scopedref.hpp>
 #include <veriparse/AST/node_operators.hpp>
 #include <veriparse/AST/node_cast.hpp>
 

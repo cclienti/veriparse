@@ -147,6 +147,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_structdef(const AST::StructDef::Ptr node) const;
     virtual YAML::Node render_package(const AST::Package::Ptr node) const;
     virtual YAML::Node render_import(const AST::Import::Ptr node) const;
+    virtual YAML::Node render_scopedref(const AST::ScopedRef::Ptr node) const;
 };
 
 } // namespace Generators

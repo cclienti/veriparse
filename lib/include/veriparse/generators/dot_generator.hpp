@@ -152,6 +152,7 @@ private:
     virtual std::string render_structdef(const AST::StructDef::Ptr node) const;
     virtual std::string render_package(const AST::Package::Ptr node) const;
     virtual std::string render_import(const AST::Import::Ptr node) const;
+    virtual std::string render_scopedref(const AST::ScopedRef::Ptr node) const;
 };
 
 } // namespace Generators

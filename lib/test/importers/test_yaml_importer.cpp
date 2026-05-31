@@ -2879,3 +2879,24 @@ TEST(YAMLImporter, Import)
     ASSERT_TRUE(yaml["Import"]["package"].as<std::string>() == "mynbiqpmzj");
     ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
 }
+
+TEST(YAMLImporter, ScopedRef)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.ScopedRef.log");
+    Logger::add_stderr_sink();
+    std::string str("ScopedRef:\n"
+                    "  filename: scopedref.v\n"
+                    "  line: 9\n"
+                    "  package: mynbiqpmzj\n"
+                    "  name: plsgqejeyd\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["ScopedRef"]);
+    ASSERT_TRUE(yaml["ScopedRef"]["filename"].as<std::string>() == "scopedref.v");
+    ASSERT_TRUE(yaml["ScopedRef"]["line"].as<int>() == 9);
+    ASSERT_TRUE(yaml["ScopedRef"]["package"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["ScopedRef"]["name"].as<std::string>() == "plsgqejeyd");
+}

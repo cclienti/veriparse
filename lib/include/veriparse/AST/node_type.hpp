@@ -141,6 +141,7 @@ enum class NodeType
     StructDef,
     Package,
     Import,
+    ScopedRef,
     Node,
     None
 };
