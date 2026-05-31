@@ -171,6 +171,10 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_ENUM         "'enum'"
 %token                  TK_STRUCT       "'struct'"
 %token                  TK_PACKED       "'packed'"
+%token                  TK_PACKAGE      "'package'"
+%token                  TK_ENDPACKAGE   "'endpackage'"
+%token                  TK_IMPORT       "'import'"
+%token                  TK_COLONCOLON   "'::'"
 %token                  TK_VPP_LINE     "`line'"
 %token                  TK_LATTR        "(*"
 %token                  TK_RATTR        "*)"
@@ -263,6 +267,10 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 definitions
 %type   <AST::Node::Ptr>                     definition
 %type   <AST::Module::Ptr>                   moduledef
+%type   <AST::Package::Ptr>                  packagedef
+%type   <AST::Node::ListPtr>                 module_imports
+%type   <AST::Node::ListPtr>                 import_decl import_list
+%type   <AST::Import::Ptr>                   import_item
 %type   <AST::Pragmalist::Ptr>               pragmalist
 %type   <AST::Pragma::ListPtr>               pragma
 %type   <AST::Node::Ptr>                     expression ternary paren_expression
@@ -437,6 +445,19 @@ definitions:    definition
                     $$ = $1;
                     $$->push_back($2);
                 }
+
+        |       import_decl
+                {
+                    // A package_import_declaration can introduce several Import
+                    // nodes (import a::b, c::*;); splice them into the list.
+                    $$ = $1;
+                }
+
+        |       definitions import_decl
+                {
+                    $$ = $1;
+                    $$->splice($$->end(), *$2);
+                }
         ;
 
 
@@ -451,6 +472,76 @@ definition:     moduledef
                     stmts->push_back($2);
                     $1->set_statements(stmts);
                     $$ = AST::to_node($1);
+                }
+
+        |       packagedef
+                {
+                    $$ = AST::to_node($1);
+                }
+        ;
+
+
+packagedef:     TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
+                {
+                    $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_items($4);
+                }
+
+        |       TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_items($4);
+                }
+
+        |       TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE
+                {
+                    $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                }
+
+        |       TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                }
+        ;
+
+
+import_decl:    TK_IMPORT import_list TK_SEMICOLON
+                {
+                    $$ = $2;
+                }
+        ;
+
+
+import_list:    import_item
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+
+        |       import_list TK_COMMA import_item
+                {
+                    $$ = $1;
+                    $$->push_back(AST::to_node($3));
+                }
+        ;
+
+
+import_item:    TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::Import>(scanner.get_filename(), @1.begin.line);
+                    $$->set_package($1);
+                    $$->set_symbol($3);
+                }
+
+        |       TK_IDENTIFIER TK_COLONCOLON TK_TIMES
+                {
+                    $$ = std::make_shared<AST::Import>(scanner.get_filename(), @1.begin.line);
+                    $$->set_package($1);
+                    $$->set_symbol("*");
                 }
         ;
 
@@ -503,36 +594,58 @@ pragma:         pragma TK_COMMA TK_IDENTIFIER TK_EQUALS expression
         ;
 
 
-moduledef:      TK_MODULE modulename params_block ports_block items TK_ENDMODULE
+moduledef:      TK_MODULE modulename module_imports params_block ports_block items TK_ENDMODULE
                 {
-                    $$ = std::make_shared<AST::Module>($3, $4, $5, $2, scanner.get_default_nettype(),
+                    // SV allows package imports in the module header; they
+                    // import into module scope, so prepend them to the items.
+                    $6->splice($6->begin(), *$3);
+                    $$ = std::make_shared<AST::Module>($4, $5, $6, $2, scanner.get_default_nettype(),
                                                        scanner.get_filename(), @1.begin.line);
                 }
 
-        |       TK_MODULE modulename ports_block items TK_ENDMODULE
+        |       TK_MODULE modulename module_imports ports_block items TK_ENDMODULE
                 {
+                    $5->splice($5->begin(), *$3);
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
                     $$->set_name($2);
-                    $$->set_ports($3);
-                    $$->set_items($4);
-                }
-
-        |       TK_MODULE modulename params_block ports_block TK_ENDMODULE
-                {
-                    $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
-                    $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_name($2);
-                    $$->set_params($3);
                     $$->set_ports($4);
+                    $$->set_items($5);
                 }
 
-        |       TK_MODULE modulename ports_block TK_ENDMODULE
+        |       TK_MODULE modulename module_imports params_block ports_block TK_ENDMODULE
                 {
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
                     $$->set_name($2);
-                    $$->set_ports($3);
+                    $$->set_params($4);
+                    $$->set_ports($5);
+                    if (!$3->empty()) $$->set_items($3);
+                }
+
+        |       TK_MODULE modulename module_imports ports_block TK_ENDMODULE
+                {
+                    $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
+                    $$->set_default_nettype(scanner.get_default_nettype());
+                    $$->set_name($2);
+                    $$->set_ports($4);
+                    if (!$3->empty()) $$->set_items($3);
+                }
+        ;
+
+
+// Zero or more package_import_declarations in the module header
+// (module_ansi_header, 1800-2017 Annex A). Empty for plain Verilog modules,
+// so existing modules parse unchanged.
+module_imports: %empty
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                }
+
+        |       module_imports import_decl
+                {
+                    $$ = $1;
+                    $$->splice($$->end(), *$2);
                 }
         ;
 
@@ -970,6 +1083,11 @@ standard_item_base:
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     $$->push_back(AST::to_node($1));
+                }
+
+        |       import_decl
+                {
+                    $$ = $1;
                 }
         ;
 
