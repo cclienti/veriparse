@@ -1,0 +1,12 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Package:
+          filename: lib/test/parser/testcases/sv_package_empty0.sv
+          line: 1
+          name: sv_package_empty0
+      filename: lib/test/parser/testcases/sv_package_empty0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_package_empty0.sv
+  line: 1

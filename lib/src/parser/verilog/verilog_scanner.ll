@@ -173,6 +173,21 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"package"     {
+                  if(m_sv_mode) return token::TK_PACKAGE;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"endpackage"  {
+                  if(m_sv_mode) return token::TK_ENDPACKAGE;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"import"      {
+                  if(m_sv_mode) return token::TK_IMPORT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 
 
 	/**************************************************
@@ -225,6 +240,7 @@ using token = Veriparse::Parser::VerilogParser::token;
 "@"    {return token::TK_AT;}
 ","    {return token::TK_COMMA;}
 ";"    {return token::TK_SEMICOLON;}
+"::"   {return token::TK_COLONCOLON;}
 ":"    {return token::TK_COLON;}
 "\."   {return token::TK_DOT;}
 
