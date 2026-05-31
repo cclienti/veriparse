@@ -12,7 +12,9 @@ import re
 import argparse
 import yaml
 import jinja2
+import subprocess
 
+from pathlib import Path
 from collections import OrderedDict
 from yaml_ordered_loader import OrderedDictYAMLLoader
 
@@ -350,7 +352,7 @@ def get_base_classes(description, node_str):
 
     if base_class is None:
         return []
-    elif base_class is "Node":
+    elif base_class == "Node":
         return ["Node"]
     else:
         return [base_class] + get_base_classes(description, base_class)
@@ -815,19 +817,49 @@ def process_test_yaml_importer(description_filename, jinja_env, header_dir, impl
 #################
 
 
+def repo_dir(suffix: str):
+    here = Path(__file__).resolve().parent
+    r = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        cwd=here,
+        capture_output=True,
+        text=True,
+    )
+    return str(Path(r.stdout.strip()) / suffix) if r.returncode == 0 else None
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate the C++ AST classes from a YAML description."
-    )
-    parser.add_argument("description", type=str, help="template path")
-    parser.add_argument(
-        "-t", "--template", type=str, default="./templates", help="template path"
+        description="Generate the C++ AST classes from a YAML description.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        "-i", "--header", type=str, default=".", help="header files output path"
+        "-d",
+        "--description",
+        type=str,
+        default=repo_dir("lib/tools/ASTGen/verilog_ast.yaml"),
+        help="YAML template filename",
     )
     parser.add_argument(
-        "-c", "--impl", type=str, default=".", help="implem. files output path"
+        "-t",
+        "--template",
+        type=str,
+        default=repo_dir("lib/tools/ASTGen/templates"),
+        help="template path",
+    )
+    parser.add_argument(
+        "-i",
+        "--header",
+        type=str,
+        default=repo_dir("lib/include/veriparse"),
+        help="header files output path",
+    )
+    parser.add_argument(
+        "-c",
+        "--impl",
+        type=str,
+        default=repo_dir("lib/src"),
+        help="implem. files output path",
     )
 
     args = parser.parse_args()
