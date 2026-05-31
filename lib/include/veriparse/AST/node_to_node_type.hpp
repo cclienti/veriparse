@@ -180,6 +180,8 @@ template <> constexpr NodeType get_node_type<EnumDef>() { return NodeType::EnumD
 template <> constexpr NodeType get_node_type<Typedef>() { return NodeType::Typedef; }
 template <> constexpr NodeType get_node_type<StructMember>() { return NodeType::StructMember; }
 template <> constexpr NodeType get_node_type<StructDef>() { return NodeType::StructDef; }
+template <> constexpr NodeType get_node_type<Package>() { return NodeType::Package; }
+template <> constexpr NodeType get_node_type<Import>() { return NodeType::Import; }
 
 } // namespace AST
 } // namespace Veriparse

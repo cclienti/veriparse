@@ -20,8 +20,9 @@ YAML::Node YAMLGenerator::render_source(const AST::Source::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Source)
+        if(node->get_node_type() != AST::NodeType::Source) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -39,8 +40,9 @@ YAML::Node YAMLGenerator::render_description(const AST::Description::Ptr node) c
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Description)
+        if(node->get_node_type() != AST::NodeType::Description) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -63,8 +65,9 @@ YAML::Node YAMLGenerator::render_pragmalist(const AST::Pragmalist::Ptr node) con
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Pragmalist)
+        if(node->get_node_type() != AST::NodeType::Pragmalist) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -94,8 +97,9 @@ YAML::Node YAMLGenerator::render_pragma(const AST::Pragma::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Pragma)
+        if(node->get_node_type() != AST::NodeType::Pragma) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -114,8 +118,9 @@ YAML::Node YAMLGenerator::render_module(const AST::Module::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Module)
+        if(node->get_node_type() != AST::NodeType::Module) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -178,8 +183,9 @@ YAML::Node YAMLGenerator::render_port(const AST::Port::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Port)
+        if(node->get_node_type() != AST::NodeType::Port) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -203,8 +209,9 @@ YAML::Node YAMLGenerator::render_width(const AST::Width::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Width)
+        if(node->get_node_type() != AST::NodeType::Width) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -224,8 +231,9 @@ YAML::Node YAMLGenerator::render_length(const AST::Length::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Length)
+        if(node->get_node_type() != AST::NodeType::Length) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -245,8 +253,9 @@ YAML::Node YAMLGenerator::render_identifier(const AST::Identifier::Ptr node) con
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Identifier)
+        if(node->get_node_type() != AST::NodeType::Identifier) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -265,8 +274,9 @@ YAML::Node YAMLGenerator::render_constant(const AST::Constant::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Constant)
+        if(node->get_node_type() != AST::NodeType::Constant) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -282,8 +292,9 @@ YAML::Node YAMLGenerator::render_stringconst(const AST::StringConst::Ptr node) c
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::StringConst)
+        if(node->get_node_type() != AST::NodeType::StringConst) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -300,8 +311,9 @@ YAML::Node YAMLGenerator::render_intconst(const AST::IntConst::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IntConst)
+        if(node->get_node_type() != AST::NodeType::IntConst) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -318,8 +330,9 @@ YAML::Node YAMLGenerator::render_intconstn(const AST::IntConstN::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IntConstN)
+        if(node->get_node_type() != AST::NodeType::IntConstN) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -339,8 +352,9 @@ YAML::Node YAMLGenerator::render_floatconst(const AST::FloatConst::Ptr node) con
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::FloatConst)
+        if(node->get_node_type() != AST::NodeType::FloatConst) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -357,8 +371,9 @@ YAML::Node YAMLGenerator::render_iodir(const AST::IODir::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IODir)
+        if(node->get_node_type() != AST::NodeType::IODir) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -383,8 +398,9 @@ YAML::Node YAMLGenerator::render_input(const AST::Input::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Input)
+        if(node->get_node_type() != AST::NodeType::Input) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -409,8 +425,9 @@ YAML::Node YAMLGenerator::render_output(const AST::Output::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Output)
+        if(node->get_node_type() != AST::NodeType::Output) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -435,8 +452,9 @@ YAML::Node YAMLGenerator::render_inout(const AST::Inout::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Inout)
+        if(node->get_node_type() != AST::NodeType::Inout) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -461,8 +479,9 @@ YAML::Node YAMLGenerator::render_variablebase(const AST::VariableBase::Ptr node)
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::VariableBase)
+        if(node->get_node_type() != AST::NodeType::VariableBase) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -479,8 +498,9 @@ YAML::Node YAMLGenerator::render_genvar(const AST::Genvar::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Genvar)
+        if(node->get_node_type() != AST::NodeType::Genvar) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -497,8 +517,9 @@ YAML::Node YAMLGenerator::render_variable(const AST::Variable::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Variable)
+        if(node->get_node_type() != AST::NodeType::Variable) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -524,8 +545,9 @@ YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Net)
+        if(node->get_node_type() != AST::NodeType::Net) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -563,8 +585,9 @@ YAML::Node YAMLGenerator::render_integer(const AST::Integer::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Integer)
+        if(node->get_node_type() != AST::NodeType::Integer) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -590,8 +613,9 @@ YAML::Node YAMLGenerator::render_real(const AST::Real::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Real)
+        if(node->get_node_type() != AST::NodeType::Real) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -617,8 +641,9 @@ YAML::Node YAMLGenerator::render_tri(const AST::Tri::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Tri)
+        if(node->get_node_type() != AST::NodeType::Tri) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -656,8 +681,9 @@ YAML::Node YAMLGenerator::render_wire(const AST::Wire::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Wire)
+        if(node->get_node_type() != AST::NodeType::Wire) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -695,8 +721,9 @@ YAML::Node YAMLGenerator::render_supply0(const AST::Supply0::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Supply0)
+        if(node->get_node_type() != AST::NodeType::Supply0) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -734,8 +761,9 @@ YAML::Node YAMLGenerator::render_supply1(const AST::Supply1::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Supply1)
+        if(node->get_node_type() != AST::NodeType::Supply1) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -773,8 +801,9 @@ YAML::Node YAMLGenerator::render_logic(const AST::Logic::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Logic)
+        if(node->get_node_type() != AST::NodeType::Logic) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -812,8 +841,9 @@ YAML::Node YAMLGenerator::render_reg(const AST::Reg::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Reg)
+        if(node->get_node_type() != AST::NodeType::Reg) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -847,8 +877,9 @@ YAML::Node YAMLGenerator::render_ioport(const AST::Ioport::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Ioport)
+        if(node->get_node_type() != AST::NodeType::Ioport) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -868,8 +899,9 @@ YAML::Node YAMLGenerator::render_parameter(const AST::Parameter::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Parameter)
+        if(node->get_node_type() != AST::NodeType::Parameter) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -924,8 +956,9 @@ YAML::Node YAMLGenerator::render_localparam(const AST::Localparam::Ptr node) con
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Localparam)
+        if(node->get_node_type() != AST::NodeType::Localparam) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -980,8 +1013,9 @@ YAML::Node YAMLGenerator::render_concat(const AST::Concat::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Concat)
+        if(node->get_node_type() != AST::NodeType::Concat) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1004,8 +1038,9 @@ YAML::Node YAMLGenerator::render_lconcat(const AST::Lconcat::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Lconcat)
+        if(node->get_node_type() != AST::NodeType::Lconcat) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1028,8 +1063,9 @@ YAML::Node YAMLGenerator::render_repeat(const AST::Repeat::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Repeat)
+        if(node->get_node_type() != AST::NodeType::Repeat) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1049,8 +1085,9 @@ YAML::Node YAMLGenerator::render_indirect(const AST::Indirect::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Indirect)
+        if(node->get_node_type() != AST::NodeType::Indirect) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1068,8 +1105,9 @@ YAML::Node YAMLGenerator::render_partselect(const AST::Partselect::Ptr node) con
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Partselect)
+        if(node->get_node_type() != AST::NodeType::Partselect) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1091,8 +1129,9 @@ YAML::Node YAMLGenerator::render_partselectindexed(const AST::PartselectIndexed:
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::PartselectIndexed)
+        if(node->get_node_type() != AST::NodeType::PartselectIndexed) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1115,8 +1154,9 @@ YAMLGenerator::render_partselectplusindexed(const AST::PartselectPlusIndexed::Pt
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::PartselectPlusIndexed)
+        if(node->get_node_type() != AST::NodeType::PartselectPlusIndexed) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1139,8 +1179,9 @@ YAMLGenerator::render_partselectminusindexed(const AST::PartselectMinusIndexed::
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::PartselectMinusIndexed)
+        if(node->get_node_type() != AST::NodeType::PartselectMinusIndexed) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1162,8 +1203,9 @@ YAML::Node YAMLGenerator::render_pointer(const AST::Pointer::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Pointer)
+        if(node->get_node_type() != AST::NodeType::Pointer) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1183,8 +1225,9 @@ YAML::Node YAMLGenerator::render_lvalue(const AST::Lvalue::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Lvalue)
+        if(node->get_node_type() != AST::NodeType::Lvalue) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1202,8 +1245,9 @@ YAML::Node YAMLGenerator::render_rvalue(const AST::Rvalue::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Rvalue)
+        if(node->get_node_type() != AST::NodeType::Rvalue) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1221,8 +1265,9 @@ YAML::Node YAMLGenerator::render_unaryoperator(const AST::UnaryOperator::Ptr nod
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::UnaryOperator)
+        if(node->get_node_type() != AST::NodeType::UnaryOperator) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1240,8 +1285,9 @@ YAML::Node YAMLGenerator::render_uplus(const AST::Uplus::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Uplus)
+        if(node->get_node_type() != AST::NodeType::Uplus) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1259,8 +1305,9 @@ YAML::Node YAMLGenerator::render_uminus(const AST::Uminus::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Uminus)
+        if(node->get_node_type() != AST::NodeType::Uminus) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1278,8 +1325,9 @@ YAML::Node YAMLGenerator::render_ulnot(const AST::Ulnot::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Ulnot)
+        if(node->get_node_type() != AST::NodeType::Ulnot) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1297,8 +1345,9 @@ YAML::Node YAMLGenerator::render_unot(const AST::Unot::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Unot)
+        if(node->get_node_type() != AST::NodeType::Unot) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1316,8 +1365,9 @@ YAML::Node YAMLGenerator::render_uand(const AST::Uand::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Uand)
+        if(node->get_node_type() != AST::NodeType::Uand) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1335,8 +1385,9 @@ YAML::Node YAMLGenerator::render_unand(const AST::Unand::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Unand)
+        if(node->get_node_type() != AST::NodeType::Unand) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1354,8 +1405,9 @@ YAML::Node YAMLGenerator::render_uor(const AST::Uor::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Uor)
+        if(node->get_node_type() != AST::NodeType::Uor) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1373,8 +1425,9 @@ YAML::Node YAMLGenerator::render_unor(const AST::Unor::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Unor)
+        if(node->get_node_type() != AST::NodeType::Unor) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1392,8 +1445,9 @@ YAML::Node YAMLGenerator::render_uxor(const AST::Uxor::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Uxor)
+        if(node->get_node_type() != AST::NodeType::Uxor) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1411,8 +1465,9 @@ YAML::Node YAMLGenerator::render_uxnor(const AST::Uxnor::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Uxnor)
+        if(node->get_node_type() != AST::NodeType::Uxnor) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1430,8 +1485,9 @@ YAML::Node YAMLGenerator::render_operator(const AST::Operator::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Operator)
+        if(node->get_node_type() != AST::NodeType::Operator) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1451,8 +1507,9 @@ YAML::Node YAMLGenerator::render_power(const AST::Power::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Power)
+        if(node->get_node_type() != AST::NodeType::Power) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1472,8 +1529,9 @@ YAML::Node YAMLGenerator::render_times(const AST::Times::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Times)
+        if(node->get_node_type() != AST::NodeType::Times) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1493,8 +1551,9 @@ YAML::Node YAMLGenerator::render_divide(const AST::Divide::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Divide)
+        if(node->get_node_type() != AST::NodeType::Divide) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1514,8 +1573,9 @@ YAML::Node YAMLGenerator::render_mod(const AST::Mod::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Mod)
+        if(node->get_node_type() != AST::NodeType::Mod) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1535,8 +1595,9 @@ YAML::Node YAMLGenerator::render_plus(const AST::Plus::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Plus)
+        if(node->get_node_type() != AST::NodeType::Plus) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1556,8 +1617,9 @@ YAML::Node YAMLGenerator::render_minus(const AST::Minus::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Minus)
+        if(node->get_node_type() != AST::NodeType::Minus) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1577,8 +1639,9 @@ YAML::Node YAMLGenerator::render_sll(const AST::Sll::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Sll)
+        if(node->get_node_type() != AST::NodeType::Sll) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1598,8 +1661,9 @@ YAML::Node YAMLGenerator::render_srl(const AST::Srl::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Srl)
+        if(node->get_node_type() != AST::NodeType::Srl) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1619,8 +1683,9 @@ YAML::Node YAMLGenerator::render_sra(const AST::Sra::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Sra)
+        if(node->get_node_type() != AST::NodeType::Sra) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1640,8 +1705,9 @@ YAML::Node YAMLGenerator::render_lessthan(const AST::LessThan::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::LessThan)
+        if(node->get_node_type() != AST::NodeType::LessThan) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1661,8 +1727,9 @@ YAML::Node YAMLGenerator::render_greaterthan(const AST::GreaterThan::Ptr node) c
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::GreaterThan)
+        if(node->get_node_type() != AST::NodeType::GreaterThan) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1682,8 +1749,9 @@ YAML::Node YAMLGenerator::render_lesseq(const AST::LessEq::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::LessEq)
+        if(node->get_node_type() != AST::NodeType::LessEq) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1703,8 +1771,9 @@ YAML::Node YAMLGenerator::render_greatereq(const AST::GreaterEq::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::GreaterEq)
+        if(node->get_node_type() != AST::NodeType::GreaterEq) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1724,8 +1793,9 @@ YAML::Node YAMLGenerator::render_eq(const AST::Eq::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Eq)
+        if(node->get_node_type() != AST::NodeType::Eq) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1745,8 +1815,9 @@ YAML::Node YAMLGenerator::render_noteq(const AST::NotEq::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::NotEq)
+        if(node->get_node_type() != AST::NodeType::NotEq) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1766,8 +1837,9 @@ YAML::Node YAMLGenerator::render_eql(const AST::Eql::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Eql)
+        if(node->get_node_type() != AST::NodeType::Eql) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1787,8 +1859,9 @@ YAML::Node YAMLGenerator::render_noteql(const AST::NotEql::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::NotEql)
+        if(node->get_node_type() != AST::NodeType::NotEql) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1808,8 +1881,9 @@ YAML::Node YAMLGenerator::render_and(const AST::And::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::And)
+        if(node->get_node_type() != AST::NodeType::And) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1829,8 +1903,9 @@ YAML::Node YAMLGenerator::render_xor(const AST::Xor::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Xor)
+        if(node->get_node_type() != AST::NodeType::Xor) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1850,8 +1925,9 @@ YAML::Node YAMLGenerator::render_xnor(const AST::Xnor::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Xnor)
+        if(node->get_node_type() != AST::NodeType::Xnor) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1871,8 +1947,9 @@ YAML::Node YAMLGenerator::render_or(const AST::Or::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Or)
+        if(node->get_node_type() != AST::NodeType::Or) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1892,8 +1969,9 @@ YAML::Node YAMLGenerator::render_land(const AST::Land::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Land)
+        if(node->get_node_type() != AST::NodeType::Land) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1913,8 +1991,9 @@ YAML::Node YAMLGenerator::render_lor(const AST::Lor::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Lor)
+        if(node->get_node_type() != AST::NodeType::Lor) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1934,8 +2013,9 @@ YAML::Node YAMLGenerator::render_cond(const AST::Cond::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Cond)
+        if(node->get_node_type() != AST::NodeType::Cond) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1957,8 +2037,9 @@ YAML::Node YAMLGenerator::render_always(const AST::Always::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Always)
+        if(node->get_node_type() != AST::NodeType::Always) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1978,8 +2059,9 @@ YAML::Node YAMLGenerator::render_alwaysff(const AST::AlwaysFF::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::AlwaysFF)
+        if(node->get_node_type() != AST::NodeType::AlwaysFF) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -1999,8 +2081,9 @@ YAML::Node YAMLGenerator::render_alwayscomb(const AST::AlwaysComb::Ptr node) con
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::AlwaysComb)
+        if(node->get_node_type() != AST::NodeType::AlwaysComb) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2020,8 +2103,9 @@ YAML::Node YAMLGenerator::render_alwayslatch(const AST::AlwaysLatch::Ptr node) c
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::AlwaysLatch)
+        if(node->get_node_type() != AST::NodeType::AlwaysLatch) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2041,8 +2125,9 @@ YAML::Node YAMLGenerator::render_senslist(const AST::Senslist::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Senslist)
+        if(node->get_node_type() != AST::NodeType::Senslist) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2065,8 +2150,9 @@ YAML::Node YAMLGenerator::render_sens(const AST::Sens::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Sens)
+        if(node->get_node_type() != AST::NodeType::Sens) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2097,8 +2183,9 @@ YAML::Node YAMLGenerator::render_defparamlist(const AST::Defparamlist::Ptr node)
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Defparamlist)
+        if(node->get_node_type() != AST::NodeType::Defparamlist) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2121,8 +2208,9 @@ YAML::Node YAMLGenerator::render_defparam(const AST::Defparam::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Defparam)
+        if(node->get_node_type() != AST::NodeType::Defparam) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2142,8 +2230,9 @@ YAML::Node YAMLGenerator::render_assign(const AST::Assign::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Assign)
+        if(node->get_node_type() != AST::NodeType::Assign) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2168,8 +2257,9 @@ YAMLGenerator::render_blockingsubstitution(const AST::BlockingSubstitution::Ptr 
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::BlockingSubstitution)
+        if(node->get_node_type() != AST::NodeType::BlockingSubstitution) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2194,8 +2284,9 @@ YAMLGenerator::render_nonblockingsubstitution(const AST::NonblockingSubstitution
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::NonblockingSubstitution)
+        if(node->get_node_type() != AST::NodeType::NonblockingSubstitution) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2219,8 +2310,9 @@ YAML::Node YAMLGenerator::render_ifstatement(const AST::IfStatement::Ptr node) c
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IfStatement)
+        if(node->get_node_type() != AST::NodeType::IfStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2242,8 +2334,9 @@ YAML::Node YAMLGenerator::render_repeatstatement(const AST::RepeatStatement::Ptr
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::RepeatStatement)
+        if(node->get_node_type() != AST::NodeType::RepeatStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2263,8 +2356,9 @@ YAML::Node YAMLGenerator::render_forstatement(const AST::ForStatement::Ptr node)
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::ForStatement)
+        if(node->get_node_type() != AST::NodeType::ForStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2288,8 +2382,9 @@ YAML::Node YAMLGenerator::render_whilestatement(const AST::WhileStatement::Ptr n
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::WhileStatement)
+        if(node->get_node_type() != AST::NodeType::WhileStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2309,8 +2404,9 @@ YAML::Node YAMLGenerator::render_casestatement(const AST::CaseStatement::Ptr nod
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::CaseStatement)
+        if(node->get_node_type() != AST::NodeType::CaseStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2335,8 +2431,9 @@ YAML::Node YAMLGenerator::render_casexstatement(const AST::CasexStatement::Ptr n
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::CasexStatement)
+        if(node->get_node_type() != AST::NodeType::CasexStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2361,8 +2458,9 @@ YAML::Node YAMLGenerator::render_casezstatement(const AST::CasezStatement::Ptr n
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::CasezStatement)
+        if(node->get_node_type() != AST::NodeType::CasezStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2387,8 +2485,9 @@ YAML::Node YAMLGenerator::render_uniquecasestatement(const AST::UniqueCaseStatem
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::UniqueCaseStatement)
+        if(node->get_node_type() != AST::NodeType::UniqueCaseStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2414,8 +2513,9 @@ YAMLGenerator::render_prioritycasestatement(const AST::PriorityCaseStatement::Pt
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::PriorityCaseStatement)
+        if(node->get_node_type() != AST::NodeType::PriorityCaseStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2440,8 +2540,9 @@ YAML::Node YAMLGenerator::render_case(const AST::Case::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Case)
+        if(node->get_node_type() != AST::NodeType::Case) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2466,8 +2567,9 @@ YAML::Node YAMLGenerator::render_block(const AST::Block::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Block)
+        if(node->get_node_type() != AST::NodeType::Block) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2491,8 +2593,9 @@ YAML::Node YAMLGenerator::render_initial(const AST::Initial::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Initial)
+        if(node->get_node_type() != AST::NodeType::Initial) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2510,8 +2613,9 @@ YAML::Node YAMLGenerator::render_eventstatement(const AST::EventStatement::Ptr n
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::EventStatement)
+        if(node->get_node_type() != AST::NodeType::EventStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2531,8 +2635,9 @@ YAML::Node YAMLGenerator::render_waitstatement(const AST::WaitStatement::Ptr nod
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::WaitStatement)
+        if(node->get_node_type() != AST::NodeType::WaitStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2552,8 +2657,9 @@ YAML::Node YAMLGenerator::render_foreverstatement(const AST::ForeverStatement::P
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::ForeverStatement)
+        if(node->get_node_type() != AST::NodeType::ForeverStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2571,8 +2677,9 @@ YAML::Node YAMLGenerator::render_delaystatement(const AST::DelayStatement::Ptr n
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::DelayStatement)
+        if(node->get_node_type() != AST::NodeType::DelayStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2590,8 +2697,9 @@ YAML::Node YAMLGenerator::render_instancelist(const AST::Instancelist::Ptr node)
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Instancelist)
+        if(node->get_node_type() != AST::NodeType::Instancelist) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2622,8 +2730,9 @@ YAML::Node YAMLGenerator::render_instance(const AST::Instance::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Instance)
+        if(node->get_node_type() != AST::NodeType::Instance) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2657,8 +2766,9 @@ YAML::Node YAMLGenerator::render_paramarg(const AST::ParamArg::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::ParamArg)
+        if(node->get_node_type() != AST::NodeType::ParamArg) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2677,8 +2787,9 @@ YAML::Node YAMLGenerator::render_portarg(const AST::PortArg::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::PortArg)
+        if(node->get_node_type() != AST::NodeType::PortArg) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2697,8 +2808,9 @@ YAML::Node YAMLGenerator::render_function(const AST::Function::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Function)
+        if(node->get_node_type() != AST::NodeType::Function) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2748,8 +2860,9 @@ YAML::Node YAMLGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::FunctionCall)
+        if(node->get_node_type() != AST::NodeType::FunctionCall) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2773,8 +2886,9 @@ YAML::Node YAMLGenerator::render_task(const AST::Task::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Task)
+        if(node->get_node_type() != AST::NodeType::Task) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2806,8 +2920,9 @@ YAML::Node YAMLGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::TaskCall)
+        if(node->get_node_type() != AST::NodeType::TaskCall) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2831,8 +2946,9 @@ YAML::Node YAMLGenerator::render_generatestatement(const AST::GenerateStatement:
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::GenerateStatement)
+        if(node->get_node_type() != AST::NodeType::GenerateStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2855,8 +2971,9 @@ YAML::Node YAMLGenerator::render_systemcall(const AST::SystemCall::Ptr node) con
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::SystemCall)
+        if(node->get_node_type() != AST::NodeType::SystemCall) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2881,8 +2998,9 @@ YAMLGenerator::render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr 
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IdentifierScopeLabel)
+        if(node->get_node_type() != AST::NodeType::IdentifierScopeLabel) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2901,8 +3019,9 @@ YAML::Node YAMLGenerator::render_identifierscope(const AST::IdentifierScope::Ptr
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IdentifierScope)
+        if(node->get_node_type() != AST::NodeType::IdentifierScope) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2925,8 +3044,9 @@ YAML::Node YAMLGenerator::render_disable(const AST::Disable::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Disable)
+        if(node->get_node_type() != AST::NodeType::Disable) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2943,8 +3063,9 @@ YAML::Node YAMLGenerator::render_parallelblock(const AST::ParallelBlock::Ptr nod
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::ParallelBlock)
+        if(node->get_node_type() != AST::NodeType::ParallelBlock) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2968,8 +3089,9 @@ YAML::Node YAMLGenerator::render_singlestatement(const AST::SingleStatement::Ptr
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::SingleStatement)
+        if(node->get_node_type() != AST::NodeType::SingleStatement) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -2990,8 +3112,9 @@ YAML::Node YAMLGenerator::render_enumitem(const AST::EnumItem::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::EnumItem)
+        if(node->get_node_type() != AST::NodeType::EnumItem) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -3010,8 +3133,9 @@ YAML::Node YAMLGenerator::render_enumdef(const AST::EnumDef::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::EnumDef)
+        if(node->get_node_type() != AST::NodeType::EnumDef) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -3055,8 +3179,9 @@ YAML::Node YAMLGenerator::render_typedef(const AST::Typedef::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Typedef)
+        if(node->get_node_type() != AST::NodeType::Typedef) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -3075,8 +3200,9 @@ YAML::Node YAMLGenerator::render_structmember(const AST::StructMember::Ptr node)
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::StructMember)
+        if(node->get_node_type() != AST::NodeType::StructMember) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -3103,8 +3229,9 @@ YAML::Node YAMLGenerator::render_structdef(const AST::StructDef::Ptr node) const
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::StructDef)
+        if(node->get_node_type() != AST::NodeType::StructDef) {
             return render(AST::cast_to<AST::Node>(node));
+        }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
@@ -3120,6 +3247,52 @@ YAML::Node YAMLGenerator::render_structdef(const AST::StructDef::Ptr node) const
 
     node_structdef["StructDef"] = content;
     return node_structdef;
+}
+
+YAML::Node YAMLGenerator::render_package(const AST::Package::Ptr node) const
+{
+    YAML::Node node_package;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Package) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        if(node->get_items()) {
+            content["items"] = YAML::Load("[]");
+            for(const AST::Node::Ptr &n : *node->get_items()) {
+                content["items"].push_back(render(n));
+            }
+        }
+    }
+
+    node_package["Package"] = content;
+    return node_package;
+}
+
+YAML::Node YAMLGenerator::render_import(const AST::Import::Ptr node) const
+{
+    YAML::Node node_import;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Import) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["package"] = node->get_package();
+        content["symbol"] = node->get_symbol();
+    }
+
+    node_import["Import"] = content;
+    return node_import;
 }
 
 } // namespace Generators

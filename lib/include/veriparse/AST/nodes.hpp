@@ -131,6 +131,8 @@
 #include <veriparse/AST/typedef.hpp>
 #include <veriparse/AST/structmember.hpp>
 #include <veriparse/AST/structdef.hpp>
+#include <veriparse/AST/package.hpp>
+#include <veriparse/AST/import.hpp>
 #include <veriparse/AST/node_operators.hpp>
 #include <veriparse/AST/node_cast.hpp>
 

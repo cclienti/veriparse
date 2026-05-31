@@ -2837,3 +2837,45 @@ TEST(YAMLImporter, StructDef)
     ASSERT_TRUE(yaml["StructDef"]["members"]);
     ASSERT_TRUE(yaml["StructDef"]["packed"].as<bool>() == false);
 }
+
+TEST(YAMLImporter, Package)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Package.log");
+    Logger::add_stderr_sink();
+    std::string str("Package:\n"
+                    "  filename: package.v\n"
+                    "  line: 7\n"
+                    "  items:\n"
+                    "  name: mynbiqpmzj\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Package"]);
+    ASSERT_TRUE(yaml["Package"]["filename"].as<std::string>() == "package.v");
+    ASSERT_TRUE(yaml["Package"]["line"].as<int>() == 7);
+    ASSERT_TRUE(yaml["Package"]["items"]);
+    ASSERT_TRUE(yaml["Package"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLImporter, Import)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Import.log");
+    Logger::add_stderr_sink();
+    std::string str("Import:\n"
+                    "  filename: import.v\n"
+                    "  line: 6\n"
+                    "  package: mynbiqpmzj\n"
+                    "  symbol: plsgqejeyd\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Import"]);
+    ASSERT_TRUE(yaml["Import"]["filename"].as<std::string>() == "import.v");
+    ASSERT_TRUE(yaml["Import"]["line"].as<int>() == 6);
+    ASSERT_TRUE(yaml["Import"]["package"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
+}

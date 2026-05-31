@@ -139,6 +139,8 @@ enum class NodeType
     Typedef,
     StructMember,
     StructDef,
+    Package,
+    Import,
     Node,
     None
 };
