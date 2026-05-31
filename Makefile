@@ -116,9 +116,8 @@ ast-check: ast-gen
 	  || { echo "Generated AST is stale vs verilog_ast.yaml — run 'make ast-gen' and commit."; exit 1; }
 
 dev-clean:
-	set -e; \
-	  rm -rf $(DEV_BUILD_DIR); \
-	  $(MAMBA) env remove -y -p $(CONDA_DEV_ENV_PATH)
+	-$(MAMBA) env remove -y -p $(CONDA_DEV_ENV_PATH)
+	rm -rf $(DEV_BUILD_DIR)
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
