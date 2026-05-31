@@ -90,6 +90,22 @@ add_library (veriparse_static STATIC
   ${FLEX_Veriparse_VerilogNumberScanner_OUTPUTS}
   ${FLEX_Veriparse_PreprocessorScanner_OUTPUTS})
 
+# The bison-generated parser headers (e.g. verilog_number_parser.hpp) are
+# #included by hand-written sources via the *_scanner.hpp headers. The Ninja
+# generator orders each compile after the custom command producing a header it
+# consumes; the Visual Studio generator does not — it runs custom commands and
+# compiles in parallel within one .vcxproj, so a TU can compile before bison
+# writes the header ("file not found"). Aggregate every generated output into
+# one target and make the library depend on it, forcing generation to finish
+# before any compilation of veriparse_static begins.
+add_custom_target(veriparse_generated_parsers DEPENDS
+  ${BISON_Veriparse_VerilogParser_OUTPUTS}
+  ${FLEX_Veriparse_VerilogScanner_OUTPUTS}
+  ${BISON_Veriparse_VerilogNumberParser_OUTPUTS}
+  ${FLEX_Veriparse_VerilogNumberScanner_OUTPUTS}
+  ${FLEX_Veriparse_PreprocessorScanner_OUTPUTS})
+add_dependencies(veriparse_static veriparse_generated_parsers)
+
 
 target_include_directories (veriparse_static PUBLIC include)
 target_include_directories (veriparse_static SYSTEM PUBLIC ${BOOST_INCLUDE_DIRS})
