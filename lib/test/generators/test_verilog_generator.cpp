@@ -241,3 +241,4 @@ TEST(VerilogGeneratorTest, sv_package_empty0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import1) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import_header0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_scoped_ref0) { TEST_CORE_SV; }
