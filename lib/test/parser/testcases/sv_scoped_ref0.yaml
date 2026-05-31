@@ -1,0 +1,120 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+          items:
+          - Localparam:
+              filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+              line: 4
+              name: WIDTH
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                  line: 4
+                  var:
+                    ScopedRef:
+                      filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                      line: 4
+                      name: DWIDTH
+                      package: sv_package0
+          - Assign:
+              filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                      line: 6
+                      name: data
+                      scope:
+                        IdentifierScope: null
+              line: 6
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                  line: 6
+                  var:
+                    ScopedRef:
+                      filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                      line: 6
+                      name: DEFAULT
+                      package: sv_package0
+          line: 1
+          name: sv_scoped_ref0
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                  line: 2
+                  name: data
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 2
+              second:
+                Wire:
+                  filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: data
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
+      filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_scoped_ref0.sv
+  line: 1

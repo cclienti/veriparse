@@ -271,6 +271,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 module_imports
 %type   <AST::Node::ListPtr>                 import_decl import_list
 %type   <AST::Import::Ptr>                   import_item
+%type   <AST::ScopedRef::Ptr>                scoped_ref
 %type   <AST::Pragmalist::Ptr>               pragmalist
 %type   <AST::Pragma::ListPtr>               pragma
 %type   <AST::Node::Ptr>                     expression ternary paren_expression
@@ -2257,9 +2258,26 @@ expression:     TK_MINUS expression %prec TK_UMINUS
                     $$ = AST::to_node($1);
                 }
 
+        |       scoped_ref
+                {
+                    $$ = AST::to_node($1);
+                }
+
         |       const_expression
                 {
                     $$ = $1;
+                }
+        ;
+
+
+// SystemVerilog package-scoped reference, e.g. pkg::WIDTH. Kept as a
+// dedicated node (not an Identifier) so PackageInliner can resolve and
+// erase it; plain signal-analysis passes never mistake it for a net.
+scoped_ref:     TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
+                    $$->set_package($1);
+                    $$->set_name($3);
                 }
         ;
 
