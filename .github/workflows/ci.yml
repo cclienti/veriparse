@@ -87,6 +87,14 @@ jobs:
       - name: Create dev environment
         run: make dev-env
 
+      # Platform-independent: regenerate the AST from verilog_ast.yaml and
+      # fail if the committed generated tree is stale. Linux only (uses the
+      # pinned conda clang-format; same result everywhere) and before the
+      # build for fast feedback.
+      - name: Check generated AST is in sync
+        if: matrix.platform == 'linux-64'
+        run: make ast-check
+
       - name: Configure
         run: make dev-cmake DEV_LINKER_FLAGS="${{ matrix.linker }}"
 
