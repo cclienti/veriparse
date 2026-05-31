@@ -506,8 +506,8 @@ def process_description(description_filename, jinja_env, header_dir, impl_dir):
     if description is None:
         return
 
-    header_template = jinja_env.get_template("node_header.hpp")
-    impl_template = jinja_env.get_template("node_impl.cpp")
+    header_template = jinja_env.get_template("node_header.hpp.j2")
+    impl_template = jinja_env.get_template("node_impl.cpp.j2")
 
     # Walk through all defined class in the description
     for node_name, ndict in get_nodes_dict_from_description(description).items():
@@ -549,8 +549,8 @@ def process_node_type(description_filename, jinja_env, header_dir, impl_dir):
     if description is None:
         return
 
-    header_template = jinja_env.get_template("node_type.hpp")
-    impl_template = jinja_env.get_template("node_type.cpp")
+    header_template = jinja_env.get_template("node_type.hpp.j2")
+    impl_template = jinja_env.get_template("node_type.cpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
@@ -573,7 +573,7 @@ def process_node_to_node_type(description_filename, jinja_env, header_dir, impl_
     if description is None:
         return
 
-    header_template = jinja_env.get_template("node_to_node_type.hpp")
+    header_template = jinja_env.get_template("node_to_node_type.hpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
@@ -593,8 +593,8 @@ def process_node_category(description_filename, jinja_env, header_dir, impl_dir)
     if description is None:
         return
 
-    header_template = jinja_env.get_template("node_category.hpp")
-    impl_template = jinja_env.get_template("node_category.cpp")
+    header_template = jinja_env.get_template("node_category.hpp.j2")
+    impl_template = jinja_env.get_template("node_category.cpp.j2")
 
     category_list = sorted(
         set(
@@ -626,8 +626,8 @@ def process_node_ostream(description_filename, jinja_env, header_dir, impl_dir):
     if description is None:
         return
 
-    header_template = jinja_env.get_template("node_ostream.hpp")
-    impl_template = jinja_env.get_template("node_ostream.cpp")
+    header_template = jinja_env.get_template("node_ostream.hpp.j2")
+    impl_template = jinja_env.get_template("node_ostream.cpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
@@ -652,7 +652,7 @@ def process_node_general_header(description_filename, jinja_env, header_dir):
     if description is None:
         return
 
-    template = jinja_env.get_template("nodes.hpp")
+    template = jinja_env.get_template("nodes.hpp.j2")
 
     header_list = get_nodes_dict_from_description(description).keys()
 
@@ -670,7 +670,7 @@ def process_generator_base(description_filename, jinja_env, header_dir):
     if description is None:
         return
 
-    template = jinja_env.get_template("generator_base.hpp")
+    template = jinja_env.get_template("generator_base.hpp.j2")
 
     type_list = get_nodes_dict_from_description(description).keys()
 
@@ -691,8 +691,8 @@ def process_yaml_generator(description_filename, jinja_env, header_dir, impl_dir
     if description is None:
         return
 
-    header_template = jinja_env.get_template("yaml_generator.hpp")
-    impl_template = jinja_env.get_template("yaml_generator.cpp")
+    header_template = jinja_env.get_template("yaml_generator.hpp.j2")
+    impl_template = jinja_env.get_template("yaml_generator.cpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
@@ -718,8 +718,8 @@ def process_dot_generator(description_filename, jinja_env, header_dir, impl_dir)
     if description is None:
         return
 
-    header_template = jinja_env.get_template("dot_generator.hpp")
-    impl_template = jinja_env.get_template("dot_generator.cpp")
+    header_template = jinja_env.get_template("dot_generator.hpp.j2")
+    impl_template = jinja_env.get_template("dot_generator.cpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
@@ -745,7 +745,7 @@ def process_test_yaml_generator(description_filename, jinja_env, header_dir, imp
     if description is None:
         return
 
-    impl_template = jinja_env.get_template("test_yaml_generator.cpp")
+    impl_template = jinja_env.get_template("test_yaml_generator.cpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
@@ -766,9 +766,9 @@ def process_yaml_importer(description_filename, jinja_env, header_dir, impl_dir)
     if description is None:
         return
 
-    header_template = jinja_env.get_template("yaml_importer.hpp")
-    impl_template = jinja_env.get_template("yaml_importer.cpp")
-    specialization_template = jinja_env.get_template("yaml_specializations.hpp")
+    header_template = jinja_env.get_template("yaml_importer.hpp.j2")
+    impl_template = jinja_env.get_template("yaml_importer.cpp.j2")
+    specialization_template = jinja_env.get_template("yaml_specializations.hpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
@@ -799,7 +799,7 @@ def process_test_yaml_importer(description_filename, jinja_env, header_dir, impl
     if description is None:
         return
 
-    impl_template = jinja_env.get_template("test_yaml_importer.cpp")
+    impl_template = jinja_env.get_template("test_yaml_importer.cpp.j2")
 
     nodes_dict = get_nodes_dict_from_description(description)
 
