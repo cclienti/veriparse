@@ -431,6 +431,9 @@ public:
             case AST::NodeType::Import:
                 return render_import(AST::cast_to<AST::Import>(node));
 
+            case AST::NodeType::ScopedRef:
+                return render_scopedref(AST::cast_to<AST::ScopedRef>(node));
+
             default:
                 return render_node(node);
             }
@@ -1500,6 +1503,14 @@ public:
      */
     T render(const AST::Import::Ptr node) const { return render_import(node); }
 
+    /**
+     * Main rendering method for the ScopedRef node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_scopedref(const AST::ScopedRef::Ptr &node)
+     */
+    T render(const AST::ScopedRef::Ptr node) const { return render_scopedref(node); }
+
 protected:
     /**
      * Render the Node base class. This method must be overloaded
@@ -2301,6 +2312,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_import(const AST::Import::Ptr node) const { return T(); }
+
+    /**
+     * Render the ScopedRef node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_scopedref(const AST::ScopedRef::Ptr node) const { return T(); }
 
 private:
     std::string m_indent_str;

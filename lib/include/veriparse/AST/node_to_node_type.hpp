@@ -182,6 +182,7 @@ template <> constexpr NodeType get_node_type<StructMember>() { return NodeType::
 template <> constexpr NodeType get_node_type<StructDef>() { return NodeType::StructDef; }
 template <> constexpr NodeType get_node_type<Package>() { return NodeType::Package; }
 template <> constexpr NodeType get_node_type<Import>() { return NodeType::Import; }
+template <> constexpr NodeType get_node_type<ScopedRef>() { return NodeType::ScopedRef; }
 
 } // namespace AST
 } // namespace Veriparse

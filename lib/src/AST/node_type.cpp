@@ -271,6 +271,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "Package";
     case NodeType::Import:
         return "Import";
+    case NodeType::ScopedRef:
+        return "ScopedRef";
     default:
         return "Unknown NodeType";
     }

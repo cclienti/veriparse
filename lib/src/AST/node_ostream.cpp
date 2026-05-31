@@ -398,6 +398,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Import:
         os << static_cast<const AST::Import &>(p);
         break;
+    case NodeType::ScopedRef:
+        os << static_cast<const AST::ScopedRef &>(p);
+        break;
     default:
         os << "Node: {}";
     }
