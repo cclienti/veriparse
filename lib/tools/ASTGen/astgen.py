@@ -2,22 +2,21 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # Copyright (C) 2013-2026 Christophe Clienti
 
-import sys
+import argparse
+import copy
 import os
 import os.path
 import random
-import string
-import copy
 import re
-import argparse
-import yaml
-import jinja2
+import string
 import subprocess
-
-from pathlib import Path
+import sys
 from collections import OrderedDict
-from yaml_ordered_loader import OrderedDictYAMLLoader
+from pathlib import Path
 
+import jinja2
+import yaml
+from yaml_ordered_loader import OrderedDictYAMLLoader
 
 RESERVED_MEMBER_VARIABLES = [
     "children",
@@ -121,10 +120,8 @@ RESERVED_MEMBER_VARIABLES = [
 def is_virtual_node(node_desc):
     """Check if a node description marked as virtual."""
     if "virtual" in node_desc:
-        virtual = node_desc["virtual"]
-        return virtual
-    else:
-        return False
+        return node_desc["virtual"]
+    return False
 
 
 def is_type_list(str_type):
@@ -145,8 +142,7 @@ def remove_namespace(var_str):
         if len(tok) > 1:
             tok = tok[1:]
         return "::".join(tok)
-    else:
-        return string
+    return string
 
 
 def remove_escaped_quote(var_str):
@@ -161,8 +157,7 @@ def remove_escaped_quote(var_str):
 
         return s
 
-    else:
-        return var_str
+    return var_str
 
 
 def get_type(str_type):
@@ -178,8 +173,7 @@ def get_type(str_type):
     node_type = re.sub(r"list\((.*)\)", r"\1", str_type)
     if is_type_list(str_type) is True:
         return "{0}::ListPtr".format(node_type)
-    else:
-        return "{0}::Ptr".format(node_type)
+    return "{0}::Ptr".format(node_type)
 
 
 def get_underlying_type(str_type):
@@ -203,18 +197,15 @@ def get_random_property_value(property_name, properties_dict, properties_user_en
     property_type = properties_dict[property_name]
 
     if property_type in properties_user_enum:
-        return "{}::{}".format(
-            property_type, random.choice(properties_user_enum[property_type])
-        )
+        return "{}::{}".format(property_type, random.choice(properties_user_enum[property_type]))
 
-    elif properties_dict[property_name] == "std::string":
+    if properties_dict[property_name] == "std::string":
         return '"' + get_random_word(10) + '"'
 
-    elif properties_dict[property_name] == "bool":
+    if properties_dict[property_name] == "bool":
         return random.choice(["true", "false"])
 
-    else:
-        return str(random.randint(0, 127))
+    return str(random.randint(0, 127))
 
 
 def update_dict(dict1, dict2):
@@ -259,9 +250,7 @@ def flatten_inherited(inherited):
             base_desc["children_underlying_types"],
         )
         update_dict(new_inherited["properties"], base_desc["properties"])
-        update_dict(
-            new_inherited["properties_user_enum"], base_desc["properties_user_enum"]
-        )
+        update_dict(new_inherited["properties_user_enum"], base_desc["properties_user_enum"])
 
     return new_inherited
 
@@ -271,16 +260,62 @@ def flatten_inherited(inherited):
 ####################
 
 
-def save_file_if_changed(filename, content):
-    """Write the content in the file using the given filename. If the file
-    already exists and if the content is the same, the file is kept
-    untouched.
+# Set from --clang-format in main(). When False, clang_format() is a no-op so
+# generation emits raw output (and save_file_if_changed compares raw vs raw).
+# Keep it off until the whole repo is clang-formatted, otherwise every regen
+# rewrites every generated file (formatted-new vs unformatted-existing).
+APPLY_CLANG_FORMAT = False
+
+
+def clang_format(content, filename):
+    """Format the generated C++ `content` with clang-format. `filename` is
+    passed via -assume-filename so clang-format selects the right language and
+    discovers the nearest .clang-format (the generated files live under the
+    repo, so the project style applies). Returns `content` unchanged if
+    clang-format is missing or errors, so generation still works without it
+    (just unformatted). No-op unless enabled via --clang-format.
 
     """
 
+    if not APPLY_CLANG_FORMAT:
+        return content
+
+    try:
+        result = subprocess.run(
+            ["clang-format", "-assume-filename={}".format(filename)],
+            input=content,
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        sys.stderr.write("clang-format not found; writing unformatted output\n")
+        return content
+
+    if result.returncode != 0:
+        sys.stderr.write(
+            "clang-format failed on {}: {}\n".format(filename, result.stderr.strip())
+        )
+        return content
+
+    return result.stdout
+
+
+def save_file_if_changed(filename, content):
+    """Write the content in the file using the given filename. When
+    --clang-format is enabled, BOTH the new content and the existing file are
+    run through clang-format before comparing, so the check is format-aware:
+    an unchanged AST leaves the file (and its mtime) untouched even if the
+    on-disk file is not yet clang-formatted — avoiding a repo-wide churn while
+    not all generated files have been reformatted. With the flag off,
+    clang_format() is a no-op and this is a plain raw-vs-raw comparison.
+
+    """
+
+    content = clang_format(content, filename)
+
     try:
         old_content = open(filename).read()
-        if content == old_content:
+        if content == clang_format(old_content, filename):
             sys.stderr.write("{} not modified\n".format(filename))
             return
 
@@ -301,11 +336,10 @@ def is_dict(obj):
     if isinstance(obj, dict):
         return True
 
-    elif isinstance(obj, OrderedDict):
+    if isinstance(obj, OrderedDict):
         return True
 
-    else:
-        return False
+    return False
 
 
 def get_output_filename(dirname, filename, extension):
@@ -317,9 +351,7 @@ def load_description(description_filename):
     """Load the YAML description and return the data structure."""
 
     try:
-        description = yaml.load(
-            open(description_filename), Loader=OrderedDictYAMLLoader
-        )
+        description = yaml.load(open(description_filename), Loader=OrderedDictYAMLLoader)
     except IOError:
         sys.stderr.write("cannot open {}\n".format(description_filename))
         return None
@@ -337,10 +369,7 @@ def get_base_class(description, node_str):
         else:
             base_class = "Node"
         return base_class
-    else:
-        sys.stderr.write(
-            "error: node {} not found in the description\n".format(node_str)
-        )
+    sys.stderr.write("error: node {} not found in the description\n".format(node_str))
 
     return None
 
@@ -352,10 +381,9 @@ def get_base_classes(description, node_str):
 
     if base_class is None:
         return []
-    elif base_class == "Node":
+    if base_class == "Node":
         return ["Node"]
-    else:
-        return [base_class] + get_base_classes(description, base_class)
+    return [base_class] + get_base_classes(description, base_class)
 
 
 ####################
@@ -394,13 +422,11 @@ def get_nodes_dict_from_description(description):
     for node_name, node_desc in description.items():
         if type(node_name) is not str:
             sys.stderr.write("error: Node {} is not a string\n".format(node_name))
-            return
+            return None
 
         if is_dict(node_desc) is False:
-            sys.stderr.write(
-                "error: Node {} description is not a dictionary\n".format(node_name)
-            )
-            return
+            sys.stderr.write("error: Node {} description is not a dictionary\n".format(node_name))
+            return None
 
         if is_virtual_node(node_desc) is True:
             continue
@@ -408,10 +434,8 @@ def get_nodes_dict_from_description(description):
         if isinstance(node_name, str) and node_name not in nodes_dict:
             pass
         else:
-            sys.stderr.write(
-                'bad node name or node name redeclared: "{}"\n'.format(node_name)
-            )
-            return
+            sys.stderr.write('bad node name or node name redeclared: "{}"\n'.format(node_name))
+            return None
 
         if "includes" in node_desc:
             node_includes = node_desc["includes"]
@@ -431,18 +455,14 @@ def get_nodes_dict_from_description(description):
         children_dict = OrderedDict()
         children_underlying_types = set()
         if "children" in node_desc:
-            retrieve_children_info(
-                node_desc["children"], children_dict, children_underlying_types
-            )
+            retrieve_children_info(node_desc["children"], children_dict, children_underlying_types)
 
         # Parse Children in base classes
         for base_name in node_inheritance_no_node:
             base_children_dict = OrderedDict()
             base_children_underlying_types = set()
             inherited[base_name]["children"] = base_children_dict
-            inherited[base_name]["children_underlying_types"] = (
-                base_children_underlying_types
-            )
+            inherited[base_name]["children_underlying_types"] = base_children_underlying_types
 
             base_desc = description[base_name]
             if "children" in base_desc:
@@ -456,9 +476,7 @@ def get_nodes_dict_from_description(description):
         properties_user_enum = OrderedDict()
         properties_dict = OrderedDict()
         if "properties" in node_desc:
-            retrieve_properties_info(
-                node_desc["properties"], properties_dict, properties_user_enum
-            )
+            retrieve_properties_info(node_desc["properties"], properties_dict, properties_user_enum)
 
         # Parse Properties in base classes
         for base_name in node_inheritance_no_node:
@@ -533,9 +551,7 @@ def process_description(description_filename, jinja_env, header_dir, impl_dir):
             properties_dict=ndict["properties"],
         )
 
-        output_filename_header = get_output_filename(
-            header_dir + "/AST", node_name, ".hpp"
-        )
+        output_filename_header = get_output_filename(header_dir + "/AST", node_name, ".hpp")
         output_filename_impl = get_output_filename(impl_dir + "/AST", node_name, ".cpp")
 
         save_file_if_changed(output_filename_header, header)
@@ -557,9 +573,7 @@ def process_node_type(description_filename, jinja_env, header_dir, impl_dir):
     header = header_template.render(nodes_dict=nodes_dict)
     impl = impl_template.render(nodes_dict=nodes_dict)
 
-    output_filename_header = get_output_filename(
-        header_dir + "/AST", "node_type", ".hpp"
-    )
+    output_filename_header = get_output_filename(header_dir + "/AST", "node_type", ".hpp")
     output_filename_impl = get_output_filename(impl_dir + "/AST", "node_type", ".cpp")
 
     save_file_if_changed(output_filename_header, header)
@@ -579,9 +593,7 @@ def process_node_to_node_type(description_filename, jinja_env, header_dir, impl_
 
     header = header_template.render(nodes_dict=nodes_dict)
 
-    output_filename_header = get_output_filename(
-        header_dir + "/AST", "node_to_node_type", ".hpp"
-    )
+    output_filename_header = get_output_filename(header_dir + "/AST", "node_to_node_type", ".hpp")
 
     save_file_if_changed(output_filename_header, header)
 
@@ -596,24 +608,13 @@ def process_node_category(description_filename, jinja_env, header_dir, impl_dir)
     header_template = jinja_env.get_template("node_category.hpp.j2")
     impl_template = jinja_env.get_template("node_category.cpp.j2")
 
-    category_list = sorted(
-        set(
-            [
-                ndict["category"]
-                for ndict in get_nodes_dict_from_description(description).values()
-            ]
-        )
-    )
+    category_list = sorted(set([ndict["category"] for ndict in get_nodes_dict_from_description(description).values()]))
 
     header = header_template.render(category_list=category_list)
     impl = impl_template.render(category_list=category_list)
 
-    output_filename_header = get_output_filename(
-        header_dir + "/AST", "node_category", ".hpp"
-    )
-    output_filename_impl = get_output_filename(
-        impl_dir + "/AST", "node_category", ".cpp"
-    )
+    output_filename_header = get_output_filename(header_dir + "/AST", "node_category", ".hpp")
+    output_filename_impl = get_output_filename(impl_dir + "/AST", "node_category", ".cpp")
 
     save_file_if_changed(output_filename_header, header)
     save_file_if_changed(output_filename_impl, impl)
@@ -634,12 +635,8 @@ def process_node_ostream(description_filename, jinja_env, header_dir, impl_dir):
     header = header_template.render(nodes_dict=nodes_dict)
     impl = impl_template.render(nodes_dict=nodes_dict)
 
-    output_filename_header = get_output_filename(
-        header_dir + "/AST", "node_ostream", ".hpp"
-    )
-    output_filename_impl = get_output_filename(
-        impl_dir + "/AST", "node_ostream", ".cpp"
-    )
+    output_filename_header = get_output_filename(header_dir + "/AST", "node_ostream", ".hpp")
+    output_filename_impl = get_output_filename(impl_dir + "/AST", "node_ostream", ".cpp")
 
     save_file_if_changed(output_filename_header, header)
     save_file_if_changed(output_filename_impl, impl)
@@ -676,9 +673,7 @@ def process_generator_base(description_filename, jinja_env, header_dir):
 
     result = template.render(node_type_list=type_list)
 
-    output_filename = get_output_filename(
-        header_dir + "/generators", "generator_base", ".hpp"
-    )
+    output_filename = get_output_filename(header_dir + "/generators", "generator_base", ".hpp")
 
     save_file_if_changed(output_filename, result)
 
@@ -699,12 +694,8 @@ def process_yaml_generator(description_filename, jinja_env, header_dir, impl_dir
     header_result = header_template.render(nodes_dict=nodes_dict)
     impl_result = impl_template.render(nodes_dict=nodes_dict)
 
-    header_output_filename = get_output_filename(
-        header_dir + "/generators", "yaml_generator", ".hpp"
-    )
-    impl_output_filename = get_output_filename(
-        impl_dir + "/generators", "yaml_generator", ".cpp"
-    )
+    header_output_filename = get_output_filename(header_dir + "/generators", "yaml_generator", ".hpp")
+    impl_output_filename = get_output_filename(impl_dir + "/generators", "yaml_generator", ".cpp")
 
     save_file_if_changed(header_output_filename, header_result)
     save_file_if_changed(impl_output_filename, impl_result)
@@ -726,12 +717,8 @@ def process_dot_generator(description_filename, jinja_env, header_dir, impl_dir)
     header_result = header_template.render(nodes_dict=nodes_dict)
     impl_result = impl_template.render(nodes_dict=nodes_dict)
 
-    header_output_filename = get_output_filename(
-        header_dir + "/generators", "dot_generator", ".hpp"
-    )
-    impl_output_filename = get_output_filename(
-        impl_dir + "/generators", "dot_generator", ".cpp"
-    )
+    header_output_filename = get_output_filename(header_dir + "/generators", "dot_generator", ".hpp")
+    impl_output_filename = get_output_filename(impl_dir + "/generators", "dot_generator", ".cpp")
 
     save_file_if_changed(header_output_filename, header_result)
     save_file_if_changed(impl_output_filename, impl_result)
@@ -751,9 +738,7 @@ def process_test_yaml_generator(description_filename, jinja_env, header_dir, imp
 
     impl_result = impl_template.render(nodes_dict=nodes_dict)
 
-    impl_output_filename = get_output_filename(
-        impl_dir + "/../test/generators", "test_yaml_generator", ".cpp"
-    )
+    impl_output_filename = get_output_filename(impl_dir + "/../test/generators", "test_yaml_generator", ".cpp")
 
     save_file_if_changed(impl_output_filename, impl_result)
 
@@ -776,15 +761,9 @@ def process_yaml_importer(description_filename, jinja_env, header_dir, impl_dir)
     impl_result = impl_template.render(nodes_dict=nodes_dict)
     specialization_result = specialization_template.render(nodes_dict=nodes_dict)
 
-    header_output_filename = get_output_filename(
-        header_dir + "/importers", "yaml_importer", ".hpp"
-    )
-    impl_output_filename = get_output_filename(
-        impl_dir + "/importers", "yaml_importer", ".cpp"
-    )
-    specialization_output_filename = get_output_filename(
-        header_dir + "/importers", "yaml_specializations", ".hpp"
-    )
+    header_output_filename = get_output_filename(header_dir + "/importers", "yaml_importer", ".hpp")
+    impl_output_filename = get_output_filename(impl_dir + "/importers", "yaml_importer", ".cpp")
+    specialization_output_filename = get_output_filename(header_dir + "/importers", "yaml_specializations", ".hpp")
 
     save_file_if_changed(header_output_filename, header_result)
     save_file_if_changed(impl_output_filename, impl_result)
@@ -805,9 +784,7 @@ def process_test_yaml_importer(description_filename, jinja_env, header_dir, impl
 
     impl_result = impl_template.render(nodes_dict=nodes_dict)
 
-    impl_output_filename = get_output_filename(
-        impl_dir + "/../test/importers", "test_yaml_importer", ".cpp"
-    )
+    impl_output_filename = get_output_filename(impl_dir + "/../test/importers", "test_yaml_importer", ".cpp")
 
     save_file_if_changed(impl_output_filename, impl_result)
 
@@ -861,12 +838,19 @@ def main():
         default=repo_dir("lib/src"),
         help="implem. files output path",
     )
+    parser.add_argument(
+        "--clang-format",
+        action="store_true",
+        help="run clang-format on each generated file (off by default; "
+        "enable only once the repo's generated files are clang-formatted)",
+    )
 
     args = parser.parse_args()
 
-    jinja_env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(os.path.normpath(args.template))
-    )
+    global APPLY_CLANG_FORMAT
+    APPLY_CLANG_FORMAT = args.clang_format
+
+    jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.normpath(args.template)))
 
     jinja_env.globals["random_seed"] = random.seed
     jinja_env.globals["is_type_list"] = is_type_list
