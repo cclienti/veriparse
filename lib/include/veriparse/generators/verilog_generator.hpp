@@ -19,6 +19,8 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_pragmalist(const AST::Pragmalist::Ptr node) const;
     virtual std::string render_pragma(const AST::Pragma::Ptr node) const;
     virtual std::string render_module(const AST::Module::Ptr node) const;
+    virtual std::string render_package(const AST::Package::Ptr node) const;
+    virtual std::string render_import(const AST::Import::Ptr node) const;
     virtual std::string render_port(const AST::Port::Ptr node) const;
     virtual std::string render_width(const AST::Width::Ptr node) const;
     virtual std::string render_length(const AST::Length::Ptr node) const;

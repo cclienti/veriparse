@@ -236,3 +236,8 @@ TEST(VerilogGeneratorTest, sv_typedef_enum1) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_typedef_struct0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_typedef_enum2) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_typedef_struct1) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_package0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_package_empty0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_import0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_import1) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_import_header0) { TEST_CORE_SV; }

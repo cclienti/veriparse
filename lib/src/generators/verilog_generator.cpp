@@ -135,6 +135,39 @@ std::string VerilogGenerator::render_module(const AST::Module::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_package(const AST::Package::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = "package " + StringUtils::escape(node->get_name()) + ";\n\n";
+
+        const AST::Node::ListPtr items = node->get_items();
+        if(items) {
+            for(const AST::Node::Ptr &item : *items) {
+                if(item) {
+                    result.append(indent(render(item)) + "\n");
+                }
+            }
+        }
+
+        result += "\nendpackage\n";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_import(const AST::Import::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        const std::string symbol = node->get_symbol();
+        result = "import " + StringUtils::escape(node->get_package()) + "::";
+        // "*" is the wildcard token, every other symbol is an identifier.
+        result += (symbol == "*") ? symbol : StringUtils::escape(symbol);
+        result += ";";
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_port(const AST::Port::Ptr node) const
 {
     std::string result;
