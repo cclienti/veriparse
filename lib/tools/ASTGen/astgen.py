@@ -16,7 +16,6 @@ from pathlib import Path
 
 import jinja2
 import yaml
-from yaml_ordered_loader import OrderedDictYAMLLoader
 
 RESERVED_MEMBER_VARIABLES = [
     "children",
@@ -351,7 +350,10 @@ def load_description(description_filename):
     """Load the YAML description and return the data structure."""
 
     try:
-        description = yaml.load(open(description_filename), Loader=OrderedDictYAMLLoader)
+        # Python 3.7+ dicts preserve insertion order and PyYAML builds
+        # mappings in document order, so SafeLoader already keeps the yaml
+        # field order (which drives the generated AST field order).
+        description = yaml.load(open(description_filename), Loader=yaml.SafeLoader)
     except IOError:
         sys.stderr.write("cannot open {}\n".format(description_filename))
         return None
