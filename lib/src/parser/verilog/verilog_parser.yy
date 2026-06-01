@@ -409,6 +409,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Disable::Ptr>                  disable
 %type   <bool>                               automatic
 %type   <AST::Typedef::Ptr>                  typedef_decl
+%type   <AST::Node::ListPtr>                 typed_var_decl
 %type   <AST::EnumDef::Ptr>                  enum_def
 %type   <AST::EnumItem::ListPtr>             enum_items
 %type   <AST::EnumItem::Ptr>                 enum_item
@@ -1090,6 +1091,35 @@ standard_item_base:
                 {
                     $$ = $1;
                 }
+
+        |       typed_var_decl
+                {
+                    $$ = $1;
+                }
+        ;
+
+
+// A variable declared with a user-defined type name (a typedef). Parsed
+// structurally as `type_name var, var, ... ;` and distinguished from a module
+// instance by lookahead (instances always have `(`). The type stays an
+// unresolved Identifier; a later pass rewrites CustomVariable into a concrete
+// Reg/Logic once the typedef is known.
+typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &d: $2) {
+                        auto type_ref = std::make_shared<AST::Identifier>(scanner.get_filename(),
+                                                                          @1.begin.line);
+                        type_ref->set_name($1);
+                        auto var = std::make_shared<AST::CustomVariable>(scanner.get_filename(),
+                                                                         @1.begin.line);
+                        var->set_name(d.name);
+                        var->set_lengths(d.lengths);
+                        var->set_right(d.rvalue);
+                        var->set_type(AST::to_node(type_ref));
+                        $$->push_back(var);
+                    }
+                }
         ;
 
 
@@ -1108,6 +1138,30 @@ typedef_decl:
                 {
                     $$ = std::make_shared<AST::Typedef>();
                     $$->set_def(AST::to_node($2));
+                    $$->set_name($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF net_type widths TK_IDENTIFIER TK_SEMICOLON
+                {
+                    decl_name_t d{};
+                    AST::Variable::Ptr def = ParserHelpers::create_net_type(
+                        d, $2, $3, false, scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(AST::to_node(def));
+                    $$->set_name($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF net_type TK_IDENTIFIER TK_SEMICOLON
+                {
+                    decl_name_t d{};
+                    AST::Variable::Ptr def = ParserHelpers::create_net_type(
+                        d, $2, nullptr, false, scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(AST::to_node(def));
                     $$->set_name($3);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
