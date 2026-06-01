@@ -438,6 +438,7 @@ Task:
 TaskCall:
   properties:
     name: "std::string"
+    package: "std::string" # SystemVerilog package scope (pkg::task); empty if unscoped
   children:
     args: list(Node)
 

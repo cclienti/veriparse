@@ -2595,7 +2595,8 @@ TEST(YAMLImporter, TaskCall)
                     "  filename: taskcall.v\n"
                     "  line: 8\n"
                     "  args:\n"
-                    "  name: mynbiqpmzj\n");
+                    "  name: mynbiqpmzj\n"
+                    "  package: plsgqejeyd\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -2605,6 +2606,7 @@ TEST(YAMLImporter, TaskCall)
     ASSERT_TRUE(yaml["TaskCall"]["line"].as<int>() == 8);
     ASSERT_TRUE(yaml["TaskCall"]["args"]);
     ASSERT_TRUE(yaml["TaskCall"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["TaskCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLImporter, GenerateStatement)

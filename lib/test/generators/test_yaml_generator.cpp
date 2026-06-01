@@ -2222,14 +2222,16 @@ TEST(YAMLGenerator, TaskCall)
 
     AST::Node::ListPtr c_args(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
+    std::string p_package = "plsgqejeyd";
 
-    AST::TaskCall::Ptr m_taskcall(new AST::TaskCall(c_args, p_name, "filename", 0));
+    AST::TaskCall::Ptr m_taskcall(new AST::TaskCall(c_args, p_name, p_package, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_taskcall);
 
     ASSERT_TRUE(yaml["TaskCall"]);
     ASSERT_TRUE(yaml["TaskCall"]["args"]);
     ASSERT_TRUE(yaml["TaskCall"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["TaskCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLGenerator, GenerateStatement)
