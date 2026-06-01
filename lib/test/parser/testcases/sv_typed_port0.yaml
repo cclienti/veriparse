@@ -1,0 +1,134 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_typed_port0.sv
+          items:
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typed_port0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typed_port0.sv
+                      line: 6
+                      name: q
+                      scope:
+                        IdentifierScope: null
+              line: 6
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typed_port0.sv
+                      line: 6
+                      name: a
+                      scope:
+                        IdentifierScope: null
+          line: 1
+          name: sv_typed_port0
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typed_port0.sv
+              first:
+                Input:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 2
+                  name: a
+                  sign: false
+              line: 2
+              second:
+                CustomVariable:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 2
+                  name: a
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typed_port0.sv
+                      line: 2
+                      name: my_t
+                      scope:
+                        IdentifierScope: null
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typed_port0.sv
+              first:
+                Input:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 2
+                  name: b
+                  sign: false
+              line: 2
+              second:
+                CustomVariable:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 2
+                  name: b
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typed_port0.sv
+                      line: 2
+                      name: my_t
+                      scope:
+                        IdentifierScope: null
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typed_port0.sv
+              first:
+                Input:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 3
+                  name: d
+                  sign: false
+              line: 3
+              second:
+                CustomVariable:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 3
+                  name: d
+                  right:
+                    Rvalue: null
+                  type:
+                    ScopedRef:
+                      filename: lib/test/parser/testcases/sv_typed_port0.sv
+                      line: 3
+                      name: data_t
+                      package: mypkg
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typed_port0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 4
+                  name: q
+                  sign: false
+              line: 4
+              second:
+                CustomVariable:
+                  filename: lib/test/parser/testcases/sv_typed_port0.sv
+                  line: 4
+                  name: q
+                  right:
+                    Rvalue: null
+                  type:
+                    ScopedRef:
+                      filename: lib/test/parser/testcases/sv_typed_port0.sv
+                      line: 4
+                      name: res_t
+                      package: mypkg
+      filename: lib/test/parser/testcases/sv_typed_port0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_typed_port0.sv
+  line: 1
