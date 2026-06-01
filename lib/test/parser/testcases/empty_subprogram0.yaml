@@ -1,0 +1,28 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/empty_subprogram0.v
+          items:
+          - Function:
+              automatic: false
+              filename: lib/test/parser/testcases/empty_subprogram0.v
+              line: 3
+              name: f
+              retsign: true
+              rettype: INTEGER
+              statements: []
+          - Task:
+              automatic: false
+              filename: lib/test/parser/testcases/empty_subprogram0.v
+              line: 6
+              name: t
+              statements: []
+          line: 1
+          name: empty_subprogram0
+      filename: lib/test/parser/testcases/empty_subprogram0.v
+      line: 1
+  filename: lib/test/parser/testcases/empty_subprogram0.v
+  line: 1

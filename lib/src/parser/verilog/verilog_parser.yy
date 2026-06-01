@@ -4078,15 +4078,15 @@ function_ioport:portname
 
 
 function_statements:
-                function_statements function_statement
+                %empty
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                }
+
+        |       function_statements function_statement
                 {
                     $$ = $1;
                     $$->splice($$->end(), *$2);
-                }
-
-        |       function_statement
-                {
-                    $$ = $1;
                 }
         ;
 
@@ -4357,15 +4357,15 @@ task_ioport:    portname
 
 
 task_statements:
-                task_statements task_statement
+                %empty
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                }
+
+        |       task_statements task_statement
                 {
                     $$ = $1;
                     $$->splice($$->end(), *$2);
-                }
-
-        |       task_statement
-                {
-                    $$ = $1;
                 }
         ;
 
