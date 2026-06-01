@@ -1,0 +1,341 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Package:
+          filename: lib/test/parser/testcases/sv_user_types0.sv
+          items:
+          - Typedef:
+              def:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 3
+                  name: ''
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 3
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+              filename: lib/test/parser/testcases/sv_user_types0.sv
+              line: 3
+              name: data_t
+          - Function:
+              automatic: false
+              filename: lib/test/parser/testcases/sv_user_types0.sv
+              line: 5
+              name: make
+              retsign: false
+              rettype: NONE
+              rettype_ref:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 5
+                  name: data_t
+                  scope:
+                    IdentifierScope: null
+              statements:
+              - Ioport:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  first:
+                    Input:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 6
+                      name: v
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 6
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_user_types0.sv
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_user_types0.sv
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 7
+                  line: 6
+                  second:
+                    Variable: null
+              - BlockingSubstitution:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 7
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 7
+                          name: make
+                          scope:
+                            IdentifierScope: null
+                  line: 7
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 7
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 7
+                          name: v
+                          scope:
+                            IdentifierScope: null
+          line: 1
+          name: mypkg
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_user_types0.sv
+          items:
+          - Typedef:
+              def:
+                StructDef:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 16
+                  members:
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 16
+                      name: a
+                      sign: false
+                      type:
+                        ScopedRef:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 16
+                          name: data_t
+                          package: mypkg
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 16
+                      name: b
+                      sign: false
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 16
+                          name: logic
+                          scope:
+                            IdentifierScope: null
+                      widths:
+                      - Width:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 16
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_user_types0.sv
+                              line: 16
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_user_types0.sv
+                              line: 16
+                              sign: false
+                              size: -1
+                              value: 3
+                  packed: true
+              filename: lib/test/parser/testcases/sv_user_types0.sv
+              line: 16
+              name: pair_t
+          - Function:
+              automatic: false
+              filename: lib/test/parser/testcases/sv_user_types0.sv
+              line: 18
+              name: compute
+              retsign: false
+              rettype: NONE
+              rettype_ref:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 18
+                  name: my_local_t
+                  scope:
+                    IdentifierScope: null
+              statements:
+              - Ioport:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  first:
+                    Input:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 19
+                      name: x
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 19
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_user_types0.sv
+                              line: 19
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_user_types0.sv
+                              line: 19
+                              sign: false
+                              size: -1
+                              value: 7
+                  line: 19
+                  second:
+                    Variable: null
+              - BlockingSubstitution:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 20
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 20
+                          name: compute
+                          scope:
+                            IdentifierScope: null
+                  line: 20
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 20
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 20
+                          name: x
+                          scope:
+                            IdentifierScope: null
+          - Assign:
+              filename: lib/test/parser/testcases/sv_user_types0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 23
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 23
+                      name: dout
+                      scope:
+                        IdentifierScope: null
+              line: 23
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 23
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 23
+                      name: din
+                      scope:
+                        IdentifierScope: null
+          line: 12
+          name: sv_user_types0
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_user_types0.sv
+              first:
+                Input:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 13
+                  name: din
+                  sign: false
+              line: 13
+              second:
+                CustomVariable:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 13
+                  name: din
+                  right:
+                    Rvalue: null
+                  type:
+                    ScopedRef:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 13
+                      name: data_t
+                      package: mypkg
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_user_types0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                  line: 14
+                  name: dout
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_user_types0.sv
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_user_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 14
+              second:
+                Variable: null
+      filename: lib/test/parser/testcases/sv_user_types0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_user_types0.sv
+  line: 1

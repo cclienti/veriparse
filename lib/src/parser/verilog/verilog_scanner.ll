@@ -188,6 +188,11 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"export"      {
+                  if(m_sv_mode) return token::TK_EXPORT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 
 
 	/**************************************************
