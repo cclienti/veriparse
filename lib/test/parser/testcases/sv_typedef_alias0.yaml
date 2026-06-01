@@ -1,0 +1,166 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+          items:
+          - Typedef:
+              def:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: ''
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 3
+              filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+              line: 4
+              name: nib_t
+          - Typedef:
+              def:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 5
+                  name: ''
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+              filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+              line: 5
+              name: bit_t
+          - CustomVariable:
+              filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+              line: 7
+              name: a
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  line: 7
+                  name: nib_t
+                  scope:
+                    IdentifierScope: null
+          - CustomVariable:
+              filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+              line: 7
+              name: b
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  line: 7
+                  name: nib_t
+                  scope:
+                    IdentifierScope: null
+          - CustomVariable:
+              filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+              line: 8
+              name: c
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  line: 8
+                  name: bit_t
+                  scope:
+                    IdentifierScope: null
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                      line: 10
+                      name: out
+                      scope:
+                        IdentifierScope: null
+              line: 10
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                      line: 10
+                      name: a
+                      scope:
+                        IdentifierScope: null
+          line: 1
+          name: sv_typedef_alias0
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                  line: 2
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 2
+              second:
+                Variable: null
+      filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_typedef_alias0.sv
+  line: 1
