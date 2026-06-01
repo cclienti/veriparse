@@ -7497,6 +7497,19 @@ AST::Node::Ptr YAMLImporter::convert_function(const YAML::Node node) const
             result->set_retwidths(retwidths_list);
         }
 
+        // Manage Child rettype_ref
+        if(node["rettype_ref"]) {
+            const YAML::Node node_rettype_ref = node["rettype_ref"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_rettype_ref);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Function>();
+                }
+                result->set_rettype_ref(child);
+            }
+        }
+
         // Manage Child ports
         if(node["ports"]) {
             const YAML::Node node_ports = node["ports"];

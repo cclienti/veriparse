@@ -2515,6 +2515,7 @@ TEST(YAMLImporter, Function)
                     "  filename: function.v\n"
                     "  line: 8\n"
                     "  retwidths:\n"
+                    "  rettype_ref:\n"
                     "  ports:\n"
                     "  statements:\n"
                     "  name: mynbiqpmzj\n"
@@ -2529,6 +2530,7 @@ TEST(YAMLImporter, Function)
     ASSERT_TRUE(yaml["Function"]["filename"].as<std::string>() == "function.v");
     ASSERT_TRUE(yaml["Function"]["line"].as<int>() == 8);
     ASSERT_TRUE(yaml["Function"]["retwidths"]);
+    ASSERT_TRUE(yaml["Function"]["rettype_ref"]);
     ASSERT_TRUE(yaml["Function"]["ports"]);
     ASSERT_TRUE(yaml["Function"]["statements"]);
     ASSERT_TRUE(yaml["Function"]["name"].as<std::string>() == "mynbiqpmzj");

@@ -417,6 +417,9 @@ Function:
     retsign: bool
   children:
     retwidths: list(Width)
+    # User-defined return type ref (Identifier/ScopedRef); null for built-in.
+    # rettype stays NONE in that case; a resolution pass expands it.
+    rettype_ref: Node
     ports: list(Node)
     statements: list(Node)
 
