@@ -203,6 +203,7 @@ TEST(VerilogGeneratorTest, functioncall0) { TEST_CORE; }
 TEST(VerilogGeneratorTest, task0) { TEST_CORE; }
 TEST(VerilogGeneratorTest, task1) { TEST_CORE; }
 TEST(VerilogGeneratorTest, task2) { TEST_CORE; }
+TEST(VerilogGeneratorTest, empty_subprogram0) { TEST_CORE; }
 TEST(VerilogGeneratorTest, taskcall0) { TEST_CORE; }
 TEST(VerilogGeneratorTest, taskcall1) { TEST_CORE; }
 TEST(VerilogGeneratorTest, instance0) { TEST_CORE; }

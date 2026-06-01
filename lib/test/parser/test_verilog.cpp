@@ -199,6 +199,7 @@ TEST(VerilogParserTest, functioncall0) { TEST_CORE; }
 TEST(VerilogParserTest, task0) { TEST_CORE; }
 TEST(VerilogParserTest, task1) { TEST_CORE; }
 TEST(VerilogParserTest, task2) { TEST_CORE; }
+TEST(VerilogParserTest, empty_subprogram0) { TEST_CORE; }
 TEST(VerilogParserTest, taskcall0) { TEST_CORE; }
 TEST(VerilogParserTest, taskcall1) { TEST_CORE; }
 TEST(VerilogParserTest, systemcall0) { TEST_CORE; }
