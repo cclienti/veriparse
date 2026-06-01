@@ -2147,6 +2147,7 @@ TEST(YAMLGenerator, Function)
     Logger::add_stderr_sink();
 
     AST::Width::ListPtr c_retwidths(new AST::Width::List);
+    AST::Node::Ptr c_rettype_ref(new AST::Node);
     AST::Node::ListPtr c_ports(new AST::Node::List);
     AST::Node::ListPtr c_statements(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
@@ -2154,14 +2155,15 @@ TEST(YAMLGenerator, Function)
     AST::Function::RettypeEnum p_rettype = AST::Function::RettypeEnum::REAL;
     bool p_retsign = true;
 
-    AST::Function::Ptr m_function(new AST::Function(c_retwidths, c_ports, c_statements, p_name,
-                                                    p_automatic, p_rettype, p_retsign, "filename",
-                                                    0));
+    AST::Function::Ptr m_function(new AST::Function(c_retwidths, c_rettype_ref, c_ports,
+                                                    c_statements, p_name, p_automatic, p_rettype,
+                                                    p_retsign, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_function);
 
     ASSERT_TRUE(yaml["Function"]);
     ASSERT_TRUE(yaml["Function"]["retwidths"]);
+    ASSERT_TRUE(yaml["Function"]["rettype_ref"]);
     ASSERT_TRUE(yaml["Function"]["ports"]);
     ASSERT_TRUE(yaml["Function"]["statements"]);
     ASSERT_TRUE(yaml["Function"]["name"].as<std::string>() == "mynbiqpmzj");

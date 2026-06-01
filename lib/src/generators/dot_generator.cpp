@@ -5264,8 +5264,10 @@ std::string DotGenerator::render_function(const AST::Function::Ptr node) const
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">retwidths</FONT></TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">ports</FONT></TD></TR>\n";
+           << "<FONT COLOR=\"wheat\">rettype_ref</FONT></TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">ports</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">statements</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
@@ -5275,6 +5277,9 @@ std::string DotGenerator::render_function(const AST::Function::Ptr node) const
                     ss << render(n);
                 }
             }
+        }
+        if(node->get_rettype_ref().get()) {
+            ss << render(node->get_rettype_ref());
         }
         if(node->get_ports()) {
             for(const AST::Node::Ptr &n : *node->get_ports()) {
@@ -5301,12 +5306,16 @@ std::string DotGenerator::render_function(const AST::Function::Ptr node) const
                 }
             }
         }
+        childID = reinterpret_cast<uint64_t>(node->get_rettype_ref().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_ports()) {
             int i = 0;
             for(const AST::Node::Ptr &n : *node->get_ports()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
@@ -5316,7 +5325,7 @@ std::string DotGenerator::render_function(const AST::Function::Ptr node) const
             for(const AST::Node::Ptr &n : *node->get_statements()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p4 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }

@@ -2865,6 +2865,8 @@ YAML::Node YAMLGenerator::render_function(const AST::Function::Ptr node) const
             }
         }
 
+        content["rettype_ref"] = render(node->get_rettype_ref());
+
         if(node->get_ports()) {
             content["ports"] = YAML::Load("[]");
             for(const AST::Node::Ptr &n : *node->get_ports()) {
