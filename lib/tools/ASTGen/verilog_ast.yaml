@@ -423,6 +423,7 @@ Function:
 FunctionCall:
   properties:
     name: "std::string"
+    package: "std::string" # SystemVerilog package scope (pkg::func); empty if unscoped
   children:
     args: list(Node)
 

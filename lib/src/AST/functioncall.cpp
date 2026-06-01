@@ -5,197 +5,202 @@
 #include <veriparse/logger/logger.hpp>
 #include <iostream>
 
-namespace Veriparse {
-namespace AST {
+namespace Veriparse
+{
+namespace AST
+{
 
-FunctionCall::FunctionCall(const std::string &filename, uint32_t line):
-	Node(filename, line)	{
-	set_node_type(NodeType::FunctionCall);
-	set_node_categories({NodeType::Node});
+FunctionCall::FunctionCall(const std::string &filename, uint32_t line) : Node(filename, line)
+{
+    set_node_type(NodeType::FunctionCall);
+    set_node_categories({NodeType::Node});
 }
 
-
-FunctionCall::FunctionCall(const Node::ListPtr args, const std::string &name, const std::string &filename, uint32_t line):
-	Node(filename, line), m_args(args), m_name(name) {
-	set_node_type(NodeType::FunctionCall);
-	set_node_categories({NodeType::Node});
+FunctionCall::FunctionCall(const Node::ListPtr args, const std::string &name,
+                           const std::string &package, const std::string &filename, uint32_t line)
+    : Node(filename, line), m_args(args), m_name(name), m_package(package)
+{
+    set_node_type(NodeType::FunctionCall);
+    set_node_categories({NodeType::Node});
 }
 
-FunctionCall &FunctionCall::operator=(const FunctionCall &rhs) {
-	Node::operator=(static_cast<const Node &>(rhs));
-	set_name(rhs.get_name());
-	return *this;
+FunctionCall &FunctionCall::operator=(const FunctionCall &rhs)
+{
+    Node::operator=(static_cast<const Node &>(rhs));
+    set_name(rhs.get_name());
+    set_package(rhs.get_package());
+    return *this;
 }
 
-Node &FunctionCall::operator=(const Node &rhs) {
-	const FunctionCall &rhs_cast = static_cast<const FunctionCall&>(rhs);
-	return static_cast<Node &> (operator=(rhs_cast));
+Node &FunctionCall::operator=(const Node &rhs)
+{
+    const FunctionCall &rhs_cast = static_cast<const FunctionCall &>(rhs);
+    return static_cast<Node &>(operator=(rhs_cast));
 }
 
-bool FunctionCall::operator==(const FunctionCall &rhs) const {
-	if (Node::operator==(rhs) == false) {
-		return false;
-	}
-	if (get_name() != rhs.get_name()) {
-		return false;
-	}
-	return true;
+bool FunctionCall::operator==(const FunctionCall &rhs) const
+{
+    if(Node::operator==(rhs) == false) {
+        return false;
+    }
+    if(get_name() != rhs.get_name()) {
+        return false;
+    }
+    if(get_package() != rhs.get_package()) {
+        return false;
+    }
+    return true;
 }
 
-bool FunctionCall::operator==(const Node &rhs) const {
-	const FunctionCall &rhs_cast = static_cast<const FunctionCall&>(rhs);
-	return operator==(rhs_cast);
+bool FunctionCall::operator==(const Node &rhs) const
+{
+    const FunctionCall &rhs_cast = static_cast<const FunctionCall &>(rhs);
+    return operator==(rhs_cast);
 }
 
-bool FunctionCall::operator!=(const FunctionCall &rhs) const {
-	return !(operator==(rhs));
+bool FunctionCall::operator!=(const FunctionCall &rhs) const { return !(operator==(rhs)); }
+
+bool FunctionCall::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
+
+bool FunctionCall::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
+
+bool FunctionCall::replace(Node::Ptr node, Node::Ptr new_node)
+{
+    bool found = false;
+    if(get_args()) {
+        Node::ListPtr new_list = std::make_shared<Node::List>();
+        for(const Node::Ptr &lnode : *get_args()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING
+                            << *this << ", "
+                            << "FunctionCall::replace matches multiple times (list(Node)::args)";
+                    }
+                    if(new_node) {
+                        new_list->push_back(new_node);
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during FunctionCall::replace "
+                            << "of children list(Node)::args";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_args(new_list);
+        } else {
+            set_args(nullptr);
+        }
+    }
+    return found;
 }
 
-bool FunctionCall::operator!=(const Node &rhs) const {
-	return !(operator==(rhs));
+bool FunctionCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
+{
+    bool found = false;
+    if(get_args()) {
+        Node::ListPtr new_list = std::make_shared<Node::List>();
+        for(const Node::Ptr &lnode : *get_args()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING
+                            << *this << ", "
+                            << "FunctionCall::replace matches multiple times (list(Node)::args)";
+                    }
+                    if(new_nodes) {
+                        for(const Node::Ptr &n : *new_nodes) {
+                            new_list->push_back(n);
+                        }
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during FunctionCall::replace "
+                            << "of children list(Node)::args";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_args(new_list);
+        } else {
+            set_args(nullptr);
+        }
+    }
+    return found;
 }
 
-bool FunctionCall::remove(Node::Ptr node) {
-	return replace(node, AST::Node::Ptr(nullptr));
+FunctionCall::ListPtr FunctionCall::clone_list(const ListPtr nodes)
+{
+    ListPtr list;
+    if(nodes) {
+        list = std::make_shared<List>();
+        for(const Ptr &p : *nodes) {
+            list->push_back(cast_to<FunctionCall>(p->clone()));
+        }
+    }
+    return list;
 }
 
-bool FunctionCall::replace(Node::Ptr node, Node::Ptr new_node) {
-	bool found = false;
-	if (get_args()) {
-		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (const Node::Ptr &lnode : *get_args()) {
-			if (lnode) {
-				if (lnode != node) {
-					new_list->push_back(lnode);
-				}
-				else {
-					if (found) {
-						LOG_WARNING << *this << ", "
-										<< "FunctionCall::replace matches multiple times (list(Node)::args)";
-					}
-					if(new_node) {
-						new_list->push_back(new_node);
-					}
-					found = true;
-				}
-			}
-			else {
-				LOG_WARNING << *this << ", "
-								<< "found an empty node during FunctionCall::replace "
-								<< "of children list(Node)::args";
-			}
-		}
-		if (new_list->size() != 0) {
-			set_args(new_list);
-		}
-		else {
-			set_args(nullptr);
-		}
-	}
-	return found;
+Node::ListPtr FunctionCall::get_children(void) const
+{
+    Node::ListPtr list = std::make_shared<Node::List>();
+    if(get_args()) {
+        for(const Node::Ptr &node : *get_args()) {
+            if(node) {
+                list->push_back(std::static_pointer_cast<Node>(node));
+            }
+        }
+    }
+    return list;
 }
 
-bool FunctionCall::replace(Node::Ptr node, Node::ListPtr new_nodes) {
-	bool found = false;
-	if (get_args()) {
-		Node::ListPtr new_list = std::make_shared<Node::List>();
-		for (const Node::Ptr &lnode : *get_args()) {
-			if (lnode) {
-				if (lnode != node) {
-					new_list->push_back(lnode);
-				}
-				else {
-					if (found) {
-						LOG_WARNING << *this << ", "
-										<< "FunctionCall::replace matches multiple times (list(Node)::args)";
-					}
-					if(new_nodes) {
-						for(const Node::Ptr &n: *new_nodes)
-							new_list->push_back(n);
-					}
-					found = true;
-				}
-			}
-			else {
-				LOG_WARNING << *this << ", "
-								<< "found an empty node during FunctionCall::replace "
-								<< "of children list(Node)::args";
-			}
-		}
-		if (new_list->size() != 0) {
-			set_args(new_list);
-		}
-		else {
-			set_args(nullptr);
-		}
-	}
-	return found;
+void FunctionCall::clone_children(Node::Ptr new_node) const
+{
+    cast_to<FunctionCall>(new_node)->set_args(Node::clone_list(get_args()));
 }
 
-FunctionCall::ListPtr FunctionCall::clone_list(const ListPtr nodes) {
-	ListPtr list;
-	if (nodes) {
-			 list = std::make_shared<List>();
-		for(const Ptr &p : *nodes) {
-			list->push_back(cast_to<FunctionCall>(p->clone()));
-		}
-	}
-	return list;
+Node::Ptr FunctionCall::alloc_same(void) const
+{
+    Ptr p(new FunctionCall);
+    return p;
 }
 
-Node::ListPtr FunctionCall::get_children(void) const {
-	Node::ListPtr list = std::make_shared<Node::List>();
-	if (get_args()) {
-		for (const Node::Ptr &node : *get_args()) {
-			if (node) {
-				list->push_back(std::static_pointer_cast<Node>(node));
-			}
-		}
-	}
-	return list;
+std::ostream &operator<<(std::ostream &os, const FunctionCall &p)
+{
+    os << "FunctionCall: {";
+    if(!p.get_filename().empty()) {
+        os << "filename: " << p.get_filename() << ", "
+           << "line: " << p.get_line();
+    }
+
+    if(!p.get_filename().empty()) {
+        os << ", ";
+    }
+
+    os << "name: " << p.get_name() << ", ";
+
+    os << "package: " << p.get_package();
+    os << "}";
+    return os;
 }
 
-void FunctionCall::clone_children(Node::Ptr new_node) const {
-	cast_to<FunctionCall>(new_node)->set_args
-		(Node::clone_list(get_args()));
+std::ostream &operator<<(std::ostream &os, const FunctionCall::Ptr p)
+{
+    if(p) {
+        os << *p;
+    } else {
+        os << "FunctionCall: {nullptr}";
+    }
+
+    return os;
 }
 
-Node::Ptr FunctionCall::alloc_same(void) const {
-	Ptr p(new FunctionCall);
-	return p;
-}
-
-
-std::ostream & operator<<(std::ostream &os, const FunctionCall &p) {
-	os << "FunctionCall: {";
-	if (!p.get_filename().empty()) {
-		os << "filename: " << p.get_filename() << ", "
-			<< "line: " << p.get_line();
-	}
-	
-	if (!p.get_filename().empty()) os << ", ";
-	
-	os << "name: " << p.get_name();
-	os << "}";
-	return os;
-}
-
-
-std::ostream & operator<<(std::ostream &os, const FunctionCall::Ptr p) {
-	if (p) {
-		os << *p;
-	}
-	else {
-		os << "FunctionCall: {nullptr}";
-	}
-
-	return os;
-}
-
-
-
-
-
-
-}
-}
+} // namespace AST
+} // namespace Veriparse
