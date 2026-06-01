@@ -257,3 +257,4 @@ TEST(VerilogParserTest, sv_typedef_alias0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_type0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_typed_port0) { TEST_CORE_SV; }

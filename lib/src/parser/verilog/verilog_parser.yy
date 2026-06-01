@@ -55,6 +55,8 @@ typedef struct {
 	 bool is_signed;
 	 AST::Width::ListPtr widths;
 	 std::string name;
+	 std::string type_name;    // user-defined type name (typedef); empty if built-in
+	 std::string type_package; // package scope of the type (pkg::); empty if local
 	 location loc;
 } port_info_t;
 
@@ -74,6 +76,13 @@ AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
 
 AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
 														 AST::Width::ListPtr widths,  std::string name,
+														 const std::string &filename="", uint32_t line=0);
+
+// Build an Ioport for a port declared with a user-defined type (typedef name
+// or pkg::name). The direction node carries no width (unknown until the
+// typedef is resolved) and `second` is a CustomVariable holding the type ref.
+AST::Ioport::Ptr create_typed_ioport_decls(direction_t direction, const std::string &type_name,
+														 const std::string &type_package, const std::string &name,
 														 const std::string &filename="", uint32_t line=0);
 
 // if return null, the create_ports_decls failed. Error information are set in loc and error_message.
@@ -819,6 +828,29 @@ portname:       TK_IDENTIFIER
         |       TK_SIGNED TK_IDENTIFIER
                 {
                     error(@2, "a range is missing");
+                }
+
+        |       TK_IDENTIFIER TK_IDENTIFIER
+                {
+                    // user-defined type port: `my_t name`
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = false;
+                    $$.widths = nullptr;
+                    $$.name = $2;
+                    $$.type_name = $1;
+                }
+
+        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER
+                {
+                    // package-scoped type port: `pkg::T name`
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = false;
+                    $$.widths = nullptr;
+                    $$.name = $4;
+                    $$.type_name = $3;
+                    $$.type_package = $1;
                 }
         ;
 
@@ -4908,6 +4940,58 @@ namespace Veriparse {
             }
 
 
+            AST::Ioport::Ptr create_typed_ioport_decls(direction_t direction,
+                                                       const std::string &type_name,
+                                                       const std::string &type_package,
+                                                       const std::string &name,
+                                                       const std::string &filename, uint32_t line) {
+
+                AST::Ioport::Ptr ioport = std::make_shared<AST::Ioport>(filename, line);
+
+                // Direction node: width is unknown until the typedef is resolved.
+                switch(direction) {
+                case direction_t::INPUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>
+                                      (std::make_shared<AST::Input>(nullptr, name, false, filename, line)));
+                    break;
+
+                case direction_t::INOUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>
+                                      (std::make_shared<AST::Inout>(nullptr, name, false, filename, line)));
+                    break;
+
+                case direction_t::OUTPUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>
+                                      (std::make_shared<AST::Output>(nullptr, name, false, filename, line)));
+                    break;
+
+                default:
+                    break;
+                }
+
+                // Unresolved type reference: Identifier for a local typedef, ScopedRef for pkg::T.
+                AST::Node::Ptr type_ref;
+                if (type_package.empty()) {
+                    auto id = std::make_shared<AST::Identifier>(filename, line);
+                    id->set_name(type_name);
+                    type_ref = AST::to_node(id);
+                }
+                else {
+                    auto sr = std::make_shared<AST::ScopedRef>(filename, line);
+                    sr->set_package(type_package);
+                    sr->set_name(type_name);
+                    type_ref = AST::to_node(sr);
+                }
+
+                auto var = std::make_shared<AST::CustomVariable>(filename, line);
+                var->set_name(name);
+                var->set_type(type_ref);
+                ioport->set_second(var);
+
+                return ioport;
+            }
+
+
             AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
                                                   const std::string &filename,
                                                   location &loc, std::string &error_message) {
@@ -4915,6 +4999,8 @@ namespace Veriparse {
                 net_type_t last_net = net_type_t::NONE;
                 bool last_is_signed = false;
                 AST::Width::ListPtr last_widths(nullptr);
+                std::string last_type_name;
+                std::string last_type_package;
 
                 AST::Node::ListPtr node_list = std::make_shared<AST::Node::List>();
 
@@ -4926,7 +5012,7 @@ namespace Veriparse {
                     // Check for name only ports (without qualifiers)
                     for(const port_info_t &pinfo: port_list) {
                         if ((pinfo.direction != direction_t::NONE) || (pinfo.net_type != net_type_t::NONE) ||
-                            (pinfo.is_signed) || (pinfo.widths)) {
+                            (pinfo.is_signed) || (pinfo.widths) || (!pinfo.type_name.empty())) {
                             loc = pinfo.loc;
                             error_message = std::string("missing port direction qualifier");
                             return nullptr;
@@ -4944,9 +5030,12 @@ namespace Veriparse {
                         net_type_t net_type;
                         AST::Width::ListPtr widths;
                         bool is_signed;
+                        std::string type_name;
+                        std::string type_package;
 
                         if (pinfo.direction == direction_t::NONE) {
-                            if ((pinfo.net_type != net_type_t::NONE) || (pinfo.is_signed) || (pinfo.widths)) {
+                            if ((pinfo.net_type != net_type_t::NONE) || (pinfo.is_signed) ||
+                                (pinfo.widths) || (!pinfo.type_name.empty())) {
                                 loc = pinfo.loc;
                                 error_message = std::string("missing port direction qualifier");
                                 return nullptr;
@@ -4955,25 +5044,39 @@ namespace Veriparse {
                             net_type = last_net;
                             widths = last_widths;
                             is_signed = last_is_signed;
+                            type_name = last_type_name;
+                            type_package = last_type_package;
                         }
                         else {
                             dir = pinfo.direction;
                             net_type = pinfo.net_type;
                             widths = pinfo.widths;
                             is_signed = pinfo.is_signed;
+                            type_name = pinfo.type_name;
+                            type_package = pinfo.type_package;
                         }
 
                         if (widths) widths = AST::Width::clone_list(widths);
 
-                        AST::Ioport::Ptr iop = ParserHelpers::create_ioport_decls(dir, net_type, is_signed,
-                                                                                  widths, pinfo.name,
-                                                                                  filename,
-                                                                                  pinfo.loc.begin.line);
+                        AST::Ioport::Ptr iop;
+                        if (!type_name.empty()) {
+                            // user-defined / package-scoped type port
+                            iop = ParserHelpers::create_typed_ioport_decls(dir, type_name, type_package,
+                                                                           pinfo.name, filename,
+                                                                           pinfo.loc.begin.line);
+                        }
+                        else {
+                            iop = ParserHelpers::create_ioport_decls(dir, net_type, is_signed, widths,
+                                                                     pinfo.name, filename,
+                                                                     pinfo.loc.begin.line);
+                        }
                         node_list->push_back(iop);
                         last_dir = dir;
                         last_net = net_type;
                         last_widths = widths;
                         last_is_signed = is_signed;
+                        last_type_name = type_name;
+                        last_type_package = type_package;
                     }
                 }
 
