@@ -183,6 +183,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_PACKAGE      "'package'"
 %token                  TK_ENDPACKAGE   "'endpackage'"
 %token                  TK_IMPORT       "'import'"
+%token                  TK_EXPORT       "'export'"
 %token                  TK_COLONCOLON   "'::'"
 %token                  TK_VPP_LINE     "`line'"
 %token                  TK_LATTR        "(*"
@@ -278,7 +279,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Module::Ptr>                   moduledef
 %type   <AST::Package::Ptr>                  packagedef
 %type   <AST::Node::ListPtr>                 module_imports
-%type   <AST::Node::ListPtr>                 import_decl import_list
+%type   <AST::Node::ListPtr>                 import_decl import_list export_decl
 %type   <AST::Import::Ptr>                   import_item
 %type   <AST::ScopedRef::Ptr>                scoped_ref
 %type   <AST::Pragmalist::Ptr>               pragmalist
@@ -400,7 +401,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::FunctionCall::Ptr>             function_call
 %type   <AST::Node::ListPtr>                 function_args
 %type   <AST::Node::ListPtr>                 function_ports_block function_ports
-%type   <AST::Function::Ptr>                 function function_rettype
+%type   <AST::Function::Ptr>                 function function_rettype_name
 %type   <AST::Node::ListPtr>                 function_statement function_statements
 %type   <AST::Node::ListPtr>                 funcvar_decl function_calc
 
@@ -492,30 +493,32 @@ definition:     moduledef
         ;
 
 
-packagedef:     TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
+        // The optional `automatic` lifetime is accepted but not modelled (it has
+        // no effect on the synthesizable subset). `static` is the default.
+packagedef:     TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($2);
-                    $$->set_items($4);
+                    $$->set_name($3);
+                    $$->set_items($5);
                 }
 
-        |       TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+        |       TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($2);
-                    $$->set_items($4);
+                    $$->set_name($3);
+                    $$->set_items($5);
                 }
 
-        |       TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE
+        |       TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($2);
+                    $$->set_name($3);
                 }
 
-        |       TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+        |       TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($2);
+                    $$->set_name($3);
                 }
         ;
 
@@ -523,6 +526,22 @@ packagedef:     TK_PACKAGE TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
 import_decl:    TK_IMPORT import_list TK_SEMICOLON
                 {
                     $$ = $2;
+                }
+        ;
+
+
+// Package re-export is intentionally rejected with a clear message (see the
+// import/package design notes); we parse the syntax only to diagnose it.
+export_decl:    TK_EXPORT import_list TK_SEMICOLON
+                {
+                    error(@1, "package export ('export pkg::...;') is not supported");
+                    $$ = std::make_shared<AST::Node::List>();
+                }
+
+        |       TK_EXPORT TK_TIMES TK_COLONCOLON TK_TIMES TK_SEMICOLON
+                {
+                    error(@1, "package export ('export *::*;') is not supported");
+                    $$ = std::make_shared<AST::Node::List>();
                 }
         ;
 
@@ -1124,6 +1143,11 @@ standard_item_base:
                     $$ = $1;
                 }
 
+        |       export_decl
+                {
+                    $$ = $1;
+                }
+
         |       typed_var_decl
                 {
                     $$ = $1;
@@ -1416,6 +1440,37 @@ struct_member:
                     $$->set_sign(false);
                     auto type = std::make_shared<AST::Identifier>();
                     type->set_name("int");
+                    type->set_filename(scanner.get_filename());
+                    type->set_line(@1.begin.line);
+                    $$->set_type(AST::to_node(type));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+                {
+                    // user-defined type member: `my_t name;`
+                    $$ = std::make_shared<AST::StructMember>();
+                    $$->set_name($2);
+                    $$->set_sign(false);
+                    auto type = std::make_shared<AST::Identifier>();
+                    type->set_name($1);
+                    type->set_filename(scanner.get_filename());
+                    type->set_line(@1.begin.line);
+                    $$->set_type(AST::to_node(type));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+                {
+                    // package-scoped type member: `pkg::T name;`
+                    $$ = std::make_shared<AST::StructMember>();
+                    $$->set_name($4);
+                    $$->set_sign(false);
+                    auto type = std::make_shared<AST::ScopedRef>();
+                    type->set_package($1);
+                    type->set_name($3);
                     type->set_filename(scanner.get_filename());
                     type->set_line(@1.begin.line);
                     $$->set_type(AST::to_node(type));
@@ -4030,55 +4085,91 @@ sysarg:         expression {$$ = $1;}
         ;
 
 
-function:       TK_FUNCTION automatic function_rettype TK_IDENTIFIER function_ports_block function_statements TK_ENDFUNCTION
+function:       TK_FUNCTION automatic function_rettype_name function_ports_block function_statements TK_ENDFUNCTION
                 {
+                    // function_rettype_name already carries the return type AND name
+                    // (factored so a user-type return is LR(1) without a type table).
                     $$ = $3;
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
-                    $$->set_name($4);
                     $$->set_automatic($2);
-                    $$->set_ports($5);
-                    $$->set_statements($6);
+                    $$->set_ports($4);
+                    $$->set_statements($5);
                 }
         ;
 
 
-function_rettype:
-                %empty
+        // Return type and function name are factored into one rule: we shift the
+        // first identifier, then decide on the next token (another ID => the first
+        // was a user-defined return type; `(`/`;` => it was the name). Pure LR(1),
+        // no type table.
+function_rettype_name:
+                TK_IDENTIFIER
                 {
+                    // no return type, $1 is the function name
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(false);
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    $$->set_name($1);
                 }
 
-        |       widths
+        |       TK_IDENTIFIER TK_IDENTIFIER
+                {
+                    // user-defined return type $1, name $2
+                    $$ = std::make_shared<AST::Function>();
+                    $$->set_retsign(false);
+                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    auto t = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    t->set_name($1);
+                    $$->set_rettype_ref(AST::to_node(t));
+                    $$->set_name($2);
+                }
+
+        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER
+                {
+                    // package-scoped return type $1::$3, name $4
+                    $$ = std::make_shared<AST::Function>();
+                    $$->set_retsign(false);
+                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    auto t = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
+                    t->set_package($1);
+                    t->set_name($3);
+                    $$->set_rettype_ref(AST::to_node(t));
+                    $$->set_name($4);
+                }
+
+        |       widths TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(false);
                     $$->set_retwidths($1);
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    $$->set_name($2);
                 }
 
-        |       TK_SIGNED widths
+        |       TK_SIGNED widths TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(false);
                     $$->set_retwidths($2);
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    $$->set_name($3);
                 }
 
-        |       TK_INTEGER
+        |       TK_INTEGER TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(true);
                     $$->set_rettype(AST::Function::RettypeEnum::INTEGER);
+                    $$->set_name($2);
                 }
 
-        |       TK_REAL
+        |       TK_REAL TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(true);
                     $$->set_rettype(AST::Function::RettypeEnum::REAL);
+                    $$->set_name($2);
                 }
         ;
 
