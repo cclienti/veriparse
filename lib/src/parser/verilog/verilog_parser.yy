@@ -1120,6 +1120,25 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                         $$->push_back(var);
                     }
                 }
+
+        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    // Package-scoped type: pkg::T var, ... ;
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &d: $4) {
+                        auto type_ref = std::make_shared<AST::ScopedRef>(scanner.get_filename(),
+                                                                         @1.begin.line);
+                        type_ref->set_package($1);
+                        type_ref->set_name($3);
+                        auto var = std::make_shared<AST::CustomVariable>(scanner.get_filename(),
+                                                                         @1.begin.line);
+                        var->set_name(d.name);
+                        var->set_lengths(d.lengths);
+                        var->set_right(d.rvalue);
+                        var->set_type(AST::to_node(type_ref));
+                        $$->push_back(var);
+                    }
+                }
         ;
 
 

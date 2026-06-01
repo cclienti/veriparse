@@ -1,0 +1,111 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_scoped_type0.sv
+          items:
+          - CustomVariable:
+              filename: lib/test/parser/testcases/sv_scoped_type0.sv
+              line: 4
+              name: sig
+              right:
+                Rvalue: null
+              type:
+                ScopedRef:
+                  filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                  line: 4
+                  name: data_t
+                  package: mypkg
+          - CustomVariable:
+              filename: lib/test/parser/testcases/sv_scoped_type0.sv
+              line: 5
+              name: a
+              right:
+                Rvalue: null
+              type:
+                ScopedRef:
+                  filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                  line: 5
+                  name: word_t
+                  package: mypkg
+          - CustomVariable:
+              filename: lib/test/parser/testcases/sv_scoped_type0.sv
+              line: 5
+              name: b
+              right:
+                Rvalue: null
+              type:
+                ScopedRef:
+                  filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                  line: 5
+                  name: word_t
+                  package: mypkg
+          - Assign:
+              filename: lib/test/parser/testcases/sv_scoped_type0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                  line: 7
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                      line: 7
+                      name: out
+                      scope:
+                        IdentifierScope: null
+              line: 7
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                  line: 7
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                      line: 7
+                      name: sig
+                      scope:
+                        IdentifierScope: null
+          line: 1
+          name: sv_scoped_type0
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_scoped_type0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                  line: 2
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_type0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 2
+              second:
+                Variable: null
+      filename: lib/test/parser/testcases/sv_scoped_type0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_scoped_type0.sv
+  line: 1
