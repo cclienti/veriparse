@@ -2547,7 +2547,8 @@ TEST(YAMLImporter, FunctionCall)
                     "  filename: functioncall.v\n"
                     "  line: 12\n"
                     "  args:\n"
-                    "  name: mynbiqpmzj\n");
+                    "  name: mynbiqpmzj\n"
+                    "  package: plsgqejeyd\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -2557,6 +2558,7 @@ TEST(YAMLImporter, FunctionCall)
     ASSERT_TRUE(yaml["FunctionCall"]["line"].as<int>() == 12);
     ASSERT_TRUE(yaml["FunctionCall"]["args"]);
     ASSERT_TRUE(yaml["FunctionCall"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["FunctionCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLImporter, Task)

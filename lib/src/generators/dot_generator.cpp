@@ -5343,6 +5343,8 @@ std::string DotGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
            << "<FONT COLOR=\"white\">FunctionCall</FONT></TD></TR>\n"
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">package: " << node->get_package()
+           << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">args</FONT></TD></TR>\n";
 

@@ -2179,14 +2179,17 @@ TEST(YAMLGenerator, FunctionCall)
 
     AST::Node::ListPtr c_args(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
+    std::string p_package = "plsgqejeyd";
 
-    AST::FunctionCall::Ptr m_functioncall(new AST::FunctionCall(c_args, p_name, "filename", 0));
+    AST::FunctionCall::Ptr m_functioncall(
+        new AST::FunctionCall(c_args, p_name, p_package, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_functioncall);
 
     ASSERT_TRUE(yaml["FunctionCall"]);
     ASSERT_TRUE(yaml["FunctionCall"]["args"]);
     ASSERT_TRUE(yaml["FunctionCall"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["FunctionCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLGenerator, Task)
