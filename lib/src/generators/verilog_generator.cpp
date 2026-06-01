@@ -1630,6 +1630,11 @@ std::string VerilogGenerator::render_function(const AST::Function::Ptr node) con
             break;
         }
 
+        // user-defined / package-scoped return type
+        if(node->get_rettype_ref()) {
+            result += render(node->get_rettype_ref()) + " ";
+        }
+
         result += StringUtils::escape(node->get_name());
 
         const std::string ports_str = ports_list_to_string(node->get_ports(), result.size());
