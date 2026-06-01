@@ -1,0 +1,92 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_scoped_call0.sv
+          items:
+          - Assign:
+              filename: lib/test/parser/testcases/sv_scoped_call0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                  line: 4
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                      line: 4
+                      name: out
+                      scope:
+                        IdentifierScope: null
+              line: 4
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                  line: 4
+                  var:
+                    Plus:
+                      filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                      left:
+                        FunctionCall:
+                          args:
+                          - IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 8
+                          filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                          line: 4
+                          name: clog2
+                          package: mypkg
+                      line: 4
+                      right:
+                        FunctionCall:
+                          filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                          line: 4
+                          name: get
+                          package: mypkg
+          line: 1
+          name: sv_scoped_call0
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_scoped_call0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                  line: 2
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_scoped_call0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
+              line: 2
+              second:
+                Variable: null
+      filename: lib/test/parser/testcases/sv_scoped_call0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_scoped_call0.sv
+  line: 1
