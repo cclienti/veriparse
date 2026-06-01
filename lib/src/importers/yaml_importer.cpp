@@ -118,6 +118,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["Variable"]) {
             return convert_variable(node["Variable"]);
         }
+        if(node["CustomVariable"]) {
+            return convert_customvariable(node["CustomVariable"]);
+        }
         if(node["Net"]) {
             return convert_net(node["Net"]);
         }
@@ -1670,6 +1673,98 @@ AST::Node::Ptr YAMLImporter::convert_variable(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::Variable>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_customvariable(const YAML::Node node) const
+{
+    AST::CustomVariable::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::CustomVariable>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::CustomVariable>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::CustomVariable>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::CustomVariable>();
+                }
+                result->set_type(child);
+            }
+        }
+
+        // Manage Child lengths
+        if(node["lengths"]) {
+            const YAML::Node node_lengths = node["lengths"];
+            // Fill the list of children
+            AST::Length::ListPtr lengths_list(new AST::Length::List);
+            if(node_lengths.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
+                        lengths_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_lengths);
+                if(child) {
+                    AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
+                    lengths_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::CustomVariable>();
+            }
+            result->set_lengths(lengths_list);
+        }
+
+        // Manage Child right
+        if(node["right"]) {
+            const YAML::Node node_right = node["right"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_right);
+            if(child) {
+                AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
+                if(!result) {
+                    result = std::make_shared<AST::CustomVariable>();
+                }
+                result->set_right(child_cast);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::CustomVariable>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const

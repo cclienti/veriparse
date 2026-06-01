@@ -105,6 +105,9 @@ public:
             case AST::NodeType::Variable:
                 return render_variable(AST::cast_to<AST::Variable>(node));
 
+            case AST::NodeType::CustomVariable:
+                return render_customvariable(AST::cast_to<AST::CustomVariable>(node));
+
             case AST::NodeType::Net:
                 return render_net(AST::cast_to<AST::Net>(node));
 
@@ -609,6 +612,14 @@ public:
      * @see GeneratorBase::render_variable(const AST::Variable::Ptr &node)
      */
     T render(const AST::Variable::Ptr node) const { return render_variable(node); }
+
+    /**
+     * Main rendering method for the CustomVariable node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_customvariable(const AST::CustomVariable::Ptr &node)
+     */
+    T render(const AST::CustomVariable::Ptr node) const { return render_customvariable(node); }
 
     /**
      * Main rendering method for the Net node, we
@@ -1643,6 +1654,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_variable(const AST::Variable::Ptr node) const { return T(); }
+
+    /**
+     * Render the CustomVariable node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_customvariable(const AST::CustomVariable::Ptr node) const { return T(); }
 
     /**
      * Render the Net node. This method must be

@@ -507,6 +507,31 @@ TEST(YAMLImporter, Variable)
     ASSERT_TRUE(yaml["Variable"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
+TEST(YAMLImporter, CustomVariable)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.CustomVariable.log");
+    Logger::add_stderr_sink();
+    std::string str("CustomVariable:\n"
+                    "  filename: customvariable.v\n"
+                    "  line: 14\n"
+                    "  type:\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  name: mynbiqpmzj\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["CustomVariable"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["filename"].as<std::string>() == "customvariable.v");
+    ASSERT_TRUE(yaml["CustomVariable"]["line"].as<int>() == 14);
+    ASSERT_TRUE(yaml["CustomVariable"]["type"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["lengths"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["right"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
 TEST(YAMLImporter, Net)
 {
     Logger::remove_all_sinks();

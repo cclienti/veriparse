@@ -35,6 +35,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_variablebase(const AST::VariableBase::Ptr node) const;
     virtual YAML::Node render_genvar(const AST::Genvar::Ptr node) const;
     virtual YAML::Node render_variable(const AST::Variable::Ptr node) const;
+    virtual YAML::Node render_customvariable(const AST::CustomVariable::Ptr node) const;
     virtual YAML::Node render_net(const AST::Net::Ptr node) const;
     virtual YAML::Node render_integer(const AST::Integer::Ptr node) const;
     virtual YAML::Node render_real(const AST::Real::Ptr node) const;

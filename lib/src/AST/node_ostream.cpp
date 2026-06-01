@@ -74,6 +74,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Variable:
         os << static_cast<const AST::Variable &>(p);
         break;
+    case NodeType::CustomVariable:
+        os << static_cast<const AST::CustomVariable &>(p);
+        break;
     case NodeType::Net:
         os << static_cast<const AST::Net &>(p);
         break;

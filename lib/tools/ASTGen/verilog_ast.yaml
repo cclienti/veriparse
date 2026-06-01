@@ -106,6 +106,14 @@ Variable:
     lengths: list(Length)
     right: Rvalue
 
+# A variable declared with a user-defined type (typedef name or pkg::name).
+# `type` holds the unresolved type reference (Identifier or ScopedRef); a
+# later resolution pass rewrites this into a concrete Reg/Logic/etc.
+CustomVariable:
+  inherit: Variable
+  children:
+    type: Node
+
 Net:
   inherit: Variable
   properties:

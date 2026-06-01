@@ -539,6 +539,36 @@ YAML::Node YAMLGenerator::render_variable(const AST::Variable::Ptr node) const
     return node_variable;
 }
 
+YAML::Node YAMLGenerator::render_customvariable(const AST::CustomVariable::Ptr node) const
+{
+    YAML::Node node_customvariable;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::CustomVariable) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        content["type"] = render(node->get_type());
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_customvariable["CustomVariable"] = content;
+    return node_customvariable;
+}
+
 YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
 {
     YAML::Node node_net;

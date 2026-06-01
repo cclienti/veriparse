@@ -35,6 +35,7 @@ template <> constexpr NodeType get_node_type<Inout>() { return NodeType::Inout; 
 template <> constexpr NodeType get_node_type<VariableBase>() { return NodeType::VariableBase; }
 template <> constexpr NodeType get_node_type<Genvar>() { return NodeType::Genvar; }
 template <> constexpr NodeType get_node_type<Variable>() { return NodeType::Variable; }
+template <> constexpr NodeType get_node_type<CustomVariable>() { return NodeType::CustomVariable; }
 template <> constexpr NodeType get_node_type<Net>() { return NodeType::Net; }
 template <> constexpr NodeType get_node_type<Integer>() { return NodeType::Integer; }
 template <> constexpr NodeType get_node_type<Real>() { return NodeType::Real; }
