@@ -7756,6 +7756,16 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
                 result->set_name(node["name"].as<std::string>());
             }
         }
+        // Manage property package
+        if(node["package"]) {
+            if(node["package"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::TaskCall>();
+                }
+                result->set_package(node["package"].as<std::string>());
+            }
+        }
 
         // Manage Child args
         if(node["args"]) {

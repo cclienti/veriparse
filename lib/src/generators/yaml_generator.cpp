@@ -2958,6 +2958,7 @@ YAML::Node YAMLGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
+        content["package"] = node->get_package();
 
         if(node->get_args()) {
             content["args"] = YAML::Load("[]");
