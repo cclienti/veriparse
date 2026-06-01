@@ -1651,7 +1651,11 @@ std::string VerilogGenerator::render_functioncall(const AST::FunctionCall::Ptr n
 {
     std::string result;
     if(node) {
-        result = StringUtils::escape(node->get_name());
+        const std::string package = node->get_package();
+        if(!package.empty()) {
+            result = StringUtils::escape(package) + "::";
+        }
+        result += StringUtils::escape(node->get_name());
         result += "(";
 
         const AST::Node::ListPtr args = node->get_args();
