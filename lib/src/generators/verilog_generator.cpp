@@ -1706,7 +1706,11 @@ std::string VerilogGenerator::render_taskcall(const AST::TaskCall::Ptr node) con
 {
     std::string result;
     if(node) {
-        result = StringUtils::escape(node->get_name());
+        const std::string package = node->get_package();
+        if(!package.empty()) {
+            result = StringUtils::escape(package) + "::";
+        }
+        result += StringUtils::escape(node->get_name());
 
         const AST::Node::ListPtr args = node->get_args();
         if(args) {
