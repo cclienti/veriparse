@@ -45,6 +45,7 @@ private:
     AST::Node::Ptr convert_variablebase(const YAML::Node node) const;
     AST::Node::Ptr convert_genvar(const YAML::Node node) const;
     AST::Node::Ptr convert_variable(const YAML::Node node) const;
+    AST::Node::Ptr convert_customvariable(const YAML::Node node) const;
     AST::Node::Ptr convert_net(const YAML::Node node) const;
     AST::Node::Ptr convert_integer(const YAML::Node node) const;
     AST::Node::Ptr convert_real(const YAML::Node node) const;

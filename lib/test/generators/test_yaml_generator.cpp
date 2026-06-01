@@ -391,6 +391,29 @@ TEST(YAMLGenerator, Variable)
     ASSERT_TRUE(yaml["Variable"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
+TEST(YAMLGenerator, CustomVariable)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.CustomVariable.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_type(new AST::Node);
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::CustomVariable::Ptr m_customvariable(
+        new AST::CustomVariable(c_type, c_lengths, c_right, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_customvariable);
+
+    ASSERT_TRUE(yaml["CustomVariable"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["type"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["lengths"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["right"]);
+    ASSERT_TRUE(yaml["CustomVariable"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
 TEST(YAMLGenerator, Net)
 {
     Logger::remove_all_sinks();

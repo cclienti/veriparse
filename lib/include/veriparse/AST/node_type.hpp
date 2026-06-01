@@ -33,6 +33,7 @@ enum class NodeType
     VariableBase,
     Genvar,
     Variable,
+    CustomVariable,
     Net,
     Integer,
     Real,
