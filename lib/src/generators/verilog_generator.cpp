@@ -412,6 +412,20 @@ std::string VerilogGenerator::render_logic(const AST::Logic::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_customvariable(const AST::CustomVariable::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        // The type is an unresolved reference (Identifier or ScopedRef); render
+        // it as the type string and reuse the common variable formatter.
+        const std::string type_str = render(node->get_type());
+        result = variable_to_string(type_str.c_str(), false, nullptr, node->get_lengths(),
+                                    node->get_right(), node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_integer(const AST::Integer::Ptr node) const
 {
     std::string result;
@@ -2044,11 +2058,14 @@ std::string VerilogGenerator::render_typedef(const AST::Typedef::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = "typedef ";
-        result += render(node->get_def());
-        result += " ";
-        result += StringUtils::escape(node->get_name());
-        result += ";";
+        // A net/variable def (e.g. the alias `typedef logic [3:0] t;`) renders
+        // as a full declaration with a trailing ';' and padding; strip them so
+        // the typedef wraps just the type.
+        std::string def = render(node->get_def());
+        while(!def.empty() && (def.back() == ';' || def.back() == ' ')) {
+            def.pop_back();
+        }
+        result = "typedef " + def + " " + StringUtils::escape(node->get_name()) + ";";
     }
     return result;
 }
