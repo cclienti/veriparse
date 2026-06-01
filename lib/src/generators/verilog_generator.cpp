@@ -502,6 +502,11 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
             case AST::NodeType::Tri:
                 variable.append(" tri");
                 break;
+            case AST::NodeType::CustomVariable:
+                // user-defined / package-scoped type: append the type reference
+                variable.append(" " +
+                                render(AST::cast_to<AST::CustomVariable>(second)->get_type()));
+                break;
             default:
                 break;
             }
