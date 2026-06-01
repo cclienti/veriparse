@@ -4285,13 +4285,27 @@ function_calc:  blocking_assignment
 
 function_call:  TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::FunctionCall>($3, $1, scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::FunctionCall>($3, $1, "", scanner.get_filename(),
+                                                             @1.begin.line);
                 }
 
         |       TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
+                }
+
+        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::FunctionCall>($5, $3, $1, scanner.get_filename(),
+                                                             @1.begin.line);
+                }
+
+        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($3);
+                    $$->set_package($1);
                 }
         ;
 

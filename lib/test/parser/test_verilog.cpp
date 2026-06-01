@@ -255,3 +255,4 @@ TEST(VerilogParserTest, sv_import_header0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_ref0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typedef_alias0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_type0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
