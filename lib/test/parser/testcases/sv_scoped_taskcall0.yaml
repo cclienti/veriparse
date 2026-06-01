@@ -1,0 +1,74 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+          items:
+          - Initial:
+              filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+              line: 3
+              statement:
+                Block:
+                  filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                  line: 3
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                      line: 4
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          args:
+                          - IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 1
+                          - IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 2
+                          filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                          line: 4
+                          name: do_it
+                          package: mypkg
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                      line: 5
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                          line: 5
+                          name: reset
+                          package: mypkg
+                  - SingleStatement:
+                      delay:
+                        DelayStatement: null
+                      filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                      line: 6
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+                          line: 6
+                          name: tick
+                          package: mypkg
+          line: 1
+          name: sv_scoped_taskcall0
+      filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_scoped_taskcall0.sv
+  line: 1
