@@ -3296,6 +3296,16 @@ YAML::Node YAMLGenerator::render_package(const AST::Package::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Package::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
+            break;
+        case Veriparse::AST::Package::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
+            break;
+        default:
+            content["lifetime"] = "STATIC";
+        }
 
         if(node->get_items()) {
             content["items"] = YAML::Load("[]");
