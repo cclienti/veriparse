@@ -184,6 +184,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_ENDPACKAGE   "'endpackage'"
 %token                  TK_IMPORT       "'import'"
 %token                  TK_EXPORT       "'export'"
+%token                  TK_STATIC       "'static'"
 %token                  TK_COLONCOLON   "'::'"
 %token                  TK_VPP_LINE     "`line'"
 %token                  TK_LATTR        "(*"
@@ -495,31 +496,40 @@ definition:     moduledef
 
         // The optional `automatic` lifetime is accepted but not modelled (it has
         // no effect on the synthesizable subset). `static` is the default.
-packagedef:     TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
+packagedef:     TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
                     $$->set_items($5);
                 }
 
-        |       TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+        |       TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
                     $$->set_items($5);
                 }
 
-        |       TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE
+        |       TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
                 }
 
-        |       TK_PACKAGE automatic TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+        |       TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
                 }
+        ;
+
+
+// Optional package lifetime (`automatic` / `static`); accepted but not
+// modelled (no effect on the synthesizable subset; `static` is the default).
+package_lifetime:
+                %empty
+        |       TK_AUTOMATIC
+        |       TK_STATIC
         ;
 
 

@@ -193,6 +193,11 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"static"      {
+                  if(m_sv_mode) return token::TK_STATIC;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 
 
 	/**************************************************
