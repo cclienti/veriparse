@@ -185,6 +185,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_IMPORT       "'import'"
 %token                  TK_EXPORT       "'export'"
 %token                  TK_STATIC       "'static'"
+%token                  TK_DOLLAR_UNIT  "'$unit'"
 %token                  TK_COLONCOLON   "'::'"
 %token                  TK_VPP_LINE     "`line'"
 %token                  TK_LATTR        "(*"
@@ -283,6 +284,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 import_decl import_list export_decl
 %type   <AST::Import::Ptr>                   import_item
 %type   <AST::ScopedRef::Ptr>                scoped_ref
+%type   <std::string>                        package_scope
 %type   <AST::Pragmalist::Ptr>               pragmalist
 %type   <AST::Pragma::ListPtr>               pragma
 %type   <AST::Node::Ptr>                     expression ternary paren_expression
@@ -570,14 +572,14 @@ import_list:    import_item
         ;
 
 
-import_item:    TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER
+import_item:    package_scope TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Import>(scanner.get_filename(), @1.begin.line);
                     $$->set_package($1);
-                    $$->set_symbol($3);
+                    $$->set_symbol($2);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_TIMES
+        |       package_scope TK_TIMES
                 {
                     $$ = std::make_shared<AST::Import>(scanner.get_filename(), @1.begin.line);
                     $$->set_package($1);
@@ -870,15 +872,15 @@ portname:       TK_IDENTIFIER
                     $$.type_name = $1;
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER
+        |       package_scope TK_IDENTIFIER TK_IDENTIFIER
                 {
                     // package-scoped type port: `pkg::T name`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
                     $$.is_signed = false;
                     $$.widths = nullptr;
-                    $$.name = $4;
-                    $$.type_name = $3;
+                    $$.name = $3;
+                    $$.type_name = $2;
                     $$.type_package = $1;
                 }
         ;
@@ -1187,15 +1189,15 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                     }
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
                     // Package-scoped type: pkg::T var, ... ;
                     $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &d: $4) {
+                    for(const decl_name_t &d: $3) {
                         auto type_ref = std::make_shared<AST::ScopedRef>(scanner.get_filename(),
                                                                          @1.begin.line);
                         type_ref->set_package($1);
-                        type_ref->set_name($3);
+                        type_ref->set_name($2);
                         auto var = std::make_shared<AST::CustomVariable>(scanner.get_filename(),
                                                                          @1.begin.line);
                         var->set_name(d.name);
@@ -1264,15 +1266,15 @@ typedef_decl:
                     $$->set_line(@1.begin.line);
                 }
 
-        |       TK_TYPEDEF TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+        |       TK_TYPEDEF package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     // typedef of a package-scoped type: `typedef pkg::T other_t;`
                     auto def = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
                     def->set_package($2);
-                    def->set_name($4);
+                    def->set_name($3);
                     $$ = std::make_shared<AST::Typedef>();
                     $$->set_def(AST::to_node(def));
-                    $$->set_name($5);
+                    $$->set_name($4);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
@@ -1497,15 +1499,15 @@ struct_member:
                     $$->set_line(@1.begin.line);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+        |       package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     // package-scoped type member: `pkg::T name;`
                     $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($4);
+                    $$->set_name($3);
                     $$->set_sign(false);
                     auto type = std::make_shared<AST::ScopedRef>();
                     type->set_package($1);
-                    type->set_name($3);
+                    type->set_name($2);
                     type->set_filename(scanner.get_filename());
                     type->set_line(@1.begin.line);
                     $$->set_type(AST::to_node(type));
@@ -2468,11 +2470,26 @@ expression:     TK_MINUS expression %prec TK_UMINUS
 // SystemVerilog package-scoped reference, e.g. pkg::WIDTH. Kept as a
 // dedicated node (not an Identifier) so PackageInliner can resolve and
 // erase it; plain signal-analysis passes never mistake it for a net.
-scoped_ref:     TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER
+scoped_ref:     package_scope TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
                     $$->set_package($1);
-                    $$->set_name($3);
+                    $$->set_name($2);
+                }
+        ;
+
+
+// Scope-resolution prefix `<scope> ::`, shared by every scoped construct so
+// `$unit::` works wherever `pkg::` does. Produces the scope name (the package,
+// or "$unit" for the compilation-unit scope).
+package_scope:  TK_IDENTIFIER TK_COLONCOLON
+                {
+                    $$ = $1;
+                }
+
+        |       TK_DOLLAR_UNIT TK_COLONCOLON
+                {
+                    $$ = "$unit";
                 }
         ;
 
@@ -4160,17 +4177,17 @@ function_rettype_name:
                     $$->set_name($2);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER
+        |       package_scope TK_IDENTIFIER TK_IDENTIFIER
                 {
-                    // package-scoped return type $1::$3, name $4
+                    // package-scoped return type $1::$2, name $3
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(false);
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
                     auto t = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
                     t->set_package($1);
-                    t->set_name($3);
+                    t->set_name($2);
                     $$->set_rettype_ref(AST::to_node(t));
-                    $$->set_name($4);
+                    $$->set_name($3);
                 }
 
         |       widths TK_IDENTIFIER
@@ -4453,16 +4470,16 @@ function_call:  TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
                     $$->set_name($1);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
+        |       package_scope TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::FunctionCall>($5, $3, $1, scanner.get_filename(),
+                    $$ = std::make_shared<AST::FunctionCall>($4, $2, $1, scanner.get_filename(),
                                                              @1.begin.line);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+        |       package_scope TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($3);
+                    $$->set_name($2);
                     $$->set_package($1);
                 }
         ;
@@ -4752,23 +4769,23 @@ task_call:      TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                     $$->set_name($1);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
+        |       package_scope TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::TaskCall>($5, $3, $1, scanner.get_filename(),
+                    $$ = std::make_shared<AST::TaskCall>($4, $2, $1, scanner.get_filename(),
                                                          @1.begin.line);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+        |       package_scope TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($3);
+                    $$->set_name($2);
                     $$->set_package($1);
                 }
 
-        |       TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER
+        |       package_scope TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
-                    $$->set_name($3);
+                    $$->set_name($2);
                     $$->set_package($1);
                 }
         ;

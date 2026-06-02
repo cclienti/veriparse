@@ -262,6 +262,15 @@ using token = Veriparse::Parser::VerilogParser::token;
 "\}"   {return token::TK_RBRACE;}
 
 "\#"   {return token::TK_DELAY;}
+
+	/* $unit (compilation-unit scope) as one token, so $unit:: does not clash
+	   with a $-system call. Trailing context keeps the word boundary; outside
+	   SV mode, fall back to '$' + 'unit'. */
+"$unit"/[^a-zA-Z0-9_$] {
+                  if(m_sv_mode) return token::TK_DOLLAR_UNIT;
+                  yyless(1);
+                  return token::TK_DOLLAR;
+              }
 "\$"   {return token::TK_DOLLAR;}
 
 
