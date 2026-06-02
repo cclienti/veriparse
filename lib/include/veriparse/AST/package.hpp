@@ -27,6 +27,13 @@ public:
     using Node::operator==;
     using Node::operator!=;
 
+    enum class LifetimeEnum
+    {
+        NONE,
+        AUTOMATIC,
+        STATIC
+    };
+
     /**
      * Constructor, m_node_type is set to NodeType::Package.
      */
@@ -35,8 +42,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Package.
      */
-    Package(const Node::ListPtr items, const std::string &name, const std::string &filename = "",
-            uint32_t line = 0);
+    Package(const Node::ListPtr items, const std::string &name, const LifetimeEnum &lifetime,
+            const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -99,9 +106,19 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
+     * Return the property lifetime.
+     */
+    virtual const LifetimeEnum &get_lifetime(void) const { return m_lifetime; }
+
+    /**
      * Change the property name.
      */
     virtual void set_name(const std::string &name) { m_name = name; }
+
+    /**
+     * Change the property lifetime.
+     */
+    virtual void set_lifetime(const LifetimeEnum &lifetime) { m_lifetime = lifetime; }
 
     /**
      * Return the children list using the private children member
@@ -129,10 +146,13 @@ private:
 
     Node::ListPtr m_items;
     std::string m_name;
+    LifetimeEnum m_lifetime;
 };
 
 std::ostream &operator<<(std::ostream &os, const Package &p);
 std::ostream &operator<<(std::ostream &os, const Package::Ptr p);
+
+std::ostream &operator<<(std::ostream &os, const Package::LifetimeEnum p);
 
 } // namespace AST
 } // namespace Veriparse

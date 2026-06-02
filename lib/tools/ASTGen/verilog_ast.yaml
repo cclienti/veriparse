@@ -522,6 +522,7 @@ StructDef:
 Package:
   properties:
     name: "std::string"
+    lifetime: enum(NONE, AUTOMATIC, STATIC) # default lifetime; NONE = unspecified (static)
   children:
     items: list(Node)
 

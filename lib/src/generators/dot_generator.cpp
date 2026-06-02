@@ -6028,6 +6028,16 @@ std::string DotGenerator::render_package(const AST::Package::Ptr node) const
            << "<FONT COLOR=\"white\">Package</FONT></TD></TR>\n"
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Package::LifetimeEnum::NONE:
+            ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">lifetime: NONE</TD></TR>\n";
+            break;
+        case Veriparse::AST::Package::LifetimeEnum::AUTOMATIC:
+            ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">lifetime: AUTOMATIC</TD></TR>\n";
+            break;
+        default:
+            ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">lifetime: STATIC</TD></TR>\n";
+        }
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">items</FONT></TD></TR>\n";
 

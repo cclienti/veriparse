@@ -16,9 +16,9 @@ Package::Package(const std::string &filename, uint32_t line) : Node(filename, li
     set_node_categories({NodeType::Node});
 }
 
-Package::Package(const Node::ListPtr items, const std::string &name, const std::string &filename,
-                 uint32_t line)
-    : Node(filename, line), m_items(items), m_name(name)
+Package::Package(const Node::ListPtr items, const std::string &name, const LifetimeEnum &lifetime,
+                 const std::string &filename, uint32_t line)
+    : Node(filename, line), m_items(items), m_name(name), m_lifetime(lifetime)
 {
     set_node_type(NodeType::Package);
     set_node_categories({NodeType::Node});
@@ -28,6 +28,7 @@ Package &Package::operator=(const Package &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
     set_name(rhs.get_name());
+    set_lifetime(rhs.get_lifetime());
     return *this;
 }
 
@@ -43,6 +44,9 @@ bool Package::operator==(const Package &rhs) const
         return false;
     }
     if(get_name() != rhs.get_name()) {
+        return false;
+    }
+    if(get_lifetime() != rhs.get_lifetime()) {
         return false;
     }
     return true;
@@ -180,7 +184,9 @@ std::ostream &operator<<(std::ostream &os, const Package &p)
         os << ", ";
     }
 
-    os << "name: " << p.get_name();
+    os << "name: " << p.get_name() << ", ";
+
+    os << "lifetime: " << p.get_lifetime();
     os << "}";
     return os;
 }
@@ -193,6 +199,24 @@ std::ostream &operator<<(std::ostream &os, const Package::Ptr p)
         os << "Package: {nullptr}";
     }
 
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Package::LifetimeEnum p)
+{
+    switch(p) {
+    case Package::LifetimeEnum::NONE:
+        os << "NONE";
+        break;
+    case Package::LifetimeEnum::AUTOMATIC:
+        os << "AUTOMATIC";
+        break;
+    case Package::LifetimeEnum::STATIC:
+        os << "STATIC";
+        break;
+    default:
+        break;
+    }
     return os;
 }
 

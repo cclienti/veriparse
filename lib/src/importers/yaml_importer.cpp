@@ -8575,6 +8575,16 @@ AST::Node::Ptr YAMLImporter::convert_package(const YAML::Node node) const
                 result->set_name(node["name"].as<std::string>());
             }
         }
+        // Manage property lifetime
+        if(node["lifetime"]) {
+            if(node["lifetime"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Package>();
+                }
+                result->set_lifetime(node["lifetime"].as<AST::Package::LifetimeEnum>());
+            }
+        }
 
         // Manage Child items
         if(node["items"]) {

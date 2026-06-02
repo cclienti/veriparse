@@ -2472,14 +2472,17 @@ TEST(YAMLGenerator, Package)
 
     AST::Node::ListPtr c_items(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
+    AST::Package::LifetimeEnum p_lifetime = AST::Package::LifetimeEnum::AUTOMATIC;
 
-    AST::Package::Ptr m_package(new AST::Package(c_items, p_name, "filename", 0));
+    AST::Package::Ptr m_package(new AST::Package(c_items, p_name, p_lifetime, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_package);
 
     ASSERT_TRUE(yaml["Package"]);
     ASSERT_TRUE(yaml["Package"]["items"]);
     ASSERT_TRUE(yaml["Package"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Package"]["lifetime"].as<AST::Package::LifetimeEnum>() ==
+                AST::Package::LifetimeEnum::AUTOMATIC);
 }
 
 TEST(YAMLGenerator, Import)

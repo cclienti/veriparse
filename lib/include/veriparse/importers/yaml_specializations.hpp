@@ -290,6 +290,44 @@ template <> struct convert<Veriparse::AST::EnumDef::Base_typeEnum>
         return false;
     }
 };
+template <> struct convert<Veriparse::AST::Package::LifetimeEnum>
+{
+    static Node encode(const Veriparse::AST::Package::LifetimeEnum &rhs)
+    {
+        switch(rhs) {
+        case Veriparse::AST::Package::LifetimeEnum::NONE:
+            return Node("NONE");
+        case Veriparse::AST::Package::LifetimeEnum::AUTOMATIC:
+            return Node("AUTOMATIC");
+        default:
+            return Node("STATIC");
+        }
+    }
+
+    static bool decode(const Node &node, Veriparse::AST::Package::LifetimeEnum &rhs)
+    {
+        if(!node.IsScalar()) {
+            return false;
+        }
+
+        if(node.as<std::string>() == "NONE") {
+            rhs = Veriparse::AST::Package::LifetimeEnum::NONE;
+            return true;
+        }
+
+        if(node.as<std::string>() == "AUTOMATIC") {
+            rhs = Veriparse::AST::Package::LifetimeEnum::AUTOMATIC;
+            return true;
+        }
+
+        if(node.as<std::string>() == "STATIC") {
+            rhs = Veriparse::AST::Package::LifetimeEnum::STATIC;
+            return true;
+        }
+
+        return false;
+    }
+};
 
 template <> struct convert<mpz_class>
 {

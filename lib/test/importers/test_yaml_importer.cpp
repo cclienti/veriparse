@@ -2878,7 +2878,8 @@ TEST(YAMLImporter, Package)
                     "  filename: package.v\n"
                     "  line: 7\n"
                     "  items:\n"
-                    "  name: mynbiqpmzj\n");
+                    "  name: mynbiqpmzj\n"
+                    "  lifetime: AUTOMATIC\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -2888,6 +2889,8 @@ TEST(YAMLImporter, Package)
     ASSERT_TRUE(yaml["Package"]["line"].as<int>() == 7);
     ASSERT_TRUE(yaml["Package"]["items"]);
     ASSERT_TRUE(yaml["Package"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Package"]["lifetime"].as<AST::Package::LifetimeEnum>() ==
+                AST::Package::LifetimeEnum::AUTOMATIC);
 }
 
 TEST(YAMLImporter, Import)
