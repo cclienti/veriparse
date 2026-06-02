@@ -139,7 +139,18 @@ std::string VerilogGenerator::render_package(const AST::Package::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = "package " + StringUtils::escape(node->get_name()) + ";\n\n";
+        result = "package ";
+        switch(node->get_lifetime()) {
+        case AST::Package::LifetimeEnum::AUTOMATIC:
+            result += "automatic ";
+            break;
+        case AST::Package::LifetimeEnum::STATIC:
+            result += "static ";
+            break;
+        default:
+            break;
+        }
+        result += StringUtils::escape(node->get_name()) + ";\n\n";
 
         const AST::Node::ListPtr items = node->get_items();
         if(items) {
