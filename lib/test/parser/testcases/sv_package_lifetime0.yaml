@@ -1,0 +1,32 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Package:
+          filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+          items:
+          - Localparam:
+              filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+              line: 2
+              name: W
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+                  line: 2
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 4
+          lifetime: AUTOMATIC
+          line: 1
+          name: sv_package_lifetime0
+      filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+  line: 1

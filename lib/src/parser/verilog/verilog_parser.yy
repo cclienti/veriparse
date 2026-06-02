@@ -285,6 +285,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Import::Ptr>                   import_item
 %type   <AST::ScopedRef::Ptr>                scoped_ref
 %type   <std::string>                        package_scope
+%type   <AST::Package::LifetimeEnum>         package_lifetime
 %type   <AST::Pragmalist::Ptr>               pragmalist
 %type   <AST::Pragma::ListPtr>               pragma
 %type   <AST::Node::Ptr>                     expression ternary paren_expression
@@ -502,6 +503,7 @@ packagedef:     TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
+                    $$->set_lifetime($2);
                     $$->set_items($5);
                 }
 
@@ -509,6 +511,7 @@ packagedef:     TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
+                    $$->set_lifetime($2);
                     $$->set_items($5);
                 }
 
@@ -516,22 +519,35 @@ packagedef:     TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
+                    $$->set_lifetime($2);
                 }
 
         |       TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
+                    $$->set_lifetime($2);
                 }
         ;
 
 
-// Optional package lifetime (`automatic` / `static`); accepted but not
-// modelled (no effect on the synthesizable subset; `static` is the default).
+// Optional package lifetime: NONE (unspecified, i.e. static), AUTOMATIC or
+// STATIC. Stored on the Package node so it round-trips.
 package_lifetime:
                 %empty
+                {
+                    $$ = AST::Package::LifetimeEnum::NONE;
+                }
+
         |       TK_AUTOMATIC
+                {
+                    $$ = AST::Package::LifetimeEnum::AUTOMATIC;
+                }
+
         |       TK_STATIC
+                {
+                    $$ = AST::Package::LifetimeEnum::STATIC;
+                }
         ;
 
 
