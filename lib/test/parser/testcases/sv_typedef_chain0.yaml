@@ -1,0 +1,145 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+          items:
+          - Typedef:
+              def:
+                Logic:
+                  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: ''
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 3
+              filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+              line: 4
+              name: base_t
+          - Typedef:
+              def:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                  line: 5
+                  name: base_t
+                  scope:
+                    IdentifierScope: null
+              filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+              line: 5
+              name: alias_t
+          - Typedef:
+              def:
+                ScopedRef:
+                  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                  line: 6
+                  name: data_t
+                  package: mypkg
+              filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+              line: 6
+              name: imported_t
+          - CustomVariable:
+              filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+              line: 8
+              name: x
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                  line: 8
+                  name: alias_t
+                  scope:
+                    IdentifierScope: null
+          - Assign:
+              filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                      line: 10
+                      name: out
+                      scope:
+                        IdentifierScope: null
+              line: 10
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                      line: 10
+                      name: x
+                      scope:
+                        IdentifierScope: null
+          line: 1
+          name: sv_typedef_chain0
+          ports:
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                  line: 2
+                  name: out
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                      line: 2
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 2
+              second:
+                Variable: null
+      filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_typedef_chain0.sv
+  line: 1

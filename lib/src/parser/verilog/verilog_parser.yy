@@ -1241,6 +1241,31 @@ typedef_decl:
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
+
+        |       TK_TYPEDEF TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+                {
+                    // typedef of a user-defined type: `typedef my_t other_t;`
+                    auto def = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    def->set_name($2);
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(AST::to_node(def));
+                    $$->set_name($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF TK_IDENTIFIER TK_COLONCOLON TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+                {
+                    // typedef of a package-scoped type: `typedef pkg::T other_t;`
+                    auto def = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
+                    def->set_package($2);
+                    def->set_name($4);
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(AST::to_node(def));
+                    $$->set_name($5);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
         ;
 
 enum_def:
