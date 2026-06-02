@@ -90,6 +90,7 @@ Source:
               filename: lib/test/parser/testcases/sv_package0.sv
               line: 5
               name: state_t
+          lifetime: NONE
           line: 1
           name: sv_package0
       filename: lib/test/parser/testcases/sv_package0.sv

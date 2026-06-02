@@ -116,6 +116,7 @@ Source:
                           name: v
                           scope:
                             IdentifierScope: null
+          lifetime: AUTOMATIC
           line: 1
           name: mypkg
       - Module:
