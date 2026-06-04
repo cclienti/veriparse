@@ -47,6 +47,10 @@ Length:
 Identifier:
   properties:
     name: "std::string"
+    # SystemVerilog package scope (pkg::name or $unit::name); empty if unscoped.
+    # A later resolution pass (PackageInliner) consumes it. Unqualified names
+    # brought in by `import pkg::*` keep this empty until that pass attributes them.
+    package: "std::string"
   children:
     scope: IdentifierScope
 
@@ -107,12 +111,14 @@ Variable:
     right: Rvalue
 
 # A variable declared with a user-defined type (typedef name or pkg::name).
-# `type` holds the unresolved type reference (Identifier or ScopedRef); a
-# later resolution pass rewrites this into a concrete Reg/Logic/etc.
-CustomVariable:
+# `type` holds the unresolved type reference: an Identifier (its `package`
+# carries any pkg:: scope) or an inline StructDef/Union/EnumDef. A later
+# resolution pass rewrites this into a concrete Reg/Logic/etc.
+CustomTypeVar:
   inherit: Variable
   children:
     type: Node
+    widths: list(Width) # packed dimensions of the named/inline type (my_t [3:0] x)
 
 Net:
   inherit: Variable
@@ -125,6 +131,38 @@ Net:
 
 Integer: {inherit: Variable}
 Real:    {inherit: Variable}
+
+# SystemVerilog integer atom types (byte/shortint/int/longint): signing (signed
+# by default), no packed dimension. Dedicated nodes (visited polymorphically as
+# Variable). `sign` follows the existing convention (Reg/Bit/IntConstN).
+Byte:
+  inherit: Variable
+  properties:
+    sign: bool
+Shortint:
+  inherit: Variable
+  properties:
+    sign: bool
+Int:
+  inherit: Variable
+  properties:
+    sign: bool
+Longint:
+  inherit: Variable
+  properties:
+    sign: bool
+
+# SystemVerilog non-integer types (no signing, no packed dimension), like Real.
+Shortreal: {inherit: Variable}
+Realtime:  {inherit: Variable}
+
+# SystemVerilog integer vector type bit: signing + packed dimensions, like Reg.
+Bit:
+  inherit: Variable
+  properties:
+    sign: bool
+  children:
+    widths: list(Width)
 
 Tri:     {inherit: Net}
 Wire:    {inherit: Net}
@@ -417,8 +455,9 @@ Function:
     retsign: bool
   children:
     retwidths: list(Width)
-    # User-defined return type ref (Identifier/ScopedRef); null for built-in.
-    # rettype stays NONE in that case; a resolution pass expands it.
+    # User-defined return type ref: an Identifier (its `package` carries any
+    # pkg:: scope); null for a built-in return type. rettype stays NONE in that
+    # case; a resolution pass expands it.
     rettype_ref: Node
     ports: list(Node)
     statements: list(Node)
@@ -513,11 +552,17 @@ StructMember:
     widths: list(Width)
     type: Node
 
-StructDef:
+# Shared base for struct/union so passes can visit them as one. `sign` covers
+# `struct/union packed signed`; `packed` the packed vs unpacked layout.
+StructUnionDef:
   properties:
     packed: bool
+    sign: bool
   children:
     members: list(StructMember)
+
+StructDef: {inherit: StructUnionDef}
+Union:     {inherit: StructUnionDef}
 
 Package:
   properties:
@@ -530,10 +575,4 @@ Import:
   properties:
     package: "std::string" # package name, left of ::
     symbol: "std::string"  # imported item; "*" for a wildcard import
-  children:
-
-ScopedRef:
-  properties:
-    package: "std::string" # package name, left of ::
-    name: "std::string"    # referenced symbol, right of ::
   children:

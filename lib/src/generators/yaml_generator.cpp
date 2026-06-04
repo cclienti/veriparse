@@ -260,6 +260,7 @@ YAML::Node YAMLGenerator::render_identifier(const AST::Identifier::Ptr node) con
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
+        content["package"] = node->get_package();
 
         content["scope"] = render(node->get_scope());
     }
@@ -539,13 +540,13 @@ YAML::Node YAMLGenerator::render_variable(const AST::Variable::Ptr node) const
     return node_variable;
 }
 
-YAML::Node YAMLGenerator::render_customvariable(const AST::CustomVariable::Ptr node) const
+YAML::Node YAMLGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
 {
-    YAML::Node node_customvariable;
+    YAML::Node node_customtypevar;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::CustomVariable) {
+        if(node->get_node_type() != AST::NodeType::CustomTypeVar) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
@@ -554,6 +555,13 @@ YAML::Node YAMLGenerator::render_customvariable(const AST::CustomVariable::Ptr n
         content["name"] = node->get_name();
 
         content["type"] = render(node->get_type());
+
+        if(node->get_widths()) {
+            content["widths"] = YAML::Load("[]");
+            for(const AST::Width::Ptr &n : *node->get_widths()) {
+                content["widths"].push_back(render(n));
+            }
+        }
 
         if(node->get_lengths()) {
             content["lengths"] = YAML::Load("[]");
@@ -565,8 +573,8 @@ YAML::Node YAMLGenerator::render_customvariable(const AST::CustomVariable::Ptr n
         content["right"] = render(node->get_right());
     }
 
-    node_customvariable["CustomVariable"] = content;
-    return node_customvariable;
+    node_customtypevar["CustomTypeVar"] = content;
+    return node_customtypevar;
 }
 
 YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
@@ -663,6 +671,214 @@ YAML::Node YAMLGenerator::render_real(const AST::Real::Ptr node) const
 
     node_real["Real"] = content;
     return node_real;
+}
+
+YAML::Node YAMLGenerator::render_byte(const AST::Byte::Ptr node) const
+{
+    YAML::Node node_byte;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Byte) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["sign"] = node->get_sign();
+        content["name"] = node->get_name();
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_byte["Byte"] = content;
+    return node_byte;
+}
+
+YAML::Node YAMLGenerator::render_shortint(const AST::Shortint::Ptr node) const
+{
+    YAML::Node node_shortint;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Shortint) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["sign"] = node->get_sign();
+        content["name"] = node->get_name();
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_shortint["Shortint"] = content;
+    return node_shortint;
+}
+
+YAML::Node YAMLGenerator::render_int(const AST::Int::Ptr node) const
+{
+    YAML::Node node_int;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Int) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["sign"] = node->get_sign();
+        content["name"] = node->get_name();
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_int["Int"] = content;
+    return node_int;
+}
+
+YAML::Node YAMLGenerator::render_longint(const AST::Longint::Ptr node) const
+{
+    YAML::Node node_longint;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Longint) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["sign"] = node->get_sign();
+        content["name"] = node->get_name();
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_longint["Longint"] = content;
+    return node_longint;
+}
+
+YAML::Node YAMLGenerator::render_shortreal(const AST::Shortreal::Ptr node) const
+{
+    YAML::Node node_shortreal;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Shortreal) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_shortreal["Shortreal"] = content;
+    return node_shortreal;
+}
+
+YAML::Node YAMLGenerator::render_realtime(const AST::Realtime::Ptr node) const
+{
+    YAML::Node node_realtime;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Realtime) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_realtime["Realtime"] = content;
+    return node_realtime;
+}
+
+YAML::Node YAMLGenerator::render_bit(const AST::Bit::Ptr node) const
+{
+    YAML::Node node_bit;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Bit) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["sign"] = node->get_sign();
+        content["name"] = node->get_name();
+
+        if(node->get_widths()) {
+            content["widths"] = YAML::Load("[]");
+            for(const AST::Width::Ptr &n : *node->get_widths()) {
+                content["widths"].push_back(render(n));
+            }
+        }
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_bit["Bit"] = content;
+    return node_bit;
 }
 
 YAML::Node YAMLGenerator::render_tri(const AST::Tri::Ptr node) const
@@ -3257,6 +3473,33 @@ YAML::Node YAMLGenerator::render_structmember(const AST::StructMember::Ptr node)
     return node_structmember;
 }
 
+YAML::Node YAMLGenerator::render_structuniondef(const AST::StructUnionDef::Ptr node) const
+{
+    YAML::Node node_structuniondef;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::StructUnionDef) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["packed"] = node->get_packed();
+        content["sign"] = node->get_sign();
+
+        if(node->get_members()) {
+            content["members"] = YAML::Load("[]");
+            for(const AST::StructMember::Ptr &n : *node->get_members()) {
+                content["members"].push_back(render(n));
+            }
+        }
+    }
+
+    node_structuniondef["StructUnionDef"] = content;
+    return node_structuniondef;
+}
+
 YAML::Node YAMLGenerator::render_structdef(const AST::StructDef::Ptr node) const
 {
     YAML::Node node_structdef;
@@ -3270,6 +3513,7 @@ YAML::Node YAMLGenerator::render_structdef(const AST::StructDef::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["packed"] = node->get_packed();
+        content["sign"] = node->get_sign();
 
         if(node->get_members()) {
             content["members"] = YAML::Load("[]");
@@ -3281,6 +3525,33 @@ YAML::Node YAMLGenerator::render_structdef(const AST::StructDef::Ptr node) const
 
     node_structdef["StructDef"] = content;
     return node_structdef;
+}
+
+YAML::Node YAMLGenerator::render_union(const AST::Union::Ptr node) const
+{
+    YAML::Node node_union;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Union) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["packed"] = node->get_packed();
+        content["sign"] = node->get_sign();
+
+        if(node->get_members()) {
+            content["members"] = YAML::Load("[]");
+            for(const AST::StructMember::Ptr &n : *node->get_members()) {
+                content["members"].push_back(render(n));
+            }
+        }
+    }
+
+    node_union["Union"] = content;
+    return node_union;
 }
 
 YAML::Node YAMLGenerator::render_package(const AST::Package::Ptr node) const
@@ -3337,26 +3608,6 @@ YAML::Node YAMLGenerator::render_import(const AST::Import::Ptr node) const
 
     node_import["Import"] = content;
     return node_import;
-}
-
-YAML::Node YAMLGenerator::render_scopedref(const AST::ScopedRef::Ptr node) const
-{
-    YAML::Node node_scopedref;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::ScopedRef) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["package"] = node->get_package();
-        content["name"] = node->get_name();
-    }
-
-    node_scopedref["ScopedRef"] = content;
-    return node_scopedref;
 }
 
 } // namespace Generators

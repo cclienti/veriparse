@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#ifndef VERIPARSE_AST_STRUCTDEF_HPP
-#define VERIPARSE_AST_STRUCTDEF_HPP
+#ifndef VERIPARSE_AST_BYTE_HPP
+#define VERIPARSE_AST_BYTE_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/structuniondef.hpp>
+#include <veriparse/AST/variable.hpp>
 
-#include <veriparse/AST/structmember.hpp>
+#include <veriparse/AST/length.hpp>
+#include <veriparse/AST/rvalue.hpp>
 
 #include <list>
 #include <string>
@@ -20,31 +21,31 @@ namespace Veriparse
 namespace AST
 {
 
-class StructDef : public StructUnionDef
+class Byte : public Variable
 {
 public:
-    using Ptr = typename NodePointers<StructDef>::Ptr;
-    using List = typename NodePointers<StructDef>::List;
-    using ListPtr = typename NodePointers<StructDef>::ListPtr;
-    using StructUnionDef::operator=;
-    using StructUnionDef::operator==;
-    using StructUnionDef::operator!=;
+    using Ptr = typename NodePointers<Byte>::Ptr;
+    using List = typename NodePointers<Byte>::List;
+    using ListPtr = typename NodePointers<Byte>::ListPtr;
+    using Variable::operator=;
+    using Variable::operator==;
+    using Variable::operator!=;
 
     /**
-     * Constructor, m_node_type is set to NodeType::StructDef.
+     * Constructor, m_node_type is set to NodeType::Byte.
      */
-    StructDef(const std::string &filename = "", uint32_t line = 0);
+    Byte(const std::string &filename = "", uint32_t line = 0);
 
     /**
-     * Constructor, m_node_type is set to NodeType::StructDef.
+     * Constructor, m_node_type is set to NodeType::Byte.
      */
-    StructDef(const StructMember::ListPtr members, const bool &packed, const bool &sign,
-              const std::string &filename = "", uint32_t line = 0);
+    Byte(const Length::ListPtr lengths, const Rvalue::Ptr right, const bool &sign,
+         const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
      */
-    virtual StructDef &operator=(const StructDef &rhs);
+    virtual Byte &operator=(const Byte &rhs);
 
     /**
      * Assignment operator, do not affect children.
@@ -52,22 +53,22 @@ public:
     virtual Node &operator=(const Node &rhs) override;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Byte nodes are the same, do not check children.
      */
-    virtual bool operator==(const StructDef &rhs) const;
+    virtual bool operator==(const Byte &rhs) const;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Byte nodes are the same, do not check children.
      */
     virtual bool operator==(const Node &rhs) const override;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Byte nodes are the same, do not check children.
      */
-    virtual bool operator!=(const StructDef &rhs) const;
+    virtual bool operator!=(const Byte &rhs) const;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Byte nodes are the same, do not check children.
      */
     virtual bool operator!=(const Node &rhs) const override;
 
@@ -85,6 +86,16 @@ public:
      * Replace the given children node by the new nodes in the list.
      */
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
+
+    /**
+     * Return the property sign.
+     */
+    virtual const bool &get_sign(void) const { return m_sign; }
+
+    /**
+     * Change the property sign.
+     */
+    virtual void set_sign(const bool &sign) { m_sign = sign; }
 
     /**
      * Return the children list using the private children member
@@ -109,10 +120,12 @@ private:
      * Allocate a new node with the same node type than the current instance.
      */
     virtual Node::Ptr alloc_same(void) const override;
+
+    bool m_sign;
 };
 
-std::ostream &operator<<(std::ostream &os, const StructDef &p);
-std::ostream &operator<<(std::ostream &os, const StructDef::Ptr p);
+std::ostream &operator<<(std::ostream &os, const Byte &p);
+std::ostream &operator<<(std::ostream &os, const Byte::Ptr p);
 
 } // namespace AST
 } // namespace Veriparse

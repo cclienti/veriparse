@@ -35,10 +35,17 @@ template <> constexpr NodeType get_node_type<Inout>() { return NodeType::Inout; 
 template <> constexpr NodeType get_node_type<VariableBase>() { return NodeType::VariableBase; }
 template <> constexpr NodeType get_node_type<Genvar>() { return NodeType::Genvar; }
 template <> constexpr NodeType get_node_type<Variable>() { return NodeType::Variable; }
-template <> constexpr NodeType get_node_type<CustomVariable>() { return NodeType::CustomVariable; }
+template <> constexpr NodeType get_node_type<CustomTypeVar>() { return NodeType::CustomTypeVar; }
 template <> constexpr NodeType get_node_type<Net>() { return NodeType::Net; }
 template <> constexpr NodeType get_node_type<Integer>() { return NodeType::Integer; }
 template <> constexpr NodeType get_node_type<Real>() { return NodeType::Real; }
+template <> constexpr NodeType get_node_type<Byte>() { return NodeType::Byte; }
+template <> constexpr NodeType get_node_type<Shortint>() { return NodeType::Shortint; }
+template <> constexpr NodeType get_node_type<Int>() { return NodeType::Int; }
+template <> constexpr NodeType get_node_type<Longint>() { return NodeType::Longint; }
+template <> constexpr NodeType get_node_type<Shortreal>() { return NodeType::Shortreal; }
+template <> constexpr NodeType get_node_type<Realtime>() { return NodeType::Realtime; }
+template <> constexpr NodeType get_node_type<Bit>() { return NodeType::Bit; }
 template <> constexpr NodeType get_node_type<Tri>() { return NodeType::Tri; }
 template <> constexpr NodeType get_node_type<Wire>() { return NodeType::Wire; }
 template <> constexpr NodeType get_node_type<Supply0>() { return NodeType::Supply0; }
@@ -180,10 +187,11 @@ template <> constexpr NodeType get_node_type<EnumItem>() { return NodeType::Enum
 template <> constexpr NodeType get_node_type<EnumDef>() { return NodeType::EnumDef; }
 template <> constexpr NodeType get_node_type<Typedef>() { return NodeType::Typedef; }
 template <> constexpr NodeType get_node_type<StructMember>() { return NodeType::StructMember; }
+template <> constexpr NodeType get_node_type<StructUnionDef>() { return NodeType::StructUnionDef; }
 template <> constexpr NodeType get_node_type<StructDef>() { return NodeType::StructDef; }
+template <> constexpr NodeType get_node_type<Union>() { return NodeType::Union; }
 template <> constexpr NodeType get_node_type<Package>() { return NodeType::Package; }
 template <> constexpr NodeType get_node_type<Import>() { return NodeType::Import; }
-template <> constexpr NodeType get_node_type<ScopedRef>() { return NodeType::ScopedRef; }
 
 } // namespace AST
 } // namespace Veriparse

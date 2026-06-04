@@ -457,6 +457,8 @@ std::string DotGenerator::render_identifier(const AST::Identifier::Ptr node) con
            << "<FONT COLOR=\"white\">Identifier</FONT></TD></TR>\n"
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">package: " << node->get_package()
+           << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">scope</FONT></TD></TR>\n";
 
@@ -877,12 +879,12 @@ std::string DotGenerator::render_variable(const AST::Variable::Ptr node) const
     return ss.str();
 }
 
-std::string DotGenerator::render_customvariable(const AST::CustomVariable::Ptr node) const
+std::string DotGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
 {
     std::stringstream ss;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::CustomVariable) {
+        if(node->get_node_type() != AST::NodeType::CustomTypeVar) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
@@ -891,19 +893,28 @@ std::string DotGenerator::render_customvariable(const AST::CustomVariable::Ptr n
         ss << "\tn" << nodeID
            << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
            << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
-           << "<FONT COLOR=\"white\">CustomVariable</FONT></TD></TR>\n"
+           << "<FONT COLOR=\"white\">CustomTypeVar</FONT></TD></TR>\n"
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+           << "<FONT COLOR=\"wheat\">widths</FONT></TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
         if(node->get_type().get()) {
             ss << render(node->get_type());
+        }
+        if(node->get_widths()) {
+            for(const AST::Width::Ptr &n : *node->get_widths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
         }
         if(node->get_lengths()) {
             for(const AST::Length::Ptr &n : *node->get_lengths()) {
@@ -920,9 +931,9 @@ std::string DotGenerator::render_customvariable(const AST::CustomVariable::Ptr n
         if(childID) {
             ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
         }
-        if(node->get_lengths()) {
+        if(node->get_widths()) {
             int i = 0;
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+            for(const AST::Width::Ptr &n : *node->get_widths()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
                     ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
@@ -930,9 +941,19 @@ std::string DotGenerator::render_customvariable(const AST::CustomVariable::Ptr n
                 }
             }
         }
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
         childID = reinterpret_cast<uint64_t>(node->get_right().get());
         if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -1130,6 +1151,401 @@ std::string DotGenerator::render_real(const AST::Real::Ptr node) const
         childID = reinterpret_cast<uint64_t>(node->get_right().get());
         if(childID) {
             ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_byte(const AST::Byte::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Byte) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Byte</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_lengths()) {
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_right().get()) {
+            ss << render(node->get_right());
+        }
+        uint64_t childID;
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_right().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_shortint(const AST::Shortint::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Shortint) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Shortint</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_lengths()) {
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_right().get()) {
+            ss << render(node->get_right());
+        }
+        uint64_t childID;
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_right().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_int(const AST::Int::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Int) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Int</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_lengths()) {
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_right().get()) {
+            ss << render(node->get_right());
+        }
+        uint64_t childID;
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_right().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_longint(const AST::Longint::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Longint) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Longint</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_lengths()) {
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_right().get()) {
+            ss << render(node->get_right());
+        }
+        uint64_t childID;
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_right().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_shortreal(const AST::Shortreal::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Shortreal) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Shortreal</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_lengths()) {
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_right().get()) {
+            ss << render(node->get_right());
+        }
+        uint64_t childID;
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_right().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_realtime(const AST::Realtime::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Realtime) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Realtime</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_lengths()) {
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_right().get()) {
+            ss << render(node->get_right());
+        }
+        uint64_t childID;
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_right().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_bit(const AST::Bit::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Bit) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Bit</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">widths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">lengths</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">right</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_widths()) {
+            for(const AST::Width::Ptr &n : *node->get_widths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_lengths()) {
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_right().get()) {
+            ss << render(node->get_right());
+        }
+        uint64_t childID;
+        if(node->get_widths()) {
+            int i = 0;
+            for(const AST::Width::Ptr &n : *node->get_widths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        if(node->get_lengths()) {
+            int i = 0;
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_right().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -5967,6 +6383,51 @@ std::string DotGenerator::render_structmember(const AST::StructMember::Ptr node)
     return ss.str();
 }
 
+std::string DotGenerator::render_structuniondef(const AST::StructUnionDef::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::StructUnionDef) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">StructUnionDef</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">packed: " << node->get_packed() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">members</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_members()) {
+            for(const AST::StructMember::Ptr &n : *node->get_members()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        uint64_t childID;
+        if(node->get_members()) {
+            int i = 0;
+            for(const AST::StructMember::Ptr &n : *node->get_members()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+    }
+
+    return ss.str();
+}
+
 std::string DotGenerator::render_structdef(const AST::StructDef::Ptr node) const
 {
     std::stringstream ss;
@@ -5984,6 +6445,52 @@ std::string DotGenerator::render_structdef(const AST::StructDef::Ptr node) const
            << "<FONT COLOR=\"white\">StructDef</FONT></TD></TR>\n"
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">packed: " << node->get_packed() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">members</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_members()) {
+            for(const AST::StructMember::Ptr &n : *node->get_members()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        uint64_t childID;
+        if(node->get_members()) {
+            int i = 0;
+            for(const AST::StructMember::Ptr &n : *node->get_members()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+    }
+
+    return ss.str();
+}
+
+std::string DotGenerator::render_union(const AST::Union::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Union) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Union</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">packed: " << node->get_packed() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">members</FONT></TD></TR>\n";
 
@@ -6084,32 +6591,6 @@ std::string DotGenerator::render_import(const AST::Import::Ptr node) const
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">package: " << node->get_package()
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">symbol: " << node->get_symbol() << "</TD></TR>\n";
-
-        ss << "\t\t</TABLE>>];" << std::endl;
-    }
-
-    return ss.str();
-}
-
-std::string DotGenerator::render_scopedref(const AST::ScopedRef::Ptr node) const
-{
-    std::stringstream ss;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::ScopedRef) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
-
-        ss << "\tn" << nodeID
-           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
-           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
-           << "<FONT COLOR=\"white\">ScopedRef</FONT></TD></TR>\n"
-           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
-        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">package: " << node->get_package()
-           << "</TD></TR>\n";
-        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
     }

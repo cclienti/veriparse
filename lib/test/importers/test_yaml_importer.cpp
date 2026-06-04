@@ -243,7 +243,8 @@ TEST(YAMLImporter, Identifier)
                     "  filename: identifier.v\n"
                     "  line: 10\n"
                     "  scope:\n"
-                    "  name: mynbiqpmzj\n");
+                    "  name: mynbiqpmzj\n"
+                    "  package: plsgqejeyd\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -253,6 +254,7 @@ TEST(YAMLImporter, Identifier)
     ASSERT_TRUE(yaml["Identifier"]["line"].as<int>() == 10);
     ASSERT_TRUE(yaml["Identifier"]["scope"]);
     ASSERT_TRUE(yaml["Identifier"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Identifier"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLImporter, Constant)
@@ -507,15 +509,16 @@ TEST(YAMLImporter, Variable)
     ASSERT_TRUE(yaml["Variable"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
-TEST(YAMLImporter, CustomVariable)
+TEST(YAMLImporter, CustomTypeVar)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLImporter.CustomVariable.log");
+    Logger::add_text_sink("YAMLImporter.CustomTypeVar.log");
     Logger::add_stderr_sink();
-    std::string str("CustomVariable:\n"
-                    "  filename: customvariable.v\n"
-                    "  line: 14\n"
+    std::string str("CustomTypeVar:\n"
+                    "  filename: customtypevar.v\n"
+                    "  line: 13\n"
                     "  type:\n"
+                    "  widths:\n"
                     "  lengths:\n"
                     "  right:\n"
                     "  name: mynbiqpmzj\n");
@@ -523,13 +526,14 @@ TEST(YAMLImporter, CustomVariable)
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
 
-    ASSERT_TRUE(yaml["CustomVariable"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["filename"].as<std::string>() == "customvariable.v");
-    ASSERT_TRUE(yaml["CustomVariable"]["line"].as<int>() == 14);
-    ASSERT_TRUE(yaml["CustomVariable"]["type"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["lengths"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["right"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["CustomTypeVar"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["filename"].as<std::string>() == "customtypevar.v");
+    ASSERT_TRUE(yaml["CustomTypeVar"]["line"].as<int>() == 13);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["type"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["widths"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["lengths"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["right"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
 TEST(YAMLImporter, Net)
@@ -607,6 +611,179 @@ TEST(YAMLImporter, Real)
     ASSERT_TRUE(yaml["Real"]["lengths"]);
     ASSERT_TRUE(yaml["Real"]["right"]);
     ASSERT_TRUE(yaml["Real"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLImporter, Byte)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Byte.log");
+    Logger::add_stderr_sink();
+    std::string str("Byte:\n"
+                    "  filename: byte.v\n"
+                    "  line: 4\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  sign: false\n"
+                    "  name: ynbiqpmzjp\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Byte"]);
+    ASSERT_TRUE(yaml["Byte"]["filename"].as<std::string>() == "byte.v");
+    ASSERT_TRUE(yaml["Byte"]["line"].as<int>() == 4);
+    ASSERT_TRUE(yaml["Byte"]["lengths"]);
+    ASSERT_TRUE(yaml["Byte"]["right"]);
+    ASSERT_TRUE(yaml["Byte"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Byte"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLImporter, Shortint)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Shortint.log");
+    Logger::add_stderr_sink();
+    std::string str("Shortint:\n"
+                    "  filename: shortint.v\n"
+                    "  line: 8\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  sign: false\n"
+                    "  name: ynbiqpmzjp\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Shortint"]);
+    ASSERT_TRUE(yaml["Shortint"]["filename"].as<std::string>() == "shortint.v");
+    ASSERT_TRUE(yaml["Shortint"]["line"].as<int>() == 8);
+    ASSERT_TRUE(yaml["Shortint"]["lengths"]);
+    ASSERT_TRUE(yaml["Shortint"]["right"]);
+    ASSERT_TRUE(yaml["Shortint"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Shortint"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLImporter, Int)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Int.log");
+    Logger::add_stderr_sink();
+    std::string str("Int:\n"
+                    "  filename: int.v\n"
+                    "  line: 3\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  sign: false\n"
+                    "  name: ynbiqpmzjp\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Int"]);
+    ASSERT_TRUE(yaml["Int"]["filename"].as<std::string>() == "int.v");
+    ASSERT_TRUE(yaml["Int"]["line"].as<int>() == 3);
+    ASSERT_TRUE(yaml["Int"]["lengths"]);
+    ASSERT_TRUE(yaml["Int"]["right"]);
+    ASSERT_TRUE(yaml["Int"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Int"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLImporter, Longint)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Longint.log");
+    Logger::add_stderr_sink();
+    std::string str("Longint:\n"
+                    "  filename: longint.v\n"
+                    "  line: 7\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  sign: false\n"
+                    "  name: ynbiqpmzjp\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Longint"]);
+    ASSERT_TRUE(yaml["Longint"]["filename"].as<std::string>() == "longint.v");
+    ASSERT_TRUE(yaml["Longint"]["line"].as<int>() == 7);
+    ASSERT_TRUE(yaml["Longint"]["lengths"]);
+    ASSERT_TRUE(yaml["Longint"]["right"]);
+    ASSERT_TRUE(yaml["Longint"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Longint"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLImporter, Shortreal)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Shortreal.log");
+    Logger::add_stderr_sink();
+    std::string str("Shortreal:\n"
+                    "  filename: shortreal.v\n"
+                    "  line: 9\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  name: mynbiqpmzj\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Shortreal"]);
+    ASSERT_TRUE(yaml["Shortreal"]["filename"].as<std::string>() == "shortreal.v");
+    ASSERT_TRUE(yaml["Shortreal"]["line"].as<int>() == 9);
+    ASSERT_TRUE(yaml["Shortreal"]["lengths"]);
+    ASSERT_TRUE(yaml["Shortreal"]["right"]);
+    ASSERT_TRUE(yaml["Shortreal"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLImporter, Realtime)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Realtime.log");
+    Logger::add_stderr_sink();
+    std::string str("Realtime:\n"
+                    "  filename: realtime.v\n"
+                    "  line: 8\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  name: mynbiqpmzj\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Realtime"]);
+    ASSERT_TRUE(yaml["Realtime"]["filename"].as<std::string>() == "realtime.v");
+    ASSERT_TRUE(yaml["Realtime"]["line"].as<int>() == 8);
+    ASSERT_TRUE(yaml["Realtime"]["lengths"]);
+    ASSERT_TRUE(yaml["Realtime"]["right"]);
+    ASSERT_TRUE(yaml["Realtime"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLImporter, Bit)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Bit.log");
+    Logger::add_stderr_sink();
+    std::string str("Bit:\n"
+                    "  filename: bit.v\n"
+                    "  line: 3\n"
+                    "  widths:\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  sign: false\n"
+                    "  name: ynbiqpmzjp\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Bit"]);
+    ASSERT_TRUE(yaml["Bit"]["filename"].as<std::string>() == "bit.v");
+    ASSERT_TRUE(yaml["Bit"]["line"].as<int>() == 3);
+    ASSERT_TRUE(yaml["Bit"]["widths"]);
+    ASSERT_TRUE(yaml["Bit"]["lengths"]);
+    ASSERT_TRUE(yaml["Bit"]["right"]);
+    ASSERT_TRUE(yaml["Bit"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Bit"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
 
 TEST(YAMLImporter, Tri)
@@ -2848,6 +3025,29 @@ TEST(YAMLImporter, StructMember)
     ASSERT_TRUE(yaml["StructMember"]["sign"].as<bool>() == false);
 }
 
+TEST(YAMLImporter, StructUnionDef)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.StructUnionDef.log");
+    Logger::add_stderr_sink();
+    std::string str("StructUnionDef:\n"
+                    "  filename: structuniondef.v\n"
+                    "  line: 14\n"
+                    "  members:\n"
+                    "  packed: false\n"
+                    "  sign: false\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["StructUnionDef"]);
+    ASSERT_TRUE(yaml["StructUnionDef"]["filename"].as<std::string>() == "structuniondef.v");
+    ASSERT_TRUE(yaml["StructUnionDef"]["line"].as<int>() == 14);
+    ASSERT_TRUE(yaml["StructUnionDef"]["members"]);
+    ASSERT_TRUE(yaml["StructUnionDef"]["packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["StructUnionDef"]["sign"].as<bool>() == false);
+}
+
 TEST(YAMLImporter, StructDef)
 {
     Logger::remove_all_sinks();
@@ -2857,7 +3057,8 @@ TEST(YAMLImporter, StructDef)
                     "  filename: structdef.v\n"
                     "  line: 9\n"
                     "  members:\n"
-                    "  packed: false\n");
+                    "  packed: false\n"
+                    "  sign: false\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -2867,6 +3068,30 @@ TEST(YAMLImporter, StructDef)
     ASSERT_TRUE(yaml["StructDef"]["line"].as<int>() == 9);
     ASSERT_TRUE(yaml["StructDef"]["members"]);
     ASSERT_TRUE(yaml["StructDef"]["packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["StructDef"]["sign"].as<bool>() == false);
+}
+
+TEST(YAMLImporter, Union)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Union.log");
+    Logger::add_stderr_sink();
+    std::string str("Union:\n"
+                    "  filename: union.v\n"
+                    "  line: 5\n"
+                    "  members:\n"
+                    "  packed: false\n"
+                    "  sign: false\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Union"]);
+    ASSERT_TRUE(yaml["Union"]["filename"].as<std::string>() == "union.v");
+    ASSERT_TRUE(yaml["Union"]["line"].as<int>() == 5);
+    ASSERT_TRUE(yaml["Union"]["members"]);
+    ASSERT_TRUE(yaml["Union"]["packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Union"]["sign"].as<bool>() == false);
 }
 
 TEST(YAMLImporter, Package)
@@ -2912,25 +3137,4 @@ TEST(YAMLImporter, Import)
     ASSERT_TRUE(yaml["Import"]["line"].as<int>() == 6);
     ASSERT_TRUE(yaml["Import"]["package"].as<std::string>() == "mynbiqpmzj");
     ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
-}
-
-TEST(YAMLImporter, ScopedRef)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLImporter.ScopedRef.log");
-    Logger::add_stderr_sink();
-    std::string str("ScopedRef:\n"
-                    "  filename: scopedref.v\n"
-                    "  line: 9\n"
-                    "  package: mynbiqpmzj\n"
-                    "  name: plsgqejeyd\n");
-
-    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
-    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
-
-    ASSERT_TRUE(yaml["ScopedRef"]);
-    ASSERT_TRUE(yaml["ScopedRef"]["filename"].as<std::string>() == "scopedref.v");
-    ASSERT_TRUE(yaml["ScopedRef"]["line"].as<int>() == 9);
-    ASSERT_TRUE(yaml["ScopedRef"]["package"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["ScopedRef"]["name"].as<std::string>() == "plsgqejeyd");
 }

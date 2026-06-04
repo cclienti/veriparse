@@ -105,8 +105,8 @@ public:
             case AST::NodeType::Variable:
                 return render_variable(AST::cast_to<AST::Variable>(node));
 
-            case AST::NodeType::CustomVariable:
-                return render_customvariable(AST::cast_to<AST::CustomVariable>(node));
+            case AST::NodeType::CustomTypeVar:
+                return render_customtypevar(AST::cast_to<AST::CustomTypeVar>(node));
 
             case AST::NodeType::Net:
                 return render_net(AST::cast_to<AST::Net>(node));
@@ -116,6 +116,27 @@ public:
 
             case AST::NodeType::Real:
                 return render_real(AST::cast_to<AST::Real>(node));
+
+            case AST::NodeType::Byte:
+                return render_byte(AST::cast_to<AST::Byte>(node));
+
+            case AST::NodeType::Shortint:
+                return render_shortint(AST::cast_to<AST::Shortint>(node));
+
+            case AST::NodeType::Int:
+                return render_int(AST::cast_to<AST::Int>(node));
+
+            case AST::NodeType::Longint:
+                return render_longint(AST::cast_to<AST::Longint>(node));
+
+            case AST::NodeType::Shortreal:
+                return render_shortreal(AST::cast_to<AST::Shortreal>(node));
+
+            case AST::NodeType::Realtime:
+                return render_realtime(AST::cast_to<AST::Realtime>(node));
+
+            case AST::NodeType::Bit:
+                return render_bit(AST::cast_to<AST::Bit>(node));
 
             case AST::NodeType::Tri:
                 return render_tri(AST::cast_to<AST::Tri>(node));
@@ -425,17 +446,20 @@ public:
             case AST::NodeType::StructMember:
                 return render_structmember(AST::cast_to<AST::StructMember>(node));
 
+            case AST::NodeType::StructUnionDef:
+                return render_structuniondef(AST::cast_to<AST::StructUnionDef>(node));
+
             case AST::NodeType::StructDef:
                 return render_structdef(AST::cast_to<AST::StructDef>(node));
+
+            case AST::NodeType::Union:
+                return render_union(AST::cast_to<AST::Union>(node));
 
             case AST::NodeType::Package:
                 return render_package(AST::cast_to<AST::Package>(node));
 
             case AST::NodeType::Import:
                 return render_import(AST::cast_to<AST::Import>(node));
-
-            case AST::NodeType::ScopedRef:
-                return render_scopedref(AST::cast_to<AST::ScopedRef>(node));
 
             default:
                 return render_node(node);
@@ -614,12 +638,12 @@ public:
     T render(const AST::Variable::Ptr node) const { return render_variable(node); }
 
     /**
-     * Main rendering method for the CustomVariable node, we
+     * Main rendering method for the CustomTypeVar node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_customvariable(const AST::CustomVariable::Ptr &node)
+     * @see GeneratorBase::render_customtypevar(const AST::CustomTypeVar::Ptr &node)
      */
-    T render(const AST::CustomVariable::Ptr node) const { return render_customvariable(node); }
+    T render(const AST::CustomTypeVar::Ptr node) const { return render_customtypevar(node); }
 
     /**
      * Main rendering method for the Net node, we
@@ -644,6 +668,62 @@ public:
      * @see GeneratorBase::render_real(const AST::Real::Ptr &node)
      */
     T render(const AST::Real::Ptr node) const { return render_real(node); }
+
+    /**
+     * Main rendering method for the Byte node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_byte(const AST::Byte::Ptr &node)
+     */
+    T render(const AST::Byte::Ptr node) const { return render_byte(node); }
+
+    /**
+     * Main rendering method for the Shortint node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_shortint(const AST::Shortint::Ptr &node)
+     */
+    T render(const AST::Shortint::Ptr node) const { return render_shortint(node); }
+
+    /**
+     * Main rendering method for the Int node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_int(const AST::Int::Ptr &node)
+     */
+    T render(const AST::Int::Ptr node) const { return render_int(node); }
+
+    /**
+     * Main rendering method for the Longint node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_longint(const AST::Longint::Ptr &node)
+     */
+    T render(const AST::Longint::Ptr node) const { return render_longint(node); }
+
+    /**
+     * Main rendering method for the Shortreal node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_shortreal(const AST::Shortreal::Ptr &node)
+     */
+    T render(const AST::Shortreal::Ptr node) const { return render_shortreal(node); }
+
+    /**
+     * Main rendering method for the Realtime node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_realtime(const AST::Realtime::Ptr &node)
+     */
+    T render(const AST::Realtime::Ptr node) const { return render_realtime(node); }
+
+    /**
+     * Main rendering method for the Bit node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_bit(const AST::Bit::Ptr &node)
+     */
+    T render(const AST::Bit::Ptr node) const { return render_bit(node); }
 
     /**
      * Main rendering method for the Tri node, we
@@ -1491,12 +1571,28 @@ public:
     T render(const AST::StructMember::Ptr node) const { return render_structmember(node); }
 
     /**
+     * Main rendering method for the StructUnionDef node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_structuniondef(const AST::StructUnionDef::Ptr &node)
+     */
+    T render(const AST::StructUnionDef::Ptr node) const { return render_structuniondef(node); }
+
+    /**
      * Main rendering method for the StructDef node, we
      * dispatch directly to the right rendering method.
      *
      * @see GeneratorBase::render_structdef(const AST::StructDef::Ptr &node)
      */
     T render(const AST::StructDef::Ptr node) const { return render_structdef(node); }
+
+    /**
+     * Main rendering method for the Union node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_union(const AST::Union::Ptr &node)
+     */
+    T render(const AST::Union::Ptr node) const { return render_union(node); }
 
     /**
      * Main rendering method for the Package node, we
@@ -1513,14 +1609,6 @@ public:
      * @see GeneratorBase::render_import(const AST::Import::Ptr &node)
      */
     T render(const AST::Import::Ptr node) const { return render_import(node); }
-
-    /**
-     * Main rendering method for the ScopedRef node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_scopedref(const AST::ScopedRef::Ptr &node)
-     */
-    T render(const AST::ScopedRef::Ptr node) const { return render_scopedref(node); }
 
 protected:
     /**
@@ -1656,10 +1744,10 @@ protected:
     virtual T render_variable(const AST::Variable::Ptr node) const { return T(); }
 
     /**
-     * Render the CustomVariable node. This method must be
+     * Render the CustomTypeVar node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_customvariable(const AST::CustomVariable::Ptr node) const { return T(); }
+    virtual T render_customtypevar(const AST::CustomTypeVar::Ptr node) const { return T(); }
 
     /**
      * Render the Net node. This method must be
@@ -1678,6 +1766,48 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_real(const AST::Real::Ptr node) const { return T(); }
+
+    /**
+     * Render the Byte node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_byte(const AST::Byte::Ptr node) const { return T(); }
+
+    /**
+     * Render the Shortint node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_shortint(const AST::Shortint::Ptr node) const { return T(); }
+
+    /**
+     * Render the Int node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_int(const AST::Int::Ptr node) const { return T(); }
+
+    /**
+     * Render the Longint node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_longint(const AST::Longint::Ptr node) const { return T(); }
+
+    /**
+     * Render the Shortreal node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_shortreal(const AST::Shortreal::Ptr node) const { return T(); }
+
+    /**
+     * Render the Realtime node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_realtime(const AST::Realtime::Ptr node) const { return T(); }
+
+    /**
+     * Render the Bit node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_bit(const AST::Bit::Ptr node) const { return T(); }
 
     /**
      * Render the Tri node. This method must be
@@ -2313,10 +2443,22 @@ protected:
     virtual T render_structmember(const AST::StructMember::Ptr node) const { return T(); }
 
     /**
+     * Render the StructUnionDef node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_structuniondef(const AST::StructUnionDef::Ptr node) const { return T(); }
+
+    /**
      * Render the StructDef node. This method must be
      * overloaded in a derived class to your needs.
      */
     virtual T render_structdef(const AST::StructDef::Ptr node) const { return T(); }
+
+    /**
+     * Render the Union node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_union(const AST::Union::Ptr node) const { return T(); }
 
     /**
      * Render the Package node. This method must be
@@ -2329,12 +2471,6 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_import(const AST::Import::Ptr node) const { return T(); }
-
-    /**
-     * Render the ScopedRef node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_scopedref(const AST::ScopedRef::Ptr node) const { return T(); }
 
 private:
     std::string m_indent_str;

@@ -6,42 +6,48 @@ Source:
           default_nettype: WIRE
           filename: lib/test/parser/testcases/sv_scoped_type0.sv
           items:
-          - CustomVariable:
+          - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_scoped_type0.sv
               line: 4
               name: sig
               right:
                 Rvalue: null
               type:
-                ScopedRef:
+                Identifier:
                   filename: lib/test/parser/testcases/sv_scoped_type0.sv
                   line: 4
                   name: data_t
                   package: mypkg
-          - CustomVariable:
+                  scope:
+                    IdentifierScope: null
+          - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_scoped_type0.sv
               line: 5
               name: a
               right:
                 Rvalue: null
               type:
-                ScopedRef:
+                Identifier:
                   filename: lib/test/parser/testcases/sv_scoped_type0.sv
                   line: 5
                   name: word_t
                   package: mypkg
-          - CustomVariable:
+                  scope:
+                    IdentifierScope: null
+          - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_scoped_type0.sv
               line: 5
               name: b
               right:
                 Rvalue: null
               type:
-                ScopedRef:
+                Identifier:
                   filename: lib/test/parser/testcases/sv_scoped_type0.sv
                   line: 5
                   name: word_t
                   package: mypkg
+                  scope:
+                    IdentifierScope: null
           - Assign:
               filename: lib/test/parser/testcases/sv_scoped_type0.sv
               ldelay:
@@ -55,6 +61,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_scoped_type0.sv
                       line: 7
                       name: out
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 7
@@ -69,6 +76,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_scoped_type0.sv
                       line: 7
                       name: sig
+                      package: ''
                       scope:
                         IdentifierScope: null
           line: 1

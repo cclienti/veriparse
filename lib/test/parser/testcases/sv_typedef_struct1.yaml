@@ -22,6 +22,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                           line: 5
                           name: logic
+                          package: ''
                           scope:
                             IdentifierScope: null
                       widths:
@@ -54,6 +55,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                           line: 6
                           name: logic
+                          package: ''
                           scope:
                             IdentifierScope: null
                   - StructMember:
@@ -66,6 +68,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                           line: 7
                           name: bit
+                          package: ''
                           scope:
                             IdentifierScope: null
                       widths:
@@ -98,6 +101,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                           line: 8
                           name: bit
+                          package: ''
                           scope:
                             IdentifierScope: null
                   - StructMember:
@@ -110,9 +114,11 @@ Source:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                           line: 9
                           name: int
+                          package: ''
                           scope:
                             IdentifierScope: null
                   packed: false
+                  sign: false
               filename: lib/test/parser/testcases/sv_typedef_struct1.sv
               line: 4
               name: mixed_t
@@ -129,6 +135,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                       line: 12
                       name: data
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 12
@@ -214,4 +221,3 @@ Source:
       line: 1
   filename: lib/test/parser/testcases/sv_typedef_struct1.sv
   line: 1
-

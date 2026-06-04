@@ -45,10 +45,17 @@ private:
     AST::Node::Ptr convert_variablebase(const YAML::Node node) const;
     AST::Node::Ptr convert_genvar(const YAML::Node node) const;
     AST::Node::Ptr convert_variable(const YAML::Node node) const;
-    AST::Node::Ptr convert_customvariable(const YAML::Node node) const;
+    AST::Node::Ptr convert_customtypevar(const YAML::Node node) const;
     AST::Node::Ptr convert_net(const YAML::Node node) const;
     AST::Node::Ptr convert_integer(const YAML::Node node) const;
     AST::Node::Ptr convert_real(const YAML::Node node) const;
+    AST::Node::Ptr convert_byte(const YAML::Node node) const;
+    AST::Node::Ptr convert_shortint(const YAML::Node node) const;
+    AST::Node::Ptr convert_int(const YAML::Node node) const;
+    AST::Node::Ptr convert_longint(const YAML::Node node) const;
+    AST::Node::Ptr convert_shortreal(const YAML::Node node) const;
+    AST::Node::Ptr convert_realtime(const YAML::Node node) const;
+    AST::Node::Ptr convert_bit(const YAML::Node node) const;
     AST::Node::Ptr convert_tri(const YAML::Node node) const;
     AST::Node::Ptr convert_wire(const YAML::Node node) const;
     AST::Node::Ptr convert_supply0(const YAML::Node node) const;
@@ -151,10 +158,11 @@ private:
     AST::Node::Ptr convert_enumdef(const YAML::Node node) const;
     AST::Node::Ptr convert_typedef(const YAML::Node node) const;
     AST::Node::Ptr convert_structmember(const YAML::Node node) const;
+    AST::Node::Ptr convert_structuniondef(const YAML::Node node) const;
     AST::Node::Ptr convert_structdef(const YAML::Node node) const;
+    AST::Node::Ptr convert_union(const YAML::Node node) const;
     AST::Node::Ptr convert_package(const YAML::Node node) const;
     AST::Node::Ptr convert_import(const YAML::Node node) const;
-    AST::Node::Ptr convert_scopedref(const YAML::Node node) const;
 };
 
 } // namespace Importers

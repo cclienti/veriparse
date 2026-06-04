@@ -17,11 +17,13 @@ Source:
                   filename: lib/test/parser/testcases/sv_scoped_ref0.sv
                   line: 4
                   var:
-                    ScopedRef:
+                    Identifier:
                       filename: lib/test/parser/testcases/sv_scoped_ref0.sv
                       line: 4
                       name: DWIDTH
                       package: sv_package0
+                      scope:
+                        IdentifierScope: null
           - Assign:
               filename: lib/test/parser/testcases/sv_scoped_ref0.sv
               ldelay:
@@ -35,6 +37,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_scoped_ref0.sv
                       line: 6
                       name: data
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 6
@@ -45,11 +48,13 @@ Source:
                   filename: lib/test/parser/testcases/sv_scoped_ref0.sv
                   line: 6
                   var:
-                    ScopedRef:
+                    Identifier:
                       filename: lib/test/parser/testcases/sv_scoped_ref0.sv
                       line: 6
                       name: DEFAULT
                       package: sv_package0
+                      scope:
+                        IdentifierScope: null
           line: 1
           name: sv_scoped_ref0
           ports:

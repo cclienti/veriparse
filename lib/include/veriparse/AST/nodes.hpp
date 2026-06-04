@@ -25,10 +25,17 @@
 #include <veriparse/AST/variablebase.hpp>
 #include <veriparse/AST/genvar.hpp>
 #include <veriparse/AST/variable.hpp>
-#include <veriparse/AST/customvariable.hpp>
+#include <veriparse/AST/customtypevar.hpp>
 #include <veriparse/AST/net.hpp>
 #include <veriparse/AST/integer.hpp>
 #include <veriparse/AST/real.hpp>
+#include <veriparse/AST/byte.hpp>
+#include <veriparse/AST/shortint.hpp>
+#include <veriparse/AST/int.hpp>
+#include <veriparse/AST/longint.hpp>
+#include <veriparse/AST/shortreal.hpp>
+#include <veriparse/AST/realtime.hpp>
+#include <veriparse/AST/bit.hpp>
 #include <veriparse/AST/tri.hpp>
 #include <veriparse/AST/wire.hpp>
 #include <veriparse/AST/supply0.hpp>
@@ -131,10 +138,11 @@
 #include <veriparse/AST/enumdef.hpp>
 #include <veriparse/AST/typedef.hpp>
 #include <veriparse/AST/structmember.hpp>
+#include <veriparse/AST/structuniondef.hpp>
 #include <veriparse/AST/structdef.hpp>
+#include <veriparse/AST/union.hpp>
 #include <veriparse/AST/package.hpp>
 #include <veriparse/AST/import.hpp>
-#include <veriparse/AST/scopedref.hpp>
 #include <veriparse/AST/node_operators.hpp>
 #include <veriparse/AST/node_cast.hpp>
 
