@@ -45,6 +45,24 @@ enum class net_type_t {
 	 INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, LOGIC, NONE
 };
 
+// SystemVerilog data_type kinds (Annex A). Step 2 starts with the built-in
+// scalar types; logic/reg/integer/real, struct/union/enum and named/scoped
+// types are folded into the same `data_type` rule in later steps.
+enum class data_type_kind_t {
+	 BIT, LOGIC, REG, BYTE, SHORTINT, INT, LONGINT, INTEGER,
+	 REAL, SHORTREAL, REALTIME, STRUCT, UNION, ENUM, NAMED
+};
+
+// Semantic carrier filled by the `data_type` grammar rule; build_variable()
+// turns it into the matching AST node.
+typedef struct {
+	 data_type_kind_t kind;
+	 bool is_signed;
+	 AST::Width::ListPtr packed_dims; // packed dimensions {[msb:lsb]}
+	 AST::Node::Ptr type_ref;         // NAMED: Identifier (its package = pkg:: scope)
+	 AST::Node::Ptr inline_def;       // STRUCT/UNION/ENUM: inline def node
+} data_type_t;
+
 enum class direction_t {
 	 INPUT, INOUT, OUTPUT, NONE
 };
@@ -72,6 +90,12 @@ namespace ParserHelpers
 {
 AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
 														 AST::Width::ListPtr widths, bool sign,
+														 const std::string &filename="", uint32_t line=0);
+
+// Build the variable node for `data_type name {unpacked} [= init]`. Built-in
+// scalar kinds -> the dedicated node (Bit/Byte/Int/.../Realtime); NAMED or an
+// inline aggregate -> CustomTypeVar holding the type (folded in later steps).
+AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
 														 const std::string &filename="", uint32_t line=0);
 
 AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
@@ -174,11 +198,14 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_BYTE         "'byte'"
 %token                  TK_SHORTINT     "'shortint'"
 %token                  TK_LONGINT      "'longint'"
+%token                  TK_SHORTREAL    "'shortreal'"
+%token                  TK_REALTIME     "'realtime'"
 %token                  TK_UNIQUE       "'unique'"
 %token                  TK_PRIORITY     "'priority'"
 %token                  TK_TYPEDEF      "'typedef'"
 %token                  TK_ENUM         "'enum'"
 %token                  TK_STRUCT       "'struct'"
+%token                  TK_UNION        "'union'"
 %token                  TK_PACKED       "'packed'"
 %token                  TK_PACKAGE      "'package'"
 %token                  TK_ENDPACKAGE   "'endpackage'"
@@ -292,9 +319,12 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 items item standard_item_base standard_item
 %type   <AST::Node::ListPtr>                 ioports_decl
 %type   <AST::Node::ListPtr>                 net_decl
-%type   <AST::Node::ListPtr>                 reg_decl
-%type   <AST::Node::ListPtr>                 integer_decl
-%type   <AST::Node::ListPtr>                 real_decl
+%type   <data_type_t>                        data_type
+%type   <AST::Node::ListPtr>                 data_declaration
+%type   <AST::Node::ListPtr>                 typed_var_decl
+%type   <data_type_kind_t>                   integer_vector_type integer_atom_type non_integer_type
+%type   <bool>                               signing
+%type   <AST::Width::ListPtr>                packed_dimensions
 
 %type   <AST::GenerateStatement::Ptr>        generate
 %type   <AST::Node::ListPtr>                 generate_items
@@ -423,11 +453,11 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Disable::Ptr>                  disable
 %type   <bool>                               automatic
 %type   <AST::Typedef::Ptr>                  typedef_decl
-%type   <AST::Node::ListPtr>                 typed_var_decl
 %type   <AST::EnumDef::Ptr>                  enum_def
 %type   <AST::EnumItem::ListPtr>             enum_items
 %type   <AST::EnumItem::Ptr>                 enum_item
 %type   <AST::StructDef::Ptr>                struct_def
+%type   <AST::Union::Ptr>                    union_def
 %type   <AST::StructMember::ListPtr>         struct_members
 %type   <AST::StructMember::Ptr>             struct_member
 
@@ -1070,17 +1100,12 @@ standard_item_base:
                     $$ = $1;
                 }
 
-        |       reg_decl
+        |       data_declaration
                 {
                     $$ = $1;
                 }
 
-        |       integer_decl
-                {
-                    $$ = $1;
-                }
-
-        |       real_decl
+        |       typed_var_decl
                 {
                     $$ = $1;
                 }
@@ -1175,55 +1200,8 @@ standard_item_base:
                 {
                     $$ = $1;
                 }
-
-        |       typed_var_decl
-                {
-                    $$ = $1;
-                }
         ;
 
-
-// A variable declared with a user-defined type name (a typedef). Parsed
-// structurally as `type_name var, var, ... ;` and distinguished from a module
-// instance by lookahead (instances always have `(`). The type stays an
-// unresolved Identifier; a later pass rewrites CustomTypeVar into a concrete
-// Reg/Logic once the typedef is known.
-typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
-                {
-                    $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &d: $2) {
-                        auto type_ref = std::make_shared<AST::Identifier>(scanner.get_filename(),
-                                                                          @1.begin.line);
-                        type_ref->set_name($1);
-                        auto var = std::make_shared<AST::CustomTypeVar>(scanner.get_filename(),
-                                                                         @1.begin.line);
-                        var->set_name(d.name);
-                        var->set_lengths(d.lengths);
-                        var->set_right(d.rvalue);
-                        var->set_type(AST::to_node(type_ref));
-                        $$->push_back(var);
-                    }
-                }
-
-        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
-                {
-                    // Package-scoped type: pkg::T var, ... ;
-                    $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &d: $3) {
-                        auto type_ref = std::make_shared<AST::Identifier>(scanner.get_filename(),
-                                                                         @1.begin.line);
-                        type_ref->set_package($1);
-                        type_ref->set_name($2);
-                        auto var = std::make_shared<AST::CustomTypeVar>(scanner.get_filename(),
-                                                                         @1.begin.line);
-                        var->set_name(d.name);
-                        var->set_lengths(d.lengths);
-                        var->set_right(d.rvalue);
-                        var->set_type(AST::to_node(type_ref));
-                        $$->push_back(var);
-                    }
-                }
-        ;
 
 
 
@@ -1425,6 +1403,37 @@ struct_def:
                 }
         ;
 
+union_def:      TK_UNION TK_PACKED TK_SIGNED TK_LBRACE struct_members TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::Union>();
+                    $$->set_packed(true);
+                    $$->set_sign(true);
+                    $$->set_members($5);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_UNION TK_PACKED TK_LBRACE struct_members TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::Union>();
+                    $$->set_packed(true);
+                    $$->set_sign(false);
+                    $$->set_members($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_UNION TK_LBRACE struct_members TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::Union>();
+                    $$->set_packed(false);
+                    $$->set_sign(false);
+                    $$->set_members($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+        ;
+
 struct_members:
                 struct_members struct_member
                 {
@@ -1582,67 +1591,136 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
         ;
 
 
-reg_decl:       TK_REG TK_SIGNED widths var_decl_namelist TK_SEMICOLON
+// SystemVerilog data_type (Annex A), mirroring the standard's nonterminal
+// hierarchy. Step 2: built-in scalar types. logic/reg/integer/real,
+// struct/union/enum and named/scoped types fold into the same rule in later
+// steps (logic/reg join integer_vector_type, integer joins integer_atom_type,
+// real joins non_integer_type).
+integer_vector_type:                          // [signing] {packed_dimension}, unsigned by default
+                TK_BIT       { $$ = data_type_kind_t::BIT; }
+        |       TK_REG       { $$ = data_type_kind_t::REG; }
+        ;
+        // NOTE: `logic` stays in net_type until ports migrate to data_type
+        // (step 4): net_type is shared with port declarations, and `logic`
+        // cannot live in both net_type and integer_vector_type without an
+        // item-level reduce/reduce conflict on `logic x;`.
+
+integer_atom_type:                            // [signing], signed by default
+                TK_BYTE      { $$ = data_type_kind_t::BYTE; }
+        |       TK_SHORTINT  { $$ = data_type_kind_t::SHORTINT; }
+        |       TK_INT       { $$ = data_type_kind_t::INT; }
+        |       TK_LONGINT   { $$ = data_type_kind_t::LONGINT; }
+        |       TK_INTEGER   { $$ = data_type_kind_t::INTEGER; }
+        ;
+
+non_integer_type:                             // no signing, no packed dimension
+                TK_SHORTREAL { $$ = data_type_kind_t::SHORTREAL; }
+        |       TK_REALTIME  { $$ = data_type_kind_t::REALTIME; }
+        |       TK_REAL      { $$ = data_type_kind_t::REAL; }
+        ;
+
+signing:        %empty       { $$ = false; }  // no `unsigned` token: absent or signed
+        |       TK_SIGNED    { $$ = true; }
+        ;
+
+packed_dimensions:
+                %empty       { $$ = nullptr; }
+        |       widths       { $$ = $1; }
+        ;
+
+data_type:      integer_vector_type signing packed_dimensions
                 {
+                    // vector types are unsigned by default; `signed` flips it
+                    $$ = data_type_t{$1, $2, $3, nullptr, nullptr};
+                }
+        |       integer_atom_type signing
+                {
+                    // atom types are signed by default (no `unsigned` token)
+                    $$ = data_type_t{$1, true, nullptr, nullptr, nullptr};
+                }
+        |       non_integer_type
+                {
+                    $$ = data_type_t{$1, false, nullptr, nullptr, nullptr};
+                }
+        |       struct_def packed_dimensions
+                {
+                    $$ = data_type_t{data_type_kind_t::STRUCT, false, $2, nullptr, AST::to_node($1)};
+                }
+        |       union_def packed_dimensions
+                {
+                    $$ = data_type_t{data_type_kind_t::UNION, false, $2, nullptr, AST::to_node($1)};
+                }
+        |       enum_def packed_dimensions
+                {
+                    $$ = data_type_t{data_type_kind_t::ENUM, false, $2, nullptr, AST::to_node($1)};
+                }
+        ;
+
+// Named/scoped type declaration (`my_t x;`, `pkg::T [3:0] y;`). It cannot fold
+// into `data_type`: a leading `type_identifier` would have to reduce before the
+// second identifier, clashing with a module instance (`m i(...);`) — 2 s/r
+// conflicts. So it stays a dedicated rule with the `type_id var_list` shape that
+// defers the instance-vs-declaration choice to the token after the second id;
+// build_variable(NAMED) keeps node construction unified.
+typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_name($1);
+                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &decl_name: $4) {
-                        AST::Width::ListPtr widths = AST::Width::clone_list($3);
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, net_type_t::REG, widths, true);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                    for(const decl_name_t &d: $2) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
                     }
                 }
-
-        |       TK_REG widths var_decl_namelist TK_SEMICOLON
+        |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_name($1);
+                    data_type_t dt{data_type_kind_t::NAMED, false, $2, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &decl_name: $3) {
-                        AST::Width::ListPtr widths = AST::Width::clone_list($2);
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, net_type_t::REG, widths, false);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                    for(const decl_name_t &d: $3) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
                     }
                 }
-
-        |       TK_REG var_decl_namelist TK_SEMICOLON
+        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_package($1);
+                    ref->set_name($2);
+                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &decl_name: $2) {
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, net_type_t::REG,
-                                                                          AST::Width::ListPtr(), false);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                    for(const decl_name_t &d: $3) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
+                    }
+                }
+        |       package_scope TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
+                {
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_package($1);
+                    ref->set_name($2);
+                    data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &d: $4) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
                     }
                 }
         ;
 
 
-integer_decl:   TK_INTEGER var_decl_namelist TK_SEMICOLON
+// SystemVerilog data_declaration: a data_type followed by a list of declared
+// names, each with optional unpacked dimensions and initializer.
+data_declaration:
+                data_type var_decl_namelist TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $2) {
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, net_type_t::INTEGER,
-                                                                          AST::Width::ListPtr(), true);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
-                    }
-                }
-        ;
-
-
-real_decl:      TK_REAL var_decl_namelist TK_SEMICOLON
-                {
-                    $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &decl_name: $2) {
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, net_type_t::REAL,
-                                                                          AST::Width::ListPtr(), true);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                        AST::Variable::Ptr var = ParserHelpers::build_variable(
+                            $1, decl_name, scanner.get_filename(), @1.begin.line);
+                        $$->push_back(var);
                     }
                 }
         ;
@@ -3183,17 +3261,7 @@ block_statement:
                     $$ = $1;
                 }
 
-        |       reg_decl
-                {
-                    $$ = $1;
-                }
-
-        |       integer_decl
-                {
-                    $$ = $1;
-                }
-
-        |       real_decl
+        |       data_declaration
                 {
                     $$ = $1;
                 }
@@ -4394,17 +4462,7 @@ funcvar_decl:   parameter_decl
                     $$ = $1;
                 }
 
-        |       reg_decl
-                {
-                    $$ = $1;
-                }
-
-        |       integer_decl
-                {
-                    $$ = $1;
-                }
-
-        |       real_decl
+        |       data_declaration
                 {
                     $$ = $1;
                 }
@@ -4687,17 +4745,7 @@ taskvar_decl:
                     $$ = $1;
                 }
 
-        |       reg_decl
-                {
-                    $$ = $1;
-                }
-
-        |       integer_decl
-                {
-                    $$ = $1;
-                }
-
-        |       real_decl
+        |       data_declaration
                 {
                     $$ = $1;
                 }
@@ -5062,6 +5110,91 @@ namespace Veriparse {
                 } break;
 
                 default: break;
+                }
+
+                return node;
+            }
+
+            AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
+                                              const std::string &filename, uint32_t line) {
+                // logic/reg/integer/real reuse the existing create_net_type path
+                // so their nodes stay byte-identical (goldens unchanged).
+                switch(dt.kind) {
+                case data_type_kind_t::LOGIC:
+                    return create_net_type(decl, net_type_t::LOGIC, dt.packed_dims, dt.is_signed,
+                                           filename, line);
+                case data_type_kind_t::REG:
+                    return create_net_type(decl, net_type_t::REG, dt.packed_dims, dt.is_signed,
+                                           filename, line);
+                case data_type_kind_t::INTEGER:
+                    return create_net_type(decl, net_type_t::INTEGER, nullptr, true, filename, line);
+                case data_type_kind_t::REAL:
+                    return create_net_type(decl, net_type_t::REAL, nullptr, true, filename, line);
+                default:
+                    break;
+                }
+
+                AST::Variable::Ptr node;
+
+                switch(dt.kind) {
+                case data_type_kind_t::BIT: {
+                    auto n = std::make_shared<AST::Bit>(filename, line);
+                    n->set_sign(dt.is_signed);
+                    n->set_widths(dt.packed_dims);
+                    node = n;
+                } break;
+
+                case data_type_kind_t::BYTE: {
+                    auto n = std::make_shared<AST::Byte>(filename, line);
+                    n->set_sign(dt.is_signed);
+                    node = n;
+                } break;
+
+                case data_type_kind_t::SHORTINT: {
+                    auto n = std::make_shared<AST::Shortint>(filename, line);
+                    n->set_sign(dt.is_signed);
+                    node = n;
+                } break;
+
+                case data_type_kind_t::INT: {
+                    auto n = std::make_shared<AST::Int>(filename, line);
+                    n->set_sign(dt.is_signed);
+                    node = n;
+                } break;
+
+                case data_type_kind_t::LONGINT: {
+                    auto n = std::make_shared<AST::Longint>(filename, line);
+                    n->set_sign(dt.is_signed);
+                    node = n;
+                } break;
+
+                case data_type_kind_t::SHORTREAL:
+                    node = std::make_shared<AST::Shortreal>(filename, line);
+                    break;
+
+                case data_type_kind_t::REALTIME:
+                    node = std::make_shared<AST::Realtime>(filename, line);
+                    break;
+
+                case data_type_kind_t::STRUCT:
+                case data_type_kind_t::UNION:
+                case data_type_kind_t::ENUM:
+                case data_type_kind_t::NAMED: {
+                    // named/scoped type ref (type_ref) or inline anonymous
+                    // aggregate (inline_def): a CustomTypeVar holding the type
+                    auto n = std::make_shared<AST::CustomTypeVar>(filename, line);
+                    n->set_type(dt.kind == data_type_kind_t::NAMED ? dt.type_ref : dt.inline_def);
+                    n->set_widths(dt.packed_dims);
+                    node = n;
+                } break;
+
+                default: break;
+                }
+
+                if(node) {
+                    node->set_name(decl.name);
+                    node->set_lengths(decl.lengths);
+                    node->set_right(decl.rvalue);
                 }
 
                 return node;

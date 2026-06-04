@@ -1,0 +1,189 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+          items:
+          - Bit:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 3
+              name: a
+              right:
+                Rvalue: null
+              sign: false
+          - Bit:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 4
+              name: b
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 7
+          - Bit:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 5
+              name: c
+              right:
+                Rvalue: null
+              sign: true
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                  line: 5
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 3
+          - Bit:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              lengths:
+              - Length:
+                  filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 3
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 0
+              line: 6
+              name: d
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 7
+          - Byte:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 7
+              name: e
+              right:
+                Rvalue: null
+              sign: true
+          - Shortint:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 8
+              name: f
+              right:
+                Rvalue: null
+              sign: true
+          - Int:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 9
+              name: g
+              right:
+                Rvalue: null
+              sign: true
+          - Int:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              lengths:
+              - Length:
+                  filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                  line: 10
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 9
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 10
+                      sign: false
+                      size: -1
+                      value: 0
+              line: 10
+              name: h
+              right:
+                Rvalue: null
+              sign: true
+          - Longint:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 11
+              name: i
+              right:
+                Rvalue: null
+              sign: true
+          - Shortreal:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 12
+              name: j
+              right:
+                Rvalue: null
+          - Realtime:
+              filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+              line: 13
+              name: k
+              right:
+                Rvalue: null
+          line: 1
+          name: sv_data_type_scalar0
+      filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_data_type_scalar0.sv
+  line: 1

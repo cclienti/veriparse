@@ -143,6 +143,16 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"shortreal"   {
+                  if(m_sv_mode) return token::TK_SHORTREAL;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"realtime"    {
+                  if(m_sv_mode) return token::TK_REALTIME;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 "unique"      {
                   if(m_sv_mode) return token::TK_UNIQUE;
                   yylval->build<std::string>(yytext);
@@ -165,6 +175,11 @@ using token = Veriparse::Parser::VerilogParser::token;
               }
 "struct"      {
                   if(m_sv_mode) return token::TK_STRUCT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"union"       {
+                  if(m_sv_mode) return token::TK_UNION;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }

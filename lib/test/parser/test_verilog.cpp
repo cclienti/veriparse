@@ -258,6 +258,9 @@ TEST(VerilogParserTest, sv_typedef_alias0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typedef_chain0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typedef_struct0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typedef_struct1) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_data_type_scalar0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_data_type_aggregate0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_data_type_named0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_type0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_unit_scope0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }

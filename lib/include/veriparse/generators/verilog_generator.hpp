@@ -41,6 +41,13 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_supply1(const AST::Supply1::Ptr node) const;
     virtual std::string render_integer(const AST::Integer::Ptr node) const;
     virtual std::string render_real(const AST::Real::Ptr node) const;
+    virtual std::string render_bit(const AST::Bit::Ptr node) const;
+    virtual std::string render_byte(const AST::Byte::Ptr node) const;
+    virtual std::string render_shortint(const AST::Shortint::Ptr node) const;
+    virtual std::string render_int(const AST::Int::Ptr node) const;
+    virtual std::string render_longint(const AST::Longint::Ptr node) const;
+    virtual std::string render_shortreal(const AST::Shortreal::Ptr node) const;
+    virtual std::string render_realtime(const AST::Realtime::Ptr node) const;
     virtual std::string render_genvar(const AST::Genvar::Ptr node) const;
     virtual std::string render_ioport(const AST::Ioport::Ptr node) const;
     virtual std::string render_parameter(const AST::Parameter::Ptr node) const;
@@ -141,6 +148,7 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_typedef(const AST::Typedef::Ptr node) const;
     virtual std::string render_structmember(const AST::StructMember::Ptr node) const;
     virtual std::string render_structdef(const AST::StructDef::Ptr node) const;
+    virtual std::string render_union(const AST::Union::Ptr node) const;
 
     virtual std::string indent(const std::string str) const;
 
