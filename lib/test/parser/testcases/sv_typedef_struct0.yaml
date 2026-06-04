@@ -22,6 +22,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                           line: 6
                           name: logic
+                          package: ''
                           scope:
                             IdentifierScope: null
                       widths:
@@ -54,6 +55,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                           line: 7
                           name: logic
+                          package: ''
                           scope:
                             IdentifierScope: null
                       widths:
@@ -77,6 +79,7 @@ Source:
                               size: -1
                               value: 3
                   packed: true
+                  sign: false
               filename: lib/test/parser/testcases/sv_typedef_struct0.sv
               line: 5
               name: byte_t
@@ -93,6 +96,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                       line: 10
                       name: data
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 10
@@ -199,4 +203,3 @@ Source:
       line: 1
   filename: lib/test/parser/testcases/sv_typedef_struct0.sv
   line: 1
-

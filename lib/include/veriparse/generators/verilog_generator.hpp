@@ -21,7 +21,6 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_module(const AST::Module::Ptr node) const;
     virtual std::string render_package(const AST::Package::Ptr node) const;
     virtual std::string render_import(const AST::Import::Ptr node) const;
-    virtual std::string render_scopedref(const AST::ScopedRef::Ptr node) const;
     virtual std::string render_port(const AST::Port::Ptr node) const;
     virtual std::string render_width(const AST::Width::Ptr node) const;
     virtual std::string render_length(const AST::Length::Ptr node) const;
@@ -37,7 +36,7 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_wire(const AST::Wire::Ptr node) const;
     virtual std::string render_reg(const AST::Reg::Ptr node) const;
     virtual std::string render_logic(const AST::Logic::Ptr node) const;
-    virtual std::string render_customvariable(const AST::CustomVariable::Ptr node) const;
+    virtual std::string render_customtypevar(const AST::CustomTypeVar::Ptr node) const;
     virtual std::string render_supply0(const AST::Supply0::Ptr node) const;
     virtual std::string render_supply1(const AST::Supply1::Ptr node) const;
     virtual std::string render_integer(const AST::Integer::Ptr node) const;

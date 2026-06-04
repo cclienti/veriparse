@@ -55,14 +55,28 @@ const char *NodeTypeToString(NodeType node_type)
         return "Genvar";
     case NodeType::Variable:
         return "Variable";
-    case NodeType::CustomVariable:
-        return "CustomVariable";
+    case NodeType::CustomTypeVar:
+        return "CustomTypeVar";
     case NodeType::Net:
         return "Net";
     case NodeType::Integer:
         return "Integer";
     case NodeType::Real:
         return "Real";
+    case NodeType::Byte:
+        return "Byte";
+    case NodeType::Shortint:
+        return "Shortint";
+    case NodeType::Int:
+        return "Int";
+    case NodeType::Longint:
+        return "Longint";
+    case NodeType::Shortreal:
+        return "Shortreal";
+    case NodeType::Realtime:
+        return "Realtime";
+    case NodeType::Bit:
+        return "Bit";
     case NodeType::Tri:
         return "Tri";
     case NodeType::Wire:
@@ -267,14 +281,16 @@ const char *NodeTypeToString(NodeType node_type)
         return "Typedef";
     case NodeType::StructMember:
         return "StructMember";
+    case NodeType::StructUnionDef:
+        return "StructUnionDef";
     case NodeType::StructDef:
         return "StructDef";
+    case NodeType::Union:
+        return "Union";
     case NodeType::Package:
         return "Package";
     case NodeType::Import:
         return "Import";
-    case NodeType::ScopedRef:
-        return "ScopedRef";
     default:
         return "Unknown NodeType";
     }

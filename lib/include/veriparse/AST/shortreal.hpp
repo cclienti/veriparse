@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#ifndef VERIPARSE_AST_STRUCTDEF_HPP
-#define VERIPARSE_AST_STRUCTDEF_HPP
+#ifndef VERIPARSE_AST_SHORTREAL_HPP
+#define VERIPARSE_AST_SHORTREAL_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/structuniondef.hpp>
+#include <veriparse/AST/variable.hpp>
 
-#include <veriparse/AST/structmember.hpp>
+#include <veriparse/AST/length.hpp>
+#include <veriparse/AST/rvalue.hpp>
 
 #include <list>
 #include <string>
@@ -20,31 +21,31 @@ namespace Veriparse
 namespace AST
 {
 
-class StructDef : public StructUnionDef
+class Shortreal : public Variable
 {
 public:
-    using Ptr = typename NodePointers<StructDef>::Ptr;
-    using List = typename NodePointers<StructDef>::List;
-    using ListPtr = typename NodePointers<StructDef>::ListPtr;
-    using StructUnionDef::operator=;
-    using StructUnionDef::operator==;
-    using StructUnionDef::operator!=;
+    using Ptr = typename NodePointers<Shortreal>::Ptr;
+    using List = typename NodePointers<Shortreal>::List;
+    using ListPtr = typename NodePointers<Shortreal>::ListPtr;
+    using Variable::operator=;
+    using Variable::operator==;
+    using Variable::operator!=;
 
     /**
-     * Constructor, m_node_type is set to NodeType::StructDef.
+     * Constructor, m_node_type is set to NodeType::Shortreal.
      */
-    StructDef(const std::string &filename = "", uint32_t line = 0);
+    Shortreal(const std::string &filename = "", uint32_t line = 0);
 
     /**
-     * Constructor, m_node_type is set to NodeType::StructDef.
+     * Constructor, m_node_type is set to NodeType::Shortreal.
      */
-    StructDef(const StructMember::ListPtr members, const bool &packed, const bool &sign,
+    Shortreal(const Length::ListPtr lengths, const Rvalue::Ptr right, const std::string &name,
               const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
      */
-    virtual StructDef &operator=(const StructDef &rhs);
+    virtual Shortreal &operator=(const Shortreal &rhs);
 
     /**
      * Assignment operator, do not affect children.
@@ -52,22 +53,22 @@ public:
     virtual Node &operator=(const Node &rhs) override;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Shortreal nodes are the same, do not check children.
      */
-    virtual bool operator==(const StructDef &rhs) const;
+    virtual bool operator==(const Shortreal &rhs) const;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Shortreal nodes are the same, do not check children.
      */
     virtual bool operator==(const Node &rhs) const override;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Shortreal nodes are the same, do not check children.
      */
-    virtual bool operator!=(const StructDef &rhs) const;
+    virtual bool operator!=(const Shortreal &rhs) const;
 
     /**
-     * Return true if the StructDef nodes are the same, do not check children.
+     * Return true if the Shortreal nodes are the same, do not check children.
      */
     virtual bool operator!=(const Node &rhs) const override;
 
@@ -111,8 +112,8 @@ private:
     virtual Node::Ptr alloc_same(void) const override;
 };
 
-std::ostream &operator<<(std::ostream &os, const StructDef &p);
-std::ostream &operator<<(std::ostream &os, const StructDef::Ptr p);
+std::ostream &operator<<(std::ostream &os, const Shortreal &p);
+std::ostream &operator<<(std::ostream &os, const Shortreal::Ptr p);
 
 } // namespace AST
 } // namespace Veriparse

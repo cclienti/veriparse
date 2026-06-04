@@ -58,7 +58,7 @@ Source:
               filename: lib/test/parser/testcases/sv_typedef_alias0.sv
               line: 5
               name: bit_t
-          - CustomVariable:
+          - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_typedef_alias0.sv
               line: 7
               name: a
@@ -69,9 +69,10 @@ Source:
                   filename: lib/test/parser/testcases/sv_typedef_alias0.sv
                   line: 7
                   name: nib_t
+                  package: ''
                   scope:
                     IdentifierScope: null
-          - CustomVariable:
+          - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_typedef_alias0.sv
               line: 7
               name: b
@@ -82,9 +83,10 @@ Source:
                   filename: lib/test/parser/testcases/sv_typedef_alias0.sv
                   line: 7
                   name: nib_t
+                  package: ''
                   scope:
                     IdentifierScope: null
-          - CustomVariable:
+          - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_typedef_alias0.sv
               line: 8
               name: c
@@ -95,6 +97,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_typedef_alias0.sv
                   line: 8
                   name: bit_t
+                  package: ''
                   scope:
                     IdentifierScope: null
           - Assign:
@@ -110,6 +113,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_alias0.sv
                       line: 10
                       name: out
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 10
@@ -124,6 +128,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_alias0.sv
                       line: 10
                       name: a
+                      package: ''
                       scope:
                         IdentifierScope: null
           line: 1

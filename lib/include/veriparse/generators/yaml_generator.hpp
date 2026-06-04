@@ -35,10 +35,17 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_variablebase(const AST::VariableBase::Ptr node) const;
     virtual YAML::Node render_genvar(const AST::Genvar::Ptr node) const;
     virtual YAML::Node render_variable(const AST::Variable::Ptr node) const;
-    virtual YAML::Node render_customvariable(const AST::CustomVariable::Ptr node) const;
+    virtual YAML::Node render_customtypevar(const AST::CustomTypeVar::Ptr node) const;
     virtual YAML::Node render_net(const AST::Net::Ptr node) const;
     virtual YAML::Node render_integer(const AST::Integer::Ptr node) const;
     virtual YAML::Node render_real(const AST::Real::Ptr node) const;
+    virtual YAML::Node render_byte(const AST::Byte::Ptr node) const;
+    virtual YAML::Node render_shortint(const AST::Shortint::Ptr node) const;
+    virtual YAML::Node render_int(const AST::Int::Ptr node) const;
+    virtual YAML::Node render_longint(const AST::Longint::Ptr node) const;
+    virtual YAML::Node render_shortreal(const AST::Shortreal::Ptr node) const;
+    virtual YAML::Node render_realtime(const AST::Realtime::Ptr node) const;
+    virtual YAML::Node render_bit(const AST::Bit::Ptr node) const;
     virtual YAML::Node render_tri(const AST::Tri::Ptr node) const;
     virtual YAML::Node render_wire(const AST::Wire::Ptr node) const;
     virtual YAML::Node render_supply0(const AST::Supply0::Ptr node) const;
@@ -145,10 +152,11 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_enumdef(const AST::EnumDef::Ptr node) const;
     virtual YAML::Node render_typedef(const AST::Typedef::Ptr node) const;
     virtual YAML::Node render_structmember(const AST::StructMember::Ptr node) const;
+    virtual YAML::Node render_structuniondef(const AST::StructUnionDef::Ptr node) const;
     virtual YAML::Node render_structdef(const AST::StructDef::Ptr node) const;
+    virtual YAML::Node render_union(const AST::Union::Ptr node) const;
     virtual YAML::Node render_package(const AST::Package::Ptr node) const;
     virtual YAML::Node render_import(const AST::Import::Ptr node) const;
-    virtual YAML::Node render_scopedref(const AST::ScopedRef::Ptr node) const;
 };
 
 } // namespace Generators

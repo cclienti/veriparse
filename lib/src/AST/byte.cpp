@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#include <veriparse/AST/customvariable.hpp>
+#include <veriparse/AST/byte.hpp>
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <iostream>
@@ -10,38 +10,40 @@ namespace Veriparse
 namespace AST
 {
 
-CustomVariable::CustomVariable(const std::string &filename, uint32_t line)
-    : Variable(filename, line)
+Byte::Byte(const std::string &filename, uint32_t line) : Variable(filename, line)
 {
-    set_node_type(NodeType::CustomVariable);
+    set_node_type(NodeType::Byte);
     set_node_categories({NodeType::Variable, NodeType::VariableBase, NodeType::Node});
 }
 
-CustomVariable::CustomVariable(const Node::Ptr type, const Length::ListPtr lengths,
-                               const Rvalue::Ptr right, const std::string &name,
-                               const std::string &filename, uint32_t line)
-    : Variable(lengths, right, name, filename, line), m_type(type)
+Byte::Byte(const Length::ListPtr lengths, const Rvalue::Ptr right, const bool &sign,
+           const std::string &name, const std::string &filename, uint32_t line)
+    : Variable(lengths, right, name, filename, line), m_sign(sign)
 {
-    set_node_type(NodeType::CustomVariable);
+    set_node_type(NodeType::Byte);
     set_node_categories({NodeType::Variable, NodeType::VariableBase, NodeType::Node});
 }
 
-CustomVariable &CustomVariable::operator=(const CustomVariable &rhs)
+Byte &Byte::operator=(const Byte &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
+    set_sign(rhs.get_sign());
     set_name(rhs.get_name());
     return *this;
 }
 
-Node &CustomVariable::operator=(const Node &rhs)
+Node &Byte::operator=(const Node &rhs)
 {
-    const CustomVariable &rhs_cast = static_cast<const CustomVariable &>(rhs);
+    const Byte &rhs_cast = static_cast<const Byte &>(rhs);
     return static_cast<Node &>(operator=(rhs_cast));
 }
 
-bool CustomVariable::operator==(const CustomVariable &rhs) const
+bool Byte::operator==(const Byte &rhs) const
 {
     if(Node::operator==(rhs) == false) {
+        return false;
+    }
+    if(get_sign() != rhs.get_sign()) {
         return false;
     }
     if(get_name() != rhs.get_name()) {
@@ -50,31 +52,21 @@ bool CustomVariable::operator==(const CustomVariable &rhs) const
     return true;
 }
 
-bool CustomVariable::operator==(const Node &rhs) const
+bool Byte::operator==(const Node &rhs) const
 {
-    const CustomVariable &rhs_cast = static_cast<const CustomVariable &>(rhs);
+    const Byte &rhs_cast = static_cast<const Byte &>(rhs);
     return operator==(rhs_cast);
 }
 
-bool CustomVariable::operator!=(const CustomVariable &rhs) const { return !(operator==(rhs)); }
+bool Byte::operator!=(const Byte &rhs) const { return !(operator==(rhs)); }
 
-bool CustomVariable::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
+bool Byte::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
 
-bool CustomVariable::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
+bool Byte::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
 
-bool CustomVariable::replace(Node::Ptr node, Node::Ptr new_node)
+bool Byte::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
-    if(get_type()) {
-        if(get_type() == node) {
-            if(found) {
-                LOG_WARNING << *this << ", "
-                            << "CustomVariable::replace matches multiple times (Node::type)";
-            }
-            set_type(new_node);
-            found = true;
-        }
-    }
     if(get_lengths()) {
         Length::ListPtr new_list = std::make_shared<Length::List>();
         for(const Length::Ptr &lnode : *get_lengths()) {
@@ -83,9 +75,9 @@ bool CustomVariable::replace(Node::Ptr node, Node::Ptr new_node)
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
-                        LOG_WARNING << *this << ", "
-                                    << "CustomVariable::replace matches multiple times "
-                                       "(list(Length)::lengths)";
+                        LOG_WARNING
+                            << *this << ", "
+                            << "Byte::replace matches multiple times (list(Length)::lengths)";
                     }
                     if(new_node) {
                         new_list->push_back(cast_to<Length>(new_node));
@@ -94,7 +86,7 @@ bool CustomVariable::replace(Node::Ptr node, Node::Ptr new_node)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during CustomVariable::replace "
+                            << "found an empty node during Byte::replace "
                             << "of children list(Length)::lengths";
             }
         }
@@ -108,7 +100,7 @@ bool CustomVariable::replace(Node::Ptr node, Node::Ptr new_node)
         if(get_right() == node) {
             if(found) {
                 LOG_WARNING << *this << ", "
-                            << "CustomVariable::replace matches multiple times (Rvalue::right)";
+                            << "Byte::replace matches multiple times (Rvalue::right)";
             }
             set_right(cast_to<Rvalue>(new_node));
             found = true;
@@ -117,7 +109,7 @@ bool CustomVariable::replace(Node::Ptr node, Node::Ptr new_node)
     return found;
 }
 
-bool CustomVariable::replace(Node::Ptr node, Node::ListPtr new_nodes)
+bool Byte::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
     if(get_lengths()) {
@@ -128,9 +120,9 @@ bool CustomVariable::replace(Node::Ptr node, Node::ListPtr new_nodes)
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
-                        LOG_WARNING << *this << ", "
-                                    << "CustomVariable::replace matches multiple times "
-                                       "(list(Length)::lengths)";
+                        LOG_WARNING
+                            << *this << ", "
+                            << "Byte::replace matches multiple times (list(Length)::lengths)";
                     }
                     if(new_nodes) {
                         for(const Node::Ptr &n : *new_nodes) {
@@ -141,7 +133,7 @@ bool CustomVariable::replace(Node::Ptr node, Node::ListPtr new_nodes)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during CustomVariable::replace "
+                            << "found an empty node during Byte::replace "
                             << "of children list(Length)::lengths";
             }
         }
@@ -154,24 +146,21 @@ bool CustomVariable::replace(Node::Ptr node, Node::ListPtr new_nodes)
     return found;
 }
 
-CustomVariable::ListPtr CustomVariable::clone_list(const ListPtr nodes)
+Byte::ListPtr Byte::clone_list(const ListPtr nodes)
 {
     ListPtr list;
     if(nodes) {
         list = std::make_shared<List>();
         for(const Ptr &p : *nodes) {
-            list->push_back(cast_to<CustomVariable>(p->clone()));
+            list->push_back(cast_to<Byte>(p->clone()));
         }
     }
     return list;
 }
 
-Node::ListPtr CustomVariable::get_children(void) const
+Node::ListPtr Byte::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
-    if(get_type()) {
-        list->push_back(std::static_pointer_cast<Node>(get_type()));
-    }
     if(get_lengths()) {
         for(const Length::Ptr &node : *get_lengths()) {
             if(node) {
@@ -185,26 +174,23 @@ Node::ListPtr CustomVariable::get_children(void) const
     return list;
 }
 
-void CustomVariable::clone_children(Node::Ptr new_node) const
+void Byte::clone_children(Node::Ptr new_node) const
 {
-    if(get_type()) {
-        cast_to<CustomVariable>(new_node)->set_type(get_type()->clone());
-    }
-    cast_to<CustomVariable>(new_node)->set_lengths(Length::clone_list(get_lengths()));
+    cast_to<Byte>(new_node)->set_lengths(Length::clone_list(get_lengths()));
     if(get_right()) {
-        cast_to<CustomVariable>(new_node)->set_right(cast_to<Rvalue>(get_right()->clone()));
+        cast_to<Byte>(new_node)->set_right(cast_to<Rvalue>(get_right()->clone()));
     }
 }
 
-Node::Ptr CustomVariable::alloc_same(void) const
+Node::Ptr Byte::alloc_same(void) const
 {
-    Ptr p(new CustomVariable);
+    Ptr p(new Byte);
     return p;
 }
 
-std::ostream &operator<<(std::ostream &os, const CustomVariable &p)
+std::ostream &operator<<(std::ostream &os, const Byte &p)
 {
-    os << "CustomVariable: {";
+    os << "Byte: {";
     if(!p.get_filename().empty()) {
         os << "filename: " << p.get_filename() << ", "
            << "line: " << p.get_line();
@@ -214,17 +200,19 @@ std::ostream &operator<<(std::ostream &os, const CustomVariable &p)
         os << ", ";
     }
 
+    os << "sign: " << p.get_sign() << ", ";
+
     os << "name: " << p.get_name();
     os << "}";
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const CustomVariable::Ptr p)
+std::ostream &operator<<(std::ostream &os, const Byte::Ptr p)
 {
     if(p) {
         os << *p;
     } else {
-        os << "CustomVariable: {nullptr}";
+        os << "Byte: {nullptr}";
     }
 
     return os;

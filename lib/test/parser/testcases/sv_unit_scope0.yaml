@@ -17,11 +17,13 @@ Source:
                   filename: lib/test/parser/testcases/sv_unit_scope0.sv
                   line: 5
                   var:
-                    ScopedRef:
+                    Identifier:
                       filename: lib/test/parser/testcases/sv_unit_scope0.sv
                       line: 5
                       name: WIDTH
                       package: $unit
+                      scope:
+                        IdentifierScope: null
           - Assign:
               filename: lib/test/parser/testcases/sv_unit_scope0.sv
               ldelay:
@@ -35,6 +37,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_unit_scope0.sv
                       line: 7
                       name: dout
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 7
@@ -51,6 +54,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_unit_scope0.sv
                           line: 7
                           name: din
+                          package: ''
                           scope:
                             IdentifierScope: null
                       filename: lib/test/parser/testcases/sv_unit_scope0.sv
@@ -70,18 +74,20 @@ Source:
                   sign: false
               line: 2
               second:
-                CustomVariable:
+                CustomTypeVar:
                   filename: lib/test/parser/testcases/sv_unit_scope0.sv
                   line: 2
                   name: din
                   right:
                     Rvalue: null
                   type:
-                    ScopedRef:
+                    Identifier:
                       filename: lib/test/parser/testcases/sv_unit_scope0.sv
                       line: 2
                       name: data_t
                       package: $unit
+                      scope:
+                        IdentifierScope: null
           - Ioport:
               filename: lib/test/parser/testcases/sv_unit_scope0.sv
               first:

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#include <veriparse/AST/structdef.hpp>
+#include <veriparse/AST/structuniondef.hpp>
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <iostream>
@@ -10,21 +10,21 @@ namespace Veriparse
 namespace AST
 {
 
-StructDef::StructDef(const std::string &filename, uint32_t line) : StructUnionDef(filename, line)
+StructUnionDef::StructUnionDef(const std::string &filename, uint32_t line) : Node(filename, line)
 {
-    set_node_type(NodeType::StructDef);
-    set_node_categories({NodeType::StructUnionDef, NodeType::Node});
+    set_node_type(NodeType::StructUnionDef);
+    set_node_categories({NodeType::Node});
 }
 
-StructDef::StructDef(const StructMember::ListPtr members, const bool &packed, const bool &sign,
-                     const std::string &filename, uint32_t line)
-    : StructUnionDef(members, packed, sign, filename, line)
+StructUnionDef::StructUnionDef(const StructMember::ListPtr members, const bool &packed,
+                               const bool &sign, const std::string &filename, uint32_t line)
+    : Node(filename, line), m_members(members), m_packed(packed), m_sign(sign)
 {
-    set_node_type(NodeType::StructDef);
-    set_node_categories({NodeType::StructUnionDef, NodeType::Node});
+    set_node_type(NodeType::StructUnionDef);
+    set_node_categories({NodeType::Node});
 }
 
-StructDef &StructDef::operator=(const StructDef &rhs)
+StructUnionDef &StructUnionDef::operator=(const StructUnionDef &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
     set_packed(rhs.get_packed());
@@ -32,13 +32,13 @@ StructDef &StructDef::operator=(const StructDef &rhs)
     return *this;
 }
 
-Node &StructDef::operator=(const Node &rhs)
+Node &StructUnionDef::operator=(const Node &rhs)
 {
-    const StructDef &rhs_cast = static_cast<const StructDef &>(rhs);
+    const StructUnionDef &rhs_cast = static_cast<const StructUnionDef &>(rhs);
     return static_cast<Node &>(operator=(rhs_cast));
 }
 
-bool StructDef::operator==(const StructDef &rhs) const
+bool StructUnionDef::operator==(const StructUnionDef &rhs) const
 {
     if(Node::operator==(rhs) == false) {
         return false;
@@ -52,19 +52,19 @@ bool StructDef::operator==(const StructDef &rhs) const
     return true;
 }
 
-bool StructDef::operator==(const Node &rhs) const
+bool StructUnionDef::operator==(const Node &rhs) const
 {
-    const StructDef &rhs_cast = static_cast<const StructDef &>(rhs);
+    const StructUnionDef &rhs_cast = static_cast<const StructUnionDef &>(rhs);
     return operator==(rhs_cast);
 }
 
-bool StructDef::operator!=(const StructDef &rhs) const { return !(operator==(rhs)); }
+bool StructUnionDef::operator!=(const StructUnionDef &rhs) const { return !(operator==(rhs)); }
 
-bool StructDef::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
+bool StructUnionDef::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
 
-bool StructDef::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
+bool StructUnionDef::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
 
-bool StructDef::replace(Node::Ptr node, Node::Ptr new_node)
+bool StructUnionDef::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
     if(get_members()) {
@@ -76,7 +76,7 @@ bool StructDef::replace(Node::Ptr node, Node::Ptr new_node)
                 } else {
                     if(found) {
                         LOG_WARNING << *this << ", "
-                                    << "StructDef::replace matches multiple times "
+                                    << "StructUnionDef::replace matches multiple times "
                                        "(list(StructMember)::members)";
                     }
                     if(new_node) {
@@ -86,7 +86,7 @@ bool StructDef::replace(Node::Ptr node, Node::Ptr new_node)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during StructDef::replace "
+                            << "found an empty node during StructUnionDef::replace "
                             << "of children list(StructMember)::members";
             }
         }
@@ -99,7 +99,7 @@ bool StructDef::replace(Node::Ptr node, Node::Ptr new_node)
     return found;
 }
 
-bool StructDef::replace(Node::Ptr node, Node::ListPtr new_nodes)
+bool StructUnionDef::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
     if(get_members()) {
@@ -111,7 +111,7 @@ bool StructDef::replace(Node::Ptr node, Node::ListPtr new_nodes)
                 } else {
                     if(found) {
                         LOG_WARNING << *this << ", "
-                                    << "StructDef::replace matches multiple times "
+                                    << "StructUnionDef::replace matches multiple times "
                                        "(list(StructMember)::members)";
                     }
                     if(new_nodes) {
@@ -123,7 +123,7 @@ bool StructDef::replace(Node::Ptr node, Node::ListPtr new_nodes)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during StructDef::replace "
+                            << "found an empty node during StructUnionDef::replace "
                             << "of children list(StructMember)::members";
             }
         }
@@ -136,19 +136,19 @@ bool StructDef::replace(Node::Ptr node, Node::ListPtr new_nodes)
     return found;
 }
 
-StructDef::ListPtr StructDef::clone_list(const ListPtr nodes)
+StructUnionDef::ListPtr StructUnionDef::clone_list(const ListPtr nodes)
 {
     ListPtr list;
     if(nodes) {
         list = std::make_shared<List>();
         for(const Ptr &p : *nodes) {
-            list->push_back(cast_to<StructDef>(p->clone()));
+            list->push_back(cast_to<StructUnionDef>(p->clone()));
         }
     }
     return list;
 }
 
-Node::ListPtr StructDef::get_children(void) const
+Node::ListPtr StructUnionDef::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
     if(get_members()) {
@@ -161,20 +161,20 @@ Node::ListPtr StructDef::get_children(void) const
     return list;
 }
 
-void StructDef::clone_children(Node::Ptr new_node) const
+void StructUnionDef::clone_children(Node::Ptr new_node) const
 {
-    cast_to<StructDef>(new_node)->set_members(StructMember::clone_list(get_members()));
+    cast_to<StructUnionDef>(new_node)->set_members(StructMember::clone_list(get_members()));
 }
 
-Node::Ptr StructDef::alloc_same(void) const
+Node::Ptr StructUnionDef::alloc_same(void) const
 {
-    Ptr p(new StructDef);
+    Ptr p(new StructUnionDef);
     return p;
 }
 
-std::ostream &operator<<(std::ostream &os, const StructDef &p)
+std::ostream &operator<<(std::ostream &os, const StructUnionDef &p)
 {
-    os << "StructDef: {";
+    os << "StructUnionDef: {";
     if(!p.get_filename().empty()) {
         os << "filename: " << p.get_filename() << ", "
            << "line: " << p.get_line();
@@ -191,12 +191,12 @@ std::ostream &operator<<(std::ostream &os, const StructDef &p)
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const StructDef::Ptr p)
+std::ostream &operator<<(std::ostream &os, const StructUnionDef::Ptr p)
 {
     if(p) {
         os << *p;
     } else {
-        os << "StructDef: {nullptr}";
+        os << "StructUnionDef: {nullptr}";
     }
 
     return os;

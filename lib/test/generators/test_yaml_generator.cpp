@@ -165,14 +165,17 @@ TEST(YAMLGenerator, Identifier)
 
     AST::IdentifierScope::Ptr c_scope(new AST::IdentifierScope);
     std::string p_name = "mynbiqpmzj";
+    std::string p_package = "plsgqejeyd";
 
-    AST::Identifier::Ptr m_identifier(new AST::Identifier(c_scope, p_name, "filename", 0));
+    AST::Identifier::Ptr m_identifier(
+        new AST::Identifier(c_scope, p_name, p_package, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_identifier);
 
     ASSERT_TRUE(yaml["Identifier"]);
     ASSERT_TRUE(yaml["Identifier"]["scope"]);
     ASSERT_TRUE(yaml["Identifier"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Identifier"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLGenerator, Constant)
@@ -391,27 +394,29 @@ TEST(YAMLGenerator, Variable)
     ASSERT_TRUE(yaml["Variable"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
-TEST(YAMLGenerator, CustomVariable)
+TEST(YAMLGenerator, CustomTypeVar)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.CustomVariable.log");
+    Logger::add_text_sink("YAMLGenerator.CustomTypeVar.log");
     Logger::add_stderr_sink();
 
     AST::Node::Ptr c_type(new AST::Node);
+    AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
     std::string p_name = "mynbiqpmzj";
 
-    AST::CustomVariable::Ptr m_customvariable(
-        new AST::CustomVariable(c_type, c_lengths, c_right, p_name, "filename", 0));
+    AST::CustomTypeVar::Ptr m_customtypevar(
+        new AST::CustomTypeVar(c_type, c_widths, c_lengths, c_right, p_name, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_customvariable);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_customtypevar);
 
-    ASSERT_TRUE(yaml["CustomVariable"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["type"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["lengths"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["right"]);
-    ASSERT_TRUE(yaml["CustomVariable"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["CustomTypeVar"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["type"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["widths"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["lengths"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["right"]);
+    ASSERT_TRUE(yaml["CustomTypeVar"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
 TEST(YAMLGenerator, Net)
@@ -481,6 +486,160 @@ TEST(YAMLGenerator, Real)
     ASSERT_TRUE(yaml["Real"]["lengths"]);
     ASSERT_TRUE(yaml["Real"]["right"]);
     ASSERT_TRUE(yaml["Real"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLGenerator, Byte)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Byte.log");
+    Logger::add_stderr_sink();
+
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    bool p_sign = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::Byte::Ptr m_byte(new AST::Byte(c_lengths, c_right, p_sign, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_byte);
+
+    ASSERT_TRUE(yaml["Byte"]);
+    ASSERT_TRUE(yaml["Byte"]["lengths"]);
+    ASSERT_TRUE(yaml["Byte"]["right"]);
+    ASSERT_TRUE(yaml["Byte"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Byte"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLGenerator, Shortint)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Shortint.log");
+    Logger::add_stderr_sink();
+
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    bool p_sign = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::Shortint::Ptr m_shortint(
+        new AST::Shortint(c_lengths, c_right, p_sign, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_shortint);
+
+    ASSERT_TRUE(yaml["Shortint"]);
+    ASSERT_TRUE(yaml["Shortint"]["lengths"]);
+    ASSERT_TRUE(yaml["Shortint"]["right"]);
+    ASSERT_TRUE(yaml["Shortint"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Shortint"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLGenerator, Int)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Int.log");
+    Logger::add_stderr_sink();
+
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    bool p_sign = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::Int::Ptr m_int(new AST::Int(c_lengths, c_right, p_sign, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_int);
+
+    ASSERT_TRUE(yaml["Int"]);
+    ASSERT_TRUE(yaml["Int"]["lengths"]);
+    ASSERT_TRUE(yaml["Int"]["right"]);
+    ASSERT_TRUE(yaml["Int"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Int"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLGenerator, Longint)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Longint.log");
+    Logger::add_stderr_sink();
+
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    bool p_sign = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::Longint::Ptr m_longint(
+        new AST::Longint(c_lengths, c_right, p_sign, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_longint);
+
+    ASSERT_TRUE(yaml["Longint"]);
+    ASSERT_TRUE(yaml["Longint"]["lengths"]);
+    ASSERT_TRUE(yaml["Longint"]["right"]);
+    ASSERT_TRUE(yaml["Longint"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Longint"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLGenerator, Shortreal)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Shortreal.log");
+    Logger::add_stderr_sink();
+
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::Shortreal::Ptr m_shortreal(new AST::Shortreal(c_lengths, c_right, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_shortreal);
+
+    ASSERT_TRUE(yaml["Shortreal"]);
+    ASSERT_TRUE(yaml["Shortreal"]["lengths"]);
+    ASSERT_TRUE(yaml["Shortreal"]["right"]);
+    ASSERT_TRUE(yaml["Shortreal"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLGenerator, Realtime)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Realtime.log");
+    Logger::add_stderr_sink();
+
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::Realtime::Ptr m_realtime(new AST::Realtime(c_lengths, c_right, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_realtime);
+
+    ASSERT_TRUE(yaml["Realtime"]);
+    ASSERT_TRUE(yaml["Realtime"]["lengths"]);
+    ASSERT_TRUE(yaml["Realtime"]["right"]);
+    ASSERT_TRUE(yaml["Realtime"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLGenerator, Bit)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Bit.log");
+    Logger::add_stderr_sink();
+
+    AST::Width::ListPtr c_widths(new AST::Width::List);
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    bool p_sign = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::Bit::Ptr m_bit(new AST::Bit(c_widths, c_lengths, c_right, p_sign, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_bit);
+
+    ASSERT_TRUE(yaml["Bit"]);
+    ASSERT_TRUE(yaml["Bit"]["widths"]);
+    ASSERT_TRUE(yaml["Bit"]["lengths"]);
+    ASSERT_TRUE(yaml["Bit"]["right"]);
+    ASSERT_TRUE(yaml["Bit"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Bit"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
 
 TEST(YAMLGenerator, Tri)
@@ -2446,6 +2605,27 @@ TEST(YAMLGenerator, StructMember)
     ASSERT_TRUE(yaml["StructMember"]["sign"].as<bool>() == false);
 }
 
+TEST(YAMLGenerator, StructUnionDef)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.StructUnionDef.log");
+    Logger::add_stderr_sink();
+
+    AST::StructMember::ListPtr c_members(new AST::StructMember::List);
+    bool p_packed = false;
+    bool p_sign = false;
+
+    AST::StructUnionDef::Ptr m_structuniondef(
+        new AST::StructUnionDef(c_members, p_packed, p_sign, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_structuniondef);
+
+    ASSERT_TRUE(yaml["StructUnionDef"]);
+    ASSERT_TRUE(yaml["StructUnionDef"]["members"]);
+    ASSERT_TRUE(yaml["StructUnionDef"]["packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["StructUnionDef"]["sign"].as<bool>() == false);
+}
+
 TEST(YAMLGenerator, StructDef)
 {
     Logger::remove_all_sinks();
@@ -2454,14 +2634,36 @@ TEST(YAMLGenerator, StructDef)
 
     AST::StructMember::ListPtr c_members(new AST::StructMember::List);
     bool p_packed = false;
+    bool p_sign = false;
 
-    AST::StructDef::Ptr m_structdef(new AST::StructDef(c_members, p_packed, "filename", 0));
+    AST::StructDef::Ptr m_structdef(new AST::StructDef(c_members, p_packed, p_sign, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_structdef);
 
     ASSERT_TRUE(yaml["StructDef"]);
     ASSERT_TRUE(yaml["StructDef"]["members"]);
     ASSERT_TRUE(yaml["StructDef"]["packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["StructDef"]["sign"].as<bool>() == false);
+}
+
+TEST(YAMLGenerator, Union)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Union.log");
+    Logger::add_stderr_sink();
+
+    AST::StructMember::ListPtr c_members(new AST::StructMember::List);
+    bool p_packed = false;
+    bool p_sign = false;
+
+    AST::Union::Ptr m_union(new AST::Union(c_members, p_packed, p_sign, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_union);
+
+    ASSERT_TRUE(yaml["Union"]);
+    ASSERT_TRUE(yaml["Union"]["members"]);
+    ASSERT_TRUE(yaml["Union"]["packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Union"]["sign"].as<bool>() == false);
 }
 
 TEST(YAMLGenerator, Package)
@@ -2501,22 +2703,4 @@ TEST(YAMLGenerator, Import)
     ASSERT_TRUE(yaml["Import"]);
     ASSERT_TRUE(yaml["Import"]["package"].as<std::string>() == "mynbiqpmzj");
     ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
-}
-
-TEST(YAMLGenerator, ScopedRef)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.ScopedRef.log");
-    Logger::add_stderr_sink();
-
-    std::string p_package = "mynbiqpmzj";
-    std::string p_name = "plsgqejeyd";
-
-    AST::ScopedRef::Ptr m_scopedref(new AST::ScopedRef(p_package, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_scopedref);
-
-    ASSERT_TRUE(yaml["ScopedRef"]);
-    ASSERT_TRUE(yaml["ScopedRef"]["package"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["ScopedRef"]["name"].as<std::string>() == "plsgqejeyd");
 }

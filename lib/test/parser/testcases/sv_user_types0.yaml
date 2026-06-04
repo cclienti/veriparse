@@ -53,6 +53,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_user_types0.sv
                   line: 5
                   name: data_t
+                  package: ''
                   scope:
                     IdentifierScope: null
               statements:
@@ -100,6 +101,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
                           line: 7
                           name: make
+                          package: ''
                           scope:
                             IdentifierScope: null
                   line: 7
@@ -114,6 +116,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
                           line: 7
                           name: v
+                          package: ''
                           scope:
                             IdentifierScope: null
           lifetime: AUTOMATIC
@@ -135,11 +138,13 @@ Source:
                       name: a
                       sign: false
                       type:
-                        ScopedRef:
+                        Identifier:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
                           line: 16
                           name: data_t
                           package: mypkg
+                          scope:
+                            IdentifierScope: null
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 16
@@ -150,6 +155,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
                           line: 16
                           name: logic
+                          package: ''
                           scope:
                             IdentifierScope: null
                       widths:
@@ -173,6 +179,7 @@ Source:
                               size: -1
                               value: 3
                   packed: true
+                  sign: false
               filename: lib/test/parser/testcases/sv_user_types0.sv
               line: 16
               name: pair_t
@@ -188,6 +195,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_user_types0.sv
                   line: 18
                   name: my_local_t
+                  package: ''
                   scope:
                     IdentifierScope: null
               statements:
@@ -235,6 +243,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
                           line: 20
                           name: compute
+                          package: ''
                           scope:
                             IdentifierScope: null
                   line: 20
@@ -249,6 +258,7 @@ Source:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
                           line: 20
                           name: x
+                          package: ''
                           scope:
                             IdentifierScope: null
           - Assign:
@@ -264,6 +274,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 23
                       name: dout
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 23
@@ -278,6 +289,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 23
                       name: din
+                      package: ''
                       scope:
                         IdentifierScope: null
           line: 12
@@ -293,18 +305,20 @@ Source:
                   sign: false
               line: 13
               second:
-                CustomVariable:
+                CustomTypeVar:
                   filename: lib/test/parser/testcases/sv_user_types0.sv
                   line: 13
                   name: din
                   right:
                     Rvalue: null
                   type:
-                    ScopedRef:
+                    Identifier:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 13
                       name: data_t
                       package: mypkg
+                      scope:
+                        IdentifierScope: null
           - Ioport:
               filename: lib/test/parser/testcases/sv_user_types0.sv
               first:

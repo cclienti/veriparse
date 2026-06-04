@@ -179,16 +179,6 @@ std::string VerilogGenerator::render_import(const AST::Import::Ptr node) const
     return result;
 }
 
-std::string VerilogGenerator::render_scopedref(const AST::ScopedRef::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        result =
-            StringUtils::escape(node->get_package()) + "::" + StringUtils::escape(node->get_name());
-    }
-    return result;
-}
-
 std::string VerilogGenerator::render_port(const AST::Port::Ptr node) const
 {
     std::string result;
@@ -246,9 +236,13 @@ std::string VerilogGenerator::render_identifier(const AST::Identifier::Ptr node)
 {
     std::string result;
     if(node) {
+        const std::string &package = node->get_package();
+        if(!package.empty()) {
+            result = StringUtils::escape(package) + "::";
+        }
         const AST::IdentifierScope::Ptr scope = node->get_scope();
         if(scope) {
-            result = render(scope);
+            result += render(scope);
         }
         result.append(StringUtils::escape(node->get_name()));
     }
@@ -423,12 +417,13 @@ std::string VerilogGenerator::render_logic(const AST::Logic::Ptr node) const
     return result;
 }
 
-std::string VerilogGenerator::render_customvariable(const AST::CustomVariable::Ptr node) const
+std::string VerilogGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
 {
     std::string result;
     if(node) {
-        // The type is an unresolved reference (Identifier or ScopedRef); render
-        // it as the type string and reuse the common variable formatter.
+        // The type is an unresolved Identifier reference (its `package` carries
+        // any pkg:: scope); render it as the type string and reuse the common
+        // variable formatter.
         const std::string type_str = render(node->get_type());
         result = variable_to_string(type_str.c_str(), false, nullptr, node->get_lengths(),
                                     node->get_right(), node->get_name());
@@ -513,10 +508,9 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
             case AST::NodeType::Tri:
                 variable.append(" tri");
                 break;
-            case AST::NodeType::CustomVariable:
+            case AST::NodeType::CustomTypeVar:
                 // user-defined / package-scoped type: append the type reference
-                variable.append(" " +
-                                render(AST::cast_to<AST::CustomVariable>(second)->get_type()));
+                variable.append(" " + render(AST::cast_to<AST::CustomTypeVar>(second)->get_type()));
                 break;
             default:
                 break;
@@ -2124,6 +2118,9 @@ std::string VerilogGenerator::render_structdef(const AST::StructDef::Ptr node) c
         result = "struct";
         if(node->get_packed()) {
             result += " packed";
+            if(node->get_sign()) {
+                result += " signed";
+            }
         }
         result += " {\n";
         const AST::StructMember::ListPtr members = node->get_members();

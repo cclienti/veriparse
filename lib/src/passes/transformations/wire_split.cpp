@@ -13,14 +13,16 @@ namespace Transformations
 
 int WireSplit::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
-    if (!node) return 0;
+    if(!node) {
+        return 0;
+    }
 
     // Check if this is a Wire with an inline right-hand side
-    if (node->get_node_type() == AST::NodeType::Wire) {
+    if(node->get_node_type() == AST::NodeType::Wire) {
         auto wire = AST::cast_to<AST::Wire>(node);
         auto rhs = wire->get_right();
 
-        if (rhs && parent) {
+        if(rhs && parent) {
             LOG_DEBUG_N(wire) << "Splitting inline wire declaration: " << wire->get_name();
 
             // Clear the rhs from the wire declaration
@@ -28,13 +30,12 @@ int WireSplit::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
             // Build: assign <name> = <rhs>;
             auto lvalue = std::make_shared<AST::Lvalue>(
-                std::make_shared<AST::Identifier>(nullptr, wire->get_name(),
+                std::make_shared<AST::Identifier>(nullptr, wire->get_name(), "",
                                                   wire->get_filename(), wire->get_line()),
                 wire->get_filename(), wire->get_line());
 
-            auto assign = std::make_shared<AST::Assign>(
-                lvalue, rhs, nullptr, nullptr,
-                wire->get_filename(), wire->get_line());
+            auto assign = std::make_shared<AST::Assign>(lvalue, rhs, nullptr, nullptr,
+                                                        wire->get_filename(), wire->get_line());
 
             // Replace node with [wire, assign]
             auto stmts = std::make_shared<AST::Node::List>();
@@ -49,6 +50,6 @@ int WireSplit::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     return recurse_in_childs(node);
 }
 
-}
-}
-}
+} // namespace Transformations
+} // namespace Passes
+} // namespace Veriparse

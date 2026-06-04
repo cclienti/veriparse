@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#ifndef VERIPARSE_AST_SCOPEDREF_HPP
-#define VERIPARSE_AST_SCOPEDREF_HPP
+#ifndef VERIPARSE_AST_LONGINT_HPP
+#define VERIPARSE_AST_LONGINT_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/variable.hpp>
+
+#include <veriparse/AST/length.hpp>
+#include <veriparse/AST/rvalue.hpp>
 
 #include <list>
 #include <string>
@@ -17,31 +21,31 @@ namespace Veriparse
 namespace AST
 {
 
-class ScopedRef : public Node
+class Longint : public Variable
 {
 public:
-    using Ptr = typename NodePointers<ScopedRef>::Ptr;
-    using List = typename NodePointers<ScopedRef>::List;
-    using ListPtr = typename NodePointers<ScopedRef>::ListPtr;
-    using Node::operator=;
-    using Node::operator==;
-    using Node::operator!=;
+    using Ptr = typename NodePointers<Longint>::Ptr;
+    using List = typename NodePointers<Longint>::List;
+    using ListPtr = typename NodePointers<Longint>::ListPtr;
+    using Variable::operator=;
+    using Variable::operator==;
+    using Variable::operator!=;
 
     /**
-     * Constructor, m_node_type is set to NodeType::ScopedRef.
+     * Constructor, m_node_type is set to NodeType::Longint.
      */
-    ScopedRef(const std::string &filename = "", uint32_t line = 0);
+    Longint(const std::string &filename = "", uint32_t line = 0);
 
     /**
-     * Constructor, m_node_type is set to NodeType::ScopedRef.
+     * Constructor, m_node_type is set to NodeType::Longint.
      */
-    ScopedRef(const std::string &package, const std::string &name, const std::string &filename = "",
-              uint32_t line = 0);
+    Longint(const Length::ListPtr lengths, const Rvalue::Ptr right, const bool &sign,
+            const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
      */
-    virtual ScopedRef &operator=(const ScopedRef &rhs);
+    virtual Longint &operator=(const Longint &rhs);
 
     /**
      * Assignment operator, do not affect children.
@@ -49,22 +53,22 @@ public:
     virtual Node &operator=(const Node &rhs) override;
 
     /**
-     * Return true if the ScopedRef nodes are the same, do not check children.
+     * Return true if the Longint nodes are the same, do not check children.
      */
-    virtual bool operator==(const ScopedRef &rhs) const;
+    virtual bool operator==(const Longint &rhs) const;
 
     /**
-     * Return true if the ScopedRef nodes are the same, do not check children.
+     * Return true if the Longint nodes are the same, do not check children.
      */
     virtual bool operator==(const Node &rhs) const override;
 
     /**
-     * Return true if the ScopedRef nodes are the same, do not check children.
+     * Return true if the Longint nodes are the same, do not check children.
      */
-    virtual bool operator!=(const ScopedRef &rhs) const;
+    virtual bool operator!=(const Longint &rhs) const;
 
     /**
-     * Return true if the ScopedRef nodes are the same, do not check children.
+     * Return true if the Longint nodes are the same, do not check children.
      */
     virtual bool operator!=(const Node &rhs) const override;
 
@@ -84,24 +88,14 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the property package.
+     * Return the property sign.
      */
-    virtual const std::string &get_package(void) const { return m_package; }
+    virtual const bool &get_sign(void) const { return m_sign; }
 
     /**
-     * Return the property name.
+     * Change the property sign.
      */
-    virtual const std::string &get_name(void) const { return m_name; }
-
-    /**
-     * Change the property package.
-     */
-    virtual void set_package(const std::string &package) { m_package = package; }
-
-    /**
-     * Change the property name.
-     */
-    virtual void set_name(const std::string &name) { m_name = name; }
+    virtual void set_sign(const bool &sign) { m_sign = sign; }
 
     /**
      * Return the children list using the private children member
@@ -127,12 +121,11 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    std::string m_package;
-    std::string m_name;
+    bool m_sign;
 };
 
-std::ostream &operator<<(std::ostream &os, const ScopedRef &p);
-std::ostream &operator<<(std::ostream &os, const ScopedRef::Ptr p);
+std::ostream &operator<<(std::ostream &os, const Longint &p);
+std::ostream &operator<<(std::ostream &os, const Longint::Ptr p);
 
 } // namespace AST
 } // namespace Veriparse

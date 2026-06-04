@@ -80,7 +80,7 @@ AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type,
 
 // Build an Ioport for a port declared with a user-defined type (typedef name
 // or pkg::name). The direction node carries no width (unknown until the
-// typedef is resolved) and `second` is a CustomVariable holding the type ref.
+// typedef is resolved) and `second` is a CustomTypeVar holding the type ref.
 AST::Ioport::Ptr create_typed_ioport_decls(direction_t direction, const std::string &type_name,
 														 const std::string &type_package, const std::string &name,
 														 const std::string &filename="", uint32_t line=0);
@@ -283,7 +283,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 module_imports
 %type   <AST::Node::ListPtr>                 import_decl import_list export_decl
 %type   <AST::Import::Ptr>                   import_item
-%type   <AST::ScopedRef::Ptr>                scoped_ref
+%type   <AST::Identifier::Ptr>                scoped_ref
 %type   <std::string>                        package_scope
 %type   <AST::Package::LifetimeEnum>         package_lifetime
 %type   <AST::Pragmalist::Ptr>               pragmalist
@@ -1186,7 +1186,7 @@ standard_item_base:
 // A variable declared with a user-defined type name (a typedef). Parsed
 // structurally as `type_name var, var, ... ;` and distinguished from a module
 // instance by lookahead (instances always have `(`). The type stays an
-// unresolved Identifier; a later pass rewrites CustomVariable into a concrete
+// unresolved Identifier; a later pass rewrites CustomTypeVar into a concrete
 // Reg/Logic once the typedef is known.
 typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
@@ -1195,7 +1195,7 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                         auto type_ref = std::make_shared<AST::Identifier>(scanner.get_filename(),
                                                                           @1.begin.line);
                         type_ref->set_name($1);
-                        auto var = std::make_shared<AST::CustomVariable>(scanner.get_filename(),
+                        auto var = std::make_shared<AST::CustomTypeVar>(scanner.get_filename(),
                                                                          @1.begin.line);
                         var->set_name(d.name);
                         var->set_lengths(d.lengths);
@@ -1210,11 +1210,11 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                     // Package-scoped type: pkg::T var, ... ;
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $3) {
-                        auto type_ref = std::make_shared<AST::ScopedRef>(scanner.get_filename(),
+                        auto type_ref = std::make_shared<AST::Identifier>(scanner.get_filename(),
                                                                          @1.begin.line);
                         type_ref->set_package($1);
                         type_ref->set_name($2);
-                        auto var = std::make_shared<AST::CustomVariable>(scanner.get_filename(),
+                        auto var = std::make_shared<AST::CustomTypeVar>(scanner.get_filename(),
                                                                          @1.begin.line);
                         var->set_name(d.name);
                         var->set_lengths(d.lengths);
@@ -1285,7 +1285,7 @@ typedef_decl:
         |       TK_TYPEDEF package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     // typedef of a package-scoped type: `typedef pkg::T other_t;`
-                    auto def = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
+                    auto def = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     def->set_package($2);
                     def->set_name($3);
                     $$ = std::make_shared<AST::Typedef>();
@@ -1394,10 +1394,21 @@ enum_item:
         ;
 
 struct_def:
-                TK_STRUCT TK_PACKED TK_LBRACE struct_members TK_RBRACE
+                TK_STRUCT TK_PACKED TK_SIGNED TK_LBRACE struct_members TK_RBRACE
                 {
                     $$ = std::make_shared<AST::StructDef>();
                     $$->set_packed(true);
+                    $$->set_sign(true);
+                    $$->set_members($5);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_STRUCT TK_PACKED TK_LBRACE struct_members TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::StructDef>();
+                    $$->set_packed(true);
+                    $$->set_sign(false);
                     $$->set_members($4);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
@@ -1407,6 +1418,7 @@ struct_def:
                 {
                     $$ = std::make_shared<AST::StructDef>();
                     $$->set_packed(false);
+                    $$->set_sign(false);
                     $$->set_members($3);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
@@ -1521,7 +1533,7 @@ struct_member:
                     $$ = std::make_shared<AST::StructMember>();
                     $$->set_name($3);
                     $$->set_sign(false);
-                    auto type = std::make_shared<AST::ScopedRef>();
+                    auto type = std::make_shared<AST::Identifier>();
                     type->set_package($1);
                     type->set_name($2);
                     type->set_filename(scanner.get_filename());
@@ -2483,12 +2495,11 @@ expression:     TK_MINUS expression %prec TK_UMINUS
         ;
 
 
-// SystemVerilog package-scoped reference, e.g. pkg::WIDTH. Kept as a
-// dedicated node (not an Identifier) so PackageInliner can resolve and
-// erase it; plain signal-analysis passes never mistake it for a net.
+// SystemVerilog package-scoped reference, e.g. pkg::WIDTH. Modelled as an
+// Identifier carrying a non-empty `package`; PackageInliner resolves it.
 scoped_ref:     package_scope TK_IDENTIFIER
                 {
-                    $$ = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     $$->set_package($1);
                     $$->set_name($2);
                 }
@@ -4199,7 +4210,7 @@ function_rettype_name:
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(false);
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
-                    auto t = std::make_shared<AST::ScopedRef>(scanner.get_filename(), @1.begin.line);
+                    auto t = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     t->set_package($1);
                     t->set_name($2);
                     $$->set_rettype_ref(AST::to_node(t));
@@ -5128,21 +5139,14 @@ namespace Veriparse {
                     break;
                 }
 
-                // Unresolved type reference: Identifier for a local typedef, ScopedRef for pkg::T.
-                AST::Node::Ptr type_ref;
-                if (type_package.empty()) {
-                    auto id = std::make_shared<AST::Identifier>(filename, line);
-                    id->set_name(type_name);
-                    type_ref = AST::to_node(id);
-                }
-                else {
-                    auto sr = std::make_shared<AST::ScopedRef>(filename, line);
-                    sr->set_package(type_package);
-                    sr->set_name(type_name);
-                    type_ref = AST::to_node(sr);
-                }
+                // Unresolved type reference: an Identifier whose `package` is the
+                // package scope for pkg::T, or empty for a local typedef.
+                auto id = std::make_shared<AST::Identifier>(filename, line);
+                id->set_name(type_name);
+                id->set_package(type_package);
+                AST::Node::Ptr type_ref = AST::to_node(id);
 
-                auto var = std::make_shared<AST::CustomVariable>(filename, line);
+                auto var = std::make_shared<AST::CustomTypeVar>(filename, line);
                 var->set_name(name);
                 var->set_type(type_ref);
                 ioport->set_second(var);

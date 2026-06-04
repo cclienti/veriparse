@@ -74,8 +74,8 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Variable:
         os << static_cast<const AST::Variable &>(p);
         break;
-    case NodeType::CustomVariable:
-        os << static_cast<const AST::CustomVariable &>(p);
+    case NodeType::CustomTypeVar:
+        os << static_cast<const AST::CustomTypeVar &>(p);
         break;
     case NodeType::Net:
         os << static_cast<const AST::Net &>(p);
@@ -85,6 +85,27 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
         break;
     case NodeType::Real:
         os << static_cast<const AST::Real &>(p);
+        break;
+    case NodeType::Byte:
+        os << static_cast<const AST::Byte &>(p);
+        break;
+    case NodeType::Shortint:
+        os << static_cast<const AST::Shortint &>(p);
+        break;
+    case NodeType::Int:
+        os << static_cast<const AST::Int &>(p);
+        break;
+    case NodeType::Longint:
+        os << static_cast<const AST::Longint &>(p);
+        break;
+    case NodeType::Shortreal:
+        os << static_cast<const AST::Shortreal &>(p);
+        break;
+    case NodeType::Realtime:
+        os << static_cast<const AST::Realtime &>(p);
+        break;
+    case NodeType::Bit:
+        os << static_cast<const AST::Bit &>(p);
         break;
     case NodeType::Tri:
         os << static_cast<const AST::Tri &>(p);
@@ -392,17 +413,20 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::StructMember:
         os << static_cast<const AST::StructMember &>(p);
         break;
+    case NodeType::StructUnionDef:
+        os << static_cast<const AST::StructUnionDef &>(p);
+        break;
     case NodeType::StructDef:
         os << static_cast<const AST::StructDef &>(p);
+        break;
+    case NodeType::Union:
+        os << static_cast<const AST::Union &>(p);
         break;
     case NodeType::Package:
         os << static_cast<const AST::Package &>(p);
         break;
     case NodeType::Import:
         os << static_cast<const AST::Import &>(p);
-        break;
-    case NodeType::ScopedRef:
-        os << static_cast<const AST::ScopedRef &>(p);
         break;
     default:
         os << "Node: {}";

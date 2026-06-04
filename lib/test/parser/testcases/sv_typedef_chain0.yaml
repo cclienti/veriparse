@@ -48,6 +48,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                   line: 5
                   name: base_t
+                  package: ''
                   scope:
                     IdentifierScope: null
               filename: lib/test/parser/testcases/sv_typedef_chain0.sv
@@ -55,15 +56,17 @@ Source:
               name: alias_t
           - Typedef:
               def:
-                ScopedRef:
+                Identifier:
                   filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                   line: 6
                   name: data_t
                   package: mypkg
+                  scope:
+                    IdentifierScope: null
               filename: lib/test/parser/testcases/sv_typedef_chain0.sv
               line: 6
               name: imported_t
-          - CustomVariable:
+          - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_typedef_chain0.sv
               line: 8
               name: x
@@ -74,6 +77,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                   line: 8
                   name: alias_t
+                  package: ''
                   scope:
                     IdentifierScope: null
           - Assign:
@@ -89,6 +93,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                       line: 10
                       name: out
+                      package: ''
                       scope:
                         IdentifierScope: null
               line: 10
@@ -103,6 +108,7 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                       line: 10
                       name: x
+                      package: ''
                       scope:
                         IdentifierScope: null
           line: 1

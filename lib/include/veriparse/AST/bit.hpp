@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#ifndef VERIPARSE_AST_CUSTOMVARIABLE_HPP
-#define VERIPARSE_AST_CUSTOMVARIABLE_HPP
+#ifndef VERIPARSE_AST_BIT_HPP
+#define VERIPARSE_AST_BIT_HPP
 
 #include <veriparse/AST/node.hpp>
 #include <veriparse/AST/variable.hpp>
 
 #include <veriparse/AST/length.hpp>
 #include <veriparse/AST/rvalue.hpp>
+#include <veriparse/AST/width.hpp>
 
 #include <list>
 #include <string>
@@ -21,31 +22,32 @@ namespace Veriparse
 namespace AST
 {
 
-class CustomVariable : public Variable
+class Bit : public Variable
 {
 public:
-    using Ptr = typename NodePointers<CustomVariable>::Ptr;
-    using List = typename NodePointers<CustomVariable>::List;
-    using ListPtr = typename NodePointers<CustomVariable>::ListPtr;
+    using Ptr = typename NodePointers<Bit>::Ptr;
+    using List = typename NodePointers<Bit>::List;
+    using ListPtr = typename NodePointers<Bit>::ListPtr;
     using Variable::operator=;
     using Variable::operator==;
     using Variable::operator!=;
 
     /**
-     * Constructor, m_node_type is set to NodeType::CustomVariable.
+     * Constructor, m_node_type is set to NodeType::Bit.
      */
-    CustomVariable(const std::string &filename = "", uint32_t line = 0);
+    Bit(const std::string &filename = "", uint32_t line = 0);
 
     /**
-     * Constructor, m_node_type is set to NodeType::CustomVariable.
+     * Constructor, m_node_type is set to NodeType::Bit.
      */
-    CustomVariable(const Node::Ptr type, const Length::ListPtr lengths, const Rvalue::Ptr right,
-                   const std::string &name, const std::string &filename = "", uint32_t line = 0);
+    Bit(const Width::ListPtr widths, const Length::ListPtr lengths, const Rvalue::Ptr right,
+        const bool &sign, const std::string &name, const std::string &filename = "",
+        uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
      */
-    virtual CustomVariable &operator=(const CustomVariable &rhs);
+    virtual Bit &operator=(const Bit &rhs);
 
     /**
      * Assignment operator, do not affect children.
@@ -53,22 +55,22 @@ public:
     virtual Node &operator=(const Node &rhs) override;
 
     /**
-     * Return true if the CustomVariable nodes are the same, do not check children.
+     * Return true if the Bit nodes are the same, do not check children.
      */
-    virtual bool operator==(const CustomVariable &rhs) const;
+    virtual bool operator==(const Bit &rhs) const;
 
     /**
-     * Return true if the CustomVariable nodes are the same, do not check children.
+     * Return true if the Bit nodes are the same, do not check children.
      */
     virtual bool operator==(const Node &rhs) const override;
 
     /**
-     * Return true if the CustomVariable nodes are the same, do not check children.
+     * Return true if the Bit nodes are the same, do not check children.
      */
-    virtual bool operator!=(const CustomVariable &rhs) const;
+    virtual bool operator!=(const Bit &rhs) const;
 
     /**
-     * Return true if the CustomVariable nodes are the same, do not check children.
+     * Return true if the Bit nodes are the same, do not check children.
      */
     virtual bool operator!=(const Node &rhs) const override;
 
@@ -88,14 +90,24 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child type.
+     * Return the child widths.
      */
-    virtual Node::Ptr get_type(void) const { return m_type; }
+    virtual Width::ListPtr get_widths(void) const { return m_widths; }
 
     /**
-     * Change the child type.
+     * Change the child widths.
      */
-    virtual void set_type(Node::Ptr type) { m_type = type; }
+    virtual void set_widths(Width::ListPtr widths) { m_widths = widths; }
+
+    /**
+     * Return the property sign.
+     */
+    virtual const bool &get_sign(void) const { return m_sign; }
+
+    /**
+     * Change the property sign.
+     */
+    virtual void set_sign(const bool &sign) { m_sign = sign; }
 
     /**
      * Return the children list using the private children member
@@ -121,11 +133,12 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_type;
+    Width::ListPtr m_widths;
+    bool m_sign;
 };
 
-std::ostream &operator<<(std::ostream &os, const CustomVariable &p);
-std::ostream &operator<<(std::ostream &os, const CustomVariable::Ptr p);
+std::ostream &operator<<(std::ostream &os, const Bit &p);
+std::ostream &operator<<(std::ostream &os, const Bit::Ptr p);
 
 } // namespace AST
 } // namespace Veriparse
