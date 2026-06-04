@@ -1,0 +1,178 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_data_type_named0.sv
+          items:
+          - CustomTypeVar:
+              filename: lib/test/parser/testcases/sv_data_type_named0.sv
+              line: 3
+              name: a
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 3
+                  name: my_t
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+          - CustomTypeVar:
+              filename: lib/test/parser/testcases/sv_data_type_named0.sv
+              line: 3
+              name: b
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 3
+                  name: my_t
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+          - CustomTypeVar:
+              filename: lib/test/parser/testcases/sv_data_type_named0.sv
+              line: 4
+              name: c
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 4
+                  name: my_t
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 7
+          - CustomTypeVar:
+              filename: lib/test/parser/testcases/sv_data_type_named0.sv
+              lengths:
+              - Length:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 5
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 2
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 0
+              line: 5
+              name: d
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 5
+                  name: my_t
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 5
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 5
+                      sign: false
+                      size: -1
+                      value: 3
+          - CustomTypeVar:
+              filename: lib/test/parser/testcases/sv_data_type_named0.sv
+              line: 6
+              name: e
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 6
+                  name: t
+                  package: pkg
+                  scope:
+                    IdentifierScope: null
+          - CustomTypeVar:
+              filename: lib/test/parser/testcases/sv_data_type_named0.sv
+              line: 7
+              name: f
+              right:
+                Rvalue: null
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 7
+                  name: t
+                  package: pkg
+                  scope:
+                    IdentifierScope: null
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                  line: 7
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 15
+          line: 1
+          name: sv_data_type_named0
+      filename: lib/test/parser/testcases/sv_data_type_named0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_data_type_named0.sv
+  line: 1

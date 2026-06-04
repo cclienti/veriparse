@@ -422,11 +422,12 @@ std::string VerilogGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr
     std::string result;
     if(node) {
         // The type is an unresolved Identifier reference (its `package` carries
-        // any pkg:: scope); render it as the type string and reuse the common
-        // variable formatter.
+        // any pkg:: scope) or an inline aggregate def; render it as the type
+        // string and reuse the common variable formatter. `widths` carries the
+        // packed dimensions of the type (e.g. `my_t [3:0]`).
         const std::string type_str = render(node->get_type());
-        result = variable_to_string(type_str.c_str(), false, nullptr, node->get_lengths(),
-                                    node->get_right(), node->get_name());
+        result = variable_to_string(type_str.c_str(), false, node->get_widths(),
+                                    node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
     return result;
@@ -449,6 +450,83 @@ std::string VerilogGenerator::render_real(const AST::Real::Ptr node) const
     if(node) {
         result = variable_to_string("real", false, nullptr, node->get_lengths(), node->get_right(),
                                     node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_bit(const AST::Bit::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = variable_to_string("bit", node->get_sign(), node->get_widths(),
+                                    node->get_lengths(), node->get_right(), node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_byte(const AST::Byte::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = variable_to_string("byte", false, nullptr, node->get_lengths(), node->get_right(),
+                                    node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_shortint(const AST::Shortint::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = variable_to_string("shortint", false, nullptr, node->get_lengths(),
+                                    node->get_right(), node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_int(const AST::Int::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = variable_to_string("int", false, nullptr, node->get_lengths(), node->get_right(),
+                                    node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_longint(const AST::Longint::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = variable_to_string("longint", false, nullptr, node->get_lengths(),
+                                    node->get_right(), node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_shortreal(const AST::Shortreal::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = variable_to_string("shortreal", false, nullptr, node->get_lengths(),
+                                    node->get_right(), node->get_name());
+        result.append(";");
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_realtime(const AST::Realtime::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = variable_to_string("realtime", false, nullptr, node->get_lengths(),
+                                    node->get_right(), node->get_name());
         result.append(";");
     }
     return result;
@@ -2116,6 +2194,29 @@ std::string VerilogGenerator::render_structdef(const AST::StructDef::Ptr node) c
     std::string result;
     if(node) {
         result = "struct";
+        if(node->get_packed()) {
+            result += " packed";
+            if(node->get_sign()) {
+                result += " signed";
+            }
+        }
+        result += " {\n";
+        const AST::StructMember::ListPtr members = node->get_members();
+        if(members) {
+            for(const AST::StructMember::Ptr &m : *members) {
+                result += "\t" + render(m) + "\n";
+            }
+        }
+        result += "}";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_union(const AST::Union::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = "union";
         if(node->get_packed()) {
             result += " packed";
             if(node->get_sign()) {
