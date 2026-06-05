@@ -603,6 +603,8 @@ YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
 
         content["rdelay"] = render(node->get_rdelay());
 
+        content["type"] = render(node->get_type());
+
         if(node->get_lengths()) {
             content["lengths"] = YAML::Load("[]");
             for(const AST::Length::Ptr &n : *node->get_lengths()) {
@@ -907,6 +909,8 @@ YAML::Node YAMLGenerator::render_tri(const AST::Tri::Ptr node) const
 
         content["rdelay"] = render(node->get_rdelay());
 
+        content["type"] = render(node->get_type());
+
         if(node->get_lengths()) {
             content["lengths"] = YAML::Load("[]");
             for(const AST::Length::Ptr &n : *node->get_lengths()) {
@@ -946,6 +950,8 @@ YAML::Node YAMLGenerator::render_wire(const AST::Wire::Ptr node) const
         content["ldelay"] = render(node->get_ldelay());
 
         content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
 
         if(node->get_lengths()) {
             content["lengths"] = YAML::Load("[]");
@@ -987,6 +993,8 @@ YAML::Node YAMLGenerator::render_supply0(const AST::Supply0::Ptr node) const
 
         content["rdelay"] = render(node->get_rdelay());
 
+        content["type"] = render(node->get_type());
+
         if(node->get_lengths()) {
             content["lengths"] = YAML::Load("[]");
             for(const AST::Length::Ptr &n : *node->get_lengths()) {
@@ -1027,6 +1035,8 @@ YAML::Node YAMLGenerator::render_supply1(const AST::Supply1::Ptr node) const
 
         content["rdelay"] = render(node->get_rdelay());
 
+        content["type"] = render(node->get_type());
+
         if(node->get_lengths()) {
             content["lengths"] = YAML::Load("[]");
             for(const AST::Length::Ptr &n : *node->get_lengths()) {
@@ -1066,6 +1076,8 @@ YAML::Node YAMLGenerator::render_logic(const AST::Logic::Ptr node) const
         content["ldelay"] = render(node->get_ldelay());
 
         content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
 
         if(node->get_lengths()) {
             content["lengths"] = YAML::Load("[]");

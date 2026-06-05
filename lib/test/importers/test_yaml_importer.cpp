@@ -547,6 +547,7 @@ TEST(YAMLImporter, Net)
                     "  widths:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
+                    "  type:\n"
                     "  lengths:\n"
                     "  right:\n"
                     "  sign: false\n"
@@ -561,6 +562,7 @@ TEST(YAMLImporter, Net)
     ASSERT_TRUE(yaml["Net"]["widths"]);
     ASSERT_TRUE(yaml["Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Net"]["rdelay"]);
+    ASSERT_TRUE(yaml["Net"]["type"]);
     ASSERT_TRUE(yaml["Net"]["lengths"]);
     ASSERT_TRUE(yaml["Net"]["right"]);
     ASSERT_TRUE(yaml["Net"]["sign"].as<bool>() == false);
@@ -797,6 +799,7 @@ TEST(YAMLImporter, Tri)
                     "  widths:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
+                    "  type:\n"
                     "  lengths:\n"
                     "  right:\n"
                     "  sign: false\n"
@@ -811,6 +814,7 @@ TEST(YAMLImporter, Tri)
     ASSERT_TRUE(yaml["Tri"]["widths"]);
     ASSERT_TRUE(yaml["Tri"]["ldelay"]);
     ASSERT_TRUE(yaml["Tri"]["rdelay"]);
+    ASSERT_TRUE(yaml["Tri"]["type"]);
     ASSERT_TRUE(yaml["Tri"]["lengths"]);
     ASSERT_TRUE(yaml["Tri"]["right"]);
     ASSERT_TRUE(yaml["Tri"]["sign"].as<bool>() == false);
@@ -828,6 +832,7 @@ TEST(YAMLImporter, Wire)
                     "  widths:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
+                    "  type:\n"
                     "  lengths:\n"
                     "  right:\n"
                     "  sign: false\n"
@@ -842,6 +847,7 @@ TEST(YAMLImporter, Wire)
     ASSERT_TRUE(yaml["Wire"]["widths"]);
     ASSERT_TRUE(yaml["Wire"]["ldelay"]);
     ASSERT_TRUE(yaml["Wire"]["rdelay"]);
+    ASSERT_TRUE(yaml["Wire"]["type"]);
     ASSERT_TRUE(yaml["Wire"]["lengths"]);
     ASSERT_TRUE(yaml["Wire"]["right"]);
     ASSERT_TRUE(yaml["Wire"]["sign"].as<bool>() == false);
@@ -859,6 +865,7 @@ TEST(YAMLImporter, Supply0)
                     "  widths:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
+                    "  type:\n"
                     "  lengths:\n"
                     "  right:\n"
                     "  sign: false\n"
@@ -873,6 +880,7 @@ TEST(YAMLImporter, Supply0)
     ASSERT_TRUE(yaml["Supply0"]["widths"]);
     ASSERT_TRUE(yaml["Supply0"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply0"]["rdelay"]);
+    ASSERT_TRUE(yaml["Supply0"]["type"]);
     ASSERT_TRUE(yaml["Supply0"]["lengths"]);
     ASSERT_TRUE(yaml["Supply0"]["right"]);
     ASSERT_TRUE(yaml["Supply0"]["sign"].as<bool>() == false);
@@ -890,6 +898,7 @@ TEST(YAMLImporter, Supply1)
                     "  widths:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
+                    "  type:\n"
                     "  lengths:\n"
                     "  right:\n"
                     "  sign: false\n"
@@ -904,6 +913,7 @@ TEST(YAMLImporter, Supply1)
     ASSERT_TRUE(yaml["Supply1"]["widths"]);
     ASSERT_TRUE(yaml["Supply1"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply1"]["rdelay"]);
+    ASSERT_TRUE(yaml["Supply1"]["type"]);
     ASSERT_TRUE(yaml["Supply1"]["lengths"]);
     ASSERT_TRUE(yaml["Supply1"]["right"]);
     ASSERT_TRUE(yaml["Supply1"]["sign"].as<bool>() == false);
@@ -921,6 +931,7 @@ TEST(YAMLImporter, Logic)
                     "  widths:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
+                    "  type:\n"
                     "  lengths:\n"
                     "  right:\n"
                     "  sign: false\n"
@@ -935,6 +946,7 @@ TEST(YAMLImporter, Logic)
     ASSERT_TRUE(yaml["Logic"]["widths"]);
     ASSERT_TRUE(yaml["Logic"]["ldelay"]);
     ASSERT_TRUE(yaml["Logic"]["rdelay"]);
+    ASSERT_TRUE(yaml["Logic"]["type"]);
     ASSERT_TRUE(yaml["Logic"]["lengths"]);
     ASSERT_TRUE(yaml["Logic"]["right"]);
     ASSERT_TRUE(yaml["Logic"]["sign"].as<bool>() == false);

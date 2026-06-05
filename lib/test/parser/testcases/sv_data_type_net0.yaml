@@ -1,0 +1,150 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_data_type_net0.sv
+          items:
+          - Wire:
+              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+              ldelay:
+                DelayStatement: null
+              line: 3
+              name: a
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  line: 3
+                  name: logic
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  line: 3
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 3
+          - Wire:
+              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+              ldelay:
+                DelayStatement: null
+              line: 4
+              name: b
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: true
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  line: 4
+                  name: logic
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  line: 4
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 7
+          - Tri:
+              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+              ldelay:
+                DelayStatement: null
+              line: 5
+              name: c
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  line: 5
+                  name: reg
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+          - Wire:
+              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+              ldelay:
+                DelayStatement: null
+              line: 6
+              name: d
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue: null
+              sign: false
+              type:
+                Identifier:
+                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  line: 6
+                  name: bit
+                  package: ''
+                  scope:
+                    IdentifierScope: null
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  line: 6
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 1
+          line: 1
+          name: sv_data_type_net0
+      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+  line: 1
