@@ -98,6 +98,13 @@ AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
 AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
 														 const std::string &filename="", uint32_t line=0);
 
+// Build a struct/union member for `data_type name ;`. The member keeps its
+// existing shape (type recorded as an Identifier carrying the keyword/typedef
+// name, or the inline aggregate def; packed dims in `widths`; `sign` only for
+// vector types bit/reg/logic).
+AST::StructMember::Ptr build_struct_member(const data_type_t &dt, const std::string &name,
+														 const std::string &filename="", uint32_t line=0);
+
 AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
 														 AST::Width::ListPtr widths,  std::string name,
 														 const std::string &filename="", uint32_t line=0);
@@ -1448,111 +1455,57 @@ struct_members:
                 }
         ;
 
-struct_member:
-                TK_LOGIC widths TK_IDENTIFIER TK_SEMICOLON
+// struct/union member: a data_type plus a member name. Built-in and inline
+// aggregate types come through `data_type`; `logic` (still in net_type until
+// step 4) and named/scoped types use dedicated forms whose data_type_t is built
+// by hand. build_struct_member() keeps the StructMember shape unified.
+struct_member:  data_type TK_IDENTIFIER TK_SEMICOLON
                 {
-                    $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($3);
-                    $$->set_sign(false);
-                    $$->set_widths($2);
-                    auto type = std::make_shared<AST::Identifier>();
-                    type->set_name("logic");
-                    type->set_filename(scanner.get_filename());
-                    type->set_line(@1.begin.line);
-                    $$->set_type(AST::to_node(type));
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
+                    $$ = ParserHelpers::build_struct_member($1, $2, scanner.get_filename(),
+                                                            @1.begin.line);
                 }
-
-        |       TK_LOGIC TK_IDENTIFIER TK_SEMICOLON
+        |       TK_LOGIC packed_dimensions TK_IDENTIFIER TK_SEMICOLON
                 {
-                    $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($2);
-                    $$->set_sign(false);
-                    auto type = std::make_shared<AST::Identifier>();
-                    type->set_name("logic");
-                    type->set_filename(scanner.get_filename());
-                    type->set_line(@1.begin.line);
-                    $$->set_type(AST::to_node(type));
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
+                    data_type_t dt{data_type_kind_t::LOGIC, false, $2, nullptr, nullptr};
+                    $$ = ParserHelpers::build_struct_member(dt, $3, scanner.get_filename(),
+                                                            @1.begin.line);
                 }
-
-        |       TK_BIT widths TK_IDENTIFIER TK_SEMICOLON
-                {
-                    $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($3);
-                    $$->set_sign(false);
-                    $$->set_widths($2);
-                    auto type = std::make_shared<AST::Identifier>();
-                    type->set_name("bit");
-                    type->set_filename(scanner.get_filename());
-                    type->set_line(@1.begin.line);
-                    $$->set_type(AST::to_node(type));
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
-                }
-
-        |       TK_BIT TK_IDENTIFIER TK_SEMICOLON
-                {
-                    $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($2);
-                    $$->set_sign(false);
-                    auto type = std::make_shared<AST::Identifier>();
-                    type->set_name("bit");
-                    type->set_filename(scanner.get_filename());
-                    type->set_line(@1.begin.line);
-                    $$->set_type(AST::to_node(type));
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
-                }
-
-        |       TK_INT TK_IDENTIFIER TK_SEMICOLON
-                {
-                    $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($2);
-                    $$->set_sign(false);
-                    auto type = std::make_shared<AST::Identifier>();
-                    type->set_name("int");
-                    type->set_filename(scanner.get_filename());
-                    type->set_line(@1.begin.line);
-                    $$->set_type(AST::to_node(type));
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
-                }
-
         |       TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
-                    // user-defined type member: `my_t name;`
-                    $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($2);
-                    $$->set_sign(false);
-                    auto type = std::make_shared<AST::Identifier>();
-                    type->set_name($1);
-                    type->set_filename(scanner.get_filename());
-                    type->set_line(@1.begin.line);
-                    $$->set_type(AST::to_node(type));
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_name($1);
+                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    $$ = ParserHelpers::build_struct_member(dt, $2, scanner.get_filename(),
+                                                            @1.begin.line);
                 }
-
+        |       TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
+                {
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_name($1);
+                    data_type_t dt{data_type_kind_t::NAMED, false, $2, AST::to_node(ref), nullptr};
+                    $$ = ParserHelpers::build_struct_member(dt, $3, scanner.get_filename(),
+                                                            @1.begin.line);
+                }
         |       package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
-                    // package-scoped type member: `pkg::T name;`
-                    $$ = std::make_shared<AST::StructMember>();
-                    $$->set_name($3);
-                    $$->set_sign(false);
-                    auto type = std::make_shared<AST::Identifier>();
-                    type->set_package($1);
-                    type->set_name($2);
-                    type->set_filename(scanner.get_filename());
-                    type->set_line(@1.begin.line);
-                    $$->set_type(AST::to_node(type));
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_package($1);
+                    ref->set_name($2);
+                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    $$ = ParserHelpers::build_struct_member(dt, $3, scanner.get_filename(),
+                                                            @1.begin.line);
+                }
+        |       package_scope TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
+                {
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_package($1);
+                    ref->set_name($2);
+                    data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
+                    $$ = ParserHelpers::build_struct_member(dt, $4, scanner.get_filename(),
+                                                            @1.begin.line);
                 }
         ;
-        ;
+
 net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Node::List>();
@@ -5198,6 +5151,55 @@ namespace Veriparse {
                 }
 
                 return node;
+            }
+
+            AST::StructMember::Ptr build_struct_member(const data_type_t &dt, const std::string &name,
+                                                       const std::string &filename, uint32_t line) {
+                auto member = std::make_shared<AST::StructMember>(filename, line);
+                member->set_name(name);
+                member->set_widths(dt.packed_dims);
+
+                // signing is only meaningful for vector types (bit/reg/logic);
+                // atoms are implicitly signed, named/aggregate carry none.
+                const bool vector = dt.kind == data_type_kind_t::BIT
+                                 || dt.kind == data_type_kind_t::REG
+                                 || dt.kind == data_type_kind_t::LOGIC;
+                member->set_sign(vector ? dt.is_signed : false);
+
+                AST::Node::Ptr type;
+                if(dt.kind == data_type_kind_t::NAMED) {
+                    type = dt.type_ref;
+                }
+                else if(dt.kind == data_type_kind_t::STRUCT
+                        || dt.kind == data_type_kind_t::UNION
+                        || dt.kind == data_type_kind_t::ENUM) {
+                    type = dt.inline_def;
+                }
+                else {
+                    // built-in: the type is recorded as an Identifier carrying
+                    // the keyword name (existing struct-member representation).
+                    const char *kw = "";
+                    switch(dt.kind) {
+                    case data_type_kind_t::BIT:       kw = "bit";       break;
+                    case data_type_kind_t::REG:       kw = "reg";       break;
+                    case data_type_kind_t::LOGIC:     kw = "logic";     break;
+                    case data_type_kind_t::BYTE:      kw = "byte";      break;
+                    case data_type_kind_t::SHORTINT:  kw = "shortint";  break;
+                    case data_type_kind_t::INT:       kw = "int";       break;
+                    case data_type_kind_t::LONGINT:   kw = "longint";   break;
+                    case data_type_kind_t::INTEGER:   kw = "integer";   break;
+                    case data_type_kind_t::REAL:      kw = "real";      break;
+                    case data_type_kind_t::SHORTREAL: kw = "shortreal"; break;
+                    case data_type_kind_t::REALTIME:  kw = "realtime";  break;
+                    default: break;
+                    }
+                    auto id = std::make_shared<AST::Identifier>(filename, line);
+                    id->set_name(kw);
+                    type = AST::to_node(id);
+                }
+                member->set_type(type);
+
+                return member;
             }
 
             AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,

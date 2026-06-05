@@ -1,0 +1,194 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+          items:
+          - Typedef:
+              def:
+                StructDef:
+                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                  line: 3
+                  members:
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 4
+                      name: b
+                      sign: false
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 4
+                          name: byte
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 5
+                      name: s
+                      sign: false
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 5
+                          name: shortint
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 6
+                      name: i
+                      sign: false
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 6
+                          name: int
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 7
+                      name: l
+                      sign: false
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 7
+                          name: longint
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 8
+                      name: q
+                      sign: true
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 8
+                          name: bit
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                      widths:
+                      - Width:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 8
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 3
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 9
+                      name: lg
+                      sign: false
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 9
+                          name: logic
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                      widths:
+                      - Width:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 9
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 7
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 10
+                      name: u
+                      sign: false
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 10
+                          name: t
+                          package: pkg
+                          scope:
+                            IdentifierScope: null
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                      line: 11
+                      name: nested
+                      sign: false
+                      type:
+                        StructDef:
+                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          line: 11
+                          members:
+                          - StructMember:
+                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                              line: 11
+                              name: x
+                              sign: false
+                              type:
+                                Identifier:
+                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                                  line: 11
+                                  name: int
+                                  package: ''
+                                  scope:
+                                    IdentifierScope: null
+                          - StructMember:
+                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                              line: 11
+                              name: y
+                              sign: false
+                              type:
+                                Identifier:
+                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                                  line: 11
+                                  name: bit
+                                  package: ''
+                                  scope:
+                                    IdentifierScope: null
+                          packed: true
+                          sign: false
+                  packed: true
+                  sign: false
+              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+              line: 3
+              name: big_t
+          line: 1
+          name: sv_data_type_member0
+      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+  line: 1
