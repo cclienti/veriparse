@@ -105,6 +105,13 @@ AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl
 AST::StructMember::Ptr build_struct_member(const data_type_t &dt, const std::string &name,
 														 const std::string &filename="", uint32_t line=0);
 
+// Build the bare type node a data_type denotes (no variable name): the dedicated
+// scalar node for built-ins, the inline def for struct/union/enum, the type ref
+// for a named type; wrapped in a CustomTypeVar when packed dimensions are
+// present on an aggregate/named type. Used as a typedef/function-return type.
+AST::Node::Ptr build_data_type_def(const data_type_t &dt,
+														 const std::string &filename="", uint32_t line=0);
+
 AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
 														 AST::Width::ListPtr widths,  std::string name,
 														 const std::string &filename="", uint32_t line=0);
@@ -1215,26 +1222,23 @@ standard_item_base:
 
 
 
+// typedef of any data_type (Annex A: `typedef data_type type_identifier ;`).
+// Built-ins, struct/union/enum (incl. logic/reg now in data_type) come through
+// `data_type`; net types (wire/tri/supply) and named/scoped types — which can't
+// fold into data_type — keep dedicated forms. build_data_type_def() yields the
+// bare type node so the Typedef def stays identical to before.
 typedef_decl:
-                TK_TYPEDEF enum_def TK_IDENTIFIER TK_SEMICOLON
+                TK_TYPEDEF data_type TK_IDENTIFIER TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(AST::to_node($2));
+                    $$->set_def(ParserHelpers::build_data_type_def($2, scanner.get_filename(),
+                                                                   @1.begin.line));
                     $$->set_name($3);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
 
-        |       TK_TYPEDEF struct_def TK_IDENTIFIER TK_SEMICOLON
-                {
-                    $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(AST::to_node($2));
-                    $$->set_name($3);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
-                }
-
-        |       TK_TYPEDEF reg_net_type widths TK_IDENTIFIER TK_SEMICOLON
+        |       TK_TYPEDEF net_type widths TK_IDENTIFIER TK_SEMICOLON
                 {
                     decl_name_t d{};
                     AST::Variable::Ptr def = ParserHelpers::create_net_type(
@@ -1246,7 +1250,7 @@ typedef_decl:
                     $$->set_line(@1.begin.line);
                 }
 
-        |       TK_TYPEDEF reg_net_type TK_IDENTIFIER TK_SEMICOLON
+        |       TK_TYPEDEF net_type TK_IDENTIFIER TK_SEMICOLON
                 {
                     decl_name_t d{};
                     AST::Variable::Ptr def = ParserHelpers::create_net_type(
@@ -1260,25 +1264,58 @@ typedef_decl:
 
         |       TK_TYPEDEF TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
-                    // typedef of a user-defined type: `typedef my_t other_t;`
-                    auto def = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    def->set_name($2);
+                    // named type alias: `typedef my_t other_t;`
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_name($2);
+                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(AST::to_node(def));
+                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                                                                   @1.begin.line));
                     $$->set_name($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
+                {
+                    // named type alias with packed dims: `typedef my_t [3:0] arr_t;`
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_name($2);
+                    data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                                                                   @1.begin.line));
+                    $$->set_name($4);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
 
         |       TK_TYPEDEF package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
-                    // typedef of a package-scoped type: `typedef pkg::T other_t;`
-                    auto def = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    def->set_package($2);
-                    def->set_name($3);
+                    // package-scoped type alias: `typedef pkg::T other_t;`
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_package($2);
+                    ref->set_name($3);
+                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(AST::to_node(def));
+                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                                                                   @1.begin.line));
                     $$->set_name($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF package_scope TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
+                {
+                    // package-scoped alias with packed dims: `typedef pkg::T [3:0] arr_t;`
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    ref->set_package($2);
+                    ref->set_name($3);
+                    data_type_t dt{data_type_kind_t::NAMED, false, $4, AST::to_node(ref), nullptr};
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                                                                   @1.begin.line));
+                    $$->set_name($5);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
@@ -5194,6 +5231,31 @@ namespace Veriparse {
                 member->set_type(type);
 
                 return member;
+            }
+
+            AST::Node::Ptr build_data_type_def(const data_type_t &dt,
+                                               const std::string &filename, uint32_t line) {
+                // struct/union/enum: the inline def is the type; a named type is
+                // its reference. Wrap in a CustomTypeVar only to carry packed
+                // dimensions on the type (e.g. `typedef my_t [3:0] arr_t`).
+                if(dt.kind == data_type_kind_t::STRUCT
+                   || dt.kind == data_type_kind_t::UNION
+                   || dt.kind == data_type_kind_t::ENUM
+                   || dt.kind == data_type_kind_t::NAMED) {
+                    AST::Node::Ptr inner =
+                        (dt.kind == data_type_kind_t::NAMED) ? dt.type_ref : dt.inline_def;
+                    if(!dt.packed_dims) {
+                        return inner;
+                    }
+                    auto var = std::make_shared<AST::CustomTypeVar>(filename, line);
+                    var->set_type(inner);
+                    var->set_widths(dt.packed_dims);
+                    return AST::to_node(var);
+                }
+
+                // built-in scalar: the dedicated node with no variable name.
+                decl_name_t empty{};
+                return AST::to_node(build_variable(dt, empty, filename, line));
             }
 
             AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
