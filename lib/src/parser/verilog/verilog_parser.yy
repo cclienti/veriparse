@@ -1005,15 +1005,18 @@ ioport:         portdir portname
 
 
 reg_net_type:   TK_REG   {$$ = net_type_t::REG;}
+        |       TK_LOGIC {$$ = net_type_t::LOGIC;}
         |       net_type {$$ = $1;}
         ;
 
 
+// True net types only (Annex A). `logic`/`reg` are data types, not nets:
+// `logic` reaches data_type via integer_vector_type, and reaches port
+// declarations via reg_net_type above.
 net_type:       TK_TRI      {$$ = net_type_t::TRI;}
         |       TK_WIRE     {$$ = net_type_t::WIRE;}
         |       TK_SUPPLY0  {$$ = net_type_t::SUPPLY0;}
         |       TK_SUPPLY1  {$$ = net_type_t::SUPPLY1;}
-        |       TK_LOGIC    {$$ = net_type_t::LOGIC;}
         ;
 
 
@@ -1231,7 +1234,7 @@ typedef_decl:
                     $$->set_line(@1.begin.line);
                 }
 
-        |       TK_TYPEDEF net_type widths TK_IDENTIFIER TK_SEMICOLON
+        |       TK_TYPEDEF reg_net_type widths TK_IDENTIFIER TK_SEMICOLON
                 {
                     decl_name_t d{};
                     AST::Variable::Ptr def = ParserHelpers::create_net_type(
@@ -1243,7 +1246,7 @@ typedef_decl:
                     $$->set_line(@1.begin.line);
                 }
 
-        |       TK_TYPEDEF net_type TK_IDENTIFIER TK_SEMICOLON
+        |       TK_TYPEDEF reg_net_type TK_IDENTIFIER TK_SEMICOLON
                 {
                     decl_name_t d{};
                     AST::Variable::Ptr def = ParserHelpers::create_net_type(
@@ -1464,12 +1467,6 @@ struct_member:  data_type TK_IDENTIFIER TK_SEMICOLON
                     $$ = ParserHelpers::build_struct_member($1, $2, scanner.get_filename(),
                                                             @1.begin.line);
                 }
-        |       TK_LOGIC packed_dimensions TK_IDENTIFIER TK_SEMICOLON
-                {
-                    data_type_t dt{data_type_kind_t::LOGIC, false, $2, nullptr, nullptr};
-                    $$ = ParserHelpers::build_struct_member(dt, $3, scanner.get_filename(),
-                                                            @1.begin.line);
-                }
         |       TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
@@ -1551,12 +1548,9 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
 // real joins non_integer_type).
 integer_vector_type:                          // [signing] {packed_dimension}, unsigned by default
                 TK_BIT       { $$ = data_type_kind_t::BIT; }
+        |       TK_LOGIC     { $$ = data_type_kind_t::LOGIC; }
         |       TK_REG       { $$ = data_type_kind_t::REG; }
         ;
-        // NOTE: `logic` stays in net_type until ports migrate to data_type
-        // (step 4): net_type is shared with port declarations, and `logic`
-        // cannot live in both net_type and integer_vector_type without an
-        // item-level reduce/reduce conflict on `logic x;`.
 
 integer_atom_type:                            // [signing], signed by default
                 TK_BYTE      { $$ = data_type_kind_t::BYTE; }
