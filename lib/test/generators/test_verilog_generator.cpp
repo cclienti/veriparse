@@ -240,6 +240,7 @@ TEST(VerilogGeneratorTest, sv_typedef_struct1) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_scalar0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_aggregate0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_named0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_data_type_member0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package_lifetime0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package_empty0) { TEST_CORE_SV; }
