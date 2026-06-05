@@ -428,13 +428,14 @@ TEST(YAMLGenerator, Net)
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::Node::Ptr c_type(new AST::Node);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
     bool p_sign = false;
     std::string p_name = "ynbiqpmzjp";
 
-    AST::Net::Ptr m_net(new AST::Net(c_widths, c_ldelay, c_rdelay, c_lengths, c_right, p_sign,
-                                     p_name, "filename", 0));
+    AST::Net::Ptr m_net(new AST::Net(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
+                                     p_sign, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_net);
 
@@ -442,6 +443,7 @@ TEST(YAMLGenerator, Net)
     ASSERT_TRUE(yaml["Net"]["widths"]);
     ASSERT_TRUE(yaml["Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Net"]["rdelay"]);
+    ASSERT_TRUE(yaml["Net"]["type"]);
     ASSERT_TRUE(yaml["Net"]["lengths"]);
     ASSERT_TRUE(yaml["Net"]["right"]);
     ASSERT_TRUE(yaml["Net"]["sign"].as<bool>() == false);
@@ -651,13 +653,14 @@ TEST(YAMLGenerator, Tri)
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::Node::Ptr c_type(new AST::Node);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
     bool p_sign = false;
     std::string p_name = "ynbiqpmzjp";
 
-    AST::Tri::Ptr m_tri(new AST::Tri(c_widths, c_ldelay, c_rdelay, c_lengths, c_right, p_sign,
-                                     p_name, "filename", 0));
+    AST::Tri::Ptr m_tri(new AST::Tri(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
+                                     p_sign, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_tri);
 
@@ -665,6 +668,7 @@ TEST(YAMLGenerator, Tri)
     ASSERT_TRUE(yaml["Tri"]["widths"]);
     ASSERT_TRUE(yaml["Tri"]["ldelay"]);
     ASSERT_TRUE(yaml["Tri"]["rdelay"]);
+    ASSERT_TRUE(yaml["Tri"]["type"]);
     ASSERT_TRUE(yaml["Tri"]["lengths"]);
     ASSERT_TRUE(yaml["Tri"]["right"]);
     ASSERT_TRUE(yaml["Tri"]["sign"].as<bool>() == false);
@@ -680,13 +684,14 @@ TEST(YAMLGenerator, Wire)
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::Node::Ptr c_type(new AST::Node);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
     bool p_sign = false;
     std::string p_name = "ynbiqpmzjp";
 
-    AST::Wire::Ptr m_wire(new AST::Wire(c_widths, c_ldelay, c_rdelay, c_lengths, c_right, p_sign,
-                                        p_name, "filename", 0));
+    AST::Wire::Ptr m_wire(new AST::Wire(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
+                                        p_sign, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_wire);
 
@@ -694,6 +699,7 @@ TEST(YAMLGenerator, Wire)
     ASSERT_TRUE(yaml["Wire"]["widths"]);
     ASSERT_TRUE(yaml["Wire"]["ldelay"]);
     ASSERT_TRUE(yaml["Wire"]["rdelay"]);
+    ASSERT_TRUE(yaml["Wire"]["type"]);
     ASSERT_TRUE(yaml["Wire"]["lengths"]);
     ASSERT_TRUE(yaml["Wire"]["right"]);
     ASSERT_TRUE(yaml["Wire"]["sign"].as<bool>() == false);
@@ -709,13 +715,14 @@ TEST(YAMLGenerator, Supply0)
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::Node::Ptr c_type(new AST::Node);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
     bool p_sign = false;
     std::string p_name = "ynbiqpmzjp";
 
-    AST::Supply0::Ptr m_supply0(new AST::Supply0(c_widths, c_ldelay, c_rdelay, c_lengths, c_right,
-                                                 p_sign, p_name, "filename", 0));
+    AST::Supply0::Ptr m_supply0(new AST::Supply0(c_widths, c_ldelay, c_rdelay, c_type, c_lengths,
+                                                 c_right, p_sign, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_supply0);
 
@@ -723,6 +730,7 @@ TEST(YAMLGenerator, Supply0)
     ASSERT_TRUE(yaml["Supply0"]["widths"]);
     ASSERT_TRUE(yaml["Supply0"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply0"]["rdelay"]);
+    ASSERT_TRUE(yaml["Supply0"]["type"]);
     ASSERT_TRUE(yaml["Supply0"]["lengths"]);
     ASSERT_TRUE(yaml["Supply0"]["right"]);
     ASSERT_TRUE(yaml["Supply0"]["sign"].as<bool>() == false);
@@ -738,13 +746,14 @@ TEST(YAMLGenerator, Supply1)
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::Node::Ptr c_type(new AST::Node);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
     bool p_sign = false;
     std::string p_name = "ynbiqpmzjp";
 
-    AST::Supply1::Ptr m_supply1(new AST::Supply1(c_widths, c_ldelay, c_rdelay, c_lengths, c_right,
-                                                 p_sign, p_name, "filename", 0));
+    AST::Supply1::Ptr m_supply1(new AST::Supply1(c_widths, c_ldelay, c_rdelay, c_type, c_lengths,
+                                                 c_right, p_sign, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_supply1);
 
@@ -752,6 +761,7 @@ TEST(YAMLGenerator, Supply1)
     ASSERT_TRUE(yaml["Supply1"]["widths"]);
     ASSERT_TRUE(yaml["Supply1"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply1"]["rdelay"]);
+    ASSERT_TRUE(yaml["Supply1"]["type"]);
     ASSERT_TRUE(yaml["Supply1"]["lengths"]);
     ASSERT_TRUE(yaml["Supply1"]["right"]);
     ASSERT_TRUE(yaml["Supply1"]["sign"].as<bool>() == false);
@@ -767,13 +777,14 @@ TEST(YAMLGenerator, Logic)
     AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::Node::Ptr c_type(new AST::Node);
     AST::Length::ListPtr c_lengths(new AST::Length::List);
     AST::Rvalue::Ptr c_right(new AST::Rvalue);
     bool p_sign = false;
     std::string p_name = "ynbiqpmzjp";
 
-    AST::Logic::Ptr m_logic(new AST::Logic(c_widths, c_ldelay, c_rdelay, c_lengths, c_right, p_sign,
-                                           p_name, "filename", 0));
+    AST::Logic::Ptr m_logic(new AST::Logic(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
+                                           p_sign, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_logic);
 
@@ -781,6 +792,7 @@ TEST(YAMLGenerator, Logic)
     ASSERT_TRUE(yaml["Logic"]["widths"]);
     ASSERT_TRUE(yaml["Logic"]["ldelay"]);
     ASSERT_TRUE(yaml["Logic"]["rdelay"]);
+    ASSERT_TRUE(yaml["Logic"]["type"]);
     ASSERT_TRUE(yaml["Logic"]["lengths"]);
     ASSERT_TRUE(yaml["Logic"]["right"]);
     ASSERT_TRUE(yaml["Logic"]["sign"].as<bool>() == false);

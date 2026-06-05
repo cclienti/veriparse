@@ -128,6 +128,10 @@ Net:
     widths: list(Width)
     ldelay: DelayStatement
     rdelay: DelayStatement
+    # Explicit net data type (`wire logic`, `tri reg`), as an Identifier holding
+    # the keyword/typedef name. Null when implicit: a net with no data type is
+    # logic by default (IEEE 1800-2017 §6.7.1).
+    type: Node
 
 Integer: {inherit: Variable}
 Real:    {inherit: Variable}

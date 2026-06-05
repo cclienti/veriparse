@@ -18,159 +18,164 @@
 #include <iostream>
 #include <type_traits>
 
-namespace Veriparse {
-namespace AST {
+namespace Veriparse
+{
+namespace AST
+{
 
-class Net: public Variable {
+class Net : public Variable
+{
 public:
-	using Ptr = typename NodePointers<Net>::Ptr;
-	using List = typename NodePointers<Net>::List;
-	using ListPtr = typename NodePointers<Net>::ListPtr;
-	using Variable::operator=;
-	using Variable::operator==;
-	using Variable::operator!=;
+    using Ptr = typename NodePointers<Net>::Ptr;
+    using List = typename NodePointers<Net>::List;
+    using ListPtr = typename NodePointers<Net>::ListPtr;
+    using Variable::operator=;
+    using Variable::operator==;
+    using Variable::operator!=;
 
-	/**
-	 * Constructor, m_node_type is set to NodeType::Net.
-	 */
-	Net(const std::string &filename="", uint32_t line=0);
-	
-	/**
-	 * Constructor, m_node_type is set to NodeType::Net.
-	 */
-	Net(const Width::ListPtr widths, const DelayStatement::Ptr ldelay, const DelayStatement::Ptr rdelay, const Length::ListPtr lengths, const Rvalue::Ptr right, const bool &sign, const std::string &name, const std::string &filename="", uint32_t line=0);
-	
+    /**
+     * Constructor, m_node_type is set to NodeType::Net.
+     */
+    Net(const std::string &filename = "", uint32_t line = 0);
 
-	/**
-	 * Assignment operator, do not affect children.
-	 */
-	virtual Net &operator=(const Net &rhs);
+    /**
+     * Constructor, m_node_type is set to NodeType::Net.
+     */
+    Net(const Width::ListPtr widths, const DelayStatement::Ptr ldelay,
+        const DelayStatement::Ptr rdelay, const Node::Ptr type, const Length::ListPtr lengths,
+        const Rvalue::Ptr right, const bool &sign, const std::string &name,
+        const std::string &filename = "", uint32_t line = 0);
 
-	/**
-	 * Assignment operator, do not affect children.
-	 */
-	virtual Node &operator=(const Node &rhs) override;
+    /**
+     * Assignment operator, do not affect children.
+     */
+    virtual Net &operator=(const Net &rhs);
 
-	/**
-	 * Return true if the Net nodes are the same, do not check children.
-	 */
-	virtual bool operator==(const Net &rhs) const;
+    /**
+     * Assignment operator, do not affect children.
+     */
+    virtual Node &operator=(const Node &rhs) override;
 
-	/**
-	 * Return true if the Net nodes are the same, do not check children.
-	 */
-	virtual bool operator==(const Node &rhs) const override;
+    /**
+     * Return true if the Net nodes are the same, do not check children.
+     */
+    virtual bool operator==(const Net &rhs) const;
 
-	/**
-	 * Return true if the Net nodes are the same, do not check children.
-	 */
-	virtual bool operator!=(const Net &rhs) const;
+    /**
+     * Return true if the Net nodes are the same, do not check children.
+     */
+    virtual bool operator==(const Node &rhs) const override;
 
-	/**
-	 * Return true if the Net nodes are the same, do not check children.
-	 */
-	virtual bool operator!=(const Node &rhs) const override;
+    /**
+     * Return true if the Net nodes are the same, do not check children.
+     */
+    virtual bool operator!=(const Net &rhs) const;
 
-	/**
-	 * Remove the given child.
-	 */
-	virtual bool remove(Node::Ptr node) override;
+    /**
+     * Return true if the Net nodes are the same, do not check children.
+     */
+    virtual bool operator!=(const Node &rhs) const override;
 
-	/**
-	 * Replace the given children node by the new node.
-	 */
-	virtual bool replace(Node::Ptr node, Node::Ptr new_node) override;
+    /**
+     * Remove the given child.
+     */
+    virtual bool remove(Node::Ptr node) override;
 
-	/**
-	 * Replace the given children node by the new nodes in the list.
-	 */
-	virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
-	
-	/**
-	 * Return the child widths.
-	 */
-	virtual Width::ListPtr get_widths(void) const {return m_widths;}
-	
-	/**
-	 * Return the child ldelay.
-	 */
-	virtual DelayStatement::Ptr get_ldelay(void) const {return m_ldelay;}
-	
-	/**
-	 * Return the child rdelay.
-	 */
-	virtual DelayStatement::Ptr get_rdelay(void) const {return m_rdelay;}
-	
-	/**
-	 * Change the child widths.
-	 */
-	virtual void set_widths(Width::ListPtr widths) {
-		m_widths = widths;
-	}
-	
-	/**
-	 * Change the child ldelay.
-	 */
-	virtual void set_ldelay(DelayStatement::Ptr ldelay) {
-		m_ldelay = ldelay;
-	}
-	
-	/**
-	 * Change the child rdelay.
-	 */
-	virtual void set_rdelay(DelayStatement::Ptr rdelay) {
-		m_rdelay = rdelay;
-	}
-	
-	/**
-	 * Return the property sign.
-	 */
-	virtual const bool &get_sign(void) const {return m_sign;}
-	
-	/**
-	 * Change the property sign.
-	 */
-	virtual void set_sign(const bool &sign) {m_sign = sign;}
-	
+    /**
+     * Replace the given children node by the new node.
+     */
+    virtual bool replace(Node::Ptr node, Node::Ptr new_node) override;
 
-	/**
-	 * Return the children list using the private children member
-	 * pointers.
-	 */
-	virtual Node::ListPtr get_children(void) const override;
+    /**
+     * Replace the given children node by the new nodes in the list.
+     */
+    virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
-	/**
-	 * Return a clone of the current List and of all children (recursive).
-	 */
-	static ListPtr clone_list(const ListPtr nodes);
+    /**
+     * Return the child widths.
+     */
+    virtual Width::ListPtr get_widths(void) const { return m_widths; }
+
+    /**
+     * Return the child ldelay.
+     */
+    virtual DelayStatement::Ptr get_ldelay(void) const { return m_ldelay; }
+
+    /**
+     * Return the child rdelay.
+     */
+    virtual DelayStatement::Ptr get_rdelay(void) const { return m_rdelay; }
+
+    /**
+     * Return the child type.
+     */
+    virtual Node::Ptr get_type(void) const { return m_type; }
+
+    /**
+     * Change the child widths.
+     */
+    virtual void set_widths(Width::ListPtr widths) { m_widths = widths; }
+
+    /**
+     * Change the child ldelay.
+     */
+    virtual void set_ldelay(DelayStatement::Ptr ldelay) { m_ldelay = ldelay; }
+
+    /**
+     * Change the child rdelay.
+     */
+    virtual void set_rdelay(DelayStatement::Ptr rdelay) { m_rdelay = rdelay; }
+
+    /**
+     * Change the child type.
+     */
+    virtual void set_type(Node::Ptr type) { m_type = type; }
+
+    /**
+     * Return the property sign.
+     */
+    virtual const bool &get_sign(void) const { return m_sign; }
+
+    /**
+     * Change the property sign.
+     */
+    virtual void set_sign(const bool &sign) { m_sign = sign; }
+
+    /**
+     * Return the children list using the private children member
+     * pointers.
+     */
+    virtual Node::ListPtr get_children(void) const override;
+
+    /**
+     * Return a clone of the current List and of all children (recursive).
+     */
+    static ListPtr clone_list(const ListPtr nodes);
 
 protected:
-	/**
-	 * Clone the instance children and attach them to the
-	 * new_node. This method is called by Node::clone().
-	 */
-	virtual void clone_children(Node::Ptr new_node) const override;
+    /**
+     * Clone the instance children and attach them to the
+     * new_node. This method is called by Node::clone().
+     */
+    virtual void clone_children(Node::Ptr new_node) const override;
 
 private:
-	/**
-	 * Allocate a new node with the same node type than the current instance.
-	 */
-	virtual Node::Ptr alloc_same(void) const override;
+    /**
+     * Allocate a new node with the same node type than the current instance.
+     */
+    virtual Node::Ptr alloc_same(void) const override;
 
-	
-	Width::ListPtr m_widths;
-	DelayStatement::Ptr m_ldelay;
-	DelayStatement::Ptr m_rdelay;
-	bool m_sign;
+    Width::ListPtr m_widths;
+    DelayStatement::Ptr m_ldelay;
+    DelayStatement::Ptr m_rdelay;
+    Node::Ptr m_type;
+    bool m_sign;
 };
 
-std::ostream & operator<<(std::ostream &os, const Net &p);
-std::ostream & operator<<(std::ostream &os, const Net::Ptr p);
+std::ostream &operator<<(std::ostream &os, const Net &p);
+std::ostream &operator<<(std::ostream &os, const Net::Ptr p);
 
-
-
-}
-}
-
+} // namespace AST
+} // namespace Veriparse
 
 #endif

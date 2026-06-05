@@ -1575,6 +1575,28 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
                         $$->push_back(net);
                     }
                 }
+
+        |       net_type integer_vector_type signing packed_dimensions net_decl_namelist TK_SEMICOLON
+                {
+                    // net_declaration with an explicit integer_vector data type
+                    // (`wire logic [3:0] x`, `tri reg q`). The net node carries
+                    // the data type in `type` (an Identifier with the keyword);
+                    // its signing and packed dims stay on the net.
+                    const char *kw = ($2 == data_type_kind_t::LOGIC) ? "logic"
+                                   : ($2 == data_type_kind_t::REG)   ? "reg"
+                                                                     : "bit";
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &decl_name: $5) {
+                        AST::Width::ListPtr widths = AST::Width::clone_list($4);
+                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, $1, widths, $3);
+                        auto type = std::make_shared<AST::Identifier>(scanner.get_filename(), @2.begin.line);
+                        type->set_name(kw);
+                        std::static_pointer_cast<AST::Net>(net)->set_type(AST::to_node(type));
+                        net->set_filename(scanner.get_filename());
+                        net->set_line(@1.begin.line);
+                        $$->push_back(net);
+                    }
+                }
         ;
 
 

@@ -355,7 +355,11 @@ std::string VerilogGenerator::render_tri(const AST::Tri::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = variable_to_string("tri", node->get_sign(), node->get_widths(),
+        std::string kw = "tri";
+        if(node->get_type()) {
+            kw += " " + render(node->get_type());
+        }
+        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
                                     node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
@@ -366,7 +370,11 @@ std::string VerilogGenerator::render_wire(const AST::Wire::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = variable_to_string("wire", node->get_sign(), node->get_widths(),
+        std::string kw = "wire";
+        if(node->get_type()) {
+            kw += " " + render(node->get_type());
+        }
+        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
                                     node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
@@ -388,7 +396,11 @@ std::string VerilogGenerator::render_supply0(const AST::Supply0::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = variable_to_string("supply0", node->get_sign(), node->get_widths(),
+        std::string kw = "supply0";
+        if(node->get_type()) {
+            kw += " " + render(node->get_type());
+        }
+        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
                                     node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
@@ -399,7 +411,11 @@ std::string VerilogGenerator::render_supply1(const AST::Supply1::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = variable_to_string("supply1", node->get_sign(), node->get_widths(),
+        std::string kw = "supply1";
+        if(node->get_type()) {
+            kw += " " + render(node->get_type());
+        }
+        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
                                     node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }

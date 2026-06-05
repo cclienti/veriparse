@@ -1926,6 +1926,19 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
             }
         }
 
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Net>();
+                }
+                result->set_type(child);
+            }
+        }
+
         // Manage Child lengths
         if(node["lengths"]) {
             const YAML::Node node_lengths = node["lengths"];
@@ -2860,6 +2873,19 @@ AST::Node::Ptr YAMLImporter::convert_tri(const YAML::Node node) const
             }
         }
 
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Tri>();
+                }
+                result->set_type(child);
+            }
+        }
+
         // Manage Child lengths
         if(node["lengths"]) {
             const YAML::Node node_lengths = node["lengths"];
@@ -3002,6 +3028,19 @@ AST::Node::Ptr YAMLImporter::convert_wire(const YAML::Node node) const
                     result = std::make_shared<AST::Wire>();
                 }
                 result->set_rdelay(child_cast);
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Wire>();
+                }
+                result->set_type(child);
             }
         }
 
@@ -3150,6 +3189,19 @@ AST::Node::Ptr YAMLImporter::convert_supply0(const YAML::Node node) const
             }
         }
 
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Supply0>();
+                }
+                result->set_type(child);
+            }
+        }
+
         // Manage Child lengths
         if(node["lengths"]) {
             const YAML::Node node_lengths = node["lengths"];
@@ -3295,6 +3347,19 @@ AST::Node::Ptr YAMLImporter::convert_supply1(const YAML::Node node) const
             }
         }
 
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Supply1>();
+                }
+                result->set_type(child);
+            }
+        }
+
         // Manage Child lengths
         if(node["lengths"]) {
             const YAML::Node node_lengths = node["lengths"];
@@ -3437,6 +3502,19 @@ AST::Node::Ptr YAMLImporter::convert_logic(const YAML::Node node) const
                     result = std::make_shared<AST::Logic>();
                 }
                 result->set_rdelay(child_cast);
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Logic>();
+                }
+                result->set_type(child);
             }
         }
 
