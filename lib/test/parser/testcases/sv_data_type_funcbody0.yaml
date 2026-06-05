@@ -1,0 +1,182 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+          items:
+          - Function:
+              automatic: false
+              filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+              line: 3
+              name: f
+              ports:
+              - Ioport:
+                  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                  first:
+                    Input:
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 3
+                      name: a
+                      sign: false
+                      widths:
+                      - Width:
+                          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 3
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 3
+                  line: 3
+                  second:
+                    Variable: null
+              retsign: false
+              rettype: NONE
+              rettype_ref: null
+              retwidths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 3
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 3
+                      sign: false
+                      size: -1
+                      value: 3
+              statements:
+              - Logic:
+                  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 4
+                  name: tmp
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 4
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 3
+              - Bit:
+                  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 5
+                  name: flag
+                  right:
+                    Rvalue: null
+                  sign: false
+              - Byte:
+                  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 6
+                  name: b
+                  right:
+                    Rvalue: null
+                  sign: true
+              - BlockingSubstitution:
+                  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 7
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 7
+                          name: tmp
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  line: 7
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 7
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 7
+                          name: a
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+              - BlockingSubstitution:
+                  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                  ldelay:
+                    DelayStatement: null
+                  left:
+                    Lvalue:
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 8
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 8
+                          name: f
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  line: 8
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue:
+                      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 8
+                      var:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 8
+                          name: tmp
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+          line: 1
+          name: sv_data_type_funcbody0
+      filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_data_type_funcbody0.sv
+  line: 1
