@@ -61,13 +61,12 @@ Module:
       retsign: false
       rettype: NONE
       rettype_ref:
-        Identifier:
+        Integer:
           filename: lib/test/passes/transformations/testcases/ifstmt4.v
           line: 5
-          name: integer
-          package: ''
-          scope:
-            IdentifierScope: null
+          name: ''
+          right:
+            Rvalue: null
       statements:
       - Block:
           filename: lib/test/passes/transformations/testcases/ifstmt4.v

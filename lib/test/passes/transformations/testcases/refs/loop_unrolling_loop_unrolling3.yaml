@@ -27,13 +27,12 @@ Module:
       retsign: false
       rettype: NONE
       rettype_ref:
-        Identifier:
+        Integer:
           filename: lib/test/passes/transformations/testcases/loop_unrolling3.v
           line: 3
-          name: integer
-          package: ''
-          scope:
-            IdentifierScope: null
+          name: ''
+          right:
+            Rvalue: null
       statements:
       - Block:
           filename: lib/test/passes/transformations/testcases/loop_unrolling3.v
@@ -108,13 +107,12 @@ Module:
       retsign: false
       rettype: NONE
       rettype_ref:
-        Identifier:
+        Integer:
           filename: lib/test/passes/transformations/testcases/loop_unrolling3.v
           line: 9
-          name: integer
-          package: ''
-          scope:
-            IdentifierScope: null
+          name: ''
+          right:
+            Rvalue: null
       statements:
       - Block:
           filename: lib/test/passes/transformations/testcases/loop_unrolling3.v
@@ -205,13 +203,12 @@ Module:
       retsign: false
       rettype: NONE
       rettype_ref:
-        Identifier:
+        Integer:
           filename: lib/test/passes/transformations/testcases/loop_unrolling3.v
           line: 15
-          name: integer
-          package: ''
-          scope:
-            IdentifierScope: null
+          name: ''
+          right:
+            Rvalue: null
       statements:
       - Block:
           filename: lib/test/passes/transformations/testcases/loop_unrolling3.v

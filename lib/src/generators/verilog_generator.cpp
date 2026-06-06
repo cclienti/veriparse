@@ -1745,6 +1745,78 @@ std::string VerilogGenerator::render_portarg(const AST::PortArg::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_data_type(const AST::Node::Ptr node) const
+{
+    if(!node) {
+        return "";
+    }
+
+    // Render the bare type (no variable name, no `;`). Vector types
+    // (bit/reg/logic) carry their own signing and packed dimensions; atom /
+    // non-integer types are fixed-width keywords.
+    std::string result;
+    switch(node->get_node_type()) {
+    case AST::NodeType::Bit: {
+        const auto v = AST::cast_to<AST::Bit>(node);
+        result = variable_to_string("bit", v->get_sign(), v->get_widths(), nullptr, nullptr, "");
+        break;
+    }
+    case AST::NodeType::Reg: {
+        const auto v = AST::cast_to<AST::Reg>(node);
+        result = variable_to_string("reg", v->get_sign(), v->get_widths(), nullptr, nullptr, "");
+        break;
+    }
+    case AST::NodeType::Logic: {
+        const auto v = AST::cast_to<AST::Logic>(node);
+        result = variable_to_string("logic", v->get_sign(), v->get_widths(), nullptr, nullptr, "");
+        break;
+    }
+    case AST::NodeType::Byte:
+        result = "byte";
+        break;
+    case AST::NodeType::Shortint:
+        result = "shortint";
+        break;
+    case AST::NodeType::Int:
+        result = "int";
+        break;
+    case AST::NodeType::Longint:
+        result = "longint";
+        break;
+    case AST::NodeType::Integer:
+        result = "integer";
+        break;
+    case AST::NodeType::Shortreal:
+        result = "shortreal";
+        break;
+    case AST::NodeType::Real:
+        result = "real";
+        break;
+    case AST::NodeType::Realtime:
+        result = "realtime";
+        break;
+    case AST::NodeType::CustomTypeVar: {
+        // Named / aggregate type carrying packed dimensions (e.g. `my_t [3:0]`).
+        const auto v = AST::cast_to<AST::CustomTypeVar>(node);
+        const std::string type_str = render(v->get_type());
+        result = variable_to_string(type_str.c_str(), false, v->get_widths(), nullptr, nullptr, "");
+        break;
+    }
+    default:
+        // Inline struct/union/enum def or named-type reference (Identifier):
+        // these already render as a bare type.
+        result = render(node);
+        break;
+    }
+
+    // Drop the trailing space left by the empty variable name so the caller
+    // controls the spacing.
+    while(!result.empty() && result.back() == ' ') {
+        result.pop_back();
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_function(const AST::Function::Ptr node) const
 {
     std::string result;
@@ -1754,14 +1826,12 @@ std::string VerilogGenerator::render_function(const AST::Function::Ptr node) con
             result += "automatic ";
         }
 
-        // explicit return type (built-in/struct/named) is an Identifier keyword
-        // or inline def in rettype_ref, with signing/packed in retsign/retwidths;
-        // the implicit form (`function [3:0] f`) has only retwidths.
+        // explicit return type (built-in scalar / struct / named) is its own
+        // type node in rettype_ref, carrying its signing and packed dims; the
+        // implicit form (`function [3:0] f` / `function signed [3:0] f`) has
+        // only retwidths/retsign.
         if(node->get_rettype_ref()) {
-            result += render(node->get_rettype_ref()) + " ";
-            if(node->get_retsign()) {
-                result += "signed ";
-            }
+            result += render_data_type(node->get_rettype_ref()) + " ";
         }
         result += widths_list_to_string(node->get_retwidths());
 

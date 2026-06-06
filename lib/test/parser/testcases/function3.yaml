@@ -140,13 +140,12 @@ Source:
               retsign: false
               rettype: NONE
               rettype_ref:
-                Identifier:
+                Integer:
                   filename: lib/test/parser/testcases/function3.v
                   line: 3
-                  name: integer
-                  package: ''
-                  scope:
-                    IdentifierScope: null
+                  name: ''
+                  right:
+                    Rvalue: null
               statements:
               - Block:
                   filename: lib/test/parser/testcases/function3.v
