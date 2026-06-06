@@ -1716,23 +1716,16 @@ std::string VerilogGenerator::render_function(const AST::Function::Ptr node) con
             result += "automatic ";
         }
 
-        result += widths_list_to_string(node->get_retwidths());
-
-        switch(node->get_rettype()) {
-        case AST::Function::RettypeEnum::INTEGER:
-            result.append("integer ");
-            break;
-        case AST::Function::RettypeEnum::REAL:
-            result.append("real ");
-            break;
-        default:
-            break;
-        }
-
-        // user-defined / package-scoped return type
+        // explicit return type (built-in/struct/named) is an Identifier keyword
+        // or inline def in rettype_ref, with signing/packed in retsign/retwidths;
+        // the implicit form (`function [3:0] f`) has only retwidths.
         if(node->get_rettype_ref()) {
             result += render(node->get_rettype_ref()) + " ";
+            if(node->get_retsign()) {
+                result += "signed ";
+            }
         }
+        result += widths_list_to_string(node->get_retwidths());
 
         result += StringUtils::escape(node->get_name());
 
