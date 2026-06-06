@@ -6,55 +6,13 @@
 #include <veriparse/generators/yaml_generator.hpp>
 #include <veriparse/generators/dot_generator.hpp>
 #include <veriparse/importers/yaml_importer.hpp>
-#include <veriparse/AST/nodes.hpp>
 #include <gtest/gtest.h>
 #include <fstream>
-#include <set>
-#include <sstream>
 #include <string>
-#include <vector>
 
 using namespace Veriparse;
 
 static TestHelpers test_helpers("lib/test/parser/testcases/");
-
-// The AST is a tree: every node must be reached as a child exactly once. A node
-// reached a second time is shared between two parents (the dot output shows it
-// as a node with several incoming edges). Collect every such shared node.
-static void collect_shared(const AST::Node::Ptr &node, std::set<const void *> &seen,
-                           std::vector<AST::Node::Ptr> &shared)
-{
-    if(!node) {
-        return;
-    }
-    if(!seen.insert(node.get()).second) {
-        shared.push_back(node);
-    }
-    const AST::Node::ListPtr children = node->get_children();
-    if(children) {
-        for(const AST::Node::Ptr &c : *children) {
-            collect_shared(c, seen, shared);
-        }
-    }
-}
-
-// Empty string if `source` is a proper tree; otherwise a description of the
-// shared nodes (which break clone/in-place-mutation invariants).
-static std::string node_sharing_report(const AST::Node::Ptr &source)
-{
-    std::set<const void *> seen;
-    std::vector<AST::Node::Ptr> shared;
-    collect_shared(source, seen, shared);
-    if(shared.empty()) {
-        return "";
-    }
-    std::ostringstream os;
-    os << shared.size() << " shared AST node(s) (tree invariant violated), at lines:";
-    for(const AST::Node::Ptr &n : shared) {
-        os << " " << n->get_line();
-    }
-    return os.str();
-}
 
 #define TEST_CORE                                                                                  \
     ENABLE_LOGGER;                                                                                 \
@@ -64,11 +22,7 @@ static std::string node_sharing_report(const AST::Node::Ptr &source)
     verilog.parse(test_helpers.get_verilog_filename(test_name));                                   \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
-    {                                                                                              \
-        /* Tree invariant: no AST node shared between two parents */                               \
-        const std::string sharing = node_sharing_report(source);                                   \
-        ASSERT_TRUE(sharing.empty()) << sharing;                                                   \
-    }                                                                                              \
+    ASSERT_AST_IS_TREE(source); /* no AST node shared between two parents */                       \
     test_helpers.render_node_to_yaml_file(source, test_string + "_parsed.yaml");                   \
     test_helpers.render_node_to_dot_file(source, test_string + "_parsed.dot");                     \
                                                                                                    \
@@ -95,11 +49,7 @@ static std::string node_sharing_report(const AST::Node::Ptr &source)
     verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
-    {                                                                                              \
-        /* Tree invariant: no AST node shared between two parents */                               \
-        const std::string sharing = node_sharing_report(source);                                   \
-        ASSERT_TRUE(sharing.empty()) << sharing;                                                   \
-    }                                                                                              \
+    ASSERT_AST_IS_TREE(source); /* no AST node shared between two parents */                       \
     test_helpers.render_node_to_yaml_file(source, test_string + "_parsed.yaml");                   \
     test_helpers.render_node_to_dot_file(source, test_string + "_parsed.dot");                     \
                                                                                                    \
