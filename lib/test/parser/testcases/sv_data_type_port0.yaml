@@ -67,7 +67,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_data_type_port0.sv
                   line: 2
                   name: a
-                  sign: false
+                  sign: true
               line: 2
               second:
                 Int:
@@ -141,7 +141,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_data_type_port0.sv
                   line: 4
                   name: c
-                  sign: false
+                  sign: true
               line: 4
               second:
                 Byte:
@@ -215,7 +215,7 @@ Source:
                   filename: lib/test/parser/testcases/sv_data_type_port0.sv
                   line: 6
                   name: e
-                  sign: false
+                  sign: true
               line: 6
               second:
                 Shortint:
