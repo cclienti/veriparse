@@ -88,11 +88,11 @@ dev-cmake:
 dev-build:
 	$(DEV_RUN) cmake --build $(DEV_BUILD_DIR)
 
-dev-test:
+dev-test: dev-build
 	$(DEV_RUN) env CTEST_PARALLEL_LEVEL=$(CTEST_PARALLEL_LEVEL) VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) \
 	  ctest --test-dir $(DEV_BUILD_DIR) -L '$(CTEST_LABELS)'
 
-dev-test-cosim:
+dev-test-cosim: dev-build
 	$(DEV_RUN) env CTEST_PARALLEL_LEVEL=$(CTEST_PARALLEL_LEVEL) VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) \
 	  ctest --test-dir $(DEV_BUILD_DIR) -L 'cosim'
 
