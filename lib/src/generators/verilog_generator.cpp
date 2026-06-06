@@ -605,23 +605,39 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
             case AST::NodeType::Bit:
                 variable.append(" bit");
                 break;
+            // atom / non-integer / integer / real types are signed (or
+            // unsigned) by definition: drop the redundant `signed` keyword.
             case AST::NodeType::Byte:
                 variable.append(" byte");
+                sign = false;
                 break;
             case AST::NodeType::Shortint:
                 variable.append(" shortint");
+                sign = false;
                 break;
             case AST::NodeType::Int:
                 variable.append(" int");
+                sign = false;
                 break;
             case AST::NodeType::Longint:
                 variable.append(" longint");
+                sign = false;
+                break;
+            case AST::NodeType::Integer:
+                variable.append(" integer");
+                sign = false;
                 break;
             case AST::NodeType::Shortreal:
                 variable.append(" shortreal");
+                sign = false;
                 break;
             case AST::NodeType::Realtime:
                 variable.append(" realtime");
+                sign = false;
+                break;
+            case AST::NodeType::Real:
+                variable.append(" real");
+                sign = false;
                 break;
             case AST::NodeType::CustomTypeVar:
                 // user-defined / package-scoped type or inline aggregate: append

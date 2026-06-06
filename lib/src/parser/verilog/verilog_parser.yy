@@ -4493,22 +4493,23 @@ function_ioport:portname
                     $$.net_type = net_type_t::REG;
                 }
 
-        |       TK_INTEGER TK_IDENTIFIER
+        |       TK_LOGIC portname
                 {
-                    $$.direction = direction_t::NONE;
-                    $$.net_type = net_type_t::INTEGER;
-                    $$.is_signed = true;
-                    $$.widths = nullptr;
-                    $$.name = $2;
+                    $$ = $2;
+                    $$.net_type = net_type_t::LOGIC;
                 }
 
-        |       TK_REAL TK_IDENTIFIER
+        |       port_data_type TK_IDENTIFIER
                 {
+                    // built-in data_type function/task port: `input int a`,
+                    // `input bit [3:0] b`, `input integer i`, `input real r`
                     $$.direction = direction_t::NONE;
-                    $$.net_type = net_type_t::REAL;
-                    $$.is_signed = true;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = false;
                     $$.widths = nullptr;
                     $$.name = $2;
+                    $$.has_data_type = true;
+                    $$.data_type = $1;
                 }
         ;
 
@@ -4776,22 +4777,23 @@ task_ioport:    portname
                     $$.net_type = net_type_t::REG;
                 }
 
-        |       TK_INTEGER TK_IDENTIFIER
+        |       TK_LOGIC portname
                 {
-                    $$.direction = direction_t::NONE;
-                    $$.net_type = net_type_t::INTEGER;
-                    $$.is_signed = true;
-                    $$.widths = nullptr;
-                    $$.name = $2;
+                    $$ = $2;
+                    $$.net_type = net_type_t::LOGIC;
                 }
 
-        |       TK_REAL TK_IDENTIFIER
+        |       port_data_type TK_IDENTIFIER
                 {
+                    // built-in data_type function/task port: `input int a`,
+                    // `input bit [3:0] b`, `input integer i`, `input real r`
                     $$.direction = direction_t::NONE;
-                    $$.net_type = net_type_t::REAL;
-                    $$.is_signed = true;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = false;
                     $$.widths = nullptr;
                     $$.name = $2;
+                    $$.has_data_type = true;
+                    $$.data_type = $1;
                 }
         ;
 
@@ -5460,12 +5462,12 @@ namespace Veriparse {
                                                    const std::string &filename, uint32_t line) {
                 auto ioport = std::make_shared<AST::Ioport>(filename, line);
 
-                // direction node carries the packed dims + signing of the type
-                // (only `bit` among port data types is a vector with these).
-                const bool vector = (dt.kind == data_type_kind_t::BIT);
+                // direction node carries the packed dims and signedness of the
+                // type (matching the legacy net-type port path: e.g. `integer`
+                // is signed, `bit` unsigned unless `signed`).
                 AST::Width::ListPtr io_widths =
                     dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
-                const bool io_sign = vector ? dt.is_signed : false;
+                const bool io_sign = dt.is_signed;
 
                 switch(direction) {
                 case direction_t::INPUT:
