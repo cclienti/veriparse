@@ -247,6 +247,7 @@ TEST(VerilogGeneratorTest, sv_data_type_net0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_funcret0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_port0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_funcport0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_data_type_multiname0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package_lifetime0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package_empty0) { TEST_CORE_SV; }
