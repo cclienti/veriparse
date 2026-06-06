@@ -1,0 +1,252 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+          items:
+          - Typedef:
+              def:
+                StructDef:
+                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                  line: 5
+                  members:
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 6
+                      name: a
+                      right:
+                        Rvalue: null
+                      type:
+                        Bit:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 6
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: false
+                          widths:
+                          - Width:
+                              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                              line: 6
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 6
+                      name: b
+                      right:
+                        Rvalue: null
+                      type:
+                        Bit:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 6
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: false
+                          widths:
+                          - Width:
+                              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                              line: 6
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 6
+                      name: c
+                      right:
+                        Rvalue: null
+                      type:
+                        Bit:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 6
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: false
+                          widths:
+                          - Width:
+                              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                              line: 6
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 7
+                      name: x
+                      right:
+                        Rvalue: null
+                      type:
+                        Logic:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          ldelay:
+                            DelayStatement: null
+                          line: 7
+                          name: ''
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue: null
+                          sign: false
+                          type: null
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 7
+                      name: y
+                      right:
+                        Rvalue: null
+                      type:
+                        Logic:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          ldelay:
+                            DelayStatement: null
+                          line: 7
+                          name: ''
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue: null
+                          sign: false
+                          type: null
+                  packed: true
+                  sign: false
+              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+              line: 5
+              name: packed_t
+          - Typedef:
+              def:
+                StructDef:
+                  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                  line: 12
+                  members:
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      lengths:
+                      - Length:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 13
+                          lsb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 3
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                      line: 13
+                      name: arr
+                      right:
+                        Rvalue: null
+                      type:
+                        Int:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 13
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: true
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 13
+                      name: scalar
+                      right:
+                        Rvalue: null
+                      type:
+                        Int:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 13
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: true
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 14
+                      name: p
+                      right:
+                        Rvalue: null
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 14
+                          name: packed_t
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 14
+                      name: q
+                      right:
+                        Rvalue: null
+                      type:
+                        Identifier:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 14
+                          name: packed_t
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  packed: false
+                  sign: false
+              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+              line: 12
+              name: unpacked_t
+          line: 1
+          name: sv_struct_multiname0
+      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+  line: 1

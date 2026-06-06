@@ -137,6 +137,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 16
                       name: a
+                      right:
+                        Rvalue: null
                       type:
                         Identifier:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
@@ -149,6 +151,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 16
                       name: b
+                      right:
+                        Rvalue: null
                       type:
                         Logic:
                           filename: lib/test/parser/testcases/sv_user_types0.sv

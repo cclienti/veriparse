@@ -9207,6 +9207,49 @@ AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
                 result->set_type(child);
             }
         }
+
+        // Manage Child lengths
+        if(node["lengths"]) {
+            const YAML::Node node_lengths = node["lengths"];
+            // Fill the list of children
+            AST::Length::ListPtr lengths_list(new AST::Length::List);
+            if(node_lengths.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_lengths.begin(); it != node_lengths.end();
+                    ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
+                        lengths_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_lengths);
+                if(child) {
+                    AST::Length::Ptr child_cast = AST::cast_to<AST::Length>(child);
+                    lengths_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::StructMember>();
+            }
+            result->set_lengths(lengths_list);
+        }
+
+        // Manage Child right
+        if(node["right"]) {
+            const YAML::Node node_right = node["right"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_right);
+            if(child) {
+                AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
+                if(!result) {
+                    result = std::make_shared<AST::StructMember>();
+                }
+                result->set_right(child_cast);
+            }
+        }
     }
 
     // Return the result

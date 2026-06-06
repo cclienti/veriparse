@@ -16,6 +16,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                       line: 6
                       name: hi
+                      right:
+                        Rvalue: null
                       type:
                         Logic:
                           filename: lib/test/parser/testcases/sv_typedef_struct0.sv
@@ -53,6 +55,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                       line: 7
                       name: lo
+                      right:
+                        Rvalue: null
                       type:
                         Logic:
                           filename: lib/test/parser/testcases/sv_typedef_struct0.sv

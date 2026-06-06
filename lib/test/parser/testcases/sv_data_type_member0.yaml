@@ -16,6 +16,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 4
                       name: b
+                      right:
+                        Rvalue: null
                       type:
                         Byte:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -28,6 +30,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 5
                       name: s
+                      right:
+                        Rvalue: null
                       type:
                         Shortint:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -40,6 +44,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 6
                       name: i
+                      right:
+                        Rvalue: null
                       type:
                         Int:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -52,6 +58,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 7
                       name: l
+                      right:
+                        Rvalue: null
                       type:
                         Longint:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -64,6 +72,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 8
                       name: q
+                      right:
+                        Rvalue: null
                       type:
                         Bit:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -96,6 +106,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 9
                       name: lg
+                      right:
+                        Rvalue: null
                       type:
                         Logic:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -133,6 +145,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 10
                       name: u
+                      right:
+                        Rvalue: null
                       type:
                         Identifier:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -145,6 +159,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 11
                       name: nested
+                      right:
+                        Rvalue: null
                       type:
                         StructDef:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -154,6 +170,8 @@ Source:
                               filename: lib/test/parser/testcases/sv_data_type_member0.sv
                               line: 11
                               name: x
+                              right:
+                                Rvalue: null
                               type:
                                 Int:
                                   filename: lib/test/parser/testcases/sv_data_type_member0.sv
@@ -166,6 +184,8 @@ Source:
                               filename: lib/test/parser/testcases/sv_data_type_member0.sv
                               line: 11
                               name: y
+                              right:
+                                Rvalue: null
                               type:
                                 Bit:
                                   filename: lib/test/parser/testcases/sv_data_type_member0.sv

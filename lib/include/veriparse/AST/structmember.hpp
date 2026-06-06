@@ -4,6 +4,8 @@
 #define VERIPARSE_AST_STRUCTMEMBER_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/length.hpp>
+#include <veriparse/AST/rvalue.hpp>
 
 #include <list>
 #include <string>
@@ -35,8 +37,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::StructMember.
      */
-    StructMember(const Node::Ptr type, const std::string &name, const std::string &filename = "",
-                 uint32_t line = 0);
+    StructMember(const Node::Ptr type, const Length::ListPtr lengths, const Rvalue::Ptr right,
+                 const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -89,9 +91,29 @@ public:
     virtual Node::Ptr get_type(void) const { return m_type; }
 
     /**
+     * Return the child lengths.
+     */
+    virtual Length::ListPtr get_lengths(void) const { return m_lengths; }
+
+    /**
+     * Return the child right.
+     */
+    virtual Rvalue::Ptr get_right(void) const { return m_right; }
+
+    /**
      * Change the child type.
      */
     virtual void set_type(Node::Ptr type) { m_type = type; }
+
+    /**
+     * Change the child lengths.
+     */
+    virtual void set_lengths(Length::ListPtr lengths) { m_lengths = lengths; }
+
+    /**
+     * Change the child right.
+     */
+    virtual void set_right(Rvalue::Ptr right) { m_right = right; }
 
     /**
      * Return the property name.
@@ -128,6 +150,8 @@ private:
     virtual Node::Ptr alloc_same(void) const override;
 
     Node::Ptr m_type;
+    Length::ListPtr m_lengths;
+    Rvalue::Ptr m_right;
     std::string m_name;
 };
 
