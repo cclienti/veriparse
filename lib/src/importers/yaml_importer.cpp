@@ -9194,44 +9194,6 @@ AST::Node::Ptr YAMLImporter::convert_structmember(const YAML::Node node) const
                 result->set_name(node["name"].as<std::string>());
             }
         }
-        // Manage property sign
-        if(node["sign"]) {
-            if(node["sign"].IsScalar()) {
-
-                if(!result) {
-                    result = std::make_shared<AST::StructMember>();
-                }
-                result->set_sign(node["sign"].as<bool>());
-            }
-        }
-
-        // Manage Child widths
-        if(node["widths"]) {
-            const YAML::Node node_widths = node["widths"];
-            // Fill the list of children
-            AST::Width::ListPtr widths_list(new AST::Width::List);
-            if(node_widths.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_widths.begin(); it != node_widths.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
-                        widths_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_widths);
-                if(child) {
-                    AST::Width::Ptr child_cast = AST::cast_to<AST::Width>(child);
-                    widths_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::StructMember>();
-            }
-            result->set_widths(widths_list);
-        }
 
         // Manage Child type
         if(node["type"]) {

@@ -18,6 +18,7 @@ Source:
                   right:
                     Rvalue: null
                   sign: false
+                  type: null
                   widths:
                   - Width:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
@@ -136,7 +137,6 @@ Source:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 16
                       name: a
-                      sign: false
                       type:
                         Identifier:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
@@ -149,35 +149,39 @@ Source:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 16
                       name: b
-                      sign: false
                       type:
-                        Identifier:
+                        Logic:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
+                          ldelay:
+                            DelayStatement: null
                           line: 16
-                          name: logic
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_user_types0.sv
-                          line: 16
-                          lsb:
-                            IntConstN:
-                              base: 10
+                          name: ''
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue: null
+                          sign: false
+                          type: null
+                          widths:
+                          - Width:
                               filename: lib/test/parser/testcases/sv_user_types0.sv
                               line: 16
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_user_types0.sv
-                              line: 16
-                              sign: false
-                              size: -1
-                              value: 3
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                                  line: 16
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_user_types0.sv
+                                  line: 16
+                                  sign: false
+                                  size: -1
+                                  value: 3
                   packed: true
                   sign: false
               filename: lib/test/parser/testcases/sv_user_types0.sv

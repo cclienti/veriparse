@@ -551,9 +551,7 @@ Typedef:
 StructMember:
   properties:
     name: "std::string"
-    sign: bool
   children:
-    widths: list(Width)
     type: Node
 
 # Shared base for struct/union so passes can visit them as one. `sign` covers

@@ -16,68 +16,76 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                       line: 6
                       name: hi
-                      sign: false
                       type:
-                        Identifier:
+                        Logic:
                           filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                          ldelay:
+                            DelayStatement: null
                           line: 6
-                          name: logic
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                          line: 6
-                          lsb:
-                            IntConstN:
-                              base: 10
+                          name: ''
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue: null
+                          sign: false
+                          type: null
+                          widths:
+                          - Width:
                               filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                               line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 3
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 3
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                       line: 7
                       name: lo
-                      sign: false
                       type:
-                        Identifier:
+                        Logic:
                           filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                          ldelay:
+                            DelayStatement: null
                           line: 7
-                          name: logic
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                          line: 7
-                          lsb:
-                            IntConstN:
-                              base: 10
+                          name: ''
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue: null
+                          sign: false
+                          type: null
+                          widths:
+                          - Width:
                               filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                               line: 7
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 3
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 3
                   packed: true
                   sign: false
               filename: lib/test/parser/testcases/sv_typedef_struct0.sv
@@ -138,6 +146,7 @@ Source:
                   right:
                     Rvalue: null
                   sign: false
+                  type: null
           - Ioport:
               filename: lib/test/parser/testcases/sv_typedef_struct0.sv
               first:
@@ -179,6 +188,7 @@ Source:
                   right:
                     Rvalue: null
                   sign: false
+                  type: null
                   widths:
                   - Width:
                       filename: lib/test/parser/testcases/sv_typedef_struct0.sv

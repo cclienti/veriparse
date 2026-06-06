@@ -104,48 +104,46 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
                       line: 7
                       name: a
-                      sign: false
                       type:
-                        Identifier:
+                        Int:
                           filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
                           line: 7
-                          name: int
-                          package: ''
-                          scope:
-                            IdentifierScope: null
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: true
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
                       line: 7
                       name: b
-                      sign: false
                       type:
-                        Identifier:
+                        Bit:
                           filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
                           line: 7
-                          name: bit
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                          line: 7
-                          lsb:
-                            IntConstN:
-                              base: 10
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: false
+                          widths:
+                          - Width:
                               filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
                               line: 7
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 31
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 31
                   packed: false
                   sign: false
               filename: lib/test/parser/testcases/sv_data_type_typedef0.sv

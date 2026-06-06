@@ -2600,21 +2600,16 @@ TEST(YAMLGenerator, StructMember)
     Logger::add_text_sink("YAMLGenerator.StructMember.log");
     Logger::add_stderr_sink();
 
-    AST::Width::ListPtr c_widths(new AST::Width::List);
     AST::Node::Ptr c_type(new AST::Node);
     std::string p_name = "mynbiqpmzj";
-    bool p_sign = false;
 
-    AST::StructMember::Ptr m_structmember(
-        new AST::StructMember(c_widths, c_type, p_name, p_sign, "filename", 0));
+    AST::StructMember::Ptr m_structmember(new AST::StructMember(c_type, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_structmember);
 
     ASSERT_TRUE(yaml["StructMember"]);
-    ASSERT_TRUE(yaml["StructMember"]["widths"]);
     ASSERT_TRUE(yaml["StructMember"]["type"]);
     ASSERT_TRUE(yaml["StructMember"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["StructMember"]["sign"].as<bool>() == false);
 }
 
 TEST(YAMLGenerator, StructUnionDef)

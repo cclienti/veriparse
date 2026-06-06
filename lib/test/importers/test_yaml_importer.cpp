@@ -3020,10 +3020,8 @@ TEST(YAMLImporter, StructMember)
     std::string str("StructMember:\n"
                     "  filename: structmember.v\n"
                     "  line: 12\n"
-                    "  widths:\n"
                     "  type:\n"
-                    "  name: mynbiqpmzj\n"
-                    "  sign: false\n");
+                    "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -3031,10 +3029,8 @@ TEST(YAMLImporter, StructMember)
     ASSERT_TRUE(yaml["StructMember"]);
     ASSERT_TRUE(yaml["StructMember"]["filename"].as<std::string>() == "structmember.v");
     ASSERT_TRUE(yaml["StructMember"]["line"].as<int>() == 12);
-    ASSERT_TRUE(yaml["StructMember"]["widths"]);
     ASSERT_TRUE(yaml["StructMember"]["type"]);
     ASSERT_TRUE(yaml["StructMember"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["StructMember"]["sign"].as<bool>() == false);
 }
 
 TEST(YAMLImporter, StructUnionDef)
