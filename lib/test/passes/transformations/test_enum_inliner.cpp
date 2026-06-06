@@ -39,8 +39,10 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Apply the pipeline */                                                                       \
     test_helpers.render_node_to_verilog_file(module, test_string + "_before.v");                   \
     Passes::Transformations::ConstantFolding(function_map).run(module);                            \
+    ASSERT_AST_IS_TREE(module); /* pass output must stay a proper tree */                          \
     Passes::Transformations::EnumElaboration().run(module);                                        \
     Passes::Transformations::EnumInliner().run(module);                                            \
+    ASSERT_AST_IS_TREE(module); /* pass output must stay a proper tree */                          \
     test_helpers.render_node_to_verilog_file(module, test_string + ".v");                          \
     test_helpers.render_node_to_yaml_file(module, test_string + ".yaml");                          \
     test_helpers.render_node_to_dot_file(module, test_string + ".dot");                            \

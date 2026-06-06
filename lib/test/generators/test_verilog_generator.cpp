@@ -38,6 +38,7 @@ static TestHelpers test_helpers("lib/test/parser/testcases/");
     verilog.parse(test_string + ".v");                                                             \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
+    ASSERT_AST_IS_TREE(source); /* round-trip reparse must stay a proper tree */                   \
     test_helpers.render_node_to_yaml_file(source, test_string + "_parsed.yaml");                   \
     test_helpers.render_node_to_dot_file(source, test_string + "_parsed.dot");                     \
                                                                                                    \
@@ -66,6 +67,7 @@ static TestHelpers test_helpers("lib/test/parser/testcases/");
     verilog.parse(test_string + ".sv");                                                            \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
+    ASSERT_AST_IS_TREE(source); /* round-trip reparse must stay a proper tree */                   \
     test_helpers.render_node_to_yaml_file(source, test_string + "_parsed.yaml");                   \
     test_helpers.render_node_to_dot_file(source, test_string + "_parsed.dot");                     \
                                                                                                    \
