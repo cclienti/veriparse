@@ -3537,7 +3537,7 @@ forpost:        lvalue TK_EQUALS rvalue
                     AST::Plus::Ptr plus = std::make_shared<AST::Plus>(scanner.get_filename(), @1.begin.line);
                     AST::IntConstN::Ptr one = std::make_shared<AST::IntConstN>(scanner.get_filename(), @1.begin.line);
                     one->set_base(10); one->set_size(-1); one->set_sign(false); one->set_value(1);
-                    plus->set_left($1->get_var());
+                    plus->set_left($1->get_var()->clone());
                     plus->set_right(AST::to_node(one));
                     rv->set_var(AST::to_node(plus));
                     $$->set_left($1);
@@ -3551,7 +3551,7 @@ forpost:        lvalue TK_EQUALS rvalue
                     AST::Minus::Ptr minus = std::make_shared<AST::Minus>(scanner.get_filename(), @1.begin.line);
                     AST::IntConstN::Ptr one = std::make_shared<AST::IntConstN>(scanner.get_filename(), @1.begin.line);
                     one->set_base(10); one->set_size(-1); one->set_sign(false); one->set_value(1);
-                    minus->set_left($1->get_var());
+                    minus->set_left($1->get_var()->clone());
                     minus->set_right(AST::to_node(one));
                     rv->set_var(AST::to_node(minus));
                     $$->set_left($1);
@@ -5212,14 +5212,21 @@ namespace Veriparse {
 
             AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
                                               const std::string &filename, uint32_t line) {
+                // The same data_type_t feeds every name of a comma list (and
+                // inherited ports), so its shared subtrees MUST be cloned per
+                // declared name — otherwise two AST nodes share one child,
+                // breaking the tree invariant and in-place-mutation passes.
+                const AST::Width::ListPtr packed =
+                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
+
                 // logic/reg/integer/real reuse the existing create_net_type path
                 // so their nodes stay byte-identical (goldens unchanged).
                 switch(dt.kind) {
                 case data_type_kind_t::LOGIC:
-                    return create_net_type(decl, net_type_t::LOGIC, dt.packed_dims, dt.is_signed,
+                    return create_net_type(decl, net_type_t::LOGIC, packed, dt.is_signed,
                                            filename, line);
                 case data_type_kind_t::REG:
-                    return create_net_type(decl, net_type_t::REG, dt.packed_dims, dt.is_signed,
+                    return create_net_type(decl, net_type_t::REG, packed, dt.is_signed,
                                            filename, line);
                 case data_type_kind_t::INTEGER:
                     return create_net_type(decl, net_type_t::INTEGER, nullptr, true, filename, line);
@@ -5235,7 +5242,7 @@ namespace Veriparse {
                 case data_type_kind_t::BIT: {
                     auto n = std::make_shared<AST::Bit>(filename, line);
                     n->set_sign(dt.is_signed);
-                    n->set_widths(dt.packed_dims);
+                    n->set_widths(packed);
                     node = n;
                 } break;
 
@@ -5276,10 +5283,13 @@ namespace Veriparse {
                 case data_type_kind_t::ENUM:
                 case data_type_kind_t::NAMED: {
                     // named/scoped type ref (type_ref) or inline anonymous
-                    // aggregate (inline_def): a CustomTypeVar holding the type
+                    // aggregate (inline_def): a CustomTypeVar holding the type.
+                    // Clone the type so each declared name owns its own subtree.
+                    const AST::Node::Ptr type =
+                        (dt.kind == data_type_kind_t::NAMED) ? dt.type_ref : dt.inline_def;
                     auto n = std::make_shared<AST::CustomTypeVar>(filename, line);
-                    n->set_type(dt.kind == data_type_kind_t::NAMED ? dt.type_ref : dt.inline_def);
-                    n->set_widths(dt.packed_dims);
+                    n->set_type(type ? type->clone() : nullptr);
+                    n->set_widths(packed);
                     node = n;
                 } break;
 
