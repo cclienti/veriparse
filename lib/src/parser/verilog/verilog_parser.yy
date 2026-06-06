@@ -5275,49 +5275,15 @@ namespace Veriparse {
 
             AST::StructMember::Ptr build_struct_member(const data_type_t &dt, const std::string &name,
                                                        const std::string &filename, uint32_t line) {
+                // A struct member is `data_type member_name` (IEEE 1800-2017
+                // struct_union_member ::= data_type_or_void
+                // list_of_variable_decl_assignments). The member's type is a
+                // full data_type carrying its own signing and packed
+                // dimensions — exactly like a typedef or a function return —
+                // so build_data_type_def yields the bare type node directly.
                 auto member = std::make_shared<AST::StructMember>(filename, line);
                 member->set_name(name);
-                member->set_widths(dt.packed_dims);
-
-                // signing is only meaningful for vector types (bit/reg/logic);
-                // atoms are implicitly signed, named/aggregate carry none.
-                const bool vector = dt.kind == data_type_kind_t::BIT
-                                 || dt.kind == data_type_kind_t::REG
-                                 || dt.kind == data_type_kind_t::LOGIC;
-                member->set_sign(vector ? dt.is_signed : false);
-
-                AST::Node::Ptr type;
-                if(dt.kind == data_type_kind_t::NAMED) {
-                    type = dt.type_ref;
-                }
-                else if(dt.kind == data_type_kind_t::STRUCT
-                        || dt.kind == data_type_kind_t::UNION
-                        || dt.kind == data_type_kind_t::ENUM) {
-                    type = dt.inline_def;
-                }
-                else {
-                    // built-in: the type is recorded as an Identifier carrying
-                    // the keyword name (existing struct-member representation).
-                    const char *kw = "";
-                    switch(dt.kind) {
-                    case data_type_kind_t::BIT:       kw = "bit";       break;
-                    case data_type_kind_t::REG:       kw = "reg";       break;
-                    case data_type_kind_t::LOGIC:     kw = "logic";     break;
-                    case data_type_kind_t::BYTE:      kw = "byte";      break;
-                    case data_type_kind_t::SHORTINT:  kw = "shortint";  break;
-                    case data_type_kind_t::INT:       kw = "int";       break;
-                    case data_type_kind_t::LONGINT:   kw = "longint";   break;
-                    case data_type_kind_t::INTEGER:   kw = "integer";   break;
-                    case data_type_kind_t::REAL:      kw = "real";      break;
-                    case data_type_kind_t::SHORTREAL: kw = "shortreal"; break;
-                    case data_type_kind_t::REALTIME:  kw = "realtime";  break;
-                    default: break;
-                    }
-                    auto id = std::make_shared<AST::Identifier>(filename, line);
-                    id->set_name(kw);
-                    type = AST::to_node(id);
-                }
-                member->set_type(type);
+                member->set_type(build_data_type_def(dt, filename, line));
 
                 return member;
             }

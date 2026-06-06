@@ -2292,14 +2292,12 @@ std::string VerilogGenerator::render_structmember(const AST::StructMember::Ptr n
 {
     std::string result;
     if(node) {
+        // The member's type is a full data_type node carrying its own signing
+        // and packed dimensions; render it bare (no name, no ';').
         const AST::Node::Ptr type = node->get_type();
         if(type) {
-            result += render(type) + " ";
+            result += render_data_type(type) + " ";
         }
-        if(node->get_sign()) {
-            result += "signed ";
-        }
-        result += widths_list_to_string(node->get_widths());
         result += StringUtils::escape(node->get_name());
         result += ";";
     }

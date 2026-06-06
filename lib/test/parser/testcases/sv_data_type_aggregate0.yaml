@@ -21,48 +21,51 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 3
                       name: a
-                      sign: false
                       type:
-                        Identifier:
+                        Logic:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                          ldelay:
+                            DelayStatement: null
                           line: 3
-                          name: logic
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          line: 3
-                          lsb:
-                            IntConstN:
-                              base: 10
+                          name: ''
+                          rdelay:
+                            DelayStatement: null
+                          right:
+                            Rvalue: null
+                          sign: false
+                          type: null
+                          widths:
+                          - Width:
                               filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                               line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 7
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 3
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 3
+                                  sign: false
+                                  size: -1
+                                  value: 7
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 3
                       name: b
-                      sign: false
                       type:
-                        Identifier:
+                        Bit:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                           line: 3
-                          name: bit
-                          package: ''
-                          scope:
-                            IdentifierScope: null
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: false
                   packed: true
                   sign: false
           - CustomTypeVar:
@@ -100,35 +103,34 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 4
                       name: f
-                      sign: false
                       type:
-                        Identifier:
+                        Bit:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                           line: 4
-                          name: bit
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          line: 4
-                          lsb:
-                            IntConstN:
-                              base: 10
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: false
+                          widths:
+                          - Width:
                               filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                               line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 3
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 4
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 4
+                                  sign: false
+                                  size: -1
+                                  value: 3
                   packed: true
                   sign: true
           - CustomTypeVar:
@@ -146,48 +148,46 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 5
                       name: x
-                      sign: false
                       type:
-                        Identifier:
+                        Int:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                           line: 5
-                          name: int
-                          package: ''
-                          scope:
-                            IdentifierScope: null
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: true
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 5
                       name: y
-                      sign: false
                       type:
-                        Identifier:
+                        Bit:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                           line: 5
-                          name: bit
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          line: 5
-                          lsb:
-                            IntConstN:
-                              base: 10
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: false
+                          widths:
+                          - Width:
                               filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                               line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 7
+                              lsb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                              msb:
+                                IntConstN:
+                                  base: 10
+                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 7
                   packed: false
                   sign: false
           - CustomTypeVar:

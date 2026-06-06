@@ -4,7 +4,6 @@
 #define VERIPARSE_AST_STRUCTMEMBER_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/width.hpp>
 
 #include <list>
 #include <string>
@@ -36,8 +35,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::StructMember.
      */
-    StructMember(const Width::ListPtr widths, const Node::Ptr type, const std::string &name,
-                 const bool &sign, const std::string &filename = "", uint32_t line = 0);
+    StructMember(const Node::Ptr type, const std::string &name, const std::string &filename = "",
+                 uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -85,19 +84,9 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child widths.
-     */
-    virtual Width::ListPtr get_widths(void) const { return m_widths; }
-
-    /**
      * Return the child type.
      */
     virtual Node::Ptr get_type(void) const { return m_type; }
-
-    /**
-     * Change the child widths.
-     */
-    virtual void set_widths(Width::ListPtr widths) { m_widths = widths; }
 
     /**
      * Change the child type.
@@ -110,19 +99,9 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
-     * Return the property sign.
-     */
-    virtual const bool &get_sign(void) const { return m_sign; }
-
-    /**
      * Change the property name.
      */
     virtual void set_name(const std::string &name) { m_name = name; }
-
-    /**
-     * Change the property sign.
-     */
-    virtual void set_sign(const bool &sign) { m_sign = sign; }
 
     /**
      * Return the children list using the private children member
@@ -148,10 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_widths;
     Node::Ptr m_type;
     std::string m_name;
-    bool m_sign;
 };
 
 std::ostream &operator<<(std::ostream &os, const StructMember &p);

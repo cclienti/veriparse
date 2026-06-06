@@ -3469,14 +3469,6 @@ YAML::Node YAMLGenerator::render_structmember(const AST::StructMember::Ptr node)
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
-        content["sign"] = node->get_sign();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
 
         content["type"] = render(node->get_type());
     }

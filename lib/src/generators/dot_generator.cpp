@@ -6400,37 +6400,17 @@ std::string DotGenerator::render_structmember(const AST::StructMember::Ptr node)
            << "<FONT COLOR=\"white\">StructMember</FONT></TD></TR>\n"
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
-        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">sign: " << node->get_sign() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">widths</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_widths()) {
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
         uint64_t childID;
-        if(node->get_widths()) {
-            int i = 0;
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                childID = reinterpret_cast<uint64_t>(n.get());
-                if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
-                       << "\"];" << std::endl;
-                }
-            }
-        }
         childID = reinterpret_cast<uint64_t>(node->get_type().get());
         if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
         }
     }
 
