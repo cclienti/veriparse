@@ -67,7 +67,7 @@ enum class direction_t {
 	 INPUT, INOUT, OUTPUT, NONE
 };
 
-typedef struct {
+struct port_info_t {
 	 direction_t direction;
 	 net_type_t net_type;
 	 bool is_signed;
@@ -76,7 +76,9 @@ typedef struct {
 	 std::string type_name;    // user-defined type name (typedef); empty if built-in
 	 std::string type_package; // package scope of the type (pkg::); empty if local
 	 location loc;
-} port_info_t;
+	 bool has_data_type = false; // true when the port type is a data_type below
+	 data_type_t data_type{};    // bit/atom/non-integer/struct/union/enum port type
+};
 
 typedef struct {
 	 std::string name;
@@ -121,6 +123,13 @@ AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type,
 // typedef is resolved) and `second` is a CustomTypeVar holding the type ref.
 AST::Ioport::Ptr create_typed_ioport_decls(direction_t direction, const std::string &type_name,
 														 const std::string &type_package, const std::string &name,
+														 const std::string &filename="", uint32_t line=0);
+
+// Build an Ioport for a port declared with a built-in data_type (bit/atom/
+// non-integer/struct/union/enum). `second` is the data_type's node
+// (build_variable); the direction node carries its packed dims and signing.
+AST::Ioport::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
+														 const std::string &name,
 														 const std::string &filename="", uint32_t line=0);
 
 // if return null, the create_ports_decls failed. Error information are set in loc and error_message.
@@ -333,7 +342,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 items item standard_item_base standard_item
 %type   <AST::Node::ListPtr>                 ioports_decl
 %type   <AST::Node::ListPtr>                 net_decl
-%type   <data_type_t>                        data_type
+%type   <data_type_t>                        data_type port_data_type
 %type   <AST::Node::ListPtr>                 data_declaration
 %type   <AST::Node::ListPtr>                 typed_var_decl
 %type   <data_type_kind_t>                   integer_vector_type integer_atom_type non_integer_type
@@ -1009,11 +1018,55 @@ ioport:         portdir portname
                     $$.net_type = $2;
                 }
 
+        |       portdir port_data_type TK_IDENTIFIER
+                {
+                    // ANSI port with a built-in data_type: `input int d`,
+                    // `output bit [3:0] q`, `input struct {...} s`
+                    $$.direction = $1;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = false;
+                    $$.widths = nullptr;
+                    $$.name = $3;
+                    $$.has_data_type = true;
+                    $$.data_type = $2;
+                }
+
 
 
 reg_net_type:   TK_REG   {$$ = net_type_t::REG;}
         |       TK_LOGIC {$$ = net_type_t::LOGIC;}
         |       net_type {$$ = $1;}
+        ;
+
+
+// data_type usable as a port type, excluding logic/reg/wire (which keep their
+// dedicated port forms via reg_net_type) to avoid a port grammar conflict. So:
+// bit, the integer atom types, the non-integer types, and inline aggregates.
+port_data_type:
+                TK_BIT signing packed_dimensions
+                {
+                    $$ = data_type_t{data_type_kind_t::BIT, $2, $3, nullptr, nullptr};
+                }
+        |       integer_atom_type signing
+                {
+                    $$ = data_type_t{$1, true, nullptr, nullptr, nullptr};
+                }
+        |       non_integer_type
+                {
+                    $$ = data_type_t{$1, false, nullptr, nullptr, nullptr};
+                }
+        |       struct_def packed_dimensions
+                {
+                    $$ = data_type_t{data_type_kind_t::STRUCT, false, $2, nullptr, AST::to_node($1)};
+                }
+        |       union_def packed_dimensions
+                {
+                    $$ = data_type_t{data_type_kind_t::UNION, false, $2, nullptr, AST::to_node($1)};
+                }
+        |       enum_def packed_dimensions
+                {
+                    $$ = data_type_t{data_type_kind_t::ENUM, false, $2, nullptr, AST::to_node($1)};
+                }
         ;
 
 
@@ -5402,6 +5455,44 @@ namespace Veriparse {
             }
 
 
+            AST::Ioport::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
+                                                   const std::string &name,
+                                                   const std::string &filename, uint32_t line) {
+                auto ioport = std::make_shared<AST::Ioport>(filename, line);
+
+                // direction node carries the packed dims + signing of the type
+                // (only `bit` among port data types is a vector with these).
+                const bool vector = (dt.kind == data_type_kind_t::BIT);
+                AST::Width::ListPtr io_widths =
+                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
+                const bool io_sign = vector ? dt.is_signed : false;
+
+                switch(direction) {
+                case direction_t::INPUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
+                        std::make_shared<AST::Input>(io_widths, name, io_sign, filename, line)));
+                    break;
+                case direction_t::INOUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
+                        std::make_shared<AST::Inout>(io_widths, name, io_sign, filename, line)));
+                    break;
+                case direction_t::OUTPUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
+                        std::make_shared<AST::Output>(io_widths, name, io_sign, filename, line)));
+                    break;
+                default:
+                    break;
+                }
+
+                decl_name_t decl;
+                decl.name = name;
+                decl.lengths = nullptr;
+                ioport->set_second(build_variable(dt, decl, filename, line));
+
+                return ioport;
+            }
+
+
             AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
                                                   const std::string &filename,
                                                   location &loc, std::string &error_message) {
@@ -5411,6 +5502,8 @@ namespace Veriparse {
                 AST::Width::ListPtr last_widths(nullptr);
                 std::string last_type_name;
                 std::string last_type_package;
+                bool last_has_data_type = false;
+                data_type_t last_data_type{};
 
                 AST::Node::ListPtr node_list = std::make_shared<AST::Node::List>();
 
@@ -5422,7 +5515,8 @@ namespace Veriparse {
                     // Check for name only ports (without qualifiers)
                     for(const port_info_t &pinfo: port_list) {
                         if ((pinfo.direction != direction_t::NONE) || (pinfo.net_type != net_type_t::NONE) ||
-                            (pinfo.is_signed) || (pinfo.widths) || (!pinfo.type_name.empty())) {
+                            (pinfo.is_signed) || (pinfo.widths) || (!pinfo.type_name.empty()) ||
+                            (pinfo.has_data_type)) {
                             loc = pinfo.loc;
                             error_message = std::string("missing port direction qualifier");
                             return nullptr;
@@ -5442,10 +5536,12 @@ namespace Veriparse {
                         bool is_signed;
                         std::string type_name;
                         std::string type_package;
+                        bool has_data_type;
+                        data_type_t data_type;
 
                         if (pinfo.direction == direction_t::NONE) {
                             if ((pinfo.net_type != net_type_t::NONE) || (pinfo.is_signed) ||
-                                (pinfo.widths) || (!pinfo.type_name.empty())) {
+                                (pinfo.widths) || (!pinfo.type_name.empty()) || (pinfo.has_data_type)) {
                                 loc = pinfo.loc;
                                 error_message = std::string("missing port direction qualifier");
                                 return nullptr;
@@ -5456,6 +5552,8 @@ namespace Veriparse {
                             is_signed = last_is_signed;
                             type_name = last_type_name;
                             type_package = last_type_package;
+                            has_data_type = last_has_data_type;
+                            data_type = last_data_type;
                         }
                         else {
                             dir = pinfo.direction;
@@ -5464,12 +5562,19 @@ namespace Veriparse {
                             is_signed = pinfo.is_signed;
                             type_name = pinfo.type_name;
                             type_package = pinfo.type_package;
+                            has_data_type = pinfo.has_data_type;
+                            data_type = pinfo.data_type;
                         }
 
                         if (widths) widths = AST::Width::clone_list(widths);
 
                         AST::Ioport::Ptr iop;
-                        if (!type_name.empty()) {
+                        if (has_data_type) {
+                            // built-in data_type port (bit/atom/non-integer/aggregate)
+                            iop = ParserHelpers::create_data_type_port(dir, data_type, pinfo.name,
+                                                                       filename, pinfo.loc.begin.line);
+                        }
+                        else if (!type_name.empty()) {
                             // user-defined / package-scoped type port
                             iop = ParserHelpers::create_typed_ioport_decls(dir, type_name, type_package,
                                                                            pinfo.name, filename,
@@ -5487,6 +5592,8 @@ namespace Veriparse {
                         last_is_signed = is_signed;
                         last_type_name = type_name;
                         last_type_package = type_package;
+                        last_has_data_type = has_data_type;
+                        last_data_type = data_type;
                     }
                 }
 

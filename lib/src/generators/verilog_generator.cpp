@@ -602,8 +602,30 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
             case AST::NodeType::Tri:
                 variable.append(" tri");
                 break;
+            case AST::NodeType::Bit:
+                variable.append(" bit");
+                break;
+            case AST::NodeType::Byte:
+                variable.append(" byte");
+                break;
+            case AST::NodeType::Shortint:
+                variable.append(" shortint");
+                break;
+            case AST::NodeType::Int:
+                variable.append(" int");
+                break;
+            case AST::NodeType::Longint:
+                variable.append(" longint");
+                break;
+            case AST::NodeType::Shortreal:
+                variable.append(" shortreal");
+                break;
+            case AST::NodeType::Realtime:
+                variable.append(" realtime");
+                break;
             case AST::NodeType::CustomTypeVar:
-                // user-defined / package-scoped type: append the type reference
+                // user-defined / package-scoped type or inline aggregate: append
+                // the type (Identifier keyword/name or struct/union/enum def)
                 variable.append(" " + render(AST::cast_to<AST::CustomTypeVar>(second)->get_type()));
                 break;
             default:
