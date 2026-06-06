@@ -16,9 +16,10 @@ StructMember::StructMember(const std::string &filename, uint32_t line) : Node(fi
     set_node_categories({NodeType::Node});
 }
 
-StructMember::StructMember(const Node::Ptr type, const std::string &name,
+StructMember::StructMember(const Node::Ptr type, const Length::ListPtr lengths,
+                           const Rvalue::Ptr right, const std::string &name,
                            const std::string &filename, uint32_t line)
-    : Node(filename, line), m_type(type), m_name(name)
+    : Node(filename, line), m_type(type), m_lengths(lengths), m_right(right), m_name(name)
 {
     set_node_type(NodeType::StructMember);
     set_node_categories({NodeType::Node});
@@ -73,12 +74,82 @@ bool StructMember::replace(Node::Ptr node, Node::Ptr new_node)
             found = true;
         }
     }
+    if(get_lengths()) {
+        Length::ListPtr new_list = std::make_shared<Length::List>();
+        for(const Length::Ptr &lnode : *get_lengths()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING << *this << ", "
+                                    << "StructMember::replace matches multiple times "
+                                       "(list(Length)::lengths)";
+                    }
+                    if(new_node) {
+                        new_list->push_back(cast_to<Length>(new_node));
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during StructMember::replace "
+                            << "of children list(Length)::lengths";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_lengths(new_list);
+        } else {
+            set_lengths(nullptr);
+        }
+    }
+    if(get_right()) {
+        if(get_right() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "StructMember::replace matches multiple times (Rvalue::right)";
+            }
+            set_right(cast_to<Rvalue>(new_node));
+            found = true;
+        }
+    }
     return found;
 }
 
 bool StructMember::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
+    if(get_lengths()) {
+        Length::ListPtr new_list = std::make_shared<Length::List>();
+        for(const Length::Ptr &lnode : *get_lengths()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING << *this << ", "
+                                    << "StructMember::replace matches multiple times "
+                                       "(list(Length)::lengths)";
+                    }
+                    if(new_nodes) {
+                        for(const Node::Ptr &n : *new_nodes) {
+                            new_list->push_back(cast_to<Length>(n));
+                        }
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during StructMember::replace "
+                            << "of children list(Length)::lengths";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_lengths(new_list);
+        } else {
+            set_lengths(nullptr);
+        }
+    }
     return found;
 }
 
@@ -100,6 +171,16 @@ Node::ListPtr StructMember::get_children(void) const
     if(get_type()) {
         list->push_back(std::static_pointer_cast<Node>(get_type()));
     }
+    if(get_lengths()) {
+        for(const Length::Ptr &node : *get_lengths()) {
+            if(node) {
+                list->push_back(std::static_pointer_cast<Node>(node));
+            }
+        }
+    }
+    if(get_right()) {
+        list->push_back(std::static_pointer_cast<Node>(get_right()));
+    }
     return list;
 }
 
@@ -107,6 +188,10 @@ void StructMember::clone_children(Node::Ptr new_node) const
 {
     if(get_type()) {
         cast_to<StructMember>(new_node)->set_type(get_type()->clone());
+    }
+    cast_to<StructMember>(new_node)->set_lengths(Length::clone_list(get_lengths()));
+    if(get_right()) {
+        cast_to<StructMember>(new_node)->set_right(cast_to<Rvalue>(get_right()->clone()));
     }
 }
 

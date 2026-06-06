@@ -3471,6 +3471,15 @@ YAML::Node YAMLGenerator::render_structmember(const AST::StructMember::Ptr node)
         content["name"] = node->get_name();
 
         content["type"] = render(node->get_type());
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
     }
 
     node_structmember["StructMember"] = content;

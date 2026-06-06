@@ -553,6 +553,8 @@ StructMember:
     name: "std::string"
   children:
     type: Node
+    lengths: list(Length)
+    right: Rvalue
 
 # Shared base for struct/union so passes can visit them as one. `sign` covers
 # `struct/union packed signed`; `packed` the packed vs unpacked layout.

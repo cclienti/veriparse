@@ -104,6 +104,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
                       line: 7
                       name: a
+                      right:
+                        Rvalue: null
                       type:
                         Int:
                           filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
@@ -116,6 +118,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
                       line: 7
                       name: b
+                      right:
+                        Rvalue: null
                       type:
                         Bit:
                           filename: lib/test/parser/testcases/sv_data_type_typedef0.sv

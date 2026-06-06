@@ -2293,12 +2293,27 @@ std::string VerilogGenerator::render_structmember(const AST::StructMember::Ptr n
     std::string result;
     if(node) {
         // The member's type is a full data_type node carrying its own signing
-        // and packed dimensions; render it bare (no name, no ';').
+        // and packed dimensions; render it bare (no name, no ';'). Unpacked
+        // dimensions and an initializer (the variable_decl_assignment) follow
+        // the member name.
         const AST::Node::Ptr type = node->get_type();
         if(type) {
             result += render_data_type(type) + " ";
         }
         result += StringUtils::escape(node->get_name());
+        const AST::Length::ListPtr lengths = node->get_lengths();
+        if(lengths) {
+            std::string length_str;
+            for(const AST::Length::Ptr &length : *lengths) {
+                length_str += StringUtils::remove_whitespace(render(length));
+            }
+            if(!length_str.empty()) {
+                result += " " + length_str;
+            }
+        }
+        if(node->get_right()) {
+            result += " = " + render(node->get_right());
+        }
         result += ";";
     }
     return result;

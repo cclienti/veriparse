@@ -3021,6 +3021,8 @@ TEST(YAMLImporter, StructMember)
                     "  filename: structmember.v\n"
                     "  line: 12\n"
                     "  type:\n"
+                    "  lengths:\n"
+                    "  right:\n"
                     "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -3030,6 +3032,8 @@ TEST(YAMLImporter, StructMember)
     ASSERT_TRUE(yaml["StructMember"]["filename"].as<std::string>() == "structmember.v");
     ASSERT_TRUE(yaml["StructMember"]["line"].as<int>() == 12);
     ASSERT_TRUE(yaml["StructMember"]["type"]);
+    ASSERT_TRUE(yaml["StructMember"]["lengths"]);
+    ASSERT_TRUE(yaml["StructMember"]["right"]);
     ASSERT_TRUE(yaml["StructMember"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 

@@ -2601,14 +2601,19 @@ TEST(YAMLGenerator, StructMember)
     Logger::add_stderr_sink();
 
     AST::Node::Ptr c_type(new AST::Node);
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
     std::string p_name = "mynbiqpmzj";
 
-    AST::StructMember::Ptr m_structmember(new AST::StructMember(c_type, p_name, "filename", 0));
+    AST::StructMember::Ptr m_structmember(
+        new AST::StructMember(c_type, c_lengths, c_right, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_structmember);
 
     ASSERT_TRUE(yaml["StructMember"]);
     ASSERT_TRUE(yaml["StructMember"]["type"]);
+    ASSERT_TRUE(yaml["StructMember"]["lengths"]);
+    ASSERT_TRUE(yaml["StructMember"]["right"]);
     ASSERT_TRUE(yaml["StructMember"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 

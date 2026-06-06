@@ -16,6 +16,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                       line: 5
                       name: hi
+                      right:
+                        Rvalue: null
                       type:
                         Logic:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
@@ -53,6 +55,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                       line: 6
                       name: flag
+                      right:
+                        Rvalue: null
                       type:
                         Logic:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
@@ -70,6 +74,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                       line: 7
                       name: lo
+                      right:
+                        Rvalue: null
                       type:
                         Bit:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
@@ -102,6 +108,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                       line: 8
                       name: b
+                      right:
+                        Rvalue: null
                       type:
                         Bit:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv
@@ -114,6 +122,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_typedef_struct1.sv
                       line: 9
                       name: count
+                      right:
+                        Rvalue: null
                       type:
                         Int:
                           filename: lib/test/parser/testcases/sv_typedef_struct1.sv

@@ -21,6 +21,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 3
                       name: a
+                      right:
+                        Rvalue: null
                       type:
                         Logic:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
@@ -58,6 +60,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 3
                       name: b
+                      right:
+                        Rvalue: null
                       type:
                         Bit:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
@@ -103,6 +107,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 4
                       name: f
+                      right:
+                        Rvalue: null
                       type:
                         Bit:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
@@ -148,6 +154,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 5
                       name: x
+                      right:
+                        Rvalue: null
                       type:
                         Int:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
@@ -160,6 +168,8 @@ Source:
                       filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 5
                       name: y
+                      right:
+                        Rvalue: null
                       type:
                         Bit:
                           filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv

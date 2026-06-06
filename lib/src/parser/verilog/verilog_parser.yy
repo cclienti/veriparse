@@ -100,11 +100,12 @@ AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
 AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
 														 const std::string &filename="", uint32_t line=0);
 
-// Build a struct/union member for `data_type name ;`. The member keeps its
-// existing shape (type recorded as an Identifier carrying the keyword/typedef
-// name, or the inline aggregate def; packed dims in `widths`; `sign` only for
-// vector types bit/reg/logic).
-AST::StructMember::Ptr build_struct_member(const data_type_t &dt, const std::string &name,
+// Build the struct/union members for `data_type list_of_variable_decl_assignments
+// ;` — one StructMember per name. The member type is the bare data_type node
+// (build_data_type_def), unpacked dims + init come from each name's
+// variable_decl_assignment.
+AST::StructMember::ListPtr build_struct_members(const data_type_t &dt,
+														 const std::list<decl_name_t> &names,
 														 const std::string &filename="", uint32_t line=0);
 
 // Build the bare type node a data_type denotes (no variable name): the dedicated
@@ -481,8 +482,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::EnumItem::Ptr>                 enum_item
 %type   <AST::StructDef::Ptr>                struct_def
 %type   <AST::Union::Ptr>                    union_def
-%type   <AST::StructMember::ListPtr>         struct_members
-%type   <AST::StructMember::Ptr>             struct_member
+%type   <AST::StructMember::ListPtr>         struct_members struct_member
 
 
 %%
@@ -1537,14 +1537,15 @@ union_def:      TK_UNION TK_PACKED TK_SIGNED TK_LBRACE struct_members TK_RBRACE
 struct_members:
                 struct_members struct_member
                 {
+                    // one struct_member declaration may yield several members
+                    // (a comma list: `bit a, b;`), so splice the whole list
                     $$ = $1;
-                    $$->push_back($2);
+                    $$->insert($$->end(), $2->begin(), $2->end());
                 }
 
         |       struct_member
                 {
-                    $$ = std::make_shared<AST::StructMember::List>();
-                    $$->push_back($1);
+                    $$ = $1;
                 }
         ;
 
@@ -1552,44 +1553,44 @@ struct_members:
 // aggregate types come through `data_type`; `logic` (still in net_type until
 // step 4) and named/scoped types use dedicated forms whose data_type_t is built
 // by hand. build_struct_member() keeps the StructMember shape unified.
-struct_member:  data_type TK_IDENTIFIER TK_SEMICOLON
+struct_member:  data_type var_decl_namelist TK_SEMICOLON
                 {
-                    $$ = ParserHelpers::build_struct_member($1, $2, scanner.get_filename(),
-                                                            @1.begin.line);
+                    $$ = ParserHelpers::build_struct_members($1, $2, scanner.get_filename(),
+                                                             @1.begin.line);
                 }
-        |       TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+        |       TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
                     auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($1);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
-                    $$ = ParserHelpers::build_struct_member(dt, $2, scanner.get_filename(),
-                                                            @1.begin.line);
+                    $$ = ParserHelpers::build_struct_members(dt, $2, scanner.get_filename(),
+                                                             @1.begin.line);
                 }
-        |       TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
+        |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
                     auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($1);
                     data_type_t dt{data_type_kind_t::NAMED, false, $2, AST::to_node(ref), nullptr};
-                    $$ = ParserHelpers::build_struct_member(dt, $3, scanner.get_filename(),
-                                                            @1.begin.line);
+                    $$ = ParserHelpers::build_struct_members(dt, $3, scanner.get_filename(),
+                                                             @1.begin.line);
                 }
-        |       package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
+        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
                     auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($1);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
-                    $$ = ParserHelpers::build_struct_member(dt, $3, scanner.get_filename(),
-                                                            @1.begin.line);
+                    $$ = ParserHelpers::build_struct_members(dt, $3, scanner.get_filename(),
+                                                             @1.begin.line);
                 }
-        |       package_scope TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
+        |       package_scope TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
                     auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($1);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
-                    $$ = ParserHelpers::build_struct_member(dt, $4, scanner.get_filename(),
-                                                            @1.begin.line);
+                    $$ = ParserHelpers::build_struct_members(dt, $4, scanner.get_filename(),
+                                                             @1.begin.line);
                 }
         ;
 
@@ -5273,19 +5274,27 @@ namespace Veriparse {
                 return node;
             }
 
-            AST::StructMember::Ptr build_struct_member(const data_type_t &dt, const std::string &name,
-                                                       const std::string &filename, uint32_t line) {
-                // A struct member is `data_type member_name` (IEEE 1800-2017
-                // struct_union_member ::= data_type_or_void
-                // list_of_variable_decl_assignments). The member's type is a
-                // full data_type carrying its own signing and packed
-                // dimensions — exactly like a typedef or a function return —
-                // so build_data_type_def yields the bare type node directly.
-                auto member = std::make_shared<AST::StructMember>(filename, line);
-                member->set_name(name);
-                member->set_type(build_data_type_def(dt, filename, line));
-
-                return member;
+            AST::StructMember::ListPtr build_struct_members(const data_type_t &dt,
+                                                            const std::list<decl_name_t> &names,
+                                                            const std::string &filename, uint32_t line) {
+                // A struct member declaration is `data_type
+                // list_of_variable_decl_assignments` (IEEE 1800-2017
+                // struct_union_member). Each name yields its own StructMember:
+                // the type is the bare data_type node carrying signing+packed
+                // dims (build_data_type_def, cloned per member), while the
+                // unpacked dimensions and initializer come from the member's
+                // variable_decl_assignment. `bit [3:0] a, b;` therefore flattens
+                // to two independent members, mirroring build_variable.
+                auto list = std::make_shared<AST::StructMember::List>();
+                for(const decl_name_t &decl: names) {
+                    auto member = std::make_shared<AST::StructMember>(filename, line);
+                    member->set_name(decl.name);
+                    member->set_type(build_data_type_def(dt, filename, line));
+                    member->set_lengths(decl.lengths);
+                    member->set_right(decl.rvalue);
+                    list->push_back(member);
+                }
+                return list;
             }
 
             AST::Node::Ptr build_data_type_def(const data_type_t &dt,
@@ -5293,18 +5302,22 @@ namespace Veriparse {
                 // struct/union/enum: the inline def is the type; a named type is
                 // its reference. Wrap in a CustomTypeVar only to carry packed
                 // dimensions on the type (e.g. `typedef my_t [3:0] arr_t`).
+                // The inner type and packed dims are cloned so this can be called
+                // once per name of a comma list (`struct { my_t a, b; }`) without
+                // two members sharing one subtree (tree-invariant violation).
                 if(dt.kind == data_type_kind_t::STRUCT
                    || dt.kind == data_type_kind_t::UNION
                    || dt.kind == data_type_kind_t::ENUM
                    || dt.kind == data_type_kind_t::NAMED) {
                     AST::Node::Ptr inner =
                         (dt.kind == data_type_kind_t::NAMED) ? dt.type_ref : dt.inline_def;
+                    inner = inner ? inner->clone() : nullptr;
                     if(!dt.packed_dims) {
                         return inner;
                     }
                     auto var = std::make_shared<AST::CustomTypeVar>(filename, line);
                     var->set_type(inner);
-                    var->set_widths(dt.packed_dims);
+                    var->set_widths(AST::Width::clone_list(dt.packed_dims));
                     return AST::to_node(var);
                 }
 
