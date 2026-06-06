@@ -265,6 +265,7 @@ TEST(VerilogParserTest, sv_data_type_member0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_funcbody0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_typedef0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_net0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_data_type_funcret0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_type0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_unit_scope0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }

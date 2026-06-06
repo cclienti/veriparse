@@ -4,32 +4,40 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../test/parser/testcases/function0.v
+          filename: lib/test/parser/testcases/function0.v
           items:
           - Function:
               automatic: false
-              filename: ../../test/parser/testcases/function0.v
+              filename: lib/test/parser/testcases/function0.v
               line: 3
               name: clogb2
-              retsign: true
-              rettype: INTEGER
+              retsign: false
+              rettype: NONE
+              rettype_ref:
+                Identifier:
+                  filename: lib/test/parser/testcases/function0.v
+                  line: 3
+                  name: integer
+                  package: ''
+                  scope:
+                    IdentifierScope: null
               statements:
               - Ioport:
-                  filename: ../../test/parser/testcases/function0.v
+                  filename: lib/test/parser/testcases/function0.v
                   first:
                     Input:
-                      filename: ../../test/parser/testcases/function0.v
+                      filename: lib/test/parser/testcases/function0.v
                       line: 4
                       name: value
                       sign: false
                       widths:
                       - Width:
-                          filename: ../../test/parser/testcases/function0.v
+                          filename: lib/test/parser/testcases/function0.v
                           line: 4
                           lsb:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 4
                               sign: false
                               size: -1
@@ -37,31 +45,33 @@ Source:
                           msb:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 4
                               sign: false
                               size: -1
                               value: 31
                   line: 4
-                  second: null
+                  second:
+                    Variable: null
               - Block:
-                  filename: ../../test/parser/testcases/function0.v
+                  filename: lib/test/parser/testcases/function0.v
                   line: 5
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/function0.v
+                      filename: lib/test/parser/testcases/function0.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/parser/testcases/function0.v
+                          filename: lib/test/parser/testcases/function0.v
                           line: 6
                           var:
                             Identifier:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 6
                               name: value
+                              package: ''
                               scope:
                                 IdentifierScope: null
                       line: 6
@@ -69,23 +79,24 @@ Source:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/parser/testcases/function0.v
+                          filename: lib/test/parser/testcases/function0.v
                           line: 6
                           var:
                             Minus:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               left:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   line: 6
                                   name: value
+                                  package: ''
                                   scope:
                                     IdentifierScope: null
                               line: 6
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   line: 6
                                   sign: false
                                   size: -1
@@ -93,39 +104,41 @@ Source:
                   - ForStatement:
                       cond:
                         GreaterThan:
-                          filename: ../../test/parser/testcases/function0.v
+                          filename: lib/test/parser/testcases/function0.v
                           left:
                             Identifier:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 7
                               name: value
+                              package: ''
                               scope:
                                 IdentifierScope: null
                           line: 7
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 7
                               sign: false
                               size: -1
                               value: 0
-                      filename: ../../test/parser/testcases/function0.v
+                      filename: lib/test/parser/testcases/function0.v
                       line: 7
                       post:
                         BlockingSubstitution:
-                          filename: ../../test/parser/testcases/function0.v
+                          filename: lib/test/parser/testcases/function0.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 7
                               var:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   line: 7
                                   name: clogb2
+                                  package: ''
                                   scope:
                                     IdentifierScope: null
                           line: 7
@@ -133,41 +146,43 @@ Source:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 7
                               var:
                                 Plus:
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   left:
                                     Identifier:
-                                      filename: ../../test/parser/testcases/function0.v
+                                      filename: lib/test/parser/testcases/function0.v
                                       line: 7
                                       name: clogb2
+                                      package: ''
                                       scope:
                                         IdentifierScope: null
                                   line: 7
                                   right:
                                     IntConstN:
                                       base: 10
-                                      filename: ../../test/parser/testcases/function0.v
+                                      filename: lib/test/parser/testcases/function0.v
                                       line: 7
                                       sign: false
                                       size: -1
                                       value: 1
                       pre:
                         BlockingSubstitution:
-                          filename: ../../test/parser/testcases/function0.v
+                          filename: lib/test/parser/testcases/function0.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 7
                               var:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   line: 7
                                   name: clogb2
+                                  package: ''
                                   scope:
                                     IdentifierScope: null
                           line: 7
@@ -175,35 +190,36 @@ Source:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               line: 7
                               var:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   line: 7
                                   sign: false
                                   size: -1
                                   value: 0
                       statement:
                         Block:
-                          filename: ../../test/parser/testcases/function0.v
+                          filename: lib/test/parser/testcases/function0.v
                           line: 7
                           scope: ''
                           statements:
                           - BlockingSubstitution:
-                              filename: ../../test/parser/testcases/function0.v
+                              filename: lib/test/parser/testcases/function0.v
                               ldelay:
                                 DelayStatement: null
                               left:
                                 Lvalue:
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   line: 8
                                   var:
                                     Identifier:
-                                      filename: ../../test/parser/testcases/function0.v
+                                      filename: lib/test/parser/testcases/function0.v
                                       line: 8
                                       name: value
+                                      package: ''
                                       scope:
                                         IdentifierScope: null
                               line: 8
@@ -211,31 +227,31 @@ Source:
                                 DelayStatement: null
                               right:
                                 Rvalue:
-                                  filename: ../../test/parser/testcases/function0.v
+                                  filename: lib/test/parser/testcases/function0.v
                                   line: 8
                                   var:
                                     Srl:
-                                      filename: ../../test/parser/testcases/function0.v
+                                      filename: lib/test/parser/testcases/function0.v
                                       left:
                                         Identifier:
-                                          filename: ../../test/parser/testcases/function0.v
+                                          filename: lib/test/parser/testcases/function0.v
                                           line: 8
                                           name: value
+                                          package: ''
                                           scope:
                                             IdentifierScope: null
                                       line: 8
                                       right:
                                         IntConstN:
                                           base: 10
-                                          filename: ../../test/parser/testcases/function0.v
+                                          filename: lib/test/parser/testcases/function0.v
                                           line: 8
                                           sign: false
                                           size: -1
                                           value: 1
           line: 1
           name: function0
-      filename: ../../test/parser/testcases/function0.v
+      filename: lib/test/parser/testcases/function0.v
       line: 1
-  filename: ../../test/parser/testcases/function0.v
+  filename: lib/test/parser/testcases/function0.v
   line: 1
-
