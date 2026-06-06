@@ -227,7 +227,13 @@ std::string VerilogGenerator::render_length(const AST::Length::Ptr node) const
                 StringUtils::delete_surrounding_brackets(render(lsb)));
         }
 
-        result = "[" + msb_str + ":" + lsb_str + "]";
+        // a null lsb marks the single-size unpacked dimension `[N]` (≡ [0:N-1]);
+        // with both bounds it is the explicit range `[msb:lsb]`.
+        if(lsb) {
+            result = "[" + msb_str + ":" + lsb_str + "]";
+        } else {
+            result = "[" + msb_str + "]";
+        }
     }
     return result;
 }

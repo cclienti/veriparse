@@ -161,19 +161,19 @@ Source:
               def:
                 StructDef:
                   filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                  line: 12
+                  line: 13
                   members:
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_struct_multiname0.sv
                       lengths:
                       - Length:
                           filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                          line: 13
+                          line: 14
                           lsb:
                             IntConstN:
                               base: 10
                               filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                              line: 13
+                              line: 14
                               sign: false
                               size: -1
                               value: 3
@@ -181,60 +181,87 @@ Source:
                             IntConstN:
                               base: 10
                               filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                              line: 13
+                              line: 14
                               sign: false
                               size: -1
                               value: 0
-                      line: 13
+                      line: 14
                       name: arr
                       right:
                         Rvalue: null
                       type:
                         Int:
                           filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                          line: 13
+                          line: 14
                           name: ''
                           right:
                             Rvalue: null
                           sign: true
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                      line: 13
+                      line: 14
                       name: scalar
                       right:
                         Rvalue: null
                       type:
                         Int:
                           filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                          line: 13
+                          line: 14
                           name: ''
                           right:
                             Rvalue: null
                           sign: true
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                      line: 14
+                      lengths:
+                      - Length:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 15
+                          lsb: null
+                          msb:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 4
+                      line: 15
+                      name: mem
+                      right:
+                        Rvalue: null
+                      type:
+                        Byte:
+                          filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                          line: 15
+                          name: ''
+                          right:
+                            Rvalue: null
+                          sign: true
+                  - StructMember:
+                      filename: lib/test/parser/testcases/sv_struct_multiname0.sv
+                      line: 16
                       name: p
                       right:
                         Rvalue: null
                       type:
                         Identifier:
                           filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                          line: 14
+                          line: 16
                           name: packed_t
                           package: ''
                           scope:
                             IdentifierScope: null
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                      line: 14
+                      line: 16
                       name: q
                       right:
                         Rvalue: null
                       type:
                         Identifier:
                           filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-                          line: 14
+                          line: 16
                           name: packed_t
                           package: ''
                           scope:
@@ -242,7 +269,7 @@ Source:
                   packed: false
                   sign: false
               filename: lib/test/parser/testcases/sv_struct_multiname0.sv
-              line: 12
+              line: 13
               name: unpacked_t
           line: 1
           name: sv_struct_multiname0

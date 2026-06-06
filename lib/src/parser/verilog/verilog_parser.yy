@@ -1118,6 +1118,14 @@ length:         TK_LBRACKET expression TK_COLON expression TK_RBRACKET
                 {
                     $$ = std::make_shared<AST::Length>($2, $4, scanner.get_filename(), @1.begin.line);
                 }
+        |       TK_LBRACKET expression TK_RBRACKET
+                {
+                    // single-size unpacked dimension `[N]` (IEEE unpacked_dimension
+                    // ::= [ constant_expression ], ≡ [0:N-1]): the size is the msb,
+                    // lsb stays null to mark the short form and round-trip as `[N]`.
+                    $$ = std::make_shared<AST::Length>($2, nullptr, scanner.get_filename(),
+                                                       @1.begin.line);
+                }
         ;
 
 
