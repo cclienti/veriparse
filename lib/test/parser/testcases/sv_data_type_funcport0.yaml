@@ -127,13 +127,13 @@ Source:
               retsign: false
               rettype: NONE
               rettype_ref:
-                Identifier:
+                Int:
                   filename: lib/test/parser/testcases/sv_data_type_funcport0.sv
                   line: 3
-                  name: int
-                  package: ''
-                  scope:
-                    IdentifierScope: null
+                  name: ''
+                  right:
+                    Rvalue: null
+                  sign: true
               statements:
               - BlockingSubstitution:
                   filename: lib/test/parser/testcases/sv_data_type_funcport0.sv

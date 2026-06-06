@@ -154,13 +154,12 @@ Source:
               retsign: false
               rettype: NONE
               rettype_ref:
-                Identifier:
+                Integer:
                   filename: lib/test/passes/transformations/testcases/scope4.v
                   line: 11
-                  name: integer
-                  package: ''
-                  scope:
-                    IdentifierScope: null
+                  name: ''
+                  right:
+                    Rvalue: null
               statements:
               - Ioport:
                   filename: lib/test/passes/transformations/testcases/scope4.v

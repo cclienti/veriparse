@@ -4365,50 +4365,18 @@ function_rettype_name:
         |       data_type TK_IDENTIFIER
                 {
                     // explicit data_type return (integer/real/int/bit/logic/reg/
-                    // byte/.../struct/union/enum). Represented like a struct
-                    // member: an Identifier with the keyword (or the inline
-                    // aggregate / named ref) in rettype_ref, packed dims in
-                    // retwidths, signing (vectors only) in retsign. Never a
-                    // Variable node, so function variable analysis is unaffected.
-                    const data_type_t &dt = $1;
-                    const bool vector = dt.kind == data_type_kind_t::BIT
-                                     || dt.kind == data_type_kind_t::REG
-                                     || dt.kind == data_type_kind_t::LOGIC;
-                    AST::Node::Ptr ref;
-                    if(dt.kind == data_type_kind_t::NAMED) {
-                        ref = dt.type_ref;
-                    }
-                    else if(dt.kind == data_type_kind_t::STRUCT
-                            || dt.kind == data_type_kind_t::UNION
-                            || dt.kind == data_type_kind_t::ENUM) {
-                        ref = dt.inline_def;
-                    }
-                    else {
-                        const char *kw = "";
-                        switch(dt.kind) {
-                        case data_type_kind_t::BIT:       kw = "bit";       break;
-                        case data_type_kind_t::REG:       kw = "reg";       break;
-                        case data_type_kind_t::LOGIC:     kw = "logic";     break;
-                        case data_type_kind_t::BYTE:      kw = "byte";      break;
-                        case data_type_kind_t::SHORTINT:  kw = "shortint";  break;
-                        case data_type_kind_t::INT:       kw = "int";       break;
-                        case data_type_kind_t::LONGINT:   kw = "longint";   break;
-                        case data_type_kind_t::INTEGER:   kw = "integer";   break;
-                        case data_type_kind_t::REAL:      kw = "real";      break;
-                        case data_type_kind_t::SHORTREAL: kw = "shortreal"; break;
-                        case data_type_kind_t::REALTIME:  kw = "realtime";  break;
-                        default: break;
-                        }
-                        auto id = std::make_shared<AST::Identifier>(scanner.get_filename(),
-                                                                    @1.begin.line);
-                        id->set_name(kw);
-                        ref = AST::to_node(id);
-                    }
+                    // byte/.../struct/union/enum). rettype_ref holds the type as
+                    // its own node: the dedicated built-in scalar node (carrying
+                    // signing and packed dims), the inline struct/union/enum def,
+                    // or the named-type reference — the same node a declaration
+                    // would use. Function variable analysis (get_variable_nodes)
+                    // skips rettype_ref, so a built-in scalar Variable node here
+                    // is not mistaken for a declared variable.
                     $$ = std::make_shared<AST::Function>();
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
-                    $$->set_retsign(vector ? dt.is_signed : false);
-                    $$->set_retwidths(dt.packed_dims);
-                    $$->set_rettype_ref(ref);
+                    $$->set_retsign(false);
+                    $$->set_rettype_ref(ParserHelpers::build_data_type_def(
+                                            $1, scanner.get_filename(), @1.begin.line));
                     $$->set_name($2);
                 }
         ;

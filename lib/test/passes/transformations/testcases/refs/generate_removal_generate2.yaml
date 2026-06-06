@@ -82,13 +82,12 @@ Source:
               retsign: false
               rettype: NONE
               rettype_ref:
-                Identifier:
+                Integer:
                   filename: lib/test/passes/transformations/testcases/generate2.v
                   line: 6
-                  name: integer
-                  package: ''
-                  scope:
-                    IdentifierScope: null
+                  name: ''
+                  right:
+                    Rvalue: null
               statements:
               - Integer:
                   filename: lib/test/passes/transformations/testcases/generate2.v

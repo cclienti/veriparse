@@ -14,13 +14,12 @@ Source:
               retsign: false
               rettype: NONE
               rettype_ref:
-                Identifier:
+                Integer:
                   filename: lib/test/parser/testcases/function0.v
                   line: 3
-                  name: integer
-                  package: ''
-                  scope:
-                    IdentifierScope: null
+                  name: ''
+                  right:
+                    Rvalue: null
               statements:
               - Ioport:
                   filename: lib/test/parser/testcases/function0.v
