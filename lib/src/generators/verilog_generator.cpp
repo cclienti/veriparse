@@ -540,18 +540,35 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
         }
 
         if(second) {
+            // A net (wire/tri/supply) prints its keyword and, when present, the
+            // explicit integer_vector data type it carries: `wire logic [3:0] x`.
+            auto append_net = [&](const char *kw) {
+                variable.append(" ");
+                variable.append(kw);
+                const AST::Node::Ptr net_data_type = AST::cast_to<AST::Net>(second)->get_type();
+                if(net_data_type) {
+                    variable.append(" " + render(net_data_type));
+                }
+            };
+
             switch(second->get_node_type()) {
             case AST::NodeType::Wire:
-                variable.append(" wire");
+                append_net("wire");
+                break;
+            case AST::NodeType::Tri:
+                append_net("tri");
+                break;
+            case AST::NodeType::Supply0:
+                append_net("supply0");
+                break;
+            case AST::NodeType::Supply1:
+                append_net("supply1");
                 break;
             case AST::NodeType::Logic:
                 variable.append(" logic");
                 break;
             case AST::NodeType::Reg:
                 variable.append(" reg");
-                break;
-            case AST::NodeType::Tri:
-                variable.append(" tri");
                 break;
             case AST::NodeType::Bit:
                 variable.append(" bit");
@@ -601,23 +618,6 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
                 // the type (Identifier keyword/name or struct/union/enum def)
                 variable.append(" " + render(AST::cast_to<AST::CustomTypeVar>(second)->get_type()));
                 break;
-            default:
-                break;
-            }
-
-            // a net (wire/tri/supply) may carry an explicit integer_vector data
-            // type: `wire logic [3:0] x`, `tri reg q`.
-            switch(second->get_node_type()) {
-            case AST::NodeType::Wire:
-            case AST::NodeType::Tri:
-            case AST::NodeType::Supply0:
-            case AST::NodeType::Supply1: {
-                const AST::Node::Ptr net_type = AST::cast_to<AST::Net>(second)->get_type();
-                if(net_type) {
-                    variable.append(" " + render(net_type));
-                }
-                break;
-            }
             default:
                 break;
             }
