@@ -60,6 +60,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_repeat(const AST::Repeat::Ptr node) const;
     virtual YAML::Node render_assignmentpattern(const AST::AssignmentPattern::Ptr node) const;
     virtual YAML::Node render_patternitem(const AST::PatternItem::Ptr node) const;
+    virtual YAML::Node render_cast(const AST::Cast::Ptr node) const;
     virtual YAML::Node render_indirect(const AST::Indirect::Ptr node) const;
     virtual YAML::Node render_partselect(const AST::Partselect::Ptr node) const;
     virtual YAML::Node render_partselectindexed(const AST::PartselectIndexed::Ptr node) const;

@@ -180,6 +180,9 @@ public:
             case AST::NodeType::PatternItem:
                 return render_patternitem(AST::cast_to<AST::PatternItem>(node));
 
+            case AST::NodeType::Cast:
+                return render_cast(AST::cast_to<AST::Cast>(node));
+
             case AST::NodeType::Indirect:
                 return render_indirect(AST::cast_to<AST::Indirect>(node));
 
@@ -845,6 +848,14 @@ public:
      * @see GeneratorBase::render_patternitem(const AST::PatternItem::Ptr &node)
      */
     T render(const AST::PatternItem::Ptr node) const { return render_patternitem(node); }
+
+    /**
+     * Main rendering method for the Cast node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_cast(const AST::Cast::Ptr &node)
+     */
+    T render(const AST::Cast::Ptr node) const { return render_cast(node); }
 
     /**
      * Main rendering method for the Indirect node, we
@@ -1917,6 +1928,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_patternitem(const AST::PatternItem::Ptr node) const { return T(); }
+
+    /**
+     * Render the Cast node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_cast(const AST::Cast::Ptr node) const { return T(); }
 
     /**
      * Render the Indirect node. This method must be

@@ -1387,6 +1387,28 @@ YAML::Node YAMLGenerator::render_patternitem(const AST::PatternItem::Ptr node) c
     return node_patternitem;
 }
 
+YAML::Node YAMLGenerator::render_cast(const AST::Cast::Ptr node) const
+{
+    YAML::Node node_cast;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Cast) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["type"] = render(node->get_type());
+
+        content["expr"] = render(node->get_expr());
+    }
+
+    node_cast["Cast"] = content;
+    return node_cast;
+}
+
 YAML::Node YAMLGenerator::render_indirect(const AST::Indirect::Ptr node) const
 {
     YAML::Node node_indirect;

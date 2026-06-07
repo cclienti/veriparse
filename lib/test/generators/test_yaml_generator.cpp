@@ -983,6 +983,24 @@ TEST(YAMLGenerator, PatternItem)
     ASSERT_TRUE(yaml["PatternItem"]["is_default"].as<bool>() == false);
 }
 
+TEST(YAMLGenerator, Cast)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Cast.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_type(new AST::Node);
+    AST::Node::Ptr c_expr(new AST::Node);
+
+    AST::Cast::Ptr m_cast(new AST::Cast(c_type, c_expr, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_cast);
+
+    ASSERT_TRUE(yaml["Cast"]);
+    ASSERT_TRUE(yaml["Cast"]["type"]);
+    ASSERT_TRUE(yaml["Cast"]["expr"]);
+}
+
 TEST(YAMLGenerator, Indirect)
 {
     Logger::remove_all_sinks();

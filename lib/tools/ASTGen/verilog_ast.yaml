@@ -230,6 +230,15 @@ PatternItem:
     key: Node
     value: Node
 
+# SystemVerilog cast `type'(expr)`: a type/size/signing conversion. `type` is the
+# casting type — an Identifier for a built-in keyword / named type / signing, or a
+# constant expression for a size cast (`8'(x)`).
+Cast:
+  properties:
+  children:
+    type: Node
+    expr: Node
+
 Indirect:
   properties:
   children:

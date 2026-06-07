@@ -249,6 +249,7 @@ TEST(VerilogGeneratorTest, sv_struct_multiname0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_signing0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_port_types0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_assign_pattern0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_cast0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_net0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_funcret0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_port0) { TEST_CORE_SV; }

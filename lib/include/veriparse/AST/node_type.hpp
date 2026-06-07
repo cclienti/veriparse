@@ -58,6 +58,7 @@ enum class NodeType
     Repeat,
     AssignmentPattern,
     PatternItem,
+    Cast,
     Indirect,
     Partselect,
     PartselectIndexed,
