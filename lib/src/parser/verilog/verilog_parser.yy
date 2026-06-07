@@ -53,6 +53,12 @@ enum class data_type_kind_t {
 	 REAL, SHORTREAL, REALTIME, STRUCT, UNION, ENUM, NAMED
 };
 
+// Explicit signing of a data_type (`signed`/`unsigned`/absent). Kept tri-state
+// because the default differs by type: integer_vector_type is unsigned by
+// default, integer_atom_type is signed by default (IEEE 1800-2017 §6.8). Each
+// consumer resolves it to data_type_t::is_signed against its own default.
+enum class signing_t { NONE, SIGNED, UNSIGNED };
+
 // Semantic carrier filled by the `data_type` grammar rule; build_variable()
 // turns it into the matching AST node.
 typedef struct {
@@ -186,6 +192,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_INTEGER      "'integer'"
 %token                  TK_REAL         "'real'"
 %token                  TK_SIGNED       "'signed'"
+%token                  TK_UNSIGNED     "'unsigned'"
 %token                  TK_PARAMETER    "'parameter'"
 %token                  TK_LOCALPARAM   "'localparam'"
 %token                  TK_SUPPLY0      "'supply0'"
@@ -347,7 +354,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 data_declaration
 %type   <AST::Node::ListPtr>                 typed_var_decl
 %type   <data_type_kind_t>                   integer_vector_type integer_atom_type non_integer_type
-%type   <bool>                               signing
+%type   <signing_t>                          signing
 %type   <AST::Width::ListPtr>                packed_dimensions
 
 %type   <AST::GenerateStatement::Ptr>        generate
@@ -1045,11 +1052,12 @@ reg_net_type:   TK_REG   {$$ = net_type_t::REG;}
 port_data_type:
                 TK_BIT signing packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::BIT, $2, $3, nullptr, nullptr};
+                    $$ = data_type_t{data_type_kind_t::BIT, $2 == signing_t::SIGNED, $3, nullptr,
+                                     nullptr};
                 }
         |       integer_atom_type signing
                 {
-                    $$ = data_type_t{$1, true, nullptr, nullptr, nullptr};
+                    $$ = data_type_t{$1, $2 != signing_t::UNSIGNED, nullptr, nullptr, nullptr};
                 }
         |       non_integer_type
                 {
@@ -1650,7 +1658,8 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $5) {
                         AST::Width::ListPtr widths = AST::Width::clone_list($4);
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, $1, widths, $3);
+                        AST::Variable::Ptr net = ParserHelpers::create_net_type(
+                            decl_name, $1, widths, $3 == signing_t::SIGNED);
                         auto type = std::make_shared<AST::Identifier>(scanner.get_filename(), @2.begin.line);
                         type->set_name(kw);
                         std::static_pointer_cast<AST::Net>(net)->set_type(AST::to_node(type));
@@ -1687,8 +1696,9 @@ non_integer_type:                             // no signing, no packed dimension
         |       TK_REAL      { $$ = data_type_kind_t::REAL; }
         ;
 
-signing:        %empty       { $$ = false; }  // no `unsigned` token: absent or signed
-        |       TK_SIGNED    { $$ = true; }
+signing:        %empty       { $$ = signing_t::NONE; }
+        |       TK_SIGNED    { $$ = signing_t::SIGNED; }
+        |       TK_UNSIGNED  { $$ = signing_t::UNSIGNED; }
         ;
 
 packed_dimensions:
@@ -1699,12 +1709,12 @@ packed_dimensions:
 data_type:      integer_vector_type signing packed_dimensions
                 {
                     // vector types are unsigned by default; `signed` flips it
-                    $$ = data_type_t{$1, $2, $3, nullptr, nullptr};
+                    $$ = data_type_t{$1, $2 == signing_t::SIGNED, $3, nullptr, nullptr};
                 }
         |       integer_atom_type signing
                 {
-                    // atom types are signed by default (no `unsigned` token)
-                    $$ = data_type_t{$1, true, nullptr, nullptr, nullptr};
+                    // atom types are signed by default; `unsigned` flips it
+                    $$ = data_type_t{$1, $2 != signing_t::UNSIGNED, nullptr, nullptr, nullptr};
                 }
         |       non_integer_type
                 {
@@ -4279,6 +4289,24 @@ systemcall:     TK_DOLLAR TK_IDENTIFIER
         |       TK_DOLLAR TK_SIGNED TK_LPARENTHESIS sysargs TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::SystemCall>($4, "signed", scanner.get_filename(), @1.begin.line);
+                }
+
+                // $unsigned system task (`unsigned` is now a keyword, like signed)
+        |       TK_DOLLAR TK_UNSIGNED
+                {
+                    $$ = std::make_shared<AST::SystemCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_syscall("unsigned");
+                }
+
+        |       TK_DOLLAR TK_UNSIGNED TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::SystemCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_syscall("unsigned");
+                }
+
+        |       TK_DOLLAR TK_UNSIGNED TK_LPARENTHESIS sysargs TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::SystemCall>($4, "unsigned", scanner.get_filename(), @1.begin.line);
                 }
         ;
 
