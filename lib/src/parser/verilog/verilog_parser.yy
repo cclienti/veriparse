@@ -69,6 +69,24 @@ typedef struct {
 	 AST::Node::Ptr inline_def;       // STRUCT/UNION/ENUM: inline def node
 } data_type_t;
 
+// A net (wire/tri/supply) carrying an explicit integer_vector data type must be
+// 4-state, and a net keyword may not be directly followed by `reg` (IEEE
+// 1800-2017 6.7.1). Of bit/logic/reg only `logic` is valid. Returns an error
+// message for an invalid kind, or nullptr.
+static inline const char *net_integer_vector_error(data_type_kind_t kind)
+{
+	 switch(kind) {
+	 case data_type_kind_t::REG:
+		  return "a net type keyword shall not be directly followed by 'reg' "
+				 "(IEEE 1800-2017 6.7.1)";
+	 case data_type_kind_t::BIT:
+		  return "a net data type shall be 4-state; 'bit' is 2-state "
+				 "(IEEE 1800-2017 6.7.1)";
+	 default:
+		  return nullptr;
+	 }
+}
+
 enum class direction_t {
 	 INPUT, INOUT, OUTPUT, NONE
 };
@@ -1001,9 +1019,14 @@ port_typed_name:
         |       net_type integer_vector_type signing packed_dimensions TK_IDENTIFIER
                 {
                     // net type + explicit integer_vector data type:
-                    // `input wire logic [3:0] x`, `inout tri reg q` (IEEE
-                    // net_port_type ::= net_type data_type). The net carries the
-                    // data type keyword in its `type` child, like net_declaration.
+                    // `input wire logic [3:0] x` (IEEE net_port_type ::= net_type
+                    // data_type). The net carries the data type keyword in its
+                    // `type` child, like net_declaration. Only `logic` is valid:
+                    // `reg` may not directly follow a net keyword and `bit` is
+                    // 2-state (6.7.1).
+                    if(const char *err = net_integer_vector_error($2)) {
+                        error(@2, err);
+                    }
                     $$.direction = direction_t::NONE;
                     $$.net_type = $1;
                     $$.is_signed = false;
@@ -1682,12 +1705,15 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
         |       net_type integer_vector_type signing packed_dimensions net_decl_namelist TK_SEMICOLON
                 {
                     // net_declaration with an explicit integer_vector data type
-                    // (`wire logic [3:0] x`, `tri reg q`). The net node carries
-                    // the data type in `type` (an Identifier with the keyword);
-                    // its signing and packed dims stay on the net.
-                    const char *kw = ($2 == data_type_kind_t::LOGIC) ? "logic"
-                                   : ($2 == data_type_kind_t::REG)   ? "reg"
-                                                                     : "bit";
+                    // (`wire logic [3:0] x`). The net node carries the data type
+                    // in `type` (an Identifier with the keyword); its signing and
+                    // packed dims stay on the net. Only `logic` is a valid net
+                    // data type (reg may not directly follow a net keyword, bit
+                    // is 2-state — 6.7.1).
+                    if(const char *err = net_integer_vector_error($2)) {
+                        error(@2, err);
+                    }
+                    const char *kw = "logic";
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $5) {
                         AST::Width::ListPtr widths = AST::Width::clone_list($4);
