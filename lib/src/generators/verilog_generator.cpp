@@ -400,13 +400,7 @@ std::string VerilogGenerator::render_wire(const AST::Wire::Ptr node) const
 
 std::string VerilogGenerator::render_reg(const AST::Reg::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("reg", node->get_sign(), node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_supply0(const AST::Supply0::Ptr node) const
@@ -441,13 +435,7 @@ std::string VerilogGenerator::render_supply1(const AST::Supply1::Ptr node) const
 
 std::string VerilogGenerator::render_logic(const AST::Logic::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("logic", node->get_sign(), node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
@@ -468,105 +456,47 @@ std::string VerilogGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr
 
 std::string VerilogGenerator::render_integer(const AST::Integer::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("integer", false, nullptr, node->get_lengths(),
-                                    node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_real(const AST::Real::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("real", false, nullptr, node->get_lengths(), node->get_right(),
-                                    node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_bit(const AST::Bit::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("bit", node->get_sign(), node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_byte(const AST::Byte::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result =
-            variable_to_string(atom_type_string("byte", node->get_sign()).c_str(), false, nullptr,
-                               node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_shortint(const AST::Shortint::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result =
-            variable_to_string(atom_type_string("shortint", node->get_sign()).c_str(), false,
-                               nullptr, node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_int(const AST::Int::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result =
-            variable_to_string(atom_type_string("int", node->get_sign()).c_str(), false, nullptr,
-                               node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_longint(const AST::Longint::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result =
-            variable_to_string(atom_type_string("longint", node->get_sign()).c_str(), false,
-                               nullptr, node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_shortreal(const AST::Shortreal::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("shortreal", false, nullptr, node->get_lengths(),
-                                    node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_realtime(const AST::Realtime::Ptr node) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("realtime", false, nullptr, node->get_lengths(),
-                                    node->get_right(), node->get_name());
-        result.append(";");
-    }
-    return result;
+    return render_scalar_variable(node);
 }
 
 std::string VerilogGenerator::render_genvar(const AST::Genvar::Ptr node) const
@@ -1841,6 +1771,22 @@ std::string VerilogGenerator::render_data_type(const AST::Node::Ptr node) const
     while(!result.empty() && result.back() == ' ') {
         result.pop_back();
     }
+    return result;
+}
+
+std::string VerilogGenerator::render_scalar_variable(const AST::Variable::Ptr node) const
+{
+    if(!node) {
+        return "";
+    }
+    // The bare type (keyword + signing + packed dims) is rendered in exactly one
+    // place — render_data_type. Here we only add the declared name, unpacked
+    // dimensions and initializer. Passing the bare type as the `variable` keyword
+    // with no extra sign/widths reproduces the per-type formatting byte-for-byte.
+    std::string result =
+        variable_to_string(render_data_type(AST::to_node(node)).c_str(), false, nullptr,
+                           node->get_lengths(), node->get_right(), node->get_name());
+    result.append(";");
     return result;
 }
 
