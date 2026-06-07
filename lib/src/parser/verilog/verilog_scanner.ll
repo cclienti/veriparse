@@ -66,6 +66,7 @@ using token = Veriparse::Parser::VerilogParser::token;
 "integer"     {return token::TK_INTEGER;}
 "real"        {return token::TK_REAL;}
 "signed"      {return token::TK_SIGNED;}
+"unsigned"    {return token::TK_UNSIGNED;}
 "parameter"   {return token::TK_PARAMETER;}
 "localparam"  {return token::TK_LOCALPARAM;}
 "supply0"     {return token::TK_SUPPLY0;}

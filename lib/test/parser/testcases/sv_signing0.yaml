@@ -1,0 +1,173 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: lib/test/parser/testcases/sv_signing0.sv
+          items:
+          - Int:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 5
+              name: a
+              right:
+                Rvalue: null
+              sign: true
+          - Int:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 6
+              name: b
+              right:
+                Rvalue: null
+              sign: false
+          - Byte:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 7
+              name: c
+              right:
+                Rvalue: null
+              sign: false
+          - Longint:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 8
+              name: d
+              right:
+                Rvalue: null
+              sign: false
+          - Bit:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 12
+              name: e
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_signing0.sv
+                  line: 12
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 12
+                      sign: false
+                      size: -1
+                      value: 3
+          - Bit:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 13
+              name: f
+              right:
+                Rvalue: null
+              sign: true
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_signing0.sv
+                  line: 13
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 13
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 13
+                      sign: false
+                      size: -1
+                      value: 3
+          - Bit:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 14
+              name: g
+              right:
+                Rvalue: null
+              sign: false
+              widths:
+              - Width:
+                  filename: lib/test/parser/testcases/sv_signing0.sv
+                  line: 14
+                  lsb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 0
+                  msb:
+                    IntConstN:
+                      base: 10
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 14
+                      sign: false
+                      size: -1
+                      value: 3
+          - Localparam:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 17
+              name: U
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_signing0.sv
+                  line: 17
+                  var:
+                    SystemCall:
+                      args:
+                      - Uminus:
+                          filename: lib/test/parser/testcases/sv_signing0.sv
+                          line: 17
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: lib/test/parser/testcases/sv_signing0.sv
+                              line: 17
+                              sign: false
+                              size: -1
+                              value: 1
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 17
+                      syscall: unsigned
+          - Localparam:
+              filename: lib/test/parser/testcases/sv_signing0.sv
+              line: 18
+              name: S
+              sign: false
+              type: NONE
+              value:
+                Rvalue:
+                  filename: lib/test/parser/testcases/sv_signing0.sv
+                  line: 18
+                  var:
+                    SystemCall:
+                      args:
+                      - IntConstN:
+                          base: 16
+                          filename: lib/test/parser/testcases/sv_signing0.sv
+                          line: 18
+                          sign: false
+                          size: 8
+                          value: 254
+                      filename: lib/test/parser/testcases/sv_signing0.sv
+                      line: 18
+                      syscall: signed
+          line: 1
+          name: sv_signing0
+      filename: lib/test/parser/testcases/sv_signing0.sv
+      line: 1
+  filename: lib/test/parser/testcases/sv_signing0.sv
+  line: 1

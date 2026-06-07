@@ -23,6 +23,17 @@ namespace Generators
 
 typedef std::numeric_limits<double> dbl;
 
+namespace
+{
+// Integer atom types (byte/shortint/int/longint) are signed by default, so the
+// type spells the non-default case: `unsigned` is emitted, the redundant
+// `signed` is not (`int x;` / `int unsigned y;`, never `int signed`).
+std::string atom_type_string(const std::string &keyword, bool is_signed)
+{
+    return is_signed ? keyword : keyword + " unsigned";
+}
+} // namespace
+
 std::string VerilogGenerator::render_node(const AST::Node::Ptr node) const
 {
     if(node->get_node_type() != AST::NodeType::Node) {
@@ -492,8 +503,9 @@ std::string VerilogGenerator::render_byte(const AST::Byte::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = variable_to_string("byte", false, nullptr, node->get_lengths(), node->get_right(),
-                                    node->get_name());
+        result =
+            variable_to_string(atom_type_string("byte", node->get_sign()).c_str(), false, nullptr,
+                               node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
     return result;
@@ -503,8 +515,9 @@ std::string VerilogGenerator::render_shortint(const AST::Shortint::Ptr node) con
 {
     std::string result;
     if(node) {
-        result = variable_to_string("shortint", false, nullptr, node->get_lengths(),
-                                    node->get_right(), node->get_name());
+        result =
+            variable_to_string(atom_type_string("shortint", node->get_sign()).c_str(), false,
+                               nullptr, node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
     return result;
@@ -514,8 +527,9 @@ std::string VerilogGenerator::render_int(const AST::Int::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = variable_to_string("int", false, nullptr, node->get_lengths(), node->get_right(),
-                                    node->get_name());
+        result =
+            variable_to_string(atom_type_string("int", node->get_sign()).c_str(), false, nullptr,
+                               node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
     return result;
@@ -525,8 +539,9 @@ std::string VerilogGenerator::render_longint(const AST::Longint::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = variable_to_string("longint", false, nullptr, node->get_lengths(),
-                                    node->get_right(), node->get_name());
+        result =
+            variable_to_string(atom_type_string("longint", node->get_sign()).c_str(), false,
+                               nullptr, node->get_lengths(), node->get_right(), node->get_name());
         result.append(";");
     }
     return result;
@@ -611,22 +626,28 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
             case AST::NodeType::Bit:
                 variable.append(" bit");
                 break;
-            // atom / non-integer / integer / real types are signed (or
-            // unsigned) by definition: drop the redundant `signed` keyword.
+            // atom / non-integer / integer / real types are signed by default:
+            // drop the redundant `signed`; atoms still spell explicit `unsigned`.
             case AST::NodeType::Byte:
-                variable.append(" byte");
+                variable.append(
+                    " " + atom_type_string("byte", AST::cast_to<AST::Byte>(second)->get_sign()));
                 sign = false;
                 break;
             case AST::NodeType::Shortint:
-                variable.append(" shortint");
+                variable.append(
+                    " " +
+                    atom_type_string("shortint", AST::cast_to<AST::Shortint>(second)->get_sign()));
                 sign = false;
                 break;
             case AST::NodeType::Int:
-                variable.append(" int");
+                variable.append(
+                    " " + atom_type_string("int", AST::cast_to<AST::Int>(second)->get_sign()));
                 sign = false;
                 break;
             case AST::NodeType::Longint:
-                variable.append(" longint");
+                variable.append(
+                    " " +
+                    atom_type_string("longint", AST::cast_to<AST::Longint>(second)->get_sign()));
                 sign = false;
                 break;
             case AST::NodeType::Integer:
@@ -1778,16 +1799,16 @@ std::string VerilogGenerator::render_data_type(const AST::Node::Ptr node) const
         break;
     }
     case AST::NodeType::Byte:
-        result = "byte";
+        result = atom_type_string("byte", AST::cast_to<AST::Byte>(node)->get_sign());
         break;
     case AST::NodeType::Shortint:
-        result = "shortint";
+        result = atom_type_string("shortint", AST::cast_to<AST::Shortint>(node)->get_sign());
         break;
     case AST::NodeType::Int:
-        result = "int";
+        result = atom_type_string("int", AST::cast_to<AST::Int>(node)->get_sign());
         break;
     case AST::NodeType::Longint:
-        result = "longint";
+        result = atom_type_string("longint", AST::cast_to<AST::Longint>(node)->get_sign());
         break;
     case AST::NodeType::Integer:
         result = "integer";
