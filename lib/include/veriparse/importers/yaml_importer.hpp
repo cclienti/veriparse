@@ -68,6 +68,8 @@ private:
     AST::Node::Ptr convert_concat(const YAML::Node node) const;
     AST::Node::Ptr convert_lconcat(const YAML::Node node) const;
     AST::Node::Ptr convert_repeat(const YAML::Node node) const;
+    AST::Node::Ptr convert_assignmentpattern(const YAML::Node node) const;
+    AST::Node::Ptr convert_patternitem(const YAML::Node node) const;
     AST::Node::Ptr convert_indirect(const YAML::Node node) const;
     AST::Node::Ptr convert_partselect(const YAML::Node node) const;
     AST::Node::Ptr convert_partselectindexed(const YAML::Node node) const;

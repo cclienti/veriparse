@@ -316,6 +316,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_RBRACKET     "']'"
 %token                  TK_LBRACE       "'{'"
 %token                  TK_RBRACE       "'}'"
+%token                  TK_TICK_LBRACE  "''{'"
 %token                  TK_DELAY        "'#'"
 %token                  TK_DOLLAR       "'$'"
 %token  <std::string>   TK_INTNUMBER    "'integer const'"
@@ -436,6 +437,9 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Concat::Ptr>                   concat
 %type   <AST::Node::ListPtr>                 concatlist
 %type   <AST::Repeat::Ptr>                   repeat
+%type   <AST::AssignmentPattern::Ptr>        assignment_pattern
+%type   <AST::Node::ListPtr>                 pattern_items
+%type   <AST::Node::Ptr>                     pattern_item
 %type   <AST::Node::Ptr>                     partselect
 %type   <AST::FloatConst::Ptr>               floatnumber
 %type   <AST::Node::Ptr>                     intnumber
@@ -2673,6 +2677,11 @@ expression:     TK_MINUS expression %prec TK_UMINUS
                     $$ = AST::to_node($1);
                 }
 
+        |       assignment_pattern
+                {
+                    $$ = AST::to_node($1);
+                }
+
         |       partselect
                 {
                     $$ = $1;
@@ -2775,6 +2784,69 @@ concatlist:     concatlist TK_COMMA expression
 repeat:         TK_LBRACE expression concat TK_RBRACE
                 {
                     $$ = std::make_shared<AST::Repeat>($3, $2, scanner.get_filename(), @1.begin.line);
+                }
+        ;
+
+
+// SystemVerilog assignment pattern: '{ ... } — a struct/array literal. Items are
+// positional expressions or keyed `key : value` / `default : value` entries.
+assignment_pattern:
+                TK_TICK_LBRACE pattern_items TK_RBRACE
+                {
+                    $$ = std::make_shared<AST::AssignmentPattern>(scanner.get_filename(),
+                                                                  @1.begin.line);
+                    $$->set_items($2);
+                }
+
+        |       TK_TICK_LBRACE expression concat TK_RBRACE
+                {
+                    // replicated form `'{N{a, b, ...}}`: N copies of the inner list
+                    $$ = std::make_shared<AST::AssignmentPattern>(scanner.get_filename(),
+                                                                  @1.begin.line);
+                    $$->set_items($3->get_list());
+                    $$->set_times($2);
+                }
+        ;
+
+
+pattern_items:  pattern_items TK_COMMA pattern_item
+                {
+                    $$ = $1;
+                    $$->push_back($3);
+                }
+
+        |       pattern_item
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back($1);
+                }
+        ;
+
+
+pattern_item:   expression
+                {
+                    $$ = $1;
+                }
+
+        |       expression TK_COLON expression
+                {
+                    // keyed entry `key : value` (member name, index, or type)
+                    auto pi = std::make_shared<AST::PatternItem>(scanner.get_filename(),
+                                                                 @1.begin.line);
+                    pi->set_is_default(false);
+                    pi->set_key($1);
+                    pi->set_value($3);
+                    $$ = AST::to_node(pi);
+                }
+
+        |       TK_DEFAULT TK_COLON expression
+                {
+                    // `default : value`
+                    auto pi = std::make_shared<AST::PatternItem>(scanner.get_filename(),
+                                                                 @1.begin.line);
+                    pi->set_is_default(true);
+                    pi->set_value($3);
+                    $$ = AST::to_node(pi);
                 }
         ;
 

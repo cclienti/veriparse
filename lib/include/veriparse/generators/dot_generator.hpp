@@ -61,6 +61,8 @@ private:
     virtual std::string render_concat(const AST::Concat::Ptr node) const;
     virtual std::string render_lconcat(const AST::Lconcat::Ptr node) const;
     virtual std::string render_repeat(const AST::Repeat::Ptr node) const;
+    virtual std::string render_assignmentpattern(const AST::AssignmentPattern::Ptr node) const;
+    virtual std::string render_patternitem(const AST::PatternItem::Ptr node) const;
     virtual std::string render_indirect(const AST::Indirect::Ptr node) const;
     virtual std::string render_partselect(const AST::Partselect::Ptr node) const;
     virtual std::string render_partselectindexed(const AST::PartselectIndexed::Ptr node) const;

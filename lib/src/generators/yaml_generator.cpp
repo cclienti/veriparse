@@ -1337,6 +1337,56 @@ YAML::Node YAMLGenerator::render_repeat(const AST::Repeat::Ptr node) const
     return node_repeat;
 }
 
+YAML::Node YAMLGenerator::render_assignmentpattern(const AST::AssignmentPattern::Ptr node) const
+{
+    YAML::Node node_assignmentpattern;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::AssignmentPattern) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        if(node->get_items()) {
+            content["items"] = YAML::Load("[]");
+            for(const AST::Node::Ptr &n : *node->get_items()) {
+                content["items"].push_back(render(n));
+            }
+        }
+
+        content["times"] = render(node->get_times());
+    }
+
+    node_assignmentpattern["AssignmentPattern"] = content;
+    return node_assignmentpattern;
+}
+
+YAML::Node YAMLGenerator::render_patternitem(const AST::PatternItem::Ptr node) const
+{
+    YAML::Node node_patternitem;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::PatternItem) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_default"] = node->get_is_default();
+
+        content["key"] = render(node->get_key());
+
+        content["value"] = render(node->get_value());
+    }
+
+    node_patternitem["PatternItem"] = content;
+    return node_patternitem;
+}
+
 YAML::Node YAMLGenerator::render_indirect(const AST::Indirect::Ptr node) const
 {
     YAML::Node node_indirect;

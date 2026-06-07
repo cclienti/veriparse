@@ -58,6 +58,11 @@ template <> constexpr NodeType get_node_type<Localparam>() { return NodeType::Lo
 template <> constexpr NodeType get_node_type<Concat>() { return NodeType::Concat; }
 template <> constexpr NodeType get_node_type<Lconcat>() { return NodeType::Lconcat; }
 template <> constexpr NodeType get_node_type<Repeat>() { return NodeType::Repeat; }
+template <> constexpr NodeType get_node_type<AssignmentPattern>()
+{
+    return NodeType::AssignmentPattern;
+}
+template <> constexpr NodeType get_node_type<PatternItem>() { return NodeType::PatternItem; }
 template <> constexpr NodeType get_node_type<Indirect>() { return NodeType::Indirect; }
 template <> constexpr NodeType get_node_type<Partselect>() { return NodeType::Partselect; }
 template <> constexpr NodeType get_node_type<PartselectIndexed>()

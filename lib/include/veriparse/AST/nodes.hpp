@@ -48,6 +48,8 @@
 #include <veriparse/AST/concat.hpp>
 #include <veriparse/AST/lconcat.hpp>
 #include <veriparse/AST/repeat.hpp>
+#include <veriparse/AST/assignmentpattern.hpp>
+#include <veriparse/AST/patternitem.hpp>
 #include <veriparse/AST/indirect.hpp>
 #include <veriparse/AST/partselect.hpp>
 #include <veriparse/AST/partselectindexed.hpp>

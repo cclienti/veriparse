@@ -790,6 +790,49 @@ std::string VerilogGenerator::render_repeat(const AST::Repeat::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_assignmentpattern(const AST::AssignmentPattern::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = "'{";
+        // replicated form `'{N{ ... }}`
+        const AST::Node::Ptr times = node->get_times();
+        if(times) {
+            result += StringUtils::delete_surrounding_brackets(render(times)) + "{";
+        }
+        const AST::Node::ListPtr items = node->get_items();
+        if(items) {
+            bool first = true;
+            for(const AST::Node::Ptr &item : *items) {
+                if(!first) {
+                    result += ", ";
+                }
+                result += render(item);
+                first = false;
+            }
+        }
+        if(times) {
+            result += "}";
+        }
+        result += "}";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_patternitem(const AST::PatternItem::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        if(node->get_is_default()) {
+            result = "default";
+        } else if(node->get_key()) {
+            result = render(node->get_key());
+        }
+        result += ": " + render(node->get_value());
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_partselect(const AST::Partselect::Ptr node) const
 {
     std::string result;
