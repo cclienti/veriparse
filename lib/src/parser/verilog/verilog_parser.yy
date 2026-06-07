@@ -325,9 +325,10 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 
 %type   <std::string>                        modulename
 %type   <std::list<port_info_t>>             portinfo_list ioports
-%type   <port_info_t>                        portinfo portname portname_reg_net ioport
+%type   <port_info_t>                        portinfo portname ioport
+%type   <port_info_t>                        port_typed_name implicit_port_type
 %type   <direction_t>                        portdir
-%type   <net_type_t>                         net_type reg_net_type
+%type   <net_type_t>                         net_type
 
 %type   <std::list<decl_name_t>>             net_decl_namelist var_decl_namelist
 %type   <decl_name_t>                        net_decl_name var_decl_name
@@ -884,7 +885,7 @@ portinfo:       portname
                     $$ = $1;
                 }
 
-        |       portname_reg_net
+        |       port_typed_name
                 {
                     $$ = $1;
                 }
@@ -896,15 +897,6 @@ portinfo:       portname
         ;
 
 
-portname_reg_net:
-                reg_net_type portname
-                {
-                    $$ = $2;
-                    $$.net_type = $1;
-                }
-        ;
-
-
 portname:       TK_IDENTIFIER
                 {
                     $$.direction = direction_t::NONE;
@@ -912,29 +904,6 @@ portname:       TK_IDENTIFIER
                     $$.is_signed = false;
                     $$.widths = nullptr;
                     $$.name = $1;
-                }
-
-        |       widths TK_IDENTIFIER
-                {
-                    $$.direction = direction_t::NONE;
-                    $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
-                    $$.widths = $1;
-                    $$.name = $2;
-                }
-
-        |       TK_SIGNED widths TK_IDENTIFIER
-                {
-                    $$.direction = direction_t::NONE;
-                    $$.net_type = net_type_t::NONE;
-                    $$.is_signed = true;
-                    $$.widths = $2;
-                    $$.name = $3;
-                }
-
-        |       TK_SIGNED TK_IDENTIFIER
-                {
-                    error(@2, "a range is missing");
                 }
 
         |       TK_IDENTIFIER TK_IDENTIFIER
@@ -958,6 +927,68 @@ portname:       TK_IDENTIFIER
                     $$.name = $3;
                     $$.type_name = $2;
                     $$.type_package = $1;
+                }
+        ;
+
+
+// Implicit data type on a port (no type keyword): a range, optionally signed —
+// `[3:0] x`, `signed [3:0] x`. Lives on its own path so it never competes with
+// `integer_vector_type signing` inside port_data_type (the old type-vs-name wall).
+implicit_port_type:
+                widths
+                {
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = false;
+                    $$.widths = $1;
+                }
+
+        |       TK_SIGNED widths
+                {
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = true;
+                    $$.widths = $2;
+                }
+        ;
+
+
+// A port carrying a type, without direction (shared by ANSI and non-ANSI):
+// a built-in data_type, an implicit range, or a net_type (optionally with an
+// implicit range). IEEE: [net_type] data_type_or_implicit.
+port_typed_name:
+                port_data_type TK_IDENTIFIER
+                {
+                    // bit/logic/reg/atom/struct/enum port: `int d`, `reg [3:0] q`
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.is_signed = false;
+                    $$.widths = nullptr;
+                    $$.name = $2;
+                    $$.has_data_type = true;
+                    $$.data_type = $1;
+                }
+
+        |       implicit_port_type TK_IDENTIFIER
+                {
+                    $$ = $1;
+                    $$.name = $2;
+                }
+
+        |       net_type TK_IDENTIFIER
+                {
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = $1;
+                    $$.is_signed = false;
+                    $$.widths = nullptr;
+                    $$.name = $2;
+                }
+
+        |       net_type implicit_port_type TK_IDENTIFIER
+                {
+                    $$ = $2;
+                    $$.net_type = $1;
+                    $$.name = $3;
                 }
         ;
 
@@ -996,7 +1027,7 @@ ioports:        ioports TK_COMMA portname
                     $$.push_back($3);
                 }
 
-        |       ioports TK_COMMA portname_reg_net
+        |       ioports TK_COMMA port_typed_name
                 {
                     $$ = $1;
                     $3.loc = @3;
@@ -1018,42 +1049,22 @@ ioport:         portdir portname
                     $$.direction = $1;
                 }
 
-        |       portdir reg_net_type portname
+        |       portdir port_typed_name
                 {
-                    $$ = $3;
+                    // ANSI port with a type: `input int d`, `output bit [3:0] q`,
+                    // `input reg [3:0] r`, `input wire [3:0] w`, `input [3:0] x`
+                    $$ = $2;
                     $$.direction = $1;
-                    $$.net_type = $2;
-                }
-
-        |       portdir port_data_type TK_IDENTIFIER
-                {
-                    // ANSI port with a built-in data_type: `input int d`,
-                    // `output bit [3:0] q`, `input struct {...} s`
-                    $$.direction = $1;
-                    $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
-                    $$.widths = nullptr;
-                    $$.name = $3;
-                    $$.has_data_type = true;
-                    $$.data_type = $2;
                 }
 
 
-
-reg_net_type:   TK_REG   {$$ = net_type_t::REG;}
-        |       TK_LOGIC {$$ = net_type_t::LOGIC;}
-        |       net_type {$$ = $1;}
-        ;
-
-
-// data_type usable as a port type, excluding logic/reg/wire (which keep their
-// dedicated port forms via reg_net_type) to avoid a port grammar conflict. So:
-// bit, the integer atom types, the non-integer types, and inline aggregates.
+// data_type usable as a port type: bit/logic/reg (integer_vector_type, owning
+// their signing + packed dims), the integer atom types, the non-integer types,
+// and inline aggregates. wire/tri/supply are net_type, kept separate.
 port_data_type:
-                TK_BIT signing packed_dimensions
+                integer_vector_type signing packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::BIT, $2 == signing_t::SIGNED, $3, nullptr,
-                                     nullptr};
+                    $$ = data_type_t{$1, $2 == signing_t::SIGNED, $3, nullptr, nullptr};
                 }
         |       integer_atom_type signing
                 {
@@ -1078,9 +1089,9 @@ port_data_type:
         ;
 
 
-// True net types only (Annex A). `logic`/`reg` are data types, not nets:
-// `logic` reaches data_type via integer_vector_type, and reaches port
-// declarations via reg_net_type above.
+// True net types only (Annex A): wire/tri/supply. `logic`/`reg` are data types,
+// not nets — they reach every position (items, ports, returns, members) through
+// integer_vector_type inside data_type / port_data_type.
 net_type:       TK_TRI      {$$ = net_type_t::TRI;}
         |       TK_WIRE     {$$ = net_type_t::WIRE;}
         |       TK_SUPPLY0  {$$ = net_type_t::SUPPLY0;}
@@ -4492,22 +4503,10 @@ function_ioport:portname
                     $$ = $1;
                 }
 
-        |       TK_REG portname
-                {
-                    $$ = $2;
-                    $$.net_type = net_type_t::REG;
-                }
-
-        |       TK_LOGIC portname
-                {
-                    $$ = $2;
-                    $$.net_type = net_type_t::LOGIC;
-                }
-
         |       port_data_type TK_IDENTIFIER
                 {
                     // built-in data_type function/task port: `input int a`,
-                    // `input bit [3:0] b`, `input integer i`, `input real r`
+                    // `input bit [3:0] b`, `input reg/logic [3:0] r`, `input real r`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
                     $$.is_signed = false;
@@ -4515,6 +4514,13 @@ function_ioport:portname
                     $$.name = $2;
                     $$.has_data_type = true;
                     $$.data_type = $1;
+                }
+
+        |       implicit_port_type TK_IDENTIFIER
+                {
+                    // implicit range port: `input [3:0] x`, `input signed [3:0] x`
+                    $$ = $1;
+                    $$.name = $2;
                 }
         ;
 
@@ -4776,22 +4782,10 @@ task_ioport:    portname
                     $$ = $1;
                 }
 
-        |       TK_REG portname
-                {
-                    $$ = $2;
-                    $$.net_type = net_type_t::REG;
-                }
-
-        |       TK_LOGIC portname
-                {
-                    $$ = $2;
-                    $$.net_type = net_type_t::LOGIC;
-                }
-
         |       port_data_type TK_IDENTIFIER
                 {
                     // built-in data_type function/task port: `input int a`,
-                    // `input bit [3:0] b`, `input integer i`, `input real r`
+                    // `input bit [3:0] b`, `input reg/logic [3:0] r`, `input real r`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
                     $$.is_signed = false;
@@ -4799,6 +4793,13 @@ task_ioport:    portname
                     $$.name = $2;
                     $$.has_data_type = true;
                     $$.data_type = $1;
+                }
+
+        |       implicit_port_type TK_IDENTIFIER
+                {
+                    // implicit range port: `input [3:0] x`, `input signed [3:0] x`
+                    $$ = $1;
+                    $$.name = $2;
                 }
         ;
 
