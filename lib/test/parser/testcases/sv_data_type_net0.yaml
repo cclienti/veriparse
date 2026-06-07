@@ -10,7 +10,7 @@ Source:
               filename: lib/test/parser/testcases/sv_data_type_net0.sv
               ldelay:
                 DelayStatement: null
-              line: 3
+              line: 5
               name: a
               rdelay:
                 DelayStatement: null
@@ -20,7 +20,7 @@ Source:
               type:
                 Identifier:
                   filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 3
+                  line: 5
                   name: logic
                   package: ''
                   scope:
@@ -28,12 +28,12 @@ Source:
               widths:
               - Width:
                   filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 3
+                  line: 5
                   lsb:
                     IntConstN:
                       base: 10
                       filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 3
+                      line: 5
                       sign: false
                       size: -1
                       value: 0
@@ -41,7 +41,7 @@ Source:
                     IntConstN:
                       base: 10
                       filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 3
+                      line: 5
                       sign: false
                       size: -1
                       value: 3
@@ -49,7 +49,7 @@ Source:
               filename: lib/test/parser/testcases/sv_data_type_net0.sv
               ldelay:
                 DelayStatement: null
-              line: 4
+              line: 6
               name: b
               rdelay:
                 DelayStatement: null
@@ -59,7 +59,7 @@ Source:
               type:
                 Identifier:
                   filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 4
+                  line: 6
                   name: logic
                   package: ''
                   scope:
@@ -67,12 +67,12 @@ Source:
               widths:
               - Width:
                   filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 4
+                  line: 6
                   lsb:
                     IntConstN:
                       base: 10
                       filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 4
+                      line: 6
                       sign: false
                       size: -1
                       value: 0
@@ -80,7 +80,7 @@ Source:
                     IntConstN:
                       base: 10
                       filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 4
+                      line: 6
                       sign: false
                       size: -1
                       value: 7
@@ -88,7 +88,7 @@ Source:
               filename: lib/test/parser/testcases/sv_data_type_net0.sv
               ldelay:
                 DelayStatement: null
-              line: 5
+              line: 7
               name: c
               rdelay:
                 DelayStatement: null
@@ -98,8 +98,8 @@ Source:
               type:
                 Identifier:
                   filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 5
-                  name: reg
+                  line: 7
+                  name: logic
                   package: ''
                   scope:
                     IdentifierScope: null
@@ -107,7 +107,7 @@ Source:
               filename: lib/test/parser/testcases/sv_data_type_net0.sv
               ldelay:
                 DelayStatement: null
-              line: 6
+              line: 8
               name: d
               rdelay:
                 DelayStatement: null
@@ -117,20 +117,20 @@ Source:
               type:
                 Identifier:
                   filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 6
-                  name: bit
+                  line: 8
+                  name: logic
                   package: ''
                   scope:
                     IdentifierScope: null
               widths:
               - Width:
                   filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 6
+                  line: 8
                   lsb:
                     IntConstN:
                       base: 10
                       filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 6
+                      line: 8
                       sign: false
                       size: -1
                       value: 0
@@ -138,7 +138,7 @@ Source:
                     IntConstN:
                       base: 10
                       filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 6
+                      line: 8
                       sign: false
                       size: -1
                       value: 1
