@@ -149,6 +149,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::PatternItem:
         os << static_cast<const AST::PatternItem &>(p);
         break;
+    case NodeType::Cast:
+        os << static_cast<const AST::Cast &>(p);
+        break;
     case NodeType::Indirect:
         os << static_cast<const AST::Indirect &>(p);
         break;

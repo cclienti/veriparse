@@ -833,6 +833,16 @@ std::string VerilogGenerator::render_patternitem(const AST::PatternItem::Ptr nod
     return result;
 }
 
+std::string VerilogGenerator::render_cast(const AST::Cast::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = render(node->get_type()) + "'(" +
+                 StringUtils::delete_surrounding_brackets(render(node->get_expr())) + ")";
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_partselect(const AST::Partselect::Ptr node) const
 {
     std::string result;

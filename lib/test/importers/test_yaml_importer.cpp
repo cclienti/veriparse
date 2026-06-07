@@ -1160,6 +1160,27 @@ TEST(YAMLImporter, PatternItem)
     ASSERT_TRUE(yaml["PatternItem"]["is_default"].as<bool>() == false);
 }
 
+TEST(YAMLImporter, Cast)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Cast.log");
+    Logger::add_stderr_sink();
+    std::string str("Cast:\n"
+                    "  filename: cast.v\n"
+                    "  line: 4\n"
+                    "  type:\n"
+                    "  expr:\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Cast"]);
+    ASSERT_TRUE(yaml["Cast"]["filename"].as<std::string>() == "cast.v");
+    ASSERT_TRUE(yaml["Cast"]["line"].as<int>() == 4);
+    ASSERT_TRUE(yaml["Cast"]["type"]);
+    ASSERT_TRUE(yaml["Cast"]["expr"]);
+}
+
 TEST(YAMLImporter, Indirect)
 {
     Logger::remove_all_sinks();

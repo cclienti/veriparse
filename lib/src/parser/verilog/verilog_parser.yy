@@ -87,6 +87,26 @@ static inline const char *net_integer_vector_error(data_type_kind_t kind)
 	 }
 }
 
+// The keyword spelling of a built-in scalar data_type_kind_t (for a cast type,
+// rendered as e.g. `int'(x)`). Aggregate/named kinds have no keyword.
+static inline const char *data_type_kind_keyword(data_type_kind_t kind)
+{
+	 switch(kind) {
+	 case data_type_kind_t::BIT:       return "bit";
+	 case data_type_kind_t::LOGIC:     return "logic";
+	 case data_type_kind_t::REG:       return "reg";
+	 case data_type_kind_t::BYTE:      return "byte";
+	 case data_type_kind_t::SHORTINT:  return "shortint";
+	 case data_type_kind_t::INT:       return "int";
+	 case data_type_kind_t::LONGINT:   return "longint";
+	 case data_type_kind_t::INTEGER:   return "integer";
+	 case data_type_kind_t::REAL:      return "real";
+	 case data_type_kind_t::SHORTREAL: return "shortreal";
+	 case data_type_kind_t::REALTIME:  return "realtime";
+	 default:                          return "";
+	 }
+}
+
 enum class direction_t {
 	 INPUT, INOUT, OUTPUT, NONE
 };
@@ -317,6 +337,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_LBRACE       "'{'"
 %token                  TK_RBRACE       "'}'"
 %token                  TK_TICK_LBRACE  "''{'"
+%token                  TK_TICK_LPAREN  "''('"
 %token                  TK_DELAY        "'#'"
 %token                  TK_DOLLAR       "'$'"
 %token  <std::string>   TK_INTNUMBER    "'integer const'"
@@ -440,6 +461,8 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::AssignmentPattern::Ptr>        assignment_pattern
 %type   <AST::Node::ListPtr>                 pattern_items
 %type   <AST::Node::Ptr>                     pattern_item
+%type   <AST::Cast::Ptr>                     cast
+%type   <AST::Node::Ptr>                     casting_type
 %type   <AST::Node::Ptr>                     partselect
 %type   <AST::FloatConst::Ptr>               floatnumber
 %type   <AST::Node::Ptr>                     intnumber
@@ -2682,6 +2705,11 @@ expression:     TK_MINUS expression %prec TK_UMINUS
                     $$ = AST::to_node($1);
                 }
 
+        |       cast
+                {
+                    $$ = AST::to_node($1);
+                }
+
         |       partselect
                 {
                     $$ = $1;
@@ -2847,6 +2875,62 @@ pattern_item:   expression
                     pi->set_is_default(true);
                     pi->set_value($3);
                     $$ = AST::to_node(pi);
+                }
+        ;
+
+
+// SystemVerilog cast: type'(expr). The casting type is a built-in keyword, a
+// signing keyword, a named type, or a size (constant expression).
+cast:           casting_type TK_TICK_LPAREN expression TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Cast>(scanner.get_filename(), @1.begin.line);
+                    $$->set_type($1);
+                    $$->set_expr($3);
+                }
+        ;
+
+
+casting_type:   integer_vector_type
+                {
+                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    id->set_name(data_type_kind_keyword($1));
+                    $$ = AST::to_node(id);
+                }
+
+        |       integer_atom_type
+                {
+                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    id->set_name(data_type_kind_keyword($1));
+                    $$ = AST::to_node(id);
+                }
+
+        |       non_integer_type
+                {
+                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    id->set_name(data_type_kind_keyword($1));
+                    $$ = AST::to_node(id);
+                }
+
+        |       TK_SIGNED
+                {
+                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    id->set_name("signed");
+                    $$ = AST::to_node(id);
+                }
+
+        |       TK_UNSIGNED
+                {
+                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    id->set_name("unsigned");
+                    $$ = AST::to_node(id);
+                }
+
+        |       TK_IDENTIFIER
+                {
+                    // named type cast: `my_t'(x)`
+                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    id->set_name($1);
+                    $$ = AST::to_node(id);
                 }
         ;
 

@@ -193,6 +193,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["PatternItem"]) {
             return convert_patternitem(node["PatternItem"]);
         }
+        if(node["Cast"]) {
+            return convert_cast(node["Cast"]);
+        }
         if(node["Indirect"]) {
             return convert_indirect(node["Indirect"]);
         }
@@ -4218,6 +4221,58 @@ AST::Node::Ptr YAMLImporter::convert_patternitem(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::PatternItem>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_cast(const YAML::Node node) const
+{
+    AST::Cast::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Cast>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Cast>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Cast>();
+                }
+                result->set_type(child);
+            }
+        }
+
+        // Manage Child expr
+        if(node["expr"]) {
+            const YAML::Node node_expr = node["expr"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_expr);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Cast>();
+                }
+                result->set_expr(child);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Cast>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_indirect(const YAML::Node node) const

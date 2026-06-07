@@ -275,6 +275,7 @@ using token = Veriparse::Parser::VerilogParser::token;
 "\["   {return token::TK_LBRACKET;}
 "\]"   {return token::TK_RBRACKET;}
 "'\{"  {return token::TK_TICK_LBRACE;}  /* SystemVerilog assignment pattern '{ */
+"'\("  {return token::TK_TICK_LPAREN;}  /* SystemVerilog cast  type'( ... )  */
 "\{"   {return token::TK_LBRACE;}
 "\}"   {return token::TK_RBRACE;}
 

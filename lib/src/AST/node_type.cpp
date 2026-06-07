@@ -105,6 +105,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "AssignmentPattern";
     case NodeType::PatternItem:
         return "PatternItem";
+    case NodeType::Cast:
+        return "Cast";
     case NodeType::Indirect:
         return "Indirect";
     case NodeType::Partselect:
