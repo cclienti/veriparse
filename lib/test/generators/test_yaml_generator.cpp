@@ -943,6 +943,46 @@ TEST(YAMLGenerator, Repeat)
     ASSERT_TRUE(yaml["Repeat"]["times"]);
 }
 
+TEST(YAMLGenerator, AssignmentPattern)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.AssignmentPattern.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::ListPtr c_items(new AST::Node::List);
+    AST::Node::Ptr c_times(new AST::Node);
+
+    AST::AssignmentPattern::Ptr m_assignmentpattern(
+        new AST::AssignmentPattern(c_items, c_times, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_assignmentpattern);
+
+    ASSERT_TRUE(yaml["AssignmentPattern"]);
+    ASSERT_TRUE(yaml["AssignmentPattern"]["items"]);
+    ASSERT_TRUE(yaml["AssignmentPattern"]["times"]);
+}
+
+TEST(YAMLGenerator, PatternItem)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.PatternItem.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_key(new AST::Node);
+    AST::Node::Ptr c_value(new AST::Node);
+    bool p_is_default = false;
+
+    AST::PatternItem::Ptr m_patternitem(
+        new AST::PatternItem(c_key, c_value, p_is_default, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_patternitem);
+
+    ASSERT_TRUE(yaml["PatternItem"]);
+    ASSERT_TRUE(yaml["PatternItem"]["key"]);
+    ASSERT_TRUE(yaml["PatternItem"]["value"]);
+    ASSERT_TRUE(yaml["PatternItem"]["is_default"].as<bool>() == false);
+}
+
 TEST(YAMLGenerator, Indirect)
 {
     Logger::remove_all_sinks();

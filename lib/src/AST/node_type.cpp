@@ -101,6 +101,10 @@ const char *NodeTypeToString(NodeType node_type)
         return "Lconcat";
     case NodeType::Repeat:
         return "Repeat";
+    case NodeType::AssignmentPattern:
+        return "AssignmentPattern";
+    case NodeType::PatternItem:
+        return "PatternItem";
     case NodeType::Indirect:
         return "Indirect";
     case NodeType::Partselect:

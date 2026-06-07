@@ -211,6 +211,25 @@ Repeat:
     value: Node
     times: Node
 
+# SystemVerilog assignment pattern `'{ ... }` (struct/array literal). `items`
+# are positional expressions or keyed `PatternItem` entries; `times` holds the
+# replication count of the `'{N{...}}` form (null for the plain form).
+AssignmentPattern:
+  properties:
+  children:
+    items: list(Node)
+    times: Node
+
+# A keyed entry `key : value` in an assignment pattern. `is_default` marks the
+# `default : value` form (key is then null); otherwise key is a member name
+# (Identifier), an index (expression), or a type name.
+PatternItem:
+  properties:
+    is_default: bool
+  children:
+    key: Node
+    value: Node
+
 Indirect:
   properties:
   children:

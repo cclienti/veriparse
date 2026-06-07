@@ -56,6 +56,8 @@ enum class NodeType
     Concat,
     Lconcat,
     Repeat,
+    AssignmentPattern,
+    PatternItem,
     Indirect,
     Partselect,
     PartselectIndexed,

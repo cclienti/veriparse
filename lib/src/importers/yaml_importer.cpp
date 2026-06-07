@@ -187,6 +187,12 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["Repeat"]) {
             return convert_repeat(node["Repeat"]);
         }
+        if(node["AssignmentPattern"]) {
+            return convert_assignmentpattern(node["AssignmentPattern"]);
+        }
+        if(node["PatternItem"]) {
+            return convert_patternitem(node["PatternItem"]);
+        }
         if(node["Indirect"]) {
             return convert_indirect(node["Indirect"]);
         }
@@ -4085,6 +4091,133 @@ AST::Node::Ptr YAMLImporter::convert_repeat(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::Repeat>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_assignmentpattern(const YAML::Node node) const
+{
+    AST::AssignmentPattern::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::AssignmentPattern>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::AssignmentPattern>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+
+        // Manage Child items
+        if(node["items"]) {
+            const YAML::Node node_items = node["items"];
+            // Fill the list of children
+            AST::Node::ListPtr items_list(new AST::Node::List);
+            if(node_items.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_items.begin(); it != node_items.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        items_list->push_back(child);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_items);
+                if(child) {
+                    items_list->push_back(child);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::AssignmentPattern>();
+            }
+            result->set_items(items_list);
+        }
+
+        // Manage Child times
+        if(node["times"]) {
+            const YAML::Node node_times = node["times"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_times);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::AssignmentPattern>();
+                }
+                result->set_times(child);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::AssignmentPattern>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_patternitem(const YAML::Node node) const
+{
+    AST::PatternItem::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::PatternItem>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::PatternItem>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property is_default
+        if(node["is_default"]) {
+            if(node["is_default"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::PatternItem>();
+                }
+                result->set_is_default(node["is_default"].as<bool>());
+            }
+        }
+
+        // Manage Child key
+        if(node["key"]) {
+            const YAML::Node node_key = node["key"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_key);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::PatternItem>();
+                }
+                result->set_key(child);
+            }
+        }
+
+        // Manage Child value
+        if(node["value"]) {
+            const YAML::Node node_value = node["value"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_value);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::PatternItem>();
+                }
+                result->set_value(child);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::PatternItem>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_indirect(const YAML::Node node) const

@@ -174,6 +174,12 @@ public:
             case AST::NodeType::Repeat:
                 return render_repeat(AST::cast_to<AST::Repeat>(node));
 
+            case AST::NodeType::AssignmentPattern:
+                return render_assignmentpattern(AST::cast_to<AST::AssignmentPattern>(node));
+
+            case AST::NodeType::PatternItem:
+                return render_patternitem(AST::cast_to<AST::PatternItem>(node));
+
             case AST::NodeType::Indirect:
                 return render_indirect(AST::cast_to<AST::Indirect>(node));
 
@@ -820,6 +826,25 @@ public:
      * @see GeneratorBase::render_repeat(const AST::Repeat::Ptr &node)
      */
     T render(const AST::Repeat::Ptr node) const { return render_repeat(node); }
+
+    /**
+     * Main rendering method for the AssignmentPattern node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_assignmentpattern(const AST::AssignmentPattern::Ptr &node)
+     */
+    T render(const AST::AssignmentPattern::Ptr node) const
+    {
+        return render_assignmentpattern(node);
+    }
+
+    /**
+     * Main rendering method for the PatternItem node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_patternitem(const AST::PatternItem::Ptr &node)
+     */
+    T render(const AST::PatternItem::Ptr node) const { return render_patternitem(node); }
 
     /**
      * Main rendering method for the Indirect node, we
@@ -1880,6 +1905,18 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_repeat(const AST::Repeat::Ptr node) const { return T(); }
+
+    /**
+     * Render the AssignmentPattern node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_assignmentpattern(const AST::AssignmentPattern::Ptr node) const { return T(); }
+
+    /**
+     * Render the PatternItem node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_patternitem(const AST::PatternItem::Ptr node) const { return T(); }
 
     /**
      * Render the Indirect node. This method must be

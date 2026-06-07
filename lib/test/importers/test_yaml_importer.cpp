@@ -1116,6 +1116,50 @@ TEST(YAMLImporter, Repeat)
     ASSERT_TRUE(yaml["Repeat"]["times"]);
 }
 
+TEST(YAMLImporter, AssignmentPattern)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.AssignmentPattern.log");
+    Logger::add_stderr_sink();
+    std::string str("AssignmentPattern:\n"
+                    "  filename: assignmentpattern.v\n"
+                    "  line: 17\n"
+                    "  items:\n"
+                    "  times:\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["AssignmentPattern"]);
+    ASSERT_TRUE(yaml["AssignmentPattern"]["filename"].as<std::string>() == "assignmentpattern.v");
+    ASSERT_TRUE(yaml["AssignmentPattern"]["line"].as<int>() == 17);
+    ASSERT_TRUE(yaml["AssignmentPattern"]["items"]);
+    ASSERT_TRUE(yaml["AssignmentPattern"]["times"]);
+}
+
+TEST(YAMLImporter, PatternItem)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.PatternItem.log");
+    Logger::add_stderr_sink();
+    std::string str("PatternItem:\n"
+                    "  filename: patternitem.v\n"
+                    "  line: 11\n"
+                    "  key:\n"
+                    "  value:\n"
+                    "  is_default: false\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["PatternItem"]);
+    ASSERT_TRUE(yaml["PatternItem"]["filename"].as<std::string>() == "patternitem.v");
+    ASSERT_TRUE(yaml["PatternItem"]["line"].as<int>() == 11);
+    ASSERT_TRUE(yaml["PatternItem"]["key"]);
+    ASSERT_TRUE(yaml["PatternItem"]["value"]);
+    ASSERT_TRUE(yaml["PatternItem"]["is_default"].as<bool>() == false);
+}
+
 TEST(YAMLImporter, Indirect)
 {
     Logger::remove_all_sinks();
