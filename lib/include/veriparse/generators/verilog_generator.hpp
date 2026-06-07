@@ -132,6 +132,7 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_paramarg(const AST::ParamArg::Ptr node) const;
     virtual std::string render_portarg(const AST::PortArg::Ptr node) const;
     virtual std::string render_data_type(const AST::Node::Ptr node) const;
+    virtual std::string render_scalar_variable(const AST::Variable::Ptr node) const;
     virtual std::string render_function(const AST::Function::Ptr node) const;
     virtual std::string render_functioncall(const AST::FunctionCall::Ptr node) const;
     virtual std::string render_task(const AST::Task::Ptr node) const;
