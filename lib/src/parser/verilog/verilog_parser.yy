@@ -139,6 +139,13 @@ AST::Ioport::Ptr create_data_type_port(direction_t direction, const data_type_t 
 														 const std::string &name,
 														 const std::string &filename="", uint32_t line=0);
 
+// Build an Ioport for a net port with an explicit integer_vector data type
+// (`wire logic [3:0] x`, `tri reg q`). `second` is the net node (create_net_type)
+// with its `type` child set to the data type keyword, like net_declaration.
+AST::Ioport::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
+														 const data_type_t &dt, const std::string &name,
+														 const std::string &filename="", uint32_t line=0);
+
 // if return null, the create_ports_decls failed. Error information are set in loc and error_message.
 AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 														const std::string &filename,
@@ -989,6 +996,21 @@ port_typed_name:
                     $$ = $2;
                     $$.net_type = $1;
                     $$.name = $3;
+                }
+
+        |       net_type integer_vector_type signing packed_dimensions TK_IDENTIFIER
+                {
+                    // net type + explicit integer_vector data type:
+                    // `input wire logic [3:0] x`, `inout tri reg q` (IEEE
+                    // net_port_type ::= net_type data_type). The net carries the
+                    // data type keyword in its `type` child, like net_declaration.
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = $1;
+                    $$.is_signed = false;
+                    $$.widths = nullptr;
+                    $$.name = $5;
+                    $$.has_data_type = true;
+                    $$.data_type = data_type_t{$2, $3 == signing_t::SIGNED, $4, nullptr, nullptr};
                 }
         ;
 
@@ -5488,6 +5510,53 @@ namespace Veriparse {
                 return ioport;
             }
 
+            AST::Ioport::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
+                                                       const data_type_t &dt, const std::string &name,
+                                                       const std::string &filename, uint32_t line) {
+                // `wire logic [3:0] x`: a net port whose data type is an explicit
+                // integer_vector type. `second` is the net (create_net_type) with
+                // its `type` child set to the keyword — identical to the
+                // item-level net_declaration form.
+                auto ioport = std::make_shared<AST::Ioport>(filename, line);
+                AST::Width::ListPtr io_widths =
+                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
+
+                switch(direction) {
+                case direction_t::INPUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
+                        std::make_shared<AST::Input>(io_widths, name, dt.is_signed, filename, line)));
+                    break;
+                case direction_t::INOUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
+                        std::make_shared<AST::Inout>(io_widths, name, dt.is_signed, filename, line)));
+                    break;
+                case direction_t::OUTPUT:
+                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
+                        std::make_shared<AST::Output>(io_widths, name, dt.is_signed, filename, line)));
+                    break;
+                default:
+                    break;
+                }
+
+                decl_name_t decl;
+                decl.name = name;
+                decl.lengths = nullptr;
+                AST::Width::ListPtr net_widths =
+                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
+                AST::Variable::Ptr net =
+                    create_net_type(decl, net_type, net_widths, dt.is_signed, filename, line);
+
+                const char *kw = (dt.kind == data_type_kind_t::LOGIC) ? "logic"
+                               : (dt.kind == data_type_kind_t::REG)   ? "reg"
+                                                                      : "bit";
+                auto type = std::make_shared<AST::Identifier>(filename, line);
+                type->set_name(kw);
+                std::static_pointer_cast<AST::Net>(net)->set_type(AST::to_node(type));
+                ioport->set_second(net);
+
+                return ioport;
+            }
+
 
             AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
                                                   const std::string &filename,
@@ -5565,7 +5634,14 @@ namespace Veriparse {
                         if (widths) widths = AST::Width::clone_list(widths);
 
                         AST::Ioport::Ptr iop;
-                        if (has_data_type) {
+                        if (has_data_type && net_type != net_type_t::NONE) {
+                            // net port with an explicit integer_vector data type
+                            // (`wire logic [3:0] x`)
+                            iop = ParserHelpers::create_net_data_type_port(dir, net_type, data_type,
+                                                                           pinfo.name, filename,
+                                                                           pinfo.loc.begin.line);
+                        }
+                        else if (has_data_type) {
                             // built-in data_type port (bit/atom/non-integer/aggregate)
                             iop = ParserHelpers::create_data_type_port(dir, data_type, pinfo.name,
                                                                        filename, pinfo.loc.begin.line);

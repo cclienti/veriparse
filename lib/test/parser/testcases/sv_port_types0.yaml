@@ -291,7 +291,7 @@ Source:
                 Input:
                   filename: lib/test/parser/testcases/sv_port_types0.sv
                   line: 11
-                  name: g
+                  name: e2
                   sign: false
                   widths:
                   - Width:
@@ -315,24 +315,34 @@ Source:
                           value: 3
               line: 11
               second:
-                Variable: null
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_port_types0.sv
-              first:
-                Output:
+                Wire:
                   filename: lib/test/parser/testcases/sv_port_types0.sv
-                  line: 12
-                  name: h
-                  sign: true
+                  ldelay:
+                    DelayStatement: null
+                  line: 11
+                  name: e2
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  type:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 11
+                      name: logic
+                      package: ''
+                      scope:
+                        IdentifierScope: null
                   widths:
                   - Width:
                       filename: lib/test/parser/testcases/sv_port_types0.sv
-                      line: 12
+                      line: 11
                       lsb:
                         IntConstN:
                           base: 10
                           filename: lib/test/parser/testcases/sv_port_types0.sv
-                          line: 12
+                          line: 11
                           sign: false
                           size: -1
                           value: 0
@@ -340,11 +350,237 @@ Source:
                         IntConstN:
                           base: 10
                           filename: lib/test/parser/testcases/sv_port_types0.sv
-                          line: 12
+                          line: 11
+                          sign: false
+                          size: -1
+                          value: 3
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_port_types0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  line: 12
+                  name: f2
+                  sign: false
+              line: 12
+              second:
+                Tri:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 12
+                  name: f2
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  type:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 12
+                      name: reg
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_port_types0.sv
+              first:
+                Input:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  line: 14
+                  name: e3
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 14
+              second:
+                Wire:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 14
+                  name: e3
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  type:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 14
+                      name: logic
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_port_types0.sv
+              first:
+                Input:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  line: 14
+                  name: e4
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 1
+              line: 14
+              second:
+                Wire:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  ldelay:
+                    DelayStatement: null
+                  line: 14
+                  name: e4
+                  rdelay:
+                    DelayStatement: null
+                  right:
+                    Rvalue: null
+                  sign: false
+                  type:
+                    Identifier:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 14
+                      name: logic
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 1
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_port_types0.sv
+              first:
+                Input:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  line: 16
+                  name: g
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 16
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 3
+              line: 16
+              second:
+                Variable: null
+          - Ioport:
+              filename: lib/test/parser/testcases/sv_port_types0.sv
+              first:
+                Output:
+                  filename: lib/test/parser/testcases/sv_port_types0.sv
+                  line: 17
+                  name: h
+                  sign: true
+                  widths:
+                  - Width:
+                      filename: lib/test/parser/testcases/sv_port_types0.sv
+                      line: 17
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 17
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: lib/test/parser/testcases/sv_port_types0.sv
+                          line: 17
                           sign: false
                           size: -1
                           value: 7
-              line: 12
+              line: 17
               second:
                 Variable: null
           - Ioport:
@@ -352,14 +588,14 @@ Source:
               first:
                 Input:
                   filename: lib/test/parser/testcases/sv_port_types0.sv
-                  line: 14
+                  line: 19
                   name: i
                   sign: true
-              line: 14
+              line: 19
               second:
                 Int:
                   filename: lib/test/parser/testcases/sv_port_types0.sv
-                  line: 14
+                  line: 19
                   name: i
                   right:
                     Rvalue: null

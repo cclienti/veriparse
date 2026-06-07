@@ -604,6 +604,23 @@ std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
             default:
                 break;
             }
+
+            // a net (wire/tri/supply) may carry an explicit integer_vector data
+            // type: `wire logic [3:0] x`, `tri reg q`.
+            switch(second->get_node_type()) {
+            case AST::NodeType::Wire:
+            case AST::NodeType::Tri:
+            case AST::NodeType::Supply0:
+            case AST::NodeType::Supply1: {
+                const AST::Node::Ptr net_type = AST::cast_to<AST::Net>(second)->get_type();
+                if(net_type) {
+                    variable.append(" " + render(net_type));
+                }
+                break;
+            }
+            default:
+                break;
+            }
         }
 
         result = variable_to_string(variable.c_str(), sign, widths, nullptr, nullptr, name);
