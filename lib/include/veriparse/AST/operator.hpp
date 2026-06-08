@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_left;
-    Node::Ptr m_right;
+    Node::Ptr m_left{};
+    Node::Ptr m_right{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Operator &p);

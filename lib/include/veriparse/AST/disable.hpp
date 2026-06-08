@@ -116,7 +116,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    std::string m_dest;
+    std::string m_dest{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Disable &p);

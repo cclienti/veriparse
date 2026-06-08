@@ -116,7 +116,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    std::string m_name;
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const VariableBase &p);

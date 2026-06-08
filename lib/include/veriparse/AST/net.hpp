@@ -165,11 +165,11 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_widths;
-    DelayStatement::Ptr m_ldelay;
-    DelayStatement::Ptr m_rdelay;
-    Node::Ptr m_type;
-    bool m_sign;
+    Width::ListPtr m_widths{};
+    DelayStatement::Ptr m_ldelay{};
+    DelayStatement::Ptr m_rdelay{};
+    Node::Ptr m_type{};
+    bool m_sign{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Net &p);

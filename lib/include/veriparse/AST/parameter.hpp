@@ -172,11 +172,11 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_value;
-    Width::ListPtr m_widths;
-    std::string m_name;
-    bool m_sign;
-    TypeEnum m_type;
+    Node::Ptr m_value{};
+    Width::ListPtr m_widths{};
+    std::string m_name{};
+    bool m_sign{};
+    TypeEnum m_type{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Parameter &p);

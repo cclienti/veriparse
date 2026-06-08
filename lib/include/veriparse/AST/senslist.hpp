@@ -117,7 +117,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Sens::ListPtr m_list;
+    Sens::ListPtr m_list{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Senslist &p);

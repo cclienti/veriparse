@@ -150,10 +150,10 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    int m_base;
-    int m_size;
-    bool m_sign;
-    mpz_class m_value;
+    int m_base{};
+    int m_size{};
+    bool m_sign{};
+    mpz_class m_value{};
 };
 
 std::ostream &operator<<(std::ostream &os, const IntConstN &p);

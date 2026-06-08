@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_loop;
-    std::string m_scope;
+    Node::Ptr m_loop{};
+    std::string m_scope{};
 };
 
 std::ostream &operator<<(std::ostream &os, const IdentifierScopeLabel &p);

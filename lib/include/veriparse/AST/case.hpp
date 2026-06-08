@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_cond;
-    Node::Ptr m_statement;
+    Node::ListPtr m_cond{};
+    Node::Ptr m_statement{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Case &p);

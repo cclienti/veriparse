@@ -128,8 +128,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Senslist::Ptr m_senslist;
-    Node::Ptr m_statement;
+    Senslist::Ptr m_senslist{};
+    Node::Ptr m_statement{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Always &p);

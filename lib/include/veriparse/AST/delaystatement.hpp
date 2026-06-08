@@ -116,7 +116,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_delay;
+    Node::Ptr m_delay{};
 };
 
 std::ostream &operator<<(std::ostream &os, const DelayStatement &p);

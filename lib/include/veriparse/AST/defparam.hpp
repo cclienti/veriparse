@@ -129,8 +129,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Identifier::Ptr m_identifier;
-    Rvalue::Ptr m_right;
+    Identifier::Ptr m_identifier{};
+    Rvalue::Ptr m_right{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Defparam &p);

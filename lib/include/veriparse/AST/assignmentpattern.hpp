@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_items;
-    Node::Ptr m_times;
+    Node::ListPtr m_items{};
+    Node::Ptr m_times{};
 };
 
 std::ostream &operator<<(std::ostream &os, const AssignmentPattern &p);

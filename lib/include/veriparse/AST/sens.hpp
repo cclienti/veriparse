@@ -135,8 +135,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_sig;
-    TypeEnum m_type;
+    Node::Ptr m_sig{};
+    TypeEnum m_type{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Sens &p);

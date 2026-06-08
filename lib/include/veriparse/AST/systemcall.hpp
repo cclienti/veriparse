@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_args;
-    std::string m_syscall;
+    Node::ListPtr m_args{};
+    std::string m_syscall{};
 };
 
 std::ostream &operator<<(std::ostream &os, const SystemCall &p);

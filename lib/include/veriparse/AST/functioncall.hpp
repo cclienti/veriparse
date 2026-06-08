@@ -137,9 +137,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_args;
-    std::string m_name;
-    std::string m_package;
+    Node::ListPtr m_args{};
+    std::string m_name{};
+    std::string m_package{};
 };
 
 std::ostream &operator<<(std::ostream &os, const FunctionCall &p);

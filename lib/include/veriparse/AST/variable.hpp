@@ -131,8 +131,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Length::ListPtr m_lengths;
-    Rvalue::Ptr m_right;
+    Length::ListPtr m_lengths{};
+    Rvalue::Ptr m_right{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Variable &p);

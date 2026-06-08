@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_value;
-    std::string m_name;
+    Node::Ptr m_value{};
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const PortArg &p);

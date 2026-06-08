@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_statements;
-    std::string m_scope;
+    Node::ListPtr m_statements{};
+    std::string m_scope{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Block &p);

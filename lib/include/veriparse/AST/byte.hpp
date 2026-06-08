@@ -121,7 +121,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    bool m_sign;
+    bool m_sign{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Byte &p);

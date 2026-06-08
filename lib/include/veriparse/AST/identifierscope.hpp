@@ -118,7 +118,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    IdentifierScopeLabel::ListPtr m_labellist;
+    IdentifierScopeLabel::ListPtr m_labellist{};
 };
 
 std::ostream &operator<<(std::ostream &os, const IdentifierScope &p);

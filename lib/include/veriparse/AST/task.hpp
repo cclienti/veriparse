@@ -147,10 +147,10 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_ports;
-    Node::ListPtr m_statements;
-    std::string m_name;
-    bool m_automatic;
+    Node::ListPtr m_ports{};
+    Node::ListPtr m_statements{};
+    std::string m_name{};
+    bool m_automatic{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Task &p);

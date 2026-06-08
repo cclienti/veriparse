@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_expression;
-    std::string m_name;
+    Node::Ptr m_expression{};
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Pragma &p);

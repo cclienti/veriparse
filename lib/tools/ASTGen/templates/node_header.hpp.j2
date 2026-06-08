@@ -173,10 +173,10 @@ private:
 	virtual Node::Ptr alloc_same(void) const override;
 
 	{% for child_name, child_type in children_dict.items() %}
-	{{ get_type(child_type) }} m_{{ child_name }};
+	{{ get_type(child_type) }} m_{{ child_name }}{};
 	{%- endfor %}
 	{%- for prop_name, prop_type in properties_dict.items() %}
-	{{ prop_type }} m_{{ prop_name }};
+	{{ prop_type }} m_{{ prop_name }}{};
 	{%- endfor %}
 };
 

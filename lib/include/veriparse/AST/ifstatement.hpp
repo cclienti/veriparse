@@ -141,9 +141,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_cond;
-    Node::Ptr m_true_statement;
-    Node::Ptr m_false_statement;
+    Node::Ptr m_cond{};
+    Node::Ptr m_true_statement{};
+    Node::Ptr m_false_statement{};
 };
 
 std::ostream &operator<<(std::ostream &os, const IfStatement &p);

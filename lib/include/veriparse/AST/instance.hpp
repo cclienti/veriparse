@@ -164,11 +164,11 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Length::Ptr m_array;
-    ParamArg::ListPtr m_parameterlist;
-    PortArg::ListPtr m_portlist;
-    std::string m_module;
-    std::string m_name;
+    Length::Ptr m_array{};
+    ParamArg::ListPtr m_parameterlist{};
+    PortArg::ListPtr m_portlist{};
+    std::string m_module{};
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Instance &p);
