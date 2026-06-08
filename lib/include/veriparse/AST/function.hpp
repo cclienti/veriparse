@@ -197,14 +197,14 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_retwidths;
-    Node::Ptr m_rettype_ref;
-    Node::ListPtr m_ports;
-    Node::ListPtr m_statements;
-    std::string m_name;
-    bool m_automatic;
-    RettypeEnum m_rettype;
-    bool m_retsign;
+    Width::ListPtr m_retwidths{};
+    Node::Ptr m_rettype_ref{};
+    Node::ListPtr m_ports{};
+    Node::ListPtr m_statements{};
+    std::string m_name{};
+    bool m_automatic{};
+    RettypeEnum m_rettype{};
+    bool m_retsign{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Function &p);

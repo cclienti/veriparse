@@ -137,9 +137,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_key;
-    Node::Ptr m_value;
-    bool m_is_default;
+    Node::Ptr m_key{};
+    Node::Ptr m_value{};
+    bool m_is_default{};
 };
 
 std::ostream &operator<<(std::ostream &os, const PatternItem &p);

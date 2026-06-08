@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_times;
-    Node::Ptr m_statement;
+    Node::Ptr m_times{};
+    Node::Ptr m_statement{};
 };
 
 std::ostream &operator<<(std::ostream &os, const RepeatStatement &p);

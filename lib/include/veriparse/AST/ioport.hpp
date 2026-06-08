@@ -129,8 +129,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    IODir::Ptr m_first;
-    Variable::Ptr m_second;
+    IODir::Ptr m_first{};
+    Variable::Ptr m_second{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Ioport &p);

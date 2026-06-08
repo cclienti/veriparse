@@ -138,9 +138,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    StructMember::ListPtr m_members;
-    bool m_packed;
-    bool m_sign;
+    StructMember::ListPtr m_members{};
+    bool m_packed{};
+    bool m_sign{};
 };
 
 std::ostream &operator<<(std::ostream &os, const StructUnionDef &p);

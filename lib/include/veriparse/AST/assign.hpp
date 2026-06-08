@@ -150,10 +150,10 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Lvalue::Ptr m_left;
-    Rvalue::Ptr m_right;
-    DelayStatement::Ptr m_ldelay;
-    DelayStatement::Ptr m_rdelay;
+    Lvalue::Ptr m_left{};
+    Rvalue::Ptr m_right{};
+    DelayStatement::Ptr m_ldelay{};
+    DelayStatement::Ptr m_rdelay{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Assign &p);

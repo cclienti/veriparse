@@ -142,9 +142,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    ParamArg::ListPtr m_parameterlist;
-    Instance::ListPtr m_instances;
-    std::string m_module;
+    ParamArg::ListPtr m_parameterlist{};
+    Instance::ListPtr m_instances{};
+    std::string m_module{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Instancelist &p);

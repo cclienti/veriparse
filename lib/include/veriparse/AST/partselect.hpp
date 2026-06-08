@@ -128,8 +128,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_msb;
-    Node::Ptr m_lsb;
+    Node::Ptr m_msb{};
+    Node::Ptr m_lsb{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Partselect &p);

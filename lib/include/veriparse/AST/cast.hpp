@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_type;
-    Node::Ptr m_expr;
+    Node::Ptr m_type{};
+    Node::Ptr m_expr{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Cast &p);

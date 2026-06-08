@@ -149,10 +149,10 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_type;
-    Length::ListPtr m_lengths;
-    Rvalue::Ptr m_right;
-    std::string m_name;
+    Node::Ptr m_type{};
+    Length::ListPtr m_lengths{};
+    Rvalue::Ptr m_right{};
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const StructMember &p);

@@ -128,8 +128,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_widths;
-    std::string m_name;
+    Width::ListPtr m_widths{};
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Port &p);

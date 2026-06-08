@@ -133,8 +133,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_widths;
-    bool m_sign;
+    Width::ListPtr m_widths{};
+    bool m_sign{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Bit &p);

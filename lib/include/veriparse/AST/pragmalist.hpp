@@ -128,8 +128,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Pragma::ListPtr m_pragmas;
-    Node::ListPtr m_statements;
+    Pragma::ListPtr m_pragmas{};
+    Node::ListPtr m_statements{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Pragmalist &p);

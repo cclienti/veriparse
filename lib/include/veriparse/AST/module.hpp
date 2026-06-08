@@ -174,11 +174,11 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Parameter::ListPtr m_params;
-    Node::ListPtr m_ports;
-    Node::ListPtr m_items;
-    std::string m_name;
-    Default_nettypeEnum m_default_nettype;
+    Parameter::ListPtr m_params{};
+    Node::ListPtr m_ports{};
+    Node::ListPtr m_items{};
+    std::string m_name{};
+    Default_nettypeEnum m_default_nettype{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Module &p);

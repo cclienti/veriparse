@@ -144,9 +144,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_items;
-    std::string m_name;
-    LifetimeEnum m_lifetime;
+    Node::ListPtr m_items{};
+    std::string m_name{};
+    LifetimeEnum m_lifetime{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Package &p);

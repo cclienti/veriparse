@@ -117,7 +117,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Defparam::ListPtr m_list;
+    Defparam::ListPtr m_list{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Defparamlist &p);

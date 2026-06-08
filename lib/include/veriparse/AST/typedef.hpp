@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_def;
-    std::string m_name;
+    Node::Ptr m_def{};
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Typedef &p);

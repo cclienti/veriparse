@@ -116,7 +116,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_list;
+    Node::ListPtr m_list{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Concat &p);

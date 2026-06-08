@@ -127,8 +127,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    std::string m_package;
-    std::string m_symbol;
+    std::string m_package{};
+    std::string m_symbol{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Import &p);

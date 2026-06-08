@@ -118,7 +118,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_cond;
+    Node::Ptr m_cond{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Cond &p);

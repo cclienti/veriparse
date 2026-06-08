@@ -117,7 +117,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_items;
+    Node::ListPtr m_items{};
 };
 
 std::ostream &operator<<(std::ostream &os, const GenerateStatement &p);

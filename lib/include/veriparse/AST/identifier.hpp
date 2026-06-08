@@ -138,9 +138,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    IdentifierScope::Ptr m_scope;
-    std::string m_name;
-    std::string m_package;
+    IdentifierScope::Ptr m_scope{};
+    std::string m_name{};
+    std::string m_package{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Identifier &p);

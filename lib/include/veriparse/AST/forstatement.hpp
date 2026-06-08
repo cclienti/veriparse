@@ -149,10 +149,10 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    BlockingSubstitution::Ptr m_pre;
-    Node::Ptr m_cond;
-    BlockingSubstitution::Ptr m_post;
-    Node::Ptr m_statement;
+    BlockingSubstitution::Ptr m_pre{};
+    Node::Ptr m_cond{};
+    BlockingSubstitution::Ptr m_post{};
+    Node::Ptr m_statement{};
 };
 
 std::ostream &operator<<(std::ostream &os, const ForStatement &p);

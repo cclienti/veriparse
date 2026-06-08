@@ -116,7 +116,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_var;
+    Node::Ptr m_var{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Lvalue &p);

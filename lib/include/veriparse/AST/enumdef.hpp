@@ -158,10 +158,10 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_widths;
-    EnumItem::ListPtr m_items;
-    Base_typeEnum m_base_type;
-    bool m_sign;
+    Width::ListPtr m_widths{};
+    EnumItem::ListPtr m_items{};
+    Base_typeEnum m_base_type{};
+    bool m_sign{};
 };
 
 std::ostream &operator<<(std::ostream &os, const EnumDef &p);

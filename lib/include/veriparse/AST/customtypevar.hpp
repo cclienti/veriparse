@@ -133,8 +133,8 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_type;
-    Width::ListPtr m_widths;
+    Node::Ptr m_type{};
+    Width::ListPtr m_widths{};
 };
 
 std::ostream &operator<<(std::ostream &os, const CustomTypeVar &p);

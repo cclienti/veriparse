@@ -117,7 +117,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Description::Ptr m_description;
+    Description::Ptr m_description{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Source &p);
