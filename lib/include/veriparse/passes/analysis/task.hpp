@@ -12,7 +12,6 @@
 
 #include <veriparse/passes/analysis/search.hpp>
 
-
 namespace Veriparse
 {
 namespace Passes
@@ -20,35 +19,34 @@ namespace Passes
 namespace Analysis
 {
 
-class Task: public Search<AST::NodeType::Module, AST::NodeType::Function>
+class Task : public Search<AST::NodeType::Module, AST::NodeType::Function>
 {
 public:
-	Task() = delete;
+    Task() = delete;
 
-	/**
-	 * Return all input, output and inout port nodes.
-	 */
-	static AST::IODir::ListPtr get_iodir_nodes(AST::Node::Ptr node);
+    /**
+     * Return all input, output and inout port nodes.
+     */
+    static AST::IODir::ListPtr get_iodir_nodes(AST::Node::Ptr node);
 
-	/**
-	 * Return all input, output and inout port names.
-	 */
-	static std::vector<std::string> get_iodir_names(AST::Node::Ptr node);
+    /**
+     * Return all input, output and inout port names.
+     */
+    static std::vector<std::string> get_iodir_names(AST::Node::Ptr node);
 
-	/**
-	 * Return all declared variable nodes except genvar.
-	 */
-	static AST::Variable::ListPtr get_variable_nodes(AST::Node::Ptr node);
+    /**
+     * Return all declared variable nodes except genvar.
+     */
+    static AST::Variable::ListPtr get_variable_nodes(AST::Node::Ptr node);
 
-	/**
-	 * Return all declared variable names except genvar.
-	 */
-	static std::vector<std::string> get_variable_names(AST::Node::Ptr node);
-
+    /**
+     * Return all declared variable names except genvar.
+     */
+    static std::vector<std::string> get_variable_names(AST::Node::Ptr node);
 };
 
-}
-}
-}
+} // namespace Analysis
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

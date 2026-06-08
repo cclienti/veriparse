@@ -6,9 +6,12 @@
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
 
-namespace Veriparse {
-namespace Passes {
-namespace Transformations {
+namespace Veriparse
+{
+namespace Passes
+{
+namespace Transformations
+{
 
 /**
  * Split inline wire declarations `wire [N:0] x = expr;` into
@@ -18,13 +21,13 @@ namespace Transformations {
  *
  * This avoids forward-reference issues in flattened Verilog.
  */
-class WireSplit: public TransformationBase
+class WireSplit : public TransformationBase
 {
-	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+    virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 };
 
-}
-}
-}
+} // namespace Transformations
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

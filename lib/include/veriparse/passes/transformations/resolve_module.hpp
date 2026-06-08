@@ -8,36 +8,36 @@
 #include <veriparse/passes/analysis/module.hpp>
 #include <string>
 
+namespace Veriparse
+{
+namespace Passes
+{
+namespace Transformations
+{
 
-namespace Veriparse {
-namespace Passes {
-namespace Transformations {
-
-
-class ResolveModule: public TransformationBase
+class ResolveModule : public TransformationBase
 {
 public:
-	ResolveModule(bool deadcode_elimination=true);
+    ResolveModule(bool deadcode_elimination = true);
 
-	ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
-	              const Analysis::Module::ModulesMap &modules_map,
-	              bool deadcode_elimination=true);
-
-private:
-	/**
-	 * @return zero on success
-	 */
-	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+    ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
+                  const Analysis::Module::ModulesMap &modules_map,
+                  bool deadcode_elimination = true);
 
 private:
-	AST::ParamArg::ListPtr m_paramlist_inst;
-	Analysis::Module::ModulesMap m_modules_map;
-	const bool m_deadcode_elimination;
+    /**
+     * @return zero on success
+     */
+    virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+
+private:
+    AST::ParamArg::ListPtr m_paramlist_inst;
+    Analysis::Module::ModulesMap m_modules_map;
+    const bool m_deadcode_elimination;
 };
 
-
-}
-}
-}
+} // namespace Transformations
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

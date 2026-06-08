@@ -259,11 +259,10 @@ def flatten_inherited(inherited):
 ####################
 
 
-# Set from --clang-format in main(). When False, clang_format() is a no-op so
-# generation emits raw output (and save_file_if_changed compares raw vs raw).
-# Keep it off until the whole repo is clang-formatted, otherwise every regen
-# rewrites every generated file (formatted-new vs unformatted-existing).
-APPLY_CLANG_FORMAT = False
+# Default ON now that the whole repo is clang-formatted: generated files are
+# emitted clang-formatted so they match the rest of the tree (and the pre-commit
+# hook). --no-clang-format can still disable it (e.g. if clang-format is absent).
+APPLY_CLANG_FORMAT = True
 
 
 def clang_format(content, filename):
@@ -272,7 +271,7 @@ def clang_format(content, filename):
     discovers the nearest .clang-format (the generated files live under the
     repo, so the project style applies). Returns `content` unchanged if
     clang-format is missing or errors, so generation still works without it
-    (just unformatted). No-op unless enabled via --clang-format.
+    (just unformatted). On by default; disable with --no-clang-format.
 
     """
 
@@ -841,11 +840,13 @@ def main():
         help="implem. files output path",
     )
     parser.add_argument(
-        "--clang-format",
-        action="store_true",
-        help="run clang-format on each generated file (off by default; "
-        "enable only once the repo's generated files are clang-formatted)",
+        "--no-clang-format",
+        dest="clang_format",
+        action="store_false",
+        help="do not run clang-format on the generated files "
+        "(formatting is on by default, matching the rest of the tree)",
     )
+    parser.set_defaults(clang_format=True)
 
     args = parser.parse_args()
 

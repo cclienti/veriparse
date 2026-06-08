@@ -6,14 +6,16 @@
 #include <veriparse/AST/node.hpp>
 #include <iostream>
 
-namespace Veriparse {
-namespace AST {
+namespace Veriparse
+{
+namespace AST
+{
 
-std::ostream & operator<<(std::ostream &os, const Node &p);
+std::ostream &operator<<(std::ostream &os, const Node &p);
 
-std::ostream & operator<<(std::ostream &os, const typename Node::Ptr p);
+std::ostream &operator<<(std::ostream &os, const typename Node::Ptr p);
 
-}
-}
+} // namespace AST
+} // namespace Veriparse
 
 #endif

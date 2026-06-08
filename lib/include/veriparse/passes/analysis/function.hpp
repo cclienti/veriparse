@@ -12,7 +12,6 @@
 
 #include <veriparse/passes/analysis/search.hpp>
 
-
 namespace Veriparse
 {
 namespace Passes
@@ -20,45 +19,45 @@ namespace Passes
 namespace Analysis
 {
 
-class Function: public Search<AST::NodeType::Module, AST::NodeType::Task>
+class Function : public Search<AST::NodeType::Module, AST::NodeType::Task>
 {
 public:
-	Function() = delete;
+    Function() = delete;
 
-	/**
-	 * Return all input, output and inout port nodes.
-	 */
-	static AST::Ioport::ListPtr get_ioport_nodes(AST::Node::Ptr node);
+    /**
+     * Return all input, output and inout port nodes.
+     */
+    static AST::Ioport::ListPtr get_ioport_nodes(AST::Node::Ptr node);
 
-	/**
-	 * Return all input, output and inout port nodes.
-	 */
-	static AST::IODir::ListPtr get_iodir_nodes(AST::Node::Ptr node);
+    /**
+     * Return all input, output and inout port nodes.
+     */
+    static AST::IODir::ListPtr get_iodir_nodes(AST::Node::Ptr node);
 
-	/**
-	 * Return all input, output and inout port names.
-	 */
-	static std::vector<std::string> get_iodir_names(AST::Node::Ptr node);
+    /**
+     * Return all input, output and inout port names.
+     */
+    static std::vector<std::string> get_iodir_names(AST::Node::Ptr node);
 
-	/**
-	 * Return all declared variable nodes except genvar.
-	 */
-	static AST::Variable::ListPtr get_variable_nodes(AST::Node::Ptr node);
+    /**
+     * Return all declared variable nodes except genvar.
+     */
+    static AST::Variable::ListPtr get_variable_nodes(AST::Node::Ptr node);
 
-	/**
-	 * Return all declared variable names except genvar.
-	 */
-	static std::vector<std::string> get_variable_names(AST::Node::Ptr node);
+    /**
+     * Return all declared variable names except genvar.
+     */
+    static std::vector<std::string> get_variable_names(AST::Node::Ptr node);
 
-	/**
-	 * Return true if the function is automatic or if it be considered
-	 * as such.
-	 */
-	static bool is_like_automatic(const AST::Function::Ptr &node);
+    /**
+     * Return true if the function is automatic or if it be considered
+     * as such.
+     */
+    static bool is_like_automatic(const AST::Function::Ptr &node);
 };
 
-}
-}
-}
+} // namespace Analysis
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

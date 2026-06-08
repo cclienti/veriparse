@@ -5,111 +5,108 @@
 #include <veriparse/logger/logger.hpp>
 #include <iostream>
 
-namespace Veriparse {
-namespace AST {
+namespace Veriparse
+{
+namespace AST
+{
 
-Constant::Constant(const std::string &filename, uint32_t line):
-	Node(filename, line)	{
-	set_node_type(NodeType::Constant);
-	set_node_categories({NodeType::Node});
+Constant::Constant(const std::string &filename, uint32_t line) : Node(filename, line)
+{
+    set_node_type(NodeType::Constant);
+    set_node_categories({NodeType::Node});
 }
 
-
-Constant &Constant::operator=(const Constant &rhs) {
-	Node::operator=(static_cast<const Node &>(rhs));
-	return *this;
+Constant &Constant::operator=(const Constant &rhs)
+{
+    Node::operator=(static_cast<const Node &>(rhs));
+    return *this;
 }
 
-Node &Constant::operator=(const Node &rhs) {
-	const Constant &rhs_cast = static_cast<const Constant&>(rhs);
-	return static_cast<Node &> (operator=(rhs_cast));
+Node &Constant::operator=(const Node &rhs)
+{
+    const Constant &rhs_cast = static_cast<const Constant &>(rhs);
+    return static_cast<Node &>(operator=(rhs_cast));
 }
 
-bool Constant::operator==(const Constant &rhs) const {
-	if (Node::operator==(rhs) == false) {
-		return false;
-	}
-	return true;
+bool Constant::operator==(const Constant &rhs) const
+{
+    if(Node::operator==(rhs) == false) {
+        return false;
+    }
+    return true;
 }
 
-bool Constant::operator==(const Node &rhs) const {
-	const Constant &rhs_cast = static_cast<const Constant&>(rhs);
-	return operator==(rhs_cast);
+bool Constant::operator==(const Node &rhs) const
+{
+    const Constant &rhs_cast = static_cast<const Constant &>(rhs);
+    return operator==(rhs_cast);
 }
 
-bool Constant::operator!=(const Constant &rhs) const {
-	return !(operator==(rhs));
+bool Constant::operator!=(const Constant &rhs) const { return !(operator==(rhs)); }
+
+bool Constant::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
+
+bool Constant::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
+
+bool Constant::replace(Node::Ptr node, Node::Ptr new_node)
+{
+    bool found = false;
+    return found;
 }
 
-bool Constant::operator!=(const Node &rhs) const {
-	return !(operator==(rhs));
+bool Constant::replace(Node::Ptr node, Node::ListPtr new_nodes)
+{
+    bool found = false;
+    return found;
 }
 
-bool Constant::remove(Node::Ptr node) {
-	return replace(node, AST::Node::Ptr(nullptr));
+Constant::ListPtr Constant::clone_list(const ListPtr nodes)
+{
+    ListPtr list;
+    if(nodes) {
+        list = std::make_shared<List>();
+        for(const Ptr &p : *nodes) {
+            list->push_back(cast_to<Constant>(p->clone()));
+        }
+    }
+    return list;
 }
 
-bool Constant::replace(Node::Ptr node, Node::Ptr new_node) {
-	bool found = false;
-	return found;
+Node::ListPtr Constant::get_children(void) const
+{
+    Node::ListPtr list = std::make_shared<Node::List>();
+    return list;
 }
 
-bool Constant::replace(Node::Ptr node, Node::ListPtr new_nodes) {
-	bool found = false;
-	return found;
+void Constant::clone_children(Node::Ptr new_node) const {}
+
+Node::Ptr Constant::alloc_same(void) const
+{
+    Ptr p(new Constant);
+    return p;
 }
 
-Constant::ListPtr Constant::clone_list(const ListPtr nodes) {
-	ListPtr list;
-	if (nodes) {
-			 list = std::make_shared<List>();
-		for(const Ptr &p : *nodes) {
-			list->push_back(cast_to<Constant>(p->clone()));
-		}
-	}
-	return list;
+std::ostream &operator<<(std::ostream &os, const Constant &p)
+{
+    os << "Constant: {";
+    if(!p.get_filename().empty()) {
+        os << "filename: " << p.get_filename() << ", "
+           << "line: " << p.get_line();
+    }
+    os << "}";
+    return os;
 }
 
-Node::ListPtr Constant::get_children(void) const {
-	Node::ListPtr list = std::make_shared<Node::List>();
-	return list;
+std::ostream &operator<<(std::ostream &os, const Constant::Ptr p)
+{
+    if(p) {
+        os << *p;
+    } else {
+        os << "Constant: {nullptr}";
+    }
+
+    return os;
 }
 
-void Constant::clone_children(Node::Ptr new_node) const {
-}
-
-Node::Ptr Constant::alloc_same(void) const {
-	Ptr p(new Constant);
-	return p;
-}
-
-
-std::ostream & operator<<(std::ostream &os, const Constant &p) {
-	os << "Constant: {";
-	if (!p.get_filename().empty()) {
-		os << "filename: " << p.get_filename() << ", "
-			<< "line: " << p.get_line();
-	}
-	os << "}";
-	return os;
-}
-
-
-std::ostream & operator<<(std::ostream &os, const Constant::Ptr p) {
-	if (p) {
-		os << *p;
-	}
-	else {
-		os << "Constant: {nullptr}";
-	}
-
-	return os;
-}
-
-
-
-
-
-
-}
-}
+} // namespace AST
+} // namespace Veriparse
