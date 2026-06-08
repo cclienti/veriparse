@@ -124,8 +124,9 @@ std::ostream &operator<<(std::ostream &os, const Typedef &p)
            << "line: " << p.get_line();
     }
 
-    if(!p.get_filename().empty())
+    if(!p.get_filename().empty()) {
         os << ", ";
+    }
 
     os << "name: " << p.get_name();
     os << "}";

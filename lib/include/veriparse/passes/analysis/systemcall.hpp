@@ -11,29 +11,31 @@
 
 #include <veriparse/passes/analysis/search.hpp>
 
+namespace Veriparse
+{
+namespace Passes
+{
+namespace Analysis
+{
 
-namespace Veriparse {
-namespace Passes {
-namespace Analysis {
-
-class SystemCall: public StandardSearch {
+class SystemCall : public StandardSearch
+{
 public:
-	SystemCall() = delete;
+    SystemCall() = delete;
 
-	/**
-	 * Return identifier nodes from a system call
-	 */
-	static AST::Identifier::ListPtr get_argument_identifier_nodes(AST::SystemCall::Ptr systemcall);
+    /**
+     * Return identifier nodes from a system call
+     */
+    static AST::Identifier::ListPtr get_argument_identifier_nodes(AST::SystemCall::Ptr systemcall);
 
-	/**
-	 * Return identifier names from a system call
-	 */
-	static std::vector<std::string> get_argument_identifier_names(AST::SystemCall::Ptr systemcall);
+    /**
+     * Return identifier names from a system call
+     */
+    static std::vector<std::string> get_argument_identifier_names(AST::SystemCall::Ptr systemcall);
 };
 
-}
-}
-}
-
+} // namespace Analysis
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

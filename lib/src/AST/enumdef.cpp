@@ -145,8 +145,9 @@ bool EnumDef::replace(Node::Ptr node, Node::ListPtr new_nodes)
                             << "EnumDef::replace matches multiple times (list(Width)::widths)";
                     }
                     if(new_nodes) {
-                        for(const Node::Ptr &n : *new_nodes)
+                        for(const Node::Ptr &n : *new_nodes) {
                             new_list->push_back(cast_to<Width>(n));
+                        }
                     }
                     found = true;
                 }
@@ -175,8 +176,9 @@ bool EnumDef::replace(Node::Ptr node, Node::ListPtr new_nodes)
                             << "EnumDef::replace matches multiple times (list(EnumItem)::items)";
                     }
                     if(new_nodes) {
-                        for(const Node::Ptr &n : *new_nodes)
+                        for(const Node::Ptr &n : *new_nodes) {
                             new_list->push_back(cast_to<EnumItem>(n));
+                        }
                     }
                     found = true;
                 }
@@ -247,8 +249,9 @@ std::ostream &operator<<(std::ostream &os, const EnumDef &p)
            << "line: " << p.get_line();
     }
 
-    if(!p.get_filename().empty())
+    if(!p.get_filename().empty()) {
         os << ", ";
+    }
 
     os << "base_type: " << p.get_base_type() << ", ";
 

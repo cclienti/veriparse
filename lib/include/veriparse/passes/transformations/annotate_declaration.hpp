@@ -11,63 +11,66 @@
 #include <set>
 #include <map>
 
-
-namespace Veriparse {
-namespace Passes {
-namespace Transformations {
+namespace Veriparse
+{
+namespace Passes
+{
+namespace Transformations
+{
 
 /**
  * This pass provides an annotation scheme of declaration within a
  * module. It can ignore declarations related to an
  * Input/Output/Inout.
  */
-class AnnotateDeclaration: public TransformationBase {
-	typedef std::map<std::string, std::string> ReplaceDict;
+class AnnotateDeclaration : public TransformationBase
+{
+    typedef std::map<std::string, std::string> ReplaceDict;
 
 public:
-	/**
-	 * Default constructor. The default search pattern is
-	 * "^.*$" and the default replace pattern is "$&".
-	 */
-	AnnotateDeclaration();
+    /**
+     * Default constructor. The default search pattern is
+     * "^.*$" and the default replace pattern is "$&".
+     */
+    AnnotateDeclaration();
 
-	/**
-	 * Constructor with the regex search (c++11 format) and
-	 * replace pattern.
-	 */
-	AnnotateDeclaration(const std::string &search, const std::string &replace, bool ignore_io);
+    /**
+     * Constructor with the regex search (c++11 format) and
+     * replace pattern.
+     */
+    AnnotateDeclaration(const std::string &search, const std::string &replace, bool ignore_io);
 
-	/**
-	 * Set the regex search (c++11 format) and replace
-	 * pattern.
-	 */
-	void set_search_replace(const std::string &search, const std::string &replace);
-
-private:
-	/**
-	 * @return zero on success
-	 */
-	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
-
-	/**
-	 * @return zero on success
-	 */
-	int get_declaration_names(const AST::Node::Ptr node, ReplaceDict &replace_dict,
-	                          const std::set<std::string> &excluded_names);
-
-	/**
-	 * @return zero on success
-	 */
-	int annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict);
+    /**
+     * Set the regex search (c++11 format) and replace
+     * pattern.
+     */
+    void set_search_replace(const std::string &search, const std::string &replace);
 
 private:
-	bool m_ignore_io;
-	std::regex m_search;
-	std::string m_replace;
+    /**
+     * @return zero on success
+     */
+    virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+
+    /**
+     * @return zero on success
+     */
+    int get_declaration_names(const AST::Node::Ptr node, ReplaceDict &replace_dict,
+                              const std::set<std::string> &excluded_names);
+
+    /**
+     * @return zero on success
+     */
+    int annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict);
+
+private:
+    bool m_ignore_io;
+    std::regex m_search;
+    std::string m_replace;
 };
 
-}
-}
-}
+} // namespace Transformations
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

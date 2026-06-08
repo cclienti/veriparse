@@ -13,7 +13,7 @@ namespace Version
 std::string get_sha1();
 std::string get_version();
 
-}
-}
+} // namespace Version
+} // namespace Veriparse
 
 #endif

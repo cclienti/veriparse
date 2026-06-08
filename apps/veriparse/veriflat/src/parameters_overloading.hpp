@@ -5,7 +5,6 @@
 
 #include <veriparse/AST/nodes.hpp>
 
-
 /**
  * @brief Parse the string to extract the list of overloaded parameters.
  *
@@ -13,7 +12,7 @@
  *
  * @return nullptr if the string is empty, else the list of ParamArg to apply.
  */
-Veriparse::AST::ParamArg::ListPtr overload_parameters(const std::string &parameters_string, bool &success);
-
+Veriparse::AST::ParamArg::ListPtr overload_parameters(const std::string &parameters_string,
+                                                      bool &success);
 
 #endif

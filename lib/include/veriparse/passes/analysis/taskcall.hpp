@@ -11,30 +11,31 @@
 
 #include <veriparse/passes/analysis/search.hpp>
 
+namespace Veriparse
+{
+namespace Passes
+{
+namespace Analysis
+{
 
-namespace Veriparse {
-namespace Passes {
-namespace Analysis {
-
-class TaskCall: public StandardSearch {
+class TaskCall : public StandardSearch
+{
 public:
-	TaskCall() = delete;
+    TaskCall() = delete;
 
-	/**
-	 * Return identifier nodes from a task call
-	 */
-	static AST::Identifier::ListPtr get_argument_identifier_nodes(AST::TaskCall::Ptr taskcall);
+    /**
+     * Return identifier nodes from a task call
+     */
+    static AST::Identifier::ListPtr get_argument_identifier_nodes(AST::TaskCall::Ptr taskcall);
 
-	/**
-	 * Return identifier names from a task call
-	 */
-	static std::vector<std::string> get_argument_identifier_names(AST::TaskCall::Ptr taskcall);
-
+    /**
+     * Return identifier names from a task call
+     */
+    static std::vector<std::string> get_argument_identifier_names(AST::TaskCall::Ptr taskcall);
 };
 
-}
-}
-}
-
+} // namespace Analysis
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

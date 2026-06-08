@@ -7,34 +7,34 @@
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/AST/nodes.hpp>
 
+namespace Veriparse
+{
+namespace Passes
+{
+namespace Transformations
+{
 
-namespace Veriparse {
-namespace Passes {
-namespace Transformations {
-
-
-class ConstantFolding: public TransformationBase
+class ConstantFolding : public TransformationBase
 {
 public:
-	using FunctionMap = Analysis::Module::FunctionMap;
+    using FunctionMap = Analysis::Module::FunctionMap;
 
-	ConstantFolding() = default;
+    ConstantFolding() = default;
 
-	ConstantFolding(const FunctionMap &function_map);
-
-private:
-	/**
-	 * @return zero on success
-	 */
-	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+    ConstantFolding(const FunctionMap &function_map);
 
 private:
-	FunctionMap m_function_map;
+    /**
+     * @return zero on success
+     */
+    virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+
+private:
+    FunctionMap m_function_map;
 };
 
-
-}
-}
-}
+} // namespace Transformations
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

@@ -7,9 +7,12 @@
 #include <string>
 #include <functional>
 
-namespace Veriparse {
-namespace Misc {
-namespace StringUtils {
+namespace Veriparse
+{
+namespace Misc
+{
+namespace StringUtils
+{
 
 /**
  * If a string starts with '\\', an extra space character
@@ -28,35 +31,38 @@ std::string lower(const std::string &str);
  * "func" to all elements except for the last one. The
  * function "func_last" will be used for the last element.
  */
-template<typename T, typename X> std::string join(const T &list,
-                                                  std::function<std::string(X const&)> func,
-                                                  std::function<std::string(X const&)> func_last) {
-	std::string result;
-	typename T::const_iterator it = list.begin();
-	typename T::const_iterator end = list.end();
-	typename T::const_iterator last = list.end();
+template <typename T, typename X>
+std::string join(const T &list, std::function<std::string(X const &)> func,
+                 std::function<std::string(X const &)> func_last)
+{
+    std::string result;
+    typename T::const_iterator it = list.begin();
+    typename T::const_iterator end = list.end();
+    typename T::const_iterator last = list.end();
 
-	if (it != end) --last;
+    if(it != end) {
+        --last;
+    }
 
-	for(; it != end ; ++it) {
-		if (it == last) {
-			result.append(func_last(*it));
-		}
-		else {
-			result.append(func(*it));
-		}
-	}
+    for(; it != end; ++it) {
+        if(it == last) {
+            result.append(func_last(*it));
+        } else {
+            result.append(func(*it));
+        }
+    }
 
-	return result;
+    return result;
 }
 
 /**
  * Join an iterable list using the given separator (python-like).
  */
-template<typename T>	std::string join(const std::string &separator, const T &list) {
-	auto func = [&](const std::string &str){ return str + separator; };
-	auto func_last = [](const std::string &str){ return str; };
-	return join<T, std::string>(list, func, func_last);
+template <typename T> std::string join(const std::string &separator, const T &list)
+{
+    auto func = [&](const std::string &str) { return str + separator; };
+    auto func_last = [](const std::string &str) { return str; };
+    return join<T, std::string>(list, func, func_last);
 }
 
 /**
@@ -102,7 +108,8 @@ std::string remove_all_sub_string(const std::string &str, const std::string &sub
 /**
  * Replace 'find' by 'replace' in the given string
  */
-std::string replace_all(const std::string &str, const std::string &find, const std::string &replace);
+std::string replace_all(const std::string &str, const std::string &find,
+                        const std::string &replace);
 
 /**
  * Remove trailing whitespace and the last ending semi-colon.
@@ -119,10 +126,10 @@ std::vector<std::string> split(const std::string &str, char delim);
  * Indent a string using the given prefix. Trailing white
  * spaces will be removed.
  */
-std::string indent(const std::string &str, const std::string &prefix="  ");
+std::string indent(const std::string &str, const std::string &prefix = "  ");
 
-}
-}
-}
+} // namespace StringUtils
+} // namespace Misc
+} // namespace Veriparse
 
 #endif

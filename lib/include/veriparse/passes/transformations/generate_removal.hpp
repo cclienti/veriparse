@@ -6,26 +6,28 @@
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
 
-
-namespace Veriparse {
-namespace Passes {
-namespace Transformations {
-
-class GenerateRemoval: public TransformationBase
+namespace Veriparse
 {
-	/**
-	 * @return zero on success.
-	 */
-	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+namespace Passes
+{
+namespace Transformations
+{
 
-	/**
-	 * @return return true if the generate block sub-statements can be safely removed.
-	 */
-	bool is_generate_removable(const AST::Node::Ptr &node);
+class GenerateRemoval : public TransformationBase
+{
+    /**
+     * @return zero on success.
+     */
+    virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+
+    /**
+     * @return return true if the generate block sub-statements can be safely removed.
+     */
+    bool is_generate_removable(const AST::Node::Ptr &node);
 };
 
-}
-}
-}
+} // namespace Transformations
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

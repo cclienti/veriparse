@@ -18,9 +18,10 @@
 #include <fstream>
 #include <cstddef>
 
-
-namespace Veriparse {
-namespace Logger {
+namespace Veriparse
+{
+namespace Logger
+{
 
 BOOST_LOG_ATTRIBUTE_KEYWORD(timestamp, "TimeStamp", boost::posix_time::ptime)
 BOOST_LOG_ATTRIBUTE_KEYWORD(severity, "Severity", boost::log::trivial::severity_level)
@@ -37,12 +38,12 @@ static const auto severity_level = boost::log::trivial::info;
 #endif
 
 // specify the format of the log message
-static boost::log::formatter & logger_get_formatter()
+static boost::log::formatter &logger_get_formatter()
 {
-    static boost::log::formatter formatter = boost::log::expressions::stream
+    static boost::log::formatter formatter =
+        boost::log::expressions::stream
         << boost::log::expressions::format_date_time(timestamp, "[%Y-%m-%d, %H:%M:%S.%f]") << " "
-        << "[" << boost::log::trivial::severity << "] "
-        << boost::log::expressions::smessage;
+        << "[" << boost::log::trivial::severity << "] " << boost::log::expressions::smessage;
     return formatter;
 }
 
@@ -51,7 +52,8 @@ BOOST_LOG_GLOBAL_LOGGER_INIT(logger, boost::log::sources::severity_logger_mt)
     boost::log::sources::severity_logger_mt<boost::log::trivial::severity_level> logger;
 
     // add attributes
-    logger.add_attribute("TimeStamp", boost::log::attributes::local_clock()); // each log line gets a timestamp
+    logger.add_attribute("TimeStamp",
+                         boost::log::attributes::local_clock()); // each log line gets a timestamp
 
     return logger;
 }
@@ -59,10 +61,11 @@ BOOST_LOG_GLOBAL_LOGGER_INIT(logger, boost::log::sources::severity_logger_mt)
 // add stderr sink (std::clog)
 void add_stderr_sink(void)
 {
-    typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend> ostream_sink_t;
+    typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend>
+        ostream_sink_t;
     boost::shared_ptr<ostream_sink_t> ostream_sink = boost::make_shared<ostream_sink_t>();
-    ostream_sink->locked_backend()->add_stream(boost::shared_ptr<std::ostream>
-                                               (&std::clog, boost::null_deleter()));
+    ostream_sink->locked_backend()->add_stream(
+        boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter()));
 
     ostream_sink->set_formatter(logger_get_formatter());
 
@@ -76,15 +79,15 @@ void add_stderr_sink(void)
     boost::log::core::get()->add_sink(ostream_sink);
 }
 
-
 // add stream sink
 void add_stream_sink(std::shared_ptr<std::ostringstream> oss)
 {
-    typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend> ostream_sink_t;
+    typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend>
+        ostream_sink_t;
     boost::shared_ptr<ostream_sink_t> ostream_sink = boost::make_shared<ostream_sink_t>();
 
-    boost::shared_ptr<std::ostringstream> boss =
-        boost::shared_ptr<std::ostringstream>(oss.get(), [oss](std::ostringstream*) mutable {oss.reset();});
+    boost::shared_ptr<std::ostringstream> boss = boost::shared_ptr<std::ostringstream>(
+        oss.get(), [oss](std::ostringstream *) mutable { oss.reset(); });
 
     ostream_sink->locked_backend()->add_stream(boss);
     ostream_sink->set_formatter(logger_get_formatter());
@@ -99,15 +102,14 @@ void add_stream_sink(std::shared_ptr<std::ostringstream> oss)
     boost::log::core::get()->add_sink(ostream_sink);
 }
 
-
 // add a text file sink
 void add_text_sink(std::string const &filename)
 {
     typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_file_backend> file_sink_t;
     boost::shared_ptr<boost::log::sinks::text_file_backend> file_backend =
-        boost::make_shared<boost::log::sinks::text_file_backend>
-        (boost::log::keywords::file_name = filename.c_str(),
-         boost::log::keywords::rotation_size = 10 * 1024 * 1024);
+        boost::make_shared<boost::log::sinks::text_file_backend>(
+            boost::log::keywords::file_name = filename.c_str(),
+            boost::log::keywords::rotation_size = 10 * 1024 * 1024);
     boost::shared_ptr<file_sink_t> file_sink = boost::make_shared<file_sink_t>(file_backend);
 
     file_sink->set_formatter(logger_get_formatter());
@@ -121,10 +123,7 @@ void add_text_sink(std::string const &filename)
     boost::log::core::get()->add_sink(file_sink);
 }
 
-void flush(void)
-{
-    boost::log::core::get()->flush();
-}
+void flush(void) { boost::log::core::get()->flush(); }
 
 void remove_all_sinks(void)
 {
@@ -132,25 +131,13 @@ void remove_all_sinks(void)
     boost::log::core::get()->remove_all_sinks();
 }
 
-bool warning_enabled(void)
-{
-    return boost::log::trivial::warning >= severity_level;
-}
+bool warning_enabled(void) { return boost::log::trivial::warning >= severity_level; }
 
-bool info_enabled(void)
-{
-    return boost::log::trivial::info >= severity_level;
-}
+bool info_enabled(void) { return boost::log::trivial::info >= severity_level; }
 
-bool debug_enabled(void)
-{
-    return boost::log::trivial::debug >= severity_level;
-}
+bool debug_enabled(void) { return boost::log::trivial::debug >= severity_level; }
 
-bool trace_enabled(void)
-{
-    return boost::log::trivial::trace >= severity_level;
-}
+bool trace_enabled(void) { return boost::log::trivial::trace >= severity_level; }
 
 std::string get_class_name(const std::string &funcname)
 {
@@ -161,17 +148,16 @@ std::string get_class_name(const std::string &funcname)
     std::string reduced2 = reduced1.substr(0, semi1);
 
     size_t semi2 = reduced2.rfind("::");
-    std::string reduced3 = reduced2.substr(semi2+2, reduced2.size()-1);
+    std::string reduced3 = reduced2.substr(semi2 + 2, reduced2.size() - 1);
 
     size_t semi3 = reduced3.rfind(" ");
-    if (semi3 != std::string::npos) {
-        std::string reduced4 = reduced3.substr(semi3+1, reduced3.size()-1);
+    if(semi3 != std::string::npos) {
+        std::string reduced4 = reduced3.substr(semi3 + 1, reduced3.size() - 1);
         return reduced4;
     }
 
     return reduced3;
 }
 
-
-}
-}
+} // namespace Logger
+} // namespace Veriparse

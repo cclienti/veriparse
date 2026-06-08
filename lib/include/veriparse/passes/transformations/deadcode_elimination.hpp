@@ -9,41 +9,42 @@
 #include <set>
 #include <iostream>
 
-namespace Veriparse {
-namespace Passes {
-namespace Transformations {
-
-class DeadcodeElimination: public TransformationBase
+namespace Veriparse
 {
-	using DSet = std::set<std::string>;
+namespace Passes
+{
+namespace Transformations
+{
 
-	virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
+class DeadcodeElimination : public TransformationBase
+{
+    using DSet = std::set<std::string>;
 
-	int analyze_identifiers(AST::Node::Ptr node, DSet &identifiers);
+    virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-	DSet remove_deadcode_step(AST::Node::Ptr node, AST::Node::Ptr parent);
+    int analyze_identifiers(AST::Node::Ptr node, DSet &identifiers);
 
-	int remove_deadstmt(const DSet &deadset,
-	                    DeadcodeElimination::DSet &removedset,
-	                    AST::Node::Ptr node, AST::Node::Ptr parent);
+    DSet remove_deadcode_step(AST::Node::Ptr node, AST::Node::Ptr parent);
 
-	int remove_deaddecl(const DSet &removedset,
-	                    AST::Node::Ptr node, AST::Node::Ptr parent);
+    int remove_deadstmt(const DSet &deadset, DeadcodeElimination::DSet &removedset,
+                        AST::Node::Ptr node, AST::Node::Ptr parent);
 
-	int remove_emptyblock(AST::Node::Ptr node, AST::Node::Ptr parent);
+    int remove_deaddecl(const DSet &removedset, AST::Node::Ptr node, AST::Node::Ptr parent);
 
-	int remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr parent);
+    int remove_emptyblock(AST::Node::Ptr node, AST::Node::Ptr parent);
 
-	int remove_emptyattr(AST::Node::Ptr node, AST::Node::Ptr parent);
+    int remove_emptystmt(AST::Node::Ptr node, AST::Node::Ptr parent);
 
-	int remove_unused_decl(const DSet &identifiers, const DSet &iodirs,
-	                       const AST::Node::Ptr &node, AST::Node::Ptr parent);
+    int remove_emptyattr(AST::Node::Ptr node, AST::Node::Ptr parent);
 
-	int collect_identifier(DSet &identifiers, const AST::Node::Ptr &node);
+    int remove_unused_decl(const DSet &identifiers, const DSet &iodirs, const AST::Node::Ptr &node,
+                           AST::Node::Ptr parent);
+
+    int collect_identifier(DSet &identifiers, const AST::Node::Ptr &node);
 };
 
-}
-}
-}
+} // namespace Transformations
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

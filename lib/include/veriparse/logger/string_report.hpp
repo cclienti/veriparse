@@ -5,8 +5,10 @@
 
 #include <string>
 
-namespace Veriparse {
-namespace Logger {
+namespace Veriparse
+{
+namespace Logger
+{
 
 /**
  * Return a string that contains the error message.
@@ -16,9 +18,10 @@ namespace Logger {
  * The context describes how many lines must be printed before
  * and after the error.
  */
-std::string string_report(const std::string &err_message, const std::string &str, int begin_col, int end_col);
+std::string string_report(const std::string &err_message, const std::string &str, int begin_col,
+                          int end_col);
 
-}
-}
+} // namespace Logger
+} // namespace Veriparse
 
 #endif

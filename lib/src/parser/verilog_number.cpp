@@ -5,23 +5,21 @@
 
 #include <sstream>
 
+namespace Veriparse
+{
+namespace Parser
+{
 
-namespace Veriparse {
-namespace Parser {
+VerilogNumber::VerilogNumber() { m_driver = new VerilogNumberDriver(); }
 
-VerilogNumber::VerilogNumber() {
-	m_driver = new VerilogNumberDriver();
-}
-
-VerilogNumber::~VerilogNumber() {
-	delete m_driver;
-}
+VerilogNumber::~VerilogNumber() { delete m_driver; }
 
 int VerilogNumber::parse(const std::string &str, mpz_class &mpz, int &size, int &base,
-                         bool &is_signed, int &rc, std::string filename, int line) {
-	std::istringstream iss(str);
-	return m_driver->parse(str, mpz, size, base, is_signed, rc, filename, line);
+                         bool &is_signed, int &rc, std::string filename, int line)
+{
+    std::istringstream iss(str);
+    return m_driver->parse(str, mpz, size, base, is_signed, rc, filename, line);
 }
 
-}
-}
+} // namespace Parser
+} // namespace Veriparse

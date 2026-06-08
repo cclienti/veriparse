@@ -11,30 +11,31 @@
 
 #include <veriparse/passes/analysis/search.hpp>
 
+namespace Veriparse
+{
+namespace Passes
+{
+namespace Analysis
+{
 
-namespace Veriparse {
-namespace Passes {
-namespace Analysis {
-
-class Identifier: public StandardSearch {
+class Identifier : public StandardSearch
+{
 public:
-	Identifier() = delete;
+    Identifier() = delete;
 
-	/**
-	 * Return identifier nodes from an identifier
-	 */
-	static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
+    /**
+     * Return identifier nodes from an identifier
+     */
+    static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
 
-	/**
-	 * Return identifier nodes from an identifier
-	 */
-	static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
-
-
+    /**
+     * Return identifier nodes from an identifier
+     */
+    static AST::Identifier::ListPtr get_identifier_names(AST::Identifier::Ptr identifier);
 };
 
-}
-}
-}
+} // namespace Analysis
+} // namespace Passes
+} // namespace Veriparse
 
 #endif

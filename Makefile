@@ -103,11 +103,11 @@ AST_GEN_PATHS = lib/include/veriparse/AST lib/src/AST \
                 lib/test/generators lib/test/importers
 
 # Regenerate the C++ AST classes (+ YAML/dot generators, importers, tests)
-# from verilog_ast.yaml. --clang-format makes the output match the committed
-# (clang-formatted) tree; astgen's format-aware compare leaves unchanged
-# files (and their mtimes) untouched.
+# from verilog_ast.yaml. clang-format is on by default so the output matches
+# the rest of the (clang-formatted) tree; astgen's format-aware compare leaves
+# unchanged files (and their mtimes) untouched.
 ast-gen:
-	$(DEV_RUN) python lib/tools/ASTGen/astgen.py --clang-format
+	$(DEV_RUN) python lib/tools/ASTGen/astgen.py
 
 # CI guard: fail if the committed generated AST is out of sync with
 # verilog_ast.yaml or the templates (regenerate, then check for any diff).
