@@ -97,6 +97,14 @@ int ModuleObfuscator::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 std::string ModuleObfuscator::push_decl(AST::Node::Ptr decl, const std::string &decl_name,
                                         bool override_collision)
 {
+    // An unnamed declaration is a bare type descriptor (a typedef def, a member
+    // or return type — e.g. the `int` in `typedef int it`), not a real
+    // identifier: there is nothing to obfuscate, and renaming its empty name
+    // would inject a spurious identifier into the output.
+    if(decl_name.empty()) {
+        return decl_name;
+    }
+
     std::string obf_name;
 
     auto id = std::make_shared<AST::Identifier>(decl->get_filename(), decl->get_line());
