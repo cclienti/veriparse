@@ -39,6 +39,36 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Check parsed against reference */                                                           \
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
+// SystemVerilog variant: parse in SV mode (for typedefs, named types, ...).
+#define TEST_CORE_SV(hash)                                                                         \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(true);                                                                     \
+    verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    test_helpers.render_node_to_verilog_file(source, test_string + "_before.v");                   \
+    Passes::Analysis::UniqueDeclaration::seed(0);                                                  \
+    Passes::Transformations::ModuleObfuscator(16, hash).run(source);                               \
+    ASSERT_AST_IS_TREE(source);                                                                    \
+    test_helpers.render_node_to_verilog_file(source, test_string + ".v");                          \
+    test_helpers.render_node_to_yaml_file(source, test_string + ".yaml");                          \
+                                                                                                   \
+    std::string test_ref_suffix = "refs/module_obfuscator_";                                       \
+    const std::string ref_filename = test_ref_suffix + test_name;                                  \
+    AST::Node::Ptr source_ref =                                                                    \
+        Importers::YAMLImporter().import(test_helpers.get_yaml_filename(ref_filename).c_str());    \
+    ASSERT_TRUE(source_ref != nullptr);                                                            \
+                                                                                                   \
+    ASSERT_TRUE(source_ref->is_equal(*source, false))
+
+// Unnamed type descriptors (the `int`/`logic`/`my_t` inside a typedef) must not
+// be obfuscated — an empty name has nothing to rename and used to leak a
+// spurious identifier into the output.
+TEST(PassesTransformation_ModuleObfuscator, typedef0) { TEST_CORE_SV(false); }
+
 TEST(PassesTransformation_ModuleObfuscator, module0) { TEST_CORE(true); }
 TEST(PassesTransformation_ModuleObfuscator, module1) { TEST_CORE(true); }
 TEST(PassesTransformation_ModuleObfuscator, localparam0) { TEST_CORE(true); }
