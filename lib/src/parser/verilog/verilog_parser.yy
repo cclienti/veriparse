@@ -1925,6 +1925,10 @@ data_declaration:
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $3) {
+                        if($1.is_const && !decl_name.rvalue) {
+                            error(@1, "a 'const' variable shall have an initializer "
+                                      "(IEEE 1800-2017 6.8)");
+                        }
                         AST::Variable::Ptr var = ParserHelpers::build_variable(
                             $2, decl_name, scanner.get_filename(), @1.begin.line);
                         $$->push_back(ParserHelpers::wrap_data_modifier(
@@ -1936,8 +1940,18 @@ data_declaration:
                 // the type is materialised as an ImplicitType node.
         |       data_qualifiers implicit_data_type var_decl_namelist TK_SEMICOLON
                 {
+                    // An omitted data type is legal only with `var` (IEEE
+                    // 1800-2017 6.8): `const a = 2;` / `static a;` are illegal.
+                    if(!$1.is_var) {
+                        error(@1, "an implicit data type (no type keyword) requires the "
+                                  "'var' keyword (IEEE 1800-2017 6.8)");
+                    }
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $3) {
+                        if($1.is_const && !decl_name.rvalue) {
+                            error(@1, "a 'const' variable shall have an initializer "
+                                      "(IEEE 1800-2017 6.8)");
+                        }
                         AST::Width::ListPtr widths =
                             $2.widths ? AST::Width::clone_list($2.widths) : nullptr;
                         AST::Variable::Ptr var = ParserHelpers::build_implicit_type(

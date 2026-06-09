@@ -130,7 +130,17 @@ Source:
                   line: 14
                   name: g
                   right:
-                    Rvalue: null
+                    Rvalue:
+                      filename: ../../test/parser/testcases/sv_var0.sv
+                      line: 14
+                      var:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 7
                   sign: true
               filename: ../../test/parser/testcases/sv_var0.sv
               is_const: true
