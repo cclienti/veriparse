@@ -102,13 +102,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_assign_pattern0.sv
                   line: 5
                   name: pair_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
           - Logic:
               filename: lib/test/parser/testcases/sv_assign_pattern0.sv
               ldelay:

@@ -266,6 +266,19 @@ std::string VerilogGenerator::render_identifier(const AST::Identifier::Ptr node)
     return result;
 }
 
+std::string VerilogGenerator::render_customtype(const AST::CustomType::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        const std::string &package = node->get_package();
+        if(!package.empty()) {
+            result = StringUtils::escape(package) + "::";
+        }
+        result.append(StringUtils::escape(node->get_name()));
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_intconst(const AST::IntConst::Ptr node) const
 {
     std::string result;

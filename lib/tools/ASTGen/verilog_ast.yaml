@@ -138,8 +138,19 @@ ImplicitType:
   children:
     widths: list(Width)
 
+# A reference to a user-defined (named/typedef) type: `my_t`, `pkg::T`. Used in
+# any type slot that names a type rather than spelling a built-in keyword (which
+# uses the concrete Logic/Int/... node). `package` carries the pkg::/$unit::
+# scope (empty if unscoped). A later resolution pass rewrites it into the
+# concrete underlying type. NOT used for built-in keywords, and NOT the SV
+# `type(expr)` operator (that is type_reference, a distinct construct).
+CustomType:
+  properties:
+    name: "std::string"
+    package: "std::string"
+
 # A variable declared with a user-defined type (typedef name or pkg::name).
-# `type` holds the unresolved type reference: an Identifier (its `package`
+# `type` holds the unresolved type reference: a CustomType (named, its `package`
 # carries any pkg:: scope) or an inline StructDef/Union/EnumDef. A later
 # resolution pass rewrites this into a concrete Reg/Logic/etc.
 CustomTypeVar:

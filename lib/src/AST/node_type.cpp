@@ -59,6 +59,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "DataModifier";
     case NodeType::ImplicitType:
         return "ImplicitType";
+    case NodeType::CustomType:
+        return "CustomType";
     case NodeType::CustomTypeVar:
         return "CustomTypeVar";
     case NodeType::Net:

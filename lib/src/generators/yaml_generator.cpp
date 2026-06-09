@@ -608,6 +608,26 @@ YAML::Node YAMLGenerator::render_implicittype(const AST::ImplicitType::Ptr node)
     return node_implicittype;
 }
 
+YAML::Node YAMLGenerator::render_customtype(const AST::CustomType::Ptr node) const
+{
+    YAML::Node node_customtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::CustomType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+        content["package"] = node->get_package();
+    }
+
+    node_customtype["CustomType"] = content;
+    return node_customtype;
+}
+
 YAML::Node YAMLGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
 {
     YAML::Node node_customtypevar;

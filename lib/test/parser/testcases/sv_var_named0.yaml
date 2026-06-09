@@ -15,13 +15,11 @@ Source:
                   right:
                     Rvalue: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 7
                       name: my_t
                       package: ''
-                      scope:
-                        IdentifierScope: null
               filename: ../../test/parser/testcases/sv_var_named0.sv
               is_const: false
               is_var: true
@@ -36,13 +34,11 @@ Source:
                   right:
                     Rvalue: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 8
                       name: my_t
                       package: ''
-                      scope:
-                        IdentifierScope: null
               filename: ../../test/parser/testcases/sv_var_named0.sv
               is_const: false
               is_var: true
@@ -57,13 +53,11 @@ Source:
                   right:
                     Rvalue: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 8
                       name: my_t
                       package: ''
-                      scope:
-                        IdentifierScope: null
               filename: ../../test/parser/testcases/sv_var_named0.sv
               is_const: false
               is_var: true
@@ -88,13 +82,11 @@ Source:
                           scope:
                             IdentifierScope: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 9
                       name: my_t
                       package: ''
-                      scope:
-                        IdentifierScope: null
               filename: ../../test/parser/testcases/sv_var_named0.sv
               is_const: true
               is_var: false
@@ -109,13 +101,11 @@ Source:
                   right:
                     Rvalue: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 10
                       name: T
                       package: pkg
-                      scope:
-                        IdentifierScope: null
               filename: ../../test/parser/testcases/sv_var_named0.sv
               is_const: false
               is_var: true
@@ -130,13 +120,11 @@ Source:
                   right:
                     Rvalue: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 11
                       name: T
                       package: pkg
-                      scope:
-                        IdentifierScope: null
                   widths:
                   - Width:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
@@ -233,13 +221,11 @@ Source:
                   right:
                     Rvalue: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 14
                       name: my_t
                       package: ''
-                      scope:
-                        IdentifierScope: null
                   widths:
                   - Width:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
@@ -287,13 +273,11 @@ Source:
                   right:
                     Rvalue: null
                   type:
-                    Identifier:
+                    CustomType:
                       filename: ../../test/parser/testcases/sv_var_named0.sv
                       line: 15
                       name: my_t
                       package: ''
-                      scope:
-                        IdentifierScope: null
                   widths:
                   - Width:
                       filename: ../../test/parser/testcases/sv_var_named0.sv

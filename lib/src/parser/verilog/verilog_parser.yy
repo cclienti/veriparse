@@ -232,7 +232,7 @@ AST::Node::Ptr wrap_data_modifier(AST::Variable::Ptr inner, const data_qualifier
 // one CustomTypeVar per name, each wrapped in a DataModifier carrying the
 // qualifiers. `ref` is the (cloned-per-name) type reference, `widths` its packed
 // dimensions (or null).
-AST::Node::ListPtr build_named_modifier(const AST::Identifier::Ptr &ref,
+AST::Node::ListPtr build_named_modifier(const AST::CustomType::Ptr &ref,
 														 AST::Width::ListPtr widths,
 														 const std::list<decl_name_t> &names,
 														 const data_qualifiers_t &q,
@@ -1928,7 +1928,7 @@ data_type:      integer_vector_type signing packed_dimensions
 // build_variable(NAMED) keeps node construction unified.
 typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($1);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Node::List>();
@@ -1939,7 +1939,7 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 }
         |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($1);
                     data_type_t dt{data_type_kind_t::NAMED, false, $2, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Node::List>();
@@ -1950,7 +1950,7 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 }
         |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($1);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
@@ -1962,7 +1962,7 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 }
         |       package_scope TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($1);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
@@ -2043,7 +2043,7 @@ data_declaration:
                             error(@1, "a 'const' variable shall have an initializer "
                                       "(IEEE 1800-2017 6.8)");
                         }
-                        auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(),
+                        auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(),
                                                                      @2.begin.line);
                         ref->set_name($2);
                         // The brackets after the type name are a packed dimension.
@@ -2083,7 +2083,7 @@ data_declaration:
                         error(@1, "a 'const' variable shall have an initializer "
                                   "(IEEE 1800-2017 6.8)");
                     }
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @3.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @3.begin.line);
                     ref->set_package($2);
                     ref->set_name($3);
                     $$ = ParserHelpers::build_named_modifier(ref, nullptr, $4, $1,
@@ -2095,7 +2095,7 @@ data_declaration:
                         error(@1, "a 'const' variable shall have an initializer "
                                   "(IEEE 1800-2017 6.8)");
                     }
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @3.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @3.begin.line);
                     ref->set_package($2);
                     ref->set_name($3);
                     $$ = ParserHelpers::build_named_modifier(ref, $4, $5, $1,
@@ -5840,7 +5840,7 @@ namespace Veriparse {
                 return AST::to_node(dm);
             }
 
-            AST::Node::ListPtr build_named_modifier(const AST::Identifier::Ptr &ref,
+            AST::Node::ListPtr build_named_modifier(const AST::CustomType::Ptr &ref,
                                                     AST::Width::ListPtr widths,
                                                     const std::list<decl_name_t> &names,
                                                     const data_qualifiers_t &q,

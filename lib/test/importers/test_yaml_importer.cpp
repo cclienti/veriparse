@@ -562,6 +562,27 @@ TEST(YAMLImporter, ImplicitType)
     ASSERT_TRUE(yaml["ImplicitType"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
 
+TEST(YAMLImporter, CustomType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.CustomType.log");
+    Logger::add_stderr_sink();
+    std::string str("CustomType:\n"
+                    "  filename: customtype.v\n"
+                    "  line: 10\n"
+                    "  name: mynbiqpmzj\n"
+                    "  package: plsgqejeyd\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["CustomType"]);
+    ASSERT_TRUE(yaml["CustomType"]["filename"].as<std::string>() == "customtype.v");
+    ASSERT_TRUE(yaml["CustomType"]["line"].as<int>() == 10);
+    ASSERT_TRUE(yaml["CustomType"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["CustomType"]["package"].as<std::string>() == "plsgqejeyd");
+}
+
 TEST(YAMLImporter, CustomTypeVar)
 {
     Logger::remove_all_sinks();

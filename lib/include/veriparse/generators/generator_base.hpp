@@ -111,6 +111,9 @@ public:
             case AST::NodeType::ImplicitType:
                 return render_implicittype(AST::cast_to<AST::ImplicitType>(node));
 
+            case AST::NodeType::CustomType:
+                return render_customtype(AST::cast_to<AST::CustomType>(node));
+
             case AST::NodeType::CustomTypeVar:
                 return render_customtypevar(AST::cast_to<AST::CustomTypeVar>(node));
 
@@ -667,6 +670,14 @@ public:
      * @see GeneratorBase::render_implicittype(const AST::ImplicitType::Ptr &node)
      */
     T render(const AST::ImplicitType::Ptr node) const { return render_implicittype(node); }
+
+    /**
+     * Main rendering method for the CustomType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_customtype(const AST::CustomType::Ptr &node)
+     */
+    T render(const AST::CustomType::Ptr node) const { return render_customtype(node); }
 
     /**
      * Main rendering method for the CustomTypeVar node, we
@@ -1812,6 +1823,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_implicittype(const AST::ImplicitType::Ptr node) const { return T(); }
+
+    /**
+     * Render the CustomType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_customtype(const AST::CustomType::Ptr node) const { return T(); }
 
     /**
      * Render the CustomTypeVar node. This method must be

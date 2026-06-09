@@ -13,13 +13,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
                   line: 3
                   name: my_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
           - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_data_type_named0.sv
               line: 3
@@ -27,13 +25,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
                   line: 3
                   name: my_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
           - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_data_type_named0.sv
               line: 4
@@ -41,13 +37,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
                   line: 4
                   name: my_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
               widths:
               - Width:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
@@ -95,13 +89,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
                   line: 5
                   name: my_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
               widths:
               - Width:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
@@ -129,13 +121,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
                   line: 6
                   name: t
                   package: pkg
-                  scope:
-                    IdentifierScope: null
           - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_data_type_named0.sv
               line: 7
@@ -143,13 +133,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
                   line: 7
                   name: t
                   package: pkg
-                  scope:
-                    IdentifierScope: null
               widths:
               - Width:
                   filename: lib/test/parser/testcases/sv_data_type_named0.sv
