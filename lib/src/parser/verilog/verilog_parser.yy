@@ -69,6 +69,21 @@ typedef struct {
 	 AST::Node::Ptr inline_def;       // STRUCT/UNION/ENUM: inline def node
 } data_type_t;
 
+// SystemVerilog data_declaration qualifiers ([const] [var]); folded into a
+// DataModifier wrapper carried above the variable's data-type node.
+struct data_qualifiers_t {
+	 bool is_var;
+	 bool is_const;
+};
+
+// data_type_or_implicit = implicit ([signing] {packed_dimension}): the type of a
+// `var`/`const` declaration with no type keyword. Materialised as an ImplicitType
+// node (implied type logic, IEEE 1800-2017 §6.8).
+struct implicit_type_t {
+	 bool is_signed;
+	 AST::Width::ListPtr widths;
+};
+
 // A net (wire/tri/supply) carrying an explicit integer_vector data type must be
 // 4-state, and a net keyword may not be directly followed by `reg` (IEEE
 // 1800-2017 6.7.1). Of bit/logic/reg only `logic` is valid. Returns an error
@@ -142,6 +157,17 @@ AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
 // scalar kinds -> the dedicated node (Bit/Byte/Int/.../Realtime); NAMED or an
 // inline aggregate -> CustomTypeVar holding the type (folded in later steps).
 AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
+														 const std::string &filename="", uint32_t line=0);
+
+// Build the ImplicitType node for a `var`/`const` declaration whose data type is
+// implicit (`var a`, `var [3:0] a`): name/signing/dims/init, no type keyword.
+AST::Variable::Ptr build_implicit_type(bool is_signed, AST::Width::ListPtr widths,
+														 const decl_name_t &decl,
+														 const std::string &filename="", uint32_t line=0);
+
+// Wrap a variable's data-type node in a DataModifier carrying the [const][var]
+// qualifiers. Returns the DataModifier (the declaration node).
+AST::Node::Ptr wrap_data_modifier(AST::Variable::Ptr inner, const data_qualifiers_t &q,
 														 const std::string &filename="", uint32_t line=0);
 
 // Build the struct/union members for `data_type list_of_variable_decl_assignments
@@ -243,6 +269,8 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_SUPPLY0      "'supply0'"
 %token                  TK_SUPPLY1      "'supply1'"
 %token                  TK_AUTOMATIC    "'automatic'"
+%token                  TK_VAR          "'var'"
+%token                  TK_CONST        "'const'"
 %token                  TK_DEFPARAM     "'defparam'"
 %token                  TK_ASSIGN       "'assign'"
 %token                  TK_ALWAYS       "'always'"
@@ -392,6 +420,8 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Identifier::Ptr>                scoped_ref
 %type   <std::string>                        package_scope
 %type   <AST::Package::LifetimeEnum>         package_lifetime
+%type   <data_qualifiers_t>                  data_qualifiers data_qualifier
+%type   <implicit_type_t>                    implicit_data_type
 %type   <AST::Pragmalist::Ptr>               pragmalist
 %type   <AST::Pragma::ListPtr>               pragma
 %type   <AST::Node::Ptr>                     expression ternary paren_expression
@@ -1886,6 +1916,55 @@ data_declaration:
                             $1, decl_name, scanner.get_filename(), @1.begin.line);
                         $$->push_back(var);
                     }
+                }
+
+                // [const] [var] with an explicit data type: each variable is
+                // wrapped in a DataModifier carrying the qualifiers.
+        |       data_qualifiers data_type var_decl_namelist TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &decl_name: $3) {
+                        AST::Variable::Ptr var = ParserHelpers::build_variable(
+                            $2, decl_name, scanner.get_filename(), @1.begin.line);
+                        $$->push_back(ParserHelpers::wrap_data_modifier(
+                            var, $1, scanner.get_filename(), @1.begin.line));
+                    }
+                }
+
+                // [const] [var] with an implicit type (`var a`, `var [3:0] a`):
+                // the type is materialised as an ImplicitType node.
+        |       data_qualifiers implicit_data_type var_decl_namelist TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &decl_name: $3) {
+                        AST::Width::ListPtr widths =
+                            $2.widths ? AST::Width::clone_list($2.widths) : nullptr;
+                        AST::Variable::Ptr var = ParserHelpers::build_implicit_type(
+                            $2.is_signed, widths, decl_name, scanner.get_filename(),
+                            @1.begin.line);
+                        $$->push_back(ParserHelpers::wrap_data_modifier(
+                            var, $1, scanner.get_filename(), @1.begin.line));
+                    }
+                }
+        ;
+
+data_qualifiers:
+                data_qualifier                  { $$ = $1; }
+        |       data_qualifiers data_qualifier
+                {
+                    $$.is_var = $1.is_var || $2.is_var;
+                    $$.is_const = $1.is_const || $2.is_const;
+                }
+        ;
+
+data_qualifier: TK_VAR    { $$ = data_qualifiers_t{true, false}; }
+        |       TK_CONST  { $$ = data_qualifiers_t{false, true}; }
+        ;
+
+implicit_data_type:
+                signing packed_dimensions
+                {
+                    $$ = implicit_type_t{$1 == signing_t::SIGNED, $2};
                 }
         ;
 
@@ -5513,6 +5592,29 @@ namespace Veriparse {
                 }
 
                 return node;
+            }
+
+            AST::Variable::Ptr build_implicit_type(bool is_signed, AST::Width::ListPtr widths,
+                                                   const decl_name_t &decl,
+                                                   const std::string &filename, uint32_t line) {
+                auto n = std::make_shared<AST::ImplicitType>(filename, line);
+                n->set_sign(is_signed);
+                n->set_widths(widths);
+                n->set_name(decl.name);
+                n->set_lengths(decl.lengths);
+                n->set_right(decl.rvalue);
+                return n;
+            }
+
+            AST::Node::Ptr wrap_data_modifier(AST::Variable::Ptr inner,
+                                              const data_qualifiers_t &q,
+                                              const std::string &filename, uint32_t line) {
+                auto dm = std::make_shared<AST::DataModifier>(filename, line);
+                dm->set_datatype(AST::to_node(inner));
+                dm->set_is_var(q.is_var);
+                dm->set_is_const(q.is_const);
+                dm->set_lifetime(AST::DataModifier::LifetimeEnum::NONE);
+                return AST::to_node(dm);
             }
 
             AST::StructMember::ListPtr build_struct_members(const data_type_t &dt,

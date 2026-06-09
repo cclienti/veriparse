@@ -394,6 +394,55 @@ TEST(YAMLGenerator, Variable)
     ASSERT_TRUE(yaml["Variable"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
+TEST(YAMLGenerator, DataModifier)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.DataModifier.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_datatype(new AST::Node);
+    bool p_is_var = false;
+    bool p_is_const = false;
+    AST::DataModifier::LifetimeEnum p_lifetime = AST::DataModifier::LifetimeEnum::NONE;
+
+    AST::DataModifier::Ptr m_datamodifier(
+        new AST::DataModifier(c_datatype, p_is_var, p_is_const, p_lifetime, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_datamodifier);
+
+    ASSERT_TRUE(yaml["DataModifier"]);
+    ASSERT_TRUE(yaml["DataModifier"]["datatype"]);
+    ASSERT_TRUE(yaml["DataModifier"]["is_var"].as<bool>() == false);
+    ASSERT_TRUE(yaml["DataModifier"]["is_const"].as<bool>() == false);
+    ASSERT_TRUE(yaml["DataModifier"]["lifetime"].as<AST::DataModifier::LifetimeEnum>() ==
+                AST::DataModifier::LifetimeEnum::NONE);
+}
+
+TEST(YAMLGenerator, ImplicitType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ImplicitType.log");
+    Logger::add_stderr_sink();
+
+    AST::Width::ListPtr c_widths(new AST::Width::List);
+    AST::Length::ListPtr c_lengths(new AST::Length::List);
+    AST::Rvalue::Ptr c_right(new AST::Rvalue);
+    bool p_sign = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::ImplicitType::Ptr m_implicittype(
+        new AST::ImplicitType(c_widths, c_lengths, c_right, p_sign, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_implicittype);
+
+    ASSERT_TRUE(yaml["ImplicitType"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["widths"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["lengths"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["right"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["ImplicitType"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
 TEST(YAMLGenerator, CustomTypeVar)
 {
     Logger::remove_all_sinks();

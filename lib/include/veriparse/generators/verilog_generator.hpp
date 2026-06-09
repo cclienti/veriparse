@@ -37,6 +37,8 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_reg(const AST::Reg::Ptr node) const;
     virtual std::string render_logic(const AST::Logic::Ptr node) const;
     virtual std::string render_customtypevar(const AST::CustomTypeVar::Ptr node) const;
+    virtual std::string render_datamodifier(const AST::DataModifier::Ptr node) const;
+    virtual std::string render_implicittype(const AST::ImplicitType::Ptr node) const;
     virtual std::string render_supply0(const AST::Supply0::Ptr node) const;
     virtual std::string render_supply1(const AST::Supply1::Ptr node) const;
     virtual std::string render_integer(const AST::Integer::Ptr node) const;

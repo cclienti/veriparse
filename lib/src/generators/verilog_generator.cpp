@@ -1860,6 +1860,52 @@ std::string VerilogGenerator::render_scalar_variable(const AST::Variable::Ptr no
     return result;
 }
 
+std::string VerilogGenerator::render_datamodifier(const AST::DataModifier::Ptr node) const
+{
+    if(!node) {
+        return "";
+    }
+    // [const] [var] [lifetime] prefix (IEEE 1800-2017 §6.8), then the underlying
+    // data-type declaration (which carries the name, dims and initializer).
+    std::string prefix;
+    if(node->get_is_const()) {
+        prefix += "const ";
+    }
+    if(node->get_is_var()) {
+        prefix += "var ";
+    }
+    switch(node->get_lifetime()) {
+    case AST::DataModifier::LifetimeEnum::AUTOMATIC:
+        prefix += "automatic ";
+        break;
+    case AST::DataModifier::LifetimeEnum::STATIC:
+        prefix += "static ";
+        break;
+    case AST::DataModifier::LifetimeEnum::NONE:
+        break;
+    }
+    return prefix + render(node->get_datatype());
+}
+
+std::string VerilogGenerator::render_implicittype(const AST::ImplicitType::Ptr node) const
+{
+    if(!node) {
+        return "";
+    }
+    // data_type_or_implicit = implicit: no type keyword, only the optional
+    // signing and packed dims, then name/unpacked dims/initializer. The enclosing
+    // DataModifier supplies the `var`/`const` keyword.
+    std::string result =
+        variable_to_string("", node->get_sign(), node->get_widths(), node->get_lengths(),
+                           node->get_right(), node->get_name());
+    // variable_to_string injects a separator space for the (empty) type keyword;
+    // drop the leading space so the `var `/`const ` prefix sits flush.
+    const size_t start = result.find_first_not_of(' ');
+    result = (start == std::string::npos) ? "" : result.substr(start);
+    result.append(";");
+    return result;
+}
+
 std::string VerilogGenerator::render_function(const AST::Function::Ptr node) const
 {
     std::string result;

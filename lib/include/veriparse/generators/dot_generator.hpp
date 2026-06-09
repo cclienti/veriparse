@@ -38,6 +38,8 @@ private:
     virtual std::string render_variablebase(const AST::VariableBase::Ptr node) const;
     virtual std::string render_genvar(const AST::Genvar::Ptr node) const;
     virtual std::string render_variable(const AST::Variable::Ptr node) const;
+    virtual std::string render_datamodifier(const AST::DataModifier::Ptr node) const;
+    virtual std::string render_implicittype(const AST::ImplicitType::Ptr node) const;
     virtual std::string render_customtypevar(const AST::CustomTypeVar::Ptr node) const;
     virtual std::string render_net(const AST::Net::Ptr node) const;
     virtual std::string render_integer(const AST::Integer::Ptr node) const;

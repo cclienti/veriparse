@@ -33,6 +33,8 @@ enum class NodeType
     VariableBase,
     Genvar,
     Variable,
+    DataModifier,
+    ImplicitType,
     CustomTypeVar,
     Net,
     Integer,

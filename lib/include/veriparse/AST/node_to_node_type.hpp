@@ -35,6 +35,8 @@ template <> constexpr NodeType get_node_type<Inout>() { return NodeType::Inout; 
 template <> constexpr NodeType get_node_type<VariableBase>() { return NodeType::VariableBase; }
 template <> constexpr NodeType get_node_type<Genvar>() { return NodeType::Genvar; }
 template <> constexpr NodeType get_node_type<Variable>() { return NodeType::Variable; }
+template <> constexpr NodeType get_node_type<DataModifier>() { return NodeType::DataModifier; }
+template <> constexpr NodeType get_node_type<ImplicitType>() { return NodeType::ImplicitType; }
 template <> constexpr NodeType get_node_type<CustomTypeVar>() { return NodeType::CustomTypeVar; }
 template <> constexpr NodeType get_node_type<Net>() { return NodeType::Net; }
 template <> constexpr NodeType get_node_type<Integer>() { return NodeType::Integer; }

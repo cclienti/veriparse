@@ -105,6 +105,12 @@ public:
             case AST::NodeType::Variable:
                 return render_variable(AST::cast_to<AST::Variable>(node));
 
+            case AST::NodeType::DataModifier:
+                return render_datamodifier(AST::cast_to<AST::DataModifier>(node));
+
+            case AST::NodeType::ImplicitType:
+                return render_implicittype(AST::cast_to<AST::ImplicitType>(node));
+
             case AST::NodeType::CustomTypeVar:
                 return render_customtypevar(AST::cast_to<AST::CustomTypeVar>(node));
 
@@ -645,6 +651,22 @@ public:
      * @see GeneratorBase::render_variable(const AST::Variable::Ptr &node)
      */
     T render(const AST::Variable::Ptr node) const { return render_variable(node); }
+
+    /**
+     * Main rendering method for the DataModifier node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_datamodifier(const AST::DataModifier::Ptr &node)
+     */
+    T render(const AST::DataModifier::Ptr node) const { return render_datamodifier(node); }
+
+    /**
+     * Main rendering method for the ImplicitType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_implicittype(const AST::ImplicitType::Ptr &node)
+     */
+    T render(const AST::ImplicitType::Ptr node) const { return render_implicittype(node); }
 
     /**
      * Main rendering method for the CustomTypeVar node, we
@@ -1778,6 +1800,18 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_variable(const AST::Variable::Ptr node) const { return T(); }
+
+    /**
+     * Render the DataModifier node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_datamodifier(const AST::DataModifier::Ptr node) const { return T(); }
+
+    /**
+     * Render the ImplicitType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_implicittype(const AST::ImplicitType::Ptr node) const { return T(); }
 
     /**
      * Render the CustomTypeVar node. This method must be
