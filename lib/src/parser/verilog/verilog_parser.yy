@@ -1517,7 +1517,7 @@ typedef_decl:
         |       TK_TYPEDEF TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     // named type alias: `typedef my_t other_t;`
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Typedef>();
@@ -1531,7 +1531,7 @@ typedef_decl:
         |       TK_TYPEDEF TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
                 {
                     // named type alias with packed dims: `typedef my_t [3:0] arr_t;`
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
                     $$ = std::make_shared<AST::Typedef>();
@@ -1545,7 +1545,7 @@ typedef_decl:
         |       TK_TYPEDEF package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     // package-scoped type alias: `typedef pkg::T other_t;`
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($2);
                     ref->set_name($3);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
@@ -1560,7 +1560,7 @@ typedef_decl:
         |       TK_TYPEDEF package_scope TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
                 {
                     // package-scoped alias with packed dims: `typedef pkg::T [3:0] arr_t;`
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($2);
                     ref->set_name($3);
                     data_type_t dt{data_type_kind_t::NAMED, false, $4, AST::to_node(ref), nullptr};
@@ -1759,7 +1759,7 @@ struct_member:  data_type var_decl_namelist TK_SEMICOLON
                 }
         |       TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($1);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
                     $$ = ParserHelpers::build_struct_members(dt, $2, scanner.get_filename(),
@@ -1767,7 +1767,7 @@ struct_member:  data_type var_decl_namelist TK_SEMICOLON
                 }
         |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_name($1);
                     data_type_t dt{data_type_kind_t::NAMED, false, $2, AST::to_node(ref), nullptr};
                     $$ = ParserHelpers::build_struct_members(dt, $3, scanner.get_filename(),
@@ -1775,7 +1775,7 @@ struct_member:  data_type var_decl_namelist TK_SEMICOLON
                 }
         |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($1);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
@@ -1784,7 +1784,7 @@ struct_member:  data_type var_decl_namelist TK_SEMICOLON
                 }
         |       package_scope TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     ref->set_package($1);
                     ref->set_name($2);
                     data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
@@ -4879,7 +4879,7 @@ function_rettype_name:
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(false);
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
-                    auto t = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto t = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     t->set_name($1);
                     $$->set_rettype_ref(AST::to_node(t));
                     $$->set_name($2);
@@ -4891,7 +4891,7 @@ function_rettype_name:
                     $$ = std::make_shared<AST::Function>();
                     $$->set_retsign(false);
                     $$->set_rettype(AST::Function::RettypeEnum::NONE);
-                    auto t = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
+                    auto t = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
                     t->set_package($1);
                     t->set_name($2);
                     $$->set_rettype_ref(AST::to_node(t));

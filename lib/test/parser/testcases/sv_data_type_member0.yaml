@@ -148,13 +148,11 @@ Source:
                       right:
                         Rvalue: null
                       type:
-                        Identifier:
+                        CustomType:
                           filename: lib/test/parser/testcases/sv_data_type_member0.sv
                           line: 10
                           name: t
                           package: pkg
-                          scope:
-                            IdentifierScope: null
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_data_type_member0.sv
                       line: 11

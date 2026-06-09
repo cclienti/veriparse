@@ -45,25 +45,21 @@ Source:
               name: base_t
           - Typedef:
               def:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                   line: 5
                   name: base_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
               filename: lib/test/parser/testcases/sv_typedef_chain0.sv
               line: 5
               name: alias_t
           - Typedef:
               def:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                   line: 6
                   name: data_t
                   package: mypkg
-                  scope:
-                    IdentifierScope: null
               filename: lib/test/parser/testcases/sv_typedef_chain0.sv
               line: 6
               name: imported_t
