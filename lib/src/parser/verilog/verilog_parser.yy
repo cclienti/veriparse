@@ -69,11 +69,12 @@ typedef struct {
 	 AST::Node::Ptr inline_def;       // STRUCT/UNION/ENUM: inline def node
 } data_type_t;
 
-// SystemVerilog data_declaration qualifiers ([const] [var]); folded into a
-// DataModifier wrapper carried above the variable's data-type node.
+// SystemVerilog data_declaration qualifiers ([const] [var] [lifetime]); folded
+// into a DataModifier wrapper carried above the variable's data-type node.
 struct data_qualifiers_t {
 	 bool is_var;
 	 bool is_const;
+	 AST::DataModifier::LifetimeEnum lifetime;
 };
 
 // data_type_or_implicit = implicit ([signing] {packed_dimension}): the type of a
@@ -1954,11 +1955,28 @@ data_qualifiers:
                 {
                     $$.is_var = $1.is_var || $2.is_var;
                     $$.is_const = $1.is_const || $2.is_const;
+                    $$.lifetime = ($2.lifetime != AST::DataModifier::LifetimeEnum::NONE)
+                                      ? $2.lifetime : $1.lifetime;
                 }
         ;
 
-data_qualifier: TK_VAR    { $$ = data_qualifiers_t{true, false}; }
-        |       TK_CONST  { $$ = data_qualifiers_t{false, true}; }
+data_qualifier: TK_VAR
+                {
+                    $$ = data_qualifiers_t{true, false, AST::DataModifier::LifetimeEnum::NONE};
+                }
+        |       TK_CONST
+                {
+                    $$ = data_qualifiers_t{false, true, AST::DataModifier::LifetimeEnum::NONE};
+                }
+        |       TK_STATIC
+                {
+                    $$ = data_qualifiers_t{false, false, AST::DataModifier::LifetimeEnum::STATIC};
+                }
+        |       TK_AUTOMATIC
+                {
+                    $$ = data_qualifiers_t{false, false,
+                                           AST::DataModifier::LifetimeEnum::AUTOMATIC};
+                }
         ;
 
 implicit_data_type:
@@ -5613,7 +5631,7 @@ namespace Veriparse {
                 dm->set_datatype(AST::to_node(inner));
                 dm->set_is_var(q.is_var);
                 dm->set_is_const(q.is_const);
-                dm->set_lifetime(AST::DataModifier::LifetimeEnum::NONE);
+                dm->set_lifetime(q.lifetime);
                 return AST::to_node(dm);
             }
 
