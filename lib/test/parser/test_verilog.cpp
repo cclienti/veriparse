@@ -284,6 +284,10 @@ TEST(VerilogParserTest, sv_var0) { TEST_CORE_SV; }
 // const/var, carried by DataModifier.lifetime (IEEE 1800-2017 §6.21).
 TEST(VerilogParserTest, sv_lifetime0) { TEST_CORE_SV; }
 
+// [const][var] on named/scoped types (CustomTypeVar in a DataModifier) plus the
+// factored implicit branch (`var g, h`, `var i [2:0]`).
+TEST(VerilogParserTest, sv_var_named0) { TEST_CORE_SV; }
+
 // Parser-local semantic checks on data declaration qualifiers (IEEE 1800-2017
 // 6.8): an omitted data type requires `var`, and `const` requires an
 // initializer. These are locally decidable, so the parser rejects them
@@ -303,6 +307,15 @@ TEST(VerilogParserErrorTest, sv_const_requires_initializer)
     Parser::Verilog verilog;
     verilog.set_sv_mode(true);
     ASSERT_EXIT(verilog.parse(test_helpers.get_sv_filename("sv_err_const_no_init0")),
+                ::testing::ExitedWithCode(1), "'const' variable shall have an initializer");
+}
+
+TEST(VerilogParserErrorTest, sv_const_named_requires_initializer)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    ASSERT_EXIT(verilog.parse(test_helpers.get_sv_filename("sv_err_const_named_no_init0")),
                 ::testing::ExitedWithCode(1), "'const' variable shall have an initializer");
 }
 

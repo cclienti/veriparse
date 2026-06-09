@@ -1,0 +1,374 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/sv_var_named0.sv
+          items:
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 7
+                  name: a
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 7
+                      name: my_t
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 7
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 8
+                  name: b
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 8
+                      name: my_t
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 8
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 8
+                  name: c
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 8
+                      name: my_t
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 8
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 9
+                  name: d
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 9
+                      var:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 9
+                          name: d_init
+                          package: ''
+                          scope:
+                            IdentifierScope: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 9
+                      name: my_t
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: true
+              is_var: false
+              lifetime: NONE
+              line: 9
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 10
+                  name: e
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 10
+                      name: T
+                      package: pkg
+                      scope:
+                        IdentifierScope: null
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 10
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 11
+                  name: f
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 11
+                      name: T
+                      package: pkg
+                      scope:
+                        IdentifierScope: null
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 11
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 11
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 11
+                          sign: false
+                          size: -1
+                          value: 1
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 11
+          - DataModifier:
+              datatype:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 12
+                  name: g
+                  right:
+                    Rvalue: null
+                  sign: false
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 12
+          - DataModifier:
+              datatype:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 12
+                  name: h
+                  right:
+                    Rvalue: null
+                  sign: false
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 12
+          - DataModifier:
+              datatype:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  lengths:
+                  - Length:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 13
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 13
+                          sign: false
+                          size: -1
+                          value: 2
+                  line: 13
+                  name: i
+                  right:
+                    Rvalue: null
+                  sign: false
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 13
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  line: 14
+                  name: j
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 14
+                      name: my_t
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 14
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 14
+                          sign: false
+                          size: -1
+                          value: 3
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 14
+          - DataModifier:
+              datatype:
+                CustomTypeVar:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  lengths:
+                  - Length:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 15
+                      lsb: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 5
+                  line: 15
+                  name: k
+                  right:
+                    Rvalue: null
+                  type:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 15
+                      name: my_t
+                      package: ''
+                      scope:
+                        IdentifierScope: null
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 15
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 15
+                          sign: false
+                          size: -1
+                          value: 3
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 15
+          - DataModifier:
+              datatype:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_var_named0.sv
+                  lengths:
+                  - Length:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 16
+                      lsb: null
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 2
+                  line: 16
+                  name: l
+                  right:
+                    Rvalue: null
+                  sign: false
+                  widths:
+                  - Width:
+                      filename: ../../test/parser/testcases/sv_var_named0.sv
+                      line: 16
+                      lsb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 0
+                      msb:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_var_named0.sv
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 7
+              filename: ../../test/parser/testcases/sv_var_named0.sv
+              is_const: false
+              is_var: true
+              lifetime: NONE
+              line: 16
+          line: 1
+          name: sv_var_named0
+      filename: ../../test/parser/testcases/sv_var_named0.sv
+      line: 1
+  filename: ../../test/parser/testcases/sv_var_named0.sv
+  line: 1

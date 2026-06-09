@@ -148,6 +148,63 @@ typedef struct {
 	 AST::Rvalue::Ptr rvalue;
 } decl_name_t;
 
+// What follows `data_qualifiers TK_IDENTIFIER [dims]` once a bracketed dimension
+// has been seen: a following identifier means the consumed id was a *type* and
+// the dims were its packed dimension (named, `names` are the variables); `;`,
+// `=` or `,` mean the id was the *first variable* and the dims were its unpacked
+// dimension.
+struct id_dims_tail_t {
+	 bool is_named;
+	 AST::Rvalue::Ptr rvalue;
+	 std::list<decl_name_t> names;
+};
+
+// What follows `data_qualifiers TK_IDENTIFIER`: either the identifier was a type
+// name (is_named, `names` are the declared variables, `dims` its packed dims) or
+// it was the first variable of an implicit declaration (its `dims` unpacked +
+// `first_rvalue`, plus any further `names`). This factoring keeps the grammar
+// LALR(1): `var a` vs `var T x` is decided by the token after the first
+// identifier (and, for the bracketed forms, the token after `]`). `dims` is
+// captured as a length list and converted to packed widths for the named case.
+struct id_decl_tail_t {
+	 bool is_named;
+	 AST::Length::ListPtr dims;
+	 AST::Rvalue::Ptr first_rvalue;
+	 std::list<decl_name_t> names;
+};
+
+// A `const` variable must be initialised in its declaration (IEEE 1800-2017
+// 6.8). True if any name in a const declaration lacks an initializer.
+static inline bool const_without_init(const data_qualifiers_t &q,
+												  const std::list<decl_name_t> &names) {
+	 if(!q.is_const) {
+		  return false;
+	 }
+	 for(const decl_name_t &d : names) {
+		  if(!d.rvalue) {
+				return true;
+		  }
+	 }
+	 return false;
+}
+
+// Reinterpret a parsed bracket list as packed dimensions (Width) when the
+// leading identifier turns out to be a named type (`var my_t [3:0] x`): the same
+// `[..]` is captured as `lengths` (which also accepts the single-size `[N]`
+// form) and rebuilt as Width nodes here.
+static inline AST::Width::ListPtr lengths_to_widths(const AST::Length::ListPtr &lengths) {
+	 if(!lengths) {
+		  return nullptr;
+	 }
+	 auto out = std::make_shared<AST::Width::List>();
+	 for(const AST::Length::Ptr &l : *lengths) {
+		  out->push_back(std::make_shared<AST::Width>(
+				l->get_msb() ? l->get_msb()->clone() : nullptr,
+				l->get_lsb() ? l->get_lsb()->clone() : nullptr, l->get_filename(), l->get_line()));
+	 }
+	 return out;
+}
+
 namespace ParserHelpers
 {
 AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
@@ -169,6 +226,16 @@ AST::Variable::Ptr build_implicit_type(bool is_signed, AST::Width::ListPtr width
 // Wrap a variable's data-type node in a DataModifier carrying the [const][var]
 // qualifiers. Returns the DataModifier (the declaration node).
 AST::Node::Ptr wrap_data_modifier(AST::Variable::Ptr inner, const data_qualifiers_t &q,
+														 const std::string &filename="", uint32_t line=0);
+
+// Build a named/scoped-type declaration (`var my_t x`, `const pkg::T [3:0] y`):
+// one CustomTypeVar per name, each wrapped in a DataModifier carrying the
+// qualifiers. `ref` is the (cloned-per-name) type reference, `widths` its packed
+// dimensions (or null).
+AST::Node::ListPtr build_named_modifier(const AST::Identifier::Ptr &ref,
+														 AST::Width::ListPtr widths,
+														 const std::list<decl_name_t> &names,
+														 const data_qualifiers_t &q,
 														 const std::string &filename="", uint32_t line=0);
 
 // Build the struct/union members for `data_type list_of_variable_decl_assignments
@@ -422,7 +489,9 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <std::string>                        package_scope
 %type   <AST::Package::LifetimeEnum>         package_lifetime
 %type   <data_qualifiers_t>                  data_qualifiers data_qualifier
-%type   <implicit_type_t>                    implicit_data_type
+%type   <implicit_type_t>                    implicit_signing_or_dims
+%type   <id_dims_tail_t>                     id_dims_tail
+%type   <id_decl_tail_t>                     id_decl_tail
 %type   <AST::Pragmalist::Ptr>               pragmalist
 %type   <AST::Pragma::ListPtr>               pragma
 %type   <AST::Node::Ptr>                     expression ternary paren_expression
@@ -1936,12 +2005,11 @@ data_declaration:
                     }
                 }
 
-                // [const] [var] with an implicit type (`var a`, `var [3:0] a`):
-                // the type is materialised as an ImplicitType node.
-        |       data_qualifiers implicit_data_type var_decl_namelist TK_SEMICOLON
+                // [const] [var] with an implicit type that carries signing
+                // and/or packed dims (`var [3:0] a`, `var signed a`). The bare
+                // implicit form (`var a`) shares the rule below to stay LALR(1).
+        |       data_qualifiers implicit_signing_or_dims var_decl_namelist TK_SEMICOLON
                 {
-                    // An omitted data type is legal only with `var` (IEEE
-                    // 1800-2017 6.8): `const a = 2;` / `static a;` are illegal.
                     if(!$1.is_var) {
                         error(@1, "an implicit data type (no type keyword) requires the "
                                   "'var' keyword (IEEE 1800-2017 6.8)");
@@ -1960,6 +2028,78 @@ data_declaration:
                         $$->push_back(ParserHelpers::wrap_data_modifier(
                             var, $1, scanner.get_filename(), @1.begin.line));
                     }
+                }
+
+                // [const] [var] then a single identifier: either a named type
+                // (`var my_t x`, `var my_t [3:0] x` — the brackets are the type's
+                // packed dim) or the first variable of an implicit declaration
+                // (`var a`, `var a = 2`, `var a, b`, `var a [3:0]` — unpacked).
+                // id_decl_tail resolves which from the token after the identifier
+                // (and, for the bracketed form, after `]`). LALR(1), no conflict.
+        |       data_qualifiers TK_IDENTIFIER id_decl_tail TK_SEMICOLON
+                {
+                    if($3.is_named) {
+                        if(const_without_init($1, $3.names)) {
+                            error(@1, "a 'const' variable shall have an initializer "
+                                      "(IEEE 1800-2017 6.8)");
+                        }
+                        auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(),
+                                                                     @2.begin.line);
+                        ref->set_name($2);
+                        // The brackets after the type name are a packed dimension.
+                        $$ = ParserHelpers::build_named_modifier(
+                            ref, lengths_to_widths($3.dims), $3.names, $1,
+                            scanner.get_filename(), @1.begin.line);
+                    } else {
+                        if(!$1.is_var) {
+                            error(@1, "an implicit data type (no type keyword) requires the "
+                                      "'var' keyword (IEEE 1800-2017 6.8)");
+                        }
+                        decl_name_t first{};
+                        first.name = $2;
+                        first.lengths = $3.dims; // unpacked dimension of the first variable
+                        first.rvalue = $3.first_rvalue;
+                        std::list<decl_name_t> all;
+                        all.push_back(first);
+                        all.insert(all.end(), $3.names.begin(), $3.names.end());
+                        $$ = std::make_shared<AST::Node::List>();
+                        for(const decl_name_t &decl_name: all) {
+                            if($1.is_const && !decl_name.rvalue) {
+                                error(@1, "a 'const' variable shall have an initializer "
+                                          "(IEEE 1800-2017 6.8)");
+                            }
+                            AST::Variable::Ptr var = ParserHelpers::build_implicit_type(
+                                false, nullptr, decl_name, scanner.get_filename(), @1.begin.line);
+                            $$->push_back(ParserHelpers::wrap_data_modifier(
+                                var, $1, scanner.get_filename(), @1.begin.line));
+                        }
+                    }
+                }
+
+                // [const] [var] with a scoped named type (`var pkg::T x`).
+        |       data_qualifiers package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    if(const_without_init($1, $4)) {
+                        error(@1, "a 'const' variable shall have an initializer "
+                                  "(IEEE 1800-2017 6.8)");
+                    }
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @3.begin.line);
+                    ref->set_package($2);
+                    ref->set_name($3);
+                    $$ = ParserHelpers::build_named_modifier(ref, nullptr, $4, $1,
+                                                             scanner.get_filename(), @1.begin.line);
+                }
+        |       data_qualifiers package_scope TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
+                {
+                    if(const_without_init($1, $5)) {
+                        error(@1, "a 'const' variable shall have an initializer "
+                                  "(IEEE 1800-2017 6.8)");
+                    }
+                    auto ref = std::make_shared<AST::Identifier>(scanner.get_filename(), @3.begin.line);
+                    ref->set_package($2);
+                    ref->set_name($3);
+                    $$ = ParserHelpers::build_named_modifier(ref, $4, $5, $1,
+                                                             scanner.get_filename(), @1.begin.line);
                 }
         ;
 
@@ -1993,11 +2133,62 @@ data_qualifier: TK_VAR
                 }
         ;
 
-implicit_data_type:
-                signing packed_dimensions
+// data_type_or_implicit = implicit, carrying signing and/or packed dims (so it
+// does NOT start with an identifier — the bare `var a` form is handled by the
+// id_decl_tail rule). Non-empty: at least a signing keyword or a packed dim.
+implicit_signing_or_dims:
+                TK_SIGNED packed_dimensions   { $$ = implicit_type_t{true, $2}; }
+        |       TK_UNSIGNED packed_dimensions { $$ = implicit_type_t{false, $2}; }
+        |       widths                        { $$ = implicit_type_t{false, $1}; }
+        ;
+
+// What follows `data_qualifiers TK_IDENTIFIER`: see id_decl_tail_t. A leading
+// identifier (var_decl_namelist) means the consumed id was a *type* name; any
+// other start means it was the *first variable* of an implicit declaration.
+id_decl_tail:
+                var_decl_namelist                       // `var my_t x` (named, no packed dim)
                 {
-                    $$ = implicit_type_t{$1 == signing_t::SIGNED, $2};
+                    $$ = id_decl_tail_t{};
+                    $$.is_named = true;
+                    $$.names = $1;
                 }
+        |       %empty                                  // `var a`
+                {
+                    $$ = id_decl_tail_t{};
+                    $$.is_named = false;
+                }
+        |       TK_EQUALS rvalue                        // `var a = 2`
+                {
+                    $$ = id_decl_tail_t{};
+                    $$.is_named = false;
+                    $$.first_rvalue = $2;
+                }
+        |       TK_COMMA var_decl_namelist              // `var a, b`
+                {
+                    $$ = id_decl_tail_t{};
+                    $$.is_named = false;
+                    $$.names = $2;
+                }
+        |       lengths id_dims_tail                    // `var a [3:0]...` OR `var my_t [3:0] x`
+                {
+                    $$ = id_decl_tail_t{};
+                    $$.is_named = $2.is_named;
+                    $$.dims = $1;
+                    $$.first_rvalue = $2.rvalue;
+                    $$.names = $2.names;
+                }
+        ;
+
+// What follows the bracket list in `data_qualifiers TK_IDENTIFIER lengths ...`: a
+// variable name list means the identifier was a named type and the brackets were
+// its *packed* dimension (`var my_t [3:0] x`); `;`/`=`/`,` mean the identifier
+// was the first variable and the brackets were its *unpacked* dimension
+// (`var a [3:0]`). Per-name unpacked dims are still carried by var_decl_name.
+id_dims_tail:
+                var_decl_namelist            { $$ = id_dims_tail_t{}; $$.is_named = true; $$.names = $1; }
+        |       %empty                       { $$ = id_dims_tail_t{}; $$.is_named = false; }
+        |       TK_EQUALS rvalue             { $$ = id_dims_tail_t{}; $$.is_named = false; $$.rvalue = $2; }
+        |       TK_COMMA var_decl_namelist   { $$ = id_dims_tail_t{}; $$.is_named = false; $$.names = $2; }
         ;
 
 
@@ -5647,6 +5838,22 @@ namespace Veriparse {
                 dm->set_is_const(q.is_const);
                 dm->set_lifetime(q.lifetime);
                 return AST::to_node(dm);
+            }
+
+            AST::Node::ListPtr build_named_modifier(const AST::Identifier::Ptr &ref,
+                                                    AST::Width::ListPtr widths,
+                                                    const std::list<decl_name_t> &names,
+                                                    const data_qualifiers_t &q,
+                                                    const std::string &filename, uint32_t line) {
+                // build_variable(NAMED) clones the type ref and packed dims per
+                // name, so the shared `ref`/`widths` are safe to reuse here.
+                data_type_t dt{data_type_kind_t::NAMED, false, widths, AST::to_node(ref), nullptr};
+                auto list = std::make_shared<AST::Node::List>();
+                for(const decl_name_t &d : names) {
+                    AST::Variable::Ptr var = build_variable(dt, d, filename, line);
+                    list->push_back(wrap_data_modifier(var, q, filename, line));
+                }
+                return list;
             }
 
             AST::StructMember::ListPtr build_struct_members(const data_type_t &dt,
