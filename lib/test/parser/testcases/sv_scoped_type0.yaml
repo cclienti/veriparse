@@ -13,13 +13,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_scoped_type0.sv
                   line: 4
                   name: data_t
                   package: mypkg
-                  scope:
-                    IdentifierScope: null
           - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_scoped_type0.sv
               line: 5
@@ -27,13 +25,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_scoped_type0.sv
                   line: 5
                   name: word_t
                   package: mypkg
-                  scope:
-                    IdentifierScope: null
           - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_scoped_type0.sv
               line: 5
@@ -41,13 +37,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_scoped_type0.sv
                   line: 5
                   name: word_t
                   package: mypkg
-                  scope:
-                    IdentifierScope: null
           - Assign:
               filename: lib/test/parser/testcases/sv_scoped_type0.sv
               ldelay:

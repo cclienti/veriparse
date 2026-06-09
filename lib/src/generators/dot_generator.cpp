@@ -998,6 +998,32 @@ std::string DotGenerator::render_implicittype(const AST::ImplicitType::Ptr node)
     return ss.str();
 }
 
+std::string DotGenerator::render_customtype(const AST::CustomType::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::CustomType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">CustomType</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">package: " << node->get_package()
+           << "</TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+    }
+
+    return ss.str();
+}
+
 std::string DotGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
 {
     std::stringstream ss;

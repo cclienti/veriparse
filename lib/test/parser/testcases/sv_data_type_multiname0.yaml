@@ -67,13 +67,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
                   line: 5
                   name: my_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
           - CustomTypeVar:
               filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
               line: 5
@@ -81,13 +79,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
                   line: 5
                   name: my_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
           line: 1
           name: sv_data_type_multiname0
           ports:

@@ -443,6 +443,24 @@ TEST(YAMLGenerator, ImplicitType)
     ASSERT_TRUE(yaml["ImplicitType"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
 
+TEST(YAMLGenerator, CustomType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.CustomType.log");
+    Logger::add_stderr_sink();
+
+    std::string p_name = "mynbiqpmzj";
+    std::string p_package = "plsgqejeyd";
+
+    AST::CustomType::Ptr m_customtype(new AST::CustomType(p_name, p_package, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_customtype);
+
+    ASSERT_TRUE(yaml["CustomType"]);
+    ASSERT_TRUE(yaml["CustomType"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["CustomType"]["package"].as<std::string>() == "plsgqejeyd");
+}
+
 TEST(YAMLGenerator, CustomTypeVar)
 {
     Logger::remove_all_sinks();

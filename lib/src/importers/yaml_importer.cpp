@@ -124,6 +124,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["ImplicitType"]) {
             return convert_implicittype(node["ImplicitType"]);
         }
+        if(node["CustomType"]) {
+            return convert_customtype(node["CustomType"]);
+        }
         if(node["CustomTypeVar"]) {
             return convert_customtypevar(node["CustomTypeVar"]);
         }
@@ -1908,6 +1911,52 @@ AST::Node::Ptr YAMLImporter::convert_implicittype(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::ImplicitType>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_customtype(const YAML::Node node) const
+{
+    AST::CustomType::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::CustomType>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::CustomType>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::CustomType>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+        // Manage property package
+        if(node["package"]) {
+            if(node["package"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::CustomType>();
+                }
+                result->set_package(node["package"].as<std::string>());
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::CustomType>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_customtypevar(const YAML::Node node) const

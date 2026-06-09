@@ -35,6 +35,7 @@ enum class NodeType
     Variable,
     DataModifier,
     ImplicitType,
+    CustomType,
     CustomTypeVar,
     Net,
     Integer,

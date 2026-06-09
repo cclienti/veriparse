@@ -27,6 +27,7 @@
 #include <veriparse/AST/variable.hpp>
 #include <veriparse/AST/datamodifier.hpp>
 #include <veriparse/AST/implicittype.hpp>
+#include <veriparse/AST/customtype.hpp>
 #include <veriparse/AST/customtypevar.hpp>
 #include <veriparse/AST/net.hpp>
 #include <veriparse/AST/integer.hpp>

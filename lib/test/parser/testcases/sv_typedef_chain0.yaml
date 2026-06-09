@@ -19,6 +19,7 @@ Source:
                   right:
                     Rvalue: null
                   sign: false
+                  type: null
                   widths:
                   - Width:
                       filename: lib/test/parser/testcases/sv_typedef_chain0.sv
@@ -73,13 +74,11 @@ Source:
               right:
                 Rvalue: null
               type:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_typedef_chain0.sv
                   line: 8
                   name: alias_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
           - Assign:
               filename: lib/test/parser/testcases/sv_typedef_chain0.sv
               ldelay:
