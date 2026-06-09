@@ -82,6 +82,44 @@ template <> struct convert<Veriparse::AST::Module::Default_nettypeEnum>
         return false;
     }
 };
+template <> struct convert<Veriparse::AST::DataModifier::LifetimeEnum>
+{
+    static Node encode(const Veriparse::AST::DataModifier::LifetimeEnum &rhs)
+    {
+        switch(rhs) {
+        case Veriparse::AST::DataModifier::LifetimeEnum::NONE:
+            return Node("NONE");
+        case Veriparse::AST::DataModifier::LifetimeEnum::AUTOMATIC:
+            return Node("AUTOMATIC");
+        default:
+            return Node("STATIC");
+        }
+    }
+
+    static bool decode(const Node &node, Veriparse::AST::DataModifier::LifetimeEnum &rhs)
+    {
+        if(!node.IsScalar()) {
+            return false;
+        }
+
+        if(node.as<std::string>() == "NONE") {
+            rhs = Veriparse::AST::DataModifier::LifetimeEnum::NONE;
+            return true;
+        }
+
+        if(node.as<std::string>() == "AUTOMATIC") {
+            rhs = Veriparse::AST::DataModifier::LifetimeEnum::AUTOMATIC;
+            return true;
+        }
+
+        if(node.as<std::string>() == "STATIC") {
+            rhs = Veriparse::AST::DataModifier::LifetimeEnum::STATIC;
+            return true;
+        }
+
+        return false;
+    }
+};
 template <> struct convert<Veriparse::AST::Parameter::TypeEnum>
 {
     static Node encode(const Veriparse::AST::Parameter::TypeEnum &rhs)

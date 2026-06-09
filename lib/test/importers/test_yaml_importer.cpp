@@ -509,6 +509,59 @@ TEST(YAMLImporter, Variable)
     ASSERT_TRUE(yaml["Variable"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
+TEST(YAMLImporter, DataModifier)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.DataModifier.log");
+    Logger::add_stderr_sink();
+    std::string str("DataModifier:\n"
+                    "  filename: datamodifier.v\n"
+                    "  line: 12\n"
+                    "  datatype:\n"
+                    "  is_var: false\n"
+                    "  is_const: false\n"
+                    "  lifetime: NONE\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["DataModifier"]);
+    ASSERT_TRUE(yaml["DataModifier"]["filename"].as<std::string>() == "datamodifier.v");
+    ASSERT_TRUE(yaml["DataModifier"]["line"].as<int>() == 12);
+    ASSERT_TRUE(yaml["DataModifier"]["datatype"]);
+    ASSERT_TRUE(yaml["DataModifier"]["is_var"].as<bool>() == false);
+    ASSERT_TRUE(yaml["DataModifier"]["is_const"].as<bool>() == false);
+    ASSERT_TRUE(yaml["DataModifier"]["lifetime"].as<AST::DataModifier::LifetimeEnum>() ==
+                AST::DataModifier::LifetimeEnum::NONE);
+}
+
+TEST(YAMLImporter, ImplicitType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.ImplicitType.log");
+    Logger::add_stderr_sink();
+    std::string str("ImplicitType:\n"
+                    "  filename: implicittype.v\n"
+                    "  line: 12\n"
+                    "  widths:\n"
+                    "  lengths:\n"
+                    "  right:\n"
+                    "  sign: false\n"
+                    "  name: ynbiqpmzjp\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["ImplicitType"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["filename"].as<std::string>() == "implicittype.v");
+    ASSERT_TRUE(yaml["ImplicitType"]["line"].as<int>() == 12);
+    ASSERT_TRUE(yaml["ImplicitType"]["widths"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["lengths"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["right"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["ImplicitType"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
 TEST(YAMLImporter, CustomTypeVar)
 {
     Logger::remove_all_sinks();

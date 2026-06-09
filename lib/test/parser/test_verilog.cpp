@@ -276,6 +276,10 @@ TEST(VerilogParserTest, sv_data_type_funcret0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_port0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_funcport0) { TEST_CORE_SV; }
 
+// [const] [var] data declaration qualifiers, with explicit and implicit
+// (ImplicitType) data types, wrapped in DataModifier (IEEE 1800-2017 §6.8).
+TEST(VerilogParserTest, sv_var0) { TEST_CORE_SV; }
+
 // Focused multi-name node-sharing case (bit a,b + named e,f + inherited ports
 // p,q). The no-node-sharing tree invariant is now checked by TEST_CORE/
 // TEST_CORE_SV for *every* testcase; this just keeps a dedicated case for it.

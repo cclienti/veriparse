@@ -55,6 +55,10 @@ const char *NodeTypeToString(NodeType node_type)
         return "Genvar";
     case NodeType::Variable:
         return "Variable";
+    case NodeType::DataModifier:
+        return "DataModifier";
+    case NodeType::ImplicitType:
+        return "ImplicitType";
     case NodeType::CustomTypeVar:
         return "CustomTypeVar";
     case NodeType::Net:

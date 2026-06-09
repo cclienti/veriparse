@@ -124,6 +124,16 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"var"         {
+                  if(m_sv_mode) return token::TK_VAR;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"const"       {
+                  if(m_sv_mode) return token::TK_CONST;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 "bit"         {
                   if(m_sv_mode) return token::TK_BIT;
                   yylval->build<std::string>(yytext);

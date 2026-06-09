@@ -540,6 +540,74 @@ YAML::Node YAMLGenerator::render_variable(const AST::Variable::Ptr node) const
     return node_variable;
 }
 
+YAML::Node YAMLGenerator::render_datamodifier(const AST::DataModifier::Ptr node) const
+{
+    YAML::Node node_datamodifier;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::DataModifier) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_var"] = node->get_is_var();
+        content["is_const"] = node->get_is_const();
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::DataModifier::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
+            break;
+        case Veriparse::AST::DataModifier::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
+            break;
+        default:
+            content["lifetime"] = "STATIC";
+        }
+
+        content["datatype"] = render(node->get_datatype());
+    }
+
+    node_datamodifier["DataModifier"] = content;
+    return node_datamodifier;
+}
+
+YAML::Node YAMLGenerator::render_implicittype(const AST::ImplicitType::Ptr node) const
+{
+    YAML::Node node_implicittype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ImplicitType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["sign"] = node->get_sign();
+        content["name"] = node->get_name();
+
+        if(node->get_widths()) {
+            content["widths"] = YAML::Load("[]");
+            for(const AST::Width::Ptr &n : *node->get_widths()) {
+                content["widths"].push_back(render(n));
+            }
+        }
+
+        if(node->get_lengths()) {
+            content["lengths"] = YAML::Load("[]");
+            for(const AST::Length::Ptr &n : *node->get_lengths()) {
+                content["lengths"].push_back(render(n));
+            }
+        }
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_implicittype["ImplicitType"] = content;
+    return node_implicittype;
+}
+
 YAML::Node YAMLGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
 {
     YAML::Node node_customtypevar;
