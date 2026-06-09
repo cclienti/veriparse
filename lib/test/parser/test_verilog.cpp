@@ -284,6 +284,28 @@ TEST(VerilogParserTest, sv_var0) { TEST_CORE_SV; }
 // const/var, carried by DataModifier.lifetime (IEEE 1800-2017 §6.21).
 TEST(VerilogParserTest, sv_lifetime0) { TEST_CORE_SV; }
 
+// Parser-local semantic checks on data declaration qualifiers (IEEE 1800-2017
+// 6.8): an omitted data type requires `var`, and `const` requires an
+// initializer. These are locally decidable, so the parser rejects them
+// (error -> exit(1)) rather than deferring to an analysis pass.
+TEST(VerilogParserErrorTest, sv_implicit_requires_var)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    ASSERT_EXIT(verilog.parse(test_helpers.get_sv_filename("sv_err_implicit_no_var0")),
+                ::testing::ExitedWithCode(1), "requires the 'var' keyword");
+}
+
+TEST(VerilogParserErrorTest, sv_const_requires_initializer)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    ASSERT_EXIT(verilog.parse(test_helpers.get_sv_filename("sv_err_const_no_init0")),
+                ::testing::ExitedWithCode(1), "'const' variable shall have an initializer");
+}
+
 // Focused multi-name node-sharing case (bit a,b + named e,f + inherited ports
 // p,q). The no-node-sharing tree invariant is now checked by TEST_CORE/
 // TEST_CORE_SV for *every* testcase; this just keeps a dedicated case for it.

@@ -11,7 +11,7 @@ module sv_var0;
   var [3:0]     d;        // implicit type with packed dimensions
   var signed    e;        // implicit type, signed
   const int     f = 5;    // DataModifier{is_const} over Int
-  const var int g;        // qualifiers stack on one DataModifier
+  const var int g = 7;    // qualifiers stack on one DataModifier (const needs init)
   reg           h;        // bare: plain Reg, unchanged
 
 endmodule
