@@ -50,13 +50,11 @@ Source:
               retsign: false
               rettype: NONE
               rettype_ref:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_user_types0.sv
                   line: 5
                   name: data_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
               statements:
               - Ioport:
                   filename: lib/test/parser/testcases/sv_user_types0.sv
@@ -140,13 +138,11 @@ Source:
                       right:
                         Rvalue: null
                       type:
-                        Identifier:
+                        CustomType:
                           filename: lib/test/parser/testcases/sv_user_types0.sv
                           line: 16
                           name: data_t
                           package: mypkg
-                          scope:
-                            IdentifierScope: null
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_user_types0.sv
                       line: 16
@@ -199,13 +195,11 @@ Source:
               retsign: false
               rettype: NONE
               rettype_ref:
-                Identifier:
+                CustomType:
                   filename: lib/test/parser/testcases/sv_user_types0.sv
                   line: 18
                   name: my_local_t
                   package: ''
-                  scope:
-                    IdentifierScope: null
               statements:
               - Ioport:
                   filename: lib/test/parser/testcases/sv_user_types0.sv

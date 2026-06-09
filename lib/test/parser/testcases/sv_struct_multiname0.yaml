@@ -245,13 +245,11 @@ Source:
                       right:
                         Rvalue: null
                       type:
-                        Identifier:
+                        CustomType:
                           filename: lib/test/parser/testcases/sv_struct_multiname0.sv
                           line: 16
                           name: packed_t
                           package: ''
-                          scope:
-                            IdentifierScope: null
                   - StructMember:
                       filename: lib/test/parser/testcases/sv_struct_multiname0.sv
                       line: 16
@@ -259,13 +257,11 @@ Source:
                       right:
                         Rvalue: null
                       type:
-                        Identifier:
+                        CustomType:
                           filename: lib/test/parser/testcases/sv_struct_multiname0.sv
                           line: 16
                           name: packed_t
                           package: ''
-                          scope:
-                            IdentifierScope: null
                   packed: false
                   sign: false
               filename: lib/test/parser/testcases/sv_struct_multiname0.sv
