@@ -1,0 +1,90 @@
+Source:
+  description:
+    Description:
+      definitions:
+      - Module:
+          default_nettype: WIRE
+          filename: ../../test/parser/testcases/sv_lifetime0.sv
+          items:
+          - DataModifier:
+              datatype:
+                Int:
+                  filename: ../../test/parser/testcases/sv_lifetime0.sv
+                  line: 8
+                  name: a
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/sv_lifetime0.sv
+                      line: 8
+                      var:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_lifetime0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 2
+                  sign: true
+              filename: ../../test/parser/testcases/sv_lifetime0.sv
+              is_const: false
+              is_var: false
+              lifetime: STATIC
+              line: 8
+          - DataModifier:
+              datatype:
+                Int:
+                  filename: ../../test/parser/testcases/sv_lifetime0.sv
+                  line: 9
+                  name: b
+                  right:
+                    Rvalue: null
+                  sign: true
+              filename: ../../test/parser/testcases/sv_lifetime0.sv
+              is_const: false
+              is_var: false
+              lifetime: AUTOMATIC
+              line: 9
+          - DataModifier:
+              datatype:
+                Int:
+                  filename: ../../test/parser/testcases/sv_lifetime0.sv
+                  line: 10
+                  name: c
+                  right:
+                    Rvalue: null
+                  sign: true
+              filename: ../../test/parser/testcases/sv_lifetime0.sv
+              is_const: false
+              is_var: true
+              lifetime: STATIC
+              line: 10
+          - DataModifier:
+              datatype:
+                Int:
+                  filename: ../../test/parser/testcases/sv_lifetime0.sv
+                  line: 11
+                  name: d
+                  right:
+                    Rvalue:
+                      filename: ../../test/parser/testcases/sv_lifetime0.sv
+                      line: 11
+                      var:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_lifetime0.sv
+                          line: 11
+                          sign: false
+                          size: -1
+                          value: 5
+                  sign: true
+              filename: ../../test/parser/testcases/sv_lifetime0.sv
+              is_const: true
+              is_var: false
+              lifetime: STATIC
+              line: 11
+          line: 1
+          name: sv_lifetime0
+      filename: ../../test/parser/testcases/sv_lifetime0.sv
+      line: 1
+  filename: ../../test/parser/testcases/sv_lifetime0.sv
+  line: 1
