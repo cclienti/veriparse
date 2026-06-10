@@ -7,128 +7,87 @@ Source:
           filename: ../../test/parser/testcases/task1.v
           items:
           - Task:
-              automatic: false
+              args:
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../../test/parser/testcases/task1.v
+                  is_var: false
+                  line: 3
+                  name: value
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/task1.v
+                      line: 3
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/task1.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task1.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 31
+                          line: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task1.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../../test/parser/testcases/task1.v
+                  is_var: false
+                  line: 3
+                  name: a
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/task1.v
+                      line: 3
+                      signing: NONE
+              - Arg:
+                  default_value: null
+                  direction: OUTPUT
+                  filename: ../../test/parser/testcases/task1.v
+                  is_var: false
+                  line: 3
+                  name: clog
+                  type:
+                    RegType:
+                      filename: ../../test/parser/testcases/task1.v
+                      line: 3
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/task1.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task1.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 31
+                          line: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/task1.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
               filename: ../../test/parser/testcases/task1.v
+              lifetime: NONE
               line: 3
               name: clogb2
-              ports:
-              - Ioport:
-                  filename: ../../test/parser/testcases/task1.v
-                  first:
-                    Input:
-                      filename: ../../test/parser/testcases/task1.v
-                      line: 3
-                      name: value
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: ../../test/parser/testcases/task1.v
-                          line: 3
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 31
-                  line: 3
-                  second: null
-              - Ioport:
-                  filename: ../../test/parser/testcases/task1.v
-                  first:
-                    Input:
-                      filename: ../../test/parser/testcases/task1.v
-                      line: 3
-                      name: a
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: ../../test/parser/testcases/task1.v
-                          line: 3
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 31
-                  line: 3
-                  second: null
-              - Ioport:
-                  filename: ../../test/parser/testcases/task1.v
-                  first:
-                    Output:
-                      filename: ../../test/parser/testcases/task1.v
-                      line: 3
-                      name: clog
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: ../../test/parser/testcases/task1.v
-                          line: 3
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 31
-                  line: 3
-                  second:
-                    Reg:
-                      filename: ../../test/parser/testcases/task1.v
-                      line: 3
-                      name: clog
-                      right:
-                        Rvalue: null
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: ../../test/parser/testcases/task1.v
-                          line: 3
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/task1.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 31
               statements:
               - Block:
                   filename: ../../test/parser/testcases/task1.v
@@ -146,10 +105,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/task1.v
+                              hier:
+                                HierName: null
                               line: 5
                               name: value
-                              scope:
-                                IdentifierScope: null
                       line: 5
                       rdelay:
                         DelayStatement: null
@@ -163,10 +122,10 @@ Source:
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/task1.v
+                                  hier:
+                                    HierName: null
                                   line: 5
                                   name: value
-                                  scope:
-                                    IdentifierScope: null
                               line: 5
                               right:
                                 IntConstN:
@@ -183,10 +142,10 @@ Source:
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/task1.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: value
-                              scope:
-                                IdentifierScope: null
                           line: 6
                           right:
                             IntConstN:
@@ -210,10 +169,10 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/task1.v
+                                  hier:
+                                    HierName: null
                                   line: 6
                                   name: clog
-                                  scope:
-                                    IdentifierScope: null
                           line: 6
                           rdelay:
                             DelayStatement: null
@@ -227,10 +186,10 @@ Source:
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/task1.v
+                                      hier:
+                                        HierName: null
                                       line: 6
                                       name: clog
-                                      scope:
-                                        IdentifierScope: null
                                   line: 6
                                   right:
                                     IntConstN:
@@ -252,10 +211,10 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/task1.v
+                                  hier:
+                                    HierName: null
                                   line: 6
                                   name: clog
-                                  scope:
-                                    IdentifierScope: null
                           line: 6
                           rdelay:
                             DelayStatement: null
@@ -288,10 +247,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/task1.v
+                                      hier:
+                                        HierName: null
                                       line: 7
                                       name: value
-                                      scope:
-                                        IdentifierScope: null
                               line: 7
                               rdelay:
                                 DelayStatement: null
@@ -305,10 +264,10 @@ Source:
                                       left:
                                         Identifier:
                                           filename: ../../test/parser/testcases/task1.v
+                                          hier:
+                                            HierName: null
                                           line: 7
                                           name: value
-                                          scope:
-                                            IdentifierScope: null
                                       line: 7
                                       right:
                                         IntConstN:
@@ -318,10 +277,10 @@ Source:
                                           sign: false
                                           size: -1
                                           value: 1
+          lifetime: NONE
           line: 1
           name: task1
       filename: ../../test/parser/testcases/task1.v
       line: 1
   filename: ../../test/parser/testcases/task1.v
   line: 1
-
