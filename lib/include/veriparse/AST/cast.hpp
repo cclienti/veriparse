@@ -35,8 +35,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Cast.
      */
-    Cast(const Node::Ptr type, const Node::Ptr expr, const std::string &filename = "",
-         uint32_t line = 0);
+    Cast(const Node::Ptr expr, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -84,19 +83,9 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child type.
-     */
-    virtual Node::Ptr get_type(void) const { return m_type; }
-
-    /**
      * Return the child expr.
      */
     virtual Node::Ptr get_expr(void) const { return m_expr; }
-
-    /**
-     * Change the child type.
-     */
-    virtual void set_type(Node::Ptr type) { m_type = type; }
 
     /**
      * Change the child expr.
@@ -127,7 +116,6 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_type{};
     Node::Ptr m_expr{};
 };
 

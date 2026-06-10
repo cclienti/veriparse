@@ -4,7 +4,8 @@
 #define VERIPARSE_AST_FUNCTION_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/width.hpp>
+#include <veriparse/AST/arg.hpp>
+#include <veriparse/AST/datatype.hpp>
 
 #include <list>
 #include <string>
@@ -28,11 +29,11 @@ public:
     using Node::operator==;
     using Node::operator!=;
 
-    enum class RettypeEnum
+    enum class LifetimeEnum
     {
-        INTEGER,
-        REAL,
-        NONE
+        NONE,
+        AUTOMATIC,
+        STATIC
     };
 
     /**
@@ -43,10 +44,9 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Function.
      */
-    Function(const Width::ListPtr retwidths, const Node::Ptr rettype_ref, const Node::ListPtr ports,
-             const Node::ListPtr statements, const std::string &name, const bool &automatic,
-             const RettypeEnum &rettype, const bool &retsign, const std::string &filename = "",
-             uint32_t line = 0);
+    Function(const DataType::Ptr return_type, const Arg::ListPtr args,
+             const Node::ListPtr statements, const std::string &name, const LifetimeEnum &lifetime,
+             const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -94,19 +94,14 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child retwidths.
+     * Return the child return_type.
      */
-    virtual Width::ListPtr get_retwidths(void) const { return m_retwidths; }
+    virtual DataType::Ptr get_return_type(void) const { return m_return_type; }
 
     /**
-     * Return the child rettype_ref.
+     * Return the child args.
      */
-    virtual Node::Ptr get_rettype_ref(void) const { return m_rettype_ref; }
-
-    /**
-     * Return the child ports.
-     */
-    virtual Node::ListPtr get_ports(void) const { return m_ports; }
+    virtual Arg::ListPtr get_args(void) const { return m_args; }
 
     /**
      * Return the child statements.
@@ -114,19 +109,14 @@ public:
     virtual Node::ListPtr get_statements(void) const { return m_statements; }
 
     /**
-     * Change the child retwidths.
+     * Change the child return_type.
      */
-    virtual void set_retwidths(Width::ListPtr retwidths) { m_retwidths = retwidths; }
+    virtual void set_return_type(DataType::Ptr return_type) { m_return_type = return_type; }
 
     /**
-     * Change the child rettype_ref.
+     * Change the child args.
      */
-    virtual void set_rettype_ref(Node::Ptr rettype_ref) { m_rettype_ref = rettype_ref; }
-
-    /**
-     * Change the child ports.
-     */
-    virtual void set_ports(Node::ListPtr ports) { m_ports = ports; }
+    virtual void set_args(Arg::ListPtr args) { m_args = args; }
 
     /**
      * Change the child statements.
@@ -139,19 +129,9 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
-     * Return the property automatic.
+     * Return the property lifetime.
      */
-    virtual const bool &get_automatic(void) const { return m_automatic; }
-
-    /**
-     * Return the property rettype.
-     */
-    virtual const RettypeEnum &get_rettype(void) const { return m_rettype; }
-
-    /**
-     * Return the property retsign.
-     */
-    virtual const bool &get_retsign(void) const { return m_retsign; }
+    virtual const LifetimeEnum &get_lifetime(void) const { return m_lifetime; }
 
     /**
      * Change the property name.
@@ -159,19 +139,9 @@ public:
     virtual void set_name(const std::string &name) { m_name = name; }
 
     /**
-     * Change the property automatic.
+     * Change the property lifetime.
      */
-    virtual void set_automatic(const bool &automatic) { m_automatic = automatic; }
-
-    /**
-     * Change the property rettype.
-     */
-    virtual void set_rettype(const RettypeEnum &rettype) { m_rettype = rettype; }
-
-    /**
-     * Change the property retsign.
-     */
-    virtual void set_retsign(const bool &retsign) { m_retsign = retsign; }
+    virtual void set_lifetime(const LifetimeEnum &lifetime) { m_lifetime = lifetime; }
 
     /**
      * Return the children list using the private children member
@@ -197,20 +167,17 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_retwidths{};
-    Node::Ptr m_rettype_ref{};
-    Node::ListPtr m_ports{};
+    DataType::Ptr m_return_type{};
+    Arg::ListPtr m_args{};
     Node::ListPtr m_statements{};
     std::string m_name{};
-    bool m_automatic{};
-    RettypeEnum m_rettype{};
-    bool m_retsign{};
+    LifetimeEnum m_lifetime{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Function &p);
 std::ostream &operator<<(std::ostream &os, const Function::Ptr p);
 
-std::ostream &operator<<(std::ostream &os, const Function::RettypeEnum p);
+std::ostream &operator<<(std::ostream &os, const Function::LifetimeEnum p);
 
 } // namespace AST
 } // namespace Veriparse

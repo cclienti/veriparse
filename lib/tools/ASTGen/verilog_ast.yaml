@@ -1,3 +1,35 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# Copyright (C) 2013-2026 Christophe Clienti
+#
+# AST description for the ASTGen code generator.
+#
+# This schema implements ADR-0001 — Type / Declaration split. The two orthogonal
+# abstractions are:
+#
+#   * DataType   — a NAMELESS description of a type (built-in keyword, named ref,
+#                  struct/union/enum, ...). Carries only what is intrinsic to the
+#                  type: `signing` and `packed_dims`. Discrimination is by node
+#                  type (LogicType/IntType/NamedType/...), never a `kind` enum.
+#   * Declaration — binds a NAME (and a role) to a DataType, plus site-specific
+#                  extras (unpacked dims, init/default, direction, qualifiers, net
+#                  strength/delays). Var/Net/Param/Arg/Member/Typedef/...
+#
+# Packed dimensions belong to the type; unpacked dimensions to the declaration.
+# "Implicit is explicit": no type keyword written -> ImplicitType (never a
+# fabricated Logic). A resolution pass turns ImplicitType/NamedType into a
+# concrete type.
+#
+# NOTE (phased, ADR §10): module-like definitions (Interface/Class/Program),
+# their DataType variants (InterfaceType/ClassType/CovergroupType), Modport,
+# Constraint and `nettype` declarations (NetTypeDecl) are part of the model but
+# are added when their grammar is wired up — additively, no redesign. The
+# value-side scope migration (Identifier/FunctionCall/TaskCall `package` string ->
+# `scope: list(ScopeName)`) is likewise deferred; `package` stays for now.
+
+#####################################################################
+# Top level
+#####################################################################
+
 Source:
   properties:
   children:
@@ -20,36 +52,63 @@ Pragma:
   children:
     expression: Node
 
+#####################################################################
+# Module / ports / package
+#####################################################################
+
 Module:
   properties:
     name: "std::string"
-    default_nettype: enum(INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, NONE)
+    # Module default lifetime (`module automatic m;`). NONE = unspecified (static).
+    lifetime: enum(NONE, AUTOMATIC, STATIC)
+    # `default_nettype directive: a net-type keyword tag or NONE. The legacy
+    # INTEGER/REAL/REG values are gone (ADR §9.6) — only real net types remain.
+    default_nettype: enum(WIRE, TRI, TRI0, TRI1, TRIAND, TRIOR, TRIREG, WAND, WOR, UWIRE, SUPPLY0, SUPPLY1, NONE)
   children:
-    params: list(Parameter)
-    ports: list(Node)
+    # #(...) parameter ports: Param | TypeParam (both Declaration).
+    params: list(Declaration)
+    # Module port list: Port nodes (ANSI typed ports, or name-only non-ANSI refs).
+    ports: list(Port)
     items: list(Node)
 
+# A module port. ADR §4/§5.3 — a port is a directed declaration (wrapper):
+#   * ANSI typed port (`input logic [7:0] p`): direction set + `decl` holds the
+#     inner Var/Net (its name/type carry the port's name/type; Port.name empty).
+#   * non-ANSI header ref (`module m(a, b)`): name-only, direction NONE, decl null;
+#     a pass merges it with the body direction/net/var declarations.
+#   * explicit ANSI connection (`.p(expr)`): name p + `expr` set, decl null.
 Port:
   properties:
     name: "std::string"
+    direction: enum(NONE, INPUT, OUTPUT, INOUT, REF, CONST_REF)
   children:
-    widths: list(Width)
+    decl: Declaration
+    expr: Node
 
-Width:
+Package:
   properties:
+    name: "std::string"
+    lifetime: enum(NONE, AUTOMATIC, STATIC) # default lifetime; NONE = unspecified (static)
   children:
-    msb: Node # an expression
-    lsb: Node # an expression
+    items: list(Node)
 
-Length:
-  inherit: Width
+Import:
+  properties:
+    package: "std::string" # package name, left of ::
+    symbol: "std::string"  # imported item; "*" for a wildcard import
+  children:
+
+#####################################################################
+# Identifiers and constants
+#####################################################################
 
 Identifier:
   properties:
     name: "std::string"
     # SystemVerilog package scope (pkg::name or $unit::name); empty if unscoped.
-    # A later resolution pass (PackageInliner) consumes it. Unqualified names
-    # brought in by `import pkg::*` keep this empty until that pass attributes them.
+    # A later resolution pass (PackageInliner) consumes it. (ADR: this flat
+    # string is to be migrated to scope: list(ScopeName) on the value side, in a
+    # later additive step — see header note.)
     package: "std::string"
   children:
     scope: IdentifierScope
@@ -86,156 +145,298 @@ FloatConst:
     value: double
   children:
 
-IODir:
+#####################################################################
+# DataType hierarchy (nameless) — ADR §3
+#####################################################################
+
+# Abstract base of every type. `signing` is tri-state (preserve what was written;
+# the default is resolved by a pass). `packed_dims` are the [..] dims of the type.
+# Both are inert (NONE / empty) on the types where they do not apply (atoms have
+# no packed dims, named/real types no signing) — zero cost, uniform access.
+DataType:
+  properties:
+    signing: enum(NONE, SIGNED, UNSIGNED)
+  children:
+    packed_dims: list(Dimension)
+
+# Integer vector types (signing + packed relevant).
+LogicType: {inherit: DataType}
+RegType:   {inherit: DataType}
+BitType:   {inherit: DataType}
+
+# Integer atom types (signing relevant; packed inert).
+ByteType:     {inherit: DataType}
+ShortintType: {inherit: DataType}
+IntType:      {inherit: DataType}
+LongintType:  {inherit: DataType}
+IntegerType:  {inherit: DataType}
+TimeType:     {inherit: DataType}
+
+# Non-integer types (signing + packed inert).
+RealType:     {inherit: DataType}
+ShortrealType: {inherit: DataType}
+RealtimeType: {inherit: DataType}
+StringType:   {inherit: DataType}
+ChandleType:  {inherit: DataType}
+EventType:    {inherit: DataType}
+
+# No type keyword written. The implied type (logic) is resolved by a pass. Used
+# by `var a`, `var [3:0] a`, `wire [3:0] w` (net with no data_type), an untyped
+# parameter, an implicit port.
+ImplicitType: {inherit: DataType}
+
+# `void` return / absence of a return type.
+VoidType: {inherit: DataType}
+
+# A reference to a user-defined (named/typedef) type: `my_t`, `pkg::T`, `A::B::T`.
+# Takes over the old CustomType. `scope` is an ordered scope list (one segment per
+# `::` step), empty when unscoped; `packed_dims` (inherited) carry the [..] after
+# a named type (`my_t [3:0]`). A resolution pass replaces it with the concrete
+# underlying type. NOT used for built-in keywords, and NOT the SV type() operator
+# (that is TypeOpExpr/TypeOpType).
+NamedType:
+  inherit: DataType
   properties:
     name: "std::string"
-    sign: bool
   children:
-    widths: list(Width)
+    scope: list(ScopeName)
 
-Input:  {inherit: IODir}
-Output: {inherit: IODir}
-Inout:  {inherit: IODir}
-
-VariableBase:
+# A `::` scope segment of a scope list. `params` carries a parameterized class
+# scope (`A#(8)::T`), null for a package / $unit segment.
+ScopeName:
   properties:
     name: "std::string"
-
-Genvar:
-  inherit: VariableBase
-
-Variable:
-  inherit: VariableBase
   children:
-    lengths: list(Length)
-    right: Rvalue
+    params: list(ParamArg)
 
-# SystemVerilog data declaration qualifiers (IEEE 1800-2017 §6.8, A.2.1.3):
-#   data_declaration ::= [const] [var] [lifetime] data_type_or_implicit ... ;
-# A thin wrapper carried ABOVE the variable's data-type node, present ONLY when
-# at least one qualifier is set; a bare declaration stays the plain data-type
-# node (Int/Reg/Wire/...), so Verilog and unqualified SV are untouched. The
-# qualifiers live here; name/dimensions/initializer live ONLY on `datatype` (no
-# duplication). `datatype` is the variable node: a concrete type (Int/Logic/...),
-# a CustomTypeVar, or an ImplicitType when no type keyword was written.
-DataModifier:
+# struct { .. } — `is_packed` is the packed-vs-unpacked layout (distinct from the
+# inherited packed_dims). `signing` (inherited) covers `struct packed signed`.
+StructType:
+  inherit: DataType
+  properties:
+    is_packed: bool
+  children:
+    members: list(Member)
+
+# union { .. } — `is_tagged` is `union tagged`.
+UnionType:
+  inherit: DataType
+  properties:
+    is_packed: bool
+    is_tagged: bool
+  children:
+    members: list(Member)
+
+# enum base { items } — `base` is the underlying DataType (null = unspecified),
+# `items` the enumerators. The optional packed_dims (inherited) carry `[..]`.
+EnumType:
+  inherit: DataType
+  children:
+    base: DataType
+    items: list(EnumItem)
+
+# An enumerator. The SV `enum { A[3:0], B }` form names a RANGE of members:
+# `range` reuses a Dimension (`A[4]` -> SizeDim(4), `A[3:0]` -> RangeDim(3,0)),
+# null for the plain form. `value` is the optional `= expr`.
+EnumItem:
+  properties:
+    name: "std::string"
+  children:
+    value: Node
+    range: Dimension
+
+# SV type() operator, node per form (consistent with the Cast split):
+#   type(expr)      -> TypeOpExpr{ expr }
+#   type(data_type) -> TypeOpType{ arg_type }
+# Distinct from NamedType. Not parsed yet; the model provides for it.
+TypeOpExpr:
+  inherit: DataType
+  children:
+    expr: Node
+
+TypeOpType:
+  inherit: DataType
+  children:
+    arg_type: DataType
+
+#####################################################################
+# Dimensions (node per form) — ADR §3.8. Replaces Width / Length.
+# Used for packed (DataType.packed_dims) and unpacked
+# (Declaration.unpacked_dims); the context decides what is legal.
+#####################################################################
+
+Dimension:
+  properties:
+  children:
+
+# [L:R] range; ascending/descending order preserved.
+RangeDim:
+  inherit: Dimension
+  children:
+    left: Node
+    right: Node
+
+# [N] size, equivalent to [0:N-1]; round-trips "[4]".
+SizeDim:
+  inherit: Dimension
+  children:
+    size: Node
+
+# [] dynamic array.
+UnsizedDim: {inherit: Dimension}
+
+# [$] | [$:N] queue (bound null for [$]).
+QueueDim:
+  inherit: Dimension
+  children:
+    bound: Node
+
+# [index_type] | [*] associative (index_type null for '*').
+AssocDim:
+  inherit: Dimension
+  children:
+    index_type: DataType
+
+#####################################################################
+# Declaration hierarchy — ADR §4
+#####################################################################
+
+# Abstract base: binds a `name` to a `type` (DataType). For a forward typedef the
+# type is null; for Port the name/type are delegated to its inner decl.
+Declaration:
+  properties:
+    name: "std::string"
+  children:
+    type: DataType
+
+# data_declaration: a variable. `is_var`/`is_const` are the SV qualifiers,
+# `lifetime` the static/automatic lifetime. `unpacked_dims` the [..] after the
+# name, `init` the initializer.
+Var:
+  inherit: Declaration
   properties:
     is_var: bool
     is_const: bool
     lifetime: enum(NONE, AUTOMATIC, STATIC)
   children:
-    datatype: Node
+    unpacked_dims: list(Dimension)
+    init: Rvalue
 
-# data_type_or_implicit = implicit (IEEE 1800-2017 A.2.2.1): a `var`/`const`
-# declaration with no data type keyword (`var a`, `var [3:0] a`). Holds name,
-# signing, packed/unpacked dimensions and initializer like any variable, but
-# renders NO type keyword (round-trips `var a`, not `var logic a`). The implied
-# type is logic (§6.8).
-ImplicitType:
-  inherit: Variable
-  properties:
-    sign: bool
-  children:
-    widths: list(Width)
-
-# A reference to a user-defined (named/typedef) type: `my_t`, `pkg::T`. Used in
-# any type slot that names a type rather than spelling a built-in keyword (which
-# uses the concrete Logic/Int/... node). `package` carries the pkg::/$unit::
-# scope (empty if unscoped). A later resolution pass rewrites it into the
-# concrete underlying type. NOT used for built-in keywords, and NOT the SV
-# `type(expr)` operator (that is type_reference, a distinct construct).
-CustomType:
-  properties:
-    name: "std::string"
-    package: "std::string"
-
-# A variable declared with a user-defined type (typedef name or pkg::name).
-# `type` holds the unresolved type reference: a CustomType (named, its `package`
-# carries any pkg:: scope) or an inline StructDef/Union/EnumDef. A later
-# resolution pass rewrites this into a concrete Reg/Logic/etc.
-CustomTypeVar:
-  inherit: Variable
-  children:
-    type: Node
-    widths: list(Width) # packed dimensions of the named/inline type (my_t [3:0] x)
-
+# net_declaration base (node per net-type below). The net's signing and data type
+# live on the inherited `type` (ImplicitType when no data_type written).
+# `cont_assign` is the optional continuous assignment (`wire w = e`); `strength`
+# the optional drive/charge strength; `is_vectored`/`is_scalared` the
+# vectored/scalared qualifiers; `ldelay`/`rdelay` the net delays.
 Net:
-  inherit: Variable
+  inherit: Declaration
   properties:
-    sign: bool
+    is_vectored: bool
+    is_scalared: bool
   children:
-    widths: list(Width)
+    unpacked_dims: list(Dimension)
+    cont_assign: Rvalue
+    strength: Strength
     ldelay: DelayStatement
     rdelay: DelayStatement
-    # Explicit net data type (`wire logic`, `tri reg`), as an Identifier holding
-    # the keyword/typedef name. Null when implicit: a net with no data type is
-    # logic by default (IEEE 1800-2017 §6.7.1).
-    type: Node
 
-Integer: {inherit: Variable}
-Real:    {inherit: Variable}
+# The 12 IEEE net_type keywords (tags -> nodes, like LogicType/IntType).
+WireNet:    {inherit: Net}
+TriNet:     {inherit: Net}
+Tri0Net:    {inherit: Net}
+Tri1Net:    {inherit: Net}
+TriandNet:  {inherit: Net}
+TriorNet:   {inherit: Net}
+TriregNet:  {inherit: Net}
+WandNet:    {inherit: Net}
+WorNet:     {inherit: Net}
+UwireNet:   {inherit: Net}
+Supply0Net: {inherit: Net}
+Supply1Net: {inherit: Net}
 
-# SystemVerilog integer atom types (byte/shortint/int/longint): signing (signed
-# by default), no packed dimension. Dedicated nodes (visited polymorphically as
-# Variable). `sign` follows the existing convention (Reg/Bit/IntConstN).
-Byte:
-  inherit: Variable
-  properties:
-    sign: bool
-Shortint:
-  inherit: Variable
-  properties:
-    sign: bool
-Int:
-  inherit: Variable
-  properties:
-    sign: bool
-Longint:
-  inherit: Variable
-  properties:
-    sign: bool
+# interconnect net (`interconnect [3:0] io;`).
+InterconnectNet: {inherit: Net}
 
-# SystemVerilog non-integer types (no signing, no packed dimension), like Real.
-Shortreal: {inherit: Variable}
-Realtime:  {inherit: Variable}
+# A net of a user-defined nettype: the nettype reference is the inherited `type`
+# (a NamedType). That named member is why nets are node-per-type, not an enum.
+UserNet: {inherit: Net}
 
-# SystemVerilog integer vector type bit: signing + packed dimensions, like Reg.
-Bit:
-  inherit: Variable
-  properties:
-    sign: bool
-  children:
-    widths: list(Width)
+# No net keyword written (a port default); a pass resolves the concrete net-type
+# via `default_nettype. Parallel to ImplicitType.
+ImplicitNet: {inherit: Net}
 
-Tri:     {inherit: Net}
-Wire:    {inherit: Net}
-Supply0: {inherit: Net}
-Supply1: {inherit: Net}
-Logic:   {inherit: Net}
-
-Reg:
-  inherit: Variable
-  properties:
-    sign: bool
-  children:
-    widths: list(Width)
-
-Ioport:
+# Net strength, node per form (no kind enum).
+Strength:
   properties:
   children:
-    first: IODir
-    second: Variable
 
-Parameter:
+DriveStrength:
+  inherit: Strength
   properties:
-    name: "std::string"
-    sign: bool
-    type: enum(INTEGER, REAL, LOGIC, INT, BIT, BYTE, SHORTINT, LONGINT, NONE)
+    s0: enum(SUPPLY0, STRONG0, PULL0, WEAK0, HIGHZ0)
+    s1: enum(SUPPLY1, STRONG1, PULL1, WEAK1, HIGHZ1)
+
+ChargeStrength:
+  inherit: Strength
+  properties:
+    charge: enum(SMALL, MEDIUM, LARGE)
+
+# parameter / localparam value parameter. `is_local` distinguishes localparam.
+# `value` is the default (null on a param-port overridden at instantiation);
+# `unpacked_dims` covers array parameters (`parameter int N [4]`).
+Param:
+  inherit: Declaration
+  properties:
+    is_local: bool
   children:
     value: Node
-    widths: list(Width)
+    unpacked_dims: list(Dimension)
 
-Localparam: {inherit: Parameter}
+# parameter type T = <default> — the inherited `type` is the default DataType
+# (null when no default, `parameter type U;`). `is_local` for `localparam type`.
+TypeParam:
+  inherit: Declaration
+  properties:
+    is_local: bool
+
+# typedef. The inherited `type` is the aliased DataType; `type == null` marks a
+# FORWARD typedef and `fwd_kind` is its optional kind hint (`typedef class C;`,
+# `typedef enum E;`, or bare `typedef foo_t;` with fwd_kind NONE).
+# `unpacked_dims` covers `typedef logic [7:0] mem_t [256]`.
+Typedef:
+  inherit: Declaration
+  properties:
+    fwd_kind: enum(NONE, ENUM, STRUCT, UNION, CLASS, INTERFACE_CLASS)
+  children:
+    unpacked_dims: list(Dimension)
+
+# struct/union member declaration.
+Member:
+  inherit: Declaration
+  children:
+    unpacked_dims: list(Dimension)
+    init: Rvalue
+
+# task/function argument. `direction` defaults to input; `is_var` for an explicit
+# `var` qualifier; `unpacked_dims` the array dims; `default_value` the default
+# (`default` is a C++ keyword, hence the name).
+Arg:
+  inherit: Declaration
+  properties:
+    is_var: bool
+    direction: enum(INPUT, OUTPUT, INOUT, REF, CONST_REF)
+  children:
+    unpacked_dims: list(Dimension)
+    default_value: Node
+
+# genvar: compile-time, untyped (always integer) — deliberately NOT a Declaration
+# (no type slot).
+Genvar:
+  properties:
+    name: "std::string"
+
+#####################################################################
+# Expressions
+#####################################################################
 
 Concat:
   properties:
@@ -269,14 +470,33 @@ PatternItem:
     key: Node
     value: Node
 
-# SystemVerilog cast `type'(expr)`: a type/size/signing conversion. `type` is the
-# casting type — an Identifier for a built-in keyword / named type / signing, or a
-# constant expression for a size cast (`8'(x)`).
+# SystemVerilog cast, node per form (ADR §5.11) — each slot well-typed:
+#   int'(x)      -> TypeCast{ target: IntType, expr }
+#   8'(x)        -> SizeCast{ size: 8, expr }
+#   signed'(x)   -> SigningCast{ signing: SIGNED, expr }
+#   const'(x)    -> ConstCast{ expr }
 Cast:
   properties:
   children:
-    type: Node
     expr: Node
+
+TypeCast:
+  inherit: Cast
+  children:
+    target: DataType
+
+SizeCast:
+  inherit: Cast
+  children:
+    size: Node
+
+SigningCast:
+  inherit: Cast
+  properties:
+    signing: enum(SIGNED, UNSIGNED)
+
+ConstCast:
+  inherit: Cast
 
 Indirect:
   properties:
@@ -369,6 +589,10 @@ Cond:
     cond: Node
     # left is true
     # right is false
+
+#####################################################################
+# Statements
+#####################################################################
 
 Always:
   properties:
@@ -490,6 +714,10 @@ DelayStatement:
   children:
     delay: Node
 
+#####################################################################
+# Instances, functions, tasks, generate, misc
+#####################################################################
+
 Instancelist:
   properties:
     module: "std::string"
@@ -502,7 +730,7 @@ Instance:
     module: "std::string"
     name: "std::string"
   children:
-    array: Length
+    array: Dimension # instance-array range (was Length)
     parameterlist: list(ParamArg)
     portlist: list(PortArg)
 
@@ -518,19 +746,15 @@ PortArg:
   children:
     value: Node
 
+# A function. `return_type` is the single DataType return (VoidType for `void`,
+# ImplicitType for an implicit 1-bit return). `args` are the typed arguments.
 Function:
   properties:
     name: "std::string"
-    automatic: bool
-    rettype: enum(INTEGER, REAL, NONE)
-    retsign: bool
+    lifetime: enum(NONE, AUTOMATIC, STATIC)
   children:
-    retwidths: list(Width)
-    # User-defined return type ref: an Identifier (its `package` carries any
-    # pkg:: scope); null for a built-in return type. rettype stays NONE in that
-    # case; a resolution pass expands it.
-    rettype_ref: Node
-    ports: list(Node)
+    return_type: DataType
+    args: list(Arg)
     statements: list(Node)
 
 FunctionCall:
@@ -543,9 +767,9 @@ FunctionCall:
 Task:
   properties:
     name: "std::string"
-    automatic: bool
+    lifetime: enum(NONE, AUTOMATIC, STATIC)
   children:
-    ports: list(Node)
+    args: list(Arg)
     statements: list(Node)
 
 TaskCall:
@@ -594,56 +818,3 @@ SingleStatement:
   children:
     statement: Node
     delay: DelayStatement
-
-EnumItem:
-  properties:
-    name: "std::string"
-  children:
-    value: Node
-
-EnumDef:
-  properties:
-    base_type: enum(LOGIC, BIT, INT, NONE)
-    sign: bool
-  children:
-    widths: list(Width)
-    items: list(EnumItem)
-
-Typedef:
-  properties:
-    name: "std::string"
-  children:
-    def: Node
-
-StructMember:
-  properties:
-    name: "std::string"
-  children:
-    type: Node
-    lengths: list(Length)
-    right: Rvalue
-
-# Shared base for struct/union so passes can visit them as one. `sign` covers
-# `struct/union packed signed`; `packed` the packed vs unpacked layout.
-StructUnionDef:
-  properties:
-    packed: bool
-    sign: bool
-  children:
-    members: list(StructMember)
-
-StructDef: {inherit: StructUnionDef}
-Union:     {inherit: StructUnionDef}
-
-Package:
-  properties:
-    name: "std::string"
-    lifetime: enum(NONE, AUTOMATIC, STATIC) # default lifetime; NONE = unspecified (static)
-  children:
-    items: list(Node)
-
-Import:
-  properties:
-    package: "std::string" # package name, left of ::
-    symbol: "std::string"  # imported item; "*" for a wildcard import
-  children:

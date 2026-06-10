@@ -83,14 +83,15 @@ TEST(YAMLGenerator, Module)
     Logger::add_text_sink("YAMLGenerator.Module.log");
     Logger::add_stderr_sink();
 
-    AST::Parameter::ListPtr c_params(new AST::Parameter::List);
-    AST::Node::ListPtr c_ports(new AST::Node::List);
+    AST::Declaration::ListPtr c_params(new AST::Declaration::List);
+    AST::Port::ListPtr c_ports(new AST::Port::List);
     AST::Node::ListPtr c_items(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
-    AST::Module::Default_nettypeEnum p_default_nettype = AST::Module::Default_nettypeEnum::NONE;
+    AST::Module::LifetimeEnum p_lifetime = AST::Module::LifetimeEnum::AUTOMATIC;
+    AST::Module::Default_nettypeEnum p_default_nettype = AST::Module::Default_nettypeEnum::TRIOR;
 
-    AST::Module::Ptr m_module(
-        new AST::Module(c_params, c_ports, c_items, p_name, p_default_nettype, "filename", 0));
+    AST::Module::Ptr m_module(new AST::Module(c_params, c_ports, c_items, p_name, p_lifetime,
+                                              p_default_nettype, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_module);
 
@@ -99,8 +100,10 @@ TEST(YAMLGenerator, Module)
     ASSERT_TRUE(yaml["Module"]["ports"]);
     ASSERT_TRUE(yaml["Module"]["items"]);
     ASSERT_TRUE(yaml["Module"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Module"]["lifetime"].as<AST::Module::LifetimeEnum>() ==
+                AST::Module::LifetimeEnum::AUTOMATIC);
     ASSERT_TRUE(yaml["Module"]["default_nettype"].as<AST::Module::Default_nettypeEnum>() ==
-                AST::Module::Default_nettypeEnum::NONE);
+                AST::Module::Default_nettypeEnum::TRIOR);
 }
 
 TEST(YAMLGenerator, Port)
@@ -109,52 +112,60 @@ TEST(YAMLGenerator, Port)
     Logger::add_text_sink("YAMLGenerator.Port.log");
     Logger::add_stderr_sink();
 
-    AST::Width::ListPtr c_widths(new AST::Width::List);
+    AST::Declaration::Ptr c_decl(new AST::Declaration);
+    AST::Node::Ptr c_expr(new AST::Node);
     std::string p_name = "mynbiqpmzj";
+    AST::Port::DirectionEnum p_direction = AST::Port::DirectionEnum::INOUT;
 
-    AST::Port::Ptr m_port(new AST::Port(c_widths, p_name, "filename", 0));
+    AST::Port::Ptr m_port(new AST::Port(c_decl, c_expr, p_name, p_direction, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_port);
 
     ASSERT_TRUE(yaml["Port"]);
-    ASSERT_TRUE(yaml["Port"]["widths"]);
+    ASSERT_TRUE(yaml["Port"]["decl"]);
+    ASSERT_TRUE(yaml["Port"]["expr"]);
     ASSERT_TRUE(yaml["Port"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Port"]["direction"].as<AST::Port::DirectionEnum>() ==
+                AST::Port::DirectionEnum::INOUT);
 }
 
-TEST(YAMLGenerator, Width)
+TEST(YAMLGenerator, Package)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Width.log");
+    Logger::add_text_sink("YAMLGenerator.Package.log");
     Logger::add_stderr_sink();
 
-    AST::Node::Ptr c_msb(new AST::Node);
-    AST::Node::Ptr c_lsb(new AST::Node);
+    AST::Node::ListPtr c_items(new AST::Node::List);
+    std::string p_name = "mynbiqpmzj";
+    AST::Package::LifetimeEnum p_lifetime = AST::Package::LifetimeEnum::AUTOMATIC;
 
-    AST::Width::Ptr m_width(new AST::Width(c_msb, c_lsb, "filename", 0));
+    AST::Package::Ptr m_package(new AST::Package(c_items, p_name, p_lifetime, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_width);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_package);
 
-    ASSERT_TRUE(yaml["Width"]);
-    ASSERT_TRUE(yaml["Width"]["msb"]);
-    ASSERT_TRUE(yaml["Width"]["lsb"]);
+    ASSERT_TRUE(yaml["Package"]);
+    ASSERT_TRUE(yaml["Package"]["items"]);
+    ASSERT_TRUE(yaml["Package"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Package"]["lifetime"].as<AST::Package::LifetimeEnum>() ==
+                AST::Package::LifetimeEnum::AUTOMATIC);
 }
 
-TEST(YAMLGenerator, Length)
+TEST(YAMLGenerator, Import)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Length.log");
+    Logger::add_text_sink("YAMLGenerator.Import.log");
     Logger::add_stderr_sink();
 
-    AST::Node::Ptr c_msb(new AST::Node);
-    AST::Node::Ptr c_lsb(new AST::Node);
+    std::string p_package = "mynbiqpmzj";
+    std::string p_symbol = "plsgqejeyd";
 
-    AST::Length::Ptr m_length(new AST::Length(c_msb, c_lsb, "filename", 0));
+    AST::Import::Ptr m_import(new AST::Import(p_package, p_symbol, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_length);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_import);
 
-    ASSERT_TRUE(yaml["Length"]);
-    ASSERT_TRUE(yaml["Length"]["msb"]);
-    ASSERT_TRUE(yaml["Length"]["lsb"]);
+    ASSERT_TRUE(yaml["Import"]);
+    ASSERT_TRUE(yaml["Import"]["package"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLGenerator, Identifier)
@@ -262,100 +273,1397 @@ TEST(YAMLGenerator, FloatConst)
     ASSERT_TRUE(yaml["FloatConst"]["value"].as<double>() == 98);
 }
 
-TEST(YAMLGenerator, IODir)
+TEST(YAMLGenerator, DataType)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.IODir.log");
+    Logger::add_text_sink("YAMLGenerator.DataType.log");
     Logger::add_stderr_sink();
 
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    std::string p_name = "mynbiqpmzj";
-    bool p_sign = false;
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::DataType::SigningEnum p_signing = AST::DataType::SigningEnum::SIGNED;
 
-    AST::IODir::Ptr m_iodir(new AST::IODir(c_widths, p_name, p_sign, "filename", 0));
+    AST::DataType::Ptr m_datatype(new AST::DataType(c_packed_dims, p_signing, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_iodir);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_datatype);
 
-    ASSERT_TRUE(yaml["IODir"]);
-    ASSERT_TRUE(yaml["IODir"]["widths"]);
-    ASSERT_TRUE(yaml["IODir"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["IODir"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["DataType"]);
+    ASSERT_TRUE(yaml["DataType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["DataType"]["signing"].as<AST::DataType::SigningEnum>() ==
+                AST::DataType::SigningEnum::SIGNED);
 }
 
-TEST(YAMLGenerator, Input)
+TEST(YAMLGenerator, LogicType)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Input.log");
+    Logger::add_text_sink("YAMLGenerator.LogicType.log");
     Logger::add_stderr_sink();
 
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    std::string p_name = "mynbiqpmzj";
-    bool p_sign = false;
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::LogicType::DataType::SigningEnum p_signing = AST::LogicType::DataType::SigningEnum::SIGNED;
 
-    AST::Input::Ptr m_input(new AST::Input(c_widths, p_name, p_sign, "filename", 0));
+    AST::LogicType::Ptr m_logictype(new AST::LogicType(c_packed_dims, p_signing, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_input);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_logictype);
 
-    ASSERT_TRUE(yaml["Input"]);
-    ASSERT_TRUE(yaml["Input"]["widths"]);
-    ASSERT_TRUE(yaml["Input"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Input"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["LogicType"]);
+    ASSERT_TRUE(yaml["LogicType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["LogicType"]["signing"].as<AST::LogicType::DataType::SigningEnum>() ==
+                AST::LogicType::DataType::SigningEnum::SIGNED);
 }
 
-TEST(YAMLGenerator, Output)
+TEST(YAMLGenerator, RegType)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Output.log");
+    Logger::add_text_sink("YAMLGenerator.RegType.log");
     Logger::add_stderr_sink();
 
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    std::string p_name = "mynbiqpmzj";
-    bool p_sign = false;
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::RegType::DataType::SigningEnum p_signing = AST::RegType::DataType::SigningEnum::SIGNED;
 
-    AST::Output::Ptr m_output(new AST::Output(c_widths, p_name, p_sign, "filename", 0));
+    AST::RegType::Ptr m_regtype(new AST::RegType(c_packed_dims, p_signing, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_output);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_regtype);
 
-    ASSERT_TRUE(yaml["Output"]);
-    ASSERT_TRUE(yaml["Output"]["widths"]);
-    ASSERT_TRUE(yaml["Output"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Output"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["RegType"]);
+    ASSERT_TRUE(yaml["RegType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["RegType"]["signing"].as<AST::RegType::DataType::SigningEnum>() ==
+                AST::RegType::DataType::SigningEnum::SIGNED);
 }
 
-TEST(YAMLGenerator, Inout)
+TEST(YAMLGenerator, BitType)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Inout.log");
+    Logger::add_text_sink("YAMLGenerator.BitType.log");
     Logger::add_stderr_sink();
 
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    std::string p_name = "mynbiqpmzj";
-    bool p_sign = false;
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::BitType::DataType::SigningEnum p_signing = AST::BitType::DataType::SigningEnum::SIGNED;
 
-    AST::Inout::Ptr m_inout(new AST::Inout(c_widths, p_name, p_sign, "filename", 0));
+    AST::BitType::Ptr m_bittype(new AST::BitType(c_packed_dims, p_signing, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_inout);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_bittype);
 
-    ASSERT_TRUE(yaml["Inout"]);
-    ASSERT_TRUE(yaml["Inout"]["widths"]);
-    ASSERT_TRUE(yaml["Inout"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Inout"]["sign"].as<bool>() == false);
+    ASSERT_TRUE(yaml["BitType"]);
+    ASSERT_TRUE(yaml["BitType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["BitType"]["signing"].as<AST::BitType::DataType::SigningEnum>() ==
+                AST::BitType::DataType::SigningEnum::SIGNED);
 }
 
-TEST(YAMLGenerator, VariableBase)
+TEST(YAMLGenerator, ByteType)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.VariableBase.log");
+    Logger::add_text_sink("YAMLGenerator.ByteType.log");
     Logger::add_stderr_sink();
 
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::ByteType::DataType::SigningEnum p_signing = AST::ByteType::DataType::SigningEnum::SIGNED;
+
+    AST::ByteType::Ptr m_bytetype(new AST::ByteType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_bytetype);
+
+    ASSERT_TRUE(yaml["ByteType"]);
+    ASSERT_TRUE(yaml["ByteType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["ByteType"]["signing"].as<AST::ByteType::DataType::SigningEnum>() ==
+                AST::ByteType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, ShortintType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ShortintType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::ShortintType::DataType::SigningEnum p_signing =
+        AST::ShortintType::DataType::SigningEnum::SIGNED;
+
+    AST::ShortintType::Ptr m_shortinttype(
+        new AST::ShortintType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_shortinttype);
+
+    ASSERT_TRUE(yaml["ShortintType"]);
+    ASSERT_TRUE(yaml["ShortintType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["ShortintType"]["signing"].as<AST::ShortintType::DataType::SigningEnum>() ==
+                AST::ShortintType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, IntType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.IntType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::IntType::DataType::SigningEnum p_signing = AST::IntType::DataType::SigningEnum::SIGNED;
+
+    AST::IntType::Ptr m_inttype(new AST::IntType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_inttype);
+
+    ASSERT_TRUE(yaml["IntType"]);
+    ASSERT_TRUE(yaml["IntType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["IntType"]["signing"].as<AST::IntType::DataType::SigningEnum>() ==
+                AST::IntType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, LongintType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.LongintType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::LongintType::DataType::SigningEnum p_signing =
+        AST::LongintType::DataType::SigningEnum::SIGNED;
+
+    AST::LongintType::Ptr m_longinttype(
+        new AST::LongintType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_longinttype);
+
+    ASSERT_TRUE(yaml["LongintType"]);
+    ASSERT_TRUE(yaml["LongintType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["LongintType"]["signing"].as<AST::LongintType::DataType::SigningEnum>() ==
+                AST::LongintType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, IntegerType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.IntegerType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::IntegerType::DataType::SigningEnum p_signing =
+        AST::IntegerType::DataType::SigningEnum::SIGNED;
+
+    AST::IntegerType::Ptr m_integertype(
+        new AST::IntegerType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_integertype);
+
+    ASSERT_TRUE(yaml["IntegerType"]);
+    ASSERT_TRUE(yaml["IntegerType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["IntegerType"]["signing"].as<AST::IntegerType::DataType::SigningEnum>() ==
+                AST::IntegerType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, TimeType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TimeType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::TimeType::DataType::SigningEnum p_signing = AST::TimeType::DataType::SigningEnum::SIGNED;
+
+    AST::TimeType::Ptr m_timetype(new AST::TimeType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_timetype);
+
+    ASSERT_TRUE(yaml["TimeType"]);
+    ASSERT_TRUE(yaml["TimeType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["TimeType"]["signing"].as<AST::TimeType::DataType::SigningEnum>() ==
+                AST::TimeType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, RealType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.RealType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::RealType::DataType::SigningEnum p_signing = AST::RealType::DataType::SigningEnum::SIGNED;
+
+    AST::RealType::Ptr m_realtype(new AST::RealType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_realtype);
+
+    ASSERT_TRUE(yaml["RealType"]);
+    ASSERT_TRUE(yaml["RealType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["RealType"]["signing"].as<AST::RealType::DataType::SigningEnum>() ==
+                AST::RealType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, ShortrealType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ShortrealType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::ShortrealType::DataType::SigningEnum p_signing =
+        AST::ShortrealType::DataType::SigningEnum::SIGNED;
+
+    AST::ShortrealType::Ptr m_shortrealtype(
+        new AST::ShortrealType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_shortrealtype);
+
+    ASSERT_TRUE(yaml["ShortrealType"]);
+    ASSERT_TRUE(yaml["ShortrealType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["ShortrealType"]["signing"].as<AST::ShortrealType::DataType::SigningEnum>() ==
+                AST::ShortrealType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, RealtimeType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.RealtimeType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::RealtimeType::DataType::SigningEnum p_signing =
+        AST::RealtimeType::DataType::SigningEnum::SIGNED;
+
+    AST::RealtimeType::Ptr m_realtimetype(
+        new AST::RealtimeType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_realtimetype);
+
+    ASSERT_TRUE(yaml["RealtimeType"]);
+    ASSERT_TRUE(yaml["RealtimeType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["RealtimeType"]["signing"].as<AST::RealtimeType::DataType::SigningEnum>() ==
+                AST::RealtimeType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, StringType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.StringType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::StringType::DataType::SigningEnum p_signing =
+        AST::StringType::DataType::SigningEnum::SIGNED;
+
+    AST::StringType::Ptr m_stringtype(new AST::StringType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_stringtype);
+
+    ASSERT_TRUE(yaml["StringType"]);
+    ASSERT_TRUE(yaml["StringType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["StringType"]["signing"].as<AST::StringType::DataType::SigningEnum>() ==
+                AST::StringType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, ChandleType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ChandleType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::ChandleType::DataType::SigningEnum p_signing =
+        AST::ChandleType::DataType::SigningEnum::SIGNED;
+
+    AST::ChandleType::Ptr m_chandletype(
+        new AST::ChandleType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_chandletype);
+
+    ASSERT_TRUE(yaml["ChandleType"]);
+    ASSERT_TRUE(yaml["ChandleType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["ChandleType"]["signing"].as<AST::ChandleType::DataType::SigningEnum>() ==
+                AST::ChandleType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, EventType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.EventType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::EventType::DataType::SigningEnum p_signing = AST::EventType::DataType::SigningEnum::SIGNED;
+
+    AST::EventType::Ptr m_eventtype(new AST::EventType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_eventtype);
+
+    ASSERT_TRUE(yaml["EventType"]);
+    ASSERT_TRUE(yaml["EventType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["EventType"]["signing"].as<AST::EventType::DataType::SigningEnum>() ==
+                AST::EventType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, ImplicitType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ImplicitType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::ImplicitType::DataType::SigningEnum p_signing =
+        AST::ImplicitType::DataType::SigningEnum::SIGNED;
+
+    AST::ImplicitType::Ptr m_implicittype(
+        new AST::ImplicitType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_implicittype);
+
+    ASSERT_TRUE(yaml["ImplicitType"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["ImplicitType"]["signing"].as<AST::ImplicitType::DataType::SigningEnum>() ==
+                AST::ImplicitType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, VoidType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.VoidType.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::VoidType::DataType::SigningEnum p_signing = AST::VoidType::DataType::SigningEnum::SIGNED;
+
+    AST::VoidType::Ptr m_voidtype(new AST::VoidType(c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_voidtype);
+
+    ASSERT_TRUE(yaml["VoidType"]);
+    ASSERT_TRUE(yaml["VoidType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["VoidType"]["signing"].as<AST::VoidType::DataType::SigningEnum>() ==
+                AST::VoidType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, NamedType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.NamedType.log");
+    Logger::add_stderr_sink();
+
+    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    std::string p_name = "mynbiqpmzj";
+    AST::NamedType::DataType::SigningEnum p_signing = AST::NamedType::DataType::SigningEnum::SIGNED;
+
+    AST::NamedType::Ptr m_namedtype(
+        new AST::NamedType(c_scope, c_packed_dims, p_name, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_namedtype);
+
+    ASSERT_TRUE(yaml["NamedType"]);
+    ASSERT_TRUE(yaml["NamedType"]["scope"]);
+    ASSERT_TRUE(yaml["NamedType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["NamedType"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["NamedType"]["signing"].as<AST::NamedType::DataType::SigningEnum>() ==
+                AST::NamedType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, ScopeName)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ScopeName.log");
+    Logger::add_stderr_sink();
+
+    AST::ParamArg::ListPtr c_params(new AST::ParamArg::List);
     std::string p_name = "mynbiqpmzj";
 
-    AST::VariableBase::Ptr m_variablebase(new AST::VariableBase(p_name, "filename", 0));
+    AST::ScopeName::Ptr m_scopename(new AST::ScopeName(c_params, p_name, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_variablebase);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_scopename);
 
-    ASSERT_TRUE(yaml["VariableBase"]);
-    ASSERT_TRUE(yaml["VariableBase"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["ScopeName"]);
+    ASSERT_TRUE(yaml["ScopeName"]["params"]);
+    ASSERT_TRUE(yaml["ScopeName"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLGenerator, StructType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.StructType.log");
+    Logger::add_stderr_sink();
+
+    AST::Member::ListPtr c_members(new AST::Member::List);
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    bool p_is_packed = false;
+    AST::StructType::DataType::SigningEnum p_signing =
+        AST::StructType::DataType::SigningEnum::SIGNED;
+
+    AST::StructType::Ptr m_structtype(
+        new AST::StructType(c_members, c_packed_dims, p_is_packed, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_structtype);
+
+    ASSERT_TRUE(yaml["StructType"]);
+    ASSERT_TRUE(yaml["StructType"]["members"]);
+    ASSERT_TRUE(yaml["StructType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["StructType"]["is_packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["StructType"]["signing"].as<AST::StructType::DataType::SigningEnum>() ==
+                AST::StructType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, UnionType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.UnionType.log");
+    Logger::add_stderr_sink();
+
+    AST::Member::ListPtr c_members(new AST::Member::List);
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    bool p_is_packed = false;
+    bool p_is_tagged = false;
+    AST::UnionType::DataType::SigningEnum p_signing = AST::UnionType::DataType::SigningEnum::NONE;
+
+    AST::UnionType::Ptr m_uniontype(new AST::UnionType(c_members, c_packed_dims, p_is_packed,
+                                                       p_is_tagged, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_uniontype);
+
+    ASSERT_TRUE(yaml["UnionType"]);
+    ASSERT_TRUE(yaml["UnionType"]["members"]);
+    ASSERT_TRUE(yaml["UnionType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["UnionType"]["is_packed"].as<bool>() == false);
+    ASSERT_TRUE(yaml["UnionType"]["is_tagged"].as<bool>() == false);
+    ASSERT_TRUE(yaml["UnionType"]["signing"].as<AST::UnionType::DataType::SigningEnum>() ==
+                AST::UnionType::DataType::SigningEnum::NONE);
+}
+
+TEST(YAMLGenerator, EnumType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.EnumType.log");
+    Logger::add_stderr_sink();
+
+    AST::DataType::Ptr c_base(new AST::DataType);
+    AST::EnumItem::ListPtr c_items(new AST::EnumItem::List);
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::EnumType::DataType::SigningEnum p_signing = AST::EnumType::DataType::SigningEnum::SIGNED;
+
+    AST::EnumType::Ptr m_enumtype(
+        new AST::EnumType(c_base, c_items, c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_enumtype);
+
+    ASSERT_TRUE(yaml["EnumType"]);
+    ASSERT_TRUE(yaml["EnumType"]["base"]);
+    ASSERT_TRUE(yaml["EnumType"]["items"]);
+    ASSERT_TRUE(yaml["EnumType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["EnumType"]["signing"].as<AST::EnumType::DataType::SigningEnum>() ==
+                AST::EnumType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, EnumItem)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.EnumItem.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_value(new AST::Node);
+    AST::Dimension::Ptr c_range(new AST::Dimension);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::EnumItem::Ptr m_enumitem(new AST::EnumItem(c_value, c_range, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_enumitem);
+
+    ASSERT_TRUE(yaml["EnumItem"]);
+    ASSERT_TRUE(yaml["EnumItem"]["value"]);
+    ASSERT_TRUE(yaml["EnumItem"]["range"]);
+    ASSERT_TRUE(yaml["EnumItem"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLGenerator, TypeOpExpr)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TypeOpExpr.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_expr(new AST::Node);
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::TypeOpExpr::DataType::SigningEnum p_signing =
+        AST::TypeOpExpr::DataType::SigningEnum::SIGNED;
+
+    AST::TypeOpExpr::Ptr m_typeopexpr(
+        new AST::TypeOpExpr(c_expr, c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_typeopexpr);
+
+    ASSERT_TRUE(yaml["TypeOpExpr"]);
+    ASSERT_TRUE(yaml["TypeOpExpr"]["expr"]);
+    ASSERT_TRUE(yaml["TypeOpExpr"]["packed_dims"]);
+    ASSERT_TRUE(yaml["TypeOpExpr"]["signing"].as<AST::TypeOpExpr::DataType::SigningEnum>() ==
+                AST::TypeOpExpr::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, TypeOpType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TypeOpType.log");
+    Logger::add_stderr_sink();
+
+    AST::DataType::Ptr c_arg_type(new AST::DataType);
+    AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
+    AST::TypeOpType::DataType::SigningEnum p_signing =
+        AST::TypeOpType::DataType::SigningEnum::SIGNED;
+
+    AST::TypeOpType::Ptr m_typeoptype(
+        new AST::TypeOpType(c_arg_type, c_packed_dims, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_typeoptype);
+
+    ASSERT_TRUE(yaml["TypeOpType"]);
+    ASSERT_TRUE(yaml["TypeOpType"]["arg_type"]);
+    ASSERT_TRUE(yaml["TypeOpType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["TypeOpType"]["signing"].as<AST::TypeOpType::DataType::SigningEnum>() ==
+                AST::TypeOpType::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLGenerator, Dimension)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Dimension.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::Ptr m_dimension(new AST::Dimension("filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_dimension);
+
+    ASSERT_TRUE(yaml["Dimension"]);
+}
+
+TEST(YAMLGenerator, RangeDim)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.RangeDim.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_left(new AST::Node);
+    AST::Node::Ptr c_right(new AST::Node);
+
+    AST::RangeDim::Ptr m_rangedim(new AST::RangeDim(c_left, c_right, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_rangedim);
+
+    ASSERT_TRUE(yaml["RangeDim"]);
+    ASSERT_TRUE(yaml["RangeDim"]["left"]);
+    ASSERT_TRUE(yaml["RangeDim"]["right"]);
+}
+
+TEST(YAMLGenerator, SizeDim)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.SizeDim.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_size(new AST::Node);
+
+    AST::SizeDim::Ptr m_sizedim(new AST::SizeDim(c_size, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_sizedim);
+
+    ASSERT_TRUE(yaml["SizeDim"]);
+    ASSERT_TRUE(yaml["SizeDim"]["size"]);
+}
+
+TEST(YAMLGenerator, UnsizedDim)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.UnsizedDim.log");
+    Logger::add_stderr_sink();
+
+    AST::UnsizedDim::Ptr m_unsizeddim(new AST::UnsizedDim("filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_unsizeddim);
+
+    ASSERT_TRUE(yaml["UnsizedDim"]);
+}
+
+TEST(YAMLGenerator, QueueDim)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.QueueDim.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_bound(new AST::Node);
+
+    AST::QueueDim::Ptr m_queuedim(new AST::QueueDim(c_bound, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_queuedim);
+
+    ASSERT_TRUE(yaml["QueueDim"]);
+    ASSERT_TRUE(yaml["QueueDim"]["bound"]);
+}
+
+TEST(YAMLGenerator, AssocDim)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.AssocDim.log");
+    Logger::add_stderr_sink();
+
+    AST::DataType::Ptr c_index_type(new AST::DataType);
+
+    AST::AssocDim::Ptr m_assocdim(new AST::AssocDim(c_index_type, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_assocdim);
+
+    ASSERT_TRUE(yaml["AssocDim"]);
+    ASSERT_TRUE(yaml["AssocDim"]["index_type"]);
+}
+
+TEST(YAMLGenerator, Declaration)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Declaration.log");
+    Logger::add_stderr_sink();
+
+    AST::DataType::Ptr c_type(new AST::DataType);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::Declaration::Ptr m_declaration(new AST::Declaration(c_type, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_declaration);
+
+    ASSERT_TRUE(yaml["Declaration"]);
+    ASSERT_TRUE(yaml["Declaration"]["type"]);
+    ASSERT_TRUE(yaml["Declaration"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLGenerator, Var)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Var.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_init(new AST::Rvalue);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_var = false;
+    bool p_is_const = false;
+    AST::Var::LifetimeEnum p_lifetime = AST::Var::LifetimeEnum::NONE;
+    std::string p_name = "iqpmzjplsg";
+
+    AST::Var::Ptr m_var(new AST::Var(c_unpacked_dims, c_init, c_type, p_is_var, p_is_const,
+                                     p_lifetime, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_var);
+
+    ASSERT_TRUE(yaml["Var"]);
+    ASSERT_TRUE(yaml["Var"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Var"]["init"]);
+    ASSERT_TRUE(yaml["Var"]["type"]);
+    ASSERT_TRUE(yaml["Var"]["is_var"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Var"]["is_const"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Var"]["lifetime"].as<AST::Var::LifetimeEnum>() ==
+                AST::Var::LifetimeEnum::NONE);
+    ASSERT_TRUE(yaml["Var"]["name"].as<std::string>() == "iqpmzjplsg");
+}
+
+TEST(YAMLGenerator, Net)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Net.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::Net::Ptr m_net(new AST::Net(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                     c_type, p_is_vectored, p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_net);
+
+    ASSERT_TRUE(yaml["Net"]);
+    ASSERT_TRUE(yaml["Net"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Net"]["cont_assign"]);
+    ASSERT_TRUE(yaml["Net"]["strength"]);
+    ASSERT_TRUE(yaml["Net"]["ldelay"]);
+    ASSERT_TRUE(yaml["Net"]["rdelay"]);
+    ASSERT_TRUE(yaml["Net"]["type"]);
+    ASSERT_TRUE(yaml["Net"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Net"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Net"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, WireNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.WireNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::WireNet::Ptr m_wirenet(new AST::WireNet(c_unpacked_dims, c_cont_assign, c_strength,
+                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                 p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_wirenet);
+
+    ASSERT_TRUE(yaml["WireNet"]);
+    ASSERT_TRUE(yaml["WireNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["WireNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["WireNet"]["strength"]);
+    ASSERT_TRUE(yaml["WireNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["WireNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["WireNet"]["type"]);
+    ASSERT_TRUE(yaml["WireNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["WireNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["WireNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, TriNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TriNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::TriNet::Ptr m_trinet(new AST::TriNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay,
+                                              c_rdelay, c_type, p_is_vectored, p_is_scalared,
+                                              p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_trinet);
+
+    ASSERT_TRUE(yaml["TriNet"]);
+    ASSERT_TRUE(yaml["TriNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["TriNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["TriNet"]["strength"]);
+    ASSERT_TRUE(yaml["TriNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["TriNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["TriNet"]["type"]);
+    ASSERT_TRUE(yaml["TriNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, Tri0Net)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Tri0Net.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::Tri0Net::Ptr m_tri0net(new AST::Tri0Net(c_unpacked_dims, c_cont_assign, c_strength,
+                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                 p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_tri0net);
+
+    ASSERT_TRUE(yaml["Tri0Net"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["cont_assign"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["strength"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["ldelay"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["rdelay"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["type"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Tri0Net"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Tri0Net"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, Tri1Net)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Tri1Net.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::Tri1Net::Ptr m_tri1net(new AST::Tri1Net(c_unpacked_dims, c_cont_assign, c_strength,
+                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                 p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_tri1net);
+
+    ASSERT_TRUE(yaml["Tri1Net"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["cont_assign"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["strength"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["ldelay"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["rdelay"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["type"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Tri1Net"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Tri1Net"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, TriandNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TriandNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::TriandNet::Ptr m_triandnet(new AST::TriandNet(c_unpacked_dims, c_cont_assign, c_strength,
+                                                       c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                       p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_triandnet);
+
+    ASSERT_TRUE(yaml["TriandNet"]);
+    ASSERT_TRUE(yaml["TriandNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["TriandNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["TriandNet"]["strength"]);
+    ASSERT_TRUE(yaml["TriandNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["TriandNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["TriandNet"]["type"]);
+    ASSERT_TRUE(yaml["TriandNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriandNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriandNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, TriorNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TriorNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::TriorNet::Ptr m_triornet(new AST::TriorNet(c_unpacked_dims, c_cont_assign, c_strength,
+                                                    c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                    p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_triornet);
+
+    ASSERT_TRUE(yaml["TriorNet"]);
+    ASSERT_TRUE(yaml["TriorNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["TriorNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["TriorNet"]["strength"]);
+    ASSERT_TRUE(yaml["TriorNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["TriorNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["TriorNet"]["type"]);
+    ASSERT_TRUE(yaml["TriorNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriorNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriorNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, TriregNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TriregNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::TriregNet::Ptr m_triregnet(new AST::TriregNet(c_unpacked_dims, c_cont_assign, c_strength,
+                                                       c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                       p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_triregnet);
+
+    ASSERT_TRUE(yaml["TriregNet"]);
+    ASSERT_TRUE(yaml["TriregNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["TriregNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["TriregNet"]["strength"]);
+    ASSERT_TRUE(yaml["TriregNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["TriregNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["TriregNet"]["type"]);
+    ASSERT_TRUE(yaml["TriregNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriregNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TriregNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, WandNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.WandNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::WandNet::Ptr m_wandnet(new AST::WandNet(c_unpacked_dims, c_cont_assign, c_strength,
+                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                 p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_wandnet);
+
+    ASSERT_TRUE(yaml["WandNet"]);
+    ASSERT_TRUE(yaml["WandNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["WandNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["WandNet"]["strength"]);
+    ASSERT_TRUE(yaml["WandNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["WandNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["WandNet"]["type"]);
+    ASSERT_TRUE(yaml["WandNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["WandNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["WandNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, WorNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.WorNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::WorNet::Ptr m_wornet(new AST::WorNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay,
+                                              c_rdelay, c_type, p_is_vectored, p_is_scalared,
+                                              p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_wornet);
+
+    ASSERT_TRUE(yaml["WorNet"]);
+    ASSERT_TRUE(yaml["WorNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["WorNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["WorNet"]["strength"]);
+    ASSERT_TRUE(yaml["WorNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["WorNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["WorNet"]["type"]);
+    ASSERT_TRUE(yaml["WorNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["WorNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["WorNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, UwireNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.UwireNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::UwireNet::Ptr m_uwirenet(new AST::UwireNet(c_unpacked_dims, c_cont_assign, c_strength,
+                                                    c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                    p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_uwirenet);
+
+    ASSERT_TRUE(yaml["UwireNet"]);
+    ASSERT_TRUE(yaml["UwireNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["UwireNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["UwireNet"]["strength"]);
+    ASSERT_TRUE(yaml["UwireNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["UwireNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["UwireNet"]["type"]);
+    ASSERT_TRUE(yaml["UwireNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["UwireNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["UwireNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, Supply0Net)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Supply0Net.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::Supply0Net::Ptr m_supply0net(
+        new AST::Supply0Net(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+                            p_is_vectored, p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_supply0net);
+
+    ASSERT_TRUE(yaml["Supply0Net"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["cont_assign"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["strength"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["ldelay"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["rdelay"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["type"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Supply0Net"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Supply0Net"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, Supply1Net)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Supply1Net.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::Supply1Net::Ptr m_supply1net(
+        new AST::Supply1Net(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+                            p_is_vectored, p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_supply1net);
+
+    ASSERT_TRUE(yaml["Supply1Net"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["cont_assign"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["strength"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["ldelay"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["rdelay"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["type"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Supply1Net"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Supply1Net"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, InterconnectNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.InterconnectNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::InterconnectNet::Ptr m_interconnectnet(
+        new AST::InterconnectNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                 c_type, p_is_vectored, p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_interconnectnet);
+
+    ASSERT_TRUE(yaml["InterconnectNet"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["strength"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["type"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["InterconnectNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["InterconnectNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, UserNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.UserNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::UserNet::Ptr m_usernet(new AST::UserNet(c_unpacked_dims, c_cont_assign, c_strength,
+                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+                                                 p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_usernet);
+
+    ASSERT_TRUE(yaml["UserNet"]);
+    ASSERT_TRUE(yaml["UserNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["UserNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["UserNet"]["strength"]);
+    ASSERT_TRUE(yaml["UserNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["UserNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["UserNet"]["type"]);
+    ASSERT_TRUE(yaml["UserNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["UserNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["UserNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, ImplicitNet)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ImplicitNet.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
+    AST::Strength::Ptr c_strength(new AST::Strength);
+    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
+    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_vectored = false;
+    bool p_is_scalared = false;
+    std::string p_name = "biqpmzjpls";
+
+    AST::ImplicitNet::Ptr m_implicitnet(
+        new AST::ImplicitNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+                             p_is_vectored, p_is_scalared, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_implicitnet);
+
+    ASSERT_TRUE(yaml["ImplicitNet"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["cont_assign"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["strength"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["ldelay"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["rdelay"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["type"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["is_vectored"].as<bool>() == false);
+    ASSERT_TRUE(yaml["ImplicitNet"]["is_scalared"].as<bool>() == false);
+    ASSERT_TRUE(yaml["ImplicitNet"]["name"].as<std::string>() == "biqpmzjpls");
+}
+
+TEST(YAMLGenerator, Strength)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Strength.log");
+    Logger::add_stderr_sink();
+
+    AST::Strength::Ptr m_strength(new AST::Strength("filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_strength);
+
+    ASSERT_TRUE(yaml["Strength"]);
+}
+
+TEST(YAMLGenerator, DriveStrength)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.DriveStrength.log");
+    Logger::add_stderr_sink();
+
+    AST::DriveStrength::S0Enum p_s0 = AST::DriveStrength::S0Enum::WEAK0;
+    AST::DriveStrength::S1Enum p_s1 = AST::DriveStrength::S1Enum::WEAK1;
+
+    AST::DriveStrength::Ptr m_drivestrength(new AST::DriveStrength(p_s0, p_s1, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_drivestrength);
+
+    ASSERT_TRUE(yaml["DriveStrength"]);
+    ASSERT_TRUE(yaml["DriveStrength"]["s0"].as<AST::DriveStrength::S0Enum>() ==
+                AST::DriveStrength::S0Enum::WEAK0);
+    ASSERT_TRUE(yaml["DriveStrength"]["s1"].as<AST::DriveStrength::S1Enum>() ==
+                AST::DriveStrength::S1Enum::WEAK1);
+}
+
+TEST(YAMLGenerator, ChargeStrength)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ChargeStrength.log");
+    Logger::add_stderr_sink();
+
+    AST::ChargeStrength::ChargeEnum p_charge = AST::ChargeStrength::ChargeEnum::MEDIUM;
+
+    AST::ChargeStrength::Ptr m_chargestrength(new AST::ChargeStrength(p_charge, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_chargestrength);
+
+    ASSERT_TRUE(yaml["ChargeStrength"]);
+    ASSERT_TRUE(yaml["ChargeStrength"]["charge"].as<AST::ChargeStrength::ChargeEnum>() ==
+                AST::ChargeStrength::ChargeEnum::MEDIUM);
+}
+
+TEST(YAMLGenerator, Param)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Param.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_value(new AST::Node);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_local = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::Param::Ptr m_param(
+        new AST::Param(c_value, c_unpacked_dims, c_type, p_is_local, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_param);
+
+    ASSERT_TRUE(yaml["Param"]);
+    ASSERT_TRUE(yaml["Param"]["value"]);
+    ASSERT_TRUE(yaml["Param"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Param"]["type"]);
+    ASSERT_TRUE(yaml["Param"]["is_local"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Param"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLGenerator, TypeParam)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TypeParam.log");
+    Logger::add_stderr_sink();
+
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_local = false;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::TypeParam::Ptr m_typeparam(new AST::TypeParam(c_type, p_is_local, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_typeparam);
+
+    ASSERT_TRUE(yaml["TypeParam"]);
+    ASSERT_TRUE(yaml["TypeParam"]["type"]);
+    ASSERT_TRUE(yaml["TypeParam"]["is_local"].as<bool>() == false);
+    ASSERT_TRUE(yaml["TypeParam"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLGenerator, Typedef)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Typedef.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Typedef::Fwd_kindEnum p_fwd_kind = AST::Typedef::Fwd_kindEnum::UNION;
+    std::string p_name = "ynbiqpmzjp";
+
+    AST::Typedef::Ptr m_typedef(
+        new AST::Typedef(c_unpacked_dims, c_type, p_fwd_kind, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_typedef);
+
+    ASSERT_TRUE(yaml["Typedef"]);
+    ASSERT_TRUE(yaml["Typedef"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Typedef"]["type"]);
+    ASSERT_TRUE(yaml["Typedef"]["fwd_kind"].as<AST::Typedef::Fwd_kindEnum>() ==
+                AST::Typedef::Fwd_kindEnum::UNION);
+    ASSERT_TRUE(yaml["Typedef"]["name"].as<std::string>() == "ynbiqpmzjp");
+}
+
+TEST(YAMLGenerator, Member)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Member.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Rvalue::Ptr c_init(new AST::Rvalue);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::Member::Ptr m_member(
+        new AST::Member(c_unpacked_dims, c_init, c_type, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_member);
+
+    ASSERT_TRUE(yaml["Member"]);
+    ASSERT_TRUE(yaml["Member"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Member"]["init"]);
+    ASSERT_TRUE(yaml["Member"]["type"]);
+    ASSERT_TRUE(yaml["Member"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLGenerator, Arg)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Arg.log");
+    Logger::add_stderr_sink();
+
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
+    AST::Node::Ptr c_default_value(new AST::Node);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    bool p_is_var = false;
+    AST::Arg::DirectionEnum p_direction = AST::Arg::DirectionEnum::REF;
+    std::string p_name = "biqpmzjpls";
+
+    AST::Arg::Ptr m_arg(new AST::Arg(c_unpacked_dims, c_default_value, c_type, p_is_var,
+                                     p_direction, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_arg);
+
+    ASSERT_TRUE(yaml["Arg"]);
+    ASSERT_TRUE(yaml["Arg"]["unpacked_dims"]);
+    ASSERT_TRUE(yaml["Arg"]["default_value"]);
+    ASSERT_TRUE(yaml["Arg"]["type"]);
+    ASSERT_TRUE(yaml["Arg"]["is_var"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Arg"]["direction"].as<AST::Arg::DirectionEnum>() ==
+                AST::Arg::DirectionEnum::REF);
+    ASSERT_TRUE(yaml["Arg"]["name"].as<std::string>() == "biqpmzjpls");
 }
 
 TEST(YAMLGenerator, Genvar)
@@ -372,592 +1680,6 @@ TEST(YAMLGenerator, Genvar)
 
     ASSERT_TRUE(yaml["Genvar"]);
     ASSERT_TRUE(yaml["Genvar"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, Variable)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Variable.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::Variable::Ptr m_variable(new AST::Variable(c_lengths, c_right, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_variable);
-
-    ASSERT_TRUE(yaml["Variable"]);
-    ASSERT_TRUE(yaml["Variable"]["lengths"]);
-    ASSERT_TRUE(yaml["Variable"]["right"]);
-    ASSERT_TRUE(yaml["Variable"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, DataModifier)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.DataModifier.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::Ptr c_datatype(new AST::Node);
-    bool p_is_var = false;
-    bool p_is_const = false;
-    AST::DataModifier::LifetimeEnum p_lifetime = AST::DataModifier::LifetimeEnum::NONE;
-
-    AST::DataModifier::Ptr m_datamodifier(
-        new AST::DataModifier(c_datatype, p_is_var, p_is_const, p_lifetime, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_datamodifier);
-
-    ASSERT_TRUE(yaml["DataModifier"]);
-    ASSERT_TRUE(yaml["DataModifier"]["datatype"]);
-    ASSERT_TRUE(yaml["DataModifier"]["is_var"].as<bool>() == false);
-    ASSERT_TRUE(yaml["DataModifier"]["is_const"].as<bool>() == false);
-    ASSERT_TRUE(yaml["DataModifier"]["lifetime"].as<AST::DataModifier::LifetimeEnum>() ==
-                AST::DataModifier::LifetimeEnum::NONE);
-}
-
-TEST(YAMLGenerator, ImplicitType)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.ImplicitType.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::ImplicitType::Ptr m_implicittype(
-        new AST::ImplicitType(c_widths, c_lengths, c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_implicittype);
-
-    ASSERT_TRUE(yaml["ImplicitType"]);
-    ASSERT_TRUE(yaml["ImplicitType"]["widths"]);
-    ASSERT_TRUE(yaml["ImplicitType"]["lengths"]);
-    ASSERT_TRUE(yaml["ImplicitType"]["right"]);
-    ASSERT_TRUE(yaml["ImplicitType"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["ImplicitType"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, CustomType)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.CustomType.log");
-    Logger::add_stderr_sink();
-
-    std::string p_name = "mynbiqpmzj";
-    std::string p_package = "plsgqejeyd";
-
-    AST::CustomType::Ptr m_customtype(new AST::CustomType(p_name, p_package, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_customtype);
-
-    ASSERT_TRUE(yaml["CustomType"]);
-    ASSERT_TRUE(yaml["CustomType"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["CustomType"]["package"].as<std::string>() == "plsgqejeyd");
-}
-
-TEST(YAMLGenerator, CustomTypeVar)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.CustomTypeVar.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::CustomTypeVar::Ptr m_customtypevar(
-        new AST::CustomTypeVar(c_type, c_widths, c_lengths, c_right, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_customtypevar);
-
-    ASSERT_TRUE(yaml["CustomTypeVar"]);
-    ASSERT_TRUE(yaml["CustomTypeVar"]["type"]);
-    ASSERT_TRUE(yaml["CustomTypeVar"]["widths"]);
-    ASSERT_TRUE(yaml["CustomTypeVar"]["lengths"]);
-    ASSERT_TRUE(yaml["CustomTypeVar"]["right"]);
-    ASSERT_TRUE(yaml["CustomTypeVar"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, Net)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Net.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
-    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Net::Ptr m_net(new AST::Net(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
-                                     p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_net);
-
-    ASSERT_TRUE(yaml["Net"]);
-    ASSERT_TRUE(yaml["Net"]["widths"]);
-    ASSERT_TRUE(yaml["Net"]["ldelay"]);
-    ASSERT_TRUE(yaml["Net"]["rdelay"]);
-    ASSERT_TRUE(yaml["Net"]["type"]);
-    ASSERT_TRUE(yaml["Net"]["lengths"]);
-    ASSERT_TRUE(yaml["Net"]["right"]);
-    ASSERT_TRUE(yaml["Net"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Net"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Integer)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Integer.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::Integer::Ptr m_integer(new AST::Integer(c_lengths, c_right, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_integer);
-
-    ASSERT_TRUE(yaml["Integer"]);
-    ASSERT_TRUE(yaml["Integer"]["lengths"]);
-    ASSERT_TRUE(yaml["Integer"]["right"]);
-    ASSERT_TRUE(yaml["Integer"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, Real)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Real.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::Real::Ptr m_real(new AST::Real(c_lengths, c_right, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_real);
-
-    ASSERT_TRUE(yaml["Real"]);
-    ASSERT_TRUE(yaml["Real"]["lengths"]);
-    ASSERT_TRUE(yaml["Real"]["right"]);
-    ASSERT_TRUE(yaml["Real"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, Byte)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Byte.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Byte::Ptr m_byte(new AST::Byte(c_lengths, c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_byte);
-
-    ASSERT_TRUE(yaml["Byte"]);
-    ASSERT_TRUE(yaml["Byte"]["lengths"]);
-    ASSERT_TRUE(yaml["Byte"]["right"]);
-    ASSERT_TRUE(yaml["Byte"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Byte"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Shortint)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Shortint.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Shortint::Ptr m_shortint(
-        new AST::Shortint(c_lengths, c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_shortint);
-
-    ASSERT_TRUE(yaml["Shortint"]);
-    ASSERT_TRUE(yaml["Shortint"]["lengths"]);
-    ASSERT_TRUE(yaml["Shortint"]["right"]);
-    ASSERT_TRUE(yaml["Shortint"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Shortint"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Int)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Int.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Int::Ptr m_int(new AST::Int(c_lengths, c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_int);
-
-    ASSERT_TRUE(yaml["Int"]);
-    ASSERT_TRUE(yaml["Int"]["lengths"]);
-    ASSERT_TRUE(yaml["Int"]["right"]);
-    ASSERT_TRUE(yaml["Int"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Int"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Longint)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Longint.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Longint::Ptr m_longint(
-        new AST::Longint(c_lengths, c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_longint);
-
-    ASSERT_TRUE(yaml["Longint"]);
-    ASSERT_TRUE(yaml["Longint"]["lengths"]);
-    ASSERT_TRUE(yaml["Longint"]["right"]);
-    ASSERT_TRUE(yaml["Longint"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Longint"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Shortreal)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Shortreal.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::Shortreal::Ptr m_shortreal(new AST::Shortreal(c_lengths, c_right, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_shortreal);
-
-    ASSERT_TRUE(yaml["Shortreal"]);
-    ASSERT_TRUE(yaml["Shortreal"]["lengths"]);
-    ASSERT_TRUE(yaml["Shortreal"]["right"]);
-    ASSERT_TRUE(yaml["Shortreal"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, Realtime)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Realtime.log");
-    Logger::add_stderr_sink();
-
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::Realtime::Ptr m_realtime(new AST::Realtime(c_lengths, c_right, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_realtime);
-
-    ASSERT_TRUE(yaml["Realtime"]);
-    ASSERT_TRUE(yaml["Realtime"]["lengths"]);
-    ASSERT_TRUE(yaml["Realtime"]["right"]);
-    ASSERT_TRUE(yaml["Realtime"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, Bit)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Bit.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Bit::Ptr m_bit(new AST::Bit(c_widths, c_lengths, c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_bit);
-
-    ASSERT_TRUE(yaml["Bit"]);
-    ASSERT_TRUE(yaml["Bit"]["widths"]);
-    ASSERT_TRUE(yaml["Bit"]["lengths"]);
-    ASSERT_TRUE(yaml["Bit"]["right"]);
-    ASSERT_TRUE(yaml["Bit"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Bit"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Tri)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Tri.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
-    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Tri::Ptr m_tri(new AST::Tri(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
-                                     p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_tri);
-
-    ASSERT_TRUE(yaml["Tri"]);
-    ASSERT_TRUE(yaml["Tri"]["widths"]);
-    ASSERT_TRUE(yaml["Tri"]["ldelay"]);
-    ASSERT_TRUE(yaml["Tri"]["rdelay"]);
-    ASSERT_TRUE(yaml["Tri"]["type"]);
-    ASSERT_TRUE(yaml["Tri"]["lengths"]);
-    ASSERT_TRUE(yaml["Tri"]["right"]);
-    ASSERT_TRUE(yaml["Tri"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Tri"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Wire)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Wire.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
-    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Wire::Ptr m_wire(new AST::Wire(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
-                                        p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_wire);
-
-    ASSERT_TRUE(yaml["Wire"]);
-    ASSERT_TRUE(yaml["Wire"]["widths"]);
-    ASSERT_TRUE(yaml["Wire"]["ldelay"]);
-    ASSERT_TRUE(yaml["Wire"]["rdelay"]);
-    ASSERT_TRUE(yaml["Wire"]["type"]);
-    ASSERT_TRUE(yaml["Wire"]["lengths"]);
-    ASSERT_TRUE(yaml["Wire"]["right"]);
-    ASSERT_TRUE(yaml["Wire"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Wire"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Supply0)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Supply0.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
-    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Supply0::Ptr m_supply0(new AST::Supply0(c_widths, c_ldelay, c_rdelay, c_type, c_lengths,
-                                                 c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_supply0);
-
-    ASSERT_TRUE(yaml["Supply0"]);
-    ASSERT_TRUE(yaml["Supply0"]["widths"]);
-    ASSERT_TRUE(yaml["Supply0"]["ldelay"]);
-    ASSERT_TRUE(yaml["Supply0"]["rdelay"]);
-    ASSERT_TRUE(yaml["Supply0"]["type"]);
-    ASSERT_TRUE(yaml["Supply0"]["lengths"]);
-    ASSERT_TRUE(yaml["Supply0"]["right"]);
-    ASSERT_TRUE(yaml["Supply0"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Supply0"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Supply1)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Supply1.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
-    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Supply1::Ptr m_supply1(new AST::Supply1(c_widths, c_ldelay, c_rdelay, c_type, c_lengths,
-                                                 c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_supply1);
-
-    ASSERT_TRUE(yaml["Supply1"]);
-    ASSERT_TRUE(yaml["Supply1"]["widths"]);
-    ASSERT_TRUE(yaml["Supply1"]["ldelay"]);
-    ASSERT_TRUE(yaml["Supply1"]["rdelay"]);
-    ASSERT_TRUE(yaml["Supply1"]["type"]);
-    ASSERT_TRUE(yaml["Supply1"]["lengths"]);
-    ASSERT_TRUE(yaml["Supply1"]["right"]);
-    ASSERT_TRUE(yaml["Supply1"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Supply1"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Logic)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Logic.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
-    AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Logic::Ptr m_logic(new AST::Logic(c_widths, c_ldelay, c_rdelay, c_type, c_lengths, c_right,
-                                           p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_logic);
-
-    ASSERT_TRUE(yaml["Logic"]);
-    ASSERT_TRUE(yaml["Logic"]["widths"]);
-    ASSERT_TRUE(yaml["Logic"]["ldelay"]);
-    ASSERT_TRUE(yaml["Logic"]["rdelay"]);
-    ASSERT_TRUE(yaml["Logic"]["type"]);
-    ASSERT_TRUE(yaml["Logic"]["lengths"]);
-    ASSERT_TRUE(yaml["Logic"]["right"]);
-    ASSERT_TRUE(yaml["Logic"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Logic"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Reg)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Reg.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    bool p_sign = false;
-    std::string p_name = "ynbiqpmzjp";
-
-    AST::Reg::Ptr m_reg(new AST::Reg(c_widths, c_lengths, c_right, p_sign, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_reg);
-
-    ASSERT_TRUE(yaml["Reg"]);
-    ASSERT_TRUE(yaml["Reg"]["widths"]);
-    ASSERT_TRUE(yaml["Reg"]["lengths"]);
-    ASSERT_TRUE(yaml["Reg"]["right"]);
-    ASSERT_TRUE(yaml["Reg"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Reg"]["name"].as<std::string>() == "ynbiqpmzjp");
-}
-
-TEST(YAMLGenerator, Ioport)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Ioport.log");
-    Logger::add_stderr_sink();
-
-    AST::IODir::Ptr c_first(new AST::IODir);
-    AST::Variable::Ptr c_second(new AST::Variable);
-
-    AST::Ioport::Ptr m_ioport(new AST::Ioport(c_first, c_second, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_ioport);
-
-    ASSERT_TRUE(yaml["Ioport"]);
-    ASSERT_TRUE(yaml["Ioport"]["first"]);
-    ASSERT_TRUE(yaml["Ioport"]["second"]);
-}
-
-TEST(YAMLGenerator, Parameter)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Parameter.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::Ptr c_value(new AST::Node);
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    std::string p_name = "mynbiqpmzj";
-    bool p_sign = false;
-    AST::Parameter::TypeEnum p_type = AST::Parameter::TypeEnum::BYTE;
-
-    AST::Parameter::Ptr m_parameter(
-        new AST::Parameter(c_value, c_widths, p_name, p_sign, p_type, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_parameter);
-
-    ASSERT_TRUE(yaml["Parameter"]);
-    ASSERT_TRUE(yaml["Parameter"]["value"]);
-    ASSERT_TRUE(yaml["Parameter"]["widths"]);
-    ASSERT_TRUE(yaml["Parameter"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Parameter"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Parameter"]["type"].as<AST::Parameter::TypeEnum>() ==
-                AST::Parameter::TypeEnum::BYTE);
-}
-
-TEST(YAMLGenerator, Localparam)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Localparam.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::Ptr c_value(new AST::Node);
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    std::string p_name = "mynbiqpmzj";
-    bool p_sign = false;
-    AST::Localparam::Parameter::TypeEnum p_type = AST::Localparam::Parameter::TypeEnum::BYTE;
-
-    AST::Localparam::Ptr m_localparam(
-        new AST::Localparam(c_value, c_widths, p_name, p_sign, p_type, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_localparam);
-
-    ASSERT_TRUE(yaml["Localparam"]);
-    ASSERT_TRUE(yaml["Localparam"]["value"]);
-    ASSERT_TRUE(yaml["Localparam"]["widths"]);
-    ASSERT_TRUE(yaml["Localparam"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Localparam"]["sign"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Localparam"]["type"].as<AST::Localparam::Parameter::TypeEnum>() ==
-                AST::Localparam::Parameter::TypeEnum::BYTE);
 }
 
 TEST(YAMLGenerator, Concat)
@@ -1056,16 +1778,85 @@ TEST(YAMLGenerator, Cast)
     Logger::add_text_sink("YAMLGenerator.Cast.log");
     Logger::add_stderr_sink();
 
-    AST::Node::Ptr c_type(new AST::Node);
     AST::Node::Ptr c_expr(new AST::Node);
 
-    AST::Cast::Ptr m_cast(new AST::Cast(c_type, c_expr, "filename", 0));
+    AST::Cast::Ptr m_cast(new AST::Cast(c_expr, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_cast);
 
     ASSERT_TRUE(yaml["Cast"]);
-    ASSERT_TRUE(yaml["Cast"]["type"]);
     ASSERT_TRUE(yaml["Cast"]["expr"]);
+}
+
+TEST(YAMLGenerator, TypeCast)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.TypeCast.log");
+    Logger::add_stderr_sink();
+
+    AST::DataType::Ptr c_target(new AST::DataType);
+    AST::Node::Ptr c_expr(new AST::Node);
+
+    AST::TypeCast::Ptr m_typecast(new AST::TypeCast(c_target, c_expr, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_typecast);
+
+    ASSERT_TRUE(yaml["TypeCast"]);
+    ASSERT_TRUE(yaml["TypeCast"]["target"]);
+    ASSERT_TRUE(yaml["TypeCast"]["expr"]);
+}
+
+TEST(YAMLGenerator, SizeCast)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.SizeCast.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_size(new AST::Node);
+    AST::Node::Ptr c_expr(new AST::Node);
+
+    AST::SizeCast::Ptr m_sizecast(new AST::SizeCast(c_size, c_expr, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_sizecast);
+
+    ASSERT_TRUE(yaml["SizeCast"]);
+    ASSERT_TRUE(yaml["SizeCast"]["size"]);
+    ASSERT_TRUE(yaml["SizeCast"]["expr"]);
+}
+
+TEST(YAMLGenerator, SigningCast)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.SigningCast.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_expr(new AST::Node);
+    AST::SigningCast::SigningEnum p_signing = AST::SigningCast::SigningEnum::UNSIGNED;
+
+    AST::SigningCast::Ptr m_signingcast(new AST::SigningCast(c_expr, p_signing, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_signingcast);
+
+    ASSERT_TRUE(yaml["SigningCast"]);
+    ASSERT_TRUE(yaml["SigningCast"]["expr"]);
+    ASSERT_TRUE(yaml["SigningCast"]["signing"].as<AST::SigningCast::SigningEnum>() ==
+                AST::SigningCast::SigningEnum::UNSIGNED);
+}
+
+TEST(YAMLGenerator, ConstCast)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.ConstCast.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_expr(new AST::Node);
+
+    AST::ConstCast::Ptr m_constcast(new AST::ConstCast(c_expr, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_constcast);
+
+    ASSERT_TRUE(yaml["ConstCast"]);
+    ASSERT_TRUE(yaml["ConstCast"]["expr"]);
 }
 
 TEST(YAMLGenerator, Indirect)
@@ -2381,7 +3172,7 @@ TEST(YAMLGenerator, Instance)
     Logger::add_text_sink("YAMLGenerator.Instance.log");
     Logger::add_stderr_sink();
 
-    AST::Length::Ptr c_array(new AST::Length);
+    AST::Dimension::Ptr c_array(new AST::Dimension);
     AST::ParamArg::ListPtr c_parameterlist(new AST::ParamArg::List);
     AST::PortArg::ListPtr c_portlist(new AST::PortArg::List);
     std::string p_module = "mynbiqpmzj";
@@ -2442,31 +3233,24 @@ TEST(YAMLGenerator, Function)
     Logger::add_text_sink("YAMLGenerator.Function.log");
     Logger::add_stderr_sink();
 
-    AST::Width::ListPtr c_retwidths(new AST::Width::List);
-    AST::Node::Ptr c_rettype_ref(new AST::Node);
-    AST::Node::ListPtr c_ports(new AST::Node::List);
+    AST::DataType::Ptr c_return_type(new AST::DataType);
+    AST::Arg::ListPtr c_args(new AST::Arg::List);
     AST::Node::ListPtr c_statements(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
-    bool p_automatic = false;
-    AST::Function::RettypeEnum p_rettype = AST::Function::RettypeEnum::REAL;
-    bool p_retsign = true;
+    AST::Function::LifetimeEnum p_lifetime = AST::Function::LifetimeEnum::AUTOMATIC;
 
-    AST::Function::Ptr m_function(new AST::Function(c_retwidths, c_rettype_ref, c_ports,
-                                                    c_statements, p_name, p_automatic, p_rettype,
-                                                    p_retsign, "filename", 0));
+    AST::Function::Ptr m_function(
+        new AST::Function(c_return_type, c_args, c_statements, p_name, p_lifetime, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_function);
 
     ASSERT_TRUE(yaml["Function"]);
-    ASSERT_TRUE(yaml["Function"]["retwidths"]);
-    ASSERT_TRUE(yaml["Function"]["rettype_ref"]);
-    ASSERT_TRUE(yaml["Function"]["ports"]);
+    ASSERT_TRUE(yaml["Function"]["return_type"]);
+    ASSERT_TRUE(yaml["Function"]["args"]);
     ASSERT_TRUE(yaml["Function"]["statements"]);
     ASSERT_TRUE(yaml["Function"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Function"]["automatic"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Function"]["rettype"].as<AST::Function::RettypeEnum>() ==
-                AST::Function::RettypeEnum::REAL);
-    ASSERT_TRUE(yaml["Function"]["retsign"].as<bool>() == true);
+    ASSERT_TRUE(yaml["Function"]["lifetime"].as<AST::Function::LifetimeEnum>() ==
+                AST::Function::LifetimeEnum::AUTOMATIC);
 }
 
 TEST(YAMLGenerator, FunctionCall)
@@ -2496,20 +3280,21 @@ TEST(YAMLGenerator, Task)
     Logger::add_text_sink("YAMLGenerator.Task.log");
     Logger::add_stderr_sink();
 
-    AST::Node::ListPtr c_ports(new AST::Node::List);
+    AST::Arg::ListPtr c_args(new AST::Arg::List);
     AST::Node::ListPtr c_statements(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
-    bool p_automatic = false;
+    AST::Task::LifetimeEnum p_lifetime = AST::Task::LifetimeEnum::AUTOMATIC;
 
-    AST::Task::Ptr m_task(new AST::Task(c_ports, c_statements, p_name, p_automatic, "filename", 0));
+    AST::Task::Ptr m_task(new AST::Task(c_args, c_statements, p_name, p_lifetime, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_task);
 
     ASSERT_TRUE(yaml["Task"]);
-    ASSERT_TRUE(yaml["Task"]["ports"]);
+    ASSERT_TRUE(yaml["Task"]["args"]);
     ASSERT_TRUE(yaml["Task"]["statements"]);
     ASSERT_TRUE(yaml["Task"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Task"]["automatic"].as<bool>() == false);
+    ASSERT_TRUE(yaml["Task"]["lifetime"].as<AST::Task::LifetimeEnum>() ==
+                AST::Task::LifetimeEnum::AUTOMATIC);
 }
 
 TEST(YAMLGenerator, TaskCall)
@@ -2657,187 +3442,4 @@ TEST(YAMLGenerator, SingleStatement)
     ASSERT_TRUE(yaml["SingleStatement"]["statement"]);
     ASSERT_TRUE(yaml["SingleStatement"]["delay"]);
     ASSERT_TRUE(yaml["SingleStatement"]["scope"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, EnumItem)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.EnumItem.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::Ptr c_value(new AST::Node);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::EnumItem::Ptr m_enumitem(new AST::EnumItem(c_value, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_enumitem);
-
-    ASSERT_TRUE(yaml["EnumItem"]);
-    ASSERT_TRUE(yaml["EnumItem"]["value"]);
-    ASSERT_TRUE(yaml["EnumItem"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, EnumDef)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.EnumDef.log");
-    Logger::add_stderr_sink();
-
-    AST::Width::ListPtr c_widths(new AST::Width::List);
-    AST::EnumItem::ListPtr c_items(new AST::EnumItem::List);
-    AST::EnumDef::Base_typeEnum p_base_type = AST::EnumDef::Base_typeEnum::NONE;
-    bool p_sign = false;
-
-    AST::EnumDef::Ptr m_enumdef(
-        new AST::EnumDef(c_widths, c_items, p_base_type, p_sign, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_enumdef);
-
-    ASSERT_TRUE(yaml["EnumDef"]);
-    ASSERT_TRUE(yaml["EnumDef"]["widths"]);
-    ASSERT_TRUE(yaml["EnumDef"]["items"]);
-    ASSERT_TRUE(yaml["EnumDef"]["base_type"].as<AST::EnumDef::Base_typeEnum>() ==
-                AST::EnumDef::Base_typeEnum::NONE);
-    ASSERT_TRUE(yaml["EnumDef"]["sign"].as<bool>() == false);
-}
-
-TEST(YAMLGenerator, Typedef)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Typedef.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::Ptr c_def(new AST::Node);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::Typedef::Ptr m_typedef(new AST::Typedef(c_def, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_typedef);
-
-    ASSERT_TRUE(yaml["Typedef"]);
-    ASSERT_TRUE(yaml["Typedef"]["def"]);
-    ASSERT_TRUE(yaml["Typedef"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, StructMember)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.StructMember.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::Ptr c_type(new AST::Node);
-    AST::Length::ListPtr c_lengths(new AST::Length::List);
-    AST::Rvalue::Ptr c_right(new AST::Rvalue);
-    std::string p_name = "mynbiqpmzj";
-
-    AST::StructMember::Ptr m_structmember(
-        new AST::StructMember(c_type, c_lengths, c_right, p_name, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_structmember);
-
-    ASSERT_TRUE(yaml["StructMember"]);
-    ASSERT_TRUE(yaml["StructMember"]["type"]);
-    ASSERT_TRUE(yaml["StructMember"]["lengths"]);
-    ASSERT_TRUE(yaml["StructMember"]["right"]);
-    ASSERT_TRUE(yaml["StructMember"]["name"].as<std::string>() == "mynbiqpmzj");
-}
-
-TEST(YAMLGenerator, StructUnionDef)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.StructUnionDef.log");
-    Logger::add_stderr_sink();
-
-    AST::StructMember::ListPtr c_members(new AST::StructMember::List);
-    bool p_packed = false;
-    bool p_sign = false;
-
-    AST::StructUnionDef::Ptr m_structuniondef(
-        new AST::StructUnionDef(c_members, p_packed, p_sign, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_structuniondef);
-
-    ASSERT_TRUE(yaml["StructUnionDef"]);
-    ASSERT_TRUE(yaml["StructUnionDef"]["members"]);
-    ASSERT_TRUE(yaml["StructUnionDef"]["packed"].as<bool>() == false);
-    ASSERT_TRUE(yaml["StructUnionDef"]["sign"].as<bool>() == false);
-}
-
-TEST(YAMLGenerator, StructDef)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.StructDef.log");
-    Logger::add_stderr_sink();
-
-    AST::StructMember::ListPtr c_members(new AST::StructMember::List);
-    bool p_packed = false;
-    bool p_sign = false;
-
-    AST::StructDef::Ptr m_structdef(new AST::StructDef(c_members, p_packed, p_sign, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_structdef);
-
-    ASSERT_TRUE(yaml["StructDef"]);
-    ASSERT_TRUE(yaml["StructDef"]["members"]);
-    ASSERT_TRUE(yaml["StructDef"]["packed"].as<bool>() == false);
-    ASSERT_TRUE(yaml["StructDef"]["sign"].as<bool>() == false);
-}
-
-TEST(YAMLGenerator, Union)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Union.log");
-    Logger::add_stderr_sink();
-
-    AST::StructMember::ListPtr c_members(new AST::StructMember::List);
-    bool p_packed = false;
-    bool p_sign = false;
-
-    AST::Union::Ptr m_union(new AST::Union(c_members, p_packed, p_sign, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_union);
-
-    ASSERT_TRUE(yaml["Union"]);
-    ASSERT_TRUE(yaml["Union"]["members"]);
-    ASSERT_TRUE(yaml["Union"]["packed"].as<bool>() == false);
-    ASSERT_TRUE(yaml["Union"]["sign"].as<bool>() == false);
-}
-
-TEST(YAMLGenerator, Package)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Package.log");
-    Logger::add_stderr_sink();
-
-    AST::Node::ListPtr c_items(new AST::Node::List);
-    std::string p_name = "mynbiqpmzj";
-    AST::Package::LifetimeEnum p_lifetime = AST::Package::LifetimeEnum::AUTOMATIC;
-
-    AST::Package::Ptr m_package(new AST::Package(c_items, p_name, p_lifetime, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_package);
-
-    ASSERT_TRUE(yaml["Package"]);
-    ASSERT_TRUE(yaml["Package"]["items"]);
-    ASSERT_TRUE(yaml["Package"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Package"]["lifetime"].as<AST::Package::LifetimeEnum>() ==
-                AST::Package::LifetimeEnum::AUTOMATIC);
-}
-
-TEST(YAMLGenerator, Import)
-{
-    Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.Import.log");
-    Logger::add_stderr_sink();
-
-    std::string p_package = "mynbiqpmzj";
-    std::string p_symbol = "plsgqejeyd";
-
-    AST::Import::Ptr m_import(new AST::Import(p_package, p_symbol, "filename", 0));
-
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_import);
-
-    ASSERT_TRUE(yaml["Import"]);
-    ASSERT_TRUE(yaml["Import"]["package"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
 }

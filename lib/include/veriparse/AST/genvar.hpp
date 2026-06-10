@@ -4,7 +4,6 @@
 #define VERIPARSE_AST_GENVAR_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/variablebase.hpp>
 
 #include <list>
 #include <string>
@@ -18,15 +17,15 @@ namespace Veriparse
 namespace AST
 {
 
-class Genvar : public VariableBase
+class Genvar : public Node
 {
 public:
     using Ptr = typename NodePointers<Genvar>::Ptr;
     using List = typename NodePointers<Genvar>::List;
     using ListPtr = typename NodePointers<Genvar>::ListPtr;
-    using VariableBase::operator=;
-    using VariableBase::operator==;
-    using VariableBase::operator!=;
+    using Node::operator=;
+    using Node::operator==;
+    using Node::operator!=;
 
     /**
      * Constructor, m_node_type is set to NodeType::Genvar.
@@ -84,6 +83,16 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
+     * Return the property name.
+     */
+    virtual const std::string &get_name(void) const { return m_name; }
+
+    /**
+     * Change the property name.
+     */
+    virtual void set_name(const std::string &name) { m_name = name; }
+
+    /**
      * Return the children list using the private children member
      * pointers.
      */
@@ -106,6 +115,8 @@ private:
      * Allocate a new node with the same node type than the current instance.
      */
     virtual Node::Ptr alloc_same(void) const override;
+
+    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Genvar &p);

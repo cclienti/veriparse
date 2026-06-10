@@ -4,6 +4,7 @@
 #define VERIPARSE_AST_TASK_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/arg.hpp>
 
 #include <list>
 #include <string>
@@ -27,6 +28,13 @@ public:
     using Node::operator==;
     using Node::operator!=;
 
+    enum class LifetimeEnum
+    {
+        NONE,
+        AUTOMATIC,
+        STATIC
+    };
+
     /**
      * Constructor, m_node_type is set to NodeType::Task.
      */
@@ -35,8 +43,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Task.
      */
-    Task(const Node::ListPtr ports, const Node::ListPtr statements, const std::string &name,
-         const bool &automatic, const std::string &filename = "", uint32_t line = 0);
+    Task(const Arg::ListPtr args, const Node::ListPtr statements, const std::string &name,
+         const LifetimeEnum &lifetime, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -84,9 +92,9 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child ports.
+     * Return the child args.
      */
-    virtual Node::ListPtr get_ports(void) const { return m_ports; }
+    virtual Arg::ListPtr get_args(void) const { return m_args; }
 
     /**
      * Return the child statements.
@@ -94,9 +102,9 @@ public:
     virtual Node::ListPtr get_statements(void) const { return m_statements; }
 
     /**
-     * Change the child ports.
+     * Change the child args.
      */
-    virtual void set_ports(Node::ListPtr ports) { m_ports = ports; }
+    virtual void set_args(Arg::ListPtr args) { m_args = args; }
 
     /**
      * Change the child statements.
@@ -109,9 +117,9 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
-     * Return the property automatic.
+     * Return the property lifetime.
      */
-    virtual const bool &get_automatic(void) const { return m_automatic; }
+    virtual const LifetimeEnum &get_lifetime(void) const { return m_lifetime; }
 
     /**
      * Change the property name.
@@ -119,9 +127,9 @@ public:
     virtual void set_name(const std::string &name) { m_name = name; }
 
     /**
-     * Change the property automatic.
+     * Change the property lifetime.
      */
-    virtual void set_automatic(const bool &automatic) { m_automatic = automatic; }
+    virtual void set_lifetime(const LifetimeEnum &lifetime) { m_lifetime = lifetime; }
 
     /**
      * Return the children list using the private children member
@@ -147,14 +155,16 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::ListPtr m_ports{};
+    Arg::ListPtr m_args{};
     Node::ListPtr m_statements{};
     std::string m_name{};
-    bool m_automatic{};
+    LifetimeEnum m_lifetime{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Task &p);
 std::ostream &operator<<(std::ostream &os, const Task::Ptr p);
+
+std::ostream &operator<<(std::ostream &os, const Task::LifetimeEnum p);
 
 } // namespace AST
 } // namespace Veriparse

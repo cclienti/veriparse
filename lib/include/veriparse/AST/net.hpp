@@ -4,12 +4,13 @@
 #define VERIPARSE_AST_NET_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/variable.hpp>
+#include <veriparse/AST/declaration.hpp>
 
+#include <veriparse/AST/datatype.hpp>
 #include <veriparse/AST/delaystatement.hpp>
-#include <veriparse/AST/length.hpp>
+#include <veriparse/AST/dimension.hpp>
 #include <veriparse/AST/rvalue.hpp>
-#include <veriparse/AST/width.hpp>
+#include <veriparse/AST/strength.hpp>
 
 #include <list>
 #include <string>
@@ -23,15 +24,15 @@ namespace Veriparse
 namespace AST
 {
 
-class Net : public Variable
+class Net : public Declaration
 {
 public:
     using Ptr = typename NodePointers<Net>::Ptr;
     using List = typename NodePointers<Net>::List;
     using ListPtr = typename NodePointers<Net>::ListPtr;
-    using Variable::operator=;
-    using Variable::operator==;
-    using Variable::operator!=;
+    using Declaration::operator=;
+    using Declaration::operator==;
+    using Declaration::operator!=;
 
     /**
      * Constructor, m_node_type is set to NodeType::Net.
@@ -41,10 +42,11 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Net.
      */
-    Net(const Width::ListPtr widths, const DelayStatement::Ptr ldelay,
-        const DelayStatement::Ptr rdelay, const Node::Ptr type, const Length::ListPtr lengths,
-        const Rvalue::Ptr right, const bool &sign, const std::string &name,
-        const std::string &filename = "", uint32_t line = 0);
+    Net(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr cont_assign,
+        const Strength::Ptr strength, const DelayStatement::Ptr ldelay,
+        const DelayStatement::Ptr rdelay, const DataType::Ptr type, const bool &is_vectored,
+        const bool &is_scalared, const std::string &name, const std::string &filename = "",
+        uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -92,9 +94,19 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child widths.
+     * Return the child unpacked_dims.
      */
-    virtual Width::ListPtr get_widths(void) const { return m_widths; }
+    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
+
+    /**
+     * Return the child cont_assign.
+     */
+    virtual Rvalue::Ptr get_cont_assign(void) const { return m_cont_assign; }
+
+    /**
+     * Return the child strength.
+     */
+    virtual Strength::Ptr get_strength(void) const { return m_strength; }
 
     /**
      * Return the child ldelay.
@@ -107,14 +119,22 @@ public:
     virtual DelayStatement::Ptr get_rdelay(void) const { return m_rdelay; }
 
     /**
-     * Return the child type.
+     * Change the child unpacked_dims.
      */
-    virtual Node::Ptr get_type(void) const { return m_type; }
+    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
+    {
+        m_unpacked_dims = unpacked_dims;
+    }
 
     /**
-     * Change the child widths.
+     * Change the child cont_assign.
      */
-    virtual void set_widths(Width::ListPtr widths) { m_widths = widths; }
+    virtual void set_cont_assign(Rvalue::Ptr cont_assign) { m_cont_assign = cont_assign; }
+
+    /**
+     * Change the child strength.
+     */
+    virtual void set_strength(Strength::Ptr strength) { m_strength = strength; }
 
     /**
      * Change the child ldelay.
@@ -127,19 +147,24 @@ public:
     virtual void set_rdelay(DelayStatement::Ptr rdelay) { m_rdelay = rdelay; }
 
     /**
-     * Change the child type.
+     * Return the property is_vectored.
      */
-    virtual void set_type(Node::Ptr type) { m_type = type; }
+    virtual const bool &get_is_vectored(void) const { return m_is_vectored; }
 
     /**
-     * Return the property sign.
+     * Return the property is_scalared.
      */
-    virtual const bool &get_sign(void) const { return m_sign; }
+    virtual const bool &get_is_scalared(void) const { return m_is_scalared; }
 
     /**
-     * Change the property sign.
+     * Change the property is_vectored.
      */
-    virtual void set_sign(const bool &sign) { m_sign = sign; }
+    virtual void set_is_vectored(const bool &is_vectored) { m_is_vectored = is_vectored; }
+
+    /**
+     * Change the property is_scalared.
+     */
+    virtual void set_is_scalared(const bool &is_scalared) { m_is_scalared = is_scalared; }
 
     /**
      * Return the children list using the private children member
@@ -165,11 +190,13 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_widths{};
+    Dimension::ListPtr m_unpacked_dims{};
+    Rvalue::Ptr m_cont_assign{};
+    Strength::Ptr m_strength{};
     DelayStatement::Ptr m_ldelay{};
     DelayStatement::Ptr m_rdelay{};
-    Node::Ptr m_type{};
-    bool m_sign{};
+    bool m_is_vectored{};
+    bool m_is_scalared{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Net &p);

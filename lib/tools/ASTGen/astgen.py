@@ -405,11 +405,12 @@ def retrieve_properties_info(properties, p_dict, p_enum_dict, class_name=None):
         for pname, ptype in properties.items():
             ptype = "".join(ptype.split())
             if ptype[0:5] == "enum(" and ptype[-1] == ")":
-                if class_name is None:
-                    class_name = ""
-                else:
-                    class_name += "::"
-                enum_name = "{}{}Enum".format(class_name, pname.capitalize())
+                # Compute the prefix freshly each iteration: mutating class_name
+                # here used to leak a "::" onto every enum after the first own
+                # enum of a node (e.g. a node with two own enums got the second
+                # named "::FooEnum").
+                prefix = "" if class_name is None else class_name + "::"
+                enum_name = "{}{}Enum".format(prefix, pname.capitalize())
                 enum_list = ptype[5:-1].split(",")
                 p_dict[pname] = enum_name
                 p_enum_dict[enum_name] = [e.upper() for e in enum_list]

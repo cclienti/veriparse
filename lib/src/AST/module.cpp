@@ -16,12 +16,12 @@ Module::Module(const std::string &filename, uint32_t line) : Node(filename, line
     set_node_categories({NodeType::Node});
 }
 
-Module::Module(const Parameter::ListPtr params, const Node::ListPtr ports,
-               const Node::ListPtr items, const std::string &name,
+Module::Module(const Declaration::ListPtr params, const Port::ListPtr ports,
+               const Node::ListPtr items, const std::string &name, const LifetimeEnum &lifetime,
                const Default_nettypeEnum &default_nettype, const std::string &filename,
                uint32_t line)
     : Node(filename, line), m_params(params), m_ports(ports), m_items(items), m_name(name),
-      m_default_nettype(default_nettype)
+      m_lifetime(lifetime), m_default_nettype(default_nettype)
 {
     set_node_type(NodeType::Module);
     set_node_categories({NodeType::Node});
@@ -31,6 +31,7 @@ Module &Module::operator=(const Module &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
     set_name(rhs.get_name());
+    set_lifetime(rhs.get_lifetime());
     set_default_nettype(rhs.get_default_nettype());
     return *this;
 }
@@ -47,6 +48,9 @@ bool Module::operator==(const Module &rhs) const
         return false;
     }
     if(get_name() != rhs.get_name()) {
+        return false;
+    }
+    if(get_lifetime() != rhs.get_lifetime()) {
         return false;
     }
     if(get_default_nettype() != rhs.get_default_nettype()) {
@@ -71,8 +75,8 @@ bool Module::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
     if(get_params()) {
-        Parameter::ListPtr new_list = std::make_shared<Parameter::List>();
-        for(const Parameter::Ptr &lnode : *get_params()) {
+        Declaration::ListPtr new_list = std::make_shared<Declaration::List>();
+        for(const Declaration::Ptr &lnode : *get_params()) {
             if(lnode) {
                 if(lnode != node) {
                     new_list->push_back(lnode);
@@ -80,17 +84,17 @@ bool Module::replace(Node::Ptr node, Node::Ptr new_node)
                     if(found) {
                         LOG_WARNING
                             << *this << ", "
-                            << "Module::replace matches multiple times (list(Parameter)::params)";
+                            << "Module::replace matches multiple times (list(Declaration)::params)";
                     }
                     if(new_node) {
-                        new_list->push_back(cast_to<Parameter>(new_node));
+                        new_list->push_back(cast_to<Declaration>(new_node));
                     }
                     found = true;
                 }
             } else {
                 LOG_WARNING << *this << ", "
                             << "found an empty node during Module::replace "
-                            << "of children list(Parameter)::params";
+                            << "of children list(Declaration)::params";
             }
         }
         if(new_list->size() != 0) {
@@ -100,25 +104,25 @@ bool Module::replace(Node::Ptr node, Node::Ptr new_node)
         }
     }
     if(get_ports()) {
-        Node::ListPtr new_list = std::make_shared<Node::List>();
-        for(const Node::Ptr &lnode : *get_ports()) {
+        Port::ListPtr new_list = std::make_shared<Port::List>();
+        for(const Port::Ptr &lnode : *get_ports()) {
             if(lnode) {
                 if(lnode != node) {
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
                         LOG_WARNING << *this << ", "
-                                    << "Module::replace matches multiple times (list(Node)::ports)";
+                                    << "Module::replace matches multiple times (list(Port)::ports)";
                     }
                     if(new_node) {
-                        new_list->push_back(new_node);
+                        new_list->push_back(cast_to<Port>(new_node));
                     }
                     found = true;
                 }
             } else {
                 LOG_WARNING << *this << ", "
                             << "found an empty node during Module::replace "
-                            << "of children list(Node)::ports";
+                            << "of children list(Port)::ports";
             }
         }
         if(new_list->size() != 0) {
@@ -162,8 +166,8 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
     if(get_params()) {
-        Parameter::ListPtr new_list = std::make_shared<Parameter::List>();
-        for(const Parameter::Ptr &lnode : *get_params()) {
+        Declaration::ListPtr new_list = std::make_shared<Declaration::List>();
+        for(const Declaration::Ptr &lnode : *get_params()) {
             if(lnode) {
                 if(lnode != node) {
                     new_list->push_back(lnode);
@@ -171,11 +175,11 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes)
                     if(found) {
                         LOG_WARNING
                             << *this << ", "
-                            << "Module::replace matches multiple times (list(Parameter)::params)";
+                            << "Module::replace matches multiple times (list(Declaration)::params)";
                     }
                     if(new_nodes) {
                         for(const Node::Ptr &n : *new_nodes) {
-                            new_list->push_back(cast_to<Parameter>(n));
+                            new_list->push_back(cast_to<Declaration>(n));
                         }
                     }
                     found = true;
@@ -183,7 +187,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes)
             } else {
                 LOG_WARNING << *this << ", "
                             << "found an empty node during Module::replace "
-                            << "of children list(Parameter)::params";
+                            << "of children list(Declaration)::params";
             }
         }
         if(new_list->size() != 0) {
@@ -193,19 +197,19 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes)
         }
     }
     if(get_ports()) {
-        Node::ListPtr new_list = std::make_shared<Node::List>();
-        for(const Node::Ptr &lnode : *get_ports()) {
+        Port::ListPtr new_list = std::make_shared<Port::List>();
+        for(const Port::Ptr &lnode : *get_ports()) {
             if(lnode) {
                 if(lnode != node) {
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
                         LOG_WARNING << *this << ", "
-                                    << "Module::replace matches multiple times (list(Node)::ports)";
+                                    << "Module::replace matches multiple times (list(Port)::ports)";
                     }
                     if(new_nodes) {
                         for(const Node::Ptr &n : *new_nodes) {
-                            new_list->push_back(n);
+                            new_list->push_back(cast_to<Port>(n));
                         }
                     }
                     found = true;
@@ -213,7 +217,7 @@ bool Module::replace(Node::Ptr node, Node::ListPtr new_nodes)
             } else {
                 LOG_WARNING << *this << ", "
                             << "found an empty node during Module::replace "
-                            << "of children list(Node)::ports";
+                            << "of children list(Port)::ports";
             }
         }
         if(new_list->size() != 0) {
@@ -271,14 +275,14 @@ Node::ListPtr Module::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
     if(get_params()) {
-        for(const Parameter::Ptr &node : *get_params()) {
+        for(const Declaration::Ptr &node : *get_params()) {
             if(node) {
                 list->push_back(std::static_pointer_cast<Node>(node));
             }
         }
     }
     if(get_ports()) {
-        for(const Node::Ptr &node : *get_ports()) {
+        for(const Port::Ptr &node : *get_ports()) {
             if(node) {
                 list->push_back(std::static_pointer_cast<Node>(node));
             }
@@ -296,8 +300,8 @@ Node::ListPtr Module::get_children(void) const
 
 void Module::clone_children(Node::Ptr new_node) const
 {
-    cast_to<Module>(new_node)->set_params(Parameter::clone_list(get_params()));
-    cast_to<Module>(new_node)->set_ports(Node::clone_list(get_ports()));
+    cast_to<Module>(new_node)->set_params(Declaration::clone_list(get_params()));
+    cast_to<Module>(new_node)->set_ports(Port::clone_list(get_ports()));
     cast_to<Module>(new_node)->set_items(Node::clone_list(get_items()));
 }
 
@@ -321,6 +325,8 @@ std::ostream &operator<<(std::ostream &os, const Module &p)
 
     os << "name: " << p.get_name() << ", ";
 
+    os << "lifetime: " << p.get_lifetime() << ", ";
+
     os << "default_nettype: " << p.get_default_nettype();
     os << "}";
     return os;
@@ -337,23 +343,56 @@ std::ostream &operator<<(std::ostream &os, const Module::Ptr p)
     return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const Module::LifetimeEnum p)
+{
+    switch(p) {
+    case Module::LifetimeEnum::NONE:
+        os << "NONE";
+        break;
+    case Module::LifetimeEnum::AUTOMATIC:
+        os << "AUTOMATIC";
+        break;
+    case Module::LifetimeEnum::STATIC:
+        os << "STATIC";
+        break;
+    default:
+        break;
+    }
+    return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const Module::Default_nettypeEnum p)
 {
     switch(p) {
-    case Module::Default_nettypeEnum::INTEGER:
-        os << "INTEGER";
-        break;
-    case Module::Default_nettypeEnum::REAL:
-        os << "REAL";
-        break;
-    case Module::Default_nettypeEnum::REG:
-        os << "REG";
+    case Module::Default_nettypeEnum::WIRE:
+        os << "WIRE";
         break;
     case Module::Default_nettypeEnum::TRI:
         os << "TRI";
         break;
-    case Module::Default_nettypeEnum::WIRE:
-        os << "WIRE";
+    case Module::Default_nettypeEnum::TRI0:
+        os << "TRI0";
+        break;
+    case Module::Default_nettypeEnum::TRI1:
+        os << "TRI1";
+        break;
+    case Module::Default_nettypeEnum::TRIAND:
+        os << "TRIAND";
+        break;
+    case Module::Default_nettypeEnum::TRIOR:
+        os << "TRIOR";
+        break;
+    case Module::Default_nettypeEnum::TRIREG:
+        os << "TRIREG";
+        break;
+    case Module::Default_nettypeEnum::WAND:
+        os << "WAND";
+        break;
+    case Module::Default_nettypeEnum::WOR:
+        os << "WOR";
+        break;
+    case Module::Default_nettypeEnum::UWIRE:
+        os << "UWIRE";
         break;
     case Module::Default_nettypeEnum::SUPPLY0:
         os << "SUPPLY0";

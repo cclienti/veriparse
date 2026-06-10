@@ -4,7 +4,7 @@
 #define VERIPARSE_AST_PORT_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/width.hpp>
+#include <veriparse/AST/declaration.hpp>
 
 #include <list>
 #include <string>
@@ -28,6 +28,16 @@ public:
     using Node::operator==;
     using Node::operator!=;
 
+    enum class DirectionEnum
+    {
+        NONE,
+        INPUT,
+        OUTPUT,
+        INOUT,
+        REF,
+        CONST_REF
+    };
+
     /**
      * Constructor, m_node_type is set to NodeType::Port.
      */
@@ -36,8 +46,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Port.
      */
-    Port(const Width::ListPtr widths, const std::string &name, const std::string &filename = "",
-         uint32_t line = 0);
+    Port(const Declaration::Ptr decl, const Node::Ptr expr, const std::string &name,
+         const DirectionEnum &direction, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -85,14 +95,24 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child widths.
+     * Return the child decl.
      */
-    virtual Width::ListPtr get_widths(void) const { return m_widths; }
+    virtual Declaration::Ptr get_decl(void) const { return m_decl; }
 
     /**
-     * Change the child widths.
+     * Return the child expr.
      */
-    virtual void set_widths(Width::ListPtr widths) { m_widths = widths; }
+    virtual Node::Ptr get_expr(void) const { return m_expr; }
+
+    /**
+     * Change the child decl.
+     */
+    virtual void set_decl(Declaration::Ptr decl) { m_decl = decl; }
+
+    /**
+     * Change the child expr.
+     */
+    virtual void set_expr(Node::Ptr expr) { m_expr = expr; }
 
     /**
      * Return the property name.
@@ -100,9 +120,19 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
+     * Return the property direction.
+     */
+    virtual const DirectionEnum &get_direction(void) const { return m_direction; }
+
+    /**
      * Change the property name.
      */
     virtual void set_name(const std::string &name) { m_name = name; }
+
+    /**
+     * Change the property direction.
+     */
+    virtual void set_direction(const DirectionEnum &direction) { m_direction = direction; }
 
     /**
      * Return the children list using the private children member
@@ -128,12 +158,16 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Width::ListPtr m_widths{};
+    Declaration::Ptr m_decl{};
+    Node::Ptr m_expr{};
     std::string m_name{};
+    DirectionEnum m_direction{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Port &p);
 std::ostream &operator<<(std::ostream &os, const Port::Ptr p);
+
+std::ostream &operator<<(std::ostream &os, const Port::DirectionEnum p);
 
 } // namespace AST
 } // namespace Veriparse

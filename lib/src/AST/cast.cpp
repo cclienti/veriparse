@@ -16,8 +16,8 @@ Cast::Cast(const std::string &filename, uint32_t line) : Node(filename, line)
     set_node_categories({NodeType::Node});
 }
 
-Cast::Cast(const Node::Ptr type, const Node::Ptr expr, const std::string &filename, uint32_t line)
-    : Node(filename, line), m_type(type), m_expr(expr)
+Cast::Cast(const Node::Ptr expr, const std::string &filename, uint32_t line)
+    : Node(filename, line), m_expr(expr)
 {
     set_node_type(NodeType::Cast);
     set_node_categories({NodeType::Node});
@@ -58,16 +58,6 @@ bool Cast::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)
 bool Cast::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
-    if(get_type()) {
-        if(get_type() == node) {
-            if(found) {
-                LOG_WARNING << *this << ", "
-                            << "Cast::replace matches multiple times (Node::type)";
-            }
-            set_type(new_node);
-            found = true;
-        }
-    }
     if(get_expr()) {
         if(get_expr() == node) {
             if(found) {
@@ -102,9 +92,6 @@ Cast::ListPtr Cast::clone_list(const ListPtr nodes)
 Node::ListPtr Cast::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
-    if(get_type()) {
-        list->push_back(std::static_pointer_cast<Node>(get_type()));
-    }
     if(get_expr()) {
         list->push_back(std::static_pointer_cast<Node>(get_expr()));
     }
@@ -113,9 +100,6 @@ Node::ListPtr Cast::get_children(void) const
 
 void Cast::clone_children(Node::Ptr new_node) const
 {
-    if(get_type()) {
-        cast_to<Cast>(new_node)->set_type(get_type()->clone());
-    }
     if(get_expr()) {
         cast_to<Cast>(new_node)->set_expr(get_expr()->clone());
     }

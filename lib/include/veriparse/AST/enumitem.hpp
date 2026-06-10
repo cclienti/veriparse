@@ -4,6 +4,7 @@
 #define VERIPARSE_AST_ENUMITEM_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/dimension.hpp>
 
 #include <list>
 #include <string>
@@ -35,8 +36,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::EnumItem.
      */
-    EnumItem(const Node::Ptr value, const std::string &name, const std::string &filename = "",
-             uint32_t line = 0);
+    EnumItem(const Node::Ptr value, const Dimension::Ptr range, const std::string &name,
+             const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -89,9 +90,19 @@ public:
     virtual Node::Ptr get_value(void) const { return m_value; }
 
     /**
+     * Return the child range.
+     */
+    virtual Dimension::Ptr get_range(void) const { return m_range; }
+
+    /**
      * Change the child value.
      */
     virtual void set_value(Node::Ptr value) { m_value = value; }
+
+    /**
+     * Change the child range.
+     */
+    virtual void set_range(Dimension::Ptr range) { m_range = range; }
 
     /**
      * Return the property name.
@@ -128,6 +139,7 @@ private:
     virtual Node::Ptr alloc_same(void) const override;
 
     Node::Ptr m_value{};
+    Dimension::Ptr m_range{};
     std::string m_name{};
 };
 
