@@ -3,11 +3,11 @@ Source:
     Description:
       definitions:
       - Package:
-          filename: lib/test/parser/testcases/sv_package_empty0.sv
+          filename: ../../test/parser/testcases/sv_package_empty0.sv
           lifetime: NONE
           line: 1
           name: sv_package_empty0
-      filename: lib/test/parser/testcases/sv_package_empty0.sv
+      filename: ../../test/parser/testcases/sv_package_empty0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_package_empty0.sv
+  filename: ../../test/parser/testcases/sv_package_empty0.sv
   line: 1

@@ -15,18 +15,34 @@ Source:
                   line: 3
                   scope: ''
                   statements:
-                  - Integer:
+                  - Var:
                       filename: ../../test/parser/testcases/disable0.v
+                      init:
+                        Rvalue: null
+                      is_const: false
+                      is_var: false
+                      lifetime: NONE
                       line: 4
                       name: i
-                      right:
-                        Rvalue: null
-                  - Integer:
+                      type:
+                        IntegerType:
+                          filename: ../../test/parser/testcases/disable0.v
+                          line: 4
+                          signing: NONE
+                  - Var:
                       filename: ../../test/parser/testcases/disable0.v
+                      init:
+                        Rvalue: null
+                      is_const: false
+                      is_var: false
+                      lifetime: NONE
                       line: 4
                       name: j
-                      right:
-                        Rvalue: null
+                      type:
+                        IntegerType:
+                          filename: ../../test/parser/testcases/disable0.v
+                          line: 4
+                          signing: NONE
                   - ForStatement:
                       cond:
                         LessThan:
@@ -34,10 +50,10 @@ Source:
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/disable0.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: i
-                              scope:
-                                IdentifierScope: null
                           line: 6
                           right:
                             IntConstN:
@@ -61,10 +77,10 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/disable0.v
+                                  hier:
+                                    HierName: null
                                   line: 6
                                   name: i
-                                  scope:
-                                    IdentifierScope: null
                           line: 6
                           rdelay:
                             DelayStatement: null
@@ -78,10 +94,10 @@ Source:
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/disable0.v
+                                      hier:
+                                        HierName: null
                                       line: 6
                                       name: i
-                                      scope:
-                                        IdentifierScope: null
                                   line: 6
                                   right:
                                     IntConstN:
@@ -103,10 +119,10 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/disable0.v
+                                  hier:
+                                    HierName: null
                                   line: 6
                                   name: i
-                                  scope:
-                                    IdentifierScope: null
                           line: 6
                           rdelay:
                             DelayStatement: null
@@ -135,10 +151,10 @@ Source:
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/disable0.v
+                                      hier:
+                                        HierName: null
                                       line: 7
                                       name: j
-                                      scope:
-                                        IdentifierScope: null
                                   line: 7
                                   right:
                                     IntConstN:
@@ -162,10 +178,10 @@ Source:
                                       var:
                                         Identifier:
                                           filename: ../../test/parser/testcases/disable0.v
+                                          hier:
+                                            HierName: null
                                           line: 7
                                           name: j
-                                          scope:
-                                            IdentifierScope: null
                                   line: 7
                                   rdelay:
                                     DelayStatement: null
@@ -179,10 +195,10 @@ Source:
                                           left:
                                             Identifier:
                                               filename: ../../test/parser/testcases/disable0.v
+                                              hier:
+                                                HierName: null
                                               line: 7
                                               name: j
-                                              scope:
-                                                IdentifierScope: null
                                           line: 7
                                           right:
                                             IntConstN:
@@ -204,10 +220,10 @@ Source:
                                       var:
                                         Identifier:
                                           filename: ../../test/parser/testcases/disable0.v
+                                          hier:
+                                            HierName: null
                                           line: 7
                                           name: j
-                                          scope:
-                                            IdentifierScope: null
                                   line: 7
                                   rdelay:
                                     DelayStatement: null
@@ -244,16 +260,16 @@ Source:
                                               value: (i, j) = (%d, %d)
                                           - Identifier:
                                               filename: ../../test/parser/testcases/disable0.v
+                                              hier:
+                                                HierName: null
                                               line: 8
                                               name: i
-                                              scope:
-                                                IdentifierScope: null
                                           - Identifier:
                                               filename: ../../test/parser/testcases/disable0.v
+                                              hier:
+                                                HierName: null
                                               line: 8
                                               name: j
-                                              scope:
-                                                IdentifierScope: null
                                           filename: ../../test/parser/testcases/disable0.v
                                           line: 8
                                           syscall: display
@@ -264,10 +280,10 @@ Source:
                                           left:
                                             Identifier:
                                               filename: ../../test/parser/testcases/disable0.v
+                                              hier:
+                                                HierName: null
                                               line: 9
                                               name: i
-                                              scope:
-                                                IdentifierScope: null
                                           line: 9
                                           right:
                                             IntConstN:
@@ -289,7 +305,13 @@ Source:
                                           scope: ''
                                           statement:
                                             Disable:
-                                              dest: OUTER
+                                              dest:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/disable0.v
+                                                  hier:
+                                                    HierName: null
+                                                  line: 9
+                                                  name: OUTER
                                               filename: ../../test/parser/testcases/disable0.v
                                               line: 9
                                   - IfStatement:
@@ -299,10 +321,10 @@ Source:
                                           left:
                                             Identifier:
                                               filename: ../../test/parser/testcases/disable0.v
+                                              hier:
+                                                HierName: null
                                               line: 10
                                               name: j
-                                              scope:
-                                                IdentifierScope: null
                                           line: 10
                                           right:
                                             IntConstN:
@@ -324,13 +346,19 @@ Source:
                                           scope: ''
                                           statement:
                                             Disable:
-                                              dest: INNER
+                                              dest:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/disable0.v
+                                                  hier:
+                                                    HierName: null
+                                                  line: 10
+                                                  name: INNER
                                               filename: ../../test/parser/testcases/disable0.v
                                               line: 10
+          lifetime: NONE
           line: 1
           name: disable0
       filename: ../../test/parser/testcases/disable0.v
       line: 1
   filename: ../../test/parser/testcases/disable0.v
   line: 1
-

@@ -4,216 +4,189 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+          filename: ../../test/parser/testcases/sv_typedef_struct0.sv
           items:
           - Typedef:
-              def:
-                StructDef:
-                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                  line: 5
-                  members:
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                      line: 6
-                      name: hi
-                      right:
-                        Rvalue: null
-                      type:
-                        Logic:
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                          ldelay:
-                            DelayStatement: null
-                          line: 6
-                          name: ''
-                          rdelay:
-                            DelayStatement: null
-                          right:
-                            Rvalue: null
-                          sign: false
-                          type: null
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                              line: 6
-                              lsb:
-                                IntConstN:
-                                  base: 10
-                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                                  line: 6
-                                  sign: false
-                                  size: -1
-                                  value: 0
-                              msb:
-                                IntConstN:
-                                  base: 10
-                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                                  line: 6
-                                  sign: false
-                                  size: -1
-                                  value: 3
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                      line: 7
-                      name: lo
-                      right:
-                        Rvalue: null
-                      type:
-                        Logic:
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                          ldelay:
-                            DelayStatement: null
-                          line: 7
-                          name: ''
-                          rdelay:
-                            DelayStatement: null
-                          right:
-                            Rvalue: null
-                          sign: false
-                          type: null
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                              line: 7
-                              lsb:
-                                IntConstN:
-                                  base: 10
-                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                                  line: 7
-                                  sign: false
-                                  size: -1
-                                  value: 0
-                              msb:
-                                IntConstN:
-                                  base: 10
-                                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                                  line: 7
-                                  sign: false
-                                  size: -1
-                                  value: 3
-                  packed: true
-                  sign: false
-              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+              fwd_kind: NONE
               line: 5
               name: byte_t
+              type:
+                StructType:
+                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                  is_packed: true
+                  line: 5
+                  members:
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                      init:
+                        Rvalue: null
+                      line: 6
+                      name: hi
+                      type:
+                        LogicType:
+                          filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                          line: 6
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                              line: 6
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                      init:
+                        Rvalue: null
+                      line: 7
+                      name: lo
+                      type:
+                        LogicType:
+                          filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                          line: 7
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 3
+                              line: 7
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  signing: NONE
           - Assign:
-              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
                   line: 10
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                      filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                      hier:
+                        HierName: null
                       line: 10
                       name: data
-                      package: ''
-                      scope:
-                        IdentifierScope: null
               line: 10
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
                   line: 10
                   var:
                     IntConstN:
                       base: 16
-                      filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                      filename: ../../test/parser/testcases/sv_typedef_struct0.sv
                       line: 10
                       sign: false
                       size: 8
                       value: 0
+          lifetime: NONE
           line: 1
           name: sv_typedef_struct0
           ports:
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-              first:
-                Input:
-                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
               line: 2
-              second:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+              name: clk
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 2
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  type: null
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-              first:
-                Output:
-                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
                   line: 3
                   name: data
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_typedef_struct0.sv
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_typedef_struct0.sv
               line: 3
-              second:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: data
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  type: null
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                      line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_struct0.sv
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 7
-      filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+              name: data
+      filename: ../../test/parser/testcases/sv_typedef_struct0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_typedef_struct0.sv
+  filename: ../../test/parser/testcases/sv_typedef_struct0.sv
   line: 1

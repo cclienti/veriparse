@@ -4,204 +4,182 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+          filename: ../../test/parser/testcases/sv_data_type_member0.sv
           items:
           - Typedef:
-              def:
-                StructDef:
-                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+              filename: ../../test/parser/testcases/sv_data_type_member0.sv
+              fwd_kind: NONE
+              line: 3
+              name: big_t
+              type:
+                StructType:
+                  filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                  is_packed: true
                   line: 3
                   members:
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
                       line: 4
                       name: b
-                      right:
-                        Rvalue: null
                       type:
-                        Byte:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                        ByteType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
                           line: 4
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: true
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
                       line: 5
                       name: s
-                      right:
-                        Rvalue: null
                       type:
-                        Shortint:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                        ShortintType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
                           line: 5
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: true
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
                       line: 6
                       name: i
-                      right:
-                        Rvalue: null
                       type:
-                        Int:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                        IntType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
                           line: 6
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: true
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
                       line: 7
                       name: l
-                      right:
-                        Rvalue: null
                       type:
-                        Longint:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                        LongintType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
                           line: 7
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: true
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
                       line: 8
                       name: q
-                      right:
-                        Rvalue: null
                       type:
-                        Bit:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                        BitType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
                           line: 8
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: true
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
-                              line: 8
-                              lsb:
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                              left:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
-                                  line: 8
-                                  sign: false
-                                  size: -1
-                                  value: 0
-                              msb:
-                                IntConstN:
-                                  base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                                  filename: ../../test/parser/testcases/sv_data_type_member0.sv
                                   line: 8
                                   sign: false
                                   size: -1
                                   value: 3
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
-                      line: 9
-                      name: lg
-                      right:
-                        Rvalue: null
-                      type:
-                        Logic:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
-                          ldelay:
-                            DelayStatement: null
-                          line: 9
-                          name: ''
-                          rdelay:
-                            DelayStatement: null
-                          right:
-                            Rvalue: null
-                          sign: false
-                          type: null
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
-                              line: 9
-                              lsb:
+                              line: 8
+                              right:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
-                                  line: 9
+                                  filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                                  line: 8
                                   sign: false
                                   size: -1
                                   value: 0
-                              msb:
+                          signing: SIGNED
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
+                      line: 9
+                      name: lg
+                      type:
+                        LogicType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                          line: 9
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                              left:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                                  filename: ../../test/parser/testcases/sv_data_type_member0.sv
                                   line: 9
                                   sign: false
                                   size: -1
                                   value: 7
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                              line: 9
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                                  line: 9
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
                       line: 10
                       name: u
-                      right:
-                        Rvalue: null
                       type:
-                        CustomType:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                        NamedType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
                           line: 10
                           name: t
-                          package: pkg
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          scope:
+                          - ScopeName:
+                              filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                              line: 10
+                              name: pkg
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                      init:
+                        Rvalue: null
                       line: 11
                       name: nested
-                      right:
-                        Rvalue: null
                       type:
-                        StructDef:
-                          filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                        StructType:
+                          filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                          is_packed: true
                           line: 11
                           members:
-                          - StructMember:
-                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                          - Member:
+                              filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                              init:
+                                Rvalue: null
                               line: 11
                               name: x
-                              right:
-                                Rvalue: null
                               type:
-                                Int:
-                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                                IntType:
+                                  filename: ../../test/parser/testcases/sv_data_type_member0.sv
                                   line: 11
-                                  name: ''
-                                  right:
-                                    Rvalue: null
-                                  sign: true
-                          - StructMember:
-                              filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                                  signing: NONE
+                          - Member:
+                              filename: ../../test/parser/testcases/sv_data_type_member0.sv
+                              init:
+                                Rvalue: null
                               line: 11
                               name: y
-                              right:
-                                Rvalue: null
                               type:
-                                Bit:
-                                  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+                                BitType:
+                                  filename: ../../test/parser/testcases/sv_data_type_member0.sv
                                   line: 11
-                                  name: ''
-                                  right:
-                                    Rvalue: null
-                                  sign: false
-                          packed: true
-                          sign: false
-                  packed: true
-                  sign: false
-              filename: lib/test/parser/testcases/sv_data_type_member0.sv
-              line: 3
-              name: big_t
+                                  signing: NONE
+                          signing: NONE
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: sv_data_type_member0
-      filename: lib/test/parser/testcases/sv_data_type_member0.sv
+      filename: ../../test/parser/testcases/sv_data_type_member0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_data_type_member0.sv
+  filename: ../../test/parser/testcases/sv_data_type_member0.sv
   line: 1

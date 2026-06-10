@@ -15,23 +15,23 @@ Source:
                   identifier:
                     Identifier:
                       filename: ../../test/parser/testcases/defparam2.v
-                      line: 3
-                      name: VALUE_0
-                      scope:
-                        IdentifierScope:
+                      hier:
+                        HierName:
                           filename: ../../test/parser/testcases/defparam2.v
                           labellist:
-                          - IdentifierScopeLabel:
+                          - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 3
                               loop: null
-                              scope: my_proxy_inst
-                          - IdentifierScopeLabel:
+                              name: my_proxy_inst
+                          - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 3
                               loop: null
-                              scope: my_module_inst
+                              name: my_module_inst
                           line: 3
+                      line: 3
+                      name: VALUE_0
                   line: 3
                   right:
                     Rvalue:
@@ -50,23 +50,23 @@ Source:
                   identifier:
                     Identifier:
                       filename: ../../test/parser/testcases/defparam2.v
-                      line: 4
-                      name: VALUE_1
-                      scope:
-                        IdentifierScope:
+                      hier:
+                        HierName:
                           filename: ../../test/parser/testcases/defparam2.v
                           labellist:
-                          - IdentifierScopeLabel:
+                          - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 4
                               loop: null
-                              scope: my_proxy_inst
-                          - IdentifierScopeLabel:
+                              name: my_proxy_inst
+                          - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 4
                               loop: null
-                              scope: my_module_inst
+                              name: my_module_inst
                           line: 4
+                      line: 4
+                      name: VALUE_1
                   line: 4
                   right:
                     Rvalue:
@@ -85,18 +85,18 @@ Source:
                   identifier:
                     Identifier:
                       filename: ../../test/parser/testcases/defparam2.v
-                      line: 5
-                      name: OTHER
-                      scope:
-                        IdentifierScope:
+                      hier:
+                        HierName:
                           filename: ../../test/parser/testcases/defparam2.v
                           labellist:
-                          - IdentifierScopeLabel:
+                          - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 5
                               loop: null
-                              scope: another_module_inst
+                              name: another_module_inst
                           line: 5
+                      line: 5
+                      name: OTHER
                   line: 5
                   right:
                     Rvalue:
@@ -115,7 +115,7 @@ Source:
               instances:
               - Instance:
                   array:
-                    Length: null
+                    Dimension: null
                   filename: ../../test/parser/testcases/defparam2.v
                   line: 7
                   module: my_proxy
@@ -127,13 +127,14 @@ Source:
               instances:
               - Instance:
                   array:
-                    Length: null
+                    Dimension: null
                   filename: ../../test/parser/testcases/defparam2.v
                   line: 8
                   module: another_module
                   name: another_module_inst
               line: 8
               module: another_module
+          lifetime: NONE
           line: 1
           name: defparm2
       - Module:
@@ -145,7 +146,7 @@ Source:
               instances:
               - Instance:
                   array:
-                    Length: null
+                    Dimension: null
                   filename: ../../test/parser/testcases/defparam2.v
                   line: 12
                   module: my_module
@@ -178,6 +179,7 @@ Source:
                       sign: false
                       size: -1
                       value: 7
+          lifetime: NONE
           line: 11
           name: my_proxy
       - Module:
@@ -208,10 +210,10 @@ Source:
                               value: VALUE_0=%0d
                           - Identifier:
                               filename: ../../test/parser/testcases/defparam2.v
+                              hier:
+                                HierName: null
                               line: 18
                               name: VALUE_0
-                              scope:
-                                IdentifierScope: null
                           filename: ../../test/parser/testcases/defparam2.v
                           line: 18
                           syscall: display
@@ -230,22 +232,24 @@ Source:
                               value: VALUE_1=%0d
                           - Identifier:
                               filename: ../../test/parser/testcases/defparam2.v
+                              hier:
+                                HierName: null
                               line: 19
                               name: VALUE_1
-                              scope:
-                                IdentifierScope: null
                           filename: ../../test/parser/testcases/defparam2.v
                           line: 19
                           syscall: display
+          lifetime: NONE
           line: 15
           name: my_module
           params:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/defparam2.v
+              is_local: false
               line: 15
               name: VALUE_0
-              sign: false
-              type: NONE
+              type:
+                DataType: null
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam2.v
@@ -258,12 +262,13 @@ Source:
                       sign: false
                       size: -1
                       value: 5
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/defparam2.v
+              is_local: false
               line: 16
               name: VALUE_1
-              sign: false
-              type: NONE
+              type:
+                DataType: null
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam2.v
@@ -304,22 +309,24 @@ Source:
                               value: OTHER=%0d
                           - Identifier:
                               filename: ../../test/parser/testcases/defparam2.v
+                              hier:
+                                HierName: null
                               line: 25
                               name: OTHER
-                              scope:
-                                IdentifierScope: null
                           filename: ../../test/parser/testcases/defparam2.v
                           line: 25
                           syscall: display
+          lifetime: NONE
           line: 23
           name: another_module
           params:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/defparam2.v
+              is_local: false
               line: 23
               name: OTHER
-              sign: false
-              type: NONE
+              type:
+                DataType: null
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam2.v
@@ -336,4 +343,3 @@ Source:
       line: 1
   filename: ../../test/parser/testcases/defparam2.v
   line: 1
-

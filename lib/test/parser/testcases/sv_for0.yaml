@@ -4,507 +4,503 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+          filename: ../../test/parser/testcases/sv_for0.sv
           items:
-          - Integer:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+          - Var:
+              filename: ../../test/parser/testcases/sv_for0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 7
               name: i
-              right:
-                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/sv_for0.sv
+                  line: 7
+                  signing: NONE
           - AlwaysFF:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+              filename: ../../test/parser/testcases/sv_for0.sv
               line: 9
               senslist:
                 Senslist:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                  filename: ../../test/parser/testcases/sv_for0.sv
                   line: 9
                   list:
                   - Sens:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                      filename: ../../test/parser/testcases/sv_for0.sv
                       line: 9
                       sig:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                          filename: ../../test/parser/testcases/sv_for0.sv
+                          hier:
+                            HierName: null
                           line: 9
                           name: clk
-                          scope:
-                            IdentifierScope: null
                       type: POSEDGE
                   - Sens:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                      filename: ../../test/parser/testcases/sv_for0.sv
                       line: 9
                       sig:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                          filename: ../../test/parser/testcases/sv_for0.sv
+                          hier:
+                            HierName: null
                           line: 9
                           name: rst_n
-                          scope:
-                            IdentifierScope: null
                       type: NEGEDGE
               statement:
                 Block:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                  filename: ../../test/parser/testcases/sv_for0.sv
                   line: 9
                   scope: ''
                   statements:
                   - IfStatement:
                       cond:
                         Ulnot:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                          filename: ../../test/parser/testcases/sv_for0.sv
                           line: 10
                           right:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                              filename: ../../test/parser/testcases/sv_for0.sv
+                              hier:
+                                HierName: null
                               line: 10
                               name: rst_n
-                              scope:
-                                IdentifierScope: null
                       false_statement:
                         Block:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                          filename: ../../test/parser/testcases/sv_for0.sv
                           line: 14
                           scope: ''
                           statements:
                           - ForStatement:
                               cond:
                                 LessThan:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   left:
                                     Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
+                                      hier:
+                                        HierName: null
                                       line: 15
                                       name: i
-                                      scope:
-                                        IdentifierScope: null
                                   line: 15
                                   right:
                                     Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
+                                      hier:
+                                        HierName: null
                                       line: 15
                                       name: DEPTH
-                                      scope:
-                                        IdentifierScope: null
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                              filename: ../../test/parser/testcases/sv_for0.sv
                               line: 15
                               post:
                                 BlockingSubstitution:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   ldelay:
                                     DelayStatement: null
                                   left:
                                     Lvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 15
                                       var:
                                         Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
+                                          hier:
+                                            HierName: null
                                           line: 15
                                           name: i
-                                          scope:
-                                            IdentifierScope: null
                                   line: 15
                                   rdelay:
                                     DelayStatement: null
                                   right:
                                     Rvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 15
                                       var:
                                         Plus:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           left:
                                             Identifier:
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
+                                              hier:
+                                                HierName: null
                                               line: 15
                                               name: i
-                                              scope:
-                                                IdentifierScope: null
                                           line: 15
                                           right:
                                             IntConstN:
                                               base: 10
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
                                               line: 15
                                               sign: false
                                               size: -1
                                               value: 1
                               pre:
                                 BlockingSubstitution:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   ldelay:
                                     DelayStatement: null
                                   left:
                                     Lvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 15
                                       var:
                                         Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
+                                          hier:
+                                            HierName: null
                                           line: 15
                                           name: i
-                                          scope:
-                                            IdentifierScope: null
                                   line: 15
                                   rdelay:
                                     DelayStatement: null
                                   right:
                                     Rvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 15
                                       var:
                                         IntConstN:
                                           base: 10
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           line: 15
                                           sign: false
                                           size: -1
                                           value: 0
                               statement:
                                 Block:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   line: 15
                                   scope: ''
                                   statements:
                                   - NonblockingSubstitution:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       ldelay:
                                         DelayStatement: null
                                       left:
                                         Lvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           line: 16
                                           var:
                                             Pointer:
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
                                               line: 16
                                               ptr:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                                  filename: ../../test/parser/testcases/sv_for0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 16
                                                   name: i
-                                                  scope:
-                                                    IdentifierScope: null
                                               var:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                                  filename: ../../test/parser/testcases/sv_for0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 16
                                                   name: out
-                                                  scope:
-                                                    IdentifierScope: null
                                       line: 16
                                       rdelay:
                                         DelayStatement: null
                                       right:
                                         Rvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           line: 16
                                           var:
                                             IntConstN:
                                               base: 2
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
                                               line: 16
                                               sign: false
                                               size: 1
                                               value: 1
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                      filename: ../../test/parser/testcases/sv_for0.sv
                       line: 10
                       true_statement:
                         Block:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                          filename: ../../test/parser/testcases/sv_for0.sv
                           line: 10
                           scope: ''
                           statements:
                           - ForStatement:
                               cond:
                                 LessThan:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   left:
                                     Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
+                                      hier:
+                                        HierName: null
                                       line: 11
                                       name: i
-                                      scope:
-                                        IdentifierScope: null
                                   line: 11
                                   right:
                                     Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
+                                      hier:
+                                        HierName: null
                                       line: 11
                                       name: DEPTH
-                                      scope:
-                                        IdentifierScope: null
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                              filename: ../../test/parser/testcases/sv_for0.sv
                               line: 11
                               post:
                                 BlockingSubstitution:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   ldelay:
                                     DelayStatement: null
                                   left:
                                     Lvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 11
                                       var:
                                         Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
+                                          hier:
+                                            HierName: null
                                           line: 11
                                           name: i
-                                          scope:
-                                            IdentifierScope: null
                                   line: 11
                                   rdelay:
                                     DelayStatement: null
                                   right:
                                     Rvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 11
                                       var:
                                         Plus:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           left:
                                             Identifier:
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
+                                              hier:
+                                                HierName: null
                                               line: 11
                                               name: i
-                                              scope:
-                                                IdentifierScope: null
                                           line: 11
                                           right:
                                             IntConstN:
                                               base: 10
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
                                               line: 11
                                               sign: false
                                               size: -1
                                               value: 1
                               pre:
                                 BlockingSubstitution:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   ldelay:
                                     DelayStatement: null
                                   left:
                                     Lvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 11
                                       var:
                                         Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
+                                          hier:
+                                            HierName: null
                                           line: 11
                                           name: i
-                                          scope:
-                                            IdentifierScope: null
                                   line: 11
                                   rdelay:
                                     DelayStatement: null
                                   right:
                                     Rvalue:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       line: 11
                                       var:
                                         IntConstN:
                                           base: 10
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           line: 11
                                           sign: false
                                           size: -1
                                           value: 0
                               statement:
                                 Block:
-                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                  filename: ../../test/parser/testcases/sv_for0.sv
                                   line: 11
                                   scope: ''
                                   statements:
                                   - NonblockingSubstitution:
-                                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                      filename: ../../test/parser/testcases/sv_for0.sv
                                       ldelay:
                                         DelayStatement: null
                                       left:
                                         Lvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           line: 12
                                           var:
                                             Pointer:
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
                                               line: 12
                                               ptr:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                                  filename: ../../test/parser/testcases/sv_for0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 12
                                                   name: i
-                                                  scope:
-                                                    IdentifierScope: null
                                               var:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                                  filename: ../../test/parser/testcases/sv_for0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 12
                                                   name: out
-                                                  scope:
-                                                    IdentifierScope: null
                                       line: 12
                                       rdelay:
                                         DelayStatement: null
                                       right:
                                         Rvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                          filename: ../../test/parser/testcases/sv_for0.sv
                                           line: 12
                                           var:
                                             IntConstN:
                                               base: 2
-                                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                                              filename: ../../test/parser/testcases/sv_for0.sv
                                               line: 12
                                               sign: false
                                               size: 1
                                               value: 0
+          lifetime: NONE
           line: 1
           name: sv_for0
           params:
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_for0.sv
+              is_local: false
               line: 2
               name: DEPTH
-              sign: true
-              type: INT
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_for0.sv
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                  filename: ../../test/parser/testcases/sv_for0.sv
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                      filename: ../../test/parser/testcases/sv_for0.sv
                       line: 2
                       sign: false
                       size: -1
                       value: 8
           ports:
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-              first:
-                Input:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_for0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_for0.sv
+                      line: 3
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_for0.sv
               line: 3
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+              name: clk
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_for0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 3
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-              first:
-                Input:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
                   line: 4
                   name: rst_n
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_for0.sv
+                      line: 4
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_for0.sv
               line: 4
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+              name: rst_n
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_for0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 4
-                  name: rst_n
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
                   line: 5
                   name: out
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_for0.sv
                       line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_for0.sv
                           left:
-                            Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                            Minus:
+                              filename: ../../test/parser/testcases/sv_for0.sv
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_for0.sv
+                                  hier:
+                                    HierName: null
+                                  line: 5
+                                  name: DEPTH
                               line: 5
-                              name: DEPTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_for0.sv
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 5
                           right:
                             IntConstN:
                               base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+                              filename: ../../test/parser/testcases/sv_for0.sv
                               line: 5
                               sign: false
                               size: -1
-                              value: 1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_for0.sv
               line: 5
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: out
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-                          left:
-                            Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-                              line: 5
-                              name: DEPTH
-                              scope:
-                                IdentifierScope: null
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 1
-      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+              name: out
+      filename: ../../test/parser/testcases/sv_for0.sv
       line: 1
-  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_for0.sv
+  filename: ../../test/parser/testcases/sv_for0.sv
   line: 1
-

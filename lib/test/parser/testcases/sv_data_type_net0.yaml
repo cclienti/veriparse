@@ -4,147 +4,148 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_data_type_net0.sv
+          filename: ../../test/parser/testcases/sv_data_type_net0.sv
           items:
-          - Wire:
-              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 5
               name: a
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
+              strength:
+                Strength: null
               type:
-                Identifier:
-                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 5
-                  name: logic
-                  package: ''
-                  scope:
-                    IdentifierScope: null
-              widths:
-              - Width:
-                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 5
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 3
                       line: 5
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 5
-                      sign: false
-                      size: -1
-                      value: 3
-          - Wire:
-              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 6
               name: b
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: true
+              strength:
+                Strength: null
               type:
-                Identifier:
-                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 6
-                  name: logic
-                  package: ''
-                  scope:
-                    IdentifierScope: null
-              widths:
-              - Width:
-                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 6
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 6
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 7
-          - Tri:
-              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: SIGNED
+          - TriNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 7
               name: c
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
+              strength:
+                Strength: null
               type:
-                Identifier:
-                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 7
-                  name: logic
-                  package: ''
-                  scope:
-                    IdentifierScope: null
-          - Wire:
-              filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: d
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
+              strength:
+                Strength: null
               type:
-                Identifier:
-                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 8
-                  name: logic
-                  package: ''
-                  scope:
-                    IdentifierScope: null
-              widths:
-              - Width:
-                  filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                  line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 1
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_net0.sv
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 1
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: sv_data_type_net0
-      filename: lib/test/parser/testcases/sv_data_type_net0.sv
+      filename: ../../test/parser/testcases/sv_data_type_net0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_data_type_net0.sv
+  filename: ../../test/parser/testcases/sv_data_type_net0.sv
   line: 1

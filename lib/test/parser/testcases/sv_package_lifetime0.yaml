@@ -3,22 +3,26 @@ Source:
     Description:
       definitions:
       - Package:
-          filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+          filename: ../../test/parser/testcases/sv_package_lifetime0.sv
           items:
-          - Localparam:
-              filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_package_lifetime0.sv
+              is_local: true
               line: 2
               name: W
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_package_lifetime0.sv
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+                  filename: ../../test/parser/testcases/sv_package_lifetime0.sv
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+                      filename: ../../test/parser/testcases/sv_package_lifetime0.sv
                       line: 2
                       sign: false
                       size: -1
@@ -26,7 +30,7 @@ Source:
           lifetime: AUTOMATIC
           line: 1
           name: sv_package_lifetime0
-      filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+      filename: ../../test/parser/testcases/sv_package_lifetime0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_package_lifetime0.sv
+  filename: ../../test/parser/testcases/sv_package_lifetime0.sv
   line: 1

@@ -5,314 +5,273 @@ Source:
       - Module:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/module2.v
+          lifetime: NONE
           line: 2
           name: module2
           ports:
-          - Ioport:
-              filename: ../../test/parser/testcases/module2.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module2.v
-                  line: 2
-                  name: reset
-                  sign: false
-              line: 2
-              second:
-                Wire:
-                  filename: ../../test/parser/testcases/module2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 2
                   name: reset
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/module2.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/module2.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/module2.v
-                  line: 2
-                  name: clk
-                  sign: false
               line: 2
-              second:
-                Wire:
+              name: reset
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 2
                   name: clk
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/module2.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/module2.v
-                  line: 3
-                  name: in0
-                  sign: true
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/module2.v
-                      line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 7
-              line: 3
-              second:
-                Wire:
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/module2.v
+              line: 2
+              name: clk
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 3
                   name: in0
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: true
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/module2.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/module2.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 7
-          - Ioport:
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: SIGNED
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/module2.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/module2.v
-                  line: 3
-                  name: in1
-                  sign: true
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/module2.v
-                      line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 7
               line: 3
-              second:
-                Wire:
+              name: in0
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 3
                   name: in1
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: true
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/module2.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/module2.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 7
-          - Ioport:
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: SIGNED
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/module2.v
-              first:
-                Input:
+              line: 3
+              name: in1
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module2.v
-                  line: 4
-                  name: in2
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/module2.v
-                      line: 4
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 7
-              line: 4
-              second:
-                Wire:
-                  filename: ../../test/parser/testcases/module2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 4
                   name: in2
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/module2.v
                       line: 4
-                      lsb:
-                        IntConstN:
-                          base: 10
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/module2.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 4
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 7
-          - Ioport:
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/module2.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/module2.v
-                  line: 4
-                  name: in3
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/module2.v
-                      line: 4
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 7
               line: 4
-              second:
-                Wire:
+              name: in2
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 4
                   name: in3
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/module2.v
                       line: 4
-                      lsb:
-                        IntConstN:
-                          base: 10
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/module2.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 4
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module2.v
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 7
-          - Ioport:
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module2.v
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/module2.v
-              first:
-                Output:
+              line: 4
+              name: in3
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module2.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 5
                   name: out
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
+                      filename: ../../test/parser/testcases/module2.v
+                      line: 5
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/module2.v
               line: 5
-              second:
-                Reg:
-                  filename: ../../test/parser/testcases/module2.v
-                  line: 5
-                  name: out
-                  right:
-                    Rvalue: null
-                  sign: false
+              name: out
       filename: ../../test/parser/testcases/module2.v
       line: 2
   filename: ../../test/parser/testcases/module2.v
   line: 2
-

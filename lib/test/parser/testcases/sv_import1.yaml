@@ -3,43 +3,49 @@ Source:
     Description:
       definitions:
       - Import:
-          filename: lib/test/parser/testcases/sv_import1.sv
+          filename: ../../test/parser/testcases/sv_import1.sv
           line: 1
           package: sv_package0
           symbol: WIDTH
       - Import:
-          filename: lib/test/parser/testcases/sv_import1.sv
+          filename: ../../test/parser/testcases/sv_import1.sv
           line: 1
           package: sv_package0
           symbol: state_t
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_import1.sv
+          filename: ../../test/parser/testcases/sv_import1.sv
+          lifetime: NONE
           line: 3
           name: sv_import1
           ports:
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_import1.sv
-              first:
-                Input:
-                  filename: lib/test/parser/testcases/sv_import1.sv
-                  line: 4
-                  name: clk
-                  sign: false
-              line: 4
-              second:
-                Wire:
-                  filename: lib/test/parser/testcases/sv_import1.sv
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_import1.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 4
                   name: clk
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-      filename: lib/test/parser/testcases/sv_import1.sv
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_import1.sv
+                      line: 4
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_import1.sv
+              line: 4
+              name: clk
+      filename: ../../test/parser/testcases/sv_import1.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_import1.sv
+  filename: ../../test/parser/testcases/sv_import1.sv
   line: 1

@@ -20,10 +20,10 @@ Source:
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/expression6.v
+                          hier:
+                            HierName: null
                           line: 8
                           name: clk
-                          scope:
-                            IdentifierScope: null
                       type: POSEDGE
               statement:
                 NonblockingSubstitution:
@@ -37,10 +37,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/expression6.v
+                          hier:
+                            HierName: null
                           line: 8
                           name: out
-                          scope:
-                            IdentifierScope: null
                   line: 8
                   rdelay:
                     DelayStatement: null
@@ -55,19 +55,24 @@ Source:
                           right:
                             Identifier:
                               filename: ../../test/parser/testcases/expression6.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: in
-                              scope:
-                                IdentifierScope: null
+          lifetime: NONE
           line: 1
           name: expression6
           params:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/expression6.v
+              is_local: false
               line: 2
               name: WIDTH
-              sign: true
-              type: INTEGER
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/expression6.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/expression6.v
@@ -81,78 +86,100 @@ Source:
                       size: -1
                       value: 8
           ports:
-          - Ioport:
-              filename: ../../test/parser/testcases/expression6.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/expression6.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: reset
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/expression6.v
+                      line: 3
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/expression6.v
               line: 3
-              second:
-                Wire:
+              name: reset
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/expression6.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 3
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/expression6.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/expression6.v
                   line: 4
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/expression6.v
+                      line: 4
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/expression6.v
               line: 4
-              second:
-                Wire:
+              name: clk
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/expression6.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 4
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/expression6.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/expression6.v
                   line: 5
                   name: in
-                  sign: false
-                  widths:
-                  - Width:
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/expression6.v
                       line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/expression6.v
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/expression6.v
                           left:
-                            Identifier:
+                            Minus:
                               filename: ../../test/parser/testcases/expression6.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/expression6.v
+                                  hier:
+                                    HierName: null
+                                  line: 5
+                                  name: WIDTH
                               line: 5
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/expression6.v
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 5
                           right:
                             IntConstN:
@@ -161,132 +188,71 @@ Source:
                               line: 5
                               sign: false
                               size: -1
-                              value: 1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/expression6.v
               line: 5
-              second:
-                Wire:
+              name: in
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/expression6.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 5
-                  name: in
+                  line: 6
+                  name: out
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
                       filename: ../../test/parser/testcases/expression6.v
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/expression6.v
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
+                      line: 6
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/expression6.v
                           left:
-                            Identifier:
+                            Minus:
                               filename: ../../test/parser/testcases/expression6.v
-                              line: 5
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 5
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/expression6.v
+                                  hier:
+                                    HierName: null
+                                  line: 6
+                                  name: WIDTH
+                              line: 6
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/expression6.v
+                                  line: 6
+                                  sign: false
+                                  size: -1
+                                  value: 1
+                          line: 6
                           right:
                             IntConstN:
                               base: 10
                               filename: ../../test/parser/testcases/expression6.v
-                              line: 5
+                              line: 6
                               sign: false
                               size: -1
-                              value: 1
-          - Ioport:
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
               filename: ../../test/parser/testcases/expression6.v
-              first:
-                Output:
-                  filename: ../../test/parser/testcases/expression6.v
-                  line: 6
-                  name: out
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/expression6.v
-                      line: 6
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/expression6.v
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: ../../test/parser/testcases/expression6.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/expression6.v
-                              line: 6
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/expression6.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 1
               line: 6
-              second:
-                Reg:
-                  filename: ../../test/parser/testcases/expression6.v
-                  line: 6
-                  name: out
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/expression6.v
-                      line: 6
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/expression6.v
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: ../../test/parser/testcases/expression6.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/expression6.v
-                              line: 6
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/expression6.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 1
+              name: out
       filename: ../../test/parser/testcases/expression6.v
       line: 1
   filename: ../../test/parser/testcases/expression6.v
   line: 1
-

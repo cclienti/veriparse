@@ -6,13 +6,20 @@ Source:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/forever1.v
           items:
-          - Reg:
+          - Var:
               filename: ../../test/parser/testcases/forever1.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 3
               name: clk
-              right:
-                Rvalue: null
-              sign: false
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/forever1.v
+                  line: 3
+                  signing: NONE
           - Initial:
               filename: ../../test/parser/testcases/forever1.v
               line: 5
@@ -43,10 +50,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/forever1.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: clk
-                              scope:
-                                IdentifierScope: null
                       line: 6
                       rdelay:
                         DelayStatement: null
@@ -87,10 +94,10 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/forever1.v
+                                  hier:
+                                    HierName: null
                                   line: 7
                                   name: clk
-                                  scope:
-                                    IdentifierScope: null
                           line: 7
                           rdelay:
                             DelayStatement: null
@@ -105,10 +112,10 @@ Source:
                                   right:
                                     Identifier:
                                       filename: ../../test/parser/testcases/forever1.v
+                                      hier:
+                                        HierName: null
                                       line: 7
                                       name: clk
-                                      scope:
-                                        IdentifierScope: null
           - Initial:
               filename: ../../test/parser/testcases/forever1.v
               line: 10
@@ -137,10 +144,10 @@ Source:
                               syscall: time
                           - Identifier:
                               filename: ../../test/parser/testcases/forever1.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: clk
-                              scope:
-                                IdentifierScope: null
                           filename: ../../test/parser/testcases/forever1.v
                           line: 11
                           syscall: monitor
@@ -165,10 +172,10 @@ Source:
                           filename: ../../test/parser/testcases/forever1.v
                           line: 12
                           syscall: finish
+          lifetime: NONE
           line: 1
           name: forever_example
       filename: ../../test/parser/testcases/forever1.v
       line: 1
   filename: ../../test/parser/testcases/forever1.v
   line: 1
-
