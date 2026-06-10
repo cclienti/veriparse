@@ -411,9 +411,9 @@ using token = Veriparse::Parser::VerilogParser::token;
                                                    << ", cannot define multiple default_nettype in the same directive";
                                          return -1;
                                      }
-                                     if (nt == "integer")      m_default_nettype = AST::Module::Default_nettypeEnum::INTEGER;
-                                     else if (nt == "real")    m_default_nettype = AST::Module::Default_nettypeEnum::REAL;
-                                     else if (nt == "reg")     m_default_nettype = AST::Module::Default_nettypeEnum::REG;
+                                     if (nt == "integer")      m_default_nettype = AST::Module::Default_nettypeEnum::NONE;
+                                     else if (nt == "real")    m_default_nettype = AST::Module::Default_nettypeEnum::NONE;
+                                     else if (nt == "reg")     m_default_nettype = AST::Module::Default_nettypeEnum::NONE;
                                      else if (nt == "tri")     m_default_nettype = AST::Module::Default_nettypeEnum::TRI;
                                      else if (nt == "wire")    m_default_nettype = AST::Module::Default_nettypeEnum::WIRE;
                                      else if (nt == "supply0") m_default_nettype = AST::Module::Default_nettypeEnum::SUPPLY0;

@@ -41,8 +41,10 @@ namespace Parser
 class VerilogDriver;
 class VerilogScanner;
 
+// The real net types parsed today (the data types reg/logic/integer/real are
+// NOT nets in the new model — they are variable DataTypes via data_type).
 enum class net_type_t {
-	 INTEGER, REAL, REG, TRI, WIRE, SUPPLY0, SUPPLY1, LOGIC, NONE
+	 TRI, WIRE, SUPPLY0, SUPPLY1, NONE
 };
 
 // SystemVerilog data_type kinds (Annex A). Step 2 starts with the built-in
@@ -63,10 +65,10 @@ enum class signing_t { NONE, SIGNED, UNSIGNED };
 // turns it into the matching AST node.
 typedef struct {
 	 data_type_kind_t kind;
-	 bool is_signed;
-	 AST::Width::ListPtr packed_dims; // packed dimensions {[msb:lsb]}
-	 AST::Node::Ptr type_ref;         // NAMED: Identifier (its package = pkg:: scope)
-	 AST::Node::Ptr inline_def;       // STRUCT/UNION/ENUM: inline def node
+	 signing_t signing;                   // tri-state, preserved (default resolved by a pass)
+	 AST::Dimension::ListPtr packed_dims; // packed dimensions
+	 AST::NamedType::Ptr named;           // NAMED: the named-type reference (name + :: scope)
+	 AST::DataType::Ptr inline_def;       // STRUCT/UNION/ENUM: inline def node
 } data_type_t;
 
 // SystemVerilog data_declaration qualifiers ([const] [var] [lifetime]); folded
@@ -74,7 +76,7 @@ typedef struct {
 struct data_qualifiers_t {
 	 bool is_var;
 	 bool is_const;
-	 AST::DataModifier::LifetimeEnum lifetime;
+	 AST::Var::LifetimeEnum lifetime;
 };
 
 // data_type_or_implicit = implicit ([signing] {packed_dimension}): the type of a
@@ -82,7 +84,7 @@ struct data_qualifiers_t {
 // node (implied type logic, IEEE 1800-2017 §6.8).
 struct implicit_type_t {
 	 bool is_signed;
-	 AST::Width::ListPtr widths;
+	 AST::Dimension::ListPtr widths;
 };
 
 // A net (wire/tri/supply) carrying an explicit integer_vector data type must be
@@ -131,7 +133,7 @@ struct port_info_t {
 	 direction_t direction;
 	 net_type_t net_type;
 	 bool is_signed;
-	 AST::Width::ListPtr widths;
+	 AST::Dimension::ListPtr widths;
 	 std::string name;
 	 std::string type_name;    // user-defined type name (typedef); empty if built-in
 	 std::string type_package; // package scope of the type (pkg::); empty if local
@@ -144,7 +146,7 @@ typedef struct {
 	 std::string name;
 	 AST::DelayStatement::Ptr ldelay;
 	 AST::DelayStatement::Ptr rdelay;
-	 AST::Length::ListPtr lengths;
+	 AST::Dimension::ListPtr lengths; // unpacked dimensions of this declared name
 	 AST::Rvalue::Ptr rvalue;
 } decl_name_t;
 
@@ -168,7 +170,7 @@ struct id_dims_tail_t {
 // captured as a length list and converted to packed widths for the named case.
 struct id_decl_tail_t {
 	 bool is_named;
-	 AST::Length::ListPtr dims;
+	 AST::Dimension::ListPtr dims;
 	 AST::Rvalue::Ptr first_rvalue;
 	 std::list<decl_name_t> names;
 };
@@ -192,96 +194,92 @@ static inline bool const_without_init(const data_qualifiers_t &q,
 // leading identifier turns out to be a named type (`var my_t [3:0] x`): the same
 // `[..]` is captured as `lengths` (which also accepts the single-size `[N]`
 // form) and rebuilt as Width nodes here.
-static inline AST::Width::ListPtr lengths_to_widths(const AST::Length::ListPtr &lengths) {
-	 if(!lengths) {
-		  return nullptr;
-	 }
-	 auto out = std::make_shared<AST::Width::List>();
-	 for(const AST::Length::Ptr &l : *lengths) {
-		  out->push_back(std::make_shared<AST::Width>(
-				l->get_msb() ? l->get_msb()->clone() : nullptr,
-				l->get_lsb() ? l->get_lsb()->clone() : nullptr, l->get_filename(), l->get_line()));
-	 }
-	 return out;
+static inline AST::Dimension::ListPtr lengths_to_widths(const AST::Dimension::ListPtr &dims) {
+	 return dims ? AST::Dimension::clone_list(dims) : nullptr;
 }
 
 namespace ParserHelpers
 {
-AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
-														 AST::Width::ListPtr widths, bool sign,
-														 const std::string &filename="", uint32_t line=0);
+// Map the parser's tri-state signing onto the AST enum.
+AST::DataType::SigningEnum to_signing(signing_t s);
 
-// Build the variable node for `data_type name {unpacked} [= init]`. Built-in
-// scalar kinds -> the dedicated node (Bit/Byte/Int/.../Realtime); NAMED or an
-// inline aggregate -> CustomTypeVar holding the type (folded in later steps).
-AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
-														 const std::string &filename="", uint32_t line=0);
+// Build the DataType node a data_type_t denotes (built-in keyword node, a cloned
+// NamedType, or a cloned inline struct/union/enum), with signing + packed dims.
+AST::DataType::Ptr make_data_type(const data_type_t &dt,
+                                  const std::string &filename="", uint32_t line=0);
 
-// Build the ImplicitType node for a `var`/`const` declaration whose data type is
-// implicit (`var a`, `var [3:0] a`): name/signing/dims/init, no type keyword.
-AST::Variable::Ptr build_implicit_type(bool is_signed, AST::Width::ListPtr widths,
-														 const decl_name_t &decl,
-														 const std::string &filename="", uint32_t line=0);
+// Build a NamedType reference: name + optional single-segment `::` scope.
+AST::NamedType::Ptr make_named_type(const std::string &name, const std::string &package,
+                                    const std::string &filename="", uint32_t line=0);
 
-// Wrap a variable's data-type node in a DataModifier carrying the [const][var]
-// qualifiers. Returns the DataModifier (the declaration node).
-AST::Node::Ptr wrap_data_modifier(AST::Variable::Ptr inner, const data_qualifiers_t &q,
-														 const std::string &filename="", uint32_t line=0);
+// Value-side SV `::` scope list (single package segment) for a name ref.
+AST::ScopeName::ListPtr pkg_scope(const std::string &package,
+                                  const std::string &filename="", uint32_t line=0);
 
-// Build a named/scoped-type declaration (`var my_t x`, `const pkg::T [3:0] y`):
-// one CustomTypeVar per name, each wrapped in a DataModifier carrying the
-// qualifiers. `ref` is the (cloned-per-name) type reference, `widths` its packed
-// dimensions (or null).
-AST::Node::ListPtr build_named_modifier(const AST::CustomType::Ptr &ref,
-														 AST::Width::ListPtr widths,
-														 const std::list<decl_name_t> &names,
-														 const data_qualifiers_t &q,
-														 const std::string &filename="", uint32_t line=0);
+// task/function argument list (one Arg per port_info).
+AST::Arg::ListPtr create_args_decls(const std::list<port_info_t> &port_list,
+                                    const std::string &filename);
 
-// Build the struct/union members for `data_type list_of_variable_decl_assignments
-// ;` — one StructMember per name. The member type is the bare data_type node
-// (build_data_type_def), unpacked dims + init come from each name's
-// variable_decl_assignment.
-AST::StructMember::ListPtr build_struct_members(const data_type_t &dt,
-														 const std::list<decl_name_t> &names,
-														 const std::string &filename="", uint32_t line=0);
+// Upcast a Param list to a Declaration list (Module.params child).
+AST::Declaration::ListPtr to_decl_list(const AST::Param::ListPtr &in);
 
-// Build the bare type node a data_type denotes (no variable name): the dedicated
-// scalar node for built-ins, the inline def for struct/union/enum, the type ref
-// for a named type; wrapped in a CustomTypeVar when packed dimensions are
-// present on an aggregate/named type. Used as a typedef/function-return type.
-AST::Node::Ptr build_data_type_def(const data_type_t &dt,
-														 const std::string &filename="", uint32_t line=0);
+// Build a net declaration node (WireNet/TriNet/Supply0Net/Supply1Net) carrying
+// the given data type, name, unpacked dims, continuous assign and delays.
+AST::Net::Ptr create_net_type(const decl_name_t &decl, net_type_t nt, AST::DataType::Ptr type,
+                              const std::string &filename="", uint32_t line=0);
 
-AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
-														 AST::Width::ListPtr widths,  std::string name,
-														 const std::string &filename="", uint32_t line=0);
+// Build the Var for `data_type name {unpacked} [= init]`.
+AST::Var::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
+                             const std::string &filename="", uint32_t line=0);
 
-// Build an Ioport for a port declared with a user-defined type (typedef name
-// or pkg::name). The direction node carries no width (unknown until the
-// typedef is resolved) and `second` is a CustomTypeVar holding the type ref.
-AST::Ioport::Ptr create_typed_ioport_decls(direction_t direction, const std::string &type_name,
-														 const std::string &type_package, const std::string &name,
-														 const std::string &filename="", uint32_t line=0);
+// Build the Var for an implicit-type declaration (`var a`, `var [3:0] a`):
+// type = ImplicitType(signing, packed dims).
+AST::Var::Ptr build_implicit_type(bool is_signed, AST::Dimension::ListPtr widths,
+                                  const decl_name_t &decl,
+                                  const std::string &filename="", uint32_t line=0);
 
-// Build an Ioport for a port declared with a built-in data_type (bit/atom/
-// non-integer/struct/union/enum). `second` is the data_type's node
-// (build_variable); the direction node carries its packed dims and signing.
-AST::Ioport::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
-														 const std::string &name,
-														 const std::string &filename="", uint32_t line=0);
+// Set the [const][var][lifetime] qualifiers on a Var and return it.
+AST::Node::Ptr wrap_data_modifier(AST::Var::Ptr inner, const data_qualifiers_t &q,
+                                  const std::string &filename="", uint32_t line=0);
 
-// Build an Ioport for a net port with an explicit integer_vector data type
-// (`wire logic [3:0] x`, `tri reg q`). `second` is the net node (create_net_type)
-// with its `type` child set to the data type keyword, like net_declaration.
-AST::Ioport::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
-														 const data_type_t &dt, const std::string &name,
-														 const std::string &filename="", uint32_t line=0);
+// Build a named-type declaration (`var my_t x`): one Var per name carrying the
+// NamedType (cloned) + packed dims and the qualifiers.
+AST::Node::ListPtr build_named_modifier(const AST::NamedType::Ptr &ref,
+                                        AST::Dimension::ListPtr widths,
+                                        const std::list<decl_name_t> &names,
+                                        const data_qualifiers_t &q,
+                                        const std::string &filename="", uint32_t line=0);
 
-// if return null, the create_ports_decls failed. Error information are set in loc and error_message.
-AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
-														const std::string &filename,
-														location &loc, std::string &error_message);
+// Build struct/union members for `data_type list_of_variable_decl_assignments`.
+AST::Member::ListPtr build_struct_members(const data_type_t &dt,
+                                          const std::list<decl_name_t> &names,
+                                          const std::string &filename="", uint32_t line=0);
+
+// Build the bare DataType a data_type denotes (typedef/return/member type).
+AST::DataType::Ptr build_data_type_def(const data_type_t &dt,
+                                       const std::string &filename="", uint32_t line=0);
+
+// Build a Port wrapping a directed declaration.
+AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
+                                   AST::Dimension::ListPtr widths, std::string name,
+                                   const std::string &filename="", uint32_t line=0);
+
+AST::Port::Ptr create_typed_ioport_decls(direction_t direction, const std::string &type_name,
+                                         const std::string &type_package, const std::string &name,
+                                         const std::string &filename="", uint32_t line=0);
+
+AST::Port::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
+                                     const std::string &name,
+                                     const std::string &filename="", uint32_t line=0);
+
+AST::Port::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
+                                         const data_type_t &dt, const std::string &name,
+                                         const std::string &filename="", uint32_t line=0);
+
+// if return null, the create_ports_decls failed. Error in loc and error_message.
+AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
+                                      const std::string &filename,
+                                      location &loc, std::string &error_message);
 }
 
 }
@@ -503,7 +501,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 typed_var_decl
 %type   <data_type_kind_t>                   integer_vector_type integer_atom_type non_integer_type
 %type   <signing_t>                          signing
-%type   <AST::Width::ListPtr>                packed_dimensions
+%type   <AST::Dimension::ListPtr>                packed_dimensions
 
 %type   <AST::GenerateStatement::Ptr>        generate
 %type   <AST::Node::ListPtr>                 generate_items
@@ -533,25 +531,27 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::AlwaysLatch::Ptr>              always_latch
 %type   <AST::Initial::Ptr>                  initial
 %type   <AST::Node::Ptr>                     initial_statement
-%type   <AST::Parameter::ListPtr>            params_block params param_assignment_list parameter_decl
-%type   <AST::Parameter::Ptr>                param_assignment param_type param_start
+%type   <AST::Param::ListPtr>            params_block params param_assignment_list parameter_decl
+%type   <AST::Param::Ptr>                param_assignment param_start
+%type   <AST::DataType::Ptr>             param_type
 %type   <AST::Defparamlist::Ptr>             defparam
 %type   <AST::Defparam::ListPtr>             defparamlist
 %type   <AST::Defparam::Ptr>                 defparam_assignment
-%type   <AST::Localparam::ListPtr>           localparam_assignment_list localparam_decl
-%type   <AST::Localparam::Ptr>               localparam_assignment localparam_type
-%type   <AST::Width::ListPtr>                widths
-%type   <AST::Width::Ptr>                    width
-%type   <AST::Length::Ptr>                   length
-%type   <AST::Length::ListPtr>               lengths
-%type   <AST::Node::ListPtr>                 ports_block ports
+%type   <AST::Param::ListPtr>           localparam_assignment_list localparam_decl
+%type   <AST::Param::Ptr>               localparam_assignment
+%type   <AST::DataType::Ptr>            localparam_type
+%type   <AST::Dimension::ListPtr>                widths
+%type   <AST::Dimension::Ptr>                    width
+%type   <AST::Dimension::Ptr>                   length
+%type   <AST::Dimension::ListPtr>               lengths
+%type   <AST::Port::ListPtr>                 ports_block ports
 %type   <AST::Lvalue::Ptr>                   lvalue
 %type   <AST::Rvalue::Ptr>                   rvalue
 %type   <AST::DelayStatement::Ptr>           delays
 %type   <AST::Node::Ptr>                     const_expression
 %type   <AST::Node::Ptr>                     pointer lpointer lpartselect
 %type   <AST::Identifier::Ptr>               identifier
-%type   <AST::IdentifierScope::Ptr>          scope
+%type   <AST::HierName::Ptr>          scope
 %type   <AST::Lconcat::Ptr>                  lconcat
 %type   <AST::Node::ListPtr>                 lconcatlist
 %type   <AST::Node::Ptr>                     lconcat_one
@@ -562,7 +562,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 pattern_items
 %type   <AST::Node::Ptr>                     pattern_item
 %type   <AST::Cast::Ptr>                     cast
-%type   <AST::Node::Ptr>                     casting_type
+%type   <AST::Cast::Ptr>                     casting_type
 %type   <AST::Node::Ptr>                     partselect
 %type   <AST::FloatConst::Ptr>               floatnumber
 %type   <AST::Node::Ptr>                     intnumber
@@ -618,7 +618,7 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <direction_t>                        function_portdir
 %type   <AST::FunctionCall::Ptr>             function_call
 %type   <AST::Node::ListPtr>                 function_args
-%type   <AST::Node::ListPtr>                 function_ports_block function_ports
+%type   <AST::Arg::ListPtr>                  function_ports_block function_ports
 %type   <AST::Function::Ptr>                 function function_rettype_name
 %type   <AST::Node::ListPtr>                 function_statement function_statements
 %type   <AST::Node::ListPtr>                 funcvar_decl function_calc
@@ -630,19 +630,19 @@ AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <direction_t>                        task_portdir
 %type   <AST::TaskCall::Ptr>                 task_call
 %type   <AST::Node::ListPtr>                 task_args
-%type   <AST::Node::ListPtr>                 task_ports_block task_ports
+%type   <AST::Arg::ListPtr>                  task_ports_block task_ports
 %type   <AST::Node::ListPtr>                 task_statement task_statements
 %type   <AST::Node::ListPtr>                 taskvar_decl task_calc
 
 %type   <AST::Disable::Ptr>                  disable
 %type   <bool>                               automatic
 %type   <AST::Typedef::Ptr>                  typedef_decl
-%type   <AST::EnumDef::Ptr>                  enum_def
+%type   <AST::EnumType::Ptr>                  enum_def
 %type   <AST::EnumItem::ListPtr>             enum_items
 %type   <AST::EnumItem::Ptr>                 enum_item
-%type   <AST::StructDef::Ptr>                struct_def
-%type   <AST::Union::Ptr>                    union_def
-%type   <AST::StructMember::ListPtr>         struct_members struct_member
+%type   <AST::StructType::Ptr>                struct_def
+%type   <AST::UnionType::Ptr>                    union_def
+%type   <AST::Member::ListPtr>         struct_members struct_member
 
 
 %%
@@ -867,11 +867,15 @@ pragma:         pragma TK_COMMA TK_IDENTIFIER TK_EQUALS expression
 
 moduledef:      TK_MODULE modulename module_imports params_block ports_block items TK_ENDMODULE
                 {
-                    // SV allows package imports in the module header; they
-                    // import into module scope, so prepend them to the items.
+                    // SV allows package imports in the module header; they import
+                    // into module scope, so prepend them to the items.
                     $6->splice($6->begin(), *$3);
-                    $$ = std::make_shared<AST::Module>($4, $5, $6, $2, scanner.get_default_nettype(),
-                                                       scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
+                    $$->set_default_nettype(scanner.get_default_nettype());
+                    $$->set_name($2);
+                    $$->set_params(ParserHelpers::to_decl_list($4));
+                    $$->set_ports($5);
+                    $$->set_items($6);
                 }
 
         |       TK_MODULE modulename module_imports ports_block items TK_ENDMODULE
@@ -889,7 +893,7 @@ moduledef:      TK_MODULE modulename module_imports params_block ports_block ite
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
                     $$->set_name($2);
-                    $$->set_params($4);
+                    $$->set_params(ParserHelpers::to_decl_list($4));
                     $$->set_ports($5);
                     if (!$3->empty()) $$->set_items($3);
                 }
@@ -946,18 +950,18 @@ params:         params TK_COMMA param_start
         |       params TK_COMMA param_assignment
                 {
                     $$ = $1;
-                    AST::Parameter::Ptr param = AST::cast_to<AST::Parameter>($1->back()->clone());
+                    // inherit the previous param's type by cloning it, override name/value
+                    AST::Param::Ptr param = AST::cast_to<AST::Param>($1->back()->clone());
                     param->set_line($3->get_line());
                     param->set_filename($3->get_filename());
                     param->set_name($3->get_name());
                     param->set_value($3->get_value());
-                    param->set_type($3->get_type());
                     $$->push_back(param);
                 }
 
         |       param_start
                 {
-                    $$ = std::make_shared<AST::Parameter::List>();
+                    $$ = std::make_shared<AST::Param::List>();
                     $$->push_back($1);
                 }
         ;
@@ -970,21 +974,21 @@ param_start:    TK_PARAMETER param_assignment
 
         |       TK_PARAMETER param_type param_assignment
                 {
-                    $$ = $2;
-                    $$->set_name($3->get_name());
-                    $$->set_value($3->get_value());
+                    $$ = $3;
+                    $$->set_type(AST::cast_to<AST::DataType>($2->clone()));
                 }
 
         |       TK_LOCALPARAM localparam_assignment
                 {
-                    $$ = AST::cast_to<AST::Parameter>($2);
+                    $$ = $2;
+                    $$->set_is_local(true);
                 }
 
         |       TK_LOCALPARAM localparam_type localparam_assignment
                 {
-                    $$ = AST::cast_to<AST::Parameter>($2);
-                    $$->set_name($3->get_name());
-                    $$->set_value($3->get_value());
+                    $$ = $3;
+                    $$->set_is_local(true);
+                    $$->set_type(AST::cast_to<AST::DataType>($2->clone()));
                 }
         ;
 
@@ -1160,7 +1164,7 @@ port_typed_name:
                     $$.widths = nullptr;
                     $$.name = $5;
                     $$.has_data_type = true;
-                    $$.data_type = data_type_t{$2, $3 == signing_t::SIGNED, $4, nullptr, nullptr};
+                    $$.data_type = data_type_t{$2, $3, $4, nullptr, nullptr};
                 }
         ;
 
@@ -1186,8 +1190,10 @@ ioports_decl:   ioports TK_SEMICOLON
                 {
                     location loc;
                     std::string error_message;
-                    $$ = ParserHelpers::create_ports_decls($1, scanner.get_filename(), loc, error_message);
-                    if(!$$) error(loc, error_message);
+                    auto _ports = ParserHelpers::create_ports_decls($1, scanner.get_filename(), loc, error_message);
+                    if(!_ports) error(loc, error_message);
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const AST::Port::Ptr &_p : *_ports) $$->push_back(_p);
                 }
         ;
 
@@ -1236,27 +1242,27 @@ ioport:         portdir portname
 port_data_type:
                 integer_vector_type signing packed_dimensions
                 {
-                    $$ = data_type_t{$1, $2 == signing_t::SIGNED, $3, nullptr, nullptr};
+                    $$ = data_type_t{$1, $2, $3, nullptr, nullptr};
                 }
         |       integer_atom_type signing
                 {
-                    $$ = data_type_t{$1, $2 != signing_t::UNSIGNED, nullptr, nullptr, nullptr};
+                    $$ = data_type_t{$1, $2, nullptr, nullptr, nullptr};
                 }
         |       non_integer_type
                 {
-                    $$ = data_type_t{$1, false, nullptr, nullptr, nullptr};
+                    $$ = data_type_t{$1, signing_t::NONE, nullptr, nullptr, nullptr};
                 }
         |       struct_def packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::STRUCT, false, $2, nullptr, AST::to_node($1)};
+                    $$ = data_type_t{data_type_kind_t::STRUCT, signing_t::NONE, $2, nullptr, $1};
                 }
         |       union_def packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::UNION, false, $2, nullptr, AST::to_node($1)};
+                    $$ = data_type_t{data_type_kind_t::UNION, signing_t::NONE, $2, nullptr, $1};
                 }
         |       enum_def packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::ENUM, false, $2, nullptr, AST::to_node($1)};
+                    $$ = data_type_t{data_type_kind_t::ENUM, signing_t::NONE, $2, nullptr, $1};
                 }
         ;
 
@@ -1279,14 +1285,14 @@ widths:         widths width
 
         |       width
                 {
-                    $$ = std::make_shared<AST::Width::List>();
+                    $$ = std::make_shared<AST::Dimension::List>();
                     $$->push_back($1);
                 }
         ;
 
 width:          TK_LBRACKET expression TK_COLON expression TK_RBRACKET
                 {
-                    $$ = std::make_shared<AST::Width>($2, $4, scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::RangeDim>($2, $4, scanner.get_filename(), @1.begin.line);
                 }
         ;
 
@@ -1299,7 +1305,7 @@ lengths:        lengths length
 
         |       length
                 {
-                    $$ = std::make_shared<AST::Length::List>();
+                    $$ = std::make_shared<AST::Dimension::List>();
                     $$->push_back($1);
                 }
         ;
@@ -1307,14 +1313,14 @@ lengths:        lengths length
 
 length:         TK_LBRACKET expression TK_COLON expression TK_RBRACKET
                 {
-                    $$ = std::make_shared<AST::Length>($2, $4, scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::RangeDim>($2, $4, scanner.get_filename(), @1.begin.line);
                 }
         |       TK_LBRACKET expression TK_RBRACKET
                 {
                     // single-size unpacked dimension `[N]` (IEEE unpacked_dimension
                     // ::= [ constant_expression ], ≡ [0:N-1]): the size is the msb,
                     // lsb stays null to mark the short form and round-trip as `[N]`.
-                    $$ = std::make_shared<AST::Length>($2, nullptr, scanner.get_filename(),
+                    $$ = std::make_shared<AST::SizeDim>($2, scanner.get_filename(),
                                                        @1.begin.line);
                 }
         ;
@@ -1483,7 +1489,7 @@ typedef_decl:
                 TK_TYPEDEF data_type TK_IDENTIFIER TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(ParserHelpers::build_data_type_def($2, scanner.get_filename(),
+                    $$->set_type(ParserHelpers::build_data_type_def($2, scanner.get_filename(),
                                                                    @1.begin.line));
                     $$->set_name($3);
                     $$->set_filename(scanner.get_filename());
@@ -1492,11 +1498,13 @@ typedef_decl:
 
         |       TK_TYPEDEF net_type widths TK_IDENTIFIER TK_SEMICOLON
                 {
-                    decl_name_t d{};
-                    AST::Variable::Ptr def = ParserHelpers::create_net_type(
-                        d, $2, $3, false, scanner.get_filename(), @1.begin.line);
+                    // typedef of a net type: the alias is the net's data type
+                    // (ImplicitType carrying the packed dims); the net keyword is
+                    // not a data_type and is dropped.
+                    auto def = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                    def->set_packed_dims($3);
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(AST::to_node(def));
+                    $$->set_type(def);
                     $$->set_name($4);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
@@ -1504,11 +1512,9 @@ typedef_decl:
 
         |       TK_TYPEDEF net_type TK_IDENTIFIER TK_SEMICOLON
                 {
-                    decl_name_t d{};
-                    AST::Variable::Ptr def = ParserHelpers::create_net_type(
-                        d, $2, nullptr, false, scanner.get_filename(), @1.begin.line);
+                    auto def = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(AST::to_node(def));
+                    $$->set_type(def);
                     $$->set_name($3);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
@@ -1517,11 +1523,10 @@ typedef_decl:
         |       TK_TYPEDEF TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     // named type alias: `typedef my_t other_t;`
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_name($2);
-                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($2, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                    $$->set_type(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
                                                                    @1.begin.line));
                     $$->set_name($3);
                     $$->set_filename(scanner.get_filename());
@@ -1531,11 +1536,10 @@ typedef_decl:
         |       TK_TYPEDEF TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
                 {
                     // named type alias with packed dims: `typedef my_t [3:0] arr_t;`
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_name($2);
-                    data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($2, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $3, ref, nullptr};
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                    $$->set_type(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
                                                                    @1.begin.line));
                     $$->set_name($4);
                     $$->set_filename(scanner.get_filename());
@@ -1545,12 +1549,10 @@ typedef_decl:
         |       TK_TYPEDEF package_scope TK_IDENTIFIER TK_IDENTIFIER TK_SEMICOLON
                 {
                     // package-scoped type alias: `typedef pkg::T other_t;`
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_package($2);
-                    ref->set_name($3);
-                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($3, $2, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                    $$->set_type(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
                                                                    @1.begin.line));
                     $$->set_name($4);
                     $$->set_filename(scanner.get_filename());
@@ -1560,12 +1562,10 @@ typedef_decl:
         |       TK_TYPEDEF package_scope TK_IDENTIFIER widths TK_IDENTIFIER TK_SEMICOLON
                 {
                     // package-scoped alias with packed dims: `typedef pkg::T [3:0] arr_t;`
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_package($2);
-                    ref->set_name($3);
-                    data_type_t dt{data_type_kind_t::NAMED, false, $4, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($3, $2, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $4, ref, nullptr};
                     $$ = std::make_shared<AST::Typedef>();
-                    $$->set_def(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                    $$->set_type(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
                                                                    @1.begin.line));
                     $$->set_name($5);
                     $$->set_filename(scanner.get_filename());
@@ -1576,64 +1576,47 @@ typedef_decl:
 enum_def:
                 TK_ENUM TK_LBRACE enum_items TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::EnumDef>();
-                    $$->set_base_type(AST::EnumDef::Base_typeEnum::NONE);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::EnumType>(scanner.get_filename(), @1.begin.line);
                     $$->set_items($3);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_ENUM TK_LOGIC widths TK_LBRACE enum_items TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::EnumDef>();
-                    $$->set_base_type(AST::EnumDef::Base_typeEnum::LOGIC);
-                    $$->set_sign(false);
-                    $$->set_widths($3);
+                    $$ = std::make_shared<AST::EnumType>(scanner.get_filename(), @1.begin.line);
+                    auto base = std::make_shared<AST::LogicType>(scanner.get_filename(), @1.begin.line);
+                    base->set_packed_dims($3);
+                    $$->set_base(base);
                     $$->set_items($5);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_ENUM TK_LOGIC TK_LBRACE enum_items TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::EnumDef>();
-                    $$->set_base_type(AST::EnumDef::Base_typeEnum::LOGIC);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::EnumType>(scanner.get_filename(), @1.begin.line);
+                    $$->set_base(std::make_shared<AST::LogicType>(scanner.get_filename(), @1.begin.line));
                     $$->set_items($4);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_ENUM TK_BIT widths TK_LBRACE enum_items TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::EnumDef>();
-                    $$->set_base_type(AST::EnumDef::Base_typeEnum::BIT);
-                    $$->set_sign(false);
-                    $$->set_widths($3);
+                    $$ = std::make_shared<AST::EnumType>(scanner.get_filename(), @1.begin.line);
+                    auto base = std::make_shared<AST::BitType>(scanner.get_filename(), @1.begin.line);
+                    base->set_packed_dims($3);
+                    $$->set_base(base);
                     $$->set_items($5);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_ENUM TK_BIT TK_LBRACE enum_items TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::EnumDef>();
-                    $$->set_base_type(AST::EnumDef::Base_typeEnum::BIT);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::EnumType>(scanner.get_filename(), @1.begin.line);
+                    $$->set_base(std::make_shared<AST::BitType>(scanner.get_filename(), @1.begin.line));
                     $$->set_items($4);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_ENUM TK_INT TK_LBRACE enum_items TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::EnumDef>();
-                    $$->set_base_type(AST::EnumDef::Base_typeEnum::INT);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::EnumType>(scanner.get_filename(), @1.begin.line);
+                    $$->set_base(std::make_shared<AST::IntType>(scanner.get_filename(), @1.begin.line));
                     $$->set_items($4);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
         ;
 
@@ -1673,63 +1656,45 @@ enum_item:
 struct_def:
                 TK_STRUCT TK_PACKED TK_SIGNED TK_LBRACE struct_members TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::StructDef>();
-                    $$->set_packed(true);
-                    $$->set_sign(true);
+                    $$ = std::make_shared<AST::StructType>(scanner.get_filename(), @1.begin.line);
+                    $$->set_is_packed(true);
+                    $$->set_signing(AST::DataType::SigningEnum::SIGNED);
                     $$->set_members($5);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_STRUCT TK_PACKED TK_LBRACE struct_members TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::StructDef>();
-                    $$->set_packed(true);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::StructType>(scanner.get_filename(), @1.begin.line);
+                    $$->set_is_packed(true);
                     $$->set_members($4);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_STRUCT TK_LBRACE struct_members TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::StructDef>();
-                    $$->set_packed(false);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::StructType>(scanner.get_filename(), @1.begin.line);
                     $$->set_members($3);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
         ;
 
 union_def:      TK_UNION TK_PACKED TK_SIGNED TK_LBRACE struct_members TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::Union>();
-                    $$->set_packed(true);
-                    $$->set_sign(true);
+                    $$ = std::make_shared<AST::UnionType>(scanner.get_filename(), @1.begin.line);
+                    $$->set_is_packed(true);
+                    $$->set_signing(AST::DataType::SigningEnum::SIGNED);
                     $$->set_members($5);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_UNION TK_PACKED TK_LBRACE struct_members TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::Union>();
-                    $$->set_packed(true);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::UnionType>(scanner.get_filename(), @1.begin.line);
+                    $$->set_is_packed(true);
                     $$->set_members($4);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
 
         |       TK_UNION TK_LBRACE struct_members TK_RBRACE
                 {
-                    $$ = std::make_shared<AST::Union>();
-                    $$->set_packed(false);
-                    $$->set_sign(false);
+                    $$ = std::make_shared<AST::UnionType>(scanner.get_filename(), @1.begin.line);
                     $$->set_members($3);
-                    $$->set_filename(scanner.get_filename());
-                    $$->set_line(@1.begin.line);
                 }
         ;
 
@@ -1759,35 +1724,29 @@ struct_member:  data_type var_decl_namelist TK_SEMICOLON
                 }
         |       TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_name($1);
-                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = ParserHelpers::build_struct_members(dt, $2, scanner.get_filename(),
                                                              @1.begin.line);
                 }
         |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_name($1);
-                    data_type_t dt{data_type_kind_t::NAMED, false, $2, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $2, ref, nullptr};
                     $$ = ParserHelpers::build_struct_members(dt, $3, scanner.get_filename(),
                                                              @1.begin.line);
                 }
         |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_package($1);
-                    ref->set_name($2);
-                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = ParserHelpers::build_struct_members(dt, $3, scanner.get_filename(),
                                                              @1.begin.line);
                 }
         |       package_scope TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_package($1);
-                    ref->set_name($2);
-                    data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $3, ref, nullptr};
                     $$ = ParserHelpers::build_struct_members(dt, $4, scanner.get_filename(),
                                                              @1.begin.line);
                 }
@@ -1797,11 +1756,11 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $4) {
-                        AST::Width::ListPtr widths = AST::Width::clone_list($3);
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, $1, widths, true);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                        auto type = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                        type->set_signing(AST::DataType::SigningEnum::SIGNED);
+                        type->set_packed_dims(AST::Dimension::clone_list($3));
+                        $$->push_back(ParserHelpers::create_net_type(decl_name, $1, type,
+                                          scanner.get_filename(), @1.begin.line));
                     }
                 }
 
@@ -1809,11 +1768,10 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $3) {
-                        AST::Width::ListPtr widths = AST::Width::clone_list($2);
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, $1, widths, false);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                        auto type = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                        type->set_packed_dims(AST::Dimension::clone_list($2));
+                        $$->push_back(ParserHelpers::create_net_type(decl_name, $1, type,
+                                          scanner.get_filename(), @1.begin.line));
                     }
                 }
 
@@ -1821,37 +1779,26 @@ net_decl:       net_type TK_SIGNED widths net_decl_namelist TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $2) {
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(decl_name, $1,
-                                                                          AST::Width::ListPtr(), false);
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                        $$->push_back(ParserHelpers::create_net_type(decl_name, $1, nullptr,
+                                          scanner.get_filename(), @1.begin.line));
                     }
                 }
 
         |       net_type integer_vector_type signing packed_dimensions net_decl_namelist TK_SEMICOLON
                 {
-                    // net_declaration with an explicit integer_vector data type
-                    // (`wire logic [3:0] x`). The net node carries the data type
-                    // in `type` (an Identifier with the keyword); its signing and
-                    // packed dims stay on the net. Only `logic` is a valid net
-                    // data type (reg may not directly follow a net keyword, bit
-                    // is 2-state — 6.7.1).
+                    // `wire logic [3:0] x`: explicit integer_vector net data type.
+                    // Only `logic` is valid (reg may not directly follow a net
+                    // keyword, bit is 2-state — IEEE 1800-2017 6.7.1).
                     if(const char *err = net_integer_vector_error($2)) {
                         error(@2, err);
                     }
-                    const char *kw = "logic";
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $5) {
-                        AST::Width::ListPtr widths = AST::Width::clone_list($4);
-                        AST::Variable::Ptr net = ParserHelpers::create_net_type(
-                            decl_name, $1, widths, $3 == signing_t::SIGNED);
-                        auto type = std::make_shared<AST::Identifier>(scanner.get_filename(), @2.begin.line);
-                        type->set_name(kw);
-                        std::static_pointer_cast<AST::Net>(net)->set_type(AST::to_node(type));
-                        net->set_filename(scanner.get_filename());
-                        net->set_line(@1.begin.line);
-                        $$->push_back(net);
+                        data_type_t dt{$2, $3, $4, nullptr, nullptr};
+                        AST::DataType::Ptr type =
+                            ParserHelpers::make_data_type(dt, scanner.get_filename(), @2.begin.line);
+                        $$->push_back(ParserHelpers::create_net_type(decl_name, $1, type,
+                                          scanner.get_filename(), @1.begin.line));
                     }
                 }
         ;
@@ -1895,28 +1842,28 @@ packed_dimensions:
 data_type:      integer_vector_type signing packed_dimensions
                 {
                     // vector types are unsigned by default; `signed` flips it
-                    $$ = data_type_t{$1, $2 == signing_t::SIGNED, $3, nullptr, nullptr};
+                    $$ = data_type_t{$1, $2, $3, nullptr, nullptr};
                 }
         |       integer_atom_type signing
                 {
                     // atom types are signed by default; `unsigned` flips it
-                    $$ = data_type_t{$1, $2 != signing_t::UNSIGNED, nullptr, nullptr, nullptr};
+                    $$ = data_type_t{$1, $2, nullptr, nullptr, nullptr};
                 }
         |       non_integer_type
                 {
-                    $$ = data_type_t{$1, false, nullptr, nullptr, nullptr};
+                    $$ = data_type_t{$1, signing_t::NONE, nullptr, nullptr, nullptr};
                 }
         |       struct_def packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::STRUCT, false, $2, nullptr, AST::to_node($1)};
+                    $$ = data_type_t{data_type_kind_t::STRUCT, signing_t::NONE, $2, nullptr, $1};
                 }
         |       union_def packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::UNION, false, $2, nullptr, AST::to_node($1)};
+                    $$ = data_type_t{data_type_kind_t::UNION, signing_t::NONE, $2, nullptr, $1};
                 }
         |       enum_def packed_dimensions
                 {
-                    $$ = data_type_t{data_type_kind_t::ENUM, false, $2, nullptr, AST::to_node($1)};
+                    $$ = data_type_t{data_type_kind_t::ENUM, signing_t::NONE, $2, nullptr, $1};
                 }
         ;
 
@@ -1928,9 +1875,8 @@ data_type:      integer_vector_type signing packed_dimensions
 // build_variable(NAMED) keeps node construction unified.
 typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_name($1);
-                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $2) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
@@ -1939,9 +1885,8 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 }
         |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_name($1);
-                    data_type_t dt{data_type_kind_t::NAMED, false, $2, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $2, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $3) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
@@ -1950,10 +1895,8 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 }
         |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_package($1);
-                    ref->set_name($2);
-                    data_type_t dt{data_type_kind_t::NAMED, false, nullptr, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $3) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
@@ -1962,10 +1905,8 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                 }
         |       package_scope TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    ref->set_package($1);
-                    ref->set_name($2);
-                    data_type_t dt{data_type_kind_t::NAMED, false, $3, AST::to_node(ref), nullptr};
+                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $3, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $4) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
@@ -1982,7 +1923,7 @@ data_declaration:
                 {
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &decl_name: $2) {
-                        AST::Variable::Ptr var = ParserHelpers::build_variable(
+                        AST::Var::Ptr var = ParserHelpers::build_variable(
                             $1, decl_name, scanner.get_filename(), @1.begin.line);
                         $$->push_back(var);
                     }
@@ -1998,7 +1939,7 @@ data_declaration:
                             error(@1, "a 'const' variable shall have an initializer "
                                       "(IEEE 1800-2017 6.8)");
                         }
-                        AST::Variable::Ptr var = ParserHelpers::build_variable(
+                        AST::Var::Ptr var = ParserHelpers::build_variable(
                             $2, decl_name, scanner.get_filename(), @1.begin.line);
                         $$->push_back(ParserHelpers::wrap_data_modifier(
                             var, $1, scanner.get_filename(), @1.begin.line));
@@ -2020,9 +1961,9 @@ data_declaration:
                             error(@1, "a 'const' variable shall have an initializer "
                                       "(IEEE 1800-2017 6.8)");
                         }
-                        AST::Width::ListPtr widths =
-                            $2.widths ? AST::Width::clone_list($2.widths) : nullptr;
-                        AST::Variable::Ptr var = ParserHelpers::build_implicit_type(
+                        AST::Dimension::ListPtr widths =
+                            $2.widths ? AST::Dimension::clone_list($2.widths) : nullptr;
+                        AST::Var::Ptr var = ParserHelpers::build_implicit_type(
                             $2.is_signed, widths, decl_name, scanner.get_filename(),
                             @1.begin.line);
                         $$->push_back(ParserHelpers::wrap_data_modifier(
@@ -2043,9 +1984,8 @@ data_declaration:
                             error(@1, "a 'const' variable shall have an initializer "
                                       "(IEEE 1800-2017 6.8)");
                         }
-                        auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(),
+                        auto ref = ParserHelpers::make_named_type($2, "", scanner.get_filename(),
                                                                      @2.begin.line);
-                        ref->set_name($2);
                         // The brackets after the type name are a packed dimension.
                         $$ = ParserHelpers::build_named_modifier(
                             ref, lengths_to_widths($3.dims), $3.names, $1,
@@ -2068,7 +2008,7 @@ data_declaration:
                                 error(@1, "a 'const' variable shall have an initializer "
                                           "(IEEE 1800-2017 6.8)");
                             }
-                            AST::Variable::Ptr var = ParserHelpers::build_implicit_type(
+                            AST::Var::Ptr var = ParserHelpers::build_implicit_type(
                                 false, nullptr, decl_name, scanner.get_filename(), @1.begin.line);
                             $$->push_back(ParserHelpers::wrap_data_modifier(
                                 var, $1, scanner.get_filename(), @1.begin.line));
@@ -2083,9 +2023,7 @@ data_declaration:
                         error(@1, "a 'const' variable shall have an initializer "
                                   "(IEEE 1800-2017 6.8)");
                     }
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @3.begin.line);
-                    ref->set_package($2);
-                    ref->set_name($3);
+                    auto ref = ParserHelpers::make_named_type($3, $2, scanner.get_filename(), @3.begin.line);
                     $$ = ParserHelpers::build_named_modifier(ref, nullptr, $4, $1,
                                                              scanner.get_filename(), @1.begin.line);
                 }
@@ -2095,9 +2033,7 @@ data_declaration:
                         error(@1, "a 'const' variable shall have an initializer "
                                   "(IEEE 1800-2017 6.8)");
                     }
-                    auto ref = std::make_shared<AST::CustomType>(scanner.get_filename(), @3.begin.line);
-                    ref->set_package($2);
-                    ref->set_name($3);
+                    auto ref = ParserHelpers::make_named_type($3, $2, scanner.get_filename(), @3.begin.line);
                     $$ = ParserHelpers::build_named_modifier(ref, $4, $5, $1,
                                                              scanner.get_filename(), @1.begin.line);
                 }
@@ -2109,27 +2045,27 @@ data_qualifiers:
                 {
                     $$.is_var = $1.is_var || $2.is_var;
                     $$.is_const = $1.is_const || $2.is_const;
-                    $$.lifetime = ($2.lifetime != AST::DataModifier::LifetimeEnum::NONE)
+                    $$.lifetime = ($2.lifetime != AST::Var::LifetimeEnum::NONE)
                                       ? $2.lifetime : $1.lifetime;
                 }
         ;
 
 data_qualifier: TK_VAR
                 {
-                    $$ = data_qualifiers_t{true, false, AST::DataModifier::LifetimeEnum::NONE};
+                    $$ = data_qualifiers_t{true, false, AST::Var::LifetimeEnum::NONE};
                 }
         |       TK_CONST
                 {
-                    $$ = data_qualifiers_t{false, true, AST::DataModifier::LifetimeEnum::NONE};
+                    $$ = data_qualifiers_t{false, true, AST::Var::LifetimeEnum::NONE};
                 }
         |       TK_STATIC
                 {
-                    $$ = data_qualifiers_t{false, false, AST::DataModifier::LifetimeEnum::STATIC};
+                    $$ = data_qualifiers_t{false, false, AST::Var::LifetimeEnum::STATIC};
                 }
         |       TK_AUTOMATIC
                 {
                     $$ = data_qualifiers_t{false, false,
-                                           AST::DataModifier::LifetimeEnum::AUTOMATIC};
+                                           AST::Var::LifetimeEnum::AUTOMATIC};
                 }
         ;
 
@@ -2211,7 +2147,7 @@ net_decl_name:  TK_IDENTIFIER
                 {
                     $$.ldelay = AST::DelayStatement::Ptr();
                     $$.name = $1;
-                    $$.lengths = AST::Length::ListPtr();
+                    $$.lengths = AST::Dimension::ListPtr();
                     $$.rdelay = AST::DelayStatement::Ptr();
                     $$.rvalue = AST::Rvalue::Ptr();
                 }
@@ -2229,7 +2165,7 @@ net_decl_name:  TK_IDENTIFIER
                 {
                     $$.ldelay = $1;
                     $$.name = $2;
-                    $$.lengths = AST::Length::ListPtr();
+                    $$.lengths = AST::Dimension::ListPtr();
                     $$.rdelay = $4;
                     $$.rvalue = $5;
                 }
@@ -2238,7 +2174,7 @@ net_decl_name:  TK_IDENTIFIER
                 {
                     $$.ldelay = $1;
                     $$.name = $2;
-                    $$.lengths = AST::Length::ListPtr();
+                    $$.lengths = AST::Dimension::ListPtr();
                     $$.rdelay = AST::DelayStatement::Ptr();
                     $$.rvalue = $4;
                 }
@@ -2247,7 +2183,7 @@ net_decl_name:  TK_IDENTIFIER
                 {
                     $$.ldelay = AST::DelayStatement::Ptr();
                     $$.name = $1;
-                    $$.lengths = AST::Length::ListPtr();
+                    $$.lengths = AST::Dimension::ListPtr();
                     $$.rdelay = $3;
                     $$.rvalue = $4;
                 }
@@ -2256,7 +2192,7 @@ net_decl_name:  TK_IDENTIFIER
                 {
                     $$.ldelay = AST::DelayStatement::Ptr();
                     $$.name = $1;
-                    $$.lengths = AST::Length::ListPtr();
+                    $$.lengths = AST::Dimension::ListPtr();
                     $$.rdelay = AST::DelayStatement::Ptr();
                     $$.rvalue = $3;
                 }
@@ -2282,7 +2218,7 @@ var_decl_name:  TK_IDENTIFIER
                 {
                     $$.ldelay = AST::DelayStatement::Ptr();
                     $$.name = $1;
-                    $$.lengths = AST::Length::ListPtr();
+                    $$.lengths = AST::Dimension::ListPtr();
                     $$.rdelay = AST::DelayStatement::Ptr();
                     $$.rvalue = AST::Rvalue::Ptr();
                 }
@@ -2300,7 +2236,7 @@ var_decl_name:  TK_IDENTIFIER
                 {
                     $$.ldelay = AST::DelayStatement::Ptr();
                     $$.name = $1;
-                    $$.lengths = AST::Length::ListPtr();
+                    $$.lengths = AST::Dimension::ListPtr();
                     $$.rdelay = AST::DelayStatement::Ptr();
                     $$.rvalue = $3;
                 }
@@ -2310,18 +2246,18 @@ var_decl_name:  TK_IDENTIFIER
 parameter_decl: TK_PARAMETER param_assignment_list TK_SEMICOLON
                 {
                     $$ = $2;
+                    for(AST::Param::Ptr param: *$$) {
+                        if(!param->get_type()) {
+                            param->set_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
+                        }
+                    }
                 }
 
         |       TK_PARAMETER param_type param_assignment_list TK_SEMICOLON
                 {
                     $$ = $3;
-                    for(AST::Parameter::Ptr param: *$$) {
-                        AST::Width::ListPtr widths = $2->get_widths();
-                        if (widths) {
-                            param->set_widths(AST::Width::clone_list(widths));
-                        }
-                        param->set_sign($2->get_sign());
-                        param->set_type($2->get_type());
+                    for(AST::Param::Ptr param: *$$) {
+                        param->set_type(AST::cast_to<AST::DataType>($2->clone()));
                     }
                 }
         ;
@@ -2331,18 +2267,20 @@ localparam_decl:
                 TK_LOCALPARAM localparam_assignment_list TK_SEMICOLON
                 {
                     $$ = $2;
+                    for(AST::Param::Ptr param: *$$) {
+                        param->set_is_local(true);
+                        if(!param->get_type()) {
+                            param->set_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
+                        }
+                    }
                 }
 
         |       TK_LOCALPARAM localparam_type localparam_assignment_list TK_SEMICOLON
                 {
                     $$ = $3;
-                    for(AST::Localparam::Ptr lparam: *$$) {
-                        AST::Width::ListPtr widths = $2->get_widths();
-                        if (widths) {
-                            lparam->set_widths(AST::Width::clone_list(widths));
-                        }
-                        lparam->set_sign($2->get_sign());
-                        lparam->set_type($2->get_type());
+                    for(AST::Param::Ptr param: *$$) {
+                        param->set_is_local(true);
+                        param->set_type(AST::cast_to<AST::DataType>($2->clone()));
                     }
                 }
         ;
@@ -2350,213 +2288,85 @@ localparam_decl:
 
 param_type:     widths
                 {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths($1);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
+                    auto t = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_packed_dims($1);
+                    $$ = t;
                 }
-
         |       TK_SIGNED widths
                 {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths($2);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
+                    auto t = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_signing(AST::DataType::SigningEnum::SIGNED);
+                    t->set_packed_dims($2);
+                    $$ = t;
                 }
-
         |       TK_SIGNED
                 {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
+                    auto t = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_signing(AST::DataType::SigningEnum::SIGNED);
+                    $$ = t;
                 }
-
-        |       TK_INTEGER
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::INTEGER);
-                }
-
-        |       TK_REAL
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::REAL);
-                }
-
+        |       TK_INTEGER  { $$ = std::make_shared<AST::IntegerType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_REAL     { $$ = std::make_shared<AST::RealType>(scanner.get_filename(), @1.begin.line); }
         |       TK_LOGIC widths
                 {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths($2);
-                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
+                    auto t = std::make_shared<AST::LogicType>(scanner.get_filename(), @1.begin.line);
+                    t->set_packed_dims($2);
+                    $$ = t;
                 }
-
-        |       TK_LOGIC
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
-                }
-
-        |       TK_INT
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::INT);
-                }
-
+        |       TK_LOGIC    { $$ = std::make_shared<AST::LogicType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_INT      { $$ = std::make_shared<AST::IntType>(scanner.get_filename(), @1.begin.line); }
         |       TK_BIT widths
                 {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths($2);
-                    $$->set_type(AST::Parameter::TypeEnum::BIT);
+                    auto t = std::make_shared<AST::BitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_packed_dims($2);
+                    $$ = t;
                 }
-
-        |       TK_BIT
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::BIT);
-                }
-
-        |       TK_BYTE
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::BYTE);
-                }
-
-        |       TK_SHORTINT
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::SHORTINT);
-                }
-
-        |       TK_LONGINT
-                {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::LONGINT);
-                }
+        |       TK_BIT      { $$ = std::make_shared<AST::BitType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_BYTE     { $$ = std::make_shared<AST::ByteType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_SHORTINT { $$ = std::make_shared<AST::ShortintType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_LONGINT  { $$ = std::make_shared<AST::LongintType>(scanner.get_filename(), @1.begin.line); }
         ;
 
 
 localparam_type:widths
                 {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths($1);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
+                    auto t = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_packed_dims($1);
+                    $$ = t;
                 }
-
         |       TK_SIGNED widths
                 {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths($2);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
+                    auto t = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_signing(AST::DataType::SigningEnum::SIGNED);
+                    t->set_packed_dims($2);
+                    $$ = t;
                 }
-
         |       TK_SIGNED
                 {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
+                    auto t = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_signing(AST::DataType::SigningEnum::SIGNED);
+                    $$ = t;
                 }
-
-        |       TK_INTEGER
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::INTEGER);
-                }
-
-        |       TK_REAL
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::REAL);
-                }
-
+        |       TK_INTEGER  { $$ = std::make_shared<AST::IntegerType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_REAL     { $$ = std::make_shared<AST::RealType>(scanner.get_filename(), @1.begin.line); }
         |       TK_LOGIC widths
                 {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths($2);
-                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
+                    auto t = std::make_shared<AST::LogicType>(scanner.get_filename(), @1.begin.line);
+                    t->set_packed_dims($2);
+                    $$ = t;
                 }
-
-        |       TK_LOGIC
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::LOGIC);
-                }
-
-        |       TK_INT
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::INT);
-                }
-
+        |       TK_LOGIC    { $$ = std::make_shared<AST::LogicType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_INT      { $$ = std::make_shared<AST::IntType>(scanner.get_filename(), @1.begin.line); }
         |       TK_BIT widths
                 {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths($2);
-                    $$->set_type(AST::Parameter::TypeEnum::BIT);
+                    auto t = std::make_shared<AST::BitType>(scanner.get_filename(), @1.begin.line);
+                    t->set_packed_dims($2);
+                    $$ = t;
                 }
-
-        |       TK_BIT
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(false);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::BIT);
-                }
-
-        |       TK_BYTE
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::BYTE);
-                }
-
-        |       TK_SHORTINT
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::SHORTINT);
-                }
-
-        |       TK_LONGINT
-                {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
-                    $$->set_sign(true);
-                    $$->set_widths(nullptr);
-                    $$->set_type(AST::Parameter::TypeEnum::LONGINT);
-                }
+        |       TK_BIT      { $$ = std::make_shared<AST::BitType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_BYTE     { $$ = std::make_shared<AST::ByteType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_SHORTINT { $$ = std::make_shared<AST::ShortintType>(scanner.get_filename(), @1.begin.line); }
+        |       TK_LONGINT  { $$ = std::make_shared<AST::LongintType>(scanner.get_filename(), @1.begin.line); }
         ;
 
 
@@ -2566,10 +2376,9 @@ param_assignment_list:
                     $$ = $1;
                     $1->push_back($3);
                 }
-
         |       param_assignment
                 {
-                    $$ = std::make_shared<AST::Parameter::List>();
+                    $$ = std::make_shared<AST::Param::List>();
                     $$->push_back($1);
                 }
         ;
@@ -2578,19 +2387,14 @@ param_assignment_list:
 param_assignment:
                 TK_IDENTIFIER TK_EQUALS rvalue
                 {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Param>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
                     $$->set_value($3);
-                    $$->set_sign(false);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
                 }
-
         |       TK_IDENTIFIER
                 {
-                    $$ = std::make_shared<AST::Parameter>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Param>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
-                    $$->set_sign(false);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
                 }
         ;
 
@@ -2601,10 +2405,9 @@ localparam_assignment_list:
                     $$ = $1;
                     $1->push_back($3);
                 }
-
         |       localparam_assignment
                 {
-                    $$ = std::make_shared<AST::Localparam::List>();
+                    $$ = std::make_shared<AST::Param::List>();
                     $$->push_back($1);
                 }
         ;
@@ -2613,12 +2416,11 @@ localparam_assignment_list:
 localparam_assignment:
                 TK_IDENTIFIER TK_EQUALS rvalue
                 {
-                    $$ = std::make_shared<AST::Localparam>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Param>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
                     $$->set_value($3);
-                    $$->set_sign(false);
-                    $$->set_type(AST::Parameter::TypeEnum::NONE);
                 }
+        ;
         ;
 
 
@@ -3054,7 +2856,7 @@ expression:     TK_MINUS expression %prec TK_UMINUS
 scoped_ref:     package_scope TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    $$->set_package($1);
+                    $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                     $$->set_name($2);
                 }
         ;
@@ -3185,8 +2987,7 @@ pattern_item:   expression
 // signing keyword, a named type, or a size (constant expression).
 cast:           casting_type TK_TICK_LPAREN expression TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::Cast>(scanner.get_filename(), @1.begin.line);
-                    $$->set_type($1);
+                    $$ = $1;
                     $$->set_expr($3);
                 }
         ;
@@ -3194,45 +2995,48 @@ cast:           casting_type TK_TICK_LPAREN expression TK_RPARENTHESIS
 
 casting_type:   integer_vector_type
                 {
-                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    id->set_name(data_type_kind_keyword($1));
-                    $$ = AST::to_node(id);
+                    data_type_t dt{$1, signing_t::NONE, nullptr, nullptr, nullptr};
+                    auto c = std::make_shared<AST::TypeCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_target(ParserHelpers::make_data_type(dt, scanner.get_filename(), @1.begin.line));
+                    $$ = c;
                 }
 
         |       integer_atom_type
                 {
-                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    id->set_name(data_type_kind_keyword($1));
-                    $$ = AST::to_node(id);
+                    data_type_t dt{$1, signing_t::NONE, nullptr, nullptr, nullptr};
+                    auto c = std::make_shared<AST::TypeCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_target(ParserHelpers::make_data_type(dt, scanner.get_filename(), @1.begin.line));
+                    $$ = c;
                 }
 
         |       non_integer_type
                 {
-                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    id->set_name(data_type_kind_keyword($1));
-                    $$ = AST::to_node(id);
+                    data_type_t dt{$1, signing_t::NONE, nullptr, nullptr, nullptr};
+                    auto c = std::make_shared<AST::TypeCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_target(ParserHelpers::make_data_type(dt, scanner.get_filename(), @1.begin.line));
+                    $$ = c;
                 }
 
         |       TK_SIGNED
                 {
-                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    id->set_name("signed");
-                    $$ = AST::to_node(id);
+                    auto c = std::make_shared<AST::SigningCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_signing(AST::SigningCast::SigningEnum::SIGNED);
+                    $$ = c;
                 }
 
         |       TK_UNSIGNED
                 {
-                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    id->set_name("unsigned");
-                    $$ = AST::to_node(id);
+                    auto c = std::make_shared<AST::SigningCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_signing(AST::SigningCast::SigningEnum::UNSIGNED);
+                    $$ = c;
                 }
 
         |       TK_IDENTIFIER
                 {
                     // named type cast: `my_t'(x)`
-                    auto id = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
-                    id->set_name($1);
-                    $$ = AST::to_node(id);
+                    auto c = std::make_shared<AST::TypeCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_target(ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line));
+                    $$ = c;
                 }
         ;
 
@@ -4852,8 +4656,9 @@ function:       TK_FUNCTION automatic function_rettype_name function_ports_block
                     $$ = $3;
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
-                    $$->set_automatic($2);
-                    $$->set_ports($4);
+                    $$->set_lifetime($2 ? AST::Function::LifetimeEnum::AUTOMATIC
+                                        : AST::Function::LifetimeEnum::NONE);
+                    $$->set_args($4);
                     $$->set_statements($5);
                 }
         ;
@@ -4866,10 +4671,9 @@ function:       TK_FUNCTION automatic function_rettype_name function_ports_block
 function_rettype_name:
                 TK_IDENTIFIER
                 {
-                    // no return type, $1 is the function name
+                    // no return type, $1 is the function name (implicit 1-bit return)
                     $$ = std::make_shared<AST::Function>();
-                    $$->set_retsign(false);
-                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    $$->set_return_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
                     $$->set_name($1);
                 }
 
@@ -4877,11 +4681,7 @@ function_rettype_name:
                 {
                     // user-defined return type $1, name $2
                     $$ = std::make_shared<AST::Function>();
-                    $$->set_retsign(false);
-                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
-                    auto t = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    t->set_name($1);
-                    $$->set_rettype_ref(AST::to_node(t));
+                    $$->set_return_type(ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line));
                     $$->set_name($2);
                 }
 
@@ -4889,30 +4689,30 @@ function_rettype_name:
                 {
                     // package-scoped return type $1::$2, name $3
                     $$ = std::make_shared<AST::Function>();
-                    $$->set_retsign(false);
-                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
-                    auto t = std::make_shared<AST::CustomType>(scanner.get_filename(), @1.begin.line);
-                    t->set_package($1);
-                    t->set_name($2);
-                    $$->set_rettype_ref(AST::to_node(t));
+                    $$->set_return_type(ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line));
                     $$->set_name($3);
                 }
 
         |       widths TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Function>();
-                    $$->set_retsign(false);
-                    $$->set_retwidths($1);
-                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    {
+                        auto rt = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                        rt->set_packed_dims($1);
+                        $$->set_return_type(rt);
+                    }
                     $$->set_name($2);
                 }
 
         |       TK_SIGNED widths TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Function>();
-                    $$->set_retsign(false);
-                    $$->set_retwidths($2);
-                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
+                    {
+                        auto rt = std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line);
+                        rt->set_signing(AST::DataType::SigningEnum::SIGNED);
+                        rt->set_packed_dims($2);
+                        $$->set_return_type(rt);
+                    }
                     $$->set_name($3);
                 }
 
@@ -4927,10 +4727,7 @@ function_rettype_name:
                     // skips rettype_ref, so a built-in scalar Variable node here
                     // is not mistaken for a declared variable.
                     $$ = std::make_shared<AST::Function>();
-                    $$->set_rettype(AST::Function::RettypeEnum::NONE);
-                    $$->set_retsign(false);
-                    $$->set_rettype_ref(ParserHelpers::build_data_type_def(
-                                            $1, scanner.get_filename(), @1.begin.line));
+                    $$->set_return_type(ParserHelpers::build_data_type_def($1, scanner.get_filename(), @1.begin.line));
                     $$->set_name($2);
                 }
         ;
@@ -4956,10 +4753,7 @@ function_ports_block:
 
 function_ports: function_portinfo_list
                 {
-                    location loc;
-                    std::string error_message;
-                    $$ = ParserHelpers::create_ports_decls($1, scanner.get_filename(), loc, error_message);
-                    if(!$$) error(loc, error_message);
+                    $$ = ParserHelpers::create_args_decls($1, scanner.get_filename());
                 }
         ;
 
@@ -5086,8 +4880,10 @@ function_ioports_decl:
                     location loc;
                     std::string error_message;
                     for(port_info_t &p: $2) p.direction = $1;
-                    $$ = ParserHelpers::create_ports_decls($2, scanner.get_filename(), loc, error_message);
-                    if(!$$) error(loc, error_message);
+                    auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(), loc, error_message);
+                    if(!_ports) error(loc, error_message);
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const AST::Port::Ptr &_p : *_ports) $$->push_back(_p);
                 }
         ;
 
@@ -5156,8 +4952,9 @@ function_calc:  blocking_assignment
 
 function_call:  TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::FunctionCall>($3, $1, "", scanner.get_filename(),
-                                                             @1.begin.line);
+                    $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                    $$->set_args($3);
                 }
 
         |       TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
@@ -5168,15 +4965,17 @@ function_call:  TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
 
         |       package_scope TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::FunctionCall>($4, $2, $1, scanner.get_filename(),
-                                                             @1.begin.line);
+                    $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
+                    $$->set_args($4);
                 }
 
         |       package_scope TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
-                    $$->set_package($1);
+                    $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                 }
         ;
 
@@ -5199,8 +4998,9 @@ task:           TK_TASK automatic TK_IDENTIFIER task_ports_block task_statements
                 {
                     $$ = std::make_shared<AST::Task>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
-                    $$->set_automatic($2);
-                    $$->set_ports($4);
+                    $$->set_lifetime($2 ? AST::Task::LifetimeEnum::AUTOMATIC
+                                        : AST::Task::LifetimeEnum::NONE);
+                    $$->set_args($4);
                     $$->set_statements($5);
                 }
         ;
@@ -5226,10 +5026,7 @@ task_ports_block:
 
 task_ports:     task_portinfo_list
                 {
-                    location loc;
-                    std::string error_message;
-                    $$ = ParserHelpers::create_ports_decls($1, scanner.get_filename(), loc, error_message);
-                    if(!$$) error(loc, error_message);
+                    $$ = ParserHelpers::create_args_decls($1, scanner.get_filename());
                 }
         ;
 
@@ -5365,8 +5162,10 @@ task_ioports_decl:
                     location loc;
                     std::string error_message;
                     for(port_info_t &p: $2) p.direction = $1;
-                    $$ = ParserHelpers::create_ports_decls($2, scanner.get_filename(), loc, error_message);
-                    if(!$$) error(loc, error_message);
+                    auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(), loc, error_message);
+                    if(!_ports) error(loc, error_message);
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const AST::Port::Ptr &_p : *_ports) $$->push_back(_p);
                 }
         ;
 
@@ -5435,8 +5234,9 @@ task_calc:      blocking_assignment
 
 task_call:      TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::TaskCall>($3, $1, "", scanner.get_filename(),
-                                                         @1.begin.line);
+                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                    $$->set_args($3);
                 }
 
         |       TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
@@ -5453,22 +5253,24 @@ task_call:      TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
 
         |       package_scope TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::TaskCall>($4, $2, $1, scanner.get_filename(),
-                                                         @1.begin.line);
+                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
+                    $$->set_args($4);
                 }
 
         |       package_scope TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
-                    $$->set_package($1);
+                    $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                 }
 
         |       package_scope TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
-                    $$->set_package($1);
+                    $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                 }
         ;
 
@@ -5497,22 +5299,22 @@ identifier:     TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Identifier>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
-                    $$->set_scope($1);
+                    $$->set_hier($1);
                 }
         ;
 
 
 scope:          identifier TK_DOT
                 {
-                    $$ = $1->get_scope();
+                    $$ = $1->get_hier();
                     if (!$$) {
-                        $$ = std::make_shared<AST::IdentifierScope>(scanner.get_filename(), @1.begin.line);
-                        $$->set_labellist(std::make_shared<AST::IdentifierScopeLabel::List>());
+                        $$ = std::make_shared<AST::HierName>(scanner.get_filename(), @1.begin.line);
+                        $$->set_labellist(std::make_shared<AST::HierLabel::List>());
                     }
 
-                    AST::IdentifierScopeLabel::Ptr lbl =
-                        std::make_shared<AST::IdentifierScopeLabel>(scanner.get_filename(), @1.begin.line);
-                    lbl->set_scope($1->get_name());
+                    AST::HierLabel::Ptr lbl =
+                        std::make_shared<AST::HierLabel>(scanner.get_filename(), @1.begin.line);
+                    lbl->set_name($1->get_name());
                     $$->get_labellist()->push_back(lbl);
                 }
 
@@ -5520,15 +5322,15 @@ scope:          identifier TK_DOT
                 {
                     AST::Pointer::Ptr ptr = AST::cast_to<AST::Pointer>($1);
                     AST::Identifier::Ptr var = AST::cast_to<AST::Identifier>(ptr->get_var());
-                    $$ = var->get_scope();
+                    $$ = var->get_hier();
                     if(!$$) {
-                        $$ = std::make_shared<AST::IdentifierScope>(scanner.get_filename(), @1.begin.line);
-                        $$->set_labellist(std::make_shared<AST::IdentifierScopeLabel::List>());
+                        $$ = std::make_shared<AST::HierName>(scanner.get_filename(), @1.begin.line);
+                        $$->set_labellist(std::make_shared<AST::HierLabel::List>());
                     }
 
-                    AST::IdentifierScopeLabel::Ptr lbl =
-                        std::make_shared<AST::IdentifierScopeLabel>(scanner.get_filename(), @1.begin.line);
-                    lbl->set_scope(var->get_name());
+                    AST::HierLabel::Ptr lbl =
+                        std::make_shared<AST::HierLabel>(scanner.get_filename(), @1.begin.line);
+                    lbl->set_name(var->get_name());
                     lbl->set_loop(ptr->get_ptr());
                     $$->get_labellist()->push_back(lbl);
                 }
@@ -5538,7 +5340,9 @@ scope:          identifier TK_DOT
 disable:        TK_DISABLE TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Disable>(scanner.get_filename(), @1.begin.line);
-                    $$->set_dest($2);
+                    auto dest = std::make_shared<AST::Identifier>(scanner.get_filename(), @2.begin.line);
+                    dest->set_name($2);
+                    $$->set_dest(dest);
                 }
         ;
 
@@ -5623,484 +5427,328 @@ namespace Veriparse {
         }
 
         namespace ParserHelpers {
-            AST::Variable::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
-                                                       AST::Width::ListPtr widths, bool sign,
-                                                       const std::string &filename, uint32_t line) {
-                AST::Variable::Ptr node;
 
-                switch(nt) {
-                case net_type_t::INTEGER: {
-                    AST::Integer::Ptr integer = std::make_shared<AST::Integer>(filename, line);
-                    integer->set_name(decl.name);
-                    integer->set_lengths(decl.lengths);
-                    integer->set_right(decl.rvalue);
-                    node = std::static_pointer_cast<AST::Variable>(integer);
-                } break;
-
-                case net_type_t::REAL: {
-                    AST::Real::Ptr real = std::make_shared<AST::Real>(filename, line);
-                    real->set_name(decl.name);
-                    real->set_lengths(decl.lengths);
-                    real->set_right(decl.rvalue);
-                    node = std::static_pointer_cast<AST::Variable>(real);
-                } break;
-
-                case net_type_t::REG: {
-                    AST::Reg::Ptr reg = std::make_shared<AST::Reg>(filename, line);
-                    reg->set_widths(widths);
-                    reg->set_name(decl.name);
-                    reg->set_lengths(decl.lengths);
-                    reg->set_sign(sign);
-                    reg->set_right(decl.rvalue);
-                    node = std::static_pointer_cast<AST::Variable>(reg);
-                } break;
-
-                case net_type_t::TRI: {
-                    AST::Tri::Ptr tri = std::make_shared<AST::Tri>(filename, line);
-                    tri->set_widths(widths);
-                    tri->set_name(decl.name);
-                    tri->set_lengths(decl.lengths);
-                    tri->set_sign(sign);
-                    tri->set_right(decl.rvalue);
-                    tri->set_ldelay(decl.ldelay);
-                    tri->set_rdelay(decl.rdelay);
-                    node = std::static_pointer_cast<AST::Variable>(tri);
-                } break;
-
-                case net_type_t::WIRE: {
-                    AST::Wire::Ptr wire = std::make_shared<AST::Wire>(filename, line);
-                    wire->set_widths(widths);
-                    wire->set_name(decl.name);
-                    wire->set_lengths(decl.lengths);
-                    wire->set_sign(sign);
-                    wire->set_right(decl.rvalue);
-                    wire->set_ldelay(decl.ldelay);
-                    wire->set_rdelay(decl.rdelay);
-                    node = std::static_pointer_cast<AST::Variable>(wire);
-                } break;
-
-                case net_type_t::SUPPLY0: {
-                    AST::Supply0::Ptr supply0 = std::make_shared<AST::Supply0>(filename, line);
-                    supply0->set_widths(widths);
-                    supply0->set_name(decl.name);
-                    supply0->set_lengths(decl.lengths);
-                    supply0->set_sign(sign);
-                    supply0->set_right(decl.rvalue);
-                    supply0->set_right(decl.rvalue);
-                    supply0->set_ldelay(decl.ldelay);
-                    supply0->set_rdelay(decl.rdelay);
-                    node = std::static_pointer_cast<AST::Variable>(supply0);
-                } break;
-
-                case net_type_t::SUPPLY1: {
-                    AST::Supply1::Ptr supply1 = std::make_shared<AST::Supply1>(filename, line);
-                    supply1->set_widths(widths);
-                    supply1->set_name(decl.name);
-                    supply1->set_lengths(decl.lengths);
-                    supply1->set_sign(sign);
-                    supply1->set_right(decl.rvalue);
-                    supply1->set_ldelay(decl.ldelay);
-                    supply1->set_rdelay(decl.rdelay);
-                    node = std::static_pointer_cast<AST::Variable>(supply1);
-                } break;
-
-                case net_type_t::LOGIC: {
-                    AST::Logic::Ptr logic = std::make_shared<AST::Logic>(filename, line);
-                    logic->set_widths(widths);
-                    logic->set_name(decl.name);
-                    logic->set_lengths(decl.lengths);
-                    logic->set_sign(sign);
-                    logic->set_right(decl.rvalue);
-                    logic->set_ldelay(decl.ldelay);
-                    logic->set_rdelay(decl.rdelay);
-                    node = std::static_pointer_cast<AST::Variable>(logic);
-                } break;
-
-                default: break;
+            AST::DataType::SigningEnum to_signing(signing_t s) {
+                switch(s) {
+                case signing_t::SIGNED:   return AST::DataType::SigningEnum::SIGNED;
+                case signing_t::UNSIGNED: return AST::DataType::SigningEnum::UNSIGNED;
+                default:                  return AST::DataType::SigningEnum::NONE;
                 }
-
-                return node;
             }
 
-            AST::Variable::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
-                                              const std::string &filename, uint32_t line) {
-                // The same data_type_t feeds every name of a comma list (and
-                // inherited ports), so its shared subtrees MUST be cloned per
-                // declared name — otherwise two AST nodes share one child,
-                // breaking the tree invariant and in-place-mutation passes.
-                const AST::Width::ListPtr packed =
-                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
-
-                // logic/reg/integer/real reuse the existing create_net_type path
-                // so their nodes stay byte-identical (goldens unchanged).
-                switch(dt.kind) {
-                case data_type_kind_t::LOGIC:
-                    return create_net_type(decl, net_type_t::LOGIC, packed, dt.is_signed,
-                                           filename, line);
-                case data_type_kind_t::REG:
-                    return create_net_type(decl, net_type_t::REG, packed, dt.is_signed,
-                                           filename, line);
-                case data_type_kind_t::INTEGER:
-                    return create_net_type(decl, net_type_t::INTEGER, nullptr, true, filename, line);
-                case data_type_kind_t::REAL:
-                    return create_net_type(decl, net_type_t::REAL, nullptr, true, filename, line);
-                default:
-                    break;
+            static AST::Port::DirectionEnum to_port_dir(direction_t d) {
+                switch(d) {
+                case direction_t::INPUT:  return AST::Port::DirectionEnum::INPUT;
+                case direction_t::OUTPUT: return AST::Port::DirectionEnum::OUTPUT;
+                case direction_t::INOUT:  return AST::Port::DirectionEnum::INOUT;
+                default:                  return AST::Port::DirectionEnum::NONE;
                 }
+            }
 
-                AST::Variable::Ptr node;
+            static AST::Arg::DirectionEnum to_arg_dir(direction_t d) {
+                switch(d) {
+                case direction_t::OUTPUT: return AST::Arg::DirectionEnum::OUTPUT;
+                case direction_t::INOUT:  return AST::Arg::DirectionEnum::INOUT;
+                default:                  return AST::Arg::DirectionEnum::INPUT;
+                }
+            }
+
+            // Value-side SV `::` scope (single package segment) for a name ref.
+            AST::ScopeName::ListPtr pkg_scope(const std::string &package,
+                                              const std::string &filename, uint32_t line) {
+                if(package.empty()) {
+                    return nullptr;
+                }
+                auto scope = std::make_shared<AST::ScopeName::List>();
+                auto seg = std::make_shared<AST::ScopeName>(filename, line);
+                seg->set_name(package);
+                scope->push_back(seg);
+                return scope;
+            }
+
+            AST::Declaration::ListPtr to_decl_list(const AST::Param::ListPtr &in) {
+                if(!in) return nullptr;
+                auto out = std::make_shared<AST::Declaration::List>();
+                for(const AST::Param::Ptr &p : *in) out->push_back(p);
+                return out;
+            }
+
+            AST::NamedType::Ptr make_named_type(const std::string &name, const std::string &package,
+                                                const std::string &filename, uint32_t line) {
+                auto nt = std::make_shared<AST::NamedType>(filename, line);
+                nt->set_name(name);
+                if(!package.empty()) {
+                    auto scope = std::make_shared<AST::ScopeName::List>();
+                    auto seg = std::make_shared<AST::ScopeName>(filename, line);
+                    seg->set_name(package);
+                    scope->push_back(seg);
+                    nt->set_scope(scope);
+                }
+                return nt;
+            }
+
+            AST::DataType::Ptr make_data_type(const data_type_t &dt,
+                                              const std::string &filename, uint32_t line) {
+                // Shared subtrees (named ref, inline def, packed dims) are cloned so
+                // the same data_type_t can feed every name of a comma list / port
+                // group without two nodes sharing a child (tree invariant).
+                const AST::Dimension::ListPtr packed =
+                    dt.packed_dims ? AST::Dimension::clone_list(dt.packed_dims) : nullptr;
+
+                AST::DataType::Ptr type;
+                bool set_signing = false;
 
                 switch(dt.kind) {
-                case data_type_kind_t::BIT: {
-                    auto n = std::make_shared<AST::Bit>(filename, line);
-                    n->set_sign(dt.is_signed);
-                    n->set_widths(packed);
-                    node = n;
-                } break;
-
-                case data_type_kind_t::BYTE: {
-                    auto n = std::make_shared<AST::Byte>(filename, line);
-                    n->set_sign(dt.is_signed);
-                    node = n;
-                } break;
-
-                case data_type_kind_t::SHORTINT: {
-                    auto n = std::make_shared<AST::Shortint>(filename, line);
-                    n->set_sign(dt.is_signed);
-                    node = n;
-                } break;
-
-                case data_type_kind_t::INT: {
-                    auto n = std::make_shared<AST::Int>(filename, line);
-                    n->set_sign(dt.is_signed);
-                    node = n;
-                } break;
-
-                case data_type_kind_t::LONGINT: {
-                    auto n = std::make_shared<AST::Longint>(filename, line);
-                    n->set_sign(dt.is_signed);
-                    node = n;
-                } break;
-
-                case data_type_kind_t::SHORTREAL:
-                    node = std::make_shared<AST::Shortreal>(filename, line);
+                case data_type_kind_t::BIT:       type = std::make_shared<AST::BitType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::LOGIC:     type = std::make_shared<AST::LogicType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::REG:       type = std::make_shared<AST::RegType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::BYTE:      type = std::make_shared<AST::ByteType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::SHORTINT:  type = std::make_shared<AST::ShortintType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::INT:       type = std::make_shared<AST::IntType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::LONGINT:   type = std::make_shared<AST::LongintType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::INTEGER:   type = std::make_shared<AST::IntegerType>(filename, line); set_signing = true; break;
+                case data_type_kind_t::REAL:      type = std::make_shared<AST::RealType>(filename, line); break;
+                case data_type_kind_t::SHORTREAL: type = std::make_shared<AST::ShortrealType>(filename, line); break;
+                case data_type_kind_t::REALTIME:  type = std::make_shared<AST::RealtimeType>(filename, line); break;
+                case data_type_kind_t::NAMED:
+                    type = dt.named ? AST::cast_to<AST::DataType>(dt.named->clone()) : nullptr;
                     break;
-
-                case data_type_kind_t::REALTIME:
-                    node = std::make_shared<AST::Realtime>(filename, line);
-                    break;
-
                 case data_type_kind_t::STRUCT:
                 case data_type_kind_t::UNION:
                 case data_type_kind_t::ENUM:
-                case data_type_kind_t::NAMED: {
-                    // named/scoped type ref (type_ref) or inline anonymous
-                    // aggregate (inline_def): a CustomTypeVar holding the type.
-                    // Clone the type so each declared name owns its own subtree.
-                    const AST::Node::Ptr type =
-                        (dt.kind == data_type_kind_t::NAMED) ? dt.type_ref : dt.inline_def;
-                    auto n = std::make_shared<AST::CustomTypeVar>(filename, line);
-                    n->set_type(type ? type->clone() : nullptr);
-                    n->set_widths(packed);
-                    node = n;
-                } break;
+                    type = dt.inline_def ? AST::cast_to<AST::DataType>(dt.inline_def->clone()) : nullptr;
+                    break;
+                }
 
+                if(type) {
+                    if(set_signing) {
+                        type->set_signing(to_signing(dt.signing));
+                    }
+                    if(packed) {
+                        type->set_packed_dims(packed);
+                    }
+                }
+                return type;
+            }
+
+            AST::Net::Ptr create_net_type(const decl_name_t &decl, net_type_t nt,
+                                          AST::DataType::Ptr type,
+                                          const std::string &filename, uint32_t line) {
+                AST::Net::Ptr net;
+                switch(nt) {
+                case net_type_t::WIRE:    net = std::make_shared<AST::WireNet>(filename, line); break;
+                case net_type_t::TRI:     net = std::make_shared<AST::TriNet>(filename, line); break;
+                case net_type_t::SUPPLY0: net = std::make_shared<AST::Supply0Net>(filename, line); break;
+                case net_type_t::SUPPLY1: net = std::make_shared<AST::Supply1Net>(filename, line); break;
                 default: break;
                 }
-
-                if(node) {
-                    node->set_name(decl.name);
-                    node->set_lengths(decl.lengths);
-                    node->set_right(decl.rvalue);
+                if(net) {
+                    net->set_type(type ? type : std::make_shared<AST::ImplicitType>(filename, line));
+                    net->set_name(decl.name);
+                    net->set_unpacked_dims(decl.lengths);
+                    net->set_cont_assign(decl.rvalue);
+                    net->set_ldelay(decl.ldelay);
+                    net->set_rdelay(decl.rdelay);
                 }
-
-                return node;
+                return net;
             }
 
-            AST::Variable::Ptr build_implicit_type(bool is_signed, AST::Width::ListPtr widths,
-                                                   const decl_name_t &decl,
-                                                   const std::string &filename, uint32_t line) {
-                auto n = std::make_shared<AST::ImplicitType>(filename, line);
-                n->set_sign(is_signed);
-                n->set_widths(widths);
-                n->set_name(decl.name);
-                n->set_lengths(decl.lengths);
-                n->set_right(decl.rvalue);
-                return n;
+            AST::Var::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
+                                         const std::string &filename, uint32_t line) {
+                auto var = std::make_shared<AST::Var>(filename, line);
+                var->set_type(make_data_type(dt, filename, line));
+                var->set_name(decl.name);
+                var->set_unpacked_dims(decl.lengths);
+                var->set_init(decl.rvalue);
+                return var;
             }
 
-            AST::Node::Ptr wrap_data_modifier(AST::Variable::Ptr inner,
-                                              const data_qualifiers_t &q,
+            AST::Var::Ptr build_implicit_type(bool is_signed, AST::Dimension::ListPtr widths,
+                                              const decl_name_t &decl,
                                               const std::string &filename, uint32_t line) {
-                auto dm = std::make_shared<AST::DataModifier>(filename, line);
-                dm->set_datatype(AST::to_node(inner));
-                dm->set_is_var(q.is_var);
-                dm->set_is_const(q.is_const);
-                dm->set_lifetime(q.lifetime);
-                return AST::to_node(dm);
+                auto type = std::make_shared<AST::ImplicitType>(filename, line);
+                if(is_signed) {
+                    type->set_signing(AST::DataType::SigningEnum::SIGNED);
+                }
+                if(widths) {
+                    type->set_packed_dims(widths);
+                }
+                auto var = std::make_shared<AST::Var>(filename, line);
+                var->set_type(type);
+                var->set_name(decl.name);
+                var->set_unpacked_dims(decl.lengths);
+                var->set_init(decl.rvalue);
+                return var;
             }
 
-            AST::Node::ListPtr build_named_modifier(const AST::CustomType::Ptr &ref,
-                                                    AST::Width::ListPtr widths,
+            AST::Node::Ptr wrap_data_modifier(AST::Var::Ptr inner, const data_qualifiers_t &q,
+                                              const std::string &, uint32_t) {
+                if(inner) {
+                    inner->set_is_var(q.is_var);
+                    inner->set_is_const(q.is_const);
+                    inner->set_lifetime(q.lifetime);
+                }
+                return AST::to_node(inner);
+            }
+
+            AST::Node::ListPtr build_named_modifier(const AST::NamedType::Ptr &ref,
+                                                    AST::Dimension::ListPtr widths,
                                                     const std::list<decl_name_t> &names,
                                                     const data_qualifiers_t &q,
                                                     const std::string &filename, uint32_t line) {
-                // build_variable(NAMED) clones the type ref and packed dims per
-                // name, so the shared `ref`/`widths` are safe to reuse here.
-                data_type_t dt{data_type_kind_t::NAMED, false, widths, AST::to_node(ref), nullptr};
+                // make_data_type clones the named ref + packed dims per name.
+                data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, widths, ref, nullptr};
                 auto list = std::make_shared<AST::Node::List>();
                 for(const decl_name_t &d : names) {
-                    AST::Variable::Ptr var = build_variable(dt, d, filename, line);
+                    AST::Var::Ptr var = build_variable(dt, d, filename, line);
                     list->push_back(wrap_data_modifier(var, q, filename, line));
                 }
                 return list;
             }
 
-            AST::StructMember::ListPtr build_struct_members(const data_type_t &dt,
-                                                            const std::list<decl_name_t> &names,
-                                                            const std::string &filename, uint32_t line) {
-                // A struct member declaration is `data_type
-                // list_of_variable_decl_assignments` (IEEE 1800-2017
-                // struct_union_member). Each name yields its own StructMember:
-                // the type is the bare data_type node carrying signing+packed
-                // dims (build_data_type_def, cloned per member), while the
-                // unpacked dimensions and initializer come from the member's
-                // variable_decl_assignment. `bit [3:0] a, b;` therefore flattens
-                // to two independent members, mirroring build_variable.
-                auto list = std::make_shared<AST::StructMember::List>();
-                for(const decl_name_t &decl: names) {
-                    auto member = std::make_shared<AST::StructMember>(filename, line);
+            AST::Member::ListPtr build_struct_members(const data_type_t &dt,
+                                                      const std::list<decl_name_t> &names,
+                                                      const std::string &filename, uint32_t line) {
+                // One Member per name: the type is the bare data_type (cloned per
+                // member), unpacked dims + init come from the variable_decl_assignment.
+                auto list = std::make_shared<AST::Member::List>();
+                for(const decl_name_t &decl : names) {
+                    auto member = std::make_shared<AST::Member>(filename, line);
                     member->set_name(decl.name);
-                    member->set_type(build_data_type_def(dt, filename, line));
-                    member->set_lengths(decl.lengths);
-                    member->set_right(decl.rvalue);
+                    member->set_type(make_data_type(dt, filename, line));
+                    member->set_unpacked_dims(decl.lengths);
+                    member->set_init(decl.rvalue);
                     list->push_back(member);
                 }
                 return list;
             }
 
-            AST::Node::Ptr build_data_type_def(const data_type_t &dt,
-                                               const std::string &filename, uint32_t line) {
-                // struct/union/enum: the inline def is the type; a named type is
-                // its reference. Wrap in a CustomTypeVar only to carry packed
-                // dimensions on the type (e.g. `typedef my_t [3:0] arr_t`).
-                // The inner type and packed dims are cloned so this can be called
-                // once per name of a comma list (`struct { my_t a, b; }`) without
-                // two members sharing one subtree (tree-invariant violation).
-                if(dt.kind == data_type_kind_t::STRUCT
-                   || dt.kind == data_type_kind_t::UNION
-                   || dt.kind == data_type_kind_t::ENUM
-                   || dt.kind == data_type_kind_t::NAMED) {
-                    AST::Node::Ptr inner =
-                        (dt.kind == data_type_kind_t::NAMED) ? dt.type_ref : dt.inline_def;
-                    inner = inner ? inner->clone() : nullptr;
-                    if(!dt.packed_dims) {
-                        return inner;
-                    }
-                    auto var = std::make_shared<AST::CustomTypeVar>(filename, line);
-                    var->set_type(inner);
-                    var->set_widths(AST::Width::clone_list(dt.packed_dims));
-                    return AST::to_node(var);
-                }
-
-                // built-in scalar: the dedicated node with no variable name.
-                decl_name_t empty{};
-                return AST::to_node(build_variable(dt, empty, filename, line));
-            }
-
-            AST::Ioport::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
-                                                       AST::Width::ListPtr widths, std::string name,
-                                                       const std::string &filename, uint32_t line) {
-
-                AST::Ioport::Ptr ioport = std::make_shared<AST::Ioport>(filename, line);
-
-                decl_name_t decl;
-                decl.name = name;
-                decl.lengths = nullptr;
-
-                switch(direction) {
-                case direction_t::INPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>
-                                      (std::make_shared<AST::Input>(widths, name, is_signed, filename, line)));
-                    break;
-
-                case direction_t::INOUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>
-                                      (std::make_shared<AST::Inout>(widths, name, is_signed, filename, line)));
-                    break;
-
-                case direction_t::OUTPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>
-                                      (std::make_shared<AST::Output>(widths, name, is_signed, filename, line)));
-                    break;
-
-                default:
-                    break;
-                }
-
-                if (widths) {
-                    ioport->set_second(ParserHelpers::create_net_type(decl, net_type, AST::Width::clone_list(widths),
-                                                                is_signed, filename, line));
-                }
-                else {
-                    ioport->set_second(ParserHelpers::create_net_type(decl, net_type, nullptr,
-                                                                is_signed, filename, line));
-                }
-
-                return ioport;
-            }
-
-
-            AST::Ioport::Ptr create_typed_ioport_decls(direction_t direction,
-                                                       const std::string &type_name,
-                                                       const std::string &type_package,
-                                                       const std::string &name,
-                                                       const std::string &filename, uint32_t line) {
-
-                AST::Ioport::Ptr ioport = std::make_shared<AST::Ioport>(filename, line);
-
-                // Direction node: width is unknown until the typedef is resolved.
-                switch(direction) {
-                case direction_t::INPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>
-                                      (std::make_shared<AST::Input>(nullptr, name, false, filename, line)));
-                    break;
-
-                case direction_t::INOUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>
-                                      (std::make_shared<AST::Inout>(nullptr, name, false, filename, line)));
-                    break;
-
-                case direction_t::OUTPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>
-                                      (std::make_shared<AST::Output>(nullptr, name, false, filename, line)));
-                    break;
-
-                default:
-                    break;
-                }
-
-                // Unresolved type reference: an Identifier whose `package` is the
-                // package scope for pkg::T, or empty for a local typedef.
-                auto id = std::make_shared<AST::Identifier>(filename, line);
-                id->set_name(type_name);
-                id->set_package(type_package);
-                AST::Node::Ptr type_ref = AST::to_node(id);
-
-                auto var = std::make_shared<AST::CustomTypeVar>(filename, line);
-                var->set_name(name);
-                var->set_type(type_ref);
-                ioport->set_second(var);
-
-                return ioport;
-            }
-
-
-            AST::Ioport::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
-                                                   const std::string &name,
+            AST::DataType::Ptr build_data_type_def(const data_type_t &dt,
                                                    const std::string &filename, uint32_t line) {
-                auto ioport = std::make_shared<AST::Ioport>(filename, line);
-
-                // direction node carries the packed dims and signedness of the
-                // type (matching the legacy net-type port path: e.g. `integer`
-                // is signed, `bit` unsigned unless `signed`).
-                AST::Width::ListPtr io_widths =
-                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
-                const bool io_sign = dt.is_signed;
-
-                switch(direction) {
-                case direction_t::INPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
-                        std::make_shared<AST::Input>(io_widths, name, io_sign, filename, line)));
-                    break;
-                case direction_t::INOUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
-                        std::make_shared<AST::Inout>(io_widths, name, io_sign, filename, line)));
-                    break;
-                case direction_t::OUTPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
-                        std::make_shared<AST::Output>(io_widths, name, io_sign, filename, line)));
-                    break;
-                default:
-                    break;
-                }
-
-                decl_name_t decl;
-                decl.name = name;
-                decl.lengths = nullptr;
-                ioport->set_second(build_variable(dt, decl, filename, line));
-
-                return ioport;
+                // The bare type a data_type denotes (typedef/return/member type):
+                // make_data_type already carries signing + packed dims and clones
+                // the named ref / inline def.
+                return make_data_type(dt, filename, line);
             }
 
-            AST::Ioport::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
-                                                       const data_type_t &dt, const std::string &name,
-                                                       const std::string &filename, uint32_t line) {
-                // `wire logic [3:0] x`: a net port whose data type is an explicit
-                // integer_vector type. `second` is the net (create_net_type) with
-                // its `type` child set to the keyword — identical to the
-                // item-level net_declaration form.
-                auto ioport = std::make_shared<AST::Ioport>(filename, line);
-                AST::Width::ListPtr io_widths =
-                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
+            AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
+                                               AST::Dimension::ListPtr widths, std::string name,
+                                               const std::string &filename, uint32_t line) {
+                auto port = std::make_shared<AST::Port>(filename, line);
+                port->set_name(name);
+                port->set_direction(to_port_dir(direction));
 
-                switch(direction) {
-                case direction_t::INPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
-                        std::make_shared<AST::Input>(io_widths, name, dt.is_signed, filename, line)));
-                    break;
-                case direction_t::INOUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
-                        std::make_shared<AST::Inout>(io_widths, name, dt.is_signed, filename, line)));
-                    break;
-                case direction_t::OUTPUT:
-                    ioport->set_first(std::static_pointer_cast<AST::IODir>(
-                        std::make_shared<AST::Output>(io_widths, name, dt.is_signed, filename, line)));
-                    break;
-                default:
-                    break;
+                auto type = std::make_shared<AST::ImplicitType>(filename, line);
+                if(is_signed) type->set_signing(AST::DataType::SigningEnum::SIGNED);
+                if(widths) type->set_packed_dims(AST::Dimension::clone_list(widths));
+
+                AST::Net::Ptr net;
+                if(net_type == net_type_t::NONE) {
+                    net = std::make_shared<AST::ImplicitNet>(filename, line);
+                    net->set_type(type);
+                    net->set_name(name);
+                } else {
+                    decl_name_t decl;
+                    decl.name = name;
+                    net = create_net_type(decl, net_type, type, filename, line);
                 }
-
-                decl_name_t decl;
-                decl.name = name;
-                decl.lengths = nullptr;
-                AST::Width::ListPtr net_widths =
-                    dt.packed_dims ? AST::Width::clone_list(dt.packed_dims) : nullptr;
-                AST::Variable::Ptr net =
-                    create_net_type(decl, net_type, net_widths, dt.is_signed, filename, line);
-
-                const char *kw = (dt.kind == data_type_kind_t::LOGIC) ? "logic"
-                               : (dt.kind == data_type_kind_t::REG)   ? "reg"
-                                                                      : "bit";
-                auto type = std::make_shared<AST::Identifier>(filename, line);
-                type->set_name(kw);
-                std::static_pointer_cast<AST::Net>(net)->set_type(AST::to_node(type));
-                ioport->set_second(net);
-
-                return ioport;
+                port->set_decl(net);
+                return port;
             }
 
+            AST::Port::Ptr create_typed_ioport_decls(direction_t direction,
+                                                     const std::string &type_name,
+                                                     const std::string &type_package,
+                                                     const std::string &name,
+                                                     const std::string &filename, uint32_t line) {
+                auto port = std::make_shared<AST::Port>(filename, line);
+                port->set_name(name);
+                port->set_direction(to_port_dir(direction));
+                auto net = std::make_shared<AST::ImplicitNet>(filename, line);
+                net->set_type(make_named_type(type_name, type_package, filename, line));
+                net->set_name(name);
+                port->set_decl(net);
+                return port;
+            }
 
-            AST::Node::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
+            AST::Port::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
+                                                 const std::string &name,
+                                                 const std::string &filename, uint32_t line) {
+                auto port = std::make_shared<AST::Port>(filename, line);
+                port->set_name(name);
+                port->set_direction(to_port_dir(direction));
+                auto net = std::make_shared<AST::ImplicitNet>(filename, line);
+                net->set_type(make_data_type(dt, filename, line));
+                net->set_name(name);
+                port->set_decl(net);
+                return port;
+            }
+
+            AST::Port::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
+                                                     const data_type_t &dt, const std::string &name,
+                                                     const std::string &filename, uint32_t line) {
+                auto port = std::make_shared<AST::Port>(filename, line);
+                port->set_name(name);
+                port->set_direction(to_port_dir(direction));
+                decl_name_t decl;
+                decl.name = name;
+                AST::Net::Ptr net =
+                    create_net_type(decl, net_type, make_data_type(dt, filename, line), filename, line);
+                port->set_decl(net);
+                return port;
+            }
+
+            // task/function argument list: one Arg per port_info (direction
+            // inherited from the previous arg when absent). The arg's type comes
+            // from the data_type / named type / implicit signing+dims of the info.
+            AST::Arg::ListPtr create_args_decls(const std::list<port_info_t> &port_list,
+                                                const std::string &filename) {
+                auto list = std::make_shared<AST::Arg::List>();
+                direction_t last_dir = direction_t::INPUT;
+                for(const port_info_t &pinfo : port_list) {
+                    direction_t dir = (pinfo.direction != direction_t::NONE) ? pinfo.direction
+                                                                            : last_dir;
+                    uint32_t line = pinfo.loc.begin.line;
+                    auto arg = std::make_shared<AST::Arg>(filename, line);
+                    arg->set_name(pinfo.name);
+                    arg->set_direction(to_arg_dir(dir));
+
+                    if(pinfo.has_data_type) {
+                        arg->set_type(make_data_type(pinfo.data_type, filename, line));
+                    } else if(!pinfo.type_name.empty()) {
+                        arg->set_type(make_named_type(pinfo.type_name, pinfo.type_package, filename, line));
+                    } else {
+                        auto t = std::make_shared<AST::ImplicitType>(filename, line);
+                        if(pinfo.is_signed) t->set_signing(AST::DataType::SigningEnum::SIGNED);
+                        if(pinfo.widths) t->set_packed_dims(AST::Dimension::clone_list(pinfo.widths));
+                        arg->set_type(t);
+                    }
+                    list->push_back(arg);
+                    last_dir = dir;
+                }
+                return list;
+            }
+
+            AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
                                                   const std::string &filename,
                                                   location &loc, std::string &error_message) {
                 direction_t last_dir = direction_t::NONE;
                 net_type_t last_net = net_type_t::NONE;
                 bool last_is_signed = false;
-                AST::Width::ListPtr last_widths(nullptr);
+                AST::Dimension::ListPtr last_widths(nullptr);
                 std::string last_type_name;
                 std::string last_type_package;
                 bool last_has_data_type = false;
                 data_type_t last_data_type{};
 
-                AST::Node::ListPtr node_list = std::make_shared<AST::Node::List>();
+                AST::Port::ListPtr node_list = std::make_shared<AST::Port::List>();
 
                 if (port_list.empty()) {
                     return node_list;
                 }
 
                 if (port_list.front().direction == direction_t::NONE) {
-                    // Check for name only ports (without qualifiers)
+                    // name-only ports (non-ANSI header references)
                     for(const port_info_t &pinfo: port_list) {
                         if ((pinfo.direction != direction_t::NONE) || (pinfo.net_type != net_type_t::NONE) ||
                             (pinfo.is_signed) || (pinfo.widths) || (!pinfo.type_name.empty()) ||
@@ -6116,11 +5764,10 @@ namespace Veriparse {
                 }
 
                 else {
-                    // Check for qualified ports
                     for(const port_info_t &pinfo: port_list) {
                         direction_t dir;
                         net_type_t net_type;
-                        AST::Width::ListPtr widths;
+                        AST::Dimension::ListPtr widths;
                         bool is_signed;
                         std::string type_name;
                         std::string type_package;
@@ -6154,31 +5801,24 @@ namespace Veriparse {
                             data_type = pinfo.data_type;
                         }
 
-                        if (widths) widths = AST::Width::clone_list(widths);
+                        if (widths) widths = AST::Dimension::clone_list(widths);
 
-                        AST::Ioport::Ptr iop;
+                        AST::Port::Ptr iop;
                         if (has_data_type && net_type != net_type_t::NONE) {
-                            // net port with an explicit integer_vector data type
-                            // (`wire logic [3:0] x`)
-                            iop = ParserHelpers::create_net_data_type_port(dir, net_type, data_type,
-                                                                           pinfo.name, filename,
-                                                                           pinfo.loc.begin.line);
+                            iop = create_net_data_type_port(dir, net_type, data_type, pinfo.name,
+                                                            filename, pinfo.loc.begin.line);
                         }
                         else if (has_data_type) {
-                            // built-in data_type port (bit/atom/non-integer/aggregate)
-                            iop = ParserHelpers::create_data_type_port(dir, data_type, pinfo.name,
-                                                                       filename, pinfo.loc.begin.line);
+                            iop = create_data_type_port(dir, data_type, pinfo.name,
+                                                        filename, pinfo.loc.begin.line);
                         }
                         else if (!type_name.empty()) {
-                            // user-defined / package-scoped type port
-                            iop = ParserHelpers::create_typed_ioport_decls(dir, type_name, type_package,
-                                                                           pinfo.name, filename,
-                                                                           pinfo.loc.begin.line);
+                            iop = create_typed_ioport_decls(dir, type_name, type_package, pinfo.name,
+                                                            filename, pinfo.loc.begin.line);
                         }
                         else {
-                            iop = ParserHelpers::create_ioport_decls(dir, net_type, is_signed, widths,
-                                                                     pinfo.name, filename,
-                                                                     pinfo.loc.begin.line);
+                            iop = create_ioport_decls(dir, net_type, is_signed, widths, pinfo.name,
+                                                      filename, pinfo.loc.begin.line);
                         }
                         node_list->push_back(iop);
                         last_dir = dir;
