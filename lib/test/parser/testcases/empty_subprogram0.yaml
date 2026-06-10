@@ -4,32 +4,29 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/empty_subprogram0.v
+          filename: ../../test/parser/testcases/empty_subprogram0.v
           items:
           - Function:
-              automatic: false
-              filename: lib/test/parser/testcases/empty_subprogram0.v
+              filename: ../../test/parser/testcases/empty_subprogram0.v
+              lifetime: NONE
               line: 3
               name: f
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Integer:
-                  filename: lib/test/parser/testcases/empty_subprogram0.v
+              return_type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/empty_subprogram0.v
                   line: 3
-                  name: ''
-                  right:
-                    Rvalue: null
+                  signing: NONE
               statements: []
           - Task:
-              automatic: false
-              filename: lib/test/parser/testcases/empty_subprogram0.v
+              filename: ../../test/parser/testcases/empty_subprogram0.v
+              lifetime: NONE
               line: 6
               name: t
               statements: []
+          lifetime: NONE
           line: 1
           name: empty_subprogram0
-      filename: lib/test/parser/testcases/empty_subprogram0.v
+      filename: ../../test/parser/testcases/empty_subprogram0.v
       line: 1
-  filename: lib/test/parser/testcases/empty_subprogram0.v
+  filename: ../../test/parser/testcases/empty_subprogram0.v
   line: 1
