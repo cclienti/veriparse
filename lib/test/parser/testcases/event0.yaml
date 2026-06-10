@@ -6,33 +6,46 @@ Source:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/event0.v
           items:
-          - Ioport:
-              filename: ../../test/parser/testcases/event0.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/event0.v
-                  line: 2
-                  name: clk
-                  sign: false
-              line: 2
-              second:
-                Wire:
-                  filename: ../../test/parser/testcases/event0.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 2
                   name: clk
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Integer:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/event0.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/event0.v
+              line: 2
+              name: clk
+          - Var:
+              filename: ../../test/parser/testcases/event0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 3
               name: i
-              right:
-                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/event0.v
+                  line: 3
+                  signing: NONE
           - Initial:
               filename: ../../test/parser/testcases/event0.v
               line: 5
@@ -53,10 +66,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/event0.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 6
                       rdelay:
                         DelayStatement: null
@@ -103,10 +116,10 @@ Source:
                                       sig:
                                         Identifier:
                                           filename: ../../test/parser/testcases/event0.v
+                                          hier:
+                                            HierName: null
                                           line: 8
                                           name: clock
-                                          scope:
-                                            IdentifierScope: null
                                       type: POSEDGE
                               statement:
                                 Block:
@@ -125,10 +138,10 @@ Source:
                                           var:
                                             Identifier:
                                               filename: ../../test/parser/testcases/event0.v
+                                              hier:
+                                                HierName: null
                                               line: 9
                                               name: i
-                                              scope:
-                                                IdentifierScope: null
                                       line: 9
                                       rdelay:
                                         DelayStatement: null
@@ -142,10 +155,10 @@ Source:
                                               left:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/event0.v
+                                                  hier:
+                                                    HierName: null
                                                   line: 9
                                                   name: i
-                                                  scope:
-                                                    IdentifierScope: null
                                               line: 9
                                               right:
                                                 IntConstN:
@@ -170,10 +183,10 @@ Source:
                                               value: clock cycle %d
                                           - Identifier:
                                               filename: ../../test/parser/testcases/event0.v
+                                              hier:
+                                                HierName: null
                                               line: 10
                                               name: i
-                                              scope:
-                                                IdentifierScope: null
                                           filename: ../../test/parser/testcases/event0.v
                                           line: 10
                                           syscall: display
@@ -184,10 +197,10 @@ Source:
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/event0.v
+                                      hier:
+                                        HierName: null
                                       line: 12
                                       name: i
-                                      scope:
-                                        IdentifierScope: null
                                   line: 12
                                   right:
                                     IntConstN:
@@ -212,16 +225,19 @@ Source:
                                       filename: ../../test/parser/testcases/event0.v
                                       line: 12
                                       syscall: finish
+          lifetime: NONE
           line: 1
           name: event0
           ports:
           - Port:
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
               filename: ../../test/parser/testcases/event0.v
               line: 1
               name: clk
-              type: ''
       filename: ../../test/parser/testcases/event0.v
       line: 1
   filename: ../../test/parser/testcases/event0.v
   line: 1
-

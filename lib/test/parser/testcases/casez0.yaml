@@ -20,10 +20,10 @@ Source:
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/casez0.v
+                          hier:
+                            HierName: null
                           line: 3
                           name: sel
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 CasezStatement:
@@ -137,38 +137,43 @@ Source:
                   comp:
                     Identifier:
                       filename: ../../test/parser/testcases/casez0.v
+                      hier:
+                        HierName: null
                       line: 4
                       name: sel
-                      scope:
-                        IdentifierScope: null
                   filename: ../../test/parser/testcases/casez0.v
                   line: 4
+          lifetime: NONE
           line: 1
           name: case0
           ports:
-          - Ioport:
-              filename: ../../test/parser/testcases/casez0.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/casez0.v
-                  line: 1
-                  name: sel
-                  sign: false
-              line: 1
-              second:
-                Wire:
-                  filename: ../../test/parser/testcases/casez0.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 1
                   name: sel
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/casez0.v
+                      line: 1
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/casez0.v
+              line: 1
+              name: sel
       filename: ../../test/parser/testcases/casez0.v
       line: 1
   filename: ../../test/parser/testcases/casez0.v
   line: 1
-

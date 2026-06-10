@@ -4,397 +4,363 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_cast0.sv
+          filename: ../../test/parser/testcases/sv_cast0.sv
           items:
           - Typedef:
-              def:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_cast0.sv
-                  ldelay:
-                    DelayStatement: null
+              filename: ../../test/parser/testcases/sv_cast0.sv
+              fwd_kind: NONE
+              line: 3
+              name: byte_t
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 3
-                  name: ''
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  type: null
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_cast0.sv
-                      line: 3
-                      lsb:
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: lib/test/parser/testcases/sv_cast0.sv
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 3
                           sign: false
                           size: -1
                           value: 7
-              filename: lib/test/parser/testcases/sv_cast0.sv
-              line: 3
-              name: byte_t
-          - Localparam:
-              filename: lib/test/parser/testcases/sv_cast0.sv
+                      line: 3
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_cast0.sv
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Param:
+              filename: ../../test/parser/testcases/sv_cast0.sv
+              is_local: true
               line: 4
               name: WIDTH
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_cast0.sv
+                  line: 4
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_cast0.sv
+                  filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 4
                   var:
                     IntConstN:
                       base: 10
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                      filename: ../../test/parser/testcases/sv_cast0.sv
                       line: 4
                       sign: false
                       size: -1
                       value: 8
-          - Logic:
-              filename: lib/test/parser/testcases/sv_cast0.sv
-              ldelay:
-                DelayStatement: null
+          - Var:
+              filename: ../../test/parser/testcases/sv_cast0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 6
               name: a
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              type: null
-              widths:
-              - Width:
-                  filename: lib/test/parser/testcases/sv_cast0.sv
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 6
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_cast0.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 15
                       line: 6
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_cast0.sv
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 15
-          - Logic:
-              filename: lib/test/parser/testcases/sv_cast0.sv
-              ldelay:
-                DelayStatement: null
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_cast0.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_cast0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 7
               name: b
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              type: null
-              widths:
-              - Width:
-                  filename: lib/test/parser/testcases/sv_cast0.sv
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 7
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_cast0.sv
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 7
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_cast0.sv
-                      line: 7
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_cast0.sv
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Initial:
-              filename: lib/test/parser/testcases/sv_cast0.sv
+              filename: ../../test/parser/testcases/sv_cast0.sv
               line: 9
               statement:
                 Block:
-                  filename: lib/test/parser/testcases/sv_cast0.sv
+                  filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 9
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                      filename: ../../test/parser/testcases/sv_cast0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 10
                           var:
                             Identifier:
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
+                              hier:
+                                HierName: null
                               line: 10
                               name: b
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 10
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 10
                           var:
-                            Cast:
+                            TypeCast:
                               expr:
                                 Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  hier:
+                                    HierName: null
                                   line: 10
                                   name: a
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 10
-                              type:
-                                Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                              target:
+                                IntType:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
                                   line: 10
-                                  name: int
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
+                                  signing: NONE
                   - BlockingSubstitution:
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                      filename: ../../test/parser/testcases/sv_cast0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 11
                           var:
                             Identifier:
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
+                              hier:
+                                HierName: null
                               line: 11
                               name: b
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 11
                           var:
-                            Cast:
+                            TypeCast:
                               expr:
                                 Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  hier:
+                                    HierName: null
                                   line: 11
                                   name: a
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 11
-                              type:
-                                Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                              target:
+                                ByteType:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
                                   line: 11
-                                  name: byte
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
+                                  signing: NONE
                   - BlockingSubstitution:
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                      filename: ../../test/parser/testcases/sv_cast0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 12
                           var:
                             Identifier:
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
+                              hier:
+                                HierName: null
                               line: 12
                               name: b
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 12
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 12
                           var:
-                            Cast:
+                            SigningCast:
                               expr:
                                 Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  hier:
+                                    HierName: null
                                   line: 12
                                   name: a
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 12
-                              type:
-                                Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
-                                  line: 12
-                                  name: unsigned
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
+                              signing: UNSIGNED
                   - BlockingSubstitution:
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                      filename: ../../test/parser/testcases/sv_cast0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 13
                           var:
                             Identifier:
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
+                              hier:
+                                HierName: null
                               line: 13
                               name: b
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 13
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 13
                           var:
-                            Cast:
+                            SigningCast:
                               expr:
                                 Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  hier:
+                                    HierName: null
                                   line: 13
                                   name: a
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 13
-                              type:
-                                Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
-                                  line: 13
-                                  name: signed
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
+                              signing: SIGNED
                   - BlockingSubstitution:
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                      filename: ../../test/parser/testcases/sv_cast0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 14
                           var:
                             Identifier:
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
+                              hier:
+                                HierName: null
                               line: 14
                               name: b
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 14
                           var:
-                            Cast:
+                            TypeCast:
                               expr:
                                 Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  hier:
+                                    HierName: null
                                   line: 14
                                   name: a
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 14
-                              type:
-                                Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                              target:
+                                NamedType:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
                                   line: 14
                                   name: byte_t
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
+                                  signing: NONE
                   - BlockingSubstitution:
-                      filename: lib/test/parser/testcases/sv_cast0.sv
+                      filename: ../../test/parser/testcases/sv_cast0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 15
                           var:
                             Identifier:
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
+                              hier:
+                                HierName: null
                               line: 15
                               name: b
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 15
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/parser/testcases/sv_cast0.sv
+                          filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 15
                           var:
-                            Cast:
+                            TypeCast:
                               expr:
                                 Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  hier:
+                                    HierName: null
                                   line: 15
                                   name: a
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
-                              filename: lib/test/parser/testcases/sv_cast0.sv
+                              filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 15
-                              type:
-                                Identifier:
-                                  filename: lib/test/parser/testcases/sv_cast0.sv
+                              target:
+                                NamedType:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
                                   line: 15
                                   name: WIDTH
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
+                                  signing: NONE
+          lifetime: NONE
           line: 1
           name: sv_cast0
-      filename: lib/test/parser/testcases/sv_cast0.sv
+      filename: ../../test/parser/testcases/sv_cast0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_cast0.sv
+  filename: ../../test/parser/testcases/sv_cast0.sv
   line: 1

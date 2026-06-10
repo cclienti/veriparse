@@ -4,122 +4,158 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_unit_scope0.sv
+          filename: ../../test/parser/testcases/sv_unit_scope0.sv
           items:
-          - Localparam:
-              filename: lib/test/parser/testcases/sv_unit_scope0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_unit_scope0.sv
+              is_local: true
               line: 5
               name: W
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                  line: 5
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                  filename: ../../test/parser/testcases/sv_unit_scope0.sv
                   line: 5
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                      filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                      hier:
+                        HierName: null
                       line: 5
                       name: WIDTH
-                      package: $unit
                       scope:
-                        IdentifierScope: null
+                      - ScopeName:
+                          filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                          line: 5
+                          name: $unit
           - Assign:
-              filename: lib/test/parser/testcases/sv_unit_scope0.sv
+              filename: ../../test/parser/testcases/sv_unit_scope0.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                  filename: ../../test/parser/testcases/sv_unit_scope0.sv
                   line: 7
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                      filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                      hier:
+                        HierName: null
                       line: 7
                       name: dout
-                      package: ''
-                      scope:
-                        IdentifierScope: null
               line: 7
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                  filename: ../../test/parser/testcases/sv_unit_scope0.sv
                   line: 7
                   var:
                     FunctionCall:
                       args:
                       - Identifier:
-                          filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                          filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                          hier:
+                            HierName: null
                           line: 7
                           name: din
-                          package: ''
-                          scope:
-                            IdentifierScope: null
-                      filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                      filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                      hier:
+                        HierName: null
                       line: 7
                       name: mask
-                      package: $unit
+                      scope:
+                      - ScopeName:
+                          filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                          line: 7
+                          name: $unit
+          lifetime: NONE
           line: 1
           name: sv_unit_scope0
           ports:
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_unit_scope0.sv
-              first:
-                Input:
-                  filename: lib/test/parser/testcases/sv_unit_scope0.sv
-                  line: 2
-                  name: din
-                  sign: false
-              line: 2
-              second:
-                CustomTypeVar:
-                  filename: lib/test/parser/testcases/sv_unit_scope0.sv
-                  line: 2
-                  name: din
-                  right:
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
                     Rvalue: null
+                  filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 2
+                  name: din
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
                   type:
-                    Identifier:
-                      filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                    NamedType:
+                      filename: ../../test/parser/testcases/sv_unit_scope0.sv
                       line: 2
                       name: data_t
-                      package: $unit
                       scope:
-                        IdentifierScope: null
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_unit_scope0.sv
-              first:
-                Output:
-                  filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                      - ScopeName:
+                          filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                          line: 2
+                          name: $unit
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_unit_scope0.sv
+              line: 2
+              name: din
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: dout
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_unit_scope0.sv
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_unit_scope0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_unit_scope0.sv
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_unit_scope0.sv
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_unit_scope0.sv
               line: 3
-              second:
-                Variable: null
-      filename: lib/test/parser/testcases/sv_unit_scope0.sv
+              name: dout
+      filename: ../../test/parser/testcases/sv_unit_scope0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_unit_scope0.sv
+  filename: ../../test/parser/testcases/sv_unit_scope0.sv
   line: 1

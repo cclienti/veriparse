@@ -4,471 +4,437 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
           items:
           - Function:
-              automatic: false
-              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-              line: 3
-              name: f1
-              ports:
-              - Ioport:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  first:
-                    Input:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+              args:
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  is_var: false
+                  line: 3
+                  name: a
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 3
-                      name: a
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                          line: 3
-                          lsb:
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          left:
                             IntConstN:
                               base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                               line: 3
                               sign: false
                               size: -1
                               value: 3
+                          line: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+              lifetime: NONE
+              line: 3
+              name: f1
+              return_type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                   line: 3
-                  second:
-                    Variable: null
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Int:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  line: 3
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: true
+                  signing: NONE
               statements:
               - BlockingSubstitution:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                   ldelay:
                     DelayStatement: null
                   left:
                     Lvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 3
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 3
                           name: f1
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                   line: 3
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 3
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 3
                           name: a
-                          package: ''
-                          scope:
-                            IdentifierScope: null
           - Function:
-              automatic: false
-              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-              line: 4
-              name: f2
-              ports:
-              - Ioport:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  first:
-                    Input:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+              args:
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  is_var: false
+                  line: 4
+                  name: a
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 4
-                      name: a
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                          line: 4
-                          lsb:
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          left:
                             IntConstN:
                               base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                               line: 4
                               sign: false
                               size: -1
                               value: 3
-                  line: 4
-                  second:
-                    Variable: null
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Bit:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  line: 4
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                      line: 4
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
                           line: 4
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+              lifetime: NONE
+              line: 4
+              name: f2
+              return_type:
+                BitType:
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  line: 4
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                           line: 4
                           sign: false
                           size: -1
                           value: 7
+                      line: 4
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
               statements:
               - BlockingSubstitution:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                   ldelay:
                     DelayStatement: null
                   left:
                     Lvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 4
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 4
                           name: f2
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                   line: 4
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 4
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 4
                           name: a
-                          package: ''
-                          scope:
-                            IdentifierScope: null
           - Function:
-              automatic: false
-              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-              line: 5
-              name: f3
-              ports:
-              - Ioport:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  first:
-                    Input:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+              args:
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  is_var: false
+                  line: 5
+                  name: a
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 5
-                      name: a
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                          line: 5
-                          lsb:
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          left:
                             IntConstN:
                               base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                               line: 5
                               sign: false
                               size: -1
                               value: 3
-                  line: 5
-                  second:
-                    Variable: null
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: ''
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  type: null
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
                           line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+              lifetime: NONE
+              line: 5
+              name: f3
+              return_type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  line: 5
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                           line: 5
                           sign: false
                           size: -1
                           value: 3
+                      line: 5
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          line: 5
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
               statements:
               - BlockingSubstitution:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                   ldelay:
                     DelayStatement: null
                   left:
                     Lvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 5
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 5
                           name: f3
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                   line: 5
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 5
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 5
                           name: a
-                          package: ''
-                          scope:
-                            IdentifierScope: null
           - Function:
-              automatic: false
-              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-              line: 6
-              name: f4
-              ports:
-              - Ioport:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  first:
-                    Input:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+              args:
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  is_var: false
+                  line: 6
+                  name: a
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 6
-                      name: a
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                          line: 6
-                          lsb:
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          left:
                             IntConstN:
                               base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                               line: 6
                               sign: false
                               size: -1
                               value: 3
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+              lifetime: NONE
+              line: 6
+              name: f4
+              return_type:
+                ByteType:
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                   line: 6
-                  second:
-                    Variable: null
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Byte:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  line: 6
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: true
+                  signing: NONE
               statements:
               - BlockingSubstitution:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                   ldelay:
                     DelayStatement: null
                   left:
                     Lvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 6
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 6
                           name: f4
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                   line: 6
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 6
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 6
                           name: a
-                          package: ''
-                          scope:
-                            IdentifierScope: null
           - Function:
-              automatic: false
-              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-              line: 7
-              name: f5
-              ports:
-              - Ioport:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  first:
-                    Input:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+              args:
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  is_var: false
+                  line: 7
+                  name: a
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 7
-                      name: a
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                          line: 7
-                          lsb:
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          left:
                             IntConstN:
                               base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                               line: 7
                               sign: false
                               size: -1
                               value: 3
-                  line: 7
-                  second:
-                    Variable: null
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Bit:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                  line: 7
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: true
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
-                      line: 7
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
                           line: 7
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+              lifetime: NONE
+              line: 7
+              name: f5
+              return_type:
+                BitType:
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                  line: 7
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                           line: 7
                           sign: false
                           size: -1
                           value: 15
+                      line: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: SIGNED
               statements:
               - BlockingSubstitution:
-                  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                   ldelay:
                     DelayStatement: null
                   left:
                     Lvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 7
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 7
                           name: f5
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                   line: 7
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
                       line: 7
                       var:
                         Identifier:
-                          filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
+                          hier:
+                            HierName: null
                           line: 7
                           name: a
-                          package: ''
-                          scope:
-                            IdentifierScope: null
+          lifetime: NONE
           line: 1
           name: sv_data_type_funcret0
-      filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+      filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_data_type_funcret0.sv
+  filename: ../../test/parser/testcases/sv_data_type_funcret0.sv
   line: 1

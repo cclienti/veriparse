@@ -4,204 +4,203 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+          filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
           items:
-          - Bit:
-              filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 4
               name: a
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+              type:
+                BitType:
+                  filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
                   line: 4
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 3
                       line: 4
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 3
-          - Bit:
-              filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 4
               name: b
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+              type:
+                BitType:
+                  filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
                   line: 4
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 3
                       line: 4
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 3
-          - CustomTypeVar:
-              filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                          line: 4
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 5
               name: e
-              right:
-                Rvalue: null
               type:
-                CustomType:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                NamedType:
+                  filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
                   line: 5
                   name: my_t
-                  package: ''
-          - CustomTypeVar:
-              filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 5
               name: f
-              right:
-                Rvalue: null
               type:
-                CustomType:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                NamedType:
+                  filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
                   line: 5
                   name: my_t
-                  package: ''
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: sv_data_type_multiname0
           ports:
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-              first:
-                Input:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: p
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    BitType:
+                      filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
                       line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
               line: 2
-              second:
-                Bit:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                  line: 2
-                  name: p
-                  right:
+              name: p
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
                     Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                      line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 3
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-              first:
-                Input:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                  filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: q
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    BitType:
+                      filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
                       line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
               line: 2
-              second:
-                Bit:
-                  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                  line: 2
-                  name: q
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                      line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 3
-      filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+              name: q
+      filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_data_type_multiname0.sv
+  filename: ../../test/parser/testcases/sv_data_type_multiname0.sv
   line: 1

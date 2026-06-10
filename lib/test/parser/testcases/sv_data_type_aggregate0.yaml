@@ -4,233 +4,234 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+          filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
           items:
-          - CustomTypeVar:
-              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 3
               name: s
-              right:
-                Rvalue: null
               type:
-                StructDef:
-                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                StructType:
+                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                  is_packed: true
                   line: 3
                   members:
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                      init:
+                        Rvalue: null
                       line: 3
                       name: a
-                      right:
-                        Rvalue: null
                       type:
-                        Logic:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          ldelay:
-                            DelayStatement: null
+                        LogicType:
+                          filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                           line: 3
-                          name: ''
-                          rdelay:
-                            DelayStatement: null
-                          right:
-                            Rvalue: null
-                          sign: false
-                          type: null
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                              line: 3
-                              lsb:
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                              left:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                                  line: 3
-                                  sign: false
-                                  size: -1
-                                  value: 0
-                              msb:
-                                IntConstN:
-                                  base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                                   line: 3
                                   sign: false
                                   size: -1
                                   value: 7
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                      line: 3
-                      name: b
-                      right:
-                        Rvalue: null
-                      type:
-                        Bit:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          line: 3
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: false
-                  packed: true
-                  sign: false
-          - CustomTypeVar:
-              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-              lengths:
-              - Length:
-                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                  line: 4
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 3
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 0
-              line: 4
-              name: g
-              right:
-                Rvalue: null
-              type:
-                StructDef:
-                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                  line: 4
-                  members:
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                      line: 4
-                      name: f
-                      right:
-                        Rvalue: null
-                      type:
-                        Bit:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          line: 4
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: false
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                              line: 4
-                              lsb:
+                              line: 3
+                              right:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                                  line: 4
+                                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 3
                                   sign: false
                                   size: -1
                                   value: 0
-                              msb:
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                      init:
+                        Rvalue: null
+                      line: 3
+                      name: b
+                      type:
+                        BitType:
+                          filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                          line: 3
+                          signing: NONE
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 4
+              name: g
+              type:
+                StructType:
+                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                  is_packed: true
+                  line: 4
+                  members:
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                      init:
+                        Rvalue: null
+                      line: 4
+                      name: f
+                      type:
+                        BitType:
+                          filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                          line: 4
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                              left:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                                   line: 4
                                   sign: false
                                   size: -1
                                   value: 3
-                  packed: true
-                  sign: true
-          - CustomTypeVar:
-              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-              line: 5
-              name: u
-              right:
-                Rvalue: null
-              type:
-                Union:
-                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                  line: 5
-                  members:
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                      line: 5
-                      name: x
-                      right:
-                        Rvalue: null
-                      type:
-                        Int:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          line: 5
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: true
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                      line: 5
-                      name: y
-                      right:
-                        Rvalue: null
-                      type:
-                        Bit:
-                          filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                          line: 5
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: false
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                              line: 5
-                              lsb:
+                              line: 4
+                              right:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
-                                  line: 5
+                                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 4
                                   sign: false
                                   size: -1
                                   value: 0
-                              msb:
+                          signing: NONE
+                  signing: SIGNED
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                  left:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 0
+                  line: 4
+                  right:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                      line: 4
+                      sign: false
+                      size: -1
+                      value: 3
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 5
+              name: u
+              type:
+                UnionType:
+                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                  is_packed: false
+                  is_tagged: false
+                  line: 5
+                  members:
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                      init:
+                        Rvalue: null
+                      line: 5
+                      name: x
+                      type:
+                        IntType:
+                          filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                          line: 5
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                      init:
+                        Rvalue: null
+                      line: 5
+                      name: y
+                      type:
+                        BitType:
+                          filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                          line: 5
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                              left:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                                   line: 5
                                   sign: false
                                   size: -1
                                   value: 7
-                  packed: false
-                  sign: false
-          - CustomTypeVar:
-              filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                              line: 5
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 6
               name: e
-              right:
-                Rvalue: null
               type:
-                EnumDef:
-                  base_type: NONE
-                  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                EnumType:
+                  base:
+                    DataType: null
+                  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                   items:
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 6
                       name: RED
+                      range:
+                        Dimension: null
                       value: null
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 6
                       name: GREEN
+                      range:
+                        Dimension: null
                       value: null
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+                      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
                       line: 6
                       name: BLUE
+                      range:
+                        Dimension: null
                       value: null
                   line: 6
-                  sign: false
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: sv_data_type_aggregate0
-      filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+      filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_data_type_aggregate0.sv
+  filename: ../../test/parser/testcases/sv_data_type_aggregate0.sv
   line: 1

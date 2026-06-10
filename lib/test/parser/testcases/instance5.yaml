@@ -4,218 +4,321 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../lib/test/parser/testcases/instance5.v
+          filename: ../../test/parser/testcases/instance5.v
           items:
-          - Ioport:
-              filename: ../lib/test/parser/testcases/instance5.v
-              first:
-                Input:
-                  filename: ../lib/test/parser/testcases/instance5.v
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance5.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: a
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance5.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 2
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/parser/testcases/instance5.v
-              first:
-                Input:
-                  filename: ../lib/test/parser/testcases/instance5.v
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance5.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: b
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance5.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 2
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/parser/testcases/instance5.v
-              first:
-                Output:
-                  filename: ../lib/test/parser/testcases/instance5.v
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance5.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: c
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance5.v
+                      line: 3
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 3
-              second:
-                Variable: null
+              name: c
           - Assign:
-              filename: ../lib/test/parser/testcases/instance5.v
+              filename: ../../test/parser/testcases/instance5.v
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: ../lib/test/parser/testcases/instance5.v
+                  filename: ../../test/parser/testcases/instance5.v
                   line: 4
                   var:
                     Identifier:
-                      filename: ../lib/test/parser/testcases/instance5.v
+                      filename: ../../test/parser/testcases/instance5.v
+                      hier:
+                        HierName: null
                       line: 4
                       name: c
-                      scope:
-                        IdentifierScope: null
               line: 4
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: ../lib/test/parser/testcases/instance5.v
+                  filename: ../../test/parser/testcases/instance5.v
                   line: 4
                   var:
                     And:
-                      filename: ../lib/test/parser/testcases/instance5.v
+                      filename: ../../test/parser/testcases/instance5.v
                       left:
                         Identifier:
-                          filename: ../lib/test/parser/testcases/instance5.v
+                          filename: ../../test/parser/testcases/instance5.v
+                          hier:
+                            HierName: null
                           line: 4
                           name: a
-                          scope:
-                            IdentifierScope: null
                       line: 4
                       right:
                         Identifier:
-                          filename: ../lib/test/parser/testcases/instance5.v
+                          filename: ../../test/parser/testcases/instance5.v
+                          hier:
+                            HierName: null
                           line: 4
                           name: b
-                          scope:
-                            IdentifierScope: null
+          lifetime: NONE
           line: 1
           name: my_module
           ports:
           - Port:
-              filename: ../lib/test/parser/testcases/instance5.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 1
               name: a
           - Port:
-              filename: ../lib/test/parser/testcases/instance5.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 1
               name: b
           - Port:
-              filename: ../lib/test/parser/testcases/instance5.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 1
               name: c
       - Module:
           default_nettype: WIRE
-          filename: ../lib/test/parser/testcases/instance5.v
+          filename: ../../test/parser/testcases/instance5.v
           items:
-          - Ioport:
-              filename: ../lib/test/parser/testcases/instance5.v
-              first:
-                Input:
-                  filename: ../lib/test/parser/testcases/instance5.v
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance5.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 8
                   name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../lib/test/parser/testcases/instance5.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance5.v
                       line: 8
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance5.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance5.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 8
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance5.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 8
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/parser/testcases/instance5.v
-              first:
-                Input:
-                  filename: ../lib/test/parser/testcases/instance5.v
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance5.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 8
                   name: b
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../lib/test/parser/testcases/instance5.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance5.v
                       line: 8
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance5.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance5.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 8
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance5.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 8
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/parser/testcases/instance5.v
-              first:
-                Output:
-                  filename: ../lib/test/parser/testcases/instance5.v
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance5.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 9
                   name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../lib/test/parser/testcases/instance5.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance5.v
                       line: 9
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance5.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance5.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 9
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
-                          line: 9
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance5.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 9
-              second:
-                Variable: null
+              name: c
           - Instancelist:
-              filename: ../lib/test/parser/testcases/instance5.v
+              filename: ../../test/parser/testcases/instance5.v
               instances:
               - Instance:
                   array:
-                    Length:
-                      filename: ../lib/test/parser/testcases/instance5.v
-                      line: 10
-                      lsb:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance5.v
+                      left:
                         IntConstN:
                           base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
-                          line: 10
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/parser/testcases/instance5.v
+                          filename: ../../test/parser/testcases/instance5.v
                           line: 10
                           sign: false
                           size: -1
                           value: 3
-                  filename: ../lib/test/parser/testcases/instance5.v
+                      line: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance5.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 0
+                  filename: ../../test/parser/testcases/instance5.v
                   line: 10
                   module: my_module
                   name: inst
@@ -226,22 +329,22 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: ../lib/test/parser/testcases/instance5.v
+                          filename: ../../test/parser/testcases/instance5.v
+                          hier:
+                            HierName: null
                           line: 10
                           name: a
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
                       name: ''
                       value:
                         Identifier:
-                          filename: ../lib/test/parser/testcases/instance5.v
+                          filename: ../../test/parser/testcases/instance5.v
+                          hier:
+                            HierName: null
                           line: 10
                           name: b
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -249,23 +352,35 @@ Source:
                       value: null
               line: 10
               module: my_module
+          lifetime: NONE
           line: 7
           name: top
           ports:
           - Port:
-              filename: ../lib/test/parser/testcases/instance5.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 7
               name: a
           - Port:
-              filename: ../lib/test/parser/testcases/instance5.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 7
               name: b
           - Port:
-              filename: ../lib/test/parser/testcases/instance5.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance5.v
               line: 7
               name: c
-      filename: ../lib/test/parser/testcases/instance5.v
+      filename: ../../test/parser/testcases/instance5.v
       line: 1
-  filename: ../lib/test/parser/testcases/instance5.v
+  filename: ../../test/parser/testcases/instance5.v
   line: 1
-

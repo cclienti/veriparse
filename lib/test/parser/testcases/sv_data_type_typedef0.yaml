@@ -4,184 +4,181 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+          filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
           items:
           - Typedef:
-              def:
-                Byte:
-                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                  line: 3
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: true
-              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+              filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+              fwd_kind: NONE
               line: 3
               name: byte_t
+              type:
+                ByteType:
+                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                  line: 3
+                  signing: NONE
           - Typedef:
-              def:
-                Int:
-                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                  line: 4
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: true
-              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+              filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+              fwd_kind: NONE
               line: 4
               name: int_t
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                  line: 4
+                  signing: NONE
           - Typedef:
-              def:
-                Bit:
-                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+              filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+              fwd_kind: NONE
+              line: 5
+              name: octet_t
+              type:
+                BitType:
+                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
                   line: 5
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                      line: 5
-                      lsb:
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
                           line: 5
                           sign: false
                           size: -1
                           value: 7
-              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-              line: 5
-              name: octet_t
-          - Typedef:
-              def:
-                Reg:
-                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                  line: 6
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                      line: 6
-                      lsb:
+                      line: 5
+                      right:
                         IntConstN:
                           base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                          line: 6
+                          filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                          line: 5
                           sign: false
                           size: -1
                           value: 0
-                      msb:
+                  signing: NONE
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+              fwd_kind: NONE
+              line: 6
+              name: nib_t
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                  line: 6
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                          filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
                           line: 6
                           sign: false
                           size: -1
                           value: 3
-              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-              line: 6
-              name: nib_t
+                      line: 6
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Typedef:
-              def:
-                Union:
-                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+              filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+              fwd_kind: NONE
+              line: 7
+              name: u_t
+              type:
+                UnionType:
+                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                  is_packed: false
+                  is_tagged: false
                   line: 7
                   members:
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                      init:
+                        Rvalue: null
                       line: 7
                       name: a
-                      right:
-                        Rvalue: null
                       type:
-                        Int:
-                          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                        IntType:
+                          filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
                           line: 7
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: true
-                  - StructMember:
-                      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                          signing: NONE
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                      init:
+                        Rvalue: null
                       line: 7
                       name: b
-                      right:
-                        Rvalue: null
                       type:
-                        Bit:
-                          filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                        BitType:
+                          filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
                           line: 7
-                          name: ''
-                          right:
-                            Rvalue: null
-                          sign: false
-                          widths:
-                          - Width:
-                              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                              line: 7
-                              lsb:
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                              left:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                                  line: 7
-                                  sign: false
-                                  size: -1
-                                  value: 0
-                              msb:
-                                IntConstN:
-                                  base: 10
-                                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+                                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
                                   line: 7
                                   sign: false
                                   size: -1
                                   value: 31
-                  packed: false
-                  sign: false
-              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-              line: 7
-              name: u_t
+                              line: 7
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                                  line: 7
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  signing: NONE
           - Typedef:
-              def:
-                EnumDef:
-                  base_type: NONE
-                  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                  items:
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                      line: 8
-                      name: A
-                      value: null
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                      line: 8
-                      name: B
-                      value: null
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
-                      line: 8
-                      name: C
-                      value: null
-                  line: 8
-                  sign: false
-              filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+              filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+              fwd_kind: NONE
               line: 8
               name: e_t
+              type:
+                EnumType:
+                  base:
+                    DataType: null
+                  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                  items:
+                  - EnumItem:
+                      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                      line: 8
+                      name: A
+                      range:
+                        Dimension: null
+                      value: null
+                  - EnumItem:
+                      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                      line: 8
+                      name: B
+                      range:
+                        Dimension: null
+                      value: null
+                  - EnumItem:
+                      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
+                      line: 8
+                      name: C
+                      range:
+                        Dimension: null
+                      value: null
+                  line: 8
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: sv_data_type_typedef0
-      filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+      filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_data_type_typedef0.sv
+  filename: ../../test/parser/testcases/sv_data_type_typedef0.sv
   line: 1

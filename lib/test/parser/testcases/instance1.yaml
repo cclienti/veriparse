@@ -6,12 +6,16 @@ Source:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/instance1.v
           items:
-          - Localparam:
+          - Param:
               filename: ../../test/parser/testcases/instance1.v
+              is_local: true
               line: 2
               name: L_INPUT_WIDTH
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance1.v
@@ -24,12 +28,16 @@ Source:
                       sign: false
                       size: -1
                       value: 8
-          - Localparam:
+          - Param:
               filename: ../../test/parser/testcases/instance1.v
+              is_local: true
               line: 3
               name: L_OUTPUT_WIDTH
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 3
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance1.v
@@ -42,123 +50,162 @@ Source:
                       sign: false
                       size: -1
                       value: 8
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ../../test/parser/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 5
               name: clock
               rdelay:
                 DelayStatement: null
-              right:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 5
+                  signing: NONE
+          - WireNet:
+              cont_assign:
                 Rvalue: null
-              sign: false
-          - Wire:
               filename: ../../test/parser/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 6
               name: reset
               rdelay:
                 DelayStatement: null
-              right:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 6
+                  signing: NONE
+          - WireNet:
+              cont_assign:
                 Rvalue: null
-              sign: false
-          - Wire:
               filename: ../../test/parser/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 7
               name: in0_i
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/instance1.v
                   line: 7
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance1.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 7
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 7
-                      sign: false
-                      size: -1
-                      value: 7
-          - Wire:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance1.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ../../test/parser/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: in1_i
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
-          - Reg:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
               filename: ../../test/parser/testcases/instance1.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 9
               name: out_i
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              type:
+                RegType:
                   filename: ../../test/parser/testcases/instance1.v
                   line: 9
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 9
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 9
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance1.v
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Instancelist:
               filename: ../../test/parser/testcases/instance1.v
               instances:
               - Instance:
                   array:
-                    Length: null
+                    Dimension: null
                   filename: ../../test/parser/testcases/instance1.v
                   line: 13
                   module: mod
@@ -171,10 +218,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 11
                           name: L_INPUT_WIDTH
-                          scope:
-                            IdentifierScope: null
                   - ParamArg:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 12
@@ -182,10 +229,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 12
                           name: L_OUTPUT_WIDTH
-                          scope:
-                            IdentifierScope: null
                   portlist:
                   - PortArg:
                       filename: ../../test/parser/testcases/instance1.v
@@ -194,10 +241,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 13
                           name: clock
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 14
@@ -205,10 +252,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 14
                           name: reset
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 15
@@ -216,10 +263,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 15
                           name: in0_i
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 16
@@ -227,10 +274,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 16
                           name: in1_i
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 17
@@ -238,10 +285,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: out_i
-                          scope:
-                            IdentifierScope: null
               line: 11
               module: mod
               parameterlist:
@@ -252,10 +299,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../../test/parser/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 11
                       name: L_INPUT_WIDTH
-                      scope:
-                        IdentifierScope: null
               - ParamArg:
                   filename: ../../test/parser/testcases/instance1.v
                   line: 12
@@ -263,49 +310,57 @@ Source:
                   value:
                     Identifier:
                       filename: ../../test/parser/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 12
                       name: L_OUTPUT_WIDTH
-                      scope:
-                        IdentifierScope: null
+          lifetime: NONE
           line: 1
           name: instance1
       - Module:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/instance1.v
           items:
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ../../test/parser/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 30
               name: in0_ex
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/instance1.v
                   line: 30
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 30
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    Minus:
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/instance1.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/instance1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance1.v
+                              hier:
+                                HierName: null
+                              line: 30
+                              name: OUTPUT_WIDTH
                           line: 30
-                          name: OUTPUT_WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance1.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 30
                       right:
                         IntConstN:
@@ -314,40 +369,48 @@ Source:
                           line: 30
                           sign: false
                           size: -1
-                          value: 1
-          - Wire:
+                          value: 0
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ../../test/parser/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 30
               name: in1_ex
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/instance1.v
                   line: 30
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 30
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    Minus:
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/instance1.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/instance1.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance1.v
+                              hier:
+                                HierName: null
+                              line: 30
+                              name: OUTPUT_WIDTH
                           line: 30
-                          name: OUTPUT_WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance1.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 30
                       right:
                         IntConstN:
@@ -356,7 +419,8 @@ Source:
                           line: 30
                           sign: false
                           size: -1
-                          value: 1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ../../test/parser/testcases/instance1.v
               ldelay:
@@ -368,10 +432,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 32
                       name: in0_ex
-                      scope:
-                        IdentifierScope: null
               line: 32
               rdelay:
                 DelayStatement: null
@@ -390,10 +454,10 @@ Source:
                           times:
                             Identifier:
                               filename: ../../test/parser/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 32
                               name: INPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
                           value:
                             Concat:
                               filename: ../../test/parser/testcases/instance1.v
@@ -408,10 +472,10 @@ Source:
                                   value: 0
                       - Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 32
                           name: in0
-                          scope:
-                            IdentifierScope: null
           - Assign:
               filename: ../../test/parser/testcases/instance1.v
               ldelay:
@@ -423,10 +487,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 33
                       name: in1_ex
-                      scope:
-                        IdentifierScope: null
               line: 33
               rdelay:
                 DelayStatement: null
@@ -445,10 +509,10 @@ Source:
                           times:
                             Identifier:
                               filename: ../../test/parser/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 33
                               name: INPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
                           value:
                             Concat:
                               filename: ../../test/parser/testcases/instance1.v
@@ -463,10 +527,10 @@ Source:
                                   value: 0
                       - Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 33
                           name: in1
-                          scope:
-                            IdentifierScope: null
           - Always:
               filename: ../../test/parser/testcases/instance1.v
               line: 35
@@ -481,10 +545,10 @@ Source:
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 35
                           name: clock
-                          scope:
-                            IdentifierScope: null
                       type: POSEDGE
               statement:
                 Block:
@@ -496,10 +560,10 @@ Source:
                       cond:
                         Identifier:
                           filename: ../../test/parser/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 36
                           name: reset
-                          scope:
-                            IdentifierScope: null
                       false_statement:
                         Block:
                           filename: ../../test/parser/testcases/instance1.v
@@ -517,10 +581,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/instance1.v
+                                      hier:
+                                        HierName: null
                                       line: 40
                                       name: out
-                                      scope:
-                                        IdentifierScope: null
                               line: 40
                               rdelay:
                                 DelayStatement: null
@@ -534,18 +598,18 @@ Source:
                                       left:
                                         Identifier:
                                           filename: ../../test/parser/testcases/instance1.v
+                                          hier:
+                                            HierName: null
                                           line: 40
                                           name: in0_ex
-                                          scope:
-                                            IdentifierScope: null
                                       line: 40
                                       right:
                                         Identifier:
                                           filename: ../../test/parser/testcases/instance1.v
+                                          hier:
+                                            HierName: null
                                           line: 40
                                           name: in1_ex
-                                          scope:
-                                            IdentifierScope: null
                       filename: ../../test/parser/testcases/instance1.v
                       line: 36
                       true_statement:
@@ -565,10 +629,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/instance1.v
+                                      hier:
+                                        HierName: null
                                       line: 37
                                       name: out
-                                      scope:
-                                        IdentifierScope: null
                               line: 37
                               rdelay:
                                 DelayStatement: null
@@ -584,15 +648,17 @@ Source:
                                       sign: false
                                       size: -1
                                       value: 0
+          lifetime: NONE
           line: 21
           name: mod
           params:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/instance1.v
+              is_local: false
               line: 22
               name: INPUT_WIDTH
-              sign: false
-              type: NONE
+              type:
+                DataType: null
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance1.v
@@ -605,12 +671,13 @@ Source:
                       sign: false
                       size: -1
                       value: 8
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/instance1.v
+              is_local: false
               line: 23
               name: OUTPUT_WIDTH
-              sign: false
-              type: NONE
+              type:
+                DataType: null
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance1.v
@@ -624,122 +691,100 @@ Source:
                       size: -1
                       value: 8
           ports:
-          - Ioport:
-              filename: ../../test/parser/testcases/instance1.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/instance1.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 25
                   name: clock
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 25
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance1.v
               line: 25
-              second:
-                Wire:
+              name: clock
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/instance1.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 25
-                  name: clock
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/instance1.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/instance1.v
                   line: 26
                   name: reset
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance1.v
+                      line: 26
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance1.v
               line: 26
-              second:
-                Wire:
-                  filename: ../../test/parser/testcases/instance1.v
-                  ldelay:
-                    DelayStatement: null
-                  line: 26
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  right:
+              name: reset
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
                     Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/instance1.v
-              first:
-                Input:
                   filename: ../../test/parser/testcases/instance1.v
-                  line: 27
-                  name: in0
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 27
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance1.v
-                          line: 27
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: ../../test/parser/testcases/instance1.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/instance1.v
-                              line: 27
-                              name: INPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 27
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/instance1.v
-                              line: 27
-                              sign: false
-                              size: -1
-                              value: 1
-              line: 27
-              second:
-                Wire:
-                  filename: ../../test/parser/testcases/instance1.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 27
                   name: in0
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 27
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance1.v
-                          line: 27
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/instance1.v
                           left:
-                            Identifier:
+                            Minus:
                               filename: ../../test/parser/testcases/instance1.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/instance1.v
+                                  hier:
+                                    HierName: null
+                                  line: 27
+                                  name: INPUT_WIDTH
                               line: 27
-                              name: INPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/instance1.v
+                                  line: 27
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 27
                           right:
                             IntConstN:
@@ -748,81 +793,55 @@ Source:
                               line: 27
                               sign: false
                               size: -1
-                              value: 1
-          - Ioport:
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/instance1.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/instance1.v
-                  line: 27
-                  name: in1
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 27
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance1.v
-                          line: 27
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: ../../test/parser/testcases/instance1.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/instance1.v
-                              line: 27
-                              name: INPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 27
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/instance1.v
-                              line: 27
-                              sign: false
-                              size: -1
-                              value: 1
               line: 27
-              second:
-                Wire:
+              name: in0
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/instance1.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 27
                   name: in1
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 27
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance1.v
-                          line: 27
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/instance1.v
                           left:
-                            Identifier:
+                            Minus:
                               filename: ../../test/parser/testcases/instance1.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/instance1.v
+                                  hier:
+                                    HierName: null
+                                  line: 27
+                                  name: INPUT_WIDTH
                               line: 27
-                              name: INPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/instance1.v
+                                  line: 27
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 27
                           right:
                             IntConstN:
@@ -831,37 +850,55 @@ Source:
                               line: 27
                               sign: false
                               size: -1
-                              value: 1
-          - Ioport:
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/instance1.v
-              first:
-                Output:
+              line: 27
+              name: in1
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/instance1.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 28
                   name: out
-                  sign: false
-                  widths:
-                  - Width:
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
                       filename: ../../test/parser/testcases/instance1.v
                       line: 28
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance1.v
-                          line: 28
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/instance1.v
                           left:
-                            Identifier:
+                            Minus:
                               filename: ../../test/parser/testcases/instance1.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/instance1.v
+                                  hier:
+                                    HierName: null
+                                  line: 28
+                                  name: OUTPUT_WIDTH
                               line: 28
-                              name: OUTPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/instance1.v
+                                  line: 28
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 28
                           right:
                             IntConstN:
@@ -870,49 +907,14 @@ Source:
                               line: 28
                               sign: false
                               size: -1
-                              value: 1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance1.v
               line: 28
-              second:
-                Reg:
-                  filename: ../../test/parser/testcases/instance1.v
-                  line: 28
-                  name: out
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/parser/testcases/instance1.v
-                      line: 28
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance1.v
-                          line: 28
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: ../../test/parser/testcases/instance1.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/instance1.v
-                              line: 28
-                              name: OUTPUT_WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 28
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/instance1.v
-                              line: 28
-                              sign: false
-                              size: -1
-                              value: 1
+              name: out
       filename: ../../test/parser/testcases/instance1.v
       line: 1
   filename: ../../test/parser/testcases/instance1.v
   line: 1
-

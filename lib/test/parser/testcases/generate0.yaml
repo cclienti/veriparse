@@ -20,10 +20,10 @@ Source:
                       left:
                         Identifier:
                           filename: ../../test/parser/testcases/generate0.v
+                          hier:
+                            HierName: null
                           line: 5
                           name: i
-                          scope:
-                            IdentifierScope: null
                       line: 5
                       right:
                         IntConstN:
@@ -47,10 +47,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/generate0.v
+                              hier:
+                                HierName: null
                               line: 5
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 5
                       rdelay:
                         DelayStatement: null
@@ -64,10 +64,10 @@ Source:
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/generate0.v
+                                  hier:
+                                    HierName: null
                                   line: 5
                                   name: i
-                                  scope:
-                                    IdentifierScope: null
                               line: 5
                               right:
                                 IntConstN:
@@ -89,10 +89,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/generate0.v
+                              hier:
+                                HierName: null
                               line: 5
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 5
                       rdelay:
                         DelayStatement: null
@@ -125,10 +125,10 @@ Source:
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/generate0.v
+                                  hier:
+                                    HierName: null
                                   line: 7
                                   name: j
-                                  scope:
-                                    IdentifierScope: null
                               line: 7
                               right:
                                 IntConstN:
@@ -152,10 +152,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/generate0.v
+                                      hier:
+                                        HierName: null
                                       line: 7
                                       name: j
-                                      scope:
-                                        IdentifierScope: null
                               line: 7
                               rdelay:
                                 DelayStatement: null
@@ -169,10 +169,10 @@ Source:
                                       left:
                                         Identifier:
                                           filename: ../../test/parser/testcases/generate0.v
+                                          hier:
+                                            HierName: null
                                           line: 7
                                           name: j
-                                          scope:
-                                            IdentifierScope: null
                                       line: 7
                                       right:
                                         IntConstN:
@@ -194,10 +194,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/generate0.v
+                                      hier:
+                                        HierName: null
                                       line: 7
                                       name: j
-                                      scope:
-                                        IdentifierScope: null
                               line: 7
                               rdelay:
                                 DelayStatement: null
@@ -208,42 +208,49 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/generate0.v
+                                      hier:
+                                        HierName: null
                                       line: 7
                                       name: i
-                                      scope:
-                                        IdentifierScope: null
                           statement:
                             Block:
                               filename: ../../test/parser/testcases/generate0.v
                               line: 7
                               scope: gen2
                               statements:
-                              - Reg:
+                              - Var:
                                   filename: ../../test/parser/testcases/generate0.v
+                                  init:
+                                    Rvalue: null
+                                  is_const: false
+                                  is_var: false
+                                  lifetime: NONE
                                   line: 8
                                   name: R
-                                  right:
-                                    Rvalue: null
-                                  sign: false
-                                  widths:
-                                  - Width:
+                                  type:
+                                    RegType:
                                       filename: ../../test/parser/testcases/generate0.v
                                       line: 8
-                                      lsb:
-                                        IntConstN:
-                                          base: 10
+                                      packed_dims:
+                                      - RangeDim:
                                           filename: ../../test/parser/testcases/generate0.v
+                                          left:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/generate0.v
+                                              hier:
+                                                HierName: null
+                                              line: 8
+                                              name: i
                                           line: 8
-                                          sign: false
-                                          size: -1
-                                          value: 0
-                                      msb:
-                                        Identifier:
-                                          filename: ../../test/parser/testcases/generate0.v
-                                          line: 8
-                                          name: i
-                                          scope:
-                                            IdentifierScope: null
+                                          right:
+                                            IntConstN:
+                                              base: 10
+                                              filename: ../../test/parser/testcases/generate0.v
+                                              line: 8
+                                              sign: false
+                                              size: -1
+                                              value: 0
+                                      signing: NONE
                               - Initial:
                                   filename: ../../test/parser/testcases/generate0.v
                                   line: 9
@@ -264,10 +271,10 @@ Source:
                                               var:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/generate0.v
+                                                  hier:
+                                                    HierName: null
                                                   line: 10
                                                   name: R
-                                                  scope:
-                                                    IdentifierScope: null
                                           line: 10
                                           rdelay:
                                             DelayStatement: null
@@ -278,10 +285,10 @@ Source:
                                               var:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/generate0.v
+                                                  hier:
+                                                    HierName: null
                                                   line: 10
                                                   name: i
-                                                  scope:
-                                                    IdentifierScope: null
                                       - SingleStatement:
                                           delay:
                                             DelayStatement: null
@@ -297,18 +304,18 @@ Source:
                                                   value: '%m\n'
                                               - Identifier:
                                                   filename: ../../test/parser/testcases/generate0.v
+                                                  hier:
+                                                    HierName: null
                                                   line: 11
                                                   name: R
-                                                  scope:
-                                                    IdentifierScope: null
                                               filename: ../../test/parser/testcases/generate0.v
                                               line: 11
                                               syscall: display
               line: 3
+          lifetime: NONE
           line: 1
           name: generate0
       filename: ../../test/parser/testcases/generate0.v
       line: 1
   filename: ../../test/parser/testcases/generate0.v
   line: 1
-

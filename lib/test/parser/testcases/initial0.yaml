@@ -6,34 +6,62 @@ Source:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/initial0.v
           items:
-          - Reg:
+          - Var:
               filename: ../../test/parser/testcases/initial0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 2
               name: clk
-              right:
-                Rvalue: null
-              sign: false
-          - Reg:
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/initial0.v
+                  line: 2
+                  signing: NONE
+          - Var:
               filename: ../../test/parser/testcases/initial0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 2
               name: reset
-              right:
-                Rvalue: null
-              sign: false
-          - Reg:
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/initial0.v
+                  line: 2
+                  signing: NONE
+          - Var:
               filename: ../../test/parser/testcases/initial0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 2
               name: enable
-              right:
-                Rvalue: null
-              sign: false
-          - Reg:
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/initial0.v
+                  line: 2
+                  signing: NONE
+          - Var:
               filename: ../../test/parser/testcases/initial0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 2
               name: data
-              right:
-                Rvalue: null
-              sign: false
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/initial0.v
+                  line: 2
+                  signing: NONE
           - Initial:
               filename: ../../test/parser/testcases/initial0.v
               line: 4
@@ -54,10 +82,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/initial0.v
+                              hier:
+                                HierName: null
                               line: 5
                               name: clk
-                              scope:
-                                IdentifierScope: null
                       line: 5
                       rdelay:
                         DelayStatement: null
@@ -84,10 +112,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/initial0.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: reset
-                              scope:
-                                IdentifierScope: null
                       line: 6
                       rdelay:
                         DelayStatement: null
@@ -114,10 +142,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/initial0.v
+                              hier:
+                                HierName: null
                               line: 7
                               name: enable
-                              scope:
-                                IdentifierScope: null
                       line: 7
                       rdelay:
                         DelayStatement: null
@@ -144,10 +172,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/initial0.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: data
-                              scope:
-                                IdentifierScope: null
                       line: 8
                       rdelay:
                         DelayStatement: null
@@ -163,10 +191,10 @@ Source:
                               sign: false
                               size: -1
                               value: 0
+          lifetime: NONE
           line: 1
           name: initial0
       filename: ../../test/parser/testcases/initial0.v
       line: 1
   filename: ../../test/parser/testcases/initial0.v
   line: 1
-

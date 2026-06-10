@@ -6,12 +6,16 @@ Source:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/module3.v
           items:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 7
               name: A
-              sign: true
-              type: INTEGER
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 7
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/module3.v
@@ -24,12 +28,16 @@ Source:
                       sign: false
                       size: -1
                       value: 2
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 7
               name: B
-              sign: true
-              type: INTEGER
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 7
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/module3.v
@@ -42,190 +50,239 @@ Source:
                       sign: false
                       size: -1
                       value: 3
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 7
               name: C
-              sign: true
-              type: INTEGER
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 7
+                  signing: NONE
               value: null
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 8
               name: X
-              sign: true
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 8
+                  signing: SIGNED
               value: null
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 8
               name: Y
-              sign: true
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 8
+                  signing: SIGNED
               value: null
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 9
               name: Z
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 9
+                  signing: NONE
               value: null
-          - Ioport:
-              filename: ../../test/parser/testcases/module3.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module3.v
-                  line: 11
-                  name: reset
-                  sign: false
-              line: 11
-              second:
-                Wire:
-                  filename: ../../test/parser/testcases/module3.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 11
                   name: reset
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 11
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/module3.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/module3.v
-                  line: 11
-                  name: clk
-                  sign: false
               line: 11
-              second:
-                Wire:
+              name: reset
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module3.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 11
                   name: clk
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/module3.v
+                      line: 11
+                      signing: NONE
+              direction: INPUT
+              expr: null
               filename: ../../test/parser/testcases/module3.v
-              first:
-                Input:
+              line: 11
+              name: clk
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module3.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 12
                   name: in
-                  sign: false
-                  widths:
-                  - Width:
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/module3.v
                       line: 12
-                      lsb:
-                        IntConstN:
-                          base: 10
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/module3.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module3.v
+                              line: 12
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 12
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module3.v
-                          line: 12
-                          sign: false
-                          size: -1
-                          value: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/module3.v
+                              line: 12
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/module3.v
               line: 12
-              second:
-                Wire:
+              name: in
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/module3.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 12
-                  name: in
+                  line: 13
+                  name: out
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
                       filename: ../../test/parser/testcases/module3.v
-                      line: 12
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module3.v
-                          line: 12
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/module3.v
-                          line: 12
-                          sign: false
-                          size: -1
-                          value: 7
-          - Ioport:
+                      line: 13
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
               filename: ../../test/parser/testcases/module3.v
-              first:
-                Output:
-                  filename: ../../test/parser/testcases/module3.v
-                  line: 13
-                  name: out
-                  sign: false
               line: 13
-              second:
-                Reg:
-                  filename: ../../test/parser/testcases/module3.v
-                  line: 13
-                  name: out
-                  right:
-                    Rvalue: null
-                  sign: false
+              name: out
+          lifetime: NONE
           line: 2
           name: module3
           params:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 3
               name: T1
-              sign: false
-              type: NONE
-              value: null
-              widths:
-              - Width:
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/module3.v
                   line: 3
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/module3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 3
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/module3.v
-                      line: 3
-                      sign: false
-                      size: -1
-                      value: 7
-          - Parameter:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+              value: null
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 3
               name: T2
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 3
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/module3.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 7
+                      line: 3
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/module3.v
+                          line: 3
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/module3.v
@@ -238,32 +295,16 @@ Source:
                       sign: false
                       size: -1
                       value: 3
-              widths:
-              - Width:
-                  filename: ../../test/parser/testcases/module3.v
-                  line: 3
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/module3.v
-                      line: 3
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/module3.v
-                      line: 3
-                      sign: false
-                      size: -1
-                      value: 7
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/module3.v
+              is_local: false
               line: 4
               name: T4
-              sign: true
-              type: INTEGER
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/module3.v
+                  line: 4
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/module3.v
@@ -278,27 +319,38 @@ Source:
                       value: 2
           ports:
           - Port:
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
               filename: ../../test/parser/testcases/module3.v
               line: 5
               name: reset
-              type: ''
           - Port:
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
               filename: ../../test/parser/testcases/module3.v
               line: 5
               name: clk
-              type: ''
           - Port:
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
               filename: ../../test/parser/testcases/module3.v
               line: 5
               name: in
-              type: ''
           - Port:
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
               filename: ../../test/parser/testcases/module3.v
               line: 5
               name: out
-              type: ''
       filename: ../../test/parser/testcases/module3.v
       line: 2
   filename: ../../test/parser/testcases/module3.v
   line: 2
-

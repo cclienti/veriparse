@@ -3,97 +3,112 @@ Source:
     Description:
       definitions:
       - Package:
-          filename: lib/test/parser/testcases/sv_package0.sv
+          filename: ../../test/parser/testcases/sv_package0.sv
           items:
-          - Localparam:
-              filename: lib/test/parser/testcases/sv_package0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_package0.sv
+              is_local: true
               line: 3
               name: WIDTH
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_package0.sv
+                  line: 3
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_package0.sv
+                  filename: ../../test/parser/testcases/sv_package0.sv
                   line: 3
                   var:
                     IntConstN:
                       base: 10
-                      filename: lib/test/parser/testcases/sv_package0.sv
+                      filename: ../../test/parser/testcases/sv_package0.sv
                       line: 3
                       sign: false
                       size: -1
                       value: 8
           - Typedef:
-              def:
-                EnumDef:
-                  base_type: LOGIC
-                  filename: lib/test/parser/testcases/sv_package0.sv
+              filename: ../../test/parser/testcases/sv_package0.sv
+              fwd_kind: NONE
+              line: 5
+              name: state_t
+              type:
+                EnumType:
+                  base:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_package0.sv
+                      line: 5
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_package0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_package0.sv
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
+                          line: 5
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/sv_package0.sv
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+                  filename: ../../test/parser/testcases/sv_package0.sv
                   items:
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_package0.sv
+                      filename: ../../test/parser/testcases/sv_package0.sv
                       line: 5
                       name: IDLE
+                      range:
+                        Dimension: null
                       value:
                         IntConstN:
                           base: 16
-                          filename: lib/test/parser/testcases/sv_package0.sv
+                          filename: ../../test/parser/testcases/sv_package0.sv
                           line: 5
                           sign: false
                           size: 2
                           value: 0
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_package0.sv
+                      filename: ../../test/parser/testcases/sv_package0.sv
                       line: 5
                       name: RUN
+                      range:
+                        Dimension: null
                       value:
                         IntConstN:
                           base: 16
-                          filename: lib/test/parser/testcases/sv_package0.sv
+                          filename: ../../test/parser/testcases/sv_package0.sv
                           line: 5
                           sign: false
                           size: 2
                           value: 1
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_package0.sv
+                      filename: ../../test/parser/testcases/sv_package0.sv
                       line: 5
                       name: DONE
+                      range:
+                        Dimension: null
                       value:
                         IntConstN:
                           base: 16
-                          filename: lib/test/parser/testcases/sv_package0.sv
+                          filename: ../../test/parser/testcases/sv_package0.sv
                           line: 5
                           sign: false
                           size: 2
                           value: 2
                   line: 5
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_package0.sv
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_package0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_package0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 1
-              filename: lib/test/parser/testcases/sv_package0.sv
-              line: 5
-              name: state_t
+                  signing: NONE
           lifetime: NONE
           line: 1
           name: sv_package0
-      filename: lib/test/parser/testcases/sv_package0.sv
+      filename: ../../test/parser/testcases/sv_package0.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_package0.sv
+  filename: ../../test/parser/testcases/sv_package0.sv
   line: 1

@@ -4,644 +4,677 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          filename: ../../test/parser/testcases/instance9.v
           items:
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          - Param:
+              filename: ../../test/parser/testcases/instance9.v
+              is_local: false
               line: 2
               name: W
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  filename: ../../test/parser/testcases/instance9.v
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 2
                       sign: false
                       size: -1
                       value: 0
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          - Param:
+              filename: ../../test/parser/testcases/instance9.v
+              is_local: false
               line: 2
               name: X
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  filename: ../../test/parser/testcases/instance9.v
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 2
                       sign: false
                       size: -1
                       value: 1
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          - Param:
+              filename: ../../test/parser/testcases/instance9.v
+              is_local: false
               line: 2
               name: Y
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  filename: ../../test/parser/testcases/instance9.v
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 2
                       sign: false
                       size: -1
                       value: 2
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          - Param:
+              filename: ../../test/parser/testcases/instance9.v
+              is_local: false
               line: 2
               name: Z
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  filename: ../../test/parser/testcases/instance9.v
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 2
                       sign: false
                       size: -1
                       value: 2
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 3
-                  name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 3
-              second:
-                Wire:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 3
                   name: a
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 3
-                  name: b
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
               line: 3
-              second:
-                Wire:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              name: a
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 3
                   name: b
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 3
-                  name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
               line: 3
-              second:
-                Wire:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              name: b
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 3
                   name: c
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 3
-                  name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
               line: 3
-              second:
-                Wire:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              name: c
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 3
                   name: d
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 3
+              name: d
           - Always:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              filename: ../../test/parser/testcases/instance9.v
               line: 5
               senslist:
                 Senslist:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  filename: ../../test/parser/testcases/instance9.v
                   line: 5
                   list:
                   - Sens:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       line: 5
                       sig: null
                       type: ALL
               statement:
                 Block:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                  filename: ../../test/parser/testcases/instance9.v
                   line: 5
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 6
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: a
-                              scope:
-                                IdentifierScope: null
                       line: 6
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 6
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: W
-                              scope:
-                                IdentifierScope: null
                   - BlockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 7
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 7
                               name: b
-                              scope:
-                                IdentifierScope: null
                       line: 7
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 7
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 7
                               name: X
-                              scope:
-                                IdentifierScope: null
                   - BlockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 8
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: c
-                              scope:
-                                IdentifierScope: null
                       line: 8
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 8
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: Y
-                              scope:
-                                IdentifierScope: null
                   - BlockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                      filename: ../../test/parser/testcases/instance9.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 9
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 9
                               name: d
-                              scope:
-                                IdentifierScope: null
                       line: 9
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                          filename: ../../test/parser/testcases/instance9.v
                           line: 9
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+                              filename: ../../test/parser/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 9
                               name: Z
-                              scope:
-                                IdentifierScope: null
+          lifetime: NONE
           line: 1
           name: my_module
           ports:
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
               line: 1
               name: a
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
               line: 1
               name: b
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
               line: 1
               name: c
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
               line: 1
               name: d
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          filename: ../../test/parser/testcases/instance9.v
           items:
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 16
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 15
                   name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 16
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 16
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 16
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 15
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 15
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 15
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 15
                   name: b
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 16
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 16
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 16
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 15
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 15
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 15
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 15
                   name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 16
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 16
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 16
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 15
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 15
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 15
+              name: c
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 15
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 16
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 16
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 16
-              second:
-                Variable: null
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 15
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 15
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 15
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 15
+              name: d
           - Instancelist:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              filename: ../../test/parser/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 17
-                      lsb:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance9.v
+                      left:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 17
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 17
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 16
                           sign: false
                           size: -1
                           value: 3
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 17
+                      line: 16
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 16
+                          sign: false
+                          size: -1
+                          value: 0
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 16
                   module: my_module
                   name: inst
                   parameterlist:
                   - ParamArg:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 17
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 16
                       name: ''
                       value:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 17
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 16
                           sign: false
                           size: -1
                           value: 4
@@ -667,11 +700,11 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 17
+                          filename: ../../test/parser/testcases/instance9.v
+                          hier:
+                            HierName: null
+                          line: 16
                           name: a
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -687,18 +720,18 @@ Source:
                       line: 0
                       name: ''
                       value: null
-              line: 17
+              line: 16
               module: my_module
               parameterlist:
               - ParamArg:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 17
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 16
                   name: ''
                   value:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 17
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 16
                       sign: false
                       size: -1
                       value: 4
@@ -717,179 +750,256 @@ Source:
                   line: 0
                   name: ''
                   value: null
-          line: 15
+          lifetime: NONE
+          line: 14
           name: top0
           ports:
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 15
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 14
               name: a
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 15
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 14
               name: b
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 15
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 14
               name: c
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 15
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 14
               name: d
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          filename: ../../test/parser/testcases/instance9.v
           items:
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 21
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 20
                   name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 21
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 21
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 21
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 20
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 20
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 20
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 20
                   name: b
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 21
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 21
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 21
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 20
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 20
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 20
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 20
                   name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 21
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 21
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 21
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 20
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 20
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 20
+              name: c
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 20
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 21
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 21
-              second:
-                Variable: null
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 20
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 20
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 20
+              name: d
           - Instancelist:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              filename: ../../test/parser/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 22
-                      lsb:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance9.v
+                      left:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 22
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 22
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 21
                           sign: false
                           size: -1
                           value: 3
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 22
+                      line: 21
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 21
+                          sign: false
+                          size: -1
+                          value: 0
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 21
                   module: my_module
                   name: inst
                   parameterlist:
@@ -899,14 +1009,14 @@ Source:
                       name: ''
                       value: null
                   - ParamArg:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 22
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 21
                       name: ''
                       value:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 22
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 21
                           sign: false
                           size: -1
                           value: 3
@@ -932,11 +1042,11 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 22
+                          filename: ../../test/parser/testcases/instance9.v
+                          hier:
+                            HierName: null
+                          line: 21
                           name: b
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -947,7 +1057,7 @@ Source:
                       line: 0
                       name: ''
                       value: null
-              line: 22
+              line: 21
               module: my_module
               parameterlist:
               - ParamArg:
@@ -956,14 +1066,14 @@ Source:
                   name: ''
                   value: null
               - ParamArg:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 22
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 21
                   name: ''
                   value:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 22
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 21
                       sign: false
                       size: -1
                       value: 3
@@ -977,179 +1087,256 @@ Source:
                   line: 0
                   name: ''
                   value: null
-          line: 20
+          lifetime: NONE
+          line: 19
           name: top1
           ports:
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 20
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 19
               name: a
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 20
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 19
               name: b
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 20
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 19
               name: c
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 20
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 19
               name: d
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          filename: ../../test/parser/testcases/instance9.v
           items:
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 26
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 25
                   name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 26
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 26
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 26
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 25
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 25
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 25
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 25
                   name: b
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 26
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 26
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 26
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 25
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 25
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 25
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 25
                   name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 26
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 26
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 26
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 25
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 25
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 25
+              name: c
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 25
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 26
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 26
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 26
-              second:
-                Variable: null
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 25
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 25
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 25
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 25
+              name: d
           - Instancelist:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              filename: ../../test/parser/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 27
-                      lsb:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance9.v
+                      left:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 27
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 27
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 26
                           sign: false
                           size: -1
                           value: 3
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 27
+                      line: 26
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 26
+                          sign: false
+                          size: -1
+                          value: 0
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 26
                   module: my_module
                   name: inst
                   parameterlist:
@@ -1164,14 +1351,14 @@ Source:
                       name: ''
                       value: null
                   - ParamArg:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 27
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 26
                       name: ''
                       value:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 27
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 26
                           sign: false
                           size: -1
                           value: 2
@@ -1197,17 +1384,17 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 27
+                          filename: ../../test/parser/testcases/instance9.v
+                          hier:
+                            HierName: null
+                          line: 26
                           name: c
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
                       name: ''
                       value: null
-              line: 27
+              line: 26
               module: my_module
               parameterlist:
               - ParamArg:
@@ -1221,14 +1408,14 @@ Source:
                   name: ''
                   value: null
               - ParamArg:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 27
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 26
                   name: ''
                   value:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 27
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 26
                       sign: false
                       size: -1
                       value: 2
@@ -1237,179 +1424,256 @@ Source:
                   line: 0
                   name: ''
                   value: null
-          line: 25
+          lifetime: NONE
+          line: 24
           name: top2
           ports:
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 25
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 24
               name: a
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 25
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 24
               name: b
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 25
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 24
               name: c
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 25
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 24
               name: d
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+          filename: ../../test/parser/testcases/instance9.v
           items:
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 31
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 30
                   name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 31
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 31
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 31
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 30
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 30
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 30
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 30
                   name: b
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 31
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 31
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 31
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 30
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 30
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 30
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 30
                   name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 31
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 31
-              second:
-                Variable: null
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 31
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 30
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 30
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 30
+              name: c
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 30
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 31
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 3
-              line: 31
-              second:
-                Variable: null
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 30
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 3
+                          line: 30
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/instance9.v
+                              line: 30
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 30
+              name: d
           - Instancelist:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+              filename: ../../test/parser/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 32
-                      lsb:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance9.v
+                      left:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 32
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 32
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 31
                           sign: false
                           size: -1
                           value: 3
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 32
+                      line: 31
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 31
+                          sign: false
+                          size: -1
+                          value: 0
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 31
                   module: my_module
                   name: inst
                   parameterlist:
@@ -1429,14 +1693,14 @@ Source:
                       name: ''
                       value: null
                   - ParamArg:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 32
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 31
                       name: ''
                       value:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 32
+                          filename: ../../test/parser/testcases/instance9.v
+                          line: 31
                           sign: false
                           size: -1
                           value: 1
@@ -1462,12 +1726,12 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                          line: 32
+                          filename: ../../test/parser/testcases/instance9.v
+                          hier:
+                            HierName: null
+                          line: 31
                           name: d
-                          scope:
-                            IdentifierScope: null
-              line: 32
+              line: 31
               module: my_module
               parameterlist:
               - ParamArg:
@@ -1486,38 +1750,54 @@ Source:
                   name: ''
                   value: null
               - ParamArg:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                  line: 32
+                  filename: ../../test/parser/testcases/instance9.v
+                  line: 31
                   name: ''
                   value:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-                      line: 32
+                      filename: ../../test/parser/testcases/instance9.v
+                      line: 31
                       sign: false
                       size: -1
                       value: 1
-          line: 30
+          lifetime: NONE
+          line: 29
           name: top3
           ports:
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 30
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 29
               name: a
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 30
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 29
               name: b
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 30
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 29
               name: c
           - Port:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
-              line: 30
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../../test/parser/testcases/instance9.v
+              line: 29
               name: d
-      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+      filename: ../../test/parser/testcases/instance9.v
       line: 1
-  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/instance9.v
+  filename: ../../test/parser/testcases/instance9.v
   line: 1
-

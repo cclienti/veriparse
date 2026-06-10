@@ -3,216 +3,243 @@ Source:
     Description:
       definitions:
       - Pragmalist:
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+          filename: ../../test/parser/testcases/pragma1.v
           line: 1
           pragmas:
           - Pragma:
               expression:
                 StringConst:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                  filename: ../../test/parser/testcases/pragma1.v
                   line: 1
                   value: my_pragma
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+              filename: ../../test/parser/testcases/pragma1.v
               line: 1
               name: my_pragma
           - Pragma:
               expression: null
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+              filename: ../../test/parser/testcases/pragma1.v
               line: 1
               name: my_other
           statements:
           - Module:
               default_nettype: WIRE
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+              filename: ../../test/parser/testcases/pragma1.v
               items:
-              - Ioport:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                  first:
-                    Input:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                      line: 3
-                      name: reset
-                      sign: false
-                  line: 3
-                  second:
-                    Wire:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+              - Port:
+                  decl:
+                    WireNet:
+                      cont_assign:
+                        Rvalue: null
+                      filename: ../../test/parser/testcases/pragma1.v
+                      is_scalared: false
+                      is_vectored: false
                       ldelay:
                         DelayStatement: null
                       line: 3
                       name: reset
                       rdelay:
                         DelayStatement: null
-                      right:
-                        Rvalue: null
-                      sign: false
-              - Ioport:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                  first:
-                    Input:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                      line: 3
-                      name: clk
-                      sign: false
+                      strength:
+                        Strength: null
+                      type:
+                        ImplicitType:
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 3
+                          signing: NONE
+                  direction: INPUT
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
                   line: 3
-                  second:
-                    Wire:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                  name: reset
+              - Port:
+                  decl:
+                    WireNet:
+                      cont_assign:
+                        Rvalue: null
+                      filename: ../../test/parser/testcases/pragma1.v
+                      is_scalared: false
+                      is_vectored: false
                       ldelay:
                         DelayStatement: null
                       line: 3
                       name: clk
                       rdelay:
                         DelayStatement: null
-                      right:
+                      strength:
+                        Strength: null
+                      type:
+                        ImplicitType:
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 3
+                          signing: NONE
+                  direction: INPUT
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 3
+                  name: clk
+              - Port:
+                  decl:
+                    WireNet:
+                      cont_assign:
                         Rvalue: null
-                      sign: false
-              - Ioport:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                  first:
-                    Input:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                      filename: ../../test/parser/testcases/pragma1.v
+                      is_scalared: false
+                      is_vectored: false
+                      ldelay:
+                        DelayStatement: null
                       line: 4
                       name: in
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                      rdelay:
+                        DelayStatement: null
+                      strength:
+                        Strength: null
+                      type:
+                        ImplicitType:
+                          filename: ../../test/parser/testcases/pragma1.v
                           line: 4
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/pragma1.v
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/pragma1.v
+                                  line: 4
+                                  sign: false
+                                  size: -1
+                                  value: 7
                               line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 7
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/pragma1.v
+                                  line: 4
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  direction: INPUT
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
                   line: 4
-                  second:
-                    Wire:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                  name: in
+              - Port:
+                  decl:
+                    ImplicitNet:
+                      cont_assign:
+                        Rvalue: null
+                      filename: ../../test/parser/testcases/pragma1.v
+                      is_scalared: false
+                      is_vectored: false
                       ldelay:
                         DelayStatement: null
-                      line: 4
-                      name: in
+                      line: 5
+                      name: out
                       rdelay:
                         DelayStatement: null
-                      right:
-                        Rvalue: null
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                          line: 4
-                          lsb:
+                      strength:
+                        Strength: null
+                      type:
+                        RegType:
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 5
+                          signing: NONE
+                  direction: OUTPUT
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
+                  line: 5
+                  name: out
+              - Var:
+                  filename: ../../test/parser/testcases/pragma1.v
+                  init:
+                    Rvalue: null
+                  is_const: false
+                  is_var: false
+                  lifetime: NONE
+                  line: 7
+                  name: ram
+                  type:
+                    RegType:
+                      filename: ../../test/parser/testcases/pragma1.v
+                      line: 7
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/pragma1.v
+                          left:
                             IntConstN:
                               base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                              line: 4
+                              filename: ../../test/parser/testcases/pragma1.v
+                              line: 7
                               sign: false
                               size: -1
                               value: 7
-              - Ioport:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                  first:
-                    Output:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                      line: 5
-                      name: out
-                      sign: false
-                  line: 5
-                  second:
-                    Reg:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                      line: 5
-                      name: out
-                      right:
-                        Rvalue: null
-                      sign: false
-              - Reg:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                  lengths:
-                  - Length:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                      line: 7
-                      lsb:
+                          line: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/pragma1.v
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+                  unpacked_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/pragma1.v
+                      left:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                          filename: ../../test/parser/testcases/pragma1.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 0
+                      line: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/pragma1.v
                           line: 7
                           sign: false
                           size: -1
                           value: 1023
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 0
-                  line: 7
-                  name: ram
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                      line: 7
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 7
+              lifetime: NONE
               line: 2
               name: pragma1
               ports:
               - Port:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                  decl:
+                    Declaration: null
+                  direction: NONE
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
                   line: 2
                   name: reset
               - Port:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                  decl:
+                    Declaration: null
+                  direction: NONE
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
                   line: 2
                   name: clk
               - Port:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                  decl:
+                    Declaration: null
+                  direction: NONE
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
                   line: 2
                   name: in
               - Port:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+                  decl:
+                    Declaration: null
+                  direction: NONE
+                  expr: null
+                  filename: ../../test/parser/testcases/pragma1.v
                   line: 2
                   name: out
-      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+      filename: ../../test/parser/testcases/pragma1.v
       line: 1
-  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/pragma1.v
+  filename: ../../test/parser/testcases/pragma1.v
   line: 1
-
