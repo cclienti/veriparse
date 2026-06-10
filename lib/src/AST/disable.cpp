@@ -16,7 +16,7 @@ Disable::Disable(const std::string &filename, uint32_t line) : Node(filename, li
     set_node_categories({NodeType::Node});
 }
 
-Disable::Disable(const std::string &dest, const std::string &filename, uint32_t line)
+Disable::Disable(const Identifier::Ptr dest, const std::string &filename, uint32_t line)
     : Node(filename, line), m_dest(dest)
 {
     set_node_type(NodeType::Disable);
@@ -26,7 +26,6 @@ Disable::Disable(const std::string &dest, const std::string &filename, uint32_t 
 Disable &Disable::operator=(const Disable &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
-    set_dest(rhs.get_dest());
     return *this;
 }
 
@@ -39,9 +38,6 @@ Node &Disable::operator=(const Node &rhs)
 bool Disable::operator==(const Disable &rhs) const
 {
     if(Node::operator==(rhs) == false) {
-        return false;
-    }
-    if(get_dest() != rhs.get_dest()) {
         return false;
     }
     return true;
@@ -62,6 +58,16 @@ bool Disable::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullp
 bool Disable::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
+    if(get_dest()) {
+        if(get_dest() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Disable::replace matches multiple times (Identifier::dest)";
+            }
+            set_dest(cast_to<Identifier>(new_node));
+            found = true;
+        }
+    }
     return found;
 }
 
@@ -86,10 +92,18 @@ Disable::ListPtr Disable::clone_list(const ListPtr nodes)
 Node::ListPtr Disable::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
+    if(get_dest()) {
+        list->push_back(std::static_pointer_cast<Node>(get_dest()));
+    }
     return list;
 }
 
-void Disable::clone_children(Node::Ptr new_node) const {}
+void Disable::clone_children(Node::Ptr new_node) const
+{
+    if(get_dest()) {
+        cast_to<Disable>(new_node)->set_dest(cast_to<Identifier>(get_dest()->clone()));
+    }
+}
 
 Node::Ptr Disable::alloc_same(void) const
 {
@@ -104,12 +118,6 @@ std::ostream &operator<<(std::ostream &os, const Disable &p)
         os << "filename: " << p.get_filename() << ", "
            << "line: " << p.get_line();
     }
-
-    if(!p.get_filename().empty()) {
-        os << ", ";
-    }
-
-    os << "dest: " << p.get_dest();
     os << "}";
     return os;
 }

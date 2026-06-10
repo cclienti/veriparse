@@ -82,6 +82,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["Identifier"]) {
             return convert_identifier(node["Identifier"]);
         }
+        if(node["Call"]) {
+            return convert_call(node["Call"]);
+        }
         if(node["Constant"]) {
             return convert_constant(node["Constant"]);
         }
@@ -1206,6 +1209,110 @@ AST::Node::Ptr YAMLImporter::convert_identifier(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::Identifier>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_call(const YAML::Node node) const
+{
+    AST::Call::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Call>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Call>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Call>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child args
+        if(node["args"]) {
+            const YAML::Node node_args = node["args"];
+            // Fill the list of children
+            AST::Node::ListPtr args_list(new AST::Node::List);
+            if(node_args.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        args_list->push_back(child);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_args);
+                if(child) {
+                    args_list->push_back(child);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Call>();
+            }
+            result->set_args(args_list);
+        }
+
+        // Manage Child scope
+        if(node["scope"]) {
+            const YAML::Node node_scope = node["scope"];
+            // Fill the list of children
+            AST::ScopeName::ListPtr scope_list(new AST::ScopeName::List);
+            if(node_scope.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_scope.begin(); it != node_scope.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                        scope_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_scope);
+                if(child) {
+                    AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                    scope_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Call>();
+            }
+            result->set_scope(scope_list);
+        }
+
+        // Manage Child hier
+        if(node["hier"]) {
+            const YAML::Node node_hier = node["hier"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_hier);
+            if(child) {
+                AST::HierName::Ptr child_cast = AST::cast_to<AST::HierName>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Call>();
+                }
+                result->set_hier(child_cast);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Call>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_constant(const YAML::Node node) const
@@ -11581,6 +11688,32 @@ AST::Node::Ptr YAMLImporter::convert_functioncall(const YAML::Node node) const
             }
         }
 
+        // Manage Child args
+        if(node["args"]) {
+            const YAML::Node node_args = node["args"];
+            // Fill the list of children
+            AST::Node::ListPtr args_list(new AST::Node::List);
+            if(node_args.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        args_list->push_back(child);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_args);
+                if(child) {
+                    args_list->push_back(child);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::FunctionCall>();
+            }
+            result->set_args(args_list);
+        }
+
         // Manage Child scope
         if(node["scope"]) {
             const YAML::Node node_scope = node["scope"];
@@ -11609,30 +11742,18 @@ AST::Node::Ptr YAMLImporter::convert_functioncall(const YAML::Node node) const
             result->set_scope(scope_list);
         }
 
-        // Manage Child args
-        if(node["args"]) {
-            const YAML::Node node_args = node["args"];
-            // Fill the list of children
-            AST::Node::ListPtr args_list(new AST::Node::List);
-            if(node_args.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        args_list->push_back(child);
-                    }
+        // Manage Child hier
+        if(node["hier"]) {
+            const YAML::Node node_hier = node["hier"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_hier);
+            if(child) {
+                AST::HierName::Ptr child_cast = AST::cast_to<AST::HierName>(child);
+                if(!result) {
+                    result = std::make_shared<AST::FunctionCall>();
                 }
-            } else {
-                AST::Node::Ptr child = convert(node_args);
-                if(child) {
-                    args_list->push_back(child);
-                }
+                result->set_hier(child_cast);
             }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::FunctionCall>();
-            }
-            result->set_args(args_list);
         }
     }
 
@@ -11772,6 +11893,32 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
             }
         }
 
+        // Manage Child args
+        if(node["args"]) {
+            const YAML::Node node_args = node["args"];
+            // Fill the list of children
+            AST::Node::ListPtr args_list(new AST::Node::List);
+            if(node_args.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        args_list->push_back(child);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_args);
+                if(child) {
+                    args_list->push_back(child);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::TaskCall>();
+            }
+            result->set_args(args_list);
+        }
+
         // Manage Child scope
         if(node["scope"]) {
             const YAML::Node node_scope = node["scope"];
@@ -11800,30 +11947,18 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
             result->set_scope(scope_list);
         }
 
-        // Manage Child args
-        if(node["args"]) {
-            const YAML::Node node_args = node["args"];
-            // Fill the list of children
-            AST::Node::ListPtr args_list(new AST::Node::List);
-            if(node_args.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_args.begin(); it != node_args.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        args_list->push_back(child);
-                    }
+        // Manage Child hier
+        if(node["hier"]) {
+            const YAML::Node node_hier = node["hier"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_hier);
+            if(child) {
+                AST::HierName::Ptr child_cast = AST::cast_to<AST::HierName>(child);
+                if(!result) {
+                    result = std::make_shared<AST::TaskCall>();
                 }
-            } else {
-                AST::Node::Ptr child = convert(node_args);
-                if(child) {
-                    args_list->push_back(child);
-                }
+                result->set_hier(child_cast);
             }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::TaskCall>();
-            }
-            result->set_args(args_list);
         }
     }
 
@@ -12069,14 +12204,18 @@ AST::Node::Ptr YAMLImporter::convert_disable(const YAML::Node node) const
                 result->set_line(node["line"].as<int>());
             }
         }
-        // Manage property dest
-        if(node["dest"]) {
-            if(node["dest"].IsScalar()) {
 
+        // Manage Child dest
+        if(node["dest"]) {
+            const YAML::Node node_dest = node["dest"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_dest);
+            if(child) {
+                AST::Identifier::Ptr child_cast = AST::cast_to<AST::Identifier>(child);
                 if(!result) {
                     result = std::make_shared<AST::Disable>();
                 }
-                result->set_dest(node["dest"].as<std::string>());
+                result->set_dest(child_cast);
             }
         }
     }

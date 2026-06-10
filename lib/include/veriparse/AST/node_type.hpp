@@ -21,6 +21,7 @@ enum class NodeType
     Package,
     Import,
     Identifier,
+    Call,
     Constant,
     StringConst,
     IntConst,

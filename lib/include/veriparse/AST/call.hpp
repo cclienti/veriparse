@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#ifndef VERIPARSE_AST_FUNCTIONCALL_HPP
-#define VERIPARSE_AST_FUNCTIONCALL_HPP
+#ifndef VERIPARSE_AST_CALL_HPP
+#define VERIPARSE_AST_CALL_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/call.hpp>
+#include <veriparse/AST/identifier.hpp>
 
 #include <veriparse/AST/hiername.hpp>
 #include <veriparse/AST/scopename.hpp>
@@ -21,31 +21,31 @@ namespace Veriparse
 namespace AST
 {
 
-class FunctionCall : public Call
+class Call : public Identifier
 {
 public:
-    using Ptr = typename NodePointers<FunctionCall>::Ptr;
-    using List = typename NodePointers<FunctionCall>::List;
-    using ListPtr = typename NodePointers<FunctionCall>::ListPtr;
-    using Call::operator=;
-    using Call::operator==;
-    using Call::operator!=;
+    using Ptr = typename NodePointers<Call>::Ptr;
+    using List = typename NodePointers<Call>::List;
+    using ListPtr = typename NodePointers<Call>::ListPtr;
+    using Identifier::operator=;
+    using Identifier::operator==;
+    using Identifier::operator!=;
 
     /**
-     * Constructor, m_node_type is set to NodeType::FunctionCall.
+     * Constructor, m_node_type is set to NodeType::Call.
      */
-    FunctionCall(const std::string &filename = "", uint32_t line = 0);
+    Call(const std::string &filename = "", uint32_t line = 0);
 
     /**
-     * Constructor, m_node_type is set to NodeType::FunctionCall.
+     * Constructor, m_node_type is set to NodeType::Call.
      */
-    FunctionCall(const Node::ListPtr args, const ScopeName::ListPtr scope, const HierName::Ptr hier,
-                 const std::string &name, const std::string &filename = "", uint32_t line = 0);
+    Call(const Node::ListPtr args, const ScopeName::ListPtr scope, const HierName::Ptr hier,
+         const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
      */
-    virtual FunctionCall &operator=(const FunctionCall &rhs);
+    virtual Call &operator=(const Call &rhs);
 
     /**
      * Assignment operator, do not affect children.
@@ -53,22 +53,22 @@ public:
     virtual Node &operator=(const Node &rhs) override;
 
     /**
-     * Return true if the FunctionCall nodes are the same, do not check children.
+     * Return true if the Call nodes are the same, do not check children.
      */
-    virtual bool operator==(const FunctionCall &rhs) const;
+    virtual bool operator==(const Call &rhs) const;
 
     /**
-     * Return true if the FunctionCall nodes are the same, do not check children.
+     * Return true if the Call nodes are the same, do not check children.
      */
     virtual bool operator==(const Node &rhs) const override;
 
     /**
-     * Return true if the FunctionCall nodes are the same, do not check children.
+     * Return true if the Call nodes are the same, do not check children.
      */
-    virtual bool operator!=(const FunctionCall &rhs) const;
+    virtual bool operator!=(const Call &rhs) const;
 
     /**
-     * Return true if the FunctionCall nodes are the same, do not check children.
+     * Return true if the Call nodes are the same, do not check children.
      */
     virtual bool operator!=(const Node &rhs) const override;
 
@@ -86,6 +86,16 @@ public:
      * Replace the given children node by the new nodes in the list.
      */
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
+
+    /**
+     * Return the child args.
+     */
+    virtual Node::ListPtr get_args(void) const { return m_args; }
+
+    /**
+     * Change the child args.
+     */
+    virtual void set_args(Node::ListPtr args) { m_args = args; }
 
     /**
      * Return the children list using the private children member
@@ -110,10 +120,12 @@ private:
      * Allocate a new node with the same node type than the current instance.
      */
     virtual Node::Ptr alloc_same(void) const override;
+
+    Node::ListPtr m_args{};
 };
 
-std::ostream &operator<<(std::ostream &os, const FunctionCall &p);
-std::ostream &operator<<(std::ostream &os, const FunctionCall::Ptr p);
+std::ostream &operator<<(std::ostream &os, const Call &p);
+std::ostream &operator<<(std::ostream &os, const Call::Ptr p);
 
 } // namespace AST
 } // namespace Veriparse

@@ -23,6 +23,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_package(const AST::Package::Ptr node) const;
     virtual YAML::Node render_import(const AST::Import::Ptr node) const;
     virtual YAML::Node render_identifier(const AST::Identifier::Ptr node) const;
+    virtual YAML::Node render_call(const AST::Call::Ptr node) const;
     virtual YAML::Node render_constant(const AST::Constant::Ptr node) const;
     virtual YAML::Node render_stringconst(const AST::StringConst::Ptr node) const;
     virtual YAML::Node render_intconst(const AST::IntConst::Ptr node) const;

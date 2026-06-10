@@ -4,6 +4,9 @@
 #define VERIPARSE_AST_TASKCALL_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/call.hpp>
+
+#include <veriparse/AST/hiername.hpp>
 #include <veriparse/AST/scopename.hpp>
 
 #include <list>
@@ -18,15 +21,15 @@ namespace Veriparse
 namespace AST
 {
 
-class TaskCall : public Node
+class TaskCall : public Call
 {
 public:
     using Ptr = typename NodePointers<TaskCall>::Ptr;
     using List = typename NodePointers<TaskCall>::List;
     using ListPtr = typename NodePointers<TaskCall>::ListPtr;
-    using Node::operator=;
-    using Node::operator==;
-    using Node::operator!=;
+    using Call::operator=;
+    using Call::operator==;
+    using Call::operator!=;
 
     /**
      * Constructor, m_node_type is set to NodeType::TaskCall.
@@ -36,8 +39,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::TaskCall.
      */
-    TaskCall(const ScopeName::ListPtr scope, const Node::ListPtr args, const std::string &name,
-             const std::string &filename = "", uint32_t line = 0);
+    TaskCall(const Node::ListPtr args, const ScopeName::ListPtr scope, const HierName::Ptr hier,
+             const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -85,36 +88,6 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child scope.
-     */
-    virtual ScopeName::ListPtr get_scope(void) const { return m_scope; }
-
-    /**
-     * Return the child args.
-     */
-    virtual Node::ListPtr get_args(void) const { return m_args; }
-
-    /**
-     * Change the child scope.
-     */
-    virtual void set_scope(ScopeName::ListPtr scope) { m_scope = scope; }
-
-    /**
-     * Change the child args.
-     */
-    virtual void set_args(Node::ListPtr args) { m_args = args; }
-
-    /**
-     * Return the property name.
-     */
-    virtual const std::string &get_name(void) const { return m_name; }
-
-    /**
-     * Change the property name.
-     */
-    virtual void set_name(const std::string &name) { m_name = name; }
-
-    /**
      * Return the children list using the private children member
      * pointers.
      */
@@ -137,10 +110,6 @@ private:
      * Allocate a new node with the same node type than the current instance.
      */
     virtual Node::Ptr alloc_same(void) const override;
-
-    ScopeName::ListPtr m_scope{};
-    Node::ListPtr m_args{};
-    std::string m_name{};
 };
 
 std::ostream &operator<<(std::ostream &os, const TaskCall &p);

@@ -10,18 +10,19 @@ namespace Veriparse
 namespace AST
 {
 
-FunctionCall::FunctionCall(const std::string &filename, uint32_t line) : Node(filename, line)
+FunctionCall::FunctionCall(const std::string &filename, uint32_t line) : Call(filename, line)
 {
     set_node_type(NodeType::FunctionCall);
-    set_node_categories({NodeType::Node});
+    set_node_categories({NodeType::Call, NodeType::Identifier, NodeType::Node});
 }
 
-FunctionCall::FunctionCall(const ScopeName::ListPtr scope, const Node::ListPtr args,
-                           const std::string &name, const std::string &filename, uint32_t line)
-    : Node(filename, line), m_scope(scope), m_args(args), m_name(name)
+FunctionCall::FunctionCall(const Node::ListPtr args, const ScopeName::ListPtr scope,
+                           const HierName::Ptr hier, const std::string &name,
+                           const std::string &filename, uint32_t line)
+    : Call(args, scope, hier, name, filename, line)
 {
     set_node_type(NodeType::FunctionCall);
-    set_node_categories({NodeType::Node});
+    set_node_categories({NodeType::Call, NodeType::Identifier, NodeType::Node});
 }
 
 FunctionCall &FunctionCall::operator=(const FunctionCall &rhs)
@@ -63,35 +64,6 @@ bool FunctionCall::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(
 bool FunctionCall::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
-    if(get_scope()) {
-        ScopeName::ListPtr new_list = std::make_shared<ScopeName::List>();
-        for(const ScopeName::Ptr &lnode : *get_scope()) {
-            if(lnode) {
-                if(lnode != node) {
-                    new_list->push_back(lnode);
-                } else {
-                    if(found) {
-                        LOG_WARNING << *this << ", "
-                                    << "FunctionCall::replace matches multiple times "
-                                       "(list(ScopeName)::scope)";
-                    }
-                    if(new_node) {
-                        new_list->push_back(cast_to<ScopeName>(new_node));
-                    }
-                    found = true;
-                }
-            } else {
-                LOG_WARNING << *this << ", "
-                            << "found an empty node during FunctionCall::replace "
-                            << "of children list(ScopeName)::scope";
-            }
-        }
-        if(new_list->size() != 0) {
-            set_scope(new_list);
-        } else {
-            set_scope(nullptr);
-        }
-    }
     if(get_args()) {
         Node::ListPtr new_list = std::make_shared<Node::List>();
         for(const Node::Ptr &lnode : *get_args()) {
@@ -121,12 +93,6 @@ bool FunctionCall::replace(Node::Ptr node, Node::Ptr new_node)
             set_args(nullptr);
         }
     }
-    return found;
-}
-
-bool FunctionCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
-{
-    bool found = false;
     if(get_scope()) {
         ScopeName::ListPtr new_list = std::make_shared<ScopeName::List>();
         for(const ScopeName::Ptr &lnode : *get_scope()) {
@@ -139,10 +105,8 @@ bool FunctionCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
                                     << "FunctionCall::replace matches multiple times "
                                        "(list(ScopeName)::scope)";
                     }
-                    if(new_nodes) {
-                        for(const Node::Ptr &n : *new_nodes) {
-                            new_list->push_back(cast_to<ScopeName>(n));
-                        }
+                    if(new_node) {
+                        new_list->push_back(cast_to<ScopeName>(new_node));
                     }
                     found = true;
                 }
@@ -158,6 +122,22 @@ bool FunctionCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
             set_scope(nullptr);
         }
     }
+    if(get_hier()) {
+        if(get_hier() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "FunctionCall::replace matches multiple times (HierName::hier)";
+            }
+            set_hier(cast_to<HierName>(new_node));
+            found = true;
+        }
+    }
+    return found;
+}
+
+bool FunctionCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
+{
+    bool found = false;
     if(get_args()) {
         Node::ListPtr new_list = std::make_shared<Node::List>();
         for(const Node::Ptr &lnode : *get_args()) {
@@ -189,6 +169,37 @@ bool FunctionCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
             set_args(nullptr);
         }
     }
+    if(get_scope()) {
+        ScopeName::ListPtr new_list = std::make_shared<ScopeName::List>();
+        for(const ScopeName::Ptr &lnode : *get_scope()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING << *this << ", "
+                                    << "FunctionCall::replace matches multiple times "
+                                       "(list(ScopeName)::scope)";
+                    }
+                    if(new_nodes) {
+                        for(const Node::Ptr &n : *new_nodes) {
+                            new_list->push_back(cast_to<ScopeName>(n));
+                        }
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during FunctionCall::replace "
+                            << "of children list(ScopeName)::scope";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_scope(new_list);
+        } else {
+            set_scope(nullptr);
+        }
+    }
     return found;
 }
 
@@ -207,13 +218,6 @@ FunctionCall::ListPtr FunctionCall::clone_list(const ListPtr nodes)
 Node::ListPtr FunctionCall::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
-    if(get_scope()) {
-        for(const ScopeName::Ptr &node : *get_scope()) {
-            if(node) {
-                list->push_back(std::static_pointer_cast<Node>(node));
-            }
-        }
-    }
     if(get_args()) {
         for(const Node::Ptr &node : *get_args()) {
             if(node) {
@@ -221,13 +225,26 @@ Node::ListPtr FunctionCall::get_children(void) const
             }
         }
     }
+    if(get_scope()) {
+        for(const ScopeName::Ptr &node : *get_scope()) {
+            if(node) {
+                list->push_back(std::static_pointer_cast<Node>(node));
+            }
+        }
+    }
+    if(get_hier()) {
+        list->push_back(std::static_pointer_cast<Node>(get_hier()));
+    }
     return list;
 }
 
 void FunctionCall::clone_children(Node::Ptr new_node) const
 {
-    cast_to<FunctionCall>(new_node)->set_scope(ScopeName::clone_list(get_scope()));
     cast_to<FunctionCall>(new_node)->set_args(Node::clone_list(get_args()));
+    cast_to<FunctionCall>(new_node)->set_scope(ScopeName::clone_list(get_scope()));
+    if(get_hier()) {
+        cast_to<FunctionCall>(new_node)->set_hier(cast_to<HierName>(get_hier()->clone()));
+    }
 }
 
 Node::Ptr FunctionCall::alloc_same(void) const

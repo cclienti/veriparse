@@ -328,6 +328,41 @@ YAML::Node YAMLGenerator::render_identifier(const AST::Identifier::Ptr node) con
     return node_identifier;
 }
 
+YAML::Node YAMLGenerator::render_call(const AST::Call::Ptr node) const
+{
+    YAML::Node node_call;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Call) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        if(node->get_args()) {
+            content["args"] = YAML::Load("[]");
+            for(const AST::Node::Ptr &n : *node->get_args()) {
+                content["args"].push_back(render(n));
+            }
+        }
+
+        if(node->get_scope()) {
+            content["scope"] = YAML::Load("[]");
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                content["scope"].push_back(render(n));
+            }
+        }
+
+        content["hier"] = render(node->get_hier());
+    }
+
+    node_call["Call"] = content;
+    return node_call;
+}
+
 YAML::Node YAMLGenerator::render_constant(const AST::Constant::Ptr node) const
 {
     YAML::Node node_constant;
@@ -4471,6 +4506,13 @@ YAML::Node YAMLGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
         content["line"] = node->get_line();
         content["name"] = node->get_name();
 
+        if(node->get_args()) {
+            content["args"] = YAML::Load("[]");
+            for(const AST::Node::Ptr &n : *node->get_args()) {
+                content["args"].push_back(render(n));
+            }
+        }
+
         if(node->get_scope()) {
             content["scope"] = YAML::Load("[]");
             for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
@@ -4478,12 +4520,7 @@ YAML::Node YAMLGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
             }
         }
 
-        if(node->get_args()) {
-            content["args"] = YAML::Load("[]");
-            for(const AST::Node::Ptr &n : *node->get_args()) {
-                content["args"].push_back(render(n));
-            }
-        }
+        content["hier"] = render(node->get_hier());
     }
 
     node_functioncall["FunctionCall"] = content;
@@ -4547,6 +4584,13 @@ YAML::Node YAMLGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
         content["line"] = node->get_line();
         content["name"] = node->get_name();
 
+        if(node->get_args()) {
+            content["args"] = YAML::Load("[]");
+            for(const AST::Node::Ptr &n : *node->get_args()) {
+                content["args"].push_back(render(n));
+            }
+        }
+
         if(node->get_scope()) {
             content["scope"] = YAML::Load("[]");
             for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
@@ -4554,12 +4598,7 @@ YAML::Node YAMLGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
             }
         }
 
-        if(node->get_args()) {
-            content["args"] = YAML::Load("[]");
-            for(const AST::Node::Ptr &n : *node->get_args()) {
-                content["args"].push_back(render(n));
-            }
-        }
+        content["hier"] = render(node->get_hier());
     }
 
     node_taskcall["TaskCall"] = content;
@@ -4675,7 +4714,8 @@ YAML::Node YAMLGenerator::render_disable(const AST::Disable::Ptr node) const
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
-        content["dest"] = node->get_dest();
+
+        content["dest"] = render(node->get_dest());
     }
 
     node_disable["Disable"] = content;
