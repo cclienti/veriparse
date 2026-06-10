@@ -22,45 +22,92 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_package(const AST::Package::Ptr node) const;
     virtual std::string render_import(const AST::Import::Ptr node) const;
     virtual std::string render_port(const AST::Port::Ptr node) const;
-    virtual std::string render_width(const AST::Width::Ptr node) const;
-    virtual std::string render_length(const AST::Length::Ptr node) const;
+
+    // Value name references and the `::` / `.` axes.
     virtual std::string render_identifier(const AST::Identifier::Ptr node) const;
+    virtual std::string render_scopename(const AST::ScopeName::Ptr node) const;
+    virtual std::string render_hiername(const AST::HierName::Ptr node) const;
+    virtual std::string render_hierlabel(const AST::HierLabel::Ptr node) const;
+
     virtual std::string render_intconst(const AST::IntConst::Ptr node) const;
     virtual std::string render_intconstn(const AST::IntConstN::Ptr node) const;
     virtual std::string render_floatconst(const AST::FloatConst::Ptr node) const;
     virtual std::string render_stringconst(const AST::StringConst::Ptr node) const;
-    virtual std::string render_input(const AST::Input::Ptr node) const;
-    virtual std::string render_output(const AST::Output::Ptr node) const;
-    virtual std::string render_inout(const AST::Inout::Ptr node) const;
-    virtual std::string render_tri(const AST::Tri::Ptr node) const;
-    virtual std::string render_wire(const AST::Wire::Ptr node) const;
-    virtual std::string render_reg(const AST::Reg::Ptr node) const;
-    virtual std::string render_logic(const AST::Logic::Ptr node) const;
-    virtual std::string render_customtypevar(const AST::CustomTypeVar::Ptr node) const;
-    virtual std::string render_customtype(const AST::CustomType::Ptr node) const;
-    virtual std::string render_datamodifier(const AST::DataModifier::Ptr node) const;
+
+    // DataType hierarchy — every variant renders the bare type (keyword + signing
+    // + packed dims) via data_type_to_string().
+    virtual std::string render_logictype(const AST::LogicType::Ptr node) const;
+    virtual std::string render_regtype(const AST::RegType::Ptr node) const;
+    virtual std::string render_bittype(const AST::BitType::Ptr node) const;
+    virtual std::string render_bytetype(const AST::ByteType::Ptr node) const;
+    virtual std::string render_shortinttype(const AST::ShortintType::Ptr node) const;
+    virtual std::string render_inttype(const AST::IntType::Ptr node) const;
+    virtual std::string render_longinttype(const AST::LongintType::Ptr node) const;
+    virtual std::string render_integertype(const AST::IntegerType::Ptr node) const;
+    virtual std::string render_timetype(const AST::TimeType::Ptr node) const;
+    virtual std::string render_realtype(const AST::RealType::Ptr node) const;
+    virtual std::string render_shortrealtype(const AST::ShortrealType::Ptr node) const;
+    virtual std::string render_realtimetype(const AST::RealtimeType::Ptr node) const;
+    virtual std::string render_stringtype(const AST::StringType::Ptr node) const;
+    virtual std::string render_chandletype(const AST::ChandleType::Ptr node) const;
+    virtual std::string render_eventtype(const AST::EventType::Ptr node) const;
+    virtual std::string render_voidtype(const AST::VoidType::Ptr node) const;
     virtual std::string render_implicittype(const AST::ImplicitType::Ptr node) const;
-    virtual std::string render_supply0(const AST::Supply0::Ptr node) const;
-    virtual std::string render_supply1(const AST::Supply1::Ptr node) const;
-    virtual std::string render_integer(const AST::Integer::Ptr node) const;
-    virtual std::string render_real(const AST::Real::Ptr node) const;
-    virtual std::string render_bit(const AST::Bit::Ptr node) const;
-    virtual std::string render_byte(const AST::Byte::Ptr node) const;
-    virtual std::string render_shortint(const AST::Shortint::Ptr node) const;
-    virtual std::string render_int(const AST::Int::Ptr node) const;
-    virtual std::string render_longint(const AST::Longint::Ptr node) const;
-    virtual std::string render_shortreal(const AST::Shortreal::Ptr node) const;
-    virtual std::string render_realtime(const AST::Realtime::Ptr node) const;
+    virtual std::string render_namedtype(const AST::NamedType::Ptr node) const;
+    virtual std::string render_structtype(const AST::StructType::Ptr node) const;
+    virtual std::string render_uniontype(const AST::UnionType::Ptr node) const;
+    virtual std::string render_enumtype(const AST::EnumType::Ptr node) const;
+    virtual std::string render_typeopexpr(const AST::TypeOpExpr::Ptr node) const;
+    virtual std::string render_typeoptype(const AST::TypeOpType::Ptr node) const;
+
+    // Dimension hierarchy (packed and unpacked).
+    virtual std::string render_rangedim(const AST::RangeDim::Ptr node) const;
+    virtual std::string render_sizedim(const AST::SizeDim::Ptr node) const;
+    virtual std::string render_unsizeddim(const AST::UnsizedDim::Ptr node) const;
+    virtual std::string render_queuedim(const AST::QueueDim::Ptr node) const;
+    virtual std::string render_assocdim(const AST::AssocDim::Ptr node) const;
+
+    virtual std::string render_enumitem(const AST::EnumItem::Ptr node) const;
+    virtual std::string render_member(const AST::Member::Ptr node) const;
+
+    // Declaration hierarchy.
+    virtual std::string render_var(const AST::Var::Ptr node) const;
+    virtual std::string render_wirenet(const AST::WireNet::Ptr node) const;
+    virtual std::string render_trinet(const AST::TriNet::Ptr node) const;
+    virtual std::string render_tri0net(const AST::Tri0Net::Ptr node) const;
+    virtual std::string render_tri1net(const AST::Tri1Net::Ptr node) const;
+    virtual std::string render_triandnet(const AST::TriandNet::Ptr node) const;
+    virtual std::string render_triornet(const AST::TriorNet::Ptr node) const;
+    virtual std::string render_triregnet(const AST::TriregNet::Ptr node) const;
+    virtual std::string render_wandnet(const AST::WandNet::Ptr node) const;
+    virtual std::string render_wornet(const AST::WorNet::Ptr node) const;
+    virtual std::string render_uwirenet(const AST::UwireNet::Ptr node) const;
+    virtual std::string render_supply0net(const AST::Supply0Net::Ptr node) const;
+    virtual std::string render_supply1net(const AST::Supply1Net::Ptr node) const;
+    virtual std::string render_interconnectnet(const AST::InterconnectNet::Ptr node) const;
+    virtual std::string render_usernet(const AST::UserNet::Ptr node) const;
+    virtual std::string render_implicitnet(const AST::ImplicitNet::Ptr node) const;
+    virtual std::string render_drivestrength(const AST::DriveStrength::Ptr node) const;
+    virtual std::string render_chargestrength(const AST::ChargeStrength::Ptr node) const;
+    virtual std::string render_param(const AST::Param::Ptr node) const;
+    virtual std::string render_typeparam(const AST::TypeParam::Ptr node) const;
+    virtual std::string render_typedef(const AST::Typedef::Ptr node) const;
+    virtual std::string render_arg(const AST::Arg::Ptr node) const;
     virtual std::string render_genvar(const AST::Genvar::Ptr node) const;
-    virtual std::string render_ioport(const AST::Ioport::Ptr node) const;
-    virtual std::string render_parameter(const AST::Parameter::Ptr node) const;
-    virtual std::string render_localparam(const AST::Localparam::Ptr node) const;
+    virtual std::string render_nettypedecl(const AST::NetTypeDecl::Ptr node) const;
+
     virtual std::string render_concat(const AST::Concat::Ptr node) const;
     virtual std::string render_lconcat(const AST::Lconcat::Ptr node) const;
     virtual std::string render_repeat(const AST::Repeat::Ptr node) const;
     virtual std::string render_assignmentpattern(const AST::AssignmentPattern::Ptr node) const;
     virtual std::string render_patternitem(const AST::PatternItem::Ptr node) const;
-    virtual std::string render_cast(const AST::Cast::Ptr node) const;
+
+    // Cast hierarchy (node per form).
+    virtual std::string render_typecast(const AST::TypeCast::Ptr node) const;
+    virtual std::string render_sizecast(const AST::SizeCast::Ptr node) const;
+    virtual std::string render_signingcast(const AST::SigningCast::Ptr node) const;
+    virtual std::string render_constcast(const AST::ConstCast::Ptr node) const;
+
     virtual std::string render_partselect(const AST::Partselect::Ptr node) const;
     virtual std::string
     render_partselectplusindexed(const AST::PartselectPlusIndexed::Ptr node) const;
@@ -137,26 +184,16 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_instance(const AST::Instance::Ptr node) const;
     virtual std::string render_paramarg(const AST::ParamArg::Ptr node) const;
     virtual std::string render_portarg(const AST::PortArg::Ptr node) const;
-    virtual std::string render_data_type(const AST::Node::Ptr node) const;
-    virtual std::string render_scalar_variable(const AST::Variable::Ptr node) const;
     virtual std::string render_function(const AST::Function::Ptr node) const;
+    virtual std::string render_call(const AST::Call::Ptr node) const;
     virtual std::string render_functioncall(const AST::FunctionCall::Ptr node) const;
     virtual std::string render_task(const AST::Task::Ptr node) const;
     virtual std::string render_taskcall(const AST::TaskCall::Ptr node) const;
     virtual std::string render_generatestatement(const AST::GenerateStatement::Ptr node) const;
     virtual std::string render_systemcall(const AST::SystemCall::Ptr node) const;
-    virtual std::string
-    render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr node) const;
-    virtual std::string render_identifierscope(const AST::IdentifierScope::Ptr node) const;
     virtual std::string render_disable(const AST::Disable::Ptr node) const;
     virtual std::string render_parallelblock(const AST::ParallelBlock::Ptr node) const;
     virtual std::string render_singlestatement(const AST::SingleStatement::Ptr node) const;
-    virtual std::string render_enumitem(const AST::EnumItem::Ptr node) const;
-    virtual std::string render_enumdef(const AST::EnumDef::Ptr node) const;
-    virtual std::string render_typedef(const AST::Typedef::Ptr node) const;
-    virtual std::string render_structmember(const AST::StructMember::Ptr node) const;
-    virtual std::string render_structdef(const AST::StructDef::Ptr node) const;
-    virtual std::string render_union(const AST::Union::Ptr node) const;
 
     virtual std::string indent(const std::string str) const;
 
@@ -166,23 +203,36 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string operators_to_string(AST::NodeType node_type, const AST::Node::Ptr left,
                                             const AST::Node::Ptr right) const;
 
-    virtual std::string variable_to_string(const char *variable, bool is_signed,
-                                           const AST::Width::ListPtr widths,
-                                           const AST::Length::ListPtr lengths,
-                                           const AST::Rvalue::Ptr rvalue,
-                                           const std::string &name) const;
+    // --- shared helpers (new model) ---
 
-    virtual std::string parameter_to_string(const char *parameter, std::string variable,
-                                            bool is_signed, const AST::Width::ListPtr widths,
-                                            const std::string &name, const std::string value) const;
+    // The bare type: keyword + signing + packed dims (e.g. "logic signed [3:0]",
+    // "int unsigned", "my_t [3:0]"). Empty for a null/keyword-less ImplicitType
+    // with no dims. Never a trailing name or ';'.
+    virtual std::string data_type_to_string(const AST::DataType::Ptr type) const;
+
+    // Concatenated dimension list, no separators: "[3:0][7:0]" / "[4]" / "[]".
+    virtual std::string dims_to_string(const AST::Dimension::ListPtr dims) const;
+
+    // A value name reference: `::` scope + `.` hierarchy + name.
+    virtual std::string identifier_to_string(const AST::Identifier::Ptr node) const;
+
+    // `[const] [var] [lifetime] ` qualifier prefix of a Var.
+    virtual std::string var_qualifier_prefix(const AST::Var::Ptr node) const;
+
+    // Shared net renderer: keyword + strength + type + name + unpacked dims +
+    // continuous assignment.
+    virtual std::string net_to_string(const char *keyword, const AST::Net::Ptr node) const;
+
+    // `name [unpacked dims] [= init]` declaration tail shared by Var/Member.
+    virtual std::string decl_tail_to_string(const std::string &name,
+                                            const AST::Dimension::ListPtr unpacked_dims,
+                                            const AST::Node::Ptr init) const;
 
     virtual std::string block_or_single_statement_to_string(AST::Node::Ptr stmt) const;
 
-    virtual std::string widths_list_to_string(const AST::Width::ListPtr widths) const;
+    virtual std::string ports_list_to_string(const AST::Port::ListPtr ports, int length = 0) const;
 
-    virtual std::string ports_list_to_string(const AST::Node::ListPtr ports, int length = 0) const;
-
-    virtual std::string parameters_list_to_string(const AST::Parameter::ListPtr parameters,
+    virtual std::string parameters_list_to_string(const AST::Declaration::ListPtr parameters,
                                                   int length = 0) const;
 };
 
