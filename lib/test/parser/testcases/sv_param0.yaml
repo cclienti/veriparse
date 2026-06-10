@@ -4,289 +4,296 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          filename: ../../test/parser/testcases/sv_param0.sv
           items:
           - Assign:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+              filename: ../../test/parser/testcases/sv_param0.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 12
                   var:
                     Identifier:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
+                      hier:
+                        HierName: null
                       line: 12
                       name: data_out
-                      scope:
-                        IdentifierScope: null
               line: 12
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 12
                   var:
                     Repeat:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 12
                       times:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                          filename: ../../test/parser/testcases/sv_param0.sv
+                          hier:
+                            HierName: null
                           line: 12
                           name: WIDTH
-                          scope:
-                            IdentifierScope: null
                       value:
                         Concat:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                          filename: ../../test/parser/testcases/sv_param0.sv
                           line: 12
                           list:
                           - IntConstN:
                               base: 2
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                              filename: ../../test/parser/testcases/sv_param0.sv
                               line: 12
                               sign: false
                               size: 1
                               value: 0
+          lifetime: NONE
           line: 1
           name: sv_param0
           params:
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_param0.sv
+              is_local: false
               line: 2
               name: WIDTH
-              sign: true
-              type: INT
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 2
                       sign: false
                       size: -1
                       value: 8
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_param0.sv
+              is_local: false
               line: 3
               name: SIGNED
-              sign: false
-              type: BIT
+              type:
+                BitType:
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  line: 3
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 3
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 3
                       sign: false
                       size: -1
                       value: 0
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_param0.sv
+              is_local: false
               line: 4
               name: FLAG
-              sign: false
-              type: LOGIC
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  line: 4
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 4
                   var:
                     IntConstN:
                       base: 2
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 4
                       sign: false
                       size: 1
                       value: 0
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_param0.sv
+              is_local: false
               line: 5
               name: BYTEVAL
-              sign: true
-              type: BYTE
+              type:
+                ByteType:
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  line: 5
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 5
                   var:
                     IntConstN:
                       base: 16
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 5
                       sign: false
                       size: 8
                       value: 255
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_param0.sv
+              is_local: false
               line: 6
               name: SHORTVAL
-              sign: true
-              type: SHORTINT
+              type:
+                ShortintType:
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  line: 6
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 6
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 6
                       sign: false
                       size: 16
                       value: 100
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_param0.sv
+              is_local: false
               line: 7
               name: LONGVAL
-              sign: true
-              type: LONGINT
+              type:
+                LongintType:
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  line: 7
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 7
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 7
                       sign: false
                       size: 64
                       value: 1000
-          - Localparam:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Param:
+              filename: ../../test/parser/testcases/sv_param0.sv
+              is_local: true
               line: 8
               name: DEPTH
-              sign: true
-              type: INT
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  line: 8
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  filename: ../../test/parser/testcases/sv_param0.sv
                   line: 8
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 8
                       sign: false
                       size: -1
                       value: 16
           ports:
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-              first:
-                Input:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 9
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_param0.sv
+                      line: 9
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_param0.sv
               line: 9
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+              name: clk
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../../test/parser/testcases/sv_param0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 9
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
                   line: 10
                   name: data_out
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_param0.sv
                       line: 10
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-                          line: 10
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_param0.sv
                           left:
-                            Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                            Minus:
+                              filename: ../../test/parser/testcases/sv_param0.sv
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_param0.sv
+                                  hier:
+                                    HierName: null
+                                  line: 10
+                                  name: WIDTH
                               line: 10
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/sv_param0.sv
+                                  line: 10
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 10
                           right:
                             IntConstN:
                               base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+                              filename: ../../test/parser/testcases/sv_param0.sv
                               line: 10
                               sign: false
                               size: -1
-                              value: 1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../../test/parser/testcases/sv_param0.sv
               line: 10
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-                  ldelay:
-                    DelayStatement: null
-                  line: 10
-                  name: data_out
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-                      line: 10
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-                          line: 10
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-                          left:
-                            Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-                              line: 10
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 10
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
-                              line: 10
-                              sign: false
-                              size: -1
-                              value: 1
-      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+              name: data_out
+      filename: ../../test/parser/testcases/sv_param0.sv
       line: 1
-  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_param0.sv
+  filename: ../../test/parser/testcases/sv_param0.sv
   line: 1
-
