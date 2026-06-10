@@ -4,7 +4,8 @@
 #define VERIPARSE_AST_IDENTIFIER_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/identifierscope.hpp>
+#include <veriparse/AST/hiername.hpp>
+#include <veriparse/AST/scopename.hpp>
 
 #include <list>
 #include <string>
@@ -36,8 +37,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Identifier.
      */
-    Identifier(const IdentifierScope::Ptr scope, const std::string &name,
-               const std::string &package, const std::string &filename = "", uint32_t line = 0);
+    Identifier(const ScopeName::ListPtr scope, const HierName::Ptr hier, const std::string &name,
+               const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -87,12 +88,22 @@ public:
     /**
      * Return the child scope.
      */
-    virtual IdentifierScope::Ptr get_scope(void) const { return m_scope; }
+    virtual ScopeName::ListPtr get_scope(void) const { return m_scope; }
+
+    /**
+     * Return the child hier.
+     */
+    virtual HierName::Ptr get_hier(void) const { return m_hier; }
 
     /**
      * Change the child scope.
      */
-    virtual void set_scope(IdentifierScope::Ptr scope) { m_scope = scope; }
+    virtual void set_scope(ScopeName::ListPtr scope) { m_scope = scope; }
+
+    /**
+     * Change the child hier.
+     */
+    virtual void set_hier(HierName::Ptr hier) { m_hier = hier; }
 
     /**
      * Return the property name.
@@ -100,19 +111,9 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
-     * Return the property package.
-     */
-    virtual const std::string &get_package(void) const { return m_package; }
-
-    /**
      * Change the property name.
      */
     virtual void set_name(const std::string &name) { m_name = name; }
-
-    /**
-     * Change the property package.
-     */
-    virtual void set_package(const std::string &package) { m_package = package; }
 
     /**
      * Return the children list using the private children member
@@ -138,9 +139,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    IdentifierScope::Ptr m_scope{};
+    ScopeName::ListPtr m_scope{};
+    HierName::Ptr m_hier{};
     std::string m_name{};
-    std::string m_package{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Identifier &p);

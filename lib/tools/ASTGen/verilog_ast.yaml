@@ -105,13 +105,15 @@ Import:
 Identifier:
   properties:
     name: "std::string"
-    # SystemVerilog package scope (pkg::name or $unit::name); empty if unscoped.
-    # A later resolution pass (PackageInliner) consumes it. (ADR: this flat
-    # string is to be migrated to scope: list(ScopeName) on the value side, in a
-    # later additive step — see header note.)
-    package: "std::string"
   children:
-    scope: IdentifierScope
+    # SV `::` scope-resolution (pkg::name, $unit::name, A::B::name, A#(8)::name);
+    # empty if unscoped. SAME model as NamedType.scope (the `::` axis is uniform
+    # for types and values). A resolution pass (PackageInliner) consumes it.
+    scope: list(ScopeName)
+    # Verilog `.` hierarchical reference path (top.u1.sig, genblk[i].sig) — a path
+    # through the instance/generate hierarchy. Orthogonal to `scope`, value-side
+    # only. Renamed from the old IdentifierScope (ADR §3.3.1).
+    hier: HierName
 
 Constant:
   properties:
@@ -770,8 +772,8 @@ Function:
 FunctionCall:
   properties:
     name: "std::string"
-    package: "std::string" # SystemVerilog package scope (pkg::func); empty if unscoped
   children:
+    scope: list(ScopeName) # SV `::` scope (pkg::func, A::B::func); empty if unscoped
     args: list(Node)
 
 Task:
@@ -785,8 +787,8 @@ Task:
 TaskCall:
   properties:
     name: "std::string"
-    package: "std::string" # SystemVerilog package scope (pkg::task); empty if unscoped
   children:
+    scope: list(ScopeName) # SV `::` scope (pkg::task, A::B::task); empty if unscoped
     args: list(Node)
 
 GenerateStatement:
@@ -800,16 +802,22 @@ SystemCall:
   children:
     args: list(Node)
 
-IdentifierScopeLabel:
+# A single segment of a Verilog hierarchical reference (top.u1.sig, genblk[i].sig):
+# `name` is the segment identifier, `loop` the optional array index. Renamed from
+# IdentifierScopeLabel — the SV `::` axis now owns the field name `scope`
+# (ADR §3.3.1), so the hierarchical segment's identifier is honestly `name`.
+HierLabel:
   properties:
-    scope: "std::string"
+    name: "std::string"
   children:
     loop: Node
 
-IdentifierScope:
+# A Verilog hierarchical reference path: an ordered list of HierLabel segments.
+# Renamed from IdentifierScope.
+HierName:
   properties:
   children:
-    labellist: list(IdentifierScopeLabel)
+    labellist: list(HierLabel)
 
 Disable:
   properties:

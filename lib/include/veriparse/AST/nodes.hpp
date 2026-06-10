@@ -169,8 +169,8 @@
 #include <veriparse/AST/taskcall.hpp>
 #include <veriparse/AST/generatestatement.hpp>
 #include <veriparse/AST/systemcall.hpp>
-#include <veriparse/AST/identifierscopelabel.hpp>
-#include <veriparse/AST/identifierscope.hpp>
+#include <veriparse/AST/hierlabel.hpp>
+#include <veriparse/AST/hiername.hpp>
 #include <veriparse/AST/disable.hpp>
 #include <veriparse/AST/parallelblock.hpp>
 #include <veriparse/AST/singlestatement.hpp>

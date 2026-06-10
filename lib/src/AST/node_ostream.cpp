@@ -506,11 +506,11 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::SystemCall:
         os << static_cast<const AST::SystemCall &>(p);
         break;
-    case NodeType::IdentifierScopeLabel:
-        os << static_cast<const AST::IdentifierScopeLabel &>(p);
+    case NodeType::HierLabel:
+        os << static_cast<const AST::HierLabel &>(p);
         break;
-    case NodeType::IdentifierScope:
-        os << static_cast<const AST::IdentifierScope &>(p);
+    case NodeType::HierName:
+        os << static_cast<const AST::HierName &>(p);
         break;
     case NodeType::Disable:
         os << static_cast<const AST::Disable &>(p);

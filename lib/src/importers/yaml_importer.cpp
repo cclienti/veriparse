@@ -550,11 +550,11 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["SystemCall"]) {
             return convert_systemcall(node["SystemCall"]);
         }
-        if(node["IdentifierScopeLabel"]) {
-            return convert_identifierscopelabel(node["IdentifierScopeLabel"]);
+        if(node["HierLabel"]) {
+            return convert_hierlabel(node["HierLabel"]);
         }
-        if(node["IdentifierScope"]) {
-            return convert_identifierscope(node["IdentifierScope"]);
+        if(node["HierName"]) {
+            return convert_hiername(node["HierName"]);
         }
         if(node["Disable"]) {
             return convert_disable(node["Disable"]);
@@ -1160,28 +1160,46 @@ AST::Node::Ptr YAMLImporter::convert_identifier(const YAML::Node node) const
                 result->set_name(node["name"].as<std::string>());
             }
         }
-        // Manage property package
-        if(node["package"]) {
-            if(node["package"].IsScalar()) {
-
-                if(!result) {
-                    result = std::make_shared<AST::Identifier>();
-                }
-                result->set_package(node["package"].as<std::string>());
-            }
-        }
 
         // Manage Child scope
         if(node["scope"]) {
             const YAML::Node node_scope = node["scope"];
+            // Fill the list of children
+            AST::ScopeName::ListPtr scope_list(new AST::ScopeName::List);
+            if(node_scope.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_scope.begin(); it != node_scope.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                        scope_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_scope);
+                if(child) {
+                    AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                    scope_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Identifier>();
+            }
+            result->set_scope(scope_list);
+        }
+
+        // Manage Child hier
+        if(node["hier"]) {
+            const YAML::Node node_hier = node["hier"];
             // Set the child
-            AST::Node::Ptr child = convert(node_scope);
+            AST::Node::Ptr child = convert(node_hier);
             if(child) {
-                AST::IdentifierScope::Ptr child_cast = AST::cast_to<AST::IdentifierScope>(child);
+                AST::HierName::Ptr child_cast = AST::cast_to<AST::HierName>(child);
                 if(!result) {
                     result = std::make_shared<AST::Identifier>();
                 }
-                result->set_scope(child_cast);
+                result->set_hier(child_cast);
             }
         }
     }
@@ -11562,15 +11580,33 @@ AST::Node::Ptr YAMLImporter::convert_functioncall(const YAML::Node node) const
                 result->set_name(node["name"].as<std::string>());
             }
         }
-        // Manage property package
-        if(node["package"]) {
-            if(node["package"].IsScalar()) {
 
-                if(!result) {
-                    result = std::make_shared<AST::FunctionCall>();
+        // Manage Child scope
+        if(node["scope"]) {
+            const YAML::Node node_scope = node["scope"];
+            // Fill the list of children
+            AST::ScopeName::ListPtr scope_list(new AST::ScopeName::List);
+            if(node_scope.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_scope.begin(); it != node_scope.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                        scope_list->push_back(child_cast);
+                    }
                 }
-                result->set_package(node["package"].as<std::string>());
+            } else {
+                AST::Node::Ptr child = convert(node_scope);
+                if(child) {
+                    AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                    scope_list->push_back(child_cast);
+                }
             }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::FunctionCall>();
+            }
+            result->set_scope(scope_list);
         }
 
         // Manage Child args
@@ -11735,15 +11771,33 @@ AST::Node::Ptr YAMLImporter::convert_taskcall(const YAML::Node node) const
                 result->set_name(node["name"].as<std::string>());
             }
         }
-        // Manage property package
-        if(node["package"]) {
-            if(node["package"].IsScalar()) {
 
-                if(!result) {
-                    result = std::make_shared<AST::TaskCall>();
+        // Manage Child scope
+        if(node["scope"]) {
+            const YAML::Node node_scope = node["scope"];
+            // Fill the list of children
+            AST::ScopeName::ListPtr scope_list(new AST::ScopeName::List);
+            if(node_scope.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_scope.begin(); it != node_scope.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                        scope_list->push_back(child_cast);
+                    }
                 }
-                result->set_package(node["package"].as<std::string>());
+            } else {
+                AST::Node::Ptr child = convert(node_scope);
+                if(child) {
+                    AST::ScopeName::Ptr child_cast = AST::cast_to<AST::ScopeName>(child);
+                    scope_list->push_back(child_cast);
+                }
             }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::TaskCall>();
+            }
+            result->set_scope(scope_list);
         }
 
         // Manage Child args
@@ -11891,14 +11945,14 @@ AST::Node::Ptr YAMLImporter::convert_systemcall(const YAML::Node node) const
     return AST::cast_to<AST::SystemCall>(result);
 }
 
-AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node) const
+AST::Node::Ptr YAMLImporter::convert_hierlabel(const YAML::Node node) const
 {
-    AST::IdentifierScopeLabel::Ptr result;
+    AST::HierLabel::Ptr result;
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
                 if(!result) {
-                    result = std::make_shared<AST::IdentifierScopeLabel>();
+                    result = std::make_shared<AST::HierLabel>();
                 }
                 result->set_filename(node["filename"].as<std::string>());
             }
@@ -11906,19 +11960,19 @@ AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node)
         if(node["line"]) {
             if(node["line"].IsScalar()) {
                 if(!result) {
-                    result = std::make_shared<AST::IdentifierScopeLabel>();
+                    result = std::make_shared<AST::HierLabel>();
                 }
                 result->set_line(node["line"].as<int>());
             }
         }
-        // Manage property scope
-        if(node["scope"]) {
-            if(node["scope"].IsScalar()) {
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
 
                 if(!result) {
-                    result = std::make_shared<AST::IdentifierScopeLabel>();
+                    result = std::make_shared<AST::HierLabel>();
                 }
-                result->set_scope(node["scope"].as<std::string>());
+                result->set_name(node["name"].as<std::string>());
             }
         }
 
@@ -11929,7 +11983,7 @@ AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node)
             AST::Node::Ptr child = convert(node_loop);
             if(child) {
                 if(!result) {
-                    result = std::make_shared<AST::IdentifierScopeLabel>();
+                    result = std::make_shared<AST::HierLabel>();
                 }
                 result->set_loop(child);
             }
@@ -11937,17 +11991,17 @@ AST::Node::Ptr YAMLImporter::convert_identifierscopelabel(const YAML::Node node)
     }
 
     // Return the result
-    return AST::cast_to<AST::IdentifierScopeLabel>(result);
+    return AST::cast_to<AST::HierLabel>(result);
 }
 
-AST::Node::Ptr YAMLImporter::convert_identifierscope(const YAML::Node node) const
+AST::Node::Ptr YAMLImporter::convert_hiername(const YAML::Node node) const
 {
-    AST::IdentifierScope::Ptr result;
+    AST::HierName::Ptr result;
     if(node.IsMap()) {
         if(node["filename"]) {
             if(node["filename"].IsScalar()) {
                 if(!result) {
-                    result = std::make_shared<AST::IdentifierScope>();
+                    result = std::make_shared<AST::HierName>();
                 }
                 result->set_filename(node["filename"].as<std::string>());
             }
@@ -11955,7 +12009,7 @@ AST::Node::Ptr YAMLImporter::convert_identifierscope(const YAML::Node node) cons
         if(node["line"]) {
             if(node["line"].IsScalar()) {
                 if(!result) {
-                    result = std::make_shared<AST::IdentifierScope>();
+                    result = std::make_shared<AST::HierName>();
                 }
                 result->set_line(node["line"].as<int>());
             }
@@ -11965,36 +12019,34 @@ AST::Node::Ptr YAMLImporter::convert_identifierscope(const YAML::Node node) cons
         if(node["labellist"]) {
             const YAML::Node node_labellist = node["labellist"];
             // Fill the list of children
-            AST::IdentifierScopeLabel::ListPtr labellist_list(new AST::IdentifierScopeLabel::List);
+            AST::HierLabel::ListPtr labellist_list(new AST::HierLabel::List);
             if(node_labellist.IsSequence()) {
                 // The YAML node is a sequence
                 for(YAML::const_iterator it = node_labellist.begin(); it != node_labellist.end();
                     ++it) {
                     AST::Node::Ptr child = convert(*it);
                     if(child) {
-                        AST::IdentifierScopeLabel::Ptr child_cast =
-                            AST::cast_to<AST::IdentifierScopeLabel>(child);
+                        AST::HierLabel::Ptr child_cast = AST::cast_to<AST::HierLabel>(child);
                         labellist_list->push_back(child_cast);
                     }
                 }
             } else {
                 AST::Node::Ptr child = convert(node_labellist);
                 if(child) {
-                    AST::IdentifierScopeLabel::Ptr child_cast =
-                        AST::cast_to<AST::IdentifierScopeLabel>(child);
+                    AST::HierLabel::Ptr child_cast = AST::cast_to<AST::HierLabel>(child);
                     labellist_list->push_back(child_cast);
                 }
             }
             // Set the list
             if(!result) {
-                result = std::make_shared<AST::IdentifierScope>();
+                result = std::make_shared<AST::HierName>();
             }
             result->set_labellist(labellist_list);
         }
     }
 
     // Return the result
-    return AST::cast_to<AST::IdentifierScope>(result);
+    return AST::cast_to<AST::HierName>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_disable(const YAML::Node node) const

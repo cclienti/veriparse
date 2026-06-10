@@ -343,10 +343,10 @@ const char *NodeTypeToString(NodeType node_type)
         return "GenerateStatement";
     case NodeType::SystemCall:
         return "SystemCall";
-    case NodeType::IdentifierScopeLabel:
-        return "IdentifierScopeLabel";
-    case NodeType::IdentifierScope:
-        return "IdentifierScope";
+    case NodeType::HierLabel:
+        return "HierLabel";
+    case NodeType::HierName:
+        return "HierName";
     case NodeType::Disable:
         return "Disable";
     case NodeType::ParallelBlock:

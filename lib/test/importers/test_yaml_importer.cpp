@@ -254,8 +254,8 @@ TEST(YAMLImporter, Identifier)
                     "  filename: identifier.v\n"
                     "  line: 10\n"
                     "  scope:\n"
-                    "  name: mynbiqpmzj\n"
-                    "  package: plsgqejeyd\n");
+                    "  hier:\n"
+                    "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -264,8 +264,8 @@ TEST(YAMLImporter, Identifier)
     ASSERT_TRUE(yaml["Identifier"]["filename"].as<std::string>() == "identifier.v");
     ASSERT_TRUE(yaml["Identifier"]["line"].as<int>() == 10);
     ASSERT_TRUE(yaml["Identifier"]["scope"]);
+    ASSERT_TRUE(yaml["Identifier"]["hier"]);
     ASSERT_TRUE(yaml["Identifier"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Identifier"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLImporter, Constant)
@@ -3739,9 +3739,9 @@ TEST(YAMLImporter, FunctionCall)
     std::string str("FunctionCall:\n"
                     "  filename: functioncall.v\n"
                     "  line: 12\n"
+                    "  scope:\n"
                     "  args:\n"
-                    "  name: mynbiqpmzj\n"
-                    "  package: plsgqejeyd\n");
+                    "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -3749,9 +3749,9 @@ TEST(YAMLImporter, FunctionCall)
     ASSERT_TRUE(yaml["FunctionCall"]);
     ASSERT_TRUE(yaml["FunctionCall"]["filename"].as<std::string>() == "functioncall.v");
     ASSERT_TRUE(yaml["FunctionCall"]["line"].as<int>() == 12);
+    ASSERT_TRUE(yaml["FunctionCall"]["scope"]);
     ASSERT_TRUE(yaml["FunctionCall"]["args"]);
     ASSERT_TRUE(yaml["FunctionCall"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["FunctionCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLImporter, Task)
@@ -3788,9 +3788,9 @@ TEST(YAMLImporter, TaskCall)
     std::string str("TaskCall:\n"
                     "  filename: taskcall.v\n"
                     "  line: 8\n"
+                    "  scope:\n"
                     "  args:\n"
-                    "  name: mynbiqpmzj\n"
-                    "  package: plsgqejeyd\n");
+                    "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -3798,9 +3798,9 @@ TEST(YAMLImporter, TaskCall)
     ASSERT_TRUE(yaml["TaskCall"]);
     ASSERT_TRUE(yaml["TaskCall"]["filename"].as<std::string>() == "taskcall.v");
     ASSERT_TRUE(yaml["TaskCall"]["line"].as<int>() == 8);
+    ASSERT_TRUE(yaml["TaskCall"]["scope"]);
     ASSERT_TRUE(yaml["TaskCall"]["args"]);
     ASSERT_TRUE(yaml["TaskCall"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["TaskCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLImporter, GenerateStatement)
@@ -3843,45 +3843,44 @@ TEST(YAMLImporter, SystemCall)
     ASSERT_TRUE(yaml["SystemCall"]["syscall"].as<std::string>() == "mynbiqpmzj");
 }
 
-TEST(YAMLImporter, IdentifierScopeLabel)
+TEST(YAMLImporter, HierLabel)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLImporter.IdentifierScopeLabel.log");
+    Logger::add_text_sink("YAMLImporter.HierLabel.log");
     Logger::add_stderr_sink();
-    std::string str("IdentifierScopeLabel:\n"
-                    "  filename: identifierscopelabel.v\n"
-                    "  line: 20\n"
+    std::string str("HierLabel:\n"
+                    "  filename: hierlabel.v\n"
+                    "  line: 9\n"
                     "  loop:\n"
-                    "  scope: mynbiqpmzj\n");
+                    "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
 
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]);
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]["filename"].as<std::string>() ==
-                "identifierscopelabel.v");
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]["line"].as<int>() == 20);
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]["loop"]);
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]["scope"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["HierLabel"]);
+    ASSERT_TRUE(yaml["HierLabel"]["filename"].as<std::string>() == "hierlabel.v");
+    ASSERT_TRUE(yaml["HierLabel"]["line"].as<int>() == 9);
+    ASSERT_TRUE(yaml["HierLabel"]["loop"]);
+    ASSERT_TRUE(yaml["HierLabel"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
-TEST(YAMLImporter, IdentifierScope)
+TEST(YAMLImporter, HierName)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLImporter.IdentifierScope.log");
+    Logger::add_text_sink("YAMLImporter.HierName.log");
     Logger::add_stderr_sink();
-    std::string str("IdentifierScope:\n"
-                    "  filename: identifierscope.v\n"
-                    "  line: 15\n"
+    std::string str("HierName:\n"
+                    "  filename: hiername.v\n"
+                    "  line: 8\n"
                     "  labellist:\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
 
-    ASSERT_TRUE(yaml["IdentifierScope"]);
-    ASSERT_TRUE(yaml["IdentifierScope"]["filename"].as<std::string>() == "identifierscope.v");
-    ASSERT_TRUE(yaml["IdentifierScope"]["line"].as<int>() == 15);
-    ASSERT_TRUE(yaml["IdentifierScope"]["labellist"]);
+    ASSERT_TRUE(yaml["HierName"]);
+    ASSERT_TRUE(yaml["HierName"]["filename"].as<std::string>() == "hiername.v");
+    ASSERT_TRUE(yaml["HierName"]["line"].as<int>() == 8);
+    ASSERT_TRUE(yaml["HierName"]["labellist"]);
 }
 
 TEST(YAMLImporter, Disable)

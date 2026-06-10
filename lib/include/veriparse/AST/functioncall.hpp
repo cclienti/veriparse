@@ -4,6 +4,7 @@
 #define VERIPARSE_AST_FUNCTIONCALL_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/scopename.hpp>
 
 #include <list>
 #include <string>
@@ -35,7 +36,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::FunctionCall.
      */
-    FunctionCall(const Node::ListPtr args, const std::string &name, const std::string &package,
+    FunctionCall(const ScopeName::ListPtr scope, const Node::ListPtr args, const std::string &name,
                  const std::string &filename = "", uint32_t line = 0);
 
     /**
@@ -84,9 +85,19 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
+     * Return the child scope.
+     */
+    virtual ScopeName::ListPtr get_scope(void) const { return m_scope; }
+
+    /**
      * Return the child args.
      */
     virtual Node::ListPtr get_args(void) const { return m_args; }
+
+    /**
+     * Change the child scope.
+     */
+    virtual void set_scope(ScopeName::ListPtr scope) { m_scope = scope; }
 
     /**
      * Change the child args.
@@ -99,19 +110,9 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
-     * Return the property package.
-     */
-    virtual const std::string &get_package(void) const { return m_package; }
-
-    /**
      * Change the property name.
      */
     virtual void set_name(const std::string &name) { m_name = name; }
-
-    /**
-     * Change the property package.
-     */
-    virtual void set_package(const std::string &package) { m_package = package; }
 
     /**
      * Return the children list using the private children member
@@ -137,9 +138,9 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
+    ScopeName::ListPtr m_scope{};
     Node::ListPtr m_args{};
     std::string m_name{};
-    std::string m_package{};
 };
 
 std::ostream &operator<<(std::ostream &os, const FunctionCall &p);
