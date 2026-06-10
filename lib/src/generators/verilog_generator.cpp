@@ -13,6 +13,7 @@
 #include <sstream>
 #include <limits>
 #include <iomanip>
+#include <memory>
 
 using namespace Veriparse::Misc;
 
@@ -25,13 +26,11 @@ typedef std::numeric_limits<double> dbl;
 
 namespace
 {
-// Integer atom types (byte/shortint/int/longint) are signed by default, so the
-// type spells the non-default case: `unsigned` is emitted, the redundant
-// `signed` is not (`int x;` / `int unsigned y;`, never `int signed`).
-std::string atom_type_string(const std::string &keyword, bool is_signed)
-{
-    return is_signed ? keyword : keyword + " unsigned";
-}
+// Force the dynamic-dispatch render() overload (the one switching on node_type)
+// when holding a base-class pointer (DataType, Dimension, Declaration, ...): the
+// generated per-type render(const X::Ptr) overloads bind statically and would
+// otherwise route a LogicType-stored-as-DataType to render_datatype (empty).
+AST::Node::Ptr as_node(const AST::Node::Ptr &n) { return std::static_pointer_cast<AST::Node>(n); }
 } // namespace
 
 std::string VerilogGenerator::render_node(const AST::Node::Ptr node) const
@@ -108,8 +107,8 @@ std::string VerilogGenerator::render_module(const AST::Module::Ptr node) const
     std::string result;
     if(node) {
         std::string modname = node->get_name();
-        const AST::Parameter::ListPtr params = node->get_params();
-        const AST::Node::ListPtr ports = node->get_ports();
+        const AST::Declaration::ListPtr params = node->get_params();
+        const AST::Port::ListPtr ports = node->get_ports();
         const AST::Node::ListPtr items = node->get_items();
 
         result = "module " + StringUtils::escape(modname);
@@ -193,88 +192,106 @@ std::string VerilogGenerator::render_import(const AST::Import::Ptr node) const
 std::string VerilogGenerator::render_port(const AST::Port::Ptr node) const
 {
     std::string result;
-    if(node) {
-        result = StringUtils::escape(node->get_name());
+    if(!node) {
+        return result;
     }
-    return result;
-}
 
-std::string VerilogGenerator::render_width(const AST::Width::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        const AST::Node::Ptr msb = node->get_msb();
-        const AST::Node::Ptr lsb = node->get_lsb();
-        std::string msb_str, lsb_str;
-
-        if(msb) {
-            msb_str = StringUtils::remove_whitespace(
-                StringUtils::delete_surrounding_brackets(render(msb)));
-        }
-        if(lsb) {
-            lsb_str = StringUtils::remove_whitespace(
-                StringUtils::delete_surrounding_brackets(render(lsb)));
-        }
-
-        result = "[" + msb_str + ":" + lsb_str + "]";
+    // Direction keyword (NONE = no explicit direction, e.g. a non-ANSI header
+    // reference or a declaration whose direction lives in a separate statement).
+    std::string dir;
+    switch(node->get_direction()) {
+    case AST::Port::DirectionEnum::INPUT:
+        dir = "input";
+        break;
+    case AST::Port::DirectionEnum::OUTPUT:
+        dir = "output";
+        break;
+    case AST::Port::DirectionEnum::INOUT:
+        dir = "inout";
+        break;
+    case AST::Port::DirectionEnum::REF:
+        dir = "ref";
+        break;
+    case AST::Port::DirectionEnum::CONST_REF:
+        dir = "const ref";
+        break;
+    case AST::Port::DirectionEnum::NONE:
+        break;
     }
-    return result;
-}
 
-std::string VerilogGenerator::render_length(const AST::Length::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        const AST::Node::Ptr msb = node->get_msb();
-        const AST::Node::Ptr lsb = node->get_lsb();
-        std::string msb_str, lsb_str;
+    // Explicit ANSI connection `.p(expr)`.
+    if(node->get_expr()) {
+        result = "." + StringUtils::escape(node->get_name()) + "(" + render(node->get_expr()) + ")";
+        return result;
+    }
 
-        if(msb) {
-            msb_str = StringUtils::remove_whitespace(
-                StringUtils::delete_surrounding_brackets(render(msb)));
-        }
-        if(lsb) {
-            lsb_str = StringUtils::remove_whitespace(
-                StringUtils::delete_surrounding_brackets(render(lsb)));
-        }
+    // ANSI typed port: a directed inner declaration (Var/Net). Render the
+    // declaration without its trailing ';'.
+    if(node->get_decl()) {
+        std::string decl = StringUtils::remove_last_semicolon(render(as_node(node->get_decl())));
+        result = dir.empty() ? decl : dir + " " + decl;
+        return result;
+    }
 
-        // a null lsb marks the single-size unpacked dimension `[N]` (≡ [0:N-1]);
-        // with both bounds it is the explicit range `[msb:lsb]`.
-        if(lsb) {
-            result = "[" + msb_str + ":" + lsb_str + "]";
-        } else {
-            result = "[" + msb_str + "]";
-        }
+    // Non-ANSI header reference: just the name (optionally a direction).
+    result = StringUtils::escape(node->get_name());
+    if(!dir.empty()) {
+        result = dir + " " + result;
     }
     return result;
 }
 
 std::string VerilogGenerator::render_identifier(const AST::Identifier::Ptr node) const
 {
+    if(!node) {
+        return std::string();
+    }
+    return identifier_to_string(node);
+}
+
+std::string VerilogGenerator::render_scopename(const AST::ScopeName::Ptr node) const
+{
     std::string result;
     if(node) {
-        const std::string &package = node->get_package();
-        if(!package.empty()) {
-            result = StringUtils::escape(package) + "::";
+        result = StringUtils::escape(node->get_name());
+        const AST::ParamArg::ListPtr params = node->get_params();
+        if(params && !params->empty()) {
+            result += "#(";
+            auto func = [&](const AST::ParamArg::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::ParamArg::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::ParamArg::List, AST::ParamArg::Ptr>(*params, func,
+                                                                                 func_last);
+            result += ")";
         }
-        const AST::IdentifierScope::Ptr scope = node->get_scope();
-        if(scope) {
-            result += render(scope);
-        }
-        result.append(StringUtils::escape(node->get_name()));
+        result += "::";
     }
     return result;
 }
 
-std::string VerilogGenerator::render_customtype(const AST::CustomType::Ptr node) const
+std::string VerilogGenerator::render_hierlabel(const AST::HierLabel::Ptr node) const
 {
     std::string result;
     if(node) {
-        const std::string &package = node->get_package();
-        if(!package.empty()) {
-            result = StringUtils::escape(package) + "::";
+        result = StringUtils::escape(node->get_name());
+        const std::string &loop = render(node->get_loop());
+        if(loop.size() > 0) {
+            result += "[" + loop + "]";
         }
-        result.append(StringUtils::escape(node->get_name()));
+        result += ".";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_hiername(const AST::HierName::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        const AST::HierLabel::ListPtr labellist = node->get_labellist();
+        if(labellist) {
+            auto func = [&](const AST::HierLabel::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::HierLabel::List, AST::HierLabel::Ptr>(*labellist, func,
+                                                                                   func);
+        }
     }
     return result;
 }
@@ -348,413 +365,658 @@ std::string VerilogGenerator::render_stringconst(const AST::StringConst::Ptr nod
     return result;
 }
 
-std::string VerilogGenerator::render_input(const AST::Input::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        result = variable_to_string("input", node->get_sign(), node->get_widths(), nullptr, nullptr,
-                                    node->get_name());
-        result.append(";");
-    }
-    return result;
-}
+//
+// DataType hierarchy
+//
 
-std::string VerilogGenerator::render_output(const AST::Output::Ptr node) const
+std::string VerilogGenerator::data_type_to_string(const AST::DataType::Ptr type) const
 {
-    std::string result;
-    if(node) {
-        result = variable_to_string("output", node->get_sign(), node->get_widths(), nullptr,
-                                    nullptr, node->get_name());
-        result.append(";");
+    if(!type) {
+        return "";
     }
-    return result;
-}
 
-std::string VerilogGenerator::render_inout(const AST::Inout::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        result = variable_to_string("inout", node->get_sign(), node->get_widths(), nullptr, nullptr,
-                                    node->get_name());
-        result.append(";");
+    // Aggregates render their own body (+ packed dims) via dispatch.
+    switch(type->get_node_type()) {
+    case AST::NodeType::StructType:
+    case AST::NodeType::UnionType:
+    case AST::NodeType::EnumType:
+        return render(as_node(type));
+    default:
+        break;
     }
-    return result;
-}
 
-std::string VerilogGenerator::render_tri(const AST::Tri::Ptr node) const
-{
     std::string result;
-    if(node) {
-        std::string kw = "tri";
-        if(node->get_type()) {
-            kw += " " + render(node->get_type());
+    bool takes_signing = false;
+
+    switch(type->get_node_type()) {
+    case AST::NodeType::LogicType:
+        result = "logic";
+        takes_signing = true;
+        break;
+    case AST::NodeType::RegType:
+        result = "reg";
+        takes_signing = true;
+        break;
+    case AST::NodeType::BitType:
+        result = "bit";
+        takes_signing = true;
+        break;
+    case AST::NodeType::ByteType:
+        result = "byte";
+        takes_signing = true;
+        break;
+    case AST::NodeType::ShortintType:
+        result = "shortint";
+        takes_signing = true;
+        break;
+    case AST::NodeType::IntType:
+        result = "int";
+        takes_signing = true;
+        break;
+    case AST::NodeType::LongintType:
+        result = "longint";
+        takes_signing = true;
+        break;
+    case AST::NodeType::IntegerType:
+        result = "integer";
+        takes_signing = true;
+        break;
+    case AST::NodeType::TimeType:
+        result = "time";
+        break;
+    case AST::NodeType::RealType:
+        result = "real";
+        break;
+    case AST::NodeType::ShortrealType:
+        result = "shortreal";
+        break;
+    case AST::NodeType::RealtimeType:
+        result = "realtime";
+        break;
+    case AST::NodeType::StringType:
+        result = "string";
+        break;
+    case AST::NodeType::ChandleType:
+        result = "chandle";
+        break;
+    case AST::NodeType::EventType:
+        result = "event";
+        break;
+    case AST::NodeType::VoidType:
+        result = "void";
+        break;
+    case AST::NodeType::ImplicitType:
+        result = "";
+        takes_signing = true;
+        break;
+    case AST::NodeType::NamedType: {
+        const auto t = AST::cast_to<AST::NamedType>(type);
+        const AST::ScopeName::ListPtr scope = t->get_scope();
+        if(scope) {
+            for(const AST::ScopeName::Ptr &s : *scope) {
+                result += render(s);
+            }
         }
-        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
+        result += StringUtils::escape(t->get_name());
+        break;
     }
-    return result;
-}
+    case AST::NodeType::TypeOpExpr:
+        result = "type(" + render(AST::cast_to<AST::TypeOpExpr>(type)->get_expr()) + ")";
+        break;
+    case AST::NodeType::TypeOpType:
+        result = "type(" +
+                 data_type_to_string(AST::cast_to<AST::TypeOpType>(type)->get_arg_type()) + ")";
+        break;
+    default:
+        break;
+    }
 
-std::string VerilogGenerator::render_wire(const AST::Wire::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        std::string kw = "wire";
-        if(node->get_type()) {
-            kw += " " + render(node->get_type());
+    if(takes_signing) {
+        switch(type->get_signing()) {
+        case AST::DataType::SigningEnum::SIGNED:
+            result += result.empty() ? "signed" : " signed";
+            break;
+        case AST::DataType::SigningEnum::UNSIGNED:
+            result += result.empty() ? "unsigned" : " unsigned";
+            break;
+        case AST::DataType::SigningEnum::NONE:
+            break;
         }
-        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
+    }
+
+    const std::string dims = dims_to_string(type->get_packed_dims());
+    if(!dims.empty()) {
+        result += result.empty() ? dims : " " + dims;
     }
     return result;
 }
 
-std::string VerilogGenerator::render_reg(const AST::Reg::Ptr node) const
+std::string VerilogGenerator::render_logictype(const AST::LogicType::Ptr node) const
 {
-    return render_scalar_variable(node);
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_regtype(const AST::RegType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_bittype(const AST::BitType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_bytetype(const AST::ByteType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_shortinttype(const AST::ShortintType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_inttype(const AST::IntType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_longinttype(const AST::LongintType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_integertype(const AST::IntegerType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_timetype(const AST::TimeType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_realtype(const AST::RealType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_shortrealtype(const AST::ShortrealType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_realtimetype(const AST::RealtimeType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_stringtype(const AST::StringType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_chandletype(const AST::ChandleType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_eventtype(const AST::EventType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_voidtype(const AST::VoidType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_implicittype(const AST::ImplicitType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_namedtype(const AST::NamedType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_typeopexpr(const AST::TypeOpExpr::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_typeoptype(const AST::TypeOpType::Ptr node) const
+{
+    return data_type_to_string(node);
 }
 
-std::string VerilogGenerator::render_supply0(const AST::Supply0::Ptr node) const
+//
+// Dimension hierarchy
+//
+
+std::string VerilogGenerator::dims_to_string(const AST::Dimension::ListPtr dims) const
 {
     std::string result;
-    if(node) {
-        std::string kw = "supply0";
-        if(node->get_type()) {
-            kw += " " + render(node->get_type());
+    if(dims) {
+        for(const AST::Dimension::Ptr &d : *dims) {
+            result += render(as_node(d));
         }
-        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
     }
     return result;
 }
 
-std::string VerilogGenerator::render_supply1(const AST::Supply1::Ptr node) const
+std::string VerilogGenerator::render_rangedim(const AST::RangeDim::Ptr node) const
 {
     std::string result;
     if(node) {
-        std::string kw = "supply1";
-        if(node->get_type()) {
-            kw += " " + render(node->get_type());
+        std::string l = StringUtils::remove_whitespace(
+            StringUtils::delete_surrounding_brackets(render(node->get_left())));
+        std::string r = StringUtils::remove_whitespace(
+            StringUtils::delete_surrounding_brackets(render(node->get_right())));
+        result = "[" + l + ":" + r + "]";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_sizedim(const AST::SizeDim::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = "[" +
+                 StringUtils::remove_whitespace(
+                     StringUtils::delete_surrounding_brackets(render(node->get_size()))) +
+                 "]";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_unsizeddim(const AST::UnsizedDim::Ptr node) const
+{
+    return node ? "[]" : "";
+}
+
+std::string VerilogGenerator::render_queuedim(const AST::QueueDim::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        if(node->get_bound()) {
+            result = "[$:" +
+                     StringUtils::remove_whitespace(
+                         StringUtils::delete_surrounding_brackets(render(node->get_bound()))) +
+                     "]";
+        } else {
+            result = "[$]";
         }
-        result = variable_to_string(kw.c_str(), node->get_sign(), node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
     }
     return result;
 }
 
-std::string VerilogGenerator::render_logic(const AST::Logic::Ptr node) const
-{
-    return render_scalar_variable(node);
-}
-
-std::string VerilogGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
+std::string VerilogGenerator::render_assocdim(const AST::AssocDim::Ptr node) const
 {
     std::string result;
     if(node) {
-        // The type is an unresolved Identifier reference (its `package` carries
-        // any pkg:: scope) or an inline aggregate def; render it as the type
-        // string and reuse the common variable formatter. `widths` carries the
-        // packed dimensions of the type (e.g. `my_t [3:0]`).
-        const std::string type_str = render(node->get_type());
-        result = variable_to_string(type_str.c_str(), false, node->get_widths(),
-                                    node->get_lengths(), node->get_right(), node->get_name());
-        result.append(";");
+        if(node->get_index_type()) {
+            result = "[" + data_type_to_string(node->get_index_type()) + "]";
+        } else {
+            result = "[*]";
+        }
     }
     return result;
 }
 
-std::string VerilogGenerator::render_integer(const AST::Integer::Ptr node) const
+//
+// Declaration hierarchy
+//
+
+std::string VerilogGenerator::decl_tail_to_string(const std::string &name,
+                                                  const AST::Dimension::ListPtr unpacked_dims,
+                                                  const AST::Node::Ptr init) const
 {
-    return render_scalar_variable(node);
+    std::string result = StringUtils::escape(name);
+    const std::string dims = dims_to_string(unpacked_dims);
+    if(!dims.empty()) {
+        result += " " + dims;
+    }
+    if(init) {
+        result += " = " + render(init);
+    }
+    return result;
 }
 
-std::string VerilogGenerator::render_real(const AST::Real::Ptr node) const
+std::string VerilogGenerator::var_qualifier_prefix(const AST::Var::Ptr node) const
 {
-    return render_scalar_variable(node);
+    std::string prefix;
+    if(node->get_is_const()) {
+        prefix += "const ";
+    }
+    if(node->get_is_var()) {
+        prefix += "var ";
+    }
+    switch(node->get_lifetime()) {
+    case AST::Var::LifetimeEnum::AUTOMATIC:
+        prefix += "automatic ";
+        break;
+    case AST::Var::LifetimeEnum::STATIC:
+        prefix += "static ";
+        break;
+    case AST::Var::LifetimeEnum::NONE:
+        break;
+    }
+    return prefix;
 }
 
-std::string VerilogGenerator::render_bit(const AST::Bit::Ptr node) const
+std::string VerilogGenerator::render_var(const AST::Var::Ptr node) const
 {
-    return render_scalar_variable(node);
+    std::string result;
+    if(node) {
+        const std::string prefix = var_qualifier_prefix(node);
+        const std::string type_str = data_type_to_string(node->get_type());
+        const std::string tail =
+            decl_tail_to_string(node->get_name(), node->get_unpacked_dims(), node->get_init());
+        result = prefix + (type_str.empty() ? tail : type_str + " " + tail) + ";";
+    }
+    return result;
 }
 
-std::string VerilogGenerator::render_byte(const AST::Byte::Ptr node) const
+std::string VerilogGenerator::render_member(const AST::Member::Ptr node) const
 {
-    return render_scalar_variable(node);
+    std::string result;
+    if(node) {
+        const std::string type_str = data_type_to_string(node->get_type());
+        const std::string tail =
+            decl_tail_to_string(node->get_name(), node->get_unpacked_dims(), node->get_init());
+        result = (type_str.empty() ? tail : type_str + " " + tail) + ";";
+    }
+    return result;
 }
 
-std::string VerilogGenerator::render_shortint(const AST::Shortint::Ptr node) const
+std::string VerilogGenerator::net_to_string(const char *keyword, const AST::Net::Ptr node) const
 {
-    return render_scalar_variable(node);
+    std::string result = keyword;
+
+    // [drive_strength | charge_strength]
+    if(node->get_strength()) {
+        result += " " + render(as_node(node->get_strength()));
+    }
+    // [vectored | scalared]
+    if(node->get_is_vectored()) {
+        result += " vectored";
+    }
+    if(node->get_is_scalared()) {
+        result += " scalared";
+    }
+    // data_type_or_implicit
+    const std::string type_str = data_type_to_string(node->get_type());
+    if(!type_str.empty()) {
+        result += " " + type_str;
+    }
+    // [delay3]
+    if(node->get_ldelay()) {
+        result += " " + render(node->get_ldelay());
+    }
+    // name { unpacked_dimension } [ = continuous_assign ]
+    result += " " + decl_tail_to_string(node->get_name(), node->get_unpacked_dims(),
+                                        node->get_cont_assign());
+    result += ";";
+    return result;
 }
 
-std::string VerilogGenerator::render_int(const AST::Int::Ptr node) const
+std::string VerilogGenerator::render_wirenet(const AST::WireNet::Ptr node) const
 {
-    return render_scalar_variable(node);
+    return node ? net_to_string("wire", node) : "";
+}
+std::string VerilogGenerator::render_trinet(const AST::TriNet::Ptr node) const
+{
+    return node ? net_to_string("tri", node) : "";
+}
+std::string VerilogGenerator::render_tri0net(const AST::Tri0Net::Ptr node) const
+{
+    return node ? net_to_string("tri0", node) : "";
+}
+std::string VerilogGenerator::render_tri1net(const AST::Tri1Net::Ptr node) const
+{
+    return node ? net_to_string("tri1", node) : "";
+}
+std::string VerilogGenerator::render_triandnet(const AST::TriandNet::Ptr node) const
+{
+    return node ? net_to_string("triand", node) : "";
+}
+std::string VerilogGenerator::render_triornet(const AST::TriorNet::Ptr node) const
+{
+    return node ? net_to_string("trior", node) : "";
+}
+std::string VerilogGenerator::render_triregnet(const AST::TriregNet::Ptr node) const
+{
+    return node ? net_to_string("trireg", node) : "";
+}
+std::string VerilogGenerator::render_wandnet(const AST::WandNet::Ptr node) const
+{
+    return node ? net_to_string("wand", node) : "";
+}
+std::string VerilogGenerator::render_wornet(const AST::WorNet::Ptr node) const
+{
+    return node ? net_to_string("wor", node) : "";
+}
+std::string VerilogGenerator::render_uwirenet(const AST::UwireNet::Ptr node) const
+{
+    return node ? net_to_string("uwire", node) : "";
+}
+std::string VerilogGenerator::render_supply0net(const AST::Supply0Net::Ptr node) const
+{
+    return node ? net_to_string("supply0", node) : "";
+}
+std::string VerilogGenerator::render_supply1net(const AST::Supply1Net::Ptr node) const
+{
+    return node ? net_to_string("supply1", node) : "";
+}
+std::string VerilogGenerator::render_interconnectnet(const AST::InterconnectNet::Ptr node) const
+{
+    return node ? net_to_string("interconnect", node) : "";
+}
+std::string VerilogGenerator::render_usernet(const AST::UserNet::Ptr node) const
+{
+    // The nettype is the (named) data type carried by the net; no extra keyword.
+    if(!node) {
+        return "";
+    }
+    const std::string type_str = data_type_to_string(node->get_type());
+    std::string result =
+        type_str + " " +
+        decl_tail_to_string(node->get_name(), node->get_unpacked_dims(), node->get_cont_assign());
+    result += ";";
+    return result;
+}
+std::string VerilogGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) const
+{
+    // No net keyword written (a port default): render only the data type (if any),
+    // name and dims.
+    if(!node) {
+        return "";
+    }
+    const std::string type_str = data_type_to_string(node->get_type());
+    const std::string tail =
+        decl_tail_to_string(node->get_name(), node->get_unpacked_dims(), node->get_cont_assign());
+    std::string result = (type_str.empty() ? tail : type_str + " " + tail) + ";";
+    return result;
 }
 
-std::string VerilogGenerator::render_longint(const AST::Longint::Ptr node) const
+namespace
 {
-    return render_scalar_variable(node);
+const char *drive_strength0_str(AST::DriveStrength::S0Enum s)
+{
+    switch(s) {
+    case AST::DriveStrength::S0Enum::SUPPLY0:
+        return "supply0";
+    case AST::DriveStrength::S0Enum::STRONG0:
+        return "strong0";
+    case AST::DriveStrength::S0Enum::PULL0:
+        return "pull0";
+    case AST::DriveStrength::S0Enum::WEAK0:
+        return "weak0";
+    case AST::DriveStrength::S0Enum::HIGHZ0:
+        return "highz0";
+    }
+    return "";
+}
+const char *drive_strength1_str(AST::DriveStrength::S1Enum s)
+{
+    switch(s) {
+    case AST::DriveStrength::S1Enum::SUPPLY1:
+        return "supply1";
+    case AST::DriveStrength::S1Enum::STRONG1:
+        return "strong1";
+    case AST::DriveStrength::S1Enum::PULL1:
+        return "pull1";
+    case AST::DriveStrength::S1Enum::WEAK1:
+        return "weak1";
+    case AST::DriveStrength::S1Enum::HIGHZ1:
+        return "highz1";
+    }
+    return "";
+}
+} // namespace
+
+std::string VerilogGenerator::render_drivestrength(const AST::DriveStrength::Ptr node) const
+{
+    if(!node) {
+        return "";
+    }
+    return std::string("(") + drive_strength0_str(node->get_s0()) + ", " +
+           drive_strength1_str(node->get_s1()) + ")";
 }
 
-std::string VerilogGenerator::render_shortreal(const AST::Shortreal::Ptr node) const
+std::string VerilogGenerator::render_chargestrength(const AST::ChargeStrength::Ptr node) const
 {
-    return render_scalar_variable(node);
+    if(!node) {
+        return "";
+    }
+    const char *c = "";
+    switch(node->get_charge()) {
+    case AST::ChargeStrength::ChargeEnum::SMALL:
+        c = "small";
+        break;
+    case AST::ChargeStrength::ChargeEnum::MEDIUM:
+        c = "medium";
+        break;
+    case AST::ChargeStrength::ChargeEnum::LARGE:
+        c = "large";
+        break;
+    }
+    return std::string("(") + c + ")";
 }
 
-std::string VerilogGenerator::render_realtime(const AST::Realtime::Ptr node) const
+std::string VerilogGenerator::render_param(const AST::Param::Ptr node) const
 {
-    return render_scalar_variable(node);
+    std::string result;
+    if(node) {
+        result = node->get_is_local() ? "localparam " : "parameter ";
+        const std::string type_str = data_type_to_string(node->get_type());
+        if(!type_str.empty()) {
+            result += type_str + " ";
+        }
+        result += StringUtils::escape(node->get_name());
+        const std::string dims = dims_to_string(node->get_unpacked_dims());
+        if(!dims.empty()) {
+            result += " " + dims;
+        }
+        if(node->get_value()) {
+            result += " = " + render(node->get_value());
+        }
+        result += ";";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_typeparam(const AST::TypeParam::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = node->get_is_local() ? "localparam type " : "parameter type ";
+        result += StringUtils::escape(node->get_name());
+        if(node->get_type()) {
+            result += " = " + data_type_to_string(node->get_type());
+        }
+        result += ";";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_typedef(const AST::Typedef::Ptr node) const
+{
+    std::string result;
+    if(!node) {
+        return result;
+    }
+    // A null type marks a forward typedef (`typedef [kind] name;`).
+    if(!node->get_type()) {
+        result = "typedef ";
+        switch(node->get_fwd_kind()) {
+        case AST::Typedef::Fwd_kindEnum::ENUM:
+            result += "enum ";
+            break;
+        case AST::Typedef::Fwd_kindEnum::STRUCT:
+            result += "struct ";
+            break;
+        case AST::Typedef::Fwd_kindEnum::UNION:
+            result += "union ";
+            break;
+        case AST::Typedef::Fwd_kindEnum::CLASS:
+            result += "class ";
+            break;
+        case AST::Typedef::Fwd_kindEnum::INTERFACE_CLASS:
+            result += "interface class ";
+            break;
+        case AST::Typedef::Fwd_kindEnum::NONE:
+            break;
+        }
+        result += StringUtils::escape(node->get_name()) + ";";
+        return result;
+    }
+
+    result = "typedef " + data_type_to_string(node->get_type()) + " " +
+             StringUtils::escape(node->get_name());
+    const std::string dims = dims_to_string(node->get_unpacked_dims());
+    if(!dims.empty()) {
+        result += " " + dims;
+    }
+    result += ";";
+    return result;
+}
+
+std::string VerilogGenerator::render_arg(const AST::Arg::Ptr node) const
+{
+    std::string result;
+    if(!node) {
+        return result;
+    }
+    switch(node->get_direction()) {
+    case AST::Arg::DirectionEnum::INPUT:
+        result = "input ";
+        break;
+    case AST::Arg::DirectionEnum::OUTPUT:
+        result = "output ";
+        break;
+    case AST::Arg::DirectionEnum::INOUT:
+        result = "inout ";
+        break;
+    case AST::Arg::DirectionEnum::REF:
+        result = "ref ";
+        break;
+    case AST::Arg::DirectionEnum::CONST_REF:
+        result = "const ref ";
+        break;
+    }
+    if(node->get_is_var()) {
+        result += "var ";
+    }
+    const std::string type_str = data_type_to_string(node->get_type());
+    const std::string tail =
+        decl_tail_to_string(node->get_name(), node->get_unpacked_dims(), node->get_default_value());
+    result += type_str.empty() ? tail : type_str + " " + tail;
+    return result;
 }
 
 std::string VerilogGenerator::render_genvar(const AST::Genvar::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = "genvar " + StringUtils::escape(node->get_name());
-        result.append(";");
+        result = "genvar " + StringUtils::escape(node->get_name()) + ";";
     }
     return result;
 }
 
-std::string VerilogGenerator::render_ioport(const AST::Ioport::Ptr node) const
+std::string VerilogGenerator::render_nettypedecl(const AST::NetTypeDecl::Ptr node) const
 {
     std::string result;
     if(node) {
-        const AST::Node::Ptr first = node->get_first();
-        const AST::Node::Ptr second = node->get_second();
-        AST::Width::ListPtr widths;
-        std::string name;
-        std::string variable;
-        bool sign = false;
-
-        if(first) {
-            widths = AST::cast_to<AST::IODir>(first)->get_widths();
-            sign = AST::cast_to<AST::IODir>(first)->get_sign();
-            name = AST::cast_to<AST::IODir>(first)->get_name();
-            switch(first->get_node_type()) {
-            case AST::NodeType::Input:
-                variable = "input";
-                break;
-            case AST::NodeType::Output:
-                variable = "output";
-                break;
-            case AST::NodeType::Inout:
-                variable = "inout";
-                break;
-            default:
-                break;
-            }
+        result = "nettype " + data_type_to_string(node->get_type()) + " " +
+                 StringUtils::escape(node->get_name());
+        if(node->get_resolver()) {
+            result += " with " + identifier_to_string(node->get_resolver());
         }
-
-        if(second) {
-            // A net (wire/tri/supply) prints its keyword and, when present, the
-            // explicit integer_vector data type it carries: `wire logic [3:0] x`.
-            auto append_net = [&](const char *kw) {
-                variable.append(" ");
-                variable.append(kw);
-                const AST::Node::Ptr net_data_type = AST::cast_to<AST::Net>(second)->get_type();
-                if(net_data_type) {
-                    variable.append(" " + render(net_data_type));
-                }
-            };
-
-            switch(second->get_node_type()) {
-            case AST::NodeType::Wire:
-                append_net("wire");
-                break;
-            case AST::NodeType::Tri:
-                append_net("tri");
-                break;
-            case AST::NodeType::Supply0:
-                append_net("supply0");
-                break;
-            case AST::NodeType::Supply1:
-                append_net("supply1");
-                break;
-            case AST::NodeType::Logic:
-                variable.append(" logic");
-                break;
-            case AST::NodeType::Reg:
-                variable.append(" reg");
-                break;
-            case AST::NodeType::Bit:
-                variable.append(" bit");
-                break;
-            // atom / non-integer / integer / real types are signed by default:
-            // drop the redundant `signed`; atoms still spell explicit `unsigned`.
-            case AST::NodeType::Byte:
-                variable.append(
-                    " " + atom_type_string("byte", AST::cast_to<AST::Byte>(second)->get_sign()));
-                sign = false;
-                break;
-            case AST::NodeType::Shortint:
-                variable.append(
-                    " " +
-                    atom_type_string("shortint", AST::cast_to<AST::Shortint>(second)->get_sign()));
-                sign = false;
-                break;
-            case AST::NodeType::Int:
-                variable.append(
-                    " " + atom_type_string("int", AST::cast_to<AST::Int>(second)->get_sign()));
-                sign = false;
-                break;
-            case AST::NodeType::Longint:
-                variable.append(
-                    " " +
-                    atom_type_string("longint", AST::cast_to<AST::Longint>(second)->get_sign()));
-                sign = false;
-                break;
-            case AST::NodeType::Integer:
-                variable.append(" integer");
-                sign = false;
-                break;
-            case AST::NodeType::Shortreal:
-                variable.append(" shortreal");
-                sign = false;
-                break;
-            case AST::NodeType::Realtime:
-                variable.append(" realtime");
-                sign = false;
-                break;
-            case AST::NodeType::Real:
-                variable.append(" real");
-                sign = false;
-                break;
-            case AST::NodeType::CustomTypeVar:
-                // user-defined / package-scoped type or inline aggregate: append
-                // the type (Identifier keyword/name or struct/union/enum def)
-                variable.append(" " + render(AST::cast_to<AST::CustomTypeVar>(second)->get_type()));
-                break;
-            default:
-                break;
-            }
-        }
-
-        result = variable_to_string(variable.c_str(), sign, widths, nullptr, nullptr, name);
-        result.append(";");
-    }
-    return result;
-}
-
-std::string VerilogGenerator::render_parameter(const AST::Parameter::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        std::string variable;
-        bool sign;
-        AST::Node::Ptr value = node->get_value();
-        std::string value_str;
-
-        if(value) {
-            value_str = " = " + render(value);
-        }
-
-        switch(node->get_type()) {
-        case AST::Parameter::TypeEnum::INTEGER:
-            variable = "integer ";
-            sign = false;
-            break;
-        case AST::Parameter::TypeEnum::INT:
-            variable = "int ";
-            sign = false;
-            break;
-        case AST::Parameter::TypeEnum::BIT:
-            variable = "bit ";
-            sign = false;
-            break;
-        case AST::Parameter::TypeEnum::BYTE:
-            variable = "byte ";
-            sign = false;
-            break;
-        case AST::Parameter::TypeEnum::SHORTINT:
-            variable = "shortint ";
-            sign = false;
-            break;
-        case AST::Parameter::TypeEnum::LONGINT:
-            variable = "longint ";
-            sign = false;
-            break;
-        case AST::Parameter::TypeEnum::LOGIC:
-            variable = "logic ";
-            sign = false;
-            break;
-        case AST::Parameter::TypeEnum::REAL:
-            variable = "real ";
-            sign = false;
-            break;
-        default:
-            sign = node->get_sign();
-            break;
-        }
-
-        result = parameter_to_string("parameter ", variable, sign, node->get_widths(),
-                                     node->get_name(), value_str);
-        result.append(";");
-    }
-    return result;
-}
-
-std::string VerilogGenerator::render_localparam(const AST::Localparam::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        std::string variable;
-        bool sign;
-        AST::Node::Ptr value = node->get_value();
-        std::string value_str;
-
-        if(value) {
-            value_str = " = " + render(value);
-        }
-
-        switch(node->get_type()) {
-        case AST::Localparam::TypeEnum::INTEGER:
-            variable = "integer ";
-            sign = false;
-            break;
-        case AST::Localparam::TypeEnum::INT:
-            variable = "int ";
-            sign = false;
-            break;
-        case AST::Localparam::TypeEnum::BIT:
-            variable = "bit ";
-            sign = false;
-            break;
-        case AST::Localparam::TypeEnum::BYTE:
-            variable = "byte ";
-            sign = false;
-            break;
-        case AST::Localparam::TypeEnum::SHORTINT:
-            variable = "shortint ";
-            sign = false;
-            break;
-        case AST::Localparam::TypeEnum::LONGINT:
-            variable = "longint ";
-            sign = false;
-            break;
-        case AST::Localparam::TypeEnum::LOGIC:
-            variable = "logic ";
-            sign = false;
-            break;
-        case AST::Localparam::TypeEnum::REAL:
-            variable = "real ";
-            sign = false;
-            break;
-        default:
-            sign = node->get_sign();
-            break;
-        }
-
-        result = parameter_to_string("localparam ", variable, sign, node->get_widths(),
-                                     node->get_name(), value_str);
-
-        result.append(";");
+        result += ";";
     }
     return result;
 }
@@ -846,12 +1108,49 @@ std::string VerilogGenerator::render_patternitem(const AST::PatternItem::Ptr nod
     return result;
 }
 
-std::string VerilogGenerator::render_cast(const AST::Cast::Ptr node) const
+//
+// Cast hierarchy (node per form)
+//
+
+std::string VerilogGenerator::render_typecast(const AST::TypeCast::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = render(node->get_type()) + "'(" +
+        result = data_type_to_string(node->get_target()) + "'(" +
                  StringUtils::delete_surrounding_brackets(render(node->get_expr())) + ")";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_sizecast(const AST::SizeCast::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = StringUtils::remove_whitespace(
+                     StringUtils::delete_surrounding_brackets(render(node->get_size()))) +
+                 "'(" + StringUtils::delete_surrounding_brackets(render(node->get_expr())) + ")";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_signingcast(const AST::SigningCast::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        const char *s =
+            (node->get_signing() == AST::SigningCast::SigningEnum::SIGNED) ? "signed" : "unsigned";
+        result = std::string(s) + "'(" +
+                 StringUtils::delete_surrounding_brackets(render(node->get_expr())) + ")";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_constcast(const AST::ConstCast::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result =
+            "const'(" + StringUtils::delete_surrounding_brackets(render(node->get_expr())) + ")";
     }
     return result;
 }
@@ -1731,7 +2030,9 @@ std::string VerilogGenerator::render_instance(const AST::Instance::Ptr node) con
     std::string result;
     if(node) {
         result += StringUtils::escape(node->get_name());
-        result += render(node->get_array());
+        if(node->get_array()) {
+            result += render(as_node(node->get_array()));
+        }
 
         result += " (";
         const AST::PortArg::ListPtr portlist = node->get_portlist();
@@ -1785,165 +2086,36 @@ std::string VerilogGenerator::render_portarg(const AST::PortArg::Ptr node) const
     return result;
 }
 
-std::string VerilogGenerator::render_data_type(const AST::Node::Ptr node) const
-{
-    if(!node) {
-        return "";
-    }
-
-    // Render the bare type (no variable name, no `;`). Vector types
-    // (bit/reg/logic) carry their own signing and packed dimensions; atom /
-    // non-integer types are fixed-width keywords.
-    std::string result;
-    switch(node->get_node_type()) {
-    case AST::NodeType::Bit: {
-        const auto v = AST::cast_to<AST::Bit>(node);
-        result = variable_to_string("bit", v->get_sign(), v->get_widths(), nullptr, nullptr, "");
-        break;
-    }
-    case AST::NodeType::Reg: {
-        const auto v = AST::cast_to<AST::Reg>(node);
-        result = variable_to_string("reg", v->get_sign(), v->get_widths(), nullptr, nullptr, "");
-        break;
-    }
-    case AST::NodeType::Logic: {
-        const auto v = AST::cast_to<AST::Logic>(node);
-        result = variable_to_string("logic", v->get_sign(), v->get_widths(), nullptr, nullptr, "");
-        break;
-    }
-    case AST::NodeType::Byte:
-        result = atom_type_string("byte", AST::cast_to<AST::Byte>(node)->get_sign());
-        break;
-    case AST::NodeType::Shortint:
-        result = atom_type_string("shortint", AST::cast_to<AST::Shortint>(node)->get_sign());
-        break;
-    case AST::NodeType::Int:
-        result = atom_type_string("int", AST::cast_to<AST::Int>(node)->get_sign());
-        break;
-    case AST::NodeType::Longint:
-        result = atom_type_string("longint", AST::cast_to<AST::Longint>(node)->get_sign());
-        break;
-    case AST::NodeType::Integer:
-        result = "integer";
-        break;
-    case AST::NodeType::Shortreal:
-        result = "shortreal";
-        break;
-    case AST::NodeType::Real:
-        result = "real";
-        break;
-    case AST::NodeType::Realtime:
-        result = "realtime";
-        break;
-    case AST::NodeType::CustomTypeVar: {
-        // Named / aggregate type carrying packed dimensions (e.g. `my_t [3:0]`).
-        const auto v = AST::cast_to<AST::CustomTypeVar>(node);
-        const std::string type_str = render(v->get_type());
-        result = variable_to_string(type_str.c_str(), false, v->get_widths(), nullptr, nullptr, "");
-        break;
-    }
-    default:
-        // Inline struct/union/enum def or named-type reference (Identifier):
-        // these already render as a bare type.
-        result = render(node);
-        break;
-    }
-
-    // Drop the trailing space left by the empty variable name so the caller
-    // controls the spacing.
-    while(!result.empty() && result.back() == ' ') {
-        result.pop_back();
-    }
-    return result;
-}
-
-std::string VerilogGenerator::render_scalar_variable(const AST::Variable::Ptr node) const
-{
-    if(!node) {
-        return "";
-    }
-    // The bare type (keyword + signing + packed dims) is rendered in exactly one
-    // place — render_data_type. Here we only add the declared name, unpacked
-    // dimensions and initializer. Passing the bare type as the `variable` keyword
-    // with no extra sign/widths reproduces the per-type formatting byte-for-byte.
-    std::string result =
-        variable_to_string(render_data_type(AST::to_node(node)).c_str(), false, nullptr,
-                           node->get_lengths(), node->get_right(), node->get_name());
-    result.append(";");
-    return result;
-}
-
-std::string VerilogGenerator::render_datamodifier(const AST::DataModifier::Ptr node) const
-{
-    if(!node) {
-        return "";
-    }
-    // [const] [var] [lifetime] prefix (IEEE 1800-2017 §6.8), then the underlying
-    // data-type declaration (which carries the name, dims and initializer).
-    std::string prefix;
-    if(node->get_is_const()) {
-        prefix += "const ";
-    }
-    if(node->get_is_var()) {
-        prefix += "var ";
-    }
-    switch(node->get_lifetime()) {
-    case AST::DataModifier::LifetimeEnum::AUTOMATIC:
-        prefix += "automatic ";
-        break;
-    case AST::DataModifier::LifetimeEnum::STATIC:
-        prefix += "static ";
-        break;
-    case AST::DataModifier::LifetimeEnum::NONE:
-        break;
-    }
-    return prefix + render(node->get_datatype());
-}
-
-std::string VerilogGenerator::render_implicittype(const AST::ImplicitType::Ptr node) const
-{
-    if(!node) {
-        return "";
-    }
-    // data_type_or_implicit = implicit: no type keyword, only the optional
-    // signing and packed dims, then name/unpacked dims/initializer. The enclosing
-    // DataModifier supplies the `var`/`const` keyword.
-    std::string result =
-        variable_to_string("", node->get_sign(), node->get_widths(), node->get_lengths(),
-                           node->get_right(), node->get_name());
-    // variable_to_string injects a separator space for the (empty) type keyword;
-    // drop the leading space so the `var `/`const ` prefix sits flush.
-    const size_t start = result.find_first_not_of(' ');
-    result = (start == std::string::npos) ? "" : result.substr(start);
-    result.append(";");
-    return result;
-}
-
 std::string VerilogGenerator::render_function(const AST::Function::Ptr node) const
 {
     std::string result;
     if(node) {
         result = "\nfunction ";
-        if(node->get_automatic()) {
+        switch(node->get_lifetime()) {
+        case AST::Function::LifetimeEnum::AUTOMATIC:
             result += "automatic ";
+            break;
+        case AST::Function::LifetimeEnum::STATIC:
+            result += "static ";
+            break;
+        case AST::Function::LifetimeEnum::NONE:
+            break;
         }
 
-        // explicit return type (built-in scalar / struct / named) is its own
-        // type node in rettype_ref, carrying its signing and packed dims; the
-        // implicit form (`function [3:0] f` / `function signed [3:0] f`) has
-        // only retwidths/retsign.
-        if(node->get_rettype_ref()) {
-            result += render_data_type(node->get_rettype_ref()) + " ";
+        const std::string rt = data_type_to_string(node->get_return_type());
+        if(!rt.empty()) {
+            result += rt + " ";
         }
-        result += widths_list_to_string(node->get_retwidths());
 
         result += StringUtils::escape(node->get_name());
 
-        const std::string ports_str = ports_list_to_string(node->get_ports(), result.size());
-
-        if(ports_str.size() != 0) {
-            result += " ";
-            result += ports_str;
+        const AST::Arg::ListPtr args = node->get_args();
+        if(args) {
+            result += "(";
+            auto func = [&](const AST::Arg::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::Arg::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::Arg::List, AST::Arg::Ptr>(*args, func, func_last);
+            result += ")";
         }
 
         result += ";\n";
@@ -1959,46 +2131,31 @@ std::string VerilogGenerator::render_function(const AST::Function::Ptr node) con
     return result;
 }
 
-std::string VerilogGenerator::render_functioncall(const AST::FunctionCall::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        const std::string package = node->get_package();
-        if(!package.empty()) {
-            result = StringUtils::escape(package) + "::";
-        }
-        result += StringUtils::escape(node->get_name());
-        result += "(";
-
-        const AST::Node::ListPtr args = node->get_args();
-        if(args) {
-            auto func = [&](const AST::Node::Ptr n) { return render(n) + ", "; };
-            auto func_last = [&](const AST::Node::Ptr n) { return render(n); };
-            result += StringUtils::join<AST::Node::List, AST::Node::Ptr>(*args, func, func_last);
-        }
-
-        result += ")";
-    }
-    return result;
-}
-
 std::string VerilogGenerator::render_task(const AST::Task::Ptr node) const
 {
     std::string result;
     if(node) {
         result = "\ntask ";
-
-        if(node->get_automatic()) {
+        switch(node->get_lifetime()) {
+        case AST::Task::LifetimeEnum::AUTOMATIC:
             result += "automatic ";
+            break;
+        case AST::Task::LifetimeEnum::STATIC:
+            result += "static ";
+            break;
+        case AST::Task::LifetimeEnum::NONE:
+            break;
         }
 
         result += StringUtils::escape(node->get_name());
 
-        const std::string ports_str = ports_list_to_string(node->get_ports(), result.size());
-
-        if(ports_str.size() != 0) {
-            result += " ";
-            result += ports_str;
+        const AST::Arg::ListPtr args = node->get_args();
+        if(args) {
+            result += "(";
+            auto func = [&](const AST::Arg::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::Arg::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::Arg::List, AST::Arg::Ptr>(*args, func, func_last);
+            result += ")";
         }
 
         result += ";\n";
@@ -2014,26 +2171,54 @@ std::string VerilogGenerator::render_task(const AST::Task::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_call(const AST::Call::Ptr node) const
+{
+    // Neutral subroutine call (task-or-function unresolved): render like a task
+    // call (parens only when there are arguments).
+    std::string result;
+    if(node) {
+        result = identifier_to_string(node);
+        const AST::Node::ListPtr args = node->get_args();
+        if(args && args->size() > 0) {
+            result += "(";
+            auto func = [&](const AST::Node::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::Node::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::Node::List, AST::Node::Ptr>(*args, func, func_last);
+            result += ")";
+        }
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_functioncall(const AST::FunctionCall::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = identifier_to_string(node);
+        result += "(";
+        const AST::Node::ListPtr args = node->get_args();
+        if(args) {
+            auto func = [&](const AST::Node::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::Node::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::Node::List, AST::Node::Ptr>(*args, func, func_last);
+        }
+        result += ")";
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
 {
     std::string result;
     if(node) {
-        const std::string package = node->get_package();
-        if(!package.empty()) {
-            result = StringUtils::escape(package) + "::";
-        }
-        result += StringUtils::escape(node->get_name());
-
+        result = identifier_to_string(node);
         const AST::Node::ListPtr args = node->get_args();
-        if(args) {
-            if(args->size() > 0) {
-                result += "(";
-                auto func = [&](const AST::Node::Ptr n) { return render(n) + ", "; };
-                auto func_last = [&](const AST::Node::Ptr n) { return render(n); };
-                result +=
-                    StringUtils::join<AST::Node::List, AST::Node::Ptr>(*args, func, func_last);
-                result += ")";
-            }
+        if(args && args->size() > 0) {
+            result += "(";
+            auto func = [&](const AST::Node::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::Node::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::Node::List, AST::Node::Ptr>(*args, func, func_last);
+            result += ")";
         }
     }
     return result;
@@ -2075,41 +2260,11 @@ std::string VerilogGenerator::render_systemcall(const AST::SystemCall::Ptr node)
     return result;
 }
 
-std::string
-VerilogGenerator::render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        result = StringUtils::escape(node->get_scope());
-        const std::string &loop = render(node->get_loop());
-        if(loop.size() > 0) {
-            result += "[" + loop + "]";
-        }
-        result += ".";
-    }
-    return result;
-}
-
-std::string VerilogGenerator::render_identifierscope(const AST::IdentifierScope::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        const AST::IdentifierScopeLabel::ListPtr labellist = node->get_labellist();
-        if(labellist) {
-            auto func = [&](const AST::IdentifierScopeLabel::Ptr n) { return render(n); };
-            result +=
-                StringUtils::join<AST::IdentifierScopeLabel::List, AST::IdentifierScopeLabel::Ptr>(
-                    *labellist, func, func);
-        }
-    }
-    return result;
-}
-
 std::string VerilogGenerator::render_disable(const AST::Disable::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = "disable " + node->get_dest();
+        result = "disable " + render(node->get_dest());
     }
     return result;
 }
@@ -2191,58 +2346,25 @@ std::string VerilogGenerator::operators_to_string(AST::NodeType node_type,
     return result;
 }
 
-std::string VerilogGenerator::variable_to_string(const char *variable, bool is_signed,
-                                                 const AST::Width::ListPtr widths,
-                                                 const AST::Length::ListPtr lengths,
-                                                 const AST::Rvalue::Ptr rvalue,
-                                                 const std::string &name) const
-{
-    std::string result(variable);
-    std::string length_str;
-    std::string rvalue_str;
-
-    result.append(" ");
-
-    if(is_signed) {
-        result.append("signed ");
-    }
-
-    result.append(widths_list_to_string(widths));
-
-    result.append(StringUtils::escape(name));
-
-    if(lengths) {
-        for(const AST::Length::Ptr &length : *lengths) {
-            length_str += StringUtils::remove_whitespace(render(length));
-        }
-
-        if(!length_str.empty()) {
-            result = StringUtils::remove_last_semicolon(result);
-            result.append(" ");
-            result.append(length_str);
-        }
-    }
-
-    if(rvalue) {
-        result.append(" = ");
-        result.append(render(rvalue));
-    }
-
-    return result;
-}
-
-std::string VerilogGenerator::parameter_to_string(const char *parameter, std::string variable,
-                                                  bool is_signed, const AST::Width::ListPtr widths,
-                                                  const std::string &name,
-                                                  const std::string value) const
+std::string VerilogGenerator::identifier_to_string(const AST::Identifier::Ptr node) const
 {
     std::string result;
-    std::string sign_str = is_signed ? "signed " : "";
-    std::string width_str;
-
-    width_str = widths_list_to_string(widths);
-
-    result = parameter + sign_str + variable + width_str + StringUtils::escape(name) + value;
+    if(!node) {
+        return result;
+    }
+    // SV `::` scope.
+    const AST::ScopeName::ListPtr scope = node->get_scope();
+    if(scope) {
+        for(const AST::ScopeName::Ptr &s : *scope) {
+            result += render(s);
+        }
+    }
+    // Verilog `.` hierarchy.
+    const AST::HierName::Ptr hier = node->get_hier();
+    if(hier) {
+        result += render(hier);
+    }
+    result += StringUtils::escape(node->get_name());
     return result;
 }
 
@@ -2263,35 +2385,21 @@ std::string VerilogGenerator::block_or_single_statement_to_string(AST::Node::Ptr
     return result;
 }
 
-std::string VerilogGenerator::widths_list_to_string(const AST::Width::ListPtr widths) const
-{
-    std::string result;
-
-    if(widths) {
-        for(const AST::Width::Ptr &width : *widths) {
-            result += StringUtils::remove_whitespace(render(width));
-            result += " ";
-        }
-    }
-
-    return result;
-}
-
-std::string VerilogGenerator::ports_list_to_string(const AST::Node::ListPtr ports, int length) const
+std::string VerilogGenerator::ports_list_to_string(const AST::Port::ListPtr ports, int length) const
 {
     std::string result;
     std::string blanks(length + 1, ' ');
 
     if(ports) {
-        auto func = [&](const AST::Node::Ptr n) {
+        auto func = [&](const AST::Port::Ptr n) {
             return StringUtils::remove_last_semicolon(render(n)) + ",\n" + blanks;
         };
-        auto func_last = [&](const AST::Node::Ptr n) {
+        auto func_last = [&](const AST::Port::Ptr n) {
             return StringUtils::remove_last_semicolon(render(n));
         };
 
         std::string strports =
-            StringUtils::join<AST::Node::List, AST::Node::Ptr>(*ports, func, func_last);
+            StringUtils::join<AST::Port::List, AST::Port::Ptr>(*ports, func, func_last);
 
         result += "(";
         result += strports + ")";
@@ -2300,22 +2408,23 @@ std::string VerilogGenerator::ports_list_to_string(const AST::Node::ListPtr port
     return result;
 }
 
-std::string VerilogGenerator::parameters_list_to_string(const AST::Parameter::ListPtr parameters,
+std::string VerilogGenerator::parameters_list_to_string(const AST::Declaration::ListPtr parameters,
                                                         int length) const
 {
     std::string result;
     std::string blanks(length + 2, ' ');
 
     if(parameters) {
-        auto func = [&](const AST::Node::Ptr n) {
-            return StringUtils::remove_last_semicolon(render(n)) + ",\n" + blanks;
+        auto func = [&](const AST::Declaration::Ptr n) {
+            return StringUtils::remove_last_semicolon(render(as_node(n))) + ",\n" + blanks;
         };
-        auto func_last = [&](const AST::Node::Ptr n) {
-            return StringUtils::remove_last_semicolon(render(n));
+        auto func_last = [&](const AST::Declaration::Ptr n) {
+            return StringUtils::remove_last_semicolon(render(as_node(n)));
         };
 
-        std::string strparameters = StringUtils::join<AST::Parameter::List, AST::Parameter::Ptr>(
-            *parameters, func, func_last);
+        std::string strparameters =
+            StringUtils::join<AST::Declaration::List, AST::Declaration::Ptr>(*parameters, func,
+                                                                             func_last);
 
         result += "#(";
         result += strparameters + ")";
@@ -2329,6 +2438,9 @@ std::string VerilogGenerator::render_enumitem(const AST::EnumItem::Ptr node) con
     std::string result;
     if(node) {
         result = StringUtils::escape(node->get_name());
+        if(node->get_range()) {
+            result += render(as_node(node->get_range()));
+        }
         const AST::Node::Ptr value = node->get_value();
         if(value) {
             result += " = " + render(value);
@@ -2337,25 +2449,14 @@ std::string VerilogGenerator::render_enumitem(const AST::EnumItem::Ptr node) con
     return result;
 }
 
-std::string VerilogGenerator::render_enumdef(const AST::EnumDef::Ptr node) const
+std::string VerilogGenerator::render_enumtype(const AST::EnumType::Ptr node) const
 {
     std::string result;
     if(node) {
         result = "enum";
-        switch(node->get_base_type()) {
-        case AST::EnumDef::Base_typeEnum::LOGIC:
-            result += " logic";
-            result += widths_list_to_string(node->get_widths());
-            break;
-        case AST::EnumDef::Base_typeEnum::BIT:
-            result += " bit";
-            result += widths_list_to_string(node->get_widths());
-            break;
-        case AST::EnumDef::Base_typeEnum::INT:
-            result += " int";
-            break;
-        default:
-            break;
+        const std::string base = data_type_to_string(node->get_base());
+        if(!base.empty()) {
+            result += " " + base;
         }
         result += " {";
         const AST::EnumItem::ListPtr items = node->get_items();
@@ -2370,99 +2471,81 @@ std::string VerilogGenerator::render_enumdef(const AST::EnumDef::Ptr node) const
             }
         }
         result += "}";
+        const std::string dims = dims_to_string(node->get_packed_dims());
+        if(!dims.empty()) {
+            result += " " + dims;
+        }
     }
     return result;
 }
 
-std::string VerilogGenerator::render_typedef(const AST::Typedef::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        // A net/variable def (e.g. the alias `typedef logic [3:0] t;`) renders
-        // as a full declaration with a trailing ';' and padding; strip them so
-        // the typedef wraps just the type.
-        std::string def = render(node->get_def());
-        while(!def.empty() && (def.back() == ';' || def.back() == ' ')) {
-            def.pop_back();
-        }
-        result = "typedef " + def + " " + StringUtils::escape(node->get_name()) + ";";
-    }
-    return result;
-}
-
-std::string VerilogGenerator::render_structmember(const AST::StructMember::Ptr node) const
-{
-    std::string result;
-    if(node) {
-        // The member's type is a full data_type node carrying its own signing
-        // and packed dimensions; render it bare (no name, no ';'). Unpacked
-        // dimensions and an initializer (the variable_decl_assignment) follow
-        // the member name.
-        const AST::Node::Ptr type = node->get_type();
-        if(type) {
-            result += render_data_type(type) + " ";
-        }
-        result += StringUtils::escape(node->get_name());
-        const AST::Length::ListPtr lengths = node->get_lengths();
-        if(lengths) {
-            std::string length_str;
-            for(const AST::Length::Ptr &length : *lengths) {
-                length_str += StringUtils::remove_whitespace(render(length));
-            }
-            if(!length_str.empty()) {
-                result += " " + length_str;
-            }
-        }
-        if(node->get_right()) {
-            result += " = " + render(node->get_right());
-        }
-        result += ";";
-    }
-    return result;
-}
-
-std::string VerilogGenerator::render_structdef(const AST::StructDef::Ptr node) const
+std::string VerilogGenerator::render_structtype(const AST::StructType::Ptr node) const
 {
     std::string result;
     if(node) {
         result = "struct";
-        if(node->get_packed()) {
+        if(node->get_is_packed()) {
             result += " packed";
-            if(node->get_sign()) {
+            switch(node->get_signing()) {
+            case AST::DataType::SigningEnum::SIGNED:
                 result += " signed";
+                break;
+            case AST::DataType::SigningEnum::UNSIGNED:
+                result += " unsigned";
+                break;
+            case AST::DataType::SigningEnum::NONE:
+                break;
             }
         }
         result += " {\n";
-        const AST::StructMember::ListPtr members = node->get_members();
+        const AST::Member::ListPtr members = node->get_members();
         if(members) {
-            for(const AST::StructMember::Ptr &m : *members) {
+            for(const AST::Member::Ptr &m : *members) {
                 result += "\t" + render(m) + "\n";
             }
         }
         result += "}";
+        const std::string dims = dims_to_string(node->get_packed_dims());
+        if(!dims.empty()) {
+            result += " " + dims;
+        }
     }
     return result;
 }
 
-std::string VerilogGenerator::render_union(const AST::Union::Ptr node) const
+std::string VerilogGenerator::render_uniontype(const AST::UnionType::Ptr node) const
 {
     std::string result;
     if(node) {
         result = "union";
-        if(node->get_packed()) {
+        if(node->get_is_tagged()) {
+            result += " tagged";
+        }
+        if(node->get_is_packed()) {
             result += " packed";
-            if(node->get_sign()) {
+            switch(node->get_signing()) {
+            case AST::DataType::SigningEnum::SIGNED:
                 result += " signed";
+                break;
+            case AST::DataType::SigningEnum::UNSIGNED:
+                result += " unsigned";
+                break;
+            case AST::DataType::SigningEnum::NONE:
+                break;
             }
         }
         result += " {\n";
-        const AST::StructMember::ListPtr members = node->get_members();
+        const AST::Member::ListPtr members = node->get_members();
         if(members) {
-            for(const AST::StructMember::Ptr &m : *members) {
+            for(const AST::Member::Ptr &m : *members) {
                 result += "\t" + render(m) + "\n";
             }
         }
         result += "}";
+        const std::string dims = dims_to_string(node->get_packed_dims());
+        if(!dims.empty()) {
+            result += " " + dims;
+        }
     }
     return result;
 }
