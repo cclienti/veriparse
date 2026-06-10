@@ -10,27 +10,30 @@ namespace Veriparse
 namespace AST
 {
 
-Net::Net(const std::string &filename, uint32_t line) : Variable(filename, line)
+Net::Net(const std::string &filename, uint32_t line) : Declaration(filename, line)
 {
     set_node_type(NodeType::Net);
-    set_node_categories({NodeType::Variable, NodeType::VariableBase, NodeType::Node});
+    set_node_categories({NodeType::Declaration, NodeType::Node});
 }
 
-Net::Net(const Width::ListPtr widths, const DelayStatement::Ptr ldelay,
-         const DelayStatement::Ptr rdelay, const Node::Ptr type, const Length::ListPtr lengths,
-         const Rvalue::Ptr right, const bool &sign, const std::string &name,
-         const std::string &filename, uint32_t line)
-    : Variable(lengths, right, name, filename, line), m_widths(widths), m_ldelay(ldelay),
-      m_rdelay(rdelay), m_type(type), m_sign(sign)
+Net::Net(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr cont_assign,
+         const Strength::Ptr strength, const DelayStatement::Ptr ldelay,
+         const DelayStatement::Ptr rdelay, const DataType::Ptr type, const bool &is_vectored,
+         const bool &is_scalared, const std::string &name, const std::string &filename,
+         uint32_t line)
+    : Declaration(type, name, filename, line), m_unpacked_dims(unpacked_dims),
+      m_cont_assign(cont_assign), m_strength(strength), m_ldelay(ldelay), m_rdelay(rdelay),
+      m_is_vectored(is_vectored), m_is_scalared(is_scalared)
 {
     set_node_type(NodeType::Net);
-    set_node_categories({NodeType::Variable, NodeType::VariableBase, NodeType::Node});
+    set_node_categories({NodeType::Declaration, NodeType::Node});
 }
 
 Net &Net::operator=(const Net &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
-    set_sign(rhs.get_sign());
+    set_is_vectored(rhs.get_is_vectored());
+    set_is_scalared(rhs.get_is_scalared());
     set_name(rhs.get_name());
     return *this;
 }
@@ -46,7 +49,10 @@ bool Net::operator==(const Net &rhs) const
     if(Node::operator==(rhs) == false) {
         return false;
     }
-    if(get_sign() != rhs.get_sign()) {
+    if(get_is_vectored() != rhs.get_is_vectored()) {
+        return false;
+    }
+    if(get_is_scalared() != rhs.get_is_scalared()) {
         return false;
     }
     if(get_name() != rhs.get_name()) {
@@ -70,32 +76,53 @@ bool Net::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr))
 bool Net::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
-    if(get_widths()) {
-        Width::ListPtr new_list = std::make_shared<Width::List>();
-        for(const Width::Ptr &lnode : *get_widths()) {
+    if(get_unpacked_dims()) {
+        Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
+        for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
             if(lnode) {
                 if(lnode != node) {
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
                         LOG_WARNING << *this << ", "
-                                    << "Net::replace matches multiple times (list(Width)::widths)";
+                                    << "Net::replace matches multiple times "
+                                       "(list(Dimension)::unpacked_dims)";
                     }
                     if(new_node) {
-                        new_list->push_back(cast_to<Width>(new_node));
+                        new_list->push_back(cast_to<Dimension>(new_node));
                     }
                     found = true;
                 }
             } else {
                 LOG_WARNING << *this << ", "
                             << "found an empty node during Net::replace "
-                            << "of children list(Width)::widths";
+                            << "of children list(Dimension)::unpacked_dims";
             }
         }
         if(new_list->size() != 0) {
-            set_widths(new_list);
+            set_unpacked_dims(new_list);
         } else {
-            set_widths(nullptr);
+            set_unpacked_dims(nullptr);
+        }
+    }
+    if(get_cont_assign()) {
+        if(get_cont_assign() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Net::replace matches multiple times (Rvalue::cont_assign)";
+            }
+            set_cont_assign(cast_to<Rvalue>(new_node));
+            found = true;
+        }
+    }
+    if(get_strength()) {
+        if(get_strength() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Net::replace matches multiple times (Strength::strength)";
+            }
+            set_strength(cast_to<Strength>(new_node));
+            found = true;
         }
     }
     if(get_ldelay()) {
@@ -122,48 +149,9 @@ bool Net::replace(Node::Ptr node, Node::Ptr new_node)
         if(get_type() == node) {
             if(found) {
                 LOG_WARNING << *this << ", "
-                            << "Net::replace matches multiple times (Node::type)";
+                            << "Net::replace matches multiple times (DataType::type)";
             }
-            set_type(new_node);
-            found = true;
-        }
-    }
-    if(get_lengths()) {
-        Length::ListPtr new_list = std::make_shared<Length::List>();
-        for(const Length::Ptr &lnode : *get_lengths()) {
-            if(lnode) {
-                if(lnode != node) {
-                    new_list->push_back(lnode);
-                } else {
-                    if(found) {
-                        LOG_WARNING
-                            << *this << ", "
-                            << "Net::replace matches multiple times (list(Length)::lengths)";
-                    }
-                    if(new_node) {
-                        new_list->push_back(cast_to<Length>(new_node));
-                    }
-                    found = true;
-                }
-            } else {
-                LOG_WARNING << *this << ", "
-                            << "found an empty node during Net::replace "
-                            << "of children list(Length)::lengths";
-            }
-        }
-        if(new_list->size() != 0) {
-            set_lengths(new_list);
-        } else {
-            set_lengths(nullptr);
-        }
-    }
-    if(get_right()) {
-        if(get_right() == node) {
-            if(found) {
-                LOG_WARNING << *this << ", "
-                            << "Net::replace matches multiple times (Rvalue::right)";
-            }
-            set_right(cast_to<Rvalue>(new_node));
+            set_type(cast_to<DataType>(new_node));
             found = true;
         }
     }
@@ -173,20 +161,21 @@ bool Net::replace(Node::Ptr node, Node::Ptr new_node)
 bool Net::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
-    if(get_widths()) {
-        Width::ListPtr new_list = std::make_shared<Width::List>();
-        for(const Width::Ptr &lnode : *get_widths()) {
+    if(get_unpacked_dims()) {
+        Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
+        for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
             if(lnode) {
                 if(lnode != node) {
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
                         LOG_WARNING << *this << ", "
-                                    << "Net::replace matches multiple times (list(Width)::widths)";
+                                    << "Net::replace matches multiple times "
+                                       "(list(Dimension)::unpacked_dims)";
                     }
                     if(new_nodes) {
                         for(const Node::Ptr &n : *new_nodes) {
-                            new_list->push_back(cast_to<Width>(n));
+                            new_list->push_back(cast_to<Dimension>(n));
                         }
                     }
                     found = true;
@@ -194,44 +183,13 @@ bool Net::replace(Node::Ptr node, Node::ListPtr new_nodes)
             } else {
                 LOG_WARNING << *this << ", "
                             << "found an empty node during Net::replace "
-                            << "of children list(Width)::widths";
+                            << "of children list(Dimension)::unpacked_dims";
             }
         }
         if(new_list->size() != 0) {
-            set_widths(new_list);
+            set_unpacked_dims(new_list);
         } else {
-            set_widths(nullptr);
-        }
-    }
-    if(get_lengths()) {
-        Length::ListPtr new_list = std::make_shared<Length::List>();
-        for(const Length::Ptr &lnode : *get_lengths()) {
-            if(lnode) {
-                if(lnode != node) {
-                    new_list->push_back(lnode);
-                } else {
-                    if(found) {
-                        LOG_WARNING
-                            << *this << ", "
-                            << "Net::replace matches multiple times (list(Length)::lengths)";
-                    }
-                    if(new_nodes) {
-                        for(const Node::Ptr &n : *new_nodes) {
-                            new_list->push_back(cast_to<Length>(n));
-                        }
-                    }
-                    found = true;
-                }
-            } else {
-                LOG_WARNING << *this << ", "
-                            << "found an empty node during Net::replace "
-                            << "of children list(Length)::lengths";
-            }
-        }
-        if(new_list->size() != 0) {
-            set_lengths(new_list);
-        } else {
-            set_lengths(nullptr);
+            set_unpacked_dims(nullptr);
         }
     }
     return found;
@@ -252,12 +210,18 @@ Net::ListPtr Net::clone_list(const ListPtr nodes)
 Node::ListPtr Net::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
-    if(get_widths()) {
-        for(const Width::Ptr &node : *get_widths()) {
+    if(get_unpacked_dims()) {
+        for(const Dimension::Ptr &node : *get_unpacked_dims()) {
             if(node) {
                 list->push_back(std::static_pointer_cast<Node>(node));
             }
         }
+    }
+    if(get_cont_assign()) {
+        list->push_back(std::static_pointer_cast<Node>(get_cont_assign()));
+    }
+    if(get_strength()) {
+        list->push_back(std::static_pointer_cast<Node>(get_strength()));
     }
     if(get_ldelay()) {
         list->push_back(std::static_pointer_cast<Node>(get_ldelay()));
@@ -268,22 +232,18 @@ Node::ListPtr Net::get_children(void) const
     if(get_type()) {
         list->push_back(std::static_pointer_cast<Node>(get_type()));
     }
-    if(get_lengths()) {
-        for(const Length::Ptr &node : *get_lengths()) {
-            if(node) {
-                list->push_back(std::static_pointer_cast<Node>(node));
-            }
-        }
-    }
-    if(get_right()) {
-        list->push_back(std::static_pointer_cast<Node>(get_right()));
-    }
     return list;
 }
 
 void Net::clone_children(Node::Ptr new_node) const
 {
-    cast_to<Net>(new_node)->set_widths(Width::clone_list(get_widths()));
+    cast_to<Net>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
+    if(get_cont_assign()) {
+        cast_to<Net>(new_node)->set_cont_assign(cast_to<Rvalue>(get_cont_assign()->clone()));
+    }
+    if(get_strength()) {
+        cast_to<Net>(new_node)->set_strength(cast_to<Strength>(get_strength()->clone()));
+    }
     if(get_ldelay()) {
         cast_to<Net>(new_node)->set_ldelay(cast_to<DelayStatement>(get_ldelay()->clone()));
     }
@@ -291,11 +251,7 @@ void Net::clone_children(Node::Ptr new_node) const
         cast_to<Net>(new_node)->set_rdelay(cast_to<DelayStatement>(get_rdelay()->clone()));
     }
     if(get_type()) {
-        cast_to<Net>(new_node)->set_type(get_type()->clone());
-    }
-    cast_to<Net>(new_node)->set_lengths(Length::clone_list(get_lengths()));
-    if(get_right()) {
-        cast_to<Net>(new_node)->set_right(cast_to<Rvalue>(get_right()->clone()));
+        cast_to<Net>(new_node)->set_type(cast_to<DataType>(get_type()->clone()));
     }
 }
 
@@ -317,7 +273,9 @@ std::ostream &operator<<(std::ostream &os, const Net &p)
         os << ", ";
     }
 
-    os << "sign: " << p.get_sign() << ", ";
+    os << "is_vectored: " << p.get_is_vectored() << ", ";
+
+    os << "is_scalared: " << p.get_is_scalared() << ", ";
 
     os << "name: " << p.get_name();
     os << "}";

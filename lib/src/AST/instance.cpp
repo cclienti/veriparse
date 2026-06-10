@@ -16,7 +16,7 @@ Instance::Instance(const std::string &filename, uint32_t line) : Node(filename, 
     set_node_categories({NodeType::Node});
 }
 
-Instance::Instance(const Length::Ptr array, const ParamArg::ListPtr parameterlist,
+Instance::Instance(const Dimension::Ptr array, const ParamArg::ListPtr parameterlist,
                    const PortArg::ListPtr portlist, const std::string &module,
                    const std::string &name, const std::string &filename, uint32_t line)
     : Node(filename, line), m_array(array), m_parameterlist(parameterlist), m_portlist(portlist),
@@ -73,9 +73,9 @@ bool Instance::replace(Node::Ptr node, Node::Ptr new_node)
         if(get_array() == node) {
             if(found) {
                 LOG_WARNING << *this << ", "
-                            << "Instance::replace matches multiple times (Length::array)";
+                            << "Instance::replace matches multiple times (Dimension::array)";
             }
-            set_array(cast_to<Length>(new_node));
+            set_array(cast_to<Dimension>(new_node));
             found = true;
         }
     }
@@ -246,7 +246,7 @@ Node::ListPtr Instance::get_children(void) const
 void Instance::clone_children(Node::Ptr new_node) const
 {
     if(get_array()) {
-        cast_to<Instance>(new_node)->set_array(cast_to<Length>(get_array()->clone()));
+        cast_to<Instance>(new_node)->set_array(cast_to<Dimension>(get_array()->clone()));
     }
     cast_to<Instance>(new_node)->set_parameterlist(ParamArg::clone_list(get_parameterlist()));
     cast_to<Instance>(new_node)->set_portlist(PortArg::clone_list(get_portlist()));

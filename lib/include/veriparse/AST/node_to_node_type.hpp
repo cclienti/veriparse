@@ -20,44 +20,76 @@ template <> constexpr NodeType get_node_type<Pragmalist>() { return NodeType::Pr
 template <> constexpr NodeType get_node_type<Pragma>() { return NodeType::Pragma; }
 template <> constexpr NodeType get_node_type<Module>() { return NodeType::Module; }
 template <> constexpr NodeType get_node_type<Port>() { return NodeType::Port; }
-template <> constexpr NodeType get_node_type<Width>() { return NodeType::Width; }
-template <> constexpr NodeType get_node_type<Length>() { return NodeType::Length; }
+template <> constexpr NodeType get_node_type<Package>() { return NodeType::Package; }
+template <> constexpr NodeType get_node_type<Import>() { return NodeType::Import; }
 template <> constexpr NodeType get_node_type<Identifier>() { return NodeType::Identifier; }
 template <> constexpr NodeType get_node_type<Constant>() { return NodeType::Constant; }
 template <> constexpr NodeType get_node_type<StringConst>() { return NodeType::StringConst; }
 template <> constexpr NodeType get_node_type<IntConst>() { return NodeType::IntConst; }
 template <> constexpr NodeType get_node_type<IntConstN>() { return NodeType::IntConstN; }
 template <> constexpr NodeType get_node_type<FloatConst>() { return NodeType::FloatConst; }
-template <> constexpr NodeType get_node_type<IODir>() { return NodeType::IODir; }
-template <> constexpr NodeType get_node_type<Input>() { return NodeType::Input; }
-template <> constexpr NodeType get_node_type<Output>() { return NodeType::Output; }
-template <> constexpr NodeType get_node_type<Inout>() { return NodeType::Inout; }
-template <> constexpr NodeType get_node_type<VariableBase>() { return NodeType::VariableBase; }
-template <> constexpr NodeType get_node_type<Genvar>() { return NodeType::Genvar; }
-template <> constexpr NodeType get_node_type<Variable>() { return NodeType::Variable; }
-template <> constexpr NodeType get_node_type<DataModifier>() { return NodeType::DataModifier; }
+template <> constexpr NodeType get_node_type<DataType>() { return NodeType::DataType; }
+template <> constexpr NodeType get_node_type<LogicType>() { return NodeType::LogicType; }
+template <> constexpr NodeType get_node_type<RegType>() { return NodeType::RegType; }
+template <> constexpr NodeType get_node_type<BitType>() { return NodeType::BitType; }
+template <> constexpr NodeType get_node_type<ByteType>() { return NodeType::ByteType; }
+template <> constexpr NodeType get_node_type<ShortintType>() { return NodeType::ShortintType; }
+template <> constexpr NodeType get_node_type<IntType>() { return NodeType::IntType; }
+template <> constexpr NodeType get_node_type<LongintType>() { return NodeType::LongintType; }
+template <> constexpr NodeType get_node_type<IntegerType>() { return NodeType::IntegerType; }
+template <> constexpr NodeType get_node_type<TimeType>() { return NodeType::TimeType; }
+template <> constexpr NodeType get_node_type<RealType>() { return NodeType::RealType; }
+template <> constexpr NodeType get_node_type<ShortrealType>() { return NodeType::ShortrealType; }
+template <> constexpr NodeType get_node_type<RealtimeType>() { return NodeType::RealtimeType; }
+template <> constexpr NodeType get_node_type<StringType>() { return NodeType::StringType; }
+template <> constexpr NodeType get_node_type<ChandleType>() { return NodeType::ChandleType; }
+template <> constexpr NodeType get_node_type<EventType>() { return NodeType::EventType; }
 template <> constexpr NodeType get_node_type<ImplicitType>() { return NodeType::ImplicitType; }
-template <> constexpr NodeType get_node_type<CustomType>() { return NodeType::CustomType; }
-template <> constexpr NodeType get_node_type<CustomTypeVar>() { return NodeType::CustomTypeVar; }
+template <> constexpr NodeType get_node_type<VoidType>() { return NodeType::VoidType; }
+template <> constexpr NodeType get_node_type<NamedType>() { return NodeType::NamedType; }
+template <> constexpr NodeType get_node_type<ScopeName>() { return NodeType::ScopeName; }
+template <> constexpr NodeType get_node_type<StructType>() { return NodeType::StructType; }
+template <> constexpr NodeType get_node_type<UnionType>() { return NodeType::UnionType; }
+template <> constexpr NodeType get_node_type<EnumType>() { return NodeType::EnumType; }
+template <> constexpr NodeType get_node_type<EnumItem>() { return NodeType::EnumItem; }
+template <> constexpr NodeType get_node_type<TypeOpExpr>() { return NodeType::TypeOpExpr; }
+template <> constexpr NodeType get_node_type<TypeOpType>() { return NodeType::TypeOpType; }
+template <> constexpr NodeType get_node_type<Dimension>() { return NodeType::Dimension; }
+template <> constexpr NodeType get_node_type<RangeDim>() { return NodeType::RangeDim; }
+template <> constexpr NodeType get_node_type<SizeDim>() { return NodeType::SizeDim; }
+template <> constexpr NodeType get_node_type<UnsizedDim>() { return NodeType::UnsizedDim; }
+template <> constexpr NodeType get_node_type<QueueDim>() { return NodeType::QueueDim; }
+template <> constexpr NodeType get_node_type<AssocDim>() { return NodeType::AssocDim; }
+template <> constexpr NodeType get_node_type<Declaration>() { return NodeType::Declaration; }
+template <> constexpr NodeType get_node_type<Var>() { return NodeType::Var; }
 template <> constexpr NodeType get_node_type<Net>() { return NodeType::Net; }
-template <> constexpr NodeType get_node_type<Integer>() { return NodeType::Integer; }
-template <> constexpr NodeType get_node_type<Real>() { return NodeType::Real; }
-template <> constexpr NodeType get_node_type<Byte>() { return NodeType::Byte; }
-template <> constexpr NodeType get_node_type<Shortint>() { return NodeType::Shortint; }
-template <> constexpr NodeType get_node_type<Int>() { return NodeType::Int; }
-template <> constexpr NodeType get_node_type<Longint>() { return NodeType::Longint; }
-template <> constexpr NodeType get_node_type<Shortreal>() { return NodeType::Shortreal; }
-template <> constexpr NodeType get_node_type<Realtime>() { return NodeType::Realtime; }
-template <> constexpr NodeType get_node_type<Bit>() { return NodeType::Bit; }
-template <> constexpr NodeType get_node_type<Tri>() { return NodeType::Tri; }
-template <> constexpr NodeType get_node_type<Wire>() { return NodeType::Wire; }
-template <> constexpr NodeType get_node_type<Supply0>() { return NodeType::Supply0; }
-template <> constexpr NodeType get_node_type<Supply1>() { return NodeType::Supply1; }
-template <> constexpr NodeType get_node_type<Logic>() { return NodeType::Logic; }
-template <> constexpr NodeType get_node_type<Reg>() { return NodeType::Reg; }
-template <> constexpr NodeType get_node_type<Ioport>() { return NodeType::Ioport; }
-template <> constexpr NodeType get_node_type<Parameter>() { return NodeType::Parameter; }
-template <> constexpr NodeType get_node_type<Localparam>() { return NodeType::Localparam; }
+template <> constexpr NodeType get_node_type<WireNet>() { return NodeType::WireNet; }
+template <> constexpr NodeType get_node_type<TriNet>() { return NodeType::TriNet; }
+template <> constexpr NodeType get_node_type<Tri0Net>() { return NodeType::Tri0Net; }
+template <> constexpr NodeType get_node_type<Tri1Net>() { return NodeType::Tri1Net; }
+template <> constexpr NodeType get_node_type<TriandNet>() { return NodeType::TriandNet; }
+template <> constexpr NodeType get_node_type<TriorNet>() { return NodeType::TriorNet; }
+template <> constexpr NodeType get_node_type<TriregNet>() { return NodeType::TriregNet; }
+template <> constexpr NodeType get_node_type<WandNet>() { return NodeType::WandNet; }
+template <> constexpr NodeType get_node_type<WorNet>() { return NodeType::WorNet; }
+template <> constexpr NodeType get_node_type<UwireNet>() { return NodeType::UwireNet; }
+template <> constexpr NodeType get_node_type<Supply0Net>() { return NodeType::Supply0Net; }
+template <> constexpr NodeType get_node_type<Supply1Net>() { return NodeType::Supply1Net; }
+template <> constexpr NodeType get_node_type<InterconnectNet>()
+{
+    return NodeType::InterconnectNet;
+}
+template <> constexpr NodeType get_node_type<UserNet>() { return NodeType::UserNet; }
+template <> constexpr NodeType get_node_type<ImplicitNet>() { return NodeType::ImplicitNet; }
+template <> constexpr NodeType get_node_type<Strength>() { return NodeType::Strength; }
+template <> constexpr NodeType get_node_type<DriveStrength>() { return NodeType::DriveStrength; }
+template <> constexpr NodeType get_node_type<ChargeStrength>() { return NodeType::ChargeStrength; }
+template <> constexpr NodeType get_node_type<Param>() { return NodeType::Param; }
+template <> constexpr NodeType get_node_type<TypeParam>() { return NodeType::TypeParam; }
+template <> constexpr NodeType get_node_type<Typedef>() { return NodeType::Typedef; }
+template <> constexpr NodeType get_node_type<Member>() { return NodeType::Member; }
+template <> constexpr NodeType get_node_type<Arg>() { return NodeType::Arg; }
+template <> constexpr NodeType get_node_type<Genvar>() { return NodeType::Genvar; }
 template <> constexpr NodeType get_node_type<Concat>() { return NodeType::Concat; }
 template <> constexpr NodeType get_node_type<Lconcat>() { return NodeType::Lconcat; }
 template <> constexpr NodeType get_node_type<Repeat>() { return NodeType::Repeat; }
@@ -67,6 +99,10 @@ template <> constexpr NodeType get_node_type<AssignmentPattern>()
 }
 template <> constexpr NodeType get_node_type<PatternItem>() { return NodeType::PatternItem; }
 template <> constexpr NodeType get_node_type<Cast>() { return NodeType::Cast; }
+template <> constexpr NodeType get_node_type<TypeCast>() { return NodeType::TypeCast; }
+template <> constexpr NodeType get_node_type<SizeCast>() { return NodeType::SizeCast; }
+template <> constexpr NodeType get_node_type<SigningCast>() { return NodeType::SigningCast; }
+template <> constexpr NodeType get_node_type<ConstCast>() { return NodeType::ConstCast; }
 template <> constexpr NodeType get_node_type<Indirect>() { return NodeType::Indirect; }
 template <> constexpr NodeType get_node_type<Partselect>() { return NodeType::Partselect; }
 template <> constexpr NodeType get_node_type<PartselectIndexed>()
@@ -192,15 +228,6 @@ template <> constexpr NodeType get_node_type<SingleStatement>()
 {
     return NodeType::SingleStatement;
 }
-template <> constexpr NodeType get_node_type<EnumItem>() { return NodeType::EnumItem; }
-template <> constexpr NodeType get_node_type<EnumDef>() { return NodeType::EnumDef; }
-template <> constexpr NodeType get_node_type<Typedef>() { return NodeType::Typedef; }
-template <> constexpr NodeType get_node_type<StructMember>() { return NodeType::StructMember; }
-template <> constexpr NodeType get_node_type<StructUnionDef>() { return NodeType::StructUnionDef; }
-template <> constexpr NodeType get_node_type<StructDef>() { return NodeType::StructDef; }
-template <> constexpr NodeType get_node_type<Union>() { return NodeType::Union; }
-template <> constexpr NodeType get_node_type<Package>() { return NodeType::Package; }
-template <> constexpr NodeType get_node_type<Import>() { return NodeType::Import; }
 
 } // namespace AST
 } // namespace Veriparse

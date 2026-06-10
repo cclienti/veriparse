@@ -4,6 +4,10 @@
 #define VERIPARSE_AST_TYPEDEF_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/declaration.hpp>
+
+#include <veriparse/AST/datatype.hpp>
+#include <veriparse/AST/dimension.hpp>
 
 #include <list>
 #include <string>
@@ -17,15 +21,25 @@ namespace Veriparse
 namespace AST
 {
 
-class Typedef : public Node
+class Typedef : public Declaration
 {
 public:
     using Ptr = typename NodePointers<Typedef>::Ptr;
     using List = typename NodePointers<Typedef>::List;
     using ListPtr = typename NodePointers<Typedef>::ListPtr;
-    using Node::operator=;
-    using Node::operator==;
-    using Node::operator!=;
+    using Declaration::operator=;
+    using Declaration::operator==;
+    using Declaration::operator!=;
+
+    enum class Fwd_kindEnum
+    {
+        NONE,
+        ENUM,
+        STRUCT,
+        UNION,
+        CLASS,
+        INTERFACE_CLASS
+    };
 
     /**
      * Constructor, m_node_type is set to NodeType::Typedef.
@@ -35,7 +49,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Typedef.
      */
-    Typedef(const Node::Ptr def, const std::string &name, const std::string &filename = "",
+    Typedef(const Dimension::ListPtr unpacked_dims, const DataType::Ptr type,
+            const Fwd_kindEnum &fwd_kind, const std::string &name, const std::string &filename = "",
             uint32_t line = 0);
 
     /**
@@ -84,24 +99,27 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child def.
+     * Return the child unpacked_dims.
      */
-    virtual Node::Ptr get_def(void) const { return m_def; }
+    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
 
     /**
-     * Change the child def.
+     * Change the child unpacked_dims.
      */
-    virtual void set_def(Node::Ptr def) { m_def = def; }
+    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
+    {
+        m_unpacked_dims = unpacked_dims;
+    }
 
     /**
-     * Return the property name.
+     * Return the property fwd_kind.
      */
-    virtual const std::string &get_name(void) const { return m_name; }
+    virtual const Fwd_kindEnum &get_fwd_kind(void) const { return m_fwd_kind; }
 
     /**
-     * Change the property name.
+     * Change the property fwd_kind.
      */
-    virtual void set_name(const std::string &name) { m_name = name; }
+    virtual void set_fwd_kind(const Fwd_kindEnum &fwd_kind) { m_fwd_kind = fwd_kind; }
 
     /**
      * Return the children list using the private children member
@@ -127,12 +145,14 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Node::Ptr m_def{};
-    std::string m_name{};
+    Dimension::ListPtr m_unpacked_dims{};
+    Fwd_kindEnum m_fwd_kind{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Typedef &p);
 std::ostream &operator<<(std::ostream &os, const Typedef::Ptr p);
+
+std::ostream &operator<<(std::ostream &os, const Typedef::Fwd_kindEnum p);
 
 } // namespace AST
 } // namespace Veriparse

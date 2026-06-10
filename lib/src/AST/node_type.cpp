@@ -25,10 +25,10 @@ const char *NodeTypeToString(NodeType node_type)
         return "Module";
     case NodeType::Port:
         return "Port";
-    case NodeType::Width:
-        return "Width";
-    case NodeType::Length:
-        return "Length";
+    case NodeType::Package:
+        return "Package";
+    case NodeType::Import:
+        return "Import";
     case NodeType::Identifier:
         return "Identifier";
     case NodeType::Constant:
@@ -41,66 +41,124 @@ const char *NodeTypeToString(NodeType node_type)
         return "IntConstN";
     case NodeType::FloatConst:
         return "FloatConst";
-    case NodeType::IODir:
-        return "IODir";
-    case NodeType::Input:
-        return "Input";
-    case NodeType::Output:
-        return "Output";
-    case NodeType::Inout:
-        return "Inout";
-    case NodeType::VariableBase:
-        return "VariableBase";
-    case NodeType::Genvar:
-        return "Genvar";
-    case NodeType::Variable:
-        return "Variable";
-    case NodeType::DataModifier:
-        return "DataModifier";
+    case NodeType::DataType:
+        return "DataType";
+    case NodeType::LogicType:
+        return "LogicType";
+    case NodeType::RegType:
+        return "RegType";
+    case NodeType::BitType:
+        return "BitType";
+    case NodeType::ByteType:
+        return "ByteType";
+    case NodeType::ShortintType:
+        return "ShortintType";
+    case NodeType::IntType:
+        return "IntType";
+    case NodeType::LongintType:
+        return "LongintType";
+    case NodeType::IntegerType:
+        return "IntegerType";
+    case NodeType::TimeType:
+        return "TimeType";
+    case NodeType::RealType:
+        return "RealType";
+    case NodeType::ShortrealType:
+        return "ShortrealType";
+    case NodeType::RealtimeType:
+        return "RealtimeType";
+    case NodeType::StringType:
+        return "StringType";
+    case NodeType::ChandleType:
+        return "ChandleType";
+    case NodeType::EventType:
+        return "EventType";
     case NodeType::ImplicitType:
         return "ImplicitType";
-    case NodeType::CustomType:
-        return "CustomType";
-    case NodeType::CustomTypeVar:
-        return "CustomTypeVar";
+    case NodeType::VoidType:
+        return "VoidType";
+    case NodeType::NamedType:
+        return "NamedType";
+    case NodeType::ScopeName:
+        return "ScopeName";
+    case NodeType::StructType:
+        return "StructType";
+    case NodeType::UnionType:
+        return "UnionType";
+    case NodeType::EnumType:
+        return "EnumType";
+    case NodeType::EnumItem:
+        return "EnumItem";
+    case NodeType::TypeOpExpr:
+        return "TypeOpExpr";
+    case NodeType::TypeOpType:
+        return "TypeOpType";
+    case NodeType::Dimension:
+        return "Dimension";
+    case NodeType::RangeDim:
+        return "RangeDim";
+    case NodeType::SizeDim:
+        return "SizeDim";
+    case NodeType::UnsizedDim:
+        return "UnsizedDim";
+    case NodeType::QueueDim:
+        return "QueueDim";
+    case NodeType::AssocDim:
+        return "AssocDim";
+    case NodeType::Declaration:
+        return "Declaration";
+    case NodeType::Var:
+        return "Var";
     case NodeType::Net:
         return "Net";
-    case NodeType::Integer:
-        return "Integer";
-    case NodeType::Real:
-        return "Real";
-    case NodeType::Byte:
-        return "Byte";
-    case NodeType::Shortint:
-        return "Shortint";
-    case NodeType::Int:
-        return "Int";
-    case NodeType::Longint:
-        return "Longint";
-    case NodeType::Shortreal:
-        return "Shortreal";
-    case NodeType::Realtime:
-        return "Realtime";
-    case NodeType::Bit:
-        return "Bit";
-    case NodeType::Tri:
-        return "Tri";
-    case NodeType::Wire:
-        return "Wire";
-    case NodeType::Supply0:
-        return "Supply0";
-    case NodeType::Supply1:
-        return "Supply1";
-    case NodeType::Logic:
-        return "Logic";
-    case NodeType::Reg:
-        return "Reg";
-    case NodeType::Ioport:
-        return "Ioport";
-    case NodeType::Parameter:
-        return "Parameter";
-    case NodeType::Localparam:
-        return "Localparam";
+    case NodeType::WireNet:
+        return "WireNet";
+    case NodeType::TriNet:
+        return "TriNet";
+    case NodeType::Tri0Net:
+        return "Tri0Net";
+    case NodeType::Tri1Net:
+        return "Tri1Net";
+    case NodeType::TriandNet:
+        return "TriandNet";
+    case NodeType::TriorNet:
+        return "TriorNet";
+    case NodeType::TriregNet:
+        return "TriregNet";
+    case NodeType::WandNet:
+        return "WandNet";
+    case NodeType::WorNet:
+        return "WorNet";
+    case NodeType::UwireNet:
+        return "UwireNet";
+    case NodeType::Supply0Net:
+        return "Supply0Net";
+    case NodeType::Supply1Net:
+        return "Supply1Net";
+    case NodeType::InterconnectNet:
+        return "InterconnectNet";
+    case NodeType::UserNet:
+        return "UserNet";
+    case NodeType::ImplicitNet:
+        return "ImplicitNet";
+    case NodeType::Strength:
+        return "Strength";
+    case NodeType::DriveStrength:
+        return "DriveStrength";
+    case NodeType::ChargeStrength:
+        return "ChargeStrength";
+    case NodeType::Param:
+        return "Param";
+    case NodeType::TypeParam:
+        return "TypeParam";
+    case NodeType::Typedef:
+        return "Typedef";
+    case NodeType::Member:
+        return "Member";
+    case NodeType::Arg:
+        return "Arg";
+    case NodeType::Genvar:
+        return "Genvar";
     case NodeType::Concat:
         return "Concat";
     case NodeType::Lconcat:
@@ -113,6 +171,14 @@ const char *NodeTypeToString(NodeType node_type)
         return "PatternItem";
     case NodeType::Cast:
         return "Cast";
+    case NodeType::TypeCast:
+        return "TypeCast";
+    case NodeType::SizeCast:
+        return "SizeCast";
+    case NodeType::SigningCast:
+        return "SigningCast";
+    case NodeType::ConstCast:
+        return "ConstCast";
     case NodeType::Indirect:
         return "Indirect";
     case NodeType::Partselect:
@@ -285,24 +351,6 @@ const char *NodeTypeToString(NodeType node_type)
         return "ParallelBlock";
     case NodeType::SingleStatement:
         return "SingleStatement";
-    case NodeType::EnumItem:
-        return "EnumItem";
-    case NodeType::EnumDef:
-        return "EnumDef";
-    case NodeType::Typedef:
-        return "Typedef";
-    case NodeType::StructMember:
-        return "StructMember";
-    case NodeType::StructUnionDef:
-        return "StructUnionDef";
-    case NodeType::StructDef:
-        return "StructDef";
-    case NodeType::Union:
-        return "Union";
-    case NodeType::Package:
-        return "Package";
-    case NodeType::Import:
-        return "Import";
     default:
         return "Unknown NodeType";
     }

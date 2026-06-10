@@ -29,11 +29,11 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Port:
         os << static_cast<const AST::Port &>(p);
         break;
-    case NodeType::Width:
-        os << static_cast<const AST::Width &>(p);
+    case NodeType::Package:
+        os << static_cast<const AST::Package &>(p);
         break;
-    case NodeType::Length:
-        os << static_cast<const AST::Length &>(p);
+    case NodeType::Import:
+        os << static_cast<const AST::Import &>(p);
         break;
     case NodeType::Identifier:
         os << static_cast<const AST::Identifier &>(p);
@@ -53,95 +53,182 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::FloatConst:
         os << static_cast<const AST::FloatConst &>(p);
         break;
-    case NodeType::IODir:
-        os << static_cast<const AST::IODir &>(p);
+    case NodeType::DataType:
+        os << static_cast<const AST::DataType &>(p);
         break;
-    case NodeType::Input:
-        os << static_cast<const AST::Input &>(p);
+    case NodeType::LogicType:
+        os << static_cast<const AST::LogicType &>(p);
         break;
-    case NodeType::Output:
-        os << static_cast<const AST::Output &>(p);
+    case NodeType::RegType:
+        os << static_cast<const AST::RegType &>(p);
         break;
-    case NodeType::Inout:
-        os << static_cast<const AST::Inout &>(p);
+    case NodeType::BitType:
+        os << static_cast<const AST::BitType &>(p);
         break;
-    case NodeType::VariableBase:
-        os << static_cast<const AST::VariableBase &>(p);
+    case NodeType::ByteType:
+        os << static_cast<const AST::ByteType &>(p);
         break;
-    case NodeType::Genvar:
-        os << static_cast<const AST::Genvar &>(p);
+    case NodeType::ShortintType:
+        os << static_cast<const AST::ShortintType &>(p);
         break;
-    case NodeType::Variable:
-        os << static_cast<const AST::Variable &>(p);
+    case NodeType::IntType:
+        os << static_cast<const AST::IntType &>(p);
         break;
-    case NodeType::DataModifier:
-        os << static_cast<const AST::DataModifier &>(p);
+    case NodeType::LongintType:
+        os << static_cast<const AST::LongintType &>(p);
+        break;
+    case NodeType::IntegerType:
+        os << static_cast<const AST::IntegerType &>(p);
+        break;
+    case NodeType::TimeType:
+        os << static_cast<const AST::TimeType &>(p);
+        break;
+    case NodeType::RealType:
+        os << static_cast<const AST::RealType &>(p);
+        break;
+    case NodeType::ShortrealType:
+        os << static_cast<const AST::ShortrealType &>(p);
+        break;
+    case NodeType::RealtimeType:
+        os << static_cast<const AST::RealtimeType &>(p);
+        break;
+    case NodeType::StringType:
+        os << static_cast<const AST::StringType &>(p);
+        break;
+    case NodeType::ChandleType:
+        os << static_cast<const AST::ChandleType &>(p);
+        break;
+    case NodeType::EventType:
+        os << static_cast<const AST::EventType &>(p);
         break;
     case NodeType::ImplicitType:
         os << static_cast<const AST::ImplicitType &>(p);
         break;
-    case NodeType::CustomType:
-        os << static_cast<const AST::CustomType &>(p);
+    case NodeType::VoidType:
+        os << static_cast<const AST::VoidType &>(p);
         break;
-    case NodeType::CustomTypeVar:
-        os << static_cast<const AST::CustomTypeVar &>(p);
+    case NodeType::NamedType:
+        os << static_cast<const AST::NamedType &>(p);
+        break;
+    case NodeType::ScopeName:
+        os << static_cast<const AST::ScopeName &>(p);
+        break;
+    case NodeType::StructType:
+        os << static_cast<const AST::StructType &>(p);
+        break;
+    case NodeType::UnionType:
+        os << static_cast<const AST::UnionType &>(p);
+        break;
+    case NodeType::EnumType:
+        os << static_cast<const AST::EnumType &>(p);
+        break;
+    case NodeType::EnumItem:
+        os << static_cast<const AST::EnumItem &>(p);
+        break;
+    case NodeType::TypeOpExpr:
+        os << static_cast<const AST::TypeOpExpr &>(p);
+        break;
+    case NodeType::TypeOpType:
+        os << static_cast<const AST::TypeOpType &>(p);
+        break;
+    case NodeType::Dimension:
+        os << static_cast<const AST::Dimension &>(p);
+        break;
+    case NodeType::RangeDim:
+        os << static_cast<const AST::RangeDim &>(p);
+        break;
+    case NodeType::SizeDim:
+        os << static_cast<const AST::SizeDim &>(p);
+        break;
+    case NodeType::UnsizedDim:
+        os << static_cast<const AST::UnsizedDim &>(p);
+        break;
+    case NodeType::QueueDim:
+        os << static_cast<const AST::QueueDim &>(p);
+        break;
+    case NodeType::AssocDim:
+        os << static_cast<const AST::AssocDim &>(p);
+        break;
+    case NodeType::Declaration:
+        os << static_cast<const AST::Declaration &>(p);
+        break;
+    case NodeType::Var:
+        os << static_cast<const AST::Var &>(p);
         break;
     case NodeType::Net:
         os << static_cast<const AST::Net &>(p);
         break;
-    case NodeType::Integer:
-        os << static_cast<const AST::Integer &>(p);
+    case NodeType::WireNet:
+        os << static_cast<const AST::WireNet &>(p);
         break;
-    case NodeType::Real:
-        os << static_cast<const AST::Real &>(p);
+    case NodeType::TriNet:
+        os << static_cast<const AST::TriNet &>(p);
         break;
-    case NodeType::Byte:
-        os << static_cast<const AST::Byte &>(p);
+    case NodeType::Tri0Net:
+        os << static_cast<const AST::Tri0Net &>(p);
         break;
-    case NodeType::Shortint:
-        os << static_cast<const AST::Shortint &>(p);
+    case NodeType::Tri1Net:
+        os << static_cast<const AST::Tri1Net &>(p);
         break;
-    case NodeType::Int:
-        os << static_cast<const AST::Int &>(p);
+    case NodeType::TriandNet:
+        os << static_cast<const AST::TriandNet &>(p);
         break;
-    case NodeType::Longint:
-        os << static_cast<const AST::Longint &>(p);
+    case NodeType::TriorNet:
+        os << static_cast<const AST::TriorNet &>(p);
         break;
-    case NodeType::Shortreal:
-        os << static_cast<const AST::Shortreal &>(p);
+    case NodeType::TriregNet:
+        os << static_cast<const AST::TriregNet &>(p);
         break;
-    case NodeType::Realtime:
-        os << static_cast<const AST::Realtime &>(p);
+    case NodeType::WandNet:
+        os << static_cast<const AST::WandNet &>(p);
         break;
-    case NodeType::Bit:
-        os << static_cast<const AST::Bit &>(p);
+    case NodeType::WorNet:
+        os << static_cast<const AST::WorNet &>(p);
         break;
-    case NodeType::Tri:
-        os << static_cast<const AST::Tri &>(p);
+    case NodeType::UwireNet:
+        os << static_cast<const AST::UwireNet &>(p);
         break;
-    case NodeType::Wire:
-        os << static_cast<const AST::Wire &>(p);
+    case NodeType::Supply0Net:
+        os << static_cast<const AST::Supply0Net &>(p);
         break;
-    case NodeType::Supply0:
-        os << static_cast<const AST::Supply0 &>(p);
+    case NodeType::Supply1Net:
+        os << static_cast<const AST::Supply1Net &>(p);
         break;
-    case NodeType::Supply1:
-        os << static_cast<const AST::Supply1 &>(p);
+    case NodeType::InterconnectNet:
+        os << static_cast<const AST::InterconnectNet &>(p);
         break;
-    case NodeType::Logic:
-        os << static_cast<const AST::Logic &>(p);
+    case NodeType::UserNet:
+        os << static_cast<const AST::UserNet &>(p);
         break;
-    case NodeType::Reg:
-        os << static_cast<const AST::Reg &>(p);
+    case NodeType::ImplicitNet:
+        os << static_cast<const AST::ImplicitNet &>(p);
         break;
-    case NodeType::Ioport:
-        os << static_cast<const AST::Ioport &>(p);
+    case NodeType::Strength:
+        os << static_cast<const AST::Strength &>(p);
         break;
-    case NodeType::Parameter:
-        os << static_cast<const AST::Parameter &>(p);
+    case NodeType::DriveStrength:
+        os << static_cast<const AST::DriveStrength &>(p);
         break;
-    case NodeType::Localparam:
-        os << static_cast<const AST::Localparam &>(p);
+    case NodeType::ChargeStrength:
+        os << static_cast<const AST::ChargeStrength &>(p);
+        break;
+    case NodeType::Param:
+        os << static_cast<const AST::Param &>(p);
+        break;
+    case NodeType::TypeParam:
+        os << static_cast<const AST::TypeParam &>(p);
+        break;
+    case NodeType::Typedef:
+        os << static_cast<const AST::Typedef &>(p);
+        break;
+    case NodeType::Member:
+        os << static_cast<const AST::Member &>(p);
+        break;
+    case NodeType::Arg:
+        os << static_cast<const AST::Arg &>(p);
+        break;
+    case NodeType::Genvar:
+        os << static_cast<const AST::Genvar &>(p);
         break;
     case NodeType::Concat:
         os << static_cast<const AST::Concat &>(p);
@@ -160,6 +247,18 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
         break;
     case NodeType::Cast:
         os << static_cast<const AST::Cast &>(p);
+        break;
+    case NodeType::TypeCast:
+        os << static_cast<const AST::TypeCast &>(p);
+        break;
+    case NodeType::SizeCast:
+        os << static_cast<const AST::SizeCast &>(p);
+        break;
+    case NodeType::SigningCast:
+        os << static_cast<const AST::SigningCast &>(p);
+        break;
+    case NodeType::ConstCast:
+        os << static_cast<const AST::ConstCast &>(p);
         break;
     case NodeType::Indirect:
         os << static_cast<const AST::Indirect &>(p);
@@ -418,33 +517,6 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
         break;
     case NodeType::SingleStatement:
         os << static_cast<const AST::SingleStatement &>(p);
-        break;
-    case NodeType::EnumItem:
-        os << static_cast<const AST::EnumItem &>(p);
-        break;
-    case NodeType::EnumDef:
-        os << static_cast<const AST::EnumDef &>(p);
-        break;
-    case NodeType::Typedef:
-        os << static_cast<const AST::Typedef &>(p);
-        break;
-    case NodeType::StructMember:
-        os << static_cast<const AST::StructMember &>(p);
-        break;
-    case NodeType::StructUnionDef:
-        os << static_cast<const AST::StructUnionDef &>(p);
-        break;
-    case NodeType::StructDef:
-        os << static_cast<const AST::StructDef &>(p);
-        break;
-    case NodeType::Union:
-        os << static_cast<const AST::Union &>(p);
-        break;
-    case NodeType::Package:
-        os << static_cast<const AST::Package &>(p);
-        break;
-    case NodeType::Import:
-        os << static_cast<const AST::Import &>(p);
         break;
     default:
         os << "Node: {}";

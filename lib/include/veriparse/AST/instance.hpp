@@ -4,7 +4,7 @@
 #define VERIPARSE_AST_INSTANCE_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/length.hpp>
+#include <veriparse/AST/dimension.hpp>
 #include <veriparse/AST/paramarg.hpp>
 #include <veriparse/AST/portarg.hpp>
 
@@ -38,7 +38,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Instance.
      */
-    Instance(const Length::Ptr array, const ParamArg::ListPtr parameterlist,
+    Instance(const Dimension::Ptr array, const ParamArg::ListPtr parameterlist,
              const PortArg::ListPtr portlist, const std::string &module, const std::string &name,
              const std::string &filename = "", uint32_t line = 0);
 
@@ -90,7 +90,7 @@ public:
     /**
      * Return the child array.
      */
-    virtual Length::Ptr get_array(void) const { return m_array; }
+    virtual Dimension::Ptr get_array(void) const { return m_array; }
 
     /**
      * Return the child parameterlist.
@@ -105,7 +105,7 @@ public:
     /**
      * Change the child array.
      */
-    virtual void set_array(Length::Ptr array) { m_array = array; }
+    virtual void set_array(Dimension::Ptr array) { m_array = array; }
 
     /**
      * Change the child parameterlist.
@@ -164,7 +164,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Length::Ptr m_array{};
+    Dimension::Ptr m_array{};
     ParamArg::ListPtr m_parameterlist{};
     PortArg::ListPtr m_portlist{};
     std::string m_module{};

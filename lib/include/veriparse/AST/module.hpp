@@ -4,7 +4,8 @@
 #define VERIPARSE_AST_MODULE_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/parameter.hpp>
+#include <veriparse/AST/declaration.hpp>
+#include <veriparse/AST/port.hpp>
 
 #include <list>
 #include <string>
@@ -28,13 +29,25 @@ public:
     using Node::operator==;
     using Node::operator!=;
 
+    enum class LifetimeEnum
+    {
+        NONE,
+        AUTOMATIC,
+        STATIC
+    };
+
     enum class Default_nettypeEnum
     {
-        INTEGER,
-        REAL,
-        REG,
-        TRI,
         WIRE,
+        TRI,
+        TRI0,
+        TRI1,
+        TRIAND,
+        TRIOR,
+        TRIREG,
+        WAND,
+        WOR,
+        UWIRE,
         SUPPLY0,
         SUPPLY1,
         NONE
@@ -48,9 +61,10 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Module.
      */
-    Module(const Parameter::ListPtr params, const Node::ListPtr ports, const Node::ListPtr items,
-           const std::string &name, const Default_nettypeEnum &default_nettype,
-           const std::string &filename = "", uint32_t line = 0);
+    Module(const Declaration::ListPtr params, const Port::ListPtr ports, const Node::ListPtr items,
+           const std::string &name, const LifetimeEnum &lifetime,
+           const Default_nettypeEnum &default_nettype, const std::string &filename = "",
+           uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -100,12 +114,12 @@ public:
     /**
      * Return the child params.
      */
-    virtual Parameter::ListPtr get_params(void) const { return m_params; }
+    virtual Declaration::ListPtr get_params(void) const { return m_params; }
 
     /**
      * Return the child ports.
      */
-    virtual Node::ListPtr get_ports(void) const { return m_ports; }
+    virtual Port::ListPtr get_ports(void) const { return m_ports; }
 
     /**
      * Return the child items.
@@ -115,12 +129,12 @@ public:
     /**
      * Change the child params.
      */
-    virtual void set_params(Parameter::ListPtr params) { m_params = params; }
+    virtual void set_params(Declaration::ListPtr params) { m_params = params; }
 
     /**
      * Change the child ports.
      */
-    virtual void set_ports(Node::ListPtr ports) { m_ports = ports; }
+    virtual void set_ports(Port::ListPtr ports) { m_ports = ports; }
 
     /**
      * Change the child items.
@@ -133,6 +147,11 @@ public:
     virtual const std::string &get_name(void) const { return m_name; }
 
     /**
+     * Return the property lifetime.
+     */
+    virtual const LifetimeEnum &get_lifetime(void) const { return m_lifetime; }
+
+    /**
      * Return the property default_nettype.
      */
     virtual const Default_nettypeEnum &get_default_nettype(void) const { return m_default_nettype; }
@@ -141,6 +160,11 @@ public:
      * Change the property name.
      */
     virtual void set_name(const std::string &name) { m_name = name; }
+
+    /**
+     * Change the property lifetime.
+     */
+    virtual void set_lifetime(const LifetimeEnum &lifetime) { m_lifetime = lifetime; }
 
     /**
      * Change the property default_nettype.
@@ -174,15 +198,18 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Parameter::ListPtr m_params{};
-    Node::ListPtr m_ports{};
+    Declaration::ListPtr m_params{};
+    Port::ListPtr m_ports{};
     Node::ListPtr m_items{};
     std::string m_name{};
+    LifetimeEnum m_lifetime{};
     Default_nettypeEnum m_default_nettype{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Module &p);
 std::ostream &operator<<(std::ostream &os, const Module::Ptr p);
+
+std::ostream &operator<<(std::ostream &os, const Module::LifetimeEnum p);
 
 std::ostream &operator<<(std::ostream &os, const Module::Default_nettypeEnum p);
 

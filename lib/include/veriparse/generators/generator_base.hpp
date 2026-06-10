@@ -60,11 +60,11 @@ public:
             case AST::NodeType::Port:
                 return render_port(AST::cast_to<AST::Port>(node));
 
-            case AST::NodeType::Width:
-                return render_width(AST::cast_to<AST::Width>(node));
+            case AST::NodeType::Package:
+                return render_package(AST::cast_to<AST::Package>(node));
 
-            case AST::NodeType::Length:
-                return render_length(AST::cast_to<AST::Length>(node));
+            case AST::NodeType::Import:
+                return render_import(AST::cast_to<AST::Import>(node));
 
             case AST::NodeType::Identifier:
                 return render_identifier(AST::cast_to<AST::Identifier>(node));
@@ -84,95 +84,182 @@ public:
             case AST::NodeType::FloatConst:
                 return render_floatconst(AST::cast_to<AST::FloatConst>(node));
 
-            case AST::NodeType::IODir:
-                return render_iodir(AST::cast_to<AST::IODir>(node));
+            case AST::NodeType::DataType:
+                return render_datatype(AST::cast_to<AST::DataType>(node));
 
-            case AST::NodeType::Input:
-                return render_input(AST::cast_to<AST::Input>(node));
+            case AST::NodeType::LogicType:
+                return render_logictype(AST::cast_to<AST::LogicType>(node));
 
-            case AST::NodeType::Output:
-                return render_output(AST::cast_to<AST::Output>(node));
+            case AST::NodeType::RegType:
+                return render_regtype(AST::cast_to<AST::RegType>(node));
 
-            case AST::NodeType::Inout:
-                return render_inout(AST::cast_to<AST::Inout>(node));
+            case AST::NodeType::BitType:
+                return render_bittype(AST::cast_to<AST::BitType>(node));
 
-            case AST::NodeType::VariableBase:
-                return render_variablebase(AST::cast_to<AST::VariableBase>(node));
+            case AST::NodeType::ByteType:
+                return render_bytetype(AST::cast_to<AST::ByteType>(node));
 
-            case AST::NodeType::Genvar:
-                return render_genvar(AST::cast_to<AST::Genvar>(node));
+            case AST::NodeType::ShortintType:
+                return render_shortinttype(AST::cast_to<AST::ShortintType>(node));
 
-            case AST::NodeType::Variable:
-                return render_variable(AST::cast_to<AST::Variable>(node));
+            case AST::NodeType::IntType:
+                return render_inttype(AST::cast_to<AST::IntType>(node));
 
-            case AST::NodeType::DataModifier:
-                return render_datamodifier(AST::cast_to<AST::DataModifier>(node));
+            case AST::NodeType::LongintType:
+                return render_longinttype(AST::cast_to<AST::LongintType>(node));
+
+            case AST::NodeType::IntegerType:
+                return render_integertype(AST::cast_to<AST::IntegerType>(node));
+
+            case AST::NodeType::TimeType:
+                return render_timetype(AST::cast_to<AST::TimeType>(node));
+
+            case AST::NodeType::RealType:
+                return render_realtype(AST::cast_to<AST::RealType>(node));
+
+            case AST::NodeType::ShortrealType:
+                return render_shortrealtype(AST::cast_to<AST::ShortrealType>(node));
+
+            case AST::NodeType::RealtimeType:
+                return render_realtimetype(AST::cast_to<AST::RealtimeType>(node));
+
+            case AST::NodeType::StringType:
+                return render_stringtype(AST::cast_to<AST::StringType>(node));
+
+            case AST::NodeType::ChandleType:
+                return render_chandletype(AST::cast_to<AST::ChandleType>(node));
+
+            case AST::NodeType::EventType:
+                return render_eventtype(AST::cast_to<AST::EventType>(node));
 
             case AST::NodeType::ImplicitType:
                 return render_implicittype(AST::cast_to<AST::ImplicitType>(node));
 
-            case AST::NodeType::CustomType:
-                return render_customtype(AST::cast_to<AST::CustomType>(node));
+            case AST::NodeType::VoidType:
+                return render_voidtype(AST::cast_to<AST::VoidType>(node));
 
-            case AST::NodeType::CustomTypeVar:
-                return render_customtypevar(AST::cast_to<AST::CustomTypeVar>(node));
+            case AST::NodeType::NamedType:
+                return render_namedtype(AST::cast_to<AST::NamedType>(node));
+
+            case AST::NodeType::ScopeName:
+                return render_scopename(AST::cast_to<AST::ScopeName>(node));
+
+            case AST::NodeType::StructType:
+                return render_structtype(AST::cast_to<AST::StructType>(node));
+
+            case AST::NodeType::UnionType:
+                return render_uniontype(AST::cast_to<AST::UnionType>(node));
+
+            case AST::NodeType::EnumType:
+                return render_enumtype(AST::cast_to<AST::EnumType>(node));
+
+            case AST::NodeType::EnumItem:
+                return render_enumitem(AST::cast_to<AST::EnumItem>(node));
+
+            case AST::NodeType::TypeOpExpr:
+                return render_typeopexpr(AST::cast_to<AST::TypeOpExpr>(node));
+
+            case AST::NodeType::TypeOpType:
+                return render_typeoptype(AST::cast_to<AST::TypeOpType>(node));
+
+            case AST::NodeType::Dimension:
+                return render_dimension(AST::cast_to<AST::Dimension>(node));
+
+            case AST::NodeType::RangeDim:
+                return render_rangedim(AST::cast_to<AST::RangeDim>(node));
+
+            case AST::NodeType::SizeDim:
+                return render_sizedim(AST::cast_to<AST::SizeDim>(node));
+
+            case AST::NodeType::UnsizedDim:
+                return render_unsizeddim(AST::cast_to<AST::UnsizedDim>(node));
+
+            case AST::NodeType::QueueDim:
+                return render_queuedim(AST::cast_to<AST::QueueDim>(node));
+
+            case AST::NodeType::AssocDim:
+                return render_assocdim(AST::cast_to<AST::AssocDim>(node));
+
+            case AST::NodeType::Declaration:
+                return render_declaration(AST::cast_to<AST::Declaration>(node));
+
+            case AST::NodeType::Var:
+                return render_var(AST::cast_to<AST::Var>(node));
 
             case AST::NodeType::Net:
                 return render_net(AST::cast_to<AST::Net>(node));
 
-            case AST::NodeType::Integer:
-                return render_integer(AST::cast_to<AST::Integer>(node));
+            case AST::NodeType::WireNet:
+                return render_wirenet(AST::cast_to<AST::WireNet>(node));
 
-            case AST::NodeType::Real:
-                return render_real(AST::cast_to<AST::Real>(node));
+            case AST::NodeType::TriNet:
+                return render_trinet(AST::cast_to<AST::TriNet>(node));
 
-            case AST::NodeType::Byte:
-                return render_byte(AST::cast_to<AST::Byte>(node));
+            case AST::NodeType::Tri0Net:
+                return render_tri0net(AST::cast_to<AST::Tri0Net>(node));
 
-            case AST::NodeType::Shortint:
-                return render_shortint(AST::cast_to<AST::Shortint>(node));
+            case AST::NodeType::Tri1Net:
+                return render_tri1net(AST::cast_to<AST::Tri1Net>(node));
 
-            case AST::NodeType::Int:
-                return render_int(AST::cast_to<AST::Int>(node));
+            case AST::NodeType::TriandNet:
+                return render_triandnet(AST::cast_to<AST::TriandNet>(node));
 
-            case AST::NodeType::Longint:
-                return render_longint(AST::cast_to<AST::Longint>(node));
+            case AST::NodeType::TriorNet:
+                return render_triornet(AST::cast_to<AST::TriorNet>(node));
 
-            case AST::NodeType::Shortreal:
-                return render_shortreal(AST::cast_to<AST::Shortreal>(node));
+            case AST::NodeType::TriregNet:
+                return render_triregnet(AST::cast_to<AST::TriregNet>(node));
 
-            case AST::NodeType::Realtime:
-                return render_realtime(AST::cast_to<AST::Realtime>(node));
+            case AST::NodeType::WandNet:
+                return render_wandnet(AST::cast_to<AST::WandNet>(node));
 
-            case AST::NodeType::Bit:
-                return render_bit(AST::cast_to<AST::Bit>(node));
+            case AST::NodeType::WorNet:
+                return render_wornet(AST::cast_to<AST::WorNet>(node));
 
-            case AST::NodeType::Tri:
-                return render_tri(AST::cast_to<AST::Tri>(node));
+            case AST::NodeType::UwireNet:
+                return render_uwirenet(AST::cast_to<AST::UwireNet>(node));
 
-            case AST::NodeType::Wire:
-                return render_wire(AST::cast_to<AST::Wire>(node));
+            case AST::NodeType::Supply0Net:
+                return render_supply0net(AST::cast_to<AST::Supply0Net>(node));
 
-            case AST::NodeType::Supply0:
-                return render_supply0(AST::cast_to<AST::Supply0>(node));
+            case AST::NodeType::Supply1Net:
+                return render_supply1net(AST::cast_to<AST::Supply1Net>(node));
 
-            case AST::NodeType::Supply1:
-                return render_supply1(AST::cast_to<AST::Supply1>(node));
+            case AST::NodeType::InterconnectNet:
+                return render_interconnectnet(AST::cast_to<AST::InterconnectNet>(node));
 
-            case AST::NodeType::Logic:
-                return render_logic(AST::cast_to<AST::Logic>(node));
+            case AST::NodeType::UserNet:
+                return render_usernet(AST::cast_to<AST::UserNet>(node));
 
-            case AST::NodeType::Reg:
-                return render_reg(AST::cast_to<AST::Reg>(node));
+            case AST::NodeType::ImplicitNet:
+                return render_implicitnet(AST::cast_to<AST::ImplicitNet>(node));
 
-            case AST::NodeType::Ioport:
-                return render_ioport(AST::cast_to<AST::Ioport>(node));
+            case AST::NodeType::Strength:
+                return render_strength(AST::cast_to<AST::Strength>(node));
 
-            case AST::NodeType::Parameter:
-                return render_parameter(AST::cast_to<AST::Parameter>(node));
+            case AST::NodeType::DriveStrength:
+                return render_drivestrength(AST::cast_to<AST::DriveStrength>(node));
 
-            case AST::NodeType::Localparam:
-                return render_localparam(AST::cast_to<AST::Localparam>(node));
+            case AST::NodeType::ChargeStrength:
+                return render_chargestrength(AST::cast_to<AST::ChargeStrength>(node));
+
+            case AST::NodeType::Param:
+                return render_param(AST::cast_to<AST::Param>(node));
+
+            case AST::NodeType::TypeParam:
+                return render_typeparam(AST::cast_to<AST::TypeParam>(node));
+
+            case AST::NodeType::Typedef:
+                return render_typedef(AST::cast_to<AST::Typedef>(node));
+
+            case AST::NodeType::Member:
+                return render_member(AST::cast_to<AST::Member>(node));
+
+            case AST::NodeType::Arg:
+                return render_arg(AST::cast_to<AST::Arg>(node));
+
+            case AST::NodeType::Genvar:
+                return render_genvar(AST::cast_to<AST::Genvar>(node));
 
             case AST::NodeType::Concat:
                 return render_concat(AST::cast_to<AST::Concat>(node));
@@ -191,6 +278,18 @@ public:
 
             case AST::NodeType::Cast:
                 return render_cast(AST::cast_to<AST::Cast>(node));
+
+            case AST::NodeType::TypeCast:
+                return render_typecast(AST::cast_to<AST::TypeCast>(node));
+
+            case AST::NodeType::SizeCast:
+                return render_sizecast(AST::cast_to<AST::SizeCast>(node));
+
+            case AST::NodeType::SigningCast:
+                return render_signingcast(AST::cast_to<AST::SigningCast>(node));
+
+            case AST::NodeType::ConstCast:
+                return render_constcast(AST::cast_to<AST::ConstCast>(node));
 
             case AST::NodeType::Indirect:
                 return render_indirect(AST::cast_to<AST::Indirect>(node));
@@ -452,33 +551,6 @@ public:
             case AST::NodeType::SingleStatement:
                 return render_singlestatement(AST::cast_to<AST::SingleStatement>(node));
 
-            case AST::NodeType::EnumItem:
-                return render_enumitem(AST::cast_to<AST::EnumItem>(node));
-
-            case AST::NodeType::EnumDef:
-                return render_enumdef(AST::cast_to<AST::EnumDef>(node));
-
-            case AST::NodeType::Typedef:
-                return render_typedef(AST::cast_to<AST::Typedef>(node));
-
-            case AST::NodeType::StructMember:
-                return render_structmember(AST::cast_to<AST::StructMember>(node));
-
-            case AST::NodeType::StructUnionDef:
-                return render_structuniondef(AST::cast_to<AST::StructUnionDef>(node));
-
-            case AST::NodeType::StructDef:
-                return render_structdef(AST::cast_to<AST::StructDef>(node));
-
-            case AST::NodeType::Union:
-                return render_union(AST::cast_to<AST::Union>(node));
-
-            case AST::NodeType::Package:
-                return render_package(AST::cast_to<AST::Package>(node));
-
-            case AST::NodeType::Import:
-                return render_import(AST::cast_to<AST::Import>(node));
-
             default:
                 return render_node(node);
             }
@@ -536,20 +608,20 @@ public:
     T render(const AST::Port::Ptr node) const { return render_port(node); }
 
     /**
-     * Main rendering method for the Width node, we
+     * Main rendering method for the Package node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_width(const AST::Width::Ptr &node)
+     * @see GeneratorBase::render_package(const AST::Package::Ptr &node)
      */
-    T render(const AST::Width::Ptr node) const { return render_width(node); }
+    T render(const AST::Package::Ptr node) const { return render_package(node); }
 
     /**
-     * Main rendering method for the Length node, we
+     * Main rendering method for the Import node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_length(const AST::Length::Ptr &node)
+     * @see GeneratorBase::render_import(const AST::Import::Ptr &node)
      */
-    T render(const AST::Length::Ptr node) const { return render_length(node); }
+    T render(const AST::Import::Ptr node) const { return render_import(node); }
 
     /**
      * Main rendering method for the Identifier node, we
@@ -600,68 +672,132 @@ public:
     T render(const AST::FloatConst::Ptr node) const { return render_floatconst(node); }
 
     /**
-     * Main rendering method for the IODir node, we
+     * Main rendering method for the DataType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_iodir(const AST::IODir::Ptr &node)
+     * @see GeneratorBase::render_datatype(const AST::DataType::Ptr &node)
      */
-    T render(const AST::IODir::Ptr node) const { return render_iodir(node); }
+    T render(const AST::DataType::Ptr node) const { return render_datatype(node); }
 
     /**
-     * Main rendering method for the Input node, we
+     * Main rendering method for the LogicType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_input(const AST::Input::Ptr &node)
+     * @see GeneratorBase::render_logictype(const AST::LogicType::Ptr &node)
      */
-    T render(const AST::Input::Ptr node) const { return render_input(node); }
+    T render(const AST::LogicType::Ptr node) const { return render_logictype(node); }
 
     /**
-     * Main rendering method for the Output node, we
+     * Main rendering method for the RegType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_output(const AST::Output::Ptr &node)
+     * @see GeneratorBase::render_regtype(const AST::RegType::Ptr &node)
      */
-    T render(const AST::Output::Ptr node) const { return render_output(node); }
+    T render(const AST::RegType::Ptr node) const { return render_regtype(node); }
 
     /**
-     * Main rendering method for the Inout node, we
+     * Main rendering method for the BitType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_inout(const AST::Inout::Ptr &node)
+     * @see GeneratorBase::render_bittype(const AST::BitType::Ptr &node)
      */
-    T render(const AST::Inout::Ptr node) const { return render_inout(node); }
+    T render(const AST::BitType::Ptr node) const { return render_bittype(node); }
 
     /**
-     * Main rendering method for the VariableBase node, we
+     * Main rendering method for the ByteType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_variablebase(const AST::VariableBase::Ptr &node)
+     * @see GeneratorBase::render_bytetype(const AST::ByteType::Ptr &node)
      */
-    T render(const AST::VariableBase::Ptr node) const { return render_variablebase(node); }
+    T render(const AST::ByteType::Ptr node) const { return render_bytetype(node); }
 
     /**
-     * Main rendering method for the Genvar node, we
+     * Main rendering method for the ShortintType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_genvar(const AST::Genvar::Ptr &node)
+     * @see GeneratorBase::render_shortinttype(const AST::ShortintType::Ptr &node)
      */
-    T render(const AST::Genvar::Ptr node) const { return render_genvar(node); }
+    T render(const AST::ShortintType::Ptr node) const { return render_shortinttype(node); }
 
     /**
-     * Main rendering method for the Variable node, we
+     * Main rendering method for the IntType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_variable(const AST::Variable::Ptr &node)
+     * @see GeneratorBase::render_inttype(const AST::IntType::Ptr &node)
      */
-    T render(const AST::Variable::Ptr node) const { return render_variable(node); }
+    T render(const AST::IntType::Ptr node) const { return render_inttype(node); }
 
     /**
-     * Main rendering method for the DataModifier node, we
+     * Main rendering method for the LongintType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_datamodifier(const AST::DataModifier::Ptr &node)
+     * @see GeneratorBase::render_longinttype(const AST::LongintType::Ptr &node)
      */
-    T render(const AST::DataModifier::Ptr node) const { return render_datamodifier(node); }
+    T render(const AST::LongintType::Ptr node) const { return render_longinttype(node); }
+
+    /**
+     * Main rendering method for the IntegerType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_integertype(const AST::IntegerType::Ptr &node)
+     */
+    T render(const AST::IntegerType::Ptr node) const { return render_integertype(node); }
+
+    /**
+     * Main rendering method for the TimeType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_timetype(const AST::TimeType::Ptr &node)
+     */
+    T render(const AST::TimeType::Ptr node) const { return render_timetype(node); }
+
+    /**
+     * Main rendering method for the RealType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_realtype(const AST::RealType::Ptr &node)
+     */
+    T render(const AST::RealType::Ptr node) const { return render_realtype(node); }
+
+    /**
+     * Main rendering method for the ShortrealType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_shortrealtype(const AST::ShortrealType::Ptr &node)
+     */
+    T render(const AST::ShortrealType::Ptr node) const { return render_shortrealtype(node); }
+
+    /**
+     * Main rendering method for the RealtimeType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_realtimetype(const AST::RealtimeType::Ptr &node)
+     */
+    T render(const AST::RealtimeType::Ptr node) const { return render_realtimetype(node); }
+
+    /**
+     * Main rendering method for the StringType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_stringtype(const AST::StringType::Ptr &node)
+     */
+    T render(const AST::StringType::Ptr node) const { return render_stringtype(node); }
+
+    /**
+     * Main rendering method for the ChandleType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_chandletype(const AST::ChandleType::Ptr &node)
+     */
+    T render(const AST::ChandleType::Ptr node) const { return render_chandletype(node); }
+
+    /**
+     * Main rendering method for the EventType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_eventtype(const AST::EventType::Ptr &node)
+     */
+    T render(const AST::EventType::Ptr node) const { return render_eventtype(node); }
 
     /**
      * Main rendering method for the ImplicitType node, we
@@ -672,20 +808,140 @@ public:
     T render(const AST::ImplicitType::Ptr node) const { return render_implicittype(node); }
 
     /**
-     * Main rendering method for the CustomType node, we
+     * Main rendering method for the VoidType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_customtype(const AST::CustomType::Ptr &node)
+     * @see GeneratorBase::render_voidtype(const AST::VoidType::Ptr &node)
      */
-    T render(const AST::CustomType::Ptr node) const { return render_customtype(node); }
+    T render(const AST::VoidType::Ptr node) const { return render_voidtype(node); }
 
     /**
-     * Main rendering method for the CustomTypeVar node, we
+     * Main rendering method for the NamedType node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_customtypevar(const AST::CustomTypeVar::Ptr &node)
+     * @see GeneratorBase::render_namedtype(const AST::NamedType::Ptr &node)
      */
-    T render(const AST::CustomTypeVar::Ptr node) const { return render_customtypevar(node); }
+    T render(const AST::NamedType::Ptr node) const { return render_namedtype(node); }
+
+    /**
+     * Main rendering method for the ScopeName node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_scopename(const AST::ScopeName::Ptr &node)
+     */
+    T render(const AST::ScopeName::Ptr node) const { return render_scopename(node); }
+
+    /**
+     * Main rendering method for the StructType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_structtype(const AST::StructType::Ptr &node)
+     */
+    T render(const AST::StructType::Ptr node) const { return render_structtype(node); }
+
+    /**
+     * Main rendering method for the UnionType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_uniontype(const AST::UnionType::Ptr &node)
+     */
+    T render(const AST::UnionType::Ptr node) const { return render_uniontype(node); }
+
+    /**
+     * Main rendering method for the EnumType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_enumtype(const AST::EnumType::Ptr &node)
+     */
+    T render(const AST::EnumType::Ptr node) const { return render_enumtype(node); }
+
+    /**
+     * Main rendering method for the EnumItem node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_enumitem(const AST::EnumItem::Ptr &node)
+     */
+    T render(const AST::EnumItem::Ptr node) const { return render_enumitem(node); }
+
+    /**
+     * Main rendering method for the TypeOpExpr node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_typeopexpr(const AST::TypeOpExpr::Ptr &node)
+     */
+    T render(const AST::TypeOpExpr::Ptr node) const { return render_typeopexpr(node); }
+
+    /**
+     * Main rendering method for the TypeOpType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_typeoptype(const AST::TypeOpType::Ptr &node)
+     */
+    T render(const AST::TypeOpType::Ptr node) const { return render_typeoptype(node); }
+
+    /**
+     * Main rendering method for the Dimension node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_dimension(const AST::Dimension::Ptr &node)
+     */
+    T render(const AST::Dimension::Ptr node) const { return render_dimension(node); }
+
+    /**
+     * Main rendering method for the RangeDim node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_rangedim(const AST::RangeDim::Ptr &node)
+     */
+    T render(const AST::RangeDim::Ptr node) const { return render_rangedim(node); }
+
+    /**
+     * Main rendering method for the SizeDim node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_sizedim(const AST::SizeDim::Ptr &node)
+     */
+    T render(const AST::SizeDim::Ptr node) const { return render_sizedim(node); }
+
+    /**
+     * Main rendering method for the UnsizedDim node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_unsizeddim(const AST::UnsizedDim::Ptr &node)
+     */
+    T render(const AST::UnsizedDim::Ptr node) const { return render_unsizeddim(node); }
+
+    /**
+     * Main rendering method for the QueueDim node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_queuedim(const AST::QueueDim::Ptr &node)
+     */
+    T render(const AST::QueueDim::Ptr node) const { return render_queuedim(node); }
+
+    /**
+     * Main rendering method for the AssocDim node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_assocdim(const AST::AssocDim::Ptr &node)
+     */
+    T render(const AST::AssocDim::Ptr node) const { return render_assocdim(node); }
+
+    /**
+     * Main rendering method for the Declaration node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_declaration(const AST::Declaration::Ptr &node)
+     */
+    T render(const AST::Declaration::Ptr node) const { return render_declaration(node); }
+
+    /**
+     * Main rendering method for the Var node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_var(const AST::Var::Ptr &node)
+     */
+    T render(const AST::Var::Ptr node) const { return render_var(node); }
 
     /**
      * Main rendering method for the Net node, we
@@ -696,148 +952,196 @@ public:
     T render(const AST::Net::Ptr node) const { return render_net(node); }
 
     /**
-     * Main rendering method for the Integer node, we
+     * Main rendering method for the WireNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_integer(const AST::Integer::Ptr &node)
+     * @see GeneratorBase::render_wirenet(const AST::WireNet::Ptr &node)
      */
-    T render(const AST::Integer::Ptr node) const { return render_integer(node); }
+    T render(const AST::WireNet::Ptr node) const { return render_wirenet(node); }
 
     /**
-     * Main rendering method for the Real node, we
+     * Main rendering method for the TriNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_real(const AST::Real::Ptr &node)
+     * @see GeneratorBase::render_trinet(const AST::TriNet::Ptr &node)
      */
-    T render(const AST::Real::Ptr node) const { return render_real(node); }
+    T render(const AST::TriNet::Ptr node) const { return render_trinet(node); }
 
     /**
-     * Main rendering method for the Byte node, we
+     * Main rendering method for the Tri0Net node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_byte(const AST::Byte::Ptr &node)
+     * @see GeneratorBase::render_tri0net(const AST::Tri0Net::Ptr &node)
      */
-    T render(const AST::Byte::Ptr node) const { return render_byte(node); }
+    T render(const AST::Tri0Net::Ptr node) const { return render_tri0net(node); }
 
     /**
-     * Main rendering method for the Shortint node, we
+     * Main rendering method for the Tri1Net node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_shortint(const AST::Shortint::Ptr &node)
+     * @see GeneratorBase::render_tri1net(const AST::Tri1Net::Ptr &node)
      */
-    T render(const AST::Shortint::Ptr node) const { return render_shortint(node); }
+    T render(const AST::Tri1Net::Ptr node) const { return render_tri1net(node); }
 
     /**
-     * Main rendering method for the Int node, we
+     * Main rendering method for the TriandNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_int(const AST::Int::Ptr &node)
+     * @see GeneratorBase::render_triandnet(const AST::TriandNet::Ptr &node)
      */
-    T render(const AST::Int::Ptr node) const { return render_int(node); }
+    T render(const AST::TriandNet::Ptr node) const { return render_triandnet(node); }
 
     /**
-     * Main rendering method for the Longint node, we
+     * Main rendering method for the TriorNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_longint(const AST::Longint::Ptr &node)
+     * @see GeneratorBase::render_triornet(const AST::TriorNet::Ptr &node)
      */
-    T render(const AST::Longint::Ptr node) const { return render_longint(node); }
+    T render(const AST::TriorNet::Ptr node) const { return render_triornet(node); }
 
     /**
-     * Main rendering method for the Shortreal node, we
+     * Main rendering method for the TriregNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_shortreal(const AST::Shortreal::Ptr &node)
+     * @see GeneratorBase::render_triregnet(const AST::TriregNet::Ptr &node)
      */
-    T render(const AST::Shortreal::Ptr node) const { return render_shortreal(node); }
+    T render(const AST::TriregNet::Ptr node) const { return render_triregnet(node); }
 
     /**
-     * Main rendering method for the Realtime node, we
+     * Main rendering method for the WandNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_realtime(const AST::Realtime::Ptr &node)
+     * @see GeneratorBase::render_wandnet(const AST::WandNet::Ptr &node)
      */
-    T render(const AST::Realtime::Ptr node) const { return render_realtime(node); }
+    T render(const AST::WandNet::Ptr node) const { return render_wandnet(node); }
 
     /**
-     * Main rendering method for the Bit node, we
+     * Main rendering method for the WorNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_bit(const AST::Bit::Ptr &node)
+     * @see GeneratorBase::render_wornet(const AST::WorNet::Ptr &node)
      */
-    T render(const AST::Bit::Ptr node) const { return render_bit(node); }
+    T render(const AST::WorNet::Ptr node) const { return render_wornet(node); }
 
     /**
-     * Main rendering method for the Tri node, we
+     * Main rendering method for the UwireNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_tri(const AST::Tri::Ptr &node)
+     * @see GeneratorBase::render_uwirenet(const AST::UwireNet::Ptr &node)
      */
-    T render(const AST::Tri::Ptr node) const { return render_tri(node); }
+    T render(const AST::UwireNet::Ptr node) const { return render_uwirenet(node); }
 
     /**
-     * Main rendering method for the Wire node, we
+     * Main rendering method for the Supply0Net node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_wire(const AST::Wire::Ptr &node)
+     * @see GeneratorBase::render_supply0net(const AST::Supply0Net::Ptr &node)
      */
-    T render(const AST::Wire::Ptr node) const { return render_wire(node); }
+    T render(const AST::Supply0Net::Ptr node) const { return render_supply0net(node); }
 
     /**
-     * Main rendering method for the Supply0 node, we
+     * Main rendering method for the Supply1Net node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_supply0(const AST::Supply0::Ptr &node)
+     * @see GeneratorBase::render_supply1net(const AST::Supply1Net::Ptr &node)
      */
-    T render(const AST::Supply0::Ptr node) const { return render_supply0(node); }
+    T render(const AST::Supply1Net::Ptr node) const { return render_supply1net(node); }
 
     /**
-     * Main rendering method for the Supply1 node, we
+     * Main rendering method for the InterconnectNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_supply1(const AST::Supply1::Ptr &node)
+     * @see GeneratorBase::render_interconnectnet(const AST::InterconnectNet::Ptr &node)
      */
-    T render(const AST::Supply1::Ptr node) const { return render_supply1(node); }
+    T render(const AST::InterconnectNet::Ptr node) const { return render_interconnectnet(node); }
 
     /**
-     * Main rendering method for the Logic node, we
+     * Main rendering method for the UserNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_logic(const AST::Logic::Ptr &node)
+     * @see GeneratorBase::render_usernet(const AST::UserNet::Ptr &node)
      */
-    T render(const AST::Logic::Ptr node) const { return render_logic(node); }
+    T render(const AST::UserNet::Ptr node) const { return render_usernet(node); }
 
     /**
-     * Main rendering method for the Reg node, we
+     * Main rendering method for the ImplicitNet node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_reg(const AST::Reg::Ptr &node)
+     * @see GeneratorBase::render_implicitnet(const AST::ImplicitNet::Ptr &node)
      */
-    T render(const AST::Reg::Ptr node) const { return render_reg(node); }
+    T render(const AST::ImplicitNet::Ptr node) const { return render_implicitnet(node); }
 
     /**
-     * Main rendering method for the Ioport node, we
+     * Main rendering method for the Strength node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_ioport(const AST::Ioport::Ptr &node)
+     * @see GeneratorBase::render_strength(const AST::Strength::Ptr &node)
      */
-    T render(const AST::Ioport::Ptr node) const { return render_ioport(node); }
+    T render(const AST::Strength::Ptr node) const { return render_strength(node); }
 
     /**
-     * Main rendering method for the Parameter node, we
+     * Main rendering method for the DriveStrength node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_parameter(const AST::Parameter::Ptr &node)
+     * @see GeneratorBase::render_drivestrength(const AST::DriveStrength::Ptr &node)
      */
-    T render(const AST::Parameter::Ptr node) const { return render_parameter(node); }
+    T render(const AST::DriveStrength::Ptr node) const { return render_drivestrength(node); }
 
     /**
-     * Main rendering method for the Localparam node, we
+     * Main rendering method for the ChargeStrength node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_localparam(const AST::Localparam::Ptr &node)
+     * @see GeneratorBase::render_chargestrength(const AST::ChargeStrength::Ptr &node)
      */
-    T render(const AST::Localparam::Ptr node) const { return render_localparam(node); }
+    T render(const AST::ChargeStrength::Ptr node) const { return render_chargestrength(node); }
+
+    /**
+     * Main rendering method for the Param node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_param(const AST::Param::Ptr &node)
+     */
+    T render(const AST::Param::Ptr node) const { return render_param(node); }
+
+    /**
+     * Main rendering method for the TypeParam node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_typeparam(const AST::TypeParam::Ptr &node)
+     */
+    T render(const AST::TypeParam::Ptr node) const { return render_typeparam(node); }
+
+    /**
+     * Main rendering method for the Typedef node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_typedef(const AST::Typedef::Ptr &node)
+     */
+    T render(const AST::Typedef::Ptr node) const { return render_typedef(node); }
+
+    /**
+     * Main rendering method for the Member node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_member(const AST::Member::Ptr &node)
+     */
+    T render(const AST::Member::Ptr node) const { return render_member(node); }
+
+    /**
+     * Main rendering method for the Arg node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_arg(const AST::Arg::Ptr &node)
+     */
+    T render(const AST::Arg::Ptr node) const { return render_arg(node); }
+
+    /**
+     * Main rendering method for the Genvar node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_genvar(const AST::Genvar::Ptr &node)
+     */
+    T render(const AST::Genvar::Ptr node) const { return render_genvar(node); }
 
     /**
      * Main rendering method for the Concat node, we
@@ -889,6 +1193,38 @@ public:
      * @see GeneratorBase::render_cast(const AST::Cast::Ptr &node)
      */
     T render(const AST::Cast::Ptr node) const { return render_cast(node); }
+
+    /**
+     * Main rendering method for the TypeCast node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_typecast(const AST::TypeCast::Ptr &node)
+     */
+    T render(const AST::TypeCast::Ptr node) const { return render_typecast(node); }
+
+    /**
+     * Main rendering method for the SizeCast node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_sizecast(const AST::SizeCast::Ptr &node)
+     */
+    T render(const AST::SizeCast::Ptr node) const { return render_sizecast(node); }
+
+    /**
+     * Main rendering method for the SigningCast node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_signingcast(const AST::SigningCast::Ptr &node)
+     */
+    T render(const AST::SigningCast::Ptr node) const { return render_signingcast(node); }
+
+    /**
+     * Main rendering method for the ConstCast node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_constcast(const AST::ConstCast::Ptr &node)
+     */
+    T render(const AST::ConstCast::Ptr node) const { return render_constcast(node); }
 
     /**
      * Main rendering method for the Indirect node, we
@@ -1607,78 +1943,6 @@ public:
      */
     T render(const AST::SingleStatement::Ptr node) const { return render_singlestatement(node); }
 
-    /**
-     * Main rendering method for the EnumItem node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_enumitem(const AST::EnumItem::Ptr &node)
-     */
-    T render(const AST::EnumItem::Ptr node) const { return render_enumitem(node); }
-
-    /**
-     * Main rendering method for the EnumDef node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_enumdef(const AST::EnumDef::Ptr &node)
-     */
-    T render(const AST::EnumDef::Ptr node) const { return render_enumdef(node); }
-
-    /**
-     * Main rendering method for the Typedef node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_typedef(const AST::Typedef::Ptr &node)
-     */
-    T render(const AST::Typedef::Ptr node) const { return render_typedef(node); }
-
-    /**
-     * Main rendering method for the StructMember node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_structmember(const AST::StructMember::Ptr &node)
-     */
-    T render(const AST::StructMember::Ptr node) const { return render_structmember(node); }
-
-    /**
-     * Main rendering method for the StructUnionDef node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_structuniondef(const AST::StructUnionDef::Ptr &node)
-     */
-    T render(const AST::StructUnionDef::Ptr node) const { return render_structuniondef(node); }
-
-    /**
-     * Main rendering method for the StructDef node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_structdef(const AST::StructDef::Ptr &node)
-     */
-    T render(const AST::StructDef::Ptr node) const { return render_structdef(node); }
-
-    /**
-     * Main rendering method for the Union node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_union(const AST::Union::Ptr &node)
-     */
-    T render(const AST::Union::Ptr node) const { return render_union(node); }
-
-    /**
-     * Main rendering method for the Package node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_package(const AST::Package::Ptr &node)
-     */
-    T render(const AST::Package::Ptr node) const { return render_package(node); }
-
-    /**
-     * Main rendering method for the Import node, we
-     * dispatch directly to the right rendering method.
-     *
-     * @see GeneratorBase::render_import(const AST::Import::Ptr &node)
-     */
-    T render(const AST::Import::Ptr node) const { return render_import(node); }
-
 protected:
     /**
      * Render the Node base class. This method must be overloaded
@@ -1723,16 +1987,16 @@ protected:
     virtual T render_port(const AST::Port::Ptr node) const { return T(); }
 
     /**
-     * Render the Width node. This method must be
+     * Render the Package node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_width(const AST::Width::Ptr node) const { return T(); }
+    virtual T render_package(const AST::Package::Ptr node) const { return T(); }
 
     /**
-     * Render the Length node. This method must be
+     * Render the Import node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_length(const AST::Length::Ptr node) const { return T(); }
+    virtual T render_import(const AST::Import::Ptr node) const { return T(); }
 
     /**
      * Render the Identifier node. This method must be
@@ -1771,52 +2035,100 @@ protected:
     virtual T render_floatconst(const AST::FloatConst::Ptr node) const { return T(); }
 
     /**
-     * Render the IODir node. This method must be
+     * Render the DataType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_iodir(const AST::IODir::Ptr node) const { return T(); }
+    virtual T render_datatype(const AST::DataType::Ptr node) const { return T(); }
 
     /**
-     * Render the Input node. This method must be
+     * Render the LogicType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_input(const AST::Input::Ptr node) const { return T(); }
+    virtual T render_logictype(const AST::LogicType::Ptr node) const { return T(); }
 
     /**
-     * Render the Output node. This method must be
+     * Render the RegType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_output(const AST::Output::Ptr node) const { return T(); }
+    virtual T render_regtype(const AST::RegType::Ptr node) const { return T(); }
 
     /**
-     * Render the Inout node. This method must be
+     * Render the BitType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_inout(const AST::Inout::Ptr node) const { return T(); }
+    virtual T render_bittype(const AST::BitType::Ptr node) const { return T(); }
 
     /**
-     * Render the VariableBase node. This method must be
+     * Render the ByteType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_variablebase(const AST::VariableBase::Ptr node) const { return T(); }
+    virtual T render_bytetype(const AST::ByteType::Ptr node) const { return T(); }
 
     /**
-     * Render the Genvar node. This method must be
+     * Render the ShortintType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_genvar(const AST::Genvar::Ptr node) const { return T(); }
+    virtual T render_shortinttype(const AST::ShortintType::Ptr node) const { return T(); }
 
     /**
-     * Render the Variable node. This method must be
+     * Render the IntType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_variable(const AST::Variable::Ptr node) const { return T(); }
+    virtual T render_inttype(const AST::IntType::Ptr node) const { return T(); }
 
     /**
-     * Render the DataModifier node. This method must be
+     * Render the LongintType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_datamodifier(const AST::DataModifier::Ptr node) const { return T(); }
+    virtual T render_longinttype(const AST::LongintType::Ptr node) const { return T(); }
+
+    /**
+     * Render the IntegerType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_integertype(const AST::IntegerType::Ptr node) const { return T(); }
+
+    /**
+     * Render the TimeType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_timetype(const AST::TimeType::Ptr node) const { return T(); }
+
+    /**
+     * Render the RealType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_realtype(const AST::RealType::Ptr node) const { return T(); }
+
+    /**
+     * Render the ShortrealType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_shortrealtype(const AST::ShortrealType::Ptr node) const { return T(); }
+
+    /**
+     * Render the RealtimeType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_realtimetype(const AST::RealtimeType::Ptr node) const { return T(); }
+
+    /**
+     * Render the StringType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_stringtype(const AST::StringType::Ptr node) const { return T(); }
+
+    /**
+     * Render the ChandleType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_chandletype(const AST::ChandleType::Ptr node) const { return T(); }
+
+    /**
+     * Render the EventType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_eventtype(const AST::EventType::Ptr node) const { return T(); }
 
     /**
      * Render the ImplicitType node. This method must be
@@ -1825,16 +2137,106 @@ protected:
     virtual T render_implicittype(const AST::ImplicitType::Ptr node) const { return T(); }
 
     /**
-     * Render the CustomType node. This method must be
+     * Render the VoidType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_customtype(const AST::CustomType::Ptr node) const { return T(); }
+    virtual T render_voidtype(const AST::VoidType::Ptr node) const { return T(); }
 
     /**
-     * Render the CustomTypeVar node. This method must be
+     * Render the NamedType node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_customtypevar(const AST::CustomTypeVar::Ptr node) const { return T(); }
+    virtual T render_namedtype(const AST::NamedType::Ptr node) const { return T(); }
+
+    /**
+     * Render the ScopeName node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_scopename(const AST::ScopeName::Ptr node) const { return T(); }
+
+    /**
+     * Render the StructType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_structtype(const AST::StructType::Ptr node) const { return T(); }
+
+    /**
+     * Render the UnionType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_uniontype(const AST::UnionType::Ptr node) const { return T(); }
+
+    /**
+     * Render the EnumType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_enumtype(const AST::EnumType::Ptr node) const { return T(); }
+
+    /**
+     * Render the EnumItem node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_enumitem(const AST::EnumItem::Ptr node) const { return T(); }
+
+    /**
+     * Render the TypeOpExpr node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_typeopexpr(const AST::TypeOpExpr::Ptr node) const { return T(); }
+
+    /**
+     * Render the TypeOpType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_typeoptype(const AST::TypeOpType::Ptr node) const { return T(); }
+
+    /**
+     * Render the Dimension node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_dimension(const AST::Dimension::Ptr node) const { return T(); }
+
+    /**
+     * Render the RangeDim node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_rangedim(const AST::RangeDim::Ptr node) const { return T(); }
+
+    /**
+     * Render the SizeDim node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_sizedim(const AST::SizeDim::Ptr node) const { return T(); }
+
+    /**
+     * Render the UnsizedDim node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_unsizeddim(const AST::UnsizedDim::Ptr node) const { return T(); }
+
+    /**
+     * Render the QueueDim node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_queuedim(const AST::QueueDim::Ptr node) const { return T(); }
+
+    /**
+     * Render the AssocDim node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_assocdim(const AST::AssocDim::Ptr node) const { return T(); }
+
+    /**
+     * Render the Declaration node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_declaration(const AST::Declaration::Ptr node) const { return T(); }
+
+    /**
+     * Render the Var node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_var(const AST::Var::Ptr node) const { return T(); }
 
     /**
      * Render the Net node. This method must be
@@ -1843,112 +2245,148 @@ protected:
     virtual T render_net(const AST::Net::Ptr node) const { return T(); }
 
     /**
-     * Render the Integer node. This method must be
+     * Render the WireNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_integer(const AST::Integer::Ptr node) const { return T(); }
+    virtual T render_wirenet(const AST::WireNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Real node. This method must be
+     * Render the TriNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_real(const AST::Real::Ptr node) const { return T(); }
+    virtual T render_trinet(const AST::TriNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Byte node. This method must be
+     * Render the Tri0Net node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_byte(const AST::Byte::Ptr node) const { return T(); }
+    virtual T render_tri0net(const AST::Tri0Net::Ptr node) const { return T(); }
 
     /**
-     * Render the Shortint node. This method must be
+     * Render the Tri1Net node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_shortint(const AST::Shortint::Ptr node) const { return T(); }
+    virtual T render_tri1net(const AST::Tri1Net::Ptr node) const { return T(); }
 
     /**
-     * Render the Int node. This method must be
+     * Render the TriandNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_int(const AST::Int::Ptr node) const { return T(); }
+    virtual T render_triandnet(const AST::TriandNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Longint node. This method must be
+     * Render the TriorNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_longint(const AST::Longint::Ptr node) const { return T(); }
+    virtual T render_triornet(const AST::TriorNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Shortreal node. This method must be
+     * Render the TriregNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_shortreal(const AST::Shortreal::Ptr node) const { return T(); }
+    virtual T render_triregnet(const AST::TriregNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Realtime node. This method must be
+     * Render the WandNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_realtime(const AST::Realtime::Ptr node) const { return T(); }
+    virtual T render_wandnet(const AST::WandNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Bit node. This method must be
+     * Render the WorNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_bit(const AST::Bit::Ptr node) const { return T(); }
+    virtual T render_wornet(const AST::WorNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Tri node. This method must be
+     * Render the UwireNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_tri(const AST::Tri::Ptr node) const { return T(); }
+    virtual T render_uwirenet(const AST::UwireNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Wire node. This method must be
+     * Render the Supply0Net node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_wire(const AST::Wire::Ptr node) const { return T(); }
+    virtual T render_supply0net(const AST::Supply0Net::Ptr node) const { return T(); }
 
     /**
-     * Render the Supply0 node. This method must be
+     * Render the Supply1Net node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_supply0(const AST::Supply0::Ptr node) const { return T(); }
+    virtual T render_supply1net(const AST::Supply1Net::Ptr node) const { return T(); }
 
     /**
-     * Render the Supply1 node. This method must be
+     * Render the InterconnectNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_supply1(const AST::Supply1::Ptr node) const { return T(); }
+    virtual T render_interconnectnet(const AST::InterconnectNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Logic node. This method must be
+     * Render the UserNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_logic(const AST::Logic::Ptr node) const { return T(); }
+    virtual T render_usernet(const AST::UserNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Reg node. This method must be
+     * Render the ImplicitNet node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_reg(const AST::Reg::Ptr node) const { return T(); }
+    virtual T render_implicitnet(const AST::ImplicitNet::Ptr node) const { return T(); }
 
     /**
-     * Render the Ioport node. This method must be
+     * Render the Strength node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_ioport(const AST::Ioport::Ptr node) const { return T(); }
+    virtual T render_strength(const AST::Strength::Ptr node) const { return T(); }
 
     /**
-     * Render the Parameter node. This method must be
+     * Render the DriveStrength node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_parameter(const AST::Parameter::Ptr node) const { return T(); }
+    virtual T render_drivestrength(const AST::DriveStrength::Ptr node) const { return T(); }
 
     /**
-     * Render the Localparam node. This method must be
+     * Render the ChargeStrength node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_localparam(const AST::Localparam::Ptr node) const { return T(); }
+    virtual T render_chargestrength(const AST::ChargeStrength::Ptr node) const { return T(); }
+
+    /**
+     * Render the Param node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_param(const AST::Param::Ptr node) const { return T(); }
+
+    /**
+     * Render the TypeParam node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_typeparam(const AST::TypeParam::Ptr node) const { return T(); }
+
+    /**
+     * Render the Typedef node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_typedef(const AST::Typedef::Ptr node) const { return T(); }
+
+    /**
+     * Render the Member node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_member(const AST::Member::Ptr node) const { return T(); }
+
+    /**
+     * Render the Arg node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_arg(const AST::Arg::Ptr node) const { return T(); }
+
+    /**
+     * Render the Genvar node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_genvar(const AST::Genvar::Ptr node) const { return T(); }
 
     /**
      * Render the Concat node. This method must be
@@ -1985,6 +2423,30 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_cast(const AST::Cast::Ptr node) const { return T(); }
+
+    /**
+     * Render the TypeCast node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_typecast(const AST::TypeCast::Ptr node) const { return T(); }
+
+    /**
+     * Render the SizeCast node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_sizecast(const AST::SizeCast::Ptr node) const { return T(); }
+
+    /**
+     * Render the SigningCast node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_signingcast(const AST::SigningCast::Ptr node) const { return T(); }
+
+    /**
+     * Render the ConstCast node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_constcast(const AST::ConstCast::Ptr node) const { return T(); }
 
     /**
      * Render the Indirect node. This method must be
@@ -2522,60 +2984,6 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_singlestatement(const AST::SingleStatement::Ptr node) const { return T(); }
-
-    /**
-     * Render the EnumItem node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_enumitem(const AST::EnumItem::Ptr node) const { return T(); }
-
-    /**
-     * Render the EnumDef node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_enumdef(const AST::EnumDef::Ptr node) const { return T(); }
-
-    /**
-     * Render the Typedef node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_typedef(const AST::Typedef::Ptr node) const { return T(); }
-
-    /**
-     * Render the StructMember node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_structmember(const AST::StructMember::Ptr node) const { return T(); }
-
-    /**
-     * Render the StructUnionDef node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_structuniondef(const AST::StructUnionDef::Ptr node) const { return T(); }
-
-    /**
-     * Render the StructDef node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_structdef(const AST::StructDef::Ptr node) const { return T(); }
-
-    /**
-     * Render the Union node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_union(const AST::Union::Ptr node) const { return T(); }
-
-    /**
-     * Render the Package node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_package(const AST::Package::Ptr node) const { return T(); }
-
-    /**
-     * Render the Import node. This method must be
-     * overloaded in a derived class to your needs.
-     */
-    virtual T render_import(const AST::Import::Ptr node) const { return T(); }
 
 private:
     std::string m_indent_str;

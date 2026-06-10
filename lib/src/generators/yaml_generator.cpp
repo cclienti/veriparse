@@ -125,21 +125,46 @@ YAML::Node YAMLGenerator::render_module(const AST::Module::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Module::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
+            break;
+        case Veriparse::AST::Module::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
+            break;
+        default:
+            content["lifetime"] = "STATIC";
+        }
         switch(node->get_default_nettype()) {
-        case Veriparse::AST::Module::Default_nettypeEnum::INTEGER:
-            content["default_nettype"] = "INTEGER";
-            break;
-        case Veriparse::AST::Module::Default_nettypeEnum::REAL:
-            content["default_nettype"] = "REAL";
-            break;
-        case Veriparse::AST::Module::Default_nettypeEnum::REG:
-            content["default_nettype"] = "REG";
+        case Veriparse::AST::Module::Default_nettypeEnum::WIRE:
+            content["default_nettype"] = "WIRE";
             break;
         case Veriparse::AST::Module::Default_nettypeEnum::TRI:
             content["default_nettype"] = "TRI";
             break;
-        case Veriparse::AST::Module::Default_nettypeEnum::WIRE:
-            content["default_nettype"] = "WIRE";
+        case Veriparse::AST::Module::Default_nettypeEnum::TRI0:
+            content["default_nettype"] = "TRI0";
+            break;
+        case Veriparse::AST::Module::Default_nettypeEnum::TRI1:
+            content["default_nettype"] = "TRI1";
+            break;
+        case Veriparse::AST::Module::Default_nettypeEnum::TRIAND:
+            content["default_nettype"] = "TRIAND";
+            break;
+        case Veriparse::AST::Module::Default_nettypeEnum::TRIOR:
+            content["default_nettype"] = "TRIOR";
+            break;
+        case Veriparse::AST::Module::Default_nettypeEnum::TRIREG:
+            content["default_nettype"] = "TRIREG";
+            break;
+        case Veriparse::AST::Module::Default_nettypeEnum::WAND:
+            content["default_nettype"] = "WAND";
+            break;
+        case Veriparse::AST::Module::Default_nettypeEnum::WOR:
+            content["default_nettype"] = "WOR";
+            break;
+        case Veriparse::AST::Module::Default_nettypeEnum::UWIRE:
+            content["default_nettype"] = "UWIRE";
             break;
         case Veriparse::AST::Module::Default_nettypeEnum::SUPPLY0:
             content["default_nettype"] = "SUPPLY0";
@@ -153,14 +178,14 @@ YAML::Node YAMLGenerator::render_module(const AST::Module::Ptr node) const
 
         if(node->get_params()) {
             content["params"] = YAML::Load("[]");
-            for(const AST::Parameter::Ptr &n : *node->get_params()) {
+            for(const AST::Declaration::Ptr &n : *node->get_params()) {
                 content["params"].push_back(render(n));
             }
         }
 
         if(node->get_ports()) {
             content["ports"] = YAML::Load("[]");
-            for(const AST::Node::Ptr &n : *node->get_ports()) {
+            for(const AST::Port::Ptr &n : *node->get_ports()) {
                 content["ports"].push_back(render(n));
             }
         }
@@ -190,61 +215,89 @@ YAML::Node YAMLGenerator::render_port(const AST::Port::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
+        switch(node->get_direction()) {
+        case Veriparse::AST::Port::DirectionEnum::NONE:
+            content["direction"] = "NONE";
+            break;
+        case Veriparse::AST::Port::DirectionEnum::INPUT:
+            content["direction"] = "INPUT";
+            break;
+        case Veriparse::AST::Port::DirectionEnum::OUTPUT:
+            content["direction"] = "OUTPUT";
+            break;
+        case Veriparse::AST::Port::DirectionEnum::INOUT:
+            content["direction"] = "INOUT";
+            break;
+        case Veriparse::AST::Port::DirectionEnum::REF:
+            content["direction"] = "REF";
+            break;
+        default:
+            content["direction"] = "CONST_REF";
         }
+
+        content["decl"] = render(node->get_decl());
+
+        content["expr"] = render(node->get_expr());
     }
 
     node_port["Port"] = content;
     return node_port;
 }
 
-YAML::Node YAMLGenerator::render_width(const AST::Width::Ptr node) const
+YAML::Node YAMLGenerator::render_package(const AST::Package::Ptr node) const
 {
-    YAML::Node node_width;
+    YAML::Node node_package;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Width) {
+        if(node->get_node_type() != AST::NodeType::Package) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
+        content["name"] = node->get_name();
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Package::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
+            break;
+        case Veriparse::AST::Package::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
+            break;
+        default:
+            content["lifetime"] = "STATIC";
+        }
 
-        content["msb"] = render(node->get_msb());
-
-        content["lsb"] = render(node->get_lsb());
+        if(node->get_items()) {
+            content["items"] = YAML::Load("[]");
+            for(const AST::Node::Ptr &n : *node->get_items()) {
+                content["items"].push_back(render(n));
+            }
+        }
     }
 
-    node_width["Width"] = content;
-    return node_width;
+    node_package["Package"] = content;
+    return node_package;
 }
 
-YAML::Node YAMLGenerator::render_length(const AST::Length::Ptr node) const
+YAML::Node YAMLGenerator::render_import(const AST::Import::Ptr node) const
 {
-    YAML::Node node_length;
+    YAML::Node node_import;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Length) {
+        if(node->get_node_type() != AST::NodeType::Import) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
-
-        content["msb"] = render(node->get_msb());
-
-        content["lsb"] = render(node->get_lsb());
+        content["package"] = node->get_package();
+        content["symbol"] = node->get_symbol();
     }
 
-    node_length["Length"] = content;
-    return node_length;
+    node_import["Import"] = content;
+    return node_import;
 }
 
 YAML::Node YAMLGenerator::render_identifier(const AST::Identifier::Ptr node) const
@@ -366,131 +419,1993 @@ YAML::Node YAMLGenerator::render_floatconst(const AST::FloatConst::Ptr node) con
     return node_floatconst;
 }
 
-YAML::Node YAMLGenerator::render_iodir(const AST::IODir::Ptr node) const
+YAML::Node YAMLGenerator::render_datatype(const AST::DataType::Ptr node) const
 {
-    YAML::Node node_iodir;
+    YAML::Node node_datatype;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IODir) {
+        if(node->get_node_type() != AST::NodeType::DataType) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        content["sign"] = node->get_sign();
+        switch(node->get_signing()) {
+        case Veriparse::AST::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
 
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
             }
         }
     }
 
-    node_iodir["IODir"] = content;
-    return node_iodir;
+    node_datatype["DataType"] = content;
+    return node_datatype;
 }
 
-YAML::Node YAMLGenerator::render_input(const AST::Input::Ptr node) const
+YAML::Node YAMLGenerator::render_logictype(const AST::LogicType::Ptr node) const
 {
-    YAML::Node node_input;
+    YAML::Node node_logictype;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Input) {
+        if(node->get_node_type() != AST::NodeType::LogicType) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        content["sign"] = node->get_sign();
+        switch(node->get_signing()) {
+        case Veriparse::AST::LogicType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::LogicType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
 
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
             }
         }
     }
 
-    node_input["Input"] = content;
-    return node_input;
+    node_logictype["LogicType"] = content;
+    return node_logictype;
 }
 
-YAML::Node YAMLGenerator::render_output(const AST::Output::Ptr node) const
+YAML::Node YAMLGenerator::render_regtype(const AST::RegType::Ptr node) const
 {
-    YAML::Node node_output;
+    YAML::Node node_regtype;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Output) {
+        if(node->get_node_type() != AST::NodeType::RegType) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        content["sign"] = node->get_sign();
+        switch(node->get_signing()) {
+        case Veriparse::AST::RegType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::RegType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
 
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
             }
         }
     }
 
-    node_output["Output"] = content;
-    return node_output;
+    node_regtype["RegType"] = content;
+    return node_regtype;
 }
 
-YAML::Node YAMLGenerator::render_inout(const AST::Inout::Ptr node) const
+YAML::Node YAMLGenerator::render_bittype(const AST::BitType::Ptr node) const
 {
-    YAML::Node node_inout;
+    YAML::Node node_bittype;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::Inout) {
+        if(node->get_node_type() != AST::NodeType::BitType) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        content["sign"] = node->get_sign();
+        switch(node->get_signing()) {
+        case Veriparse::AST::BitType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::BitType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
 
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
             }
         }
     }
 
-    node_inout["Inout"] = content;
-    return node_inout;
+    node_bittype["BitType"] = content;
+    return node_bittype;
 }
 
-YAML::Node YAMLGenerator::render_variablebase(const AST::VariableBase::Ptr node) const
+YAML::Node YAMLGenerator::render_bytetype(const AST::ByteType::Ptr node) const
 {
-    YAML::Node node_variablebase;
+    YAML::Node node_bytetype;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::VariableBase) {
+        if(node->get_node_type() != AST::NodeType::ByteType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::ByteType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::ByteType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_bytetype["ByteType"] = content;
+    return node_bytetype;
+}
+
+YAML::Node YAMLGenerator::render_shortinttype(const AST::ShortintType::Ptr node) const
+{
+    YAML::Node node_shortinttype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ShortintType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::ShortintType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::ShortintType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_shortinttype["ShortintType"] = content;
+    return node_shortinttype;
+}
+
+YAML::Node YAMLGenerator::render_inttype(const AST::IntType::Ptr node) const
+{
+    YAML::Node node_inttype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::IntType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::IntType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::IntType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_inttype["IntType"] = content;
+    return node_inttype;
+}
+
+YAML::Node YAMLGenerator::render_longinttype(const AST::LongintType::Ptr node) const
+{
+    YAML::Node node_longinttype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::LongintType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::LongintType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::LongintType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_longinttype["LongintType"] = content;
+    return node_longinttype;
+}
+
+YAML::Node YAMLGenerator::render_integertype(const AST::IntegerType::Ptr node) const
+{
+    YAML::Node node_integertype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::IntegerType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::IntegerType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::IntegerType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_integertype["IntegerType"] = content;
+    return node_integertype;
+}
+
+YAML::Node YAMLGenerator::render_timetype(const AST::TimeType::Ptr node) const
+{
+    YAML::Node node_timetype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TimeType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::TimeType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::TimeType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_timetype["TimeType"] = content;
+    return node_timetype;
+}
+
+YAML::Node YAMLGenerator::render_realtype(const AST::RealType::Ptr node) const
+{
+    YAML::Node node_realtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::RealType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::RealType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::RealType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_realtype["RealType"] = content;
+    return node_realtype;
+}
+
+YAML::Node YAMLGenerator::render_shortrealtype(const AST::ShortrealType::Ptr node) const
+{
+    YAML::Node node_shortrealtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ShortrealType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::ShortrealType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::ShortrealType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_shortrealtype["ShortrealType"] = content;
+    return node_shortrealtype;
+}
+
+YAML::Node YAMLGenerator::render_realtimetype(const AST::RealtimeType::Ptr node) const
+{
+    YAML::Node node_realtimetype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::RealtimeType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::RealtimeType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::RealtimeType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_realtimetype["RealtimeType"] = content;
+    return node_realtimetype;
+}
+
+YAML::Node YAMLGenerator::render_stringtype(const AST::StringType::Ptr node) const
+{
+    YAML::Node node_stringtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::StringType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::StringType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::StringType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_stringtype["StringType"] = content;
+    return node_stringtype;
+}
+
+YAML::Node YAMLGenerator::render_chandletype(const AST::ChandleType::Ptr node) const
+{
+    YAML::Node node_chandletype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ChandleType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::ChandleType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::ChandleType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_chandletype["ChandleType"] = content;
+    return node_chandletype;
+}
+
+YAML::Node YAMLGenerator::render_eventtype(const AST::EventType::Ptr node) const
+{
+    YAML::Node node_eventtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::EventType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::EventType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::EventType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_eventtype["EventType"] = content;
+    return node_eventtype;
+}
+
+YAML::Node YAMLGenerator::render_implicittype(const AST::ImplicitType::Ptr node) const
+{
+    YAML::Node node_implicittype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ImplicitType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::ImplicitType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::ImplicitType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_implicittype["ImplicitType"] = content;
+    return node_implicittype;
+}
+
+YAML::Node YAMLGenerator::render_voidtype(const AST::VoidType::Ptr node) const
+{
+    YAML::Node node_voidtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::VoidType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::VoidType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::VoidType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_voidtype["VoidType"] = content;
+    return node_voidtype;
+}
+
+YAML::Node YAMLGenerator::render_namedtype(const AST::NamedType::Ptr node) const
+{
+    YAML::Node node_namedtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::NamedType) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
+        switch(node->get_signing()) {
+        case Veriparse::AST::NamedType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::NamedType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_scope()) {
+            content["scope"] = YAML::Load("[]");
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                content["scope"].push_back(render(n));
+            }
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
     }
 
-    node_variablebase["VariableBase"] = content;
-    return node_variablebase;
+    node_namedtype["NamedType"] = content;
+    return node_namedtype;
+}
+
+YAML::Node YAMLGenerator::render_scopename(const AST::ScopeName::Ptr node) const
+{
+    YAML::Node node_scopename;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ScopeName) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        if(node->get_params()) {
+            content["params"] = YAML::Load("[]");
+            for(const AST::ParamArg::Ptr &n : *node->get_params()) {
+                content["params"].push_back(render(n));
+            }
+        }
+    }
+
+    node_scopename["ScopeName"] = content;
+    return node_scopename;
+}
+
+YAML::Node YAMLGenerator::render_structtype(const AST::StructType::Ptr node) const
+{
+    YAML::Node node_structtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::StructType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_packed"] = node->get_is_packed();
+        switch(node->get_signing()) {
+        case Veriparse::AST::StructType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::StructType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_members()) {
+            content["members"] = YAML::Load("[]");
+            for(const AST::Member::Ptr &n : *node->get_members()) {
+                content["members"].push_back(render(n));
+            }
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_structtype["StructType"] = content;
+    return node_structtype;
+}
+
+YAML::Node YAMLGenerator::render_uniontype(const AST::UnionType::Ptr node) const
+{
+    YAML::Node node_uniontype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::UnionType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_packed"] = node->get_is_packed();
+        content["is_tagged"] = node->get_is_tagged();
+        switch(node->get_signing()) {
+        case Veriparse::AST::UnionType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::UnionType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_members()) {
+            content["members"] = YAML::Load("[]");
+            for(const AST::Member::Ptr &n : *node->get_members()) {
+                content["members"].push_back(render(n));
+            }
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_uniontype["UnionType"] = content;
+    return node_uniontype;
+}
+
+YAML::Node YAMLGenerator::render_enumtype(const AST::EnumType::Ptr node) const
+{
+    YAML::Node node_enumtype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::EnumType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::EnumType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::EnumType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        content["base"] = render(node->get_base());
+
+        if(node->get_items()) {
+            content["items"] = YAML::Load("[]");
+            for(const AST::EnumItem::Ptr &n : *node->get_items()) {
+                content["items"].push_back(render(n));
+            }
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_enumtype["EnumType"] = content;
+    return node_enumtype;
+}
+
+YAML::Node YAMLGenerator::render_enumitem(const AST::EnumItem::Ptr node) const
+{
+    YAML::Node node_enumitem;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::EnumItem) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        content["value"] = render(node->get_value());
+
+        content["range"] = render(node->get_range());
+    }
+
+    node_enumitem["EnumItem"] = content;
+    return node_enumitem;
+}
+
+YAML::Node YAMLGenerator::render_typeopexpr(const AST::TypeOpExpr::Ptr node) const
+{
+    YAML::Node node_typeopexpr;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TypeOpExpr) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::TypeOpExpr::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::TypeOpExpr::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        content["expr"] = render(node->get_expr());
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_typeopexpr["TypeOpExpr"] = content;
+    return node_typeopexpr;
+}
+
+YAML::Node YAMLGenerator::render_typeoptype(const AST::TypeOpType::Ptr node) const
+{
+    YAML::Node node_typeoptype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TypeOpType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::TypeOpType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::TypeOpType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        content["arg_type"] = render(node->get_arg_type());
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_typeoptype["TypeOpType"] = content;
+    return node_typeoptype;
+}
+
+YAML::Node YAMLGenerator::render_dimension(const AST::Dimension::Ptr node) const
+{
+    YAML::Node node_dimension;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Dimension) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+    }
+
+    node_dimension["Dimension"] = content;
+    return node_dimension;
+}
+
+YAML::Node YAMLGenerator::render_rangedim(const AST::RangeDim::Ptr node) const
+{
+    YAML::Node node_rangedim;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::RangeDim) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["left"] = render(node->get_left());
+
+        content["right"] = render(node->get_right());
+    }
+
+    node_rangedim["RangeDim"] = content;
+    return node_rangedim;
+}
+
+YAML::Node YAMLGenerator::render_sizedim(const AST::SizeDim::Ptr node) const
+{
+    YAML::Node node_sizedim;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::SizeDim) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["size"] = render(node->get_size());
+    }
+
+    node_sizedim["SizeDim"] = content;
+    return node_sizedim;
+}
+
+YAML::Node YAMLGenerator::render_unsizeddim(const AST::UnsizedDim::Ptr node) const
+{
+    YAML::Node node_unsizeddim;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::UnsizedDim) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+    }
+
+    node_unsizeddim["UnsizedDim"] = content;
+    return node_unsizeddim;
+}
+
+YAML::Node YAMLGenerator::render_queuedim(const AST::QueueDim::Ptr node) const
+{
+    YAML::Node node_queuedim;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::QueueDim) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["bound"] = render(node->get_bound());
+    }
+
+    node_queuedim["QueueDim"] = content;
+    return node_queuedim;
+}
+
+YAML::Node YAMLGenerator::render_assocdim(const AST::AssocDim::Ptr node) const
+{
+    YAML::Node node_assocdim;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::AssocDim) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["index_type"] = render(node->get_index_type());
+    }
+
+    node_assocdim["AssocDim"] = content;
+    return node_assocdim;
+}
+
+YAML::Node YAMLGenerator::render_declaration(const AST::Declaration::Ptr node) const
+{
+    YAML::Node node_declaration;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Declaration) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_declaration["Declaration"] = content;
+    return node_declaration;
+}
+
+YAML::Node YAMLGenerator::render_var(const AST::Var::Ptr node) const
+{
+    YAML::Node node_var;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Var) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_var"] = node->get_is_var();
+        content["is_const"] = node->get_is_const();
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Var::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
+            break;
+        case Veriparse::AST::Var::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
+            break;
+        default:
+            content["lifetime"] = "STATIC";
+        }
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["init"] = render(node->get_init());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_var["Var"] = content;
+    return node_var;
+}
+
+YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
+{
+    YAML::Node node_net;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Net) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_net["Net"] = content;
+    return node_net;
+}
+
+YAML::Node YAMLGenerator::render_wirenet(const AST::WireNet::Ptr node) const
+{
+    YAML::Node node_wirenet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::WireNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_wirenet["WireNet"] = content;
+    return node_wirenet;
+}
+
+YAML::Node YAMLGenerator::render_trinet(const AST::TriNet::Ptr node) const
+{
+    YAML::Node node_trinet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TriNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_trinet["TriNet"] = content;
+    return node_trinet;
+}
+
+YAML::Node YAMLGenerator::render_tri0net(const AST::Tri0Net::Ptr node) const
+{
+    YAML::Node node_tri0net;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Tri0Net) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_tri0net["Tri0Net"] = content;
+    return node_tri0net;
+}
+
+YAML::Node YAMLGenerator::render_tri1net(const AST::Tri1Net::Ptr node) const
+{
+    YAML::Node node_tri1net;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Tri1Net) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_tri1net["Tri1Net"] = content;
+    return node_tri1net;
+}
+
+YAML::Node YAMLGenerator::render_triandnet(const AST::TriandNet::Ptr node) const
+{
+    YAML::Node node_triandnet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TriandNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_triandnet["TriandNet"] = content;
+    return node_triandnet;
+}
+
+YAML::Node YAMLGenerator::render_triornet(const AST::TriorNet::Ptr node) const
+{
+    YAML::Node node_triornet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TriorNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_triornet["TriorNet"] = content;
+    return node_triornet;
+}
+
+YAML::Node YAMLGenerator::render_triregnet(const AST::TriregNet::Ptr node) const
+{
+    YAML::Node node_triregnet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TriregNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_triregnet["TriregNet"] = content;
+    return node_triregnet;
+}
+
+YAML::Node YAMLGenerator::render_wandnet(const AST::WandNet::Ptr node) const
+{
+    YAML::Node node_wandnet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::WandNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_wandnet["WandNet"] = content;
+    return node_wandnet;
+}
+
+YAML::Node YAMLGenerator::render_wornet(const AST::WorNet::Ptr node) const
+{
+    YAML::Node node_wornet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::WorNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_wornet["WorNet"] = content;
+    return node_wornet;
+}
+
+YAML::Node YAMLGenerator::render_uwirenet(const AST::UwireNet::Ptr node) const
+{
+    YAML::Node node_uwirenet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::UwireNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_uwirenet["UwireNet"] = content;
+    return node_uwirenet;
+}
+
+YAML::Node YAMLGenerator::render_supply0net(const AST::Supply0Net::Ptr node) const
+{
+    YAML::Node node_supply0net;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Supply0Net) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_supply0net["Supply0Net"] = content;
+    return node_supply0net;
+}
+
+YAML::Node YAMLGenerator::render_supply1net(const AST::Supply1Net::Ptr node) const
+{
+    YAML::Node node_supply1net;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Supply1Net) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_supply1net["Supply1Net"] = content;
+    return node_supply1net;
+}
+
+YAML::Node YAMLGenerator::render_interconnectnet(const AST::InterconnectNet::Ptr node) const
+{
+    YAML::Node node_interconnectnet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::InterconnectNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_interconnectnet["InterconnectNet"] = content;
+    return node_interconnectnet;
+}
+
+YAML::Node YAMLGenerator::render_usernet(const AST::UserNet::Ptr node) const
+{
+    YAML::Node node_usernet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::UserNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_usernet["UserNet"] = content;
+    return node_usernet;
+}
+
+YAML::Node YAMLGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) const
+{
+    YAML::Node node_implicitnet;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ImplicitNet) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_vectored"] = node->get_is_vectored();
+        content["is_scalared"] = node->get_is_scalared();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["cont_assign"] = render(node->get_cont_assign());
+
+        content["strength"] = render(node->get_strength());
+
+        content["ldelay"] = render(node->get_ldelay());
+
+        content["rdelay"] = render(node->get_rdelay());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_implicitnet["ImplicitNet"] = content;
+    return node_implicitnet;
+}
+
+YAML::Node YAMLGenerator::render_strength(const AST::Strength::Ptr node) const
+{
+    YAML::Node node_strength;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Strength) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+    }
+
+    node_strength["Strength"] = content;
+    return node_strength;
+}
+
+YAML::Node YAMLGenerator::render_drivestrength(const AST::DriveStrength::Ptr node) const
+{
+    YAML::Node node_drivestrength;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::DriveStrength) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_s0()) {
+        case Veriparse::AST::DriveStrength::S0Enum::SUPPLY0:
+            content["s0"] = "SUPPLY0";
+            break;
+        case Veriparse::AST::DriveStrength::S0Enum::STRONG0:
+            content["s0"] = "STRONG0";
+            break;
+        case Veriparse::AST::DriveStrength::S0Enum::PULL0:
+            content["s0"] = "PULL0";
+            break;
+        case Veriparse::AST::DriveStrength::S0Enum::WEAK0:
+            content["s0"] = "WEAK0";
+            break;
+        default:
+            content["s0"] = "HIGHZ0";
+        }
+        switch(node->get_s1()) {
+        case Veriparse::AST::DriveStrength::S1Enum::SUPPLY1:
+            content["s1"] = "SUPPLY1";
+            break;
+        case Veriparse::AST::DriveStrength::S1Enum::STRONG1:
+            content["s1"] = "STRONG1";
+            break;
+        case Veriparse::AST::DriveStrength::S1Enum::PULL1:
+            content["s1"] = "PULL1";
+            break;
+        case Veriparse::AST::DriveStrength::S1Enum::WEAK1:
+            content["s1"] = "WEAK1";
+            break;
+        default:
+            content["s1"] = "HIGHZ1";
+        }
+    }
+
+    node_drivestrength["DriveStrength"] = content;
+    return node_drivestrength;
+}
+
+YAML::Node YAMLGenerator::render_chargestrength(const AST::ChargeStrength::Ptr node) const
+{
+    YAML::Node node_chargestrength;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ChargeStrength) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_charge()) {
+        case Veriparse::AST::ChargeStrength::ChargeEnum::SMALL:
+            content["charge"] = "SMALL";
+            break;
+        case Veriparse::AST::ChargeStrength::ChargeEnum::MEDIUM:
+            content["charge"] = "MEDIUM";
+            break;
+        default:
+            content["charge"] = "LARGE";
+        }
+    }
+
+    node_chargestrength["ChargeStrength"] = content;
+    return node_chargestrength;
+}
+
+YAML::Node YAMLGenerator::render_param(const AST::Param::Ptr node) const
+{
+    YAML::Node node_param;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Param) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_local"] = node->get_is_local();
+        content["name"] = node->get_name();
+
+        content["value"] = render(node->get_value());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_param["Param"] = content;
+    return node_param;
+}
+
+YAML::Node YAMLGenerator::render_typeparam(const AST::TypeParam::Ptr node) const
+{
+    YAML::Node node_typeparam;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TypeParam) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_local"] = node->get_is_local();
+        content["name"] = node->get_name();
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_typeparam["TypeParam"] = content;
+    return node_typeparam;
+}
+
+YAML::Node YAMLGenerator::render_typedef(const AST::Typedef::Ptr node) const
+{
+    YAML::Node node_typedef;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Typedef) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_fwd_kind()) {
+        case Veriparse::AST::Typedef::Fwd_kindEnum::NONE:
+            content["fwd_kind"] = "NONE";
+            break;
+        case Veriparse::AST::Typedef::Fwd_kindEnum::ENUM:
+            content["fwd_kind"] = "ENUM";
+            break;
+        case Veriparse::AST::Typedef::Fwd_kindEnum::STRUCT:
+            content["fwd_kind"] = "STRUCT";
+            break;
+        case Veriparse::AST::Typedef::Fwd_kindEnum::UNION:
+            content["fwd_kind"] = "UNION";
+            break;
+        case Veriparse::AST::Typedef::Fwd_kindEnum::CLASS:
+            content["fwd_kind"] = "CLASS";
+            break;
+        default:
+            content["fwd_kind"] = "INTERFACE_CLASS";
+        }
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_typedef["Typedef"] = content;
+    return node_typedef;
+}
+
+YAML::Node YAMLGenerator::render_member(const AST::Member::Ptr node) const
+{
+    YAML::Node node_member;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Member) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["init"] = render(node->get_init());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_member["Member"] = content;
+    return node_member;
+}
+
+YAML::Node YAMLGenerator::render_arg(const AST::Arg::Ptr node) const
+{
+    YAML::Node node_arg;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Arg) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["is_var"] = node->get_is_var();
+        switch(node->get_direction()) {
+        case Veriparse::AST::Arg::DirectionEnum::INPUT:
+            content["direction"] = "INPUT";
+            break;
+        case Veriparse::AST::Arg::DirectionEnum::OUTPUT:
+            content["direction"] = "OUTPUT";
+            break;
+        case Veriparse::AST::Arg::DirectionEnum::INOUT:
+            content["direction"] = "INOUT";
+            break;
+        case Veriparse::AST::Arg::DirectionEnum::REF:
+            content["direction"] = "REF";
+            break;
+        default:
+            content["direction"] = "CONST_REF";
+        }
+        content["name"] = node->get_name();
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
+
+        content["default_value"] = render(node->get_default_value());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_arg["Arg"] = content;
+    return node_arg;
 }
 
 YAML::Node YAMLGenerator::render_genvar(const AST::Genvar::Ptr node) const
@@ -510,847 +2425,6 @@ YAML::Node YAMLGenerator::render_genvar(const AST::Genvar::Ptr node) const
 
     node_genvar["Genvar"] = content;
     return node_genvar;
-}
-
-YAML::Node YAMLGenerator::render_variable(const AST::Variable::Ptr node) const
-{
-    YAML::Node node_variable;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Variable) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_variable["Variable"] = content;
-    return node_variable;
-}
-
-YAML::Node YAMLGenerator::render_datamodifier(const AST::DataModifier::Ptr node) const
-{
-    YAML::Node node_datamodifier;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::DataModifier) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["is_var"] = node->get_is_var();
-        content["is_const"] = node->get_is_const();
-        switch(node->get_lifetime()) {
-        case Veriparse::AST::DataModifier::LifetimeEnum::NONE:
-            content["lifetime"] = "NONE";
-            break;
-        case Veriparse::AST::DataModifier::LifetimeEnum::AUTOMATIC:
-            content["lifetime"] = "AUTOMATIC";
-            break;
-        default:
-            content["lifetime"] = "STATIC";
-        }
-
-        content["datatype"] = render(node->get_datatype());
-    }
-
-    node_datamodifier["DataModifier"] = content;
-    return node_datamodifier;
-}
-
-YAML::Node YAMLGenerator::render_implicittype(const AST::ImplicitType::Ptr node) const
-{
-    YAML::Node node_implicittype;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::ImplicitType) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_implicittype["ImplicitType"] = content;
-    return node_implicittype;
-}
-
-YAML::Node YAMLGenerator::render_customtype(const AST::CustomType::Ptr node) const
-{
-    YAML::Node node_customtype;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::CustomType) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        content["package"] = node->get_package();
-    }
-
-    node_customtype["CustomType"] = content;
-    return node_customtype;
-}
-
-YAML::Node YAMLGenerator::render_customtypevar(const AST::CustomTypeVar::Ptr node) const
-{
-    YAML::Node node_customtypevar;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::CustomTypeVar) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_customtypevar["CustomTypeVar"] = content;
-    return node_customtypevar;
-}
-
-YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
-{
-    YAML::Node node_net;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Net) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        content["ldelay"] = render(node->get_ldelay());
-
-        content["rdelay"] = render(node->get_rdelay());
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_net["Net"] = content;
-    return node_net;
-}
-
-YAML::Node YAMLGenerator::render_integer(const AST::Integer::Ptr node) const
-{
-    YAML::Node node_integer;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Integer) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_integer["Integer"] = content;
-    return node_integer;
-}
-
-YAML::Node YAMLGenerator::render_real(const AST::Real::Ptr node) const
-{
-    YAML::Node node_real;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Real) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_real["Real"] = content;
-    return node_real;
-}
-
-YAML::Node YAMLGenerator::render_byte(const AST::Byte::Ptr node) const
-{
-    YAML::Node node_byte;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Byte) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_byte["Byte"] = content;
-    return node_byte;
-}
-
-YAML::Node YAMLGenerator::render_shortint(const AST::Shortint::Ptr node) const
-{
-    YAML::Node node_shortint;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Shortint) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_shortint["Shortint"] = content;
-    return node_shortint;
-}
-
-YAML::Node YAMLGenerator::render_int(const AST::Int::Ptr node) const
-{
-    YAML::Node node_int;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Int) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_int["Int"] = content;
-    return node_int;
-}
-
-YAML::Node YAMLGenerator::render_longint(const AST::Longint::Ptr node) const
-{
-    YAML::Node node_longint;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Longint) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_longint["Longint"] = content;
-    return node_longint;
-}
-
-YAML::Node YAMLGenerator::render_shortreal(const AST::Shortreal::Ptr node) const
-{
-    YAML::Node node_shortreal;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Shortreal) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_shortreal["Shortreal"] = content;
-    return node_shortreal;
-}
-
-YAML::Node YAMLGenerator::render_realtime(const AST::Realtime::Ptr node) const
-{
-    YAML::Node node_realtime;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Realtime) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_realtime["Realtime"] = content;
-    return node_realtime;
-}
-
-YAML::Node YAMLGenerator::render_bit(const AST::Bit::Ptr node) const
-{
-    YAML::Node node_bit;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Bit) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_bit["Bit"] = content;
-    return node_bit;
-}
-
-YAML::Node YAMLGenerator::render_tri(const AST::Tri::Ptr node) const
-{
-    YAML::Node node_tri;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Tri) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        content["ldelay"] = render(node->get_ldelay());
-
-        content["rdelay"] = render(node->get_rdelay());
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_tri["Tri"] = content;
-    return node_tri;
-}
-
-YAML::Node YAMLGenerator::render_wire(const AST::Wire::Ptr node) const
-{
-    YAML::Node node_wire;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Wire) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        content["ldelay"] = render(node->get_ldelay());
-
-        content["rdelay"] = render(node->get_rdelay());
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_wire["Wire"] = content;
-    return node_wire;
-}
-
-YAML::Node YAMLGenerator::render_supply0(const AST::Supply0::Ptr node) const
-{
-    YAML::Node node_supply0;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Supply0) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        content["ldelay"] = render(node->get_ldelay());
-
-        content["rdelay"] = render(node->get_rdelay());
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_supply0["Supply0"] = content;
-    return node_supply0;
-}
-
-YAML::Node YAMLGenerator::render_supply1(const AST::Supply1::Ptr node) const
-{
-    YAML::Node node_supply1;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Supply1) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        content["ldelay"] = render(node->get_ldelay());
-
-        content["rdelay"] = render(node->get_rdelay());
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_supply1["Supply1"] = content;
-    return node_supply1;
-}
-
-YAML::Node YAMLGenerator::render_logic(const AST::Logic::Ptr node) const
-{
-    YAML::Node node_logic;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Logic) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        content["ldelay"] = render(node->get_ldelay());
-
-        content["rdelay"] = render(node->get_rdelay());
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_logic["Logic"] = content;
-    return node_logic;
-}
-
-YAML::Node YAMLGenerator::render_reg(const AST::Reg::Ptr node) const
-{
-    YAML::Node node_reg;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Reg) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["sign"] = node->get_sign();
-        content["name"] = node->get_name();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_reg["Reg"] = content;
-    return node_reg;
-}
-
-YAML::Node YAMLGenerator::render_ioport(const AST::Ioport::Ptr node) const
-{
-    YAML::Node node_ioport;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Ioport) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-
-        content["first"] = render(node->get_first());
-
-        content["second"] = render(node->get_second());
-    }
-
-    node_ioport["Ioport"] = content;
-    return node_ioport;
-}
-
-YAML::Node YAMLGenerator::render_parameter(const AST::Parameter::Ptr node) const
-{
-    YAML::Node node_parameter;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Parameter) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        content["sign"] = node->get_sign();
-        switch(node->get_type()) {
-        case Veriparse::AST::Parameter::TypeEnum::INTEGER:
-            content["type"] = "INTEGER";
-            break;
-        case Veriparse::AST::Parameter::TypeEnum::REAL:
-            content["type"] = "REAL";
-            break;
-        case Veriparse::AST::Parameter::TypeEnum::LOGIC:
-            content["type"] = "LOGIC";
-            break;
-        case Veriparse::AST::Parameter::TypeEnum::INT:
-            content["type"] = "INT";
-            break;
-        case Veriparse::AST::Parameter::TypeEnum::BIT:
-            content["type"] = "BIT";
-            break;
-        case Veriparse::AST::Parameter::TypeEnum::BYTE:
-            content["type"] = "BYTE";
-            break;
-        case Veriparse::AST::Parameter::TypeEnum::SHORTINT:
-            content["type"] = "SHORTINT";
-            break;
-        case Veriparse::AST::Parameter::TypeEnum::LONGINT:
-            content["type"] = "LONGINT";
-            break;
-        default:
-            content["type"] = "NONE";
-        }
-
-        content["value"] = render(node->get_value());
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-    }
-
-    node_parameter["Parameter"] = content;
-    return node_parameter;
-}
-
-YAML::Node YAMLGenerator::render_localparam(const AST::Localparam::Ptr node) const
-{
-    YAML::Node node_localparam;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Localparam) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        content["sign"] = node->get_sign();
-        switch(node->get_type()) {
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::INTEGER:
-            content["type"] = "INTEGER";
-            break;
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::REAL:
-            content["type"] = "REAL";
-            break;
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::LOGIC:
-            content["type"] = "LOGIC";
-            break;
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::INT:
-            content["type"] = "INT";
-            break;
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::BIT:
-            content["type"] = "BIT";
-            break;
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::BYTE:
-            content["type"] = "BYTE";
-            break;
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::SHORTINT:
-            content["type"] = "SHORTINT";
-            break;
-        case Veriparse::AST::Localparam::Parameter::TypeEnum::LONGINT:
-            content["type"] = "LONGINT";
-            break;
-        default:
-            content["type"] = "NONE";
-        }
-
-        content["value"] = render(node->get_value());
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-    }
-
-    node_localparam["Localparam"] = content;
-    return node_localparam;
 }
 
 YAML::Node YAMLGenerator::render_concat(const AST::Concat::Ptr node) const
@@ -1488,13 +2562,102 @@ YAML::Node YAMLGenerator::render_cast(const AST::Cast::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
 
-        content["type"] = render(node->get_type());
-
         content["expr"] = render(node->get_expr());
     }
 
     node_cast["Cast"] = content;
     return node_cast;
+}
+
+YAML::Node YAMLGenerator::render_typecast(const AST::TypeCast::Ptr node) const
+{
+    YAML::Node node_typecast;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::TypeCast) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["target"] = render(node->get_target());
+
+        content["expr"] = render(node->get_expr());
+    }
+
+    node_typecast["TypeCast"] = content;
+    return node_typecast;
+}
+
+YAML::Node YAMLGenerator::render_sizecast(const AST::SizeCast::Ptr node) const
+{
+    YAML::Node node_sizecast;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::SizeCast) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["size"] = render(node->get_size());
+
+        content["expr"] = render(node->get_expr());
+    }
+
+    node_sizecast["SizeCast"] = content;
+    return node_sizecast;
+}
+
+YAML::Node YAMLGenerator::render_signingcast(const AST::SigningCast::Ptr node) const
+{
+    YAML::Node node_signingcast;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::SigningCast) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        switch(node->get_signing()) {
+        case Veriparse::AST::SigningCast::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        content["expr"] = render(node->get_expr());
+    }
+
+    node_signingcast["SigningCast"] = content;
+    return node_signingcast;
+}
+
+YAML::Node YAMLGenerator::render_constcast(const AST::ConstCast::Ptr node) const
+{
+    YAML::Node node_constcast;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ConstCast) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["expr"] = render(node->get_expr());
+    }
+
+    node_constcast["ConstCast"] = content;
+    return node_constcast;
 }
 
 YAML::Node YAMLGenerator::render_indirect(const AST::Indirect::Ptr node) const
@@ -3233,32 +4396,23 @@ YAML::Node YAMLGenerator::render_function(const AST::Function::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
-        content["automatic"] = node->get_automatic();
-        switch(node->get_rettype()) {
-        case Veriparse::AST::Function::RettypeEnum::INTEGER:
-            content["rettype"] = "INTEGER";
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Function::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
             break;
-        case Veriparse::AST::Function::RettypeEnum::REAL:
-            content["rettype"] = "REAL";
+        case Veriparse::AST::Function::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
             break;
         default:
-            content["rettype"] = "NONE";
-        }
-        content["retsign"] = node->get_retsign();
-
-        if(node->get_retwidths()) {
-            content["retwidths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_retwidths()) {
-                content["retwidths"].push_back(render(n));
-            }
+            content["lifetime"] = "STATIC";
         }
 
-        content["rettype_ref"] = render(node->get_rettype_ref());
+        content["return_type"] = render(node->get_return_type());
 
-        if(node->get_ports()) {
-            content["ports"] = YAML::Load("[]");
-            for(const AST::Node::Ptr &n : *node->get_ports()) {
-                content["ports"].push_back(render(n));
+        if(node->get_args()) {
+            content["args"] = YAML::Load("[]");
+            for(const AST::Arg::Ptr &n : *node->get_args()) {
+                content["args"].push_back(render(n));
             }
         }
 
@@ -3314,12 +4468,21 @@ YAML::Node YAMLGenerator::render_task(const AST::Task::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
-        content["automatic"] = node->get_automatic();
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Task::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
+            break;
+        case Veriparse::AST::Task::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
+            break;
+        default:
+            content["lifetime"] = "STATIC";
+        }
 
-        if(node->get_ports()) {
-            content["ports"] = YAML::Load("[]");
-            for(const AST::Node::Ptr &n : *node->get_ports()) {
-                content["ports"].push_back(render(n));
+        if(node->get_args()) {
+            content["args"] = YAML::Load("[]");
+            for(const AST::Arg::Ptr &n : *node->get_args()) {
+                content["args"].push_back(render(n));
             }
         }
 
@@ -3526,261 +4689,6 @@ YAML::Node YAMLGenerator::render_singlestatement(const AST::SingleStatement::Ptr
 
     node_singlestatement["SingleStatement"] = content;
     return node_singlestatement;
-}
-
-YAML::Node YAMLGenerator::render_enumitem(const AST::EnumItem::Ptr node) const
-{
-    YAML::Node node_enumitem;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::EnumItem) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        content["value"] = render(node->get_value());
-    }
-
-    node_enumitem["EnumItem"] = content;
-    return node_enumitem;
-}
-
-YAML::Node YAMLGenerator::render_enumdef(const AST::EnumDef::Ptr node) const
-{
-    YAML::Node node_enumdef;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::EnumDef) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        switch(node->get_base_type()) {
-        case Veriparse::AST::EnumDef::Base_typeEnum::LOGIC:
-            content["base_type"] = "LOGIC";
-            break;
-        case Veriparse::AST::EnumDef::Base_typeEnum::BIT:
-            content["base_type"] = "BIT";
-            break;
-        case Veriparse::AST::EnumDef::Base_typeEnum::INT:
-            content["base_type"] = "INT";
-            break;
-        default:
-            content["base_type"] = "NONE";
-        }
-        content["sign"] = node->get_sign();
-
-        if(node->get_widths()) {
-            content["widths"] = YAML::Load("[]");
-            for(const AST::Width::Ptr &n : *node->get_widths()) {
-                content["widths"].push_back(render(n));
-            }
-        }
-
-        if(node->get_items()) {
-            content["items"] = YAML::Load("[]");
-            for(const AST::EnumItem::Ptr &n : *node->get_items()) {
-                content["items"].push_back(render(n));
-            }
-        }
-    }
-
-    node_enumdef["EnumDef"] = content;
-    return node_enumdef;
-}
-
-YAML::Node YAMLGenerator::render_typedef(const AST::Typedef::Ptr node) const
-{
-    YAML::Node node_typedef;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Typedef) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        content["def"] = render(node->get_def());
-    }
-
-    node_typedef["Typedef"] = content;
-    return node_typedef;
-}
-
-YAML::Node YAMLGenerator::render_structmember(const AST::StructMember::Ptr node) const
-{
-    YAML::Node node_structmember;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::StructMember) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-
-        content["type"] = render(node->get_type());
-
-        if(node->get_lengths()) {
-            content["lengths"] = YAML::Load("[]");
-            for(const AST::Length::Ptr &n : *node->get_lengths()) {
-                content["lengths"].push_back(render(n));
-            }
-        }
-
-        content["right"] = render(node->get_right());
-    }
-
-    node_structmember["StructMember"] = content;
-    return node_structmember;
-}
-
-YAML::Node YAMLGenerator::render_structuniondef(const AST::StructUnionDef::Ptr node) const
-{
-    YAML::Node node_structuniondef;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::StructUnionDef) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["packed"] = node->get_packed();
-        content["sign"] = node->get_sign();
-
-        if(node->get_members()) {
-            content["members"] = YAML::Load("[]");
-            for(const AST::StructMember::Ptr &n : *node->get_members()) {
-                content["members"].push_back(render(n));
-            }
-        }
-    }
-
-    node_structuniondef["StructUnionDef"] = content;
-    return node_structuniondef;
-}
-
-YAML::Node YAMLGenerator::render_structdef(const AST::StructDef::Ptr node) const
-{
-    YAML::Node node_structdef;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::StructDef) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["packed"] = node->get_packed();
-        content["sign"] = node->get_sign();
-
-        if(node->get_members()) {
-            content["members"] = YAML::Load("[]");
-            for(const AST::StructMember::Ptr &n : *node->get_members()) {
-                content["members"].push_back(render(n));
-            }
-        }
-    }
-
-    node_structdef["StructDef"] = content;
-    return node_structdef;
-}
-
-YAML::Node YAMLGenerator::render_union(const AST::Union::Ptr node) const
-{
-    YAML::Node node_union;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Union) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["packed"] = node->get_packed();
-        content["sign"] = node->get_sign();
-
-        if(node->get_members()) {
-            content["members"] = YAML::Load("[]");
-            for(const AST::StructMember::Ptr &n : *node->get_members()) {
-                content["members"].push_back(render(n));
-            }
-        }
-    }
-
-    node_union["Union"] = content;
-    return node_union;
-}
-
-YAML::Node YAMLGenerator::render_package(const AST::Package::Ptr node) const
-{
-    YAML::Node node_package;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Package) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["name"] = node->get_name();
-        switch(node->get_lifetime()) {
-        case Veriparse::AST::Package::LifetimeEnum::NONE:
-            content["lifetime"] = "NONE";
-            break;
-        case Veriparse::AST::Package::LifetimeEnum::AUTOMATIC:
-            content["lifetime"] = "AUTOMATIC";
-            break;
-        default:
-            content["lifetime"] = "STATIC";
-        }
-
-        if(node->get_items()) {
-            content["items"] = YAML::Load("[]");
-            for(const AST::Node::Ptr &n : *node->get_items()) {
-                content["items"].push_back(render(n));
-            }
-        }
-    }
-
-    node_package["Package"] = content;
-    return node_package;
-}
-
-YAML::Node YAMLGenerator::render_import(const AST::Import::Ptr node) const
-{
-    YAML::Node node_import;
-    YAML::Node content;
-
-    if(node) {
-        if(node->get_node_type() != AST::NodeType::Import) {
-            return render(AST::cast_to<AST::Node>(node));
-        }
-
-        content["filename"] = node->get_filename();
-        content["line"] = node->get_line();
-        content["package"] = node->get_package();
-        content["symbol"] = node->get_symbol();
-    }
-
-    node_import["Import"] = content;
-    return node_import;
 }
 
 } // namespace Generators

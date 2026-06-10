@@ -4,11 +4,9 @@
 #define VERIPARSE_AST_IMPLICITTYPE_HPP
 
 #include <veriparse/AST/node.hpp>
-#include <veriparse/AST/variable.hpp>
+#include <veriparse/AST/datatype.hpp>
 
-#include <veriparse/AST/length.hpp>
-#include <veriparse/AST/rvalue.hpp>
-#include <veriparse/AST/width.hpp>
+#include <veriparse/AST/dimension.hpp>
 
 #include <list>
 #include <string>
@@ -22,15 +20,15 @@ namespace Veriparse
 namespace AST
 {
 
-class ImplicitType : public Variable
+class ImplicitType : public DataType
 {
 public:
     using Ptr = typename NodePointers<ImplicitType>::Ptr;
     using List = typename NodePointers<ImplicitType>::List;
     using ListPtr = typename NodePointers<ImplicitType>::ListPtr;
-    using Variable::operator=;
-    using Variable::operator==;
-    using Variable::operator!=;
+    using DataType::operator=;
+    using DataType::operator==;
+    using DataType::operator!=;
 
     /**
      * Constructor, m_node_type is set to NodeType::ImplicitType.
@@ -40,8 +38,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::ImplicitType.
      */
-    ImplicitType(const Width::ListPtr widths, const Length::ListPtr lengths,
-                 const Rvalue::Ptr right, const bool &sign, const std::string &name,
+    ImplicitType(const Dimension::ListPtr packed_dims, const DataType::SigningEnum &signing,
                  const std::string &filename = "", uint32_t line = 0);
 
     /**
@@ -90,26 +87,6 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child widths.
-     */
-    virtual Width::ListPtr get_widths(void) const { return m_widths; }
-
-    /**
-     * Change the child widths.
-     */
-    virtual void set_widths(Width::ListPtr widths) { m_widths = widths; }
-
-    /**
-     * Return the property sign.
-     */
-    virtual const bool &get_sign(void) const { return m_sign; }
-
-    /**
-     * Change the property sign.
-     */
-    virtual void set_sign(const bool &sign) { m_sign = sign; }
-
-    /**
      * Return the children list using the private children member
      * pointers.
      */
@@ -132,9 +109,6 @@ private:
      * Allocate a new node with the same node type than the current instance.
      */
     virtual Node::Ptr alloc_same(void) const override;
-
-    Width::ListPtr m_widths{};
-    bool m_sign{};
 };
 
 std::ostream &operator<<(std::ostream &os, const ImplicitType &p);

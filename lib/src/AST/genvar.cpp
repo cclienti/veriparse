@@ -10,17 +10,17 @@ namespace Veriparse
 namespace AST
 {
 
-Genvar::Genvar(const std::string &filename, uint32_t line) : VariableBase(filename, line)
+Genvar::Genvar(const std::string &filename, uint32_t line) : Node(filename, line)
 {
     set_node_type(NodeType::Genvar);
-    set_node_categories({NodeType::VariableBase, NodeType::Node});
+    set_node_categories({NodeType::Node});
 }
 
 Genvar::Genvar(const std::string &name, const std::string &filename, uint32_t line)
-    : VariableBase(name, filename, line)
+    : Node(filename, line), m_name(name)
 {
     set_node_type(NodeType::Genvar);
-    set_node_categories({NodeType::VariableBase, NodeType::Node});
+    set_node_categories({NodeType::Node});
 }
 
 Genvar &Genvar::operator=(const Genvar &rhs)

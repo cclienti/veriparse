@@ -16,9 +16,9 @@ Port::Port(const std::string &filename, uint32_t line) : Node(filename, line)
     set_node_categories({NodeType::Node});
 }
 
-Port::Port(const Width::ListPtr widths, const std::string &name, const std::string &filename,
-           uint32_t line)
-    : Node(filename, line), m_widths(widths), m_name(name)
+Port::Port(const Declaration::Ptr decl, const Node::Ptr expr, const std::string &name,
+           const DirectionEnum &direction, const std::string &filename, uint32_t line)
+    : Node(filename, line), m_decl(decl), m_expr(expr), m_name(name), m_direction(direction)
 {
     set_node_type(NodeType::Port);
     set_node_categories({NodeType::Node});
@@ -28,6 +28,7 @@ Port &Port::operator=(const Port &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
     set_name(rhs.get_name());
+    set_direction(rhs.get_direction());
     return *this;
 }
 
@@ -43,6 +44,9 @@ bool Port::operator==(const Port &rhs) const
         return false;
     }
     if(get_name() != rhs.get_name()) {
+        return false;
+    }
+    if(get_direction() != rhs.get_direction()) {
         return false;
     }
     return true;
@@ -63,32 +67,24 @@ bool Port::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)
 bool Port::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
-    if(get_widths()) {
-        Width::ListPtr new_list = std::make_shared<Width::List>();
-        for(const Width::Ptr &lnode : *get_widths()) {
-            if(lnode) {
-                if(lnode != node) {
-                    new_list->push_back(lnode);
-                } else {
-                    if(found) {
-                        LOG_WARNING << *this << ", "
-                                    << "Port::replace matches multiple times (list(Width)::widths)";
-                    }
-                    if(new_node) {
-                        new_list->push_back(cast_to<Width>(new_node));
-                    }
-                    found = true;
-                }
-            } else {
+    if(get_decl()) {
+        if(get_decl() == node) {
+            if(found) {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during Port::replace "
-                            << "of children list(Width)::widths";
+                            << "Port::replace matches multiple times (Declaration::decl)";
             }
+            set_decl(cast_to<Declaration>(new_node));
+            found = true;
         }
-        if(new_list->size() != 0) {
-            set_widths(new_list);
-        } else {
-            set_widths(nullptr);
+    }
+    if(get_expr()) {
+        if(get_expr() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Port::replace matches multiple times (Node::expr)";
+            }
+            set_expr(new_node);
+            found = true;
         }
     }
     return found;
@@ -97,36 +93,6 @@ bool Port::replace(Node::Ptr node, Node::Ptr new_node)
 bool Port::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
-    if(get_widths()) {
-        Width::ListPtr new_list = std::make_shared<Width::List>();
-        for(const Width::Ptr &lnode : *get_widths()) {
-            if(lnode) {
-                if(lnode != node) {
-                    new_list->push_back(lnode);
-                } else {
-                    if(found) {
-                        LOG_WARNING << *this << ", "
-                                    << "Port::replace matches multiple times (list(Width)::widths)";
-                    }
-                    if(new_nodes) {
-                        for(const Node::Ptr &n : *new_nodes) {
-                            new_list->push_back(cast_to<Width>(n));
-                        }
-                    }
-                    found = true;
-                }
-            } else {
-                LOG_WARNING << *this << ", "
-                            << "found an empty node during Port::replace "
-                            << "of children list(Width)::widths";
-            }
-        }
-        if(new_list->size() != 0) {
-            set_widths(new_list);
-        } else {
-            set_widths(nullptr);
-        }
-    }
     return found;
 }
 
@@ -145,19 +111,23 @@ Port::ListPtr Port::clone_list(const ListPtr nodes)
 Node::ListPtr Port::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
-    if(get_widths()) {
-        for(const Width::Ptr &node : *get_widths()) {
-            if(node) {
-                list->push_back(std::static_pointer_cast<Node>(node));
-            }
-        }
+    if(get_decl()) {
+        list->push_back(std::static_pointer_cast<Node>(get_decl()));
+    }
+    if(get_expr()) {
+        list->push_back(std::static_pointer_cast<Node>(get_expr()));
     }
     return list;
 }
 
 void Port::clone_children(Node::Ptr new_node) const
 {
-    cast_to<Port>(new_node)->set_widths(Width::clone_list(get_widths()));
+    if(get_decl()) {
+        cast_to<Port>(new_node)->set_decl(cast_to<Declaration>(get_decl()->clone()));
+    }
+    if(get_expr()) {
+        cast_to<Port>(new_node)->set_expr(get_expr()->clone());
+    }
 }
 
 Node::Ptr Port::alloc_same(void) const
@@ -178,7 +148,9 @@ std::ostream &operator<<(std::ostream &os, const Port &p)
         os << ", ";
     }
 
-    os << "name: " << p.get_name();
+    os << "name: " << p.get_name() << ", ";
+
+    os << "direction: " << p.get_direction();
     os << "}";
     return os;
 }
@@ -191,6 +163,33 @@ std::ostream &operator<<(std::ostream &os, const Port::Ptr p)
         os << "Port: {nullptr}";
     }
 
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Port::DirectionEnum p)
+{
+    switch(p) {
+    case Port::DirectionEnum::NONE:
+        os << "NONE";
+        break;
+    case Port::DirectionEnum::INPUT:
+        os << "INPUT";
+        break;
+    case Port::DirectionEnum::OUTPUT:
+        os << "OUTPUT";
+        break;
+    case Port::DirectionEnum::INOUT:
+        os << "INOUT";
+        break;
+    case Port::DirectionEnum::REF:
+        os << "REF";
+        break;
+    case Port::DirectionEnum::CONST_REF:
+        os << "CONST_REF";
+        break;
+    default:
+        break;
+    }
     return os;
 }
 
