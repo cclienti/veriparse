@@ -115,6 +115,19 @@ Identifier:
     # only. Renamed from the old IdentifierScope (ADR §3.3.1).
     hier: HierName
 
+# A subroutine call: a scoped/hierarchical name (name/scope/hier from Identifier)
+# plus an argument list. The task-vs-function split is NOT syntactic — the SV BNF
+# `tf_call` is task-OR-function, and §13.4.1 lets a function be called as a
+# statement (`void'(f())` or with a warning). So a bare statement call `f();` is
+# a neutral `Call` (unresolved); a call in EXPRESSION position (or under a void
+# cast) is a `FunctionCall` (necessarily a function); a `TaskCall` is the
+# known-task form a symbol-aware resolution pass produces. Rendering is
+# position-driven, so all three round-trip as `name(args)` identically.
+Call:
+  inherit: Identifier
+  children:
+    args: list(Node)
+
 Constant:
   properties:
   children:
@@ -769,12 +782,10 @@ Function:
     args: list(Arg)
     statements: list(Node)
 
+# A call KNOWN to be a function: expression position (tasks cannot be operands)
+# or under a void cast `void'(f())`. name/scope/hier from Identifier, args from Call.
 FunctionCall:
-  properties:
-    name: "std::string"
-  children:
-    scope: list(ScopeName) # SV `::` scope (pkg::func, A::B::func); empty if unscoped
-    args: list(Node)
+  inherit: Call
 
 Task:
   properties:
@@ -784,12 +795,10 @@ Task:
     args: list(Arg)
     statements: list(Node)
 
+# A call KNOWN to be a task — produced by a symbol-aware resolution pass; the bare
+# parser emits a neutral Call for ambiguous statement calls. From Call/Identifier.
 TaskCall:
-  properties:
-    name: "std::string"
-  children:
-    scope: list(ScopeName) # SV `::` scope (pkg::task, A::B::task); empty if unscoped
-    args: list(Node)
+  inherit: Call
 
 GenerateStatement:
   properties:
@@ -819,10 +828,12 @@ HierName:
   children:
     labellist: list(HierLabel)
 
+# disable <name>; — the target is a (possibly hierarchical) block/task name, so it
+# is an Identifier (carrying hier/scope), not a flat string.
 Disable:
   properties:
-    dest: "std::string"
   children:
+    dest: Identifier
 
 ParallelBlock:
   properties:

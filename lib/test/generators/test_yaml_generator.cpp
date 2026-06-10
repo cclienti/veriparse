@@ -188,6 +188,28 @@ TEST(YAMLGenerator, Identifier)
     ASSERT_TRUE(yaml["Identifier"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
+TEST(YAMLGenerator, Call)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Call.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::ListPtr c_args(new AST::Node::List);
+    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
+    AST::HierName::Ptr c_hier(new AST::HierName);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::Call::Ptr m_call(new AST::Call(c_args, c_scope, c_hier, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_call);
+
+    ASSERT_TRUE(yaml["Call"]);
+    ASSERT_TRUE(yaml["Call"]["args"]);
+    ASSERT_TRUE(yaml["Call"]["scope"]);
+    ASSERT_TRUE(yaml["Call"]["hier"]);
+    ASSERT_TRUE(yaml["Call"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
 TEST(YAMLGenerator, Constant)
 {
     Logger::remove_all_sinks();
@@ -3279,18 +3301,20 @@ TEST(YAMLGenerator, FunctionCall)
     Logger::add_text_sink("YAMLGenerator.FunctionCall.log");
     Logger::add_stderr_sink();
 
-    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
     AST::Node::ListPtr c_args(new AST::Node::List);
+    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
+    AST::HierName::Ptr c_hier(new AST::HierName);
     std::string p_name = "mynbiqpmzj";
 
     AST::FunctionCall::Ptr m_functioncall(
-        new AST::FunctionCall(c_scope, c_args, p_name, "filename", 0));
+        new AST::FunctionCall(c_args, c_scope, c_hier, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_functioncall);
 
     ASSERT_TRUE(yaml["FunctionCall"]);
-    ASSERT_TRUE(yaml["FunctionCall"]["scope"]);
     ASSERT_TRUE(yaml["FunctionCall"]["args"]);
+    ASSERT_TRUE(yaml["FunctionCall"]["scope"]);
+    ASSERT_TRUE(yaml["FunctionCall"]["hier"]);
     ASSERT_TRUE(yaml["FunctionCall"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -3323,17 +3347,20 @@ TEST(YAMLGenerator, TaskCall)
     Logger::add_text_sink("YAMLGenerator.TaskCall.log");
     Logger::add_stderr_sink();
 
-    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
     AST::Node::ListPtr c_args(new AST::Node::List);
+    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
+    AST::HierName::Ptr c_hier(new AST::HierName);
     std::string p_name = "mynbiqpmzj";
 
-    AST::TaskCall::Ptr m_taskcall(new AST::TaskCall(c_scope, c_args, p_name, "filename", 0));
+    AST::TaskCall::Ptr m_taskcall(
+        new AST::TaskCall(c_args, c_scope, c_hier, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_taskcall);
 
     ASSERT_TRUE(yaml["TaskCall"]);
-    ASSERT_TRUE(yaml["TaskCall"]["scope"]);
     ASSERT_TRUE(yaml["TaskCall"]["args"]);
+    ASSERT_TRUE(yaml["TaskCall"]["scope"]);
+    ASSERT_TRUE(yaml["TaskCall"]["hier"]);
     ASSERT_TRUE(yaml["TaskCall"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -3412,14 +3439,14 @@ TEST(YAMLGenerator, Disable)
     Logger::add_text_sink("YAMLGenerator.Disable.log");
     Logger::add_stderr_sink();
 
-    std::string p_dest = "mynbiqpmzj";
+    AST::Identifier::Ptr c_dest(new AST::Identifier);
 
-    AST::Disable::Ptr m_disable(new AST::Disable(p_dest, "filename", 0));
+    AST::Disable::Ptr m_disable(new AST::Disable(c_dest, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_disable);
 
     ASSERT_TRUE(yaml["Disable"]);
-    ASSERT_TRUE(yaml["Disable"]["dest"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Disable"]["dest"]);
 }
 
 TEST(YAMLGenerator, ParallelBlock)

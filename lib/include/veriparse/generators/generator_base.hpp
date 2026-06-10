@@ -69,6 +69,9 @@ public:
             case AST::NodeType::Identifier:
                 return render_identifier(AST::cast_to<AST::Identifier>(node));
 
+            case AST::NodeType::Call:
+                return render_call(AST::cast_to<AST::Call>(node));
+
             case AST::NodeType::Constant:
                 return render_constant(AST::cast_to<AST::Constant>(node));
 
@@ -633,6 +636,14 @@ public:
      * @see GeneratorBase::render_identifier(const AST::Identifier::Ptr &node)
      */
     T render(const AST::Identifier::Ptr node) const { return render_identifier(node); }
+
+    /**
+     * Main rendering method for the Call node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_call(const AST::Call::Ptr &node)
+     */
+    T render(const AST::Call::Ptr node) const { return render_call(node); }
 
     /**
      * Main rendering method for the Constant node, we
@@ -2011,6 +2022,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_identifier(const AST::Identifier::Ptr node) const { return T(); }
+
+    /**
+     * Render the Call node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_call(const AST::Call::Ptr node) const { return T(); }
 
     /**
      * Render the Constant node. This method must be

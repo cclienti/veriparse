@@ -38,6 +38,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Identifier:
         os << static_cast<const AST::Identifier &>(p);
         break;
+    case NodeType::Call:
+        os << static_cast<const AST::Call &>(p);
+        break;
     case NodeType::Constant:
         os << static_cast<const AST::Constant &>(p);
         break;

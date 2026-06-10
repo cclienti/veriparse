@@ -23,6 +23,7 @@ template <> constexpr NodeType get_node_type<Port>() { return NodeType::Port; }
 template <> constexpr NodeType get_node_type<Package>() { return NodeType::Package; }
 template <> constexpr NodeType get_node_type<Import>() { return NodeType::Import; }
 template <> constexpr NodeType get_node_type<Identifier>() { return NodeType::Identifier; }
+template <> constexpr NodeType get_node_type<Call>() { return NodeType::Call; }
 template <> constexpr NodeType get_node_type<Constant>() { return NodeType::Constant; }
 template <> constexpr NodeType get_node_type<StringConst>() { return NodeType::StringConst; }
 template <> constexpr NodeType get_node_type<IntConst>() { return NodeType::IntConst; }

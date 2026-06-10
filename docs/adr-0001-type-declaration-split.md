@@ -540,6 +540,47 @@ Cast (abstract)   { expr }
 ⇒ replaces the current `Cast{ type, expr }` (PR #14). `TypeCast.target` is
 *always* a `DataType`; no heterogeneous type-ish slot left in the AST.
 
+### 5.12 Name references & subroutine calls — `Identifier → Call → {FunctionCall, TaskCall}`
+
+A subroutine call is just **a scoped/hierarchical name that is invoked** — so the
+calls *inherit* `Identifier` rather than re-spelling `name`/`scope`/`hier`
+(killing the same duplication §1 indicts, now for value refs):
+
+```
+Identifier        { name, scope: list(ScopeName), hier: HierName }   # value name ref
+  └── Call         { args: list(Node) }                              # an invoked name
+        ├── FunctionCall                                             # known function
+        └── TaskCall                                                 # known task
+```
+
+So `call.name`/`call.scope`/`call.hier` come for free, and
+`is_node_category(Identifier)` makes every name pass (rename, scope resolution)
+handle a call's name uniformly; `is_node_category(Call)` means "any call".
+
+**Task vs function is NOT syntactic (SETTLED, against the standard).** The SV BNF
+`tf_call ::= ps_or_hierarchical_**tf**_identifier …` is *task-or-function*; and
+§13.4.1 makes a function legally callable **as a statement** (`void'(f())`, or
+with a warning). So a bare statement call `f();` cannot be classified without a
+symbol table. What *is* known at parse time is **position**:
+
+```
+x = f(a)        FunctionCall   # expression position ⇒ necessarily a function
+f(a);           Call           # statement ⇒ task-or-void-fn, UNRESOLVED
+void'(f(a));    TypeCast{ target: VoidType, expr: FunctionCall }   # known function
+```
+
+`TaskCall` (and refining a `Call` to `FunctionCall`) is the job of a future
+**symbol-aware resolution pass** — same "resolve later" pattern as
+`NamedType`/`ImplicitType`. The bare parser never guesses "task". Rendering is
+**position-driven** (the trailing `;` comes from statement context, not the node
+type), so `Call`/`FunctionCall`/`TaskCall` all round-trip as `name(args)`.
+
+`SystemCall` (`$display`) stays **outside** this hierarchy: a `$`-name is not a
+scoped identifier (no `scope`/`hier`), so it keeps its own `syscall` string.
+
+**`Disable.dest`** is an `Identifier` (a `disable top.u1.blk;` target is a
+possibly-hierarchical name), not a flat string.
+
 ---
 
 ## 6. Node delta (removed / renamed / new)
@@ -569,12 +610,16 @@ Cast (abstract)   { expr }
 (`Typedef`/`Genvar` kept but relifted). `Cast` split into
 `TypeCast`/`SizeCast`/`SigningCast`/`ConstCast`. `Strength` (base) +
 `DriveStrength`/`ChargeStrength` (net strengths). `ScopeName` (a `::` scope
-segment, used by the scope list). (Advanced, §10: `Interface`/`Class`/`Program` +
+segment, used by the scope list). `Call` (a `Call : Identifier { args }` base for
+subroutine calls, cf. §5.12). (Advanced, §10: `Interface`/`Class`/`Program` +
 `InterfaceType`/`ClassType`/`CovergroupType` + `Modport`/`Constraint`.)
 
 **Modified (value side)**: `Identifier`, `FunctionCall`, `TaskCall` — their flat
 `package` string → `scope: list(ScopeName)` (the SV `::` axis; cf. §3.3.1/§5.10,
-handles nested `A::B::x` and parameterized `A#(8)::x`).
+handles nested `A::B::x` and parameterized `A#(8)::x`). `FunctionCall`/`TaskCall`
+no longer carry their own `name`/`scope`/`args`: they **inherit `Call : Identifier`**
+(§5.12), so a call *is* an invoked name ref. `Disable.dest`: `string` →
+`Identifier` (hierarchical disable targets).
 
 **Renamed (hierarchical axis, cf. §3.3.1)**: `IdentifierScope → HierName`,
 `IdentifierScopeLabel → HierLabel`, and `Identifier.scope` (the hierarchical

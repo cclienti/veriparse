@@ -31,6 +31,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "Import";
     case NodeType::Identifier:
         return "Identifier";
+    case NodeType::Call:
+        return "Call";
     case NodeType::Constant:
         return "Constant";
     case NodeType::StringConst:

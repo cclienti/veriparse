@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#include <veriparse/AST/taskcall.hpp>
+#include <veriparse/AST/call.hpp>
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <iostream>
@@ -10,35 +10,34 @@ namespace Veriparse
 namespace AST
 {
 
-TaskCall::TaskCall(const std::string &filename, uint32_t line) : Call(filename, line)
+Call::Call(const std::string &filename, uint32_t line) : Identifier(filename, line)
 {
-    set_node_type(NodeType::TaskCall);
-    set_node_categories({NodeType::Call, NodeType::Identifier, NodeType::Node});
+    set_node_type(NodeType::Call);
+    set_node_categories({NodeType::Identifier, NodeType::Node});
 }
 
-TaskCall::TaskCall(const Node::ListPtr args, const ScopeName::ListPtr scope,
-                   const HierName::Ptr hier, const std::string &name, const std::string &filename,
-                   uint32_t line)
-    : Call(args, scope, hier, name, filename, line)
+Call::Call(const Node::ListPtr args, const ScopeName::ListPtr scope, const HierName::Ptr hier,
+           const std::string &name, const std::string &filename, uint32_t line)
+    : Identifier(scope, hier, name, filename, line), m_args(args)
 {
-    set_node_type(NodeType::TaskCall);
-    set_node_categories({NodeType::Call, NodeType::Identifier, NodeType::Node});
+    set_node_type(NodeType::Call);
+    set_node_categories({NodeType::Identifier, NodeType::Node});
 }
 
-TaskCall &TaskCall::operator=(const TaskCall &rhs)
+Call &Call::operator=(const Call &rhs)
 {
     Node::operator=(static_cast<const Node &>(rhs));
     set_name(rhs.get_name());
     return *this;
 }
 
-Node &TaskCall::operator=(const Node &rhs)
+Node &Call::operator=(const Node &rhs)
 {
-    const TaskCall &rhs_cast = static_cast<const TaskCall &>(rhs);
+    const Call &rhs_cast = static_cast<const Call &>(rhs);
     return static_cast<Node &>(operator=(rhs_cast));
 }
 
-bool TaskCall::operator==(const TaskCall &rhs) const
+bool Call::operator==(const Call &rhs) const
 {
     if(Node::operator==(rhs) == false) {
         return false;
@@ -49,19 +48,19 @@ bool TaskCall::operator==(const TaskCall &rhs) const
     return true;
 }
 
-bool TaskCall::operator==(const Node &rhs) const
+bool Call::operator==(const Node &rhs) const
 {
-    const TaskCall &rhs_cast = static_cast<const TaskCall &>(rhs);
+    const Call &rhs_cast = static_cast<const Call &>(rhs);
     return operator==(rhs_cast);
 }
 
-bool TaskCall::operator!=(const TaskCall &rhs) const { return !(operator==(rhs)); }
+bool Call::operator!=(const Call &rhs) const { return !(operator==(rhs)); }
 
-bool TaskCall::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
+bool Call::operator!=(const Node &rhs) const { return !(operator==(rhs)); }
 
-bool TaskCall::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
+bool Call::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullptr)); }
 
-bool TaskCall::replace(Node::Ptr node, Node::Ptr new_node)
+bool Call::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
     if(get_args()) {
@@ -72,9 +71,8 @@ bool TaskCall::replace(Node::Ptr node, Node::Ptr new_node)
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
-                        LOG_WARNING
-                            << *this << ", "
-                            << "TaskCall::replace matches multiple times (list(Node)::args)";
+                        LOG_WARNING << *this << ", "
+                                    << "Call::replace matches multiple times (list(Node)::args)";
                     }
                     if(new_node) {
                         new_list->push_back(new_node);
@@ -83,7 +81,7 @@ bool TaskCall::replace(Node::Ptr node, Node::Ptr new_node)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during TaskCall::replace "
+                            << "found an empty node during Call::replace "
                             << "of children list(Node)::args";
             }
         }
@@ -103,7 +101,7 @@ bool TaskCall::replace(Node::Ptr node, Node::Ptr new_node)
                     if(found) {
                         LOG_WARNING
                             << *this << ", "
-                            << "TaskCall::replace matches multiple times (list(ScopeName)::scope)";
+                            << "Call::replace matches multiple times (list(ScopeName)::scope)";
                     }
                     if(new_node) {
                         new_list->push_back(cast_to<ScopeName>(new_node));
@@ -112,7 +110,7 @@ bool TaskCall::replace(Node::Ptr node, Node::Ptr new_node)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during TaskCall::replace "
+                            << "found an empty node during Call::replace "
                             << "of children list(ScopeName)::scope";
             }
         }
@@ -126,7 +124,7 @@ bool TaskCall::replace(Node::Ptr node, Node::Ptr new_node)
         if(get_hier() == node) {
             if(found) {
                 LOG_WARNING << *this << ", "
-                            << "TaskCall::replace matches multiple times (HierName::hier)";
+                            << "Call::replace matches multiple times (HierName::hier)";
             }
             set_hier(cast_to<HierName>(new_node));
             found = true;
@@ -135,7 +133,7 @@ bool TaskCall::replace(Node::Ptr node, Node::Ptr new_node)
     return found;
 }
 
-bool TaskCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
+bool Call::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
     if(get_args()) {
@@ -146,9 +144,8 @@ bool TaskCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
                     new_list->push_back(lnode);
                 } else {
                     if(found) {
-                        LOG_WARNING
-                            << *this << ", "
-                            << "TaskCall::replace matches multiple times (list(Node)::args)";
+                        LOG_WARNING << *this << ", "
+                                    << "Call::replace matches multiple times (list(Node)::args)";
                     }
                     if(new_nodes) {
                         for(const Node::Ptr &n : *new_nodes) {
@@ -159,7 +156,7 @@ bool TaskCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during TaskCall::replace "
+                            << "found an empty node during Call::replace "
                             << "of children list(Node)::args";
             }
         }
@@ -179,7 +176,7 @@ bool TaskCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
                     if(found) {
                         LOG_WARNING
                             << *this << ", "
-                            << "TaskCall::replace matches multiple times (list(ScopeName)::scope)";
+                            << "Call::replace matches multiple times (list(ScopeName)::scope)";
                     }
                     if(new_nodes) {
                         for(const Node::Ptr &n : *new_nodes) {
@@ -190,7 +187,7 @@ bool TaskCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
                 }
             } else {
                 LOG_WARNING << *this << ", "
-                            << "found an empty node during TaskCall::replace "
+                            << "found an empty node during Call::replace "
                             << "of children list(ScopeName)::scope";
             }
         }
@@ -203,19 +200,19 @@ bool TaskCall::replace(Node::Ptr node, Node::ListPtr new_nodes)
     return found;
 }
 
-TaskCall::ListPtr TaskCall::clone_list(const ListPtr nodes)
+Call::ListPtr Call::clone_list(const ListPtr nodes)
 {
     ListPtr list;
     if(nodes) {
         list = std::make_shared<List>();
         for(const Ptr &p : *nodes) {
-            list->push_back(cast_to<TaskCall>(p->clone()));
+            list->push_back(cast_to<Call>(p->clone()));
         }
     }
     return list;
 }
 
-Node::ListPtr TaskCall::get_children(void) const
+Node::ListPtr Call::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
     if(get_args()) {
@@ -238,24 +235,24 @@ Node::ListPtr TaskCall::get_children(void) const
     return list;
 }
 
-void TaskCall::clone_children(Node::Ptr new_node) const
+void Call::clone_children(Node::Ptr new_node) const
 {
-    cast_to<TaskCall>(new_node)->set_args(Node::clone_list(get_args()));
-    cast_to<TaskCall>(new_node)->set_scope(ScopeName::clone_list(get_scope()));
+    cast_to<Call>(new_node)->set_args(Node::clone_list(get_args()));
+    cast_to<Call>(new_node)->set_scope(ScopeName::clone_list(get_scope()));
     if(get_hier()) {
-        cast_to<TaskCall>(new_node)->set_hier(cast_to<HierName>(get_hier()->clone()));
+        cast_to<Call>(new_node)->set_hier(cast_to<HierName>(get_hier()->clone()));
     }
 }
 
-Node::Ptr TaskCall::alloc_same(void) const
+Node::Ptr Call::alloc_same(void) const
 {
-    Ptr p(new TaskCall);
+    Ptr p(new Call);
     return p;
 }
 
-std::ostream &operator<<(std::ostream &os, const TaskCall &p)
+std::ostream &operator<<(std::ostream &os, const Call &p)
 {
-    os << "TaskCall: {";
+    os << "Call: {";
     if(!p.get_filename().empty()) {
         os << "filename: " << p.get_filename() << ", "
            << "line: " << p.get_line();
@@ -270,12 +267,12 @@ std::ostream &operator<<(std::ostream &os, const TaskCall &p)
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const TaskCall::Ptr p)
+std::ostream &operator<<(std::ostream &os, const Call::Ptr p)
 {
     if(p) {
         os << *p;
     } else {
-        os << "TaskCall: {nullptr}";
+        os << "Call: {nullptr}";
     }
 
     return os;

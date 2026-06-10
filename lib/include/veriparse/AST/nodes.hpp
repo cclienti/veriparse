@@ -13,6 +13,7 @@
 #include <veriparse/AST/package.hpp>
 #include <veriparse/AST/import.hpp>
 #include <veriparse/AST/identifier.hpp>
+#include <veriparse/AST/call.hpp>
 #include <veriparse/AST/constant.hpp>
 #include <veriparse/AST/stringconst.hpp>
 #include <veriparse/AST/intconst.hpp>

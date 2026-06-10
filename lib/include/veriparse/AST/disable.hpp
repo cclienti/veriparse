@@ -4,6 +4,7 @@
 #define VERIPARSE_AST_DISABLE_HPP
 
 #include <veriparse/AST/node.hpp>
+#include <veriparse/AST/identifier.hpp>
 
 #include <list>
 #include <string>
@@ -35,7 +36,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Disable.
      */
-    Disable(const std::string &dest, const std::string &filename = "", uint32_t line = 0);
+    Disable(const Identifier::Ptr dest, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -83,14 +84,14 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the property dest.
+     * Return the child dest.
      */
-    virtual const std::string &get_dest(void) const { return m_dest; }
+    virtual Identifier::Ptr get_dest(void) const { return m_dest; }
 
     /**
-     * Change the property dest.
+     * Change the child dest.
      */
-    virtual void set_dest(const std::string &dest) { m_dest = dest; }
+    virtual void set_dest(Identifier::Ptr dest) { m_dest = dest; }
 
     /**
      * Return the children list using the private children member
@@ -116,7 +117,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    std::string m_dest{};
+    Identifier::Ptr m_dest{};
 };
 
 std::ostream &operator<<(std::ostream &os, const Disable &p);

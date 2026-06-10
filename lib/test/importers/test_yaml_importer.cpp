@@ -268,6 +268,31 @@ TEST(YAMLImporter, Identifier)
     ASSERT_TRUE(yaml["Identifier"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
+TEST(YAMLImporter, Call)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Call.log");
+    Logger::add_stderr_sink();
+    std::string str("Call:\n"
+                    "  filename: call.v\n"
+                    "  line: 4\n"
+                    "  args:\n"
+                    "  scope:\n"
+                    "  hier:\n"
+                    "  name: mynbiqpmzj\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Call"]);
+    ASSERT_TRUE(yaml["Call"]["filename"].as<std::string>() == "call.v");
+    ASSERT_TRUE(yaml["Call"]["line"].as<int>() == 4);
+    ASSERT_TRUE(yaml["Call"]["args"]);
+    ASSERT_TRUE(yaml["Call"]["scope"]);
+    ASSERT_TRUE(yaml["Call"]["hier"]);
+    ASSERT_TRUE(yaml["Call"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
 TEST(YAMLImporter, Constant)
 {
     Logger::remove_all_sinks();
@@ -3739,8 +3764,9 @@ TEST(YAMLImporter, FunctionCall)
     std::string str("FunctionCall:\n"
                     "  filename: functioncall.v\n"
                     "  line: 12\n"
-                    "  scope:\n"
                     "  args:\n"
+                    "  scope:\n"
+                    "  hier:\n"
                     "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -3749,8 +3775,9 @@ TEST(YAMLImporter, FunctionCall)
     ASSERT_TRUE(yaml["FunctionCall"]);
     ASSERT_TRUE(yaml["FunctionCall"]["filename"].as<std::string>() == "functioncall.v");
     ASSERT_TRUE(yaml["FunctionCall"]["line"].as<int>() == 12);
-    ASSERT_TRUE(yaml["FunctionCall"]["scope"]);
     ASSERT_TRUE(yaml["FunctionCall"]["args"]);
+    ASSERT_TRUE(yaml["FunctionCall"]["scope"]);
+    ASSERT_TRUE(yaml["FunctionCall"]["hier"]);
     ASSERT_TRUE(yaml["FunctionCall"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -3788,8 +3815,9 @@ TEST(YAMLImporter, TaskCall)
     std::string str("TaskCall:\n"
                     "  filename: taskcall.v\n"
                     "  line: 8\n"
-                    "  scope:\n"
                     "  args:\n"
+                    "  scope:\n"
+                    "  hier:\n"
                     "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -3798,8 +3826,9 @@ TEST(YAMLImporter, TaskCall)
     ASSERT_TRUE(yaml["TaskCall"]);
     ASSERT_TRUE(yaml["TaskCall"]["filename"].as<std::string>() == "taskcall.v");
     ASSERT_TRUE(yaml["TaskCall"]["line"].as<int>() == 8);
-    ASSERT_TRUE(yaml["TaskCall"]["scope"]);
     ASSERT_TRUE(yaml["TaskCall"]["args"]);
+    ASSERT_TRUE(yaml["TaskCall"]["scope"]);
+    ASSERT_TRUE(yaml["TaskCall"]["hier"]);
     ASSERT_TRUE(yaml["TaskCall"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -3891,7 +3920,7 @@ TEST(YAMLImporter, Disable)
     std::string str("Disable:\n"
                     "  filename: disable.v\n"
                     "  line: 7\n"
-                    "  dest: mynbiqpmzj\n");
+                    "  dest:\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
     YAML::Node yaml = Generators::YAMLGenerator().render(ast);
@@ -3899,7 +3928,7 @@ TEST(YAMLImporter, Disable)
     ASSERT_TRUE(yaml["Disable"]);
     ASSERT_TRUE(yaml["Disable"]["filename"].as<std::string>() == "disable.v");
     ASSERT_TRUE(yaml["Disable"]["line"].as<int>() == 7);
-    ASSERT_TRUE(yaml["Disable"]["dest"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Disable"]["dest"]);
 }
 
 TEST(YAMLImporter, ParallelBlock)

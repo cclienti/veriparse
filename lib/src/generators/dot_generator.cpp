@@ -532,6 +532,78 @@ std::string DotGenerator::render_identifier(const AST::Identifier::Ptr node) con
     return ss.str();
 }
 
+std::string DotGenerator::render_call(const AST::Call::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Call) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">Call</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">args</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">scope</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">hier</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_args()) {
+            for(const AST::Node::Ptr &n : *node->get_args()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_scope()) {
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_hier().get()) {
+            ss << render(node->get_hier());
+        }
+        uint64_t childID;
+        if(node->get_args()) {
+            int i = 0;
+            for(const AST::Node::Ptr &n : *node->get_args()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        if(node->get_scope()) {
+            int i = 0;
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_hier().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
 std::string DotGenerator::render_constant(const AST::Constant::Ptr node) const
 {
     std::stringstream ss;
@@ -8144,18 +8216,13 @@ std::string DotGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">scope</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">args</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">scope</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">hier</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_scope()) {
-            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_args()) {
             for(const AST::Node::Ptr &n : *node->get_args()) {
                 if(n) {
@@ -8163,10 +8230,20 @@ std::string DotGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
                 }
             }
         }
-        uint64_t childID;
         if(node->get_scope()) {
-            int i = 0;
             for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_hier().get()) {
+            ss << render(node->get_hier());
+        }
+        uint64_t childID;
+        if(node->get_args()) {
+            int i = 0;
+            for(const AST::Node::Ptr &n : *node->get_args()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
                     ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
@@ -8174,15 +8251,19 @@ std::string DotGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
                 }
             }
         }
-        if(node->get_args()) {
+        if(node->get_scope()) {
             int i = 0;
-            for(const AST::Node::Ptr &n : *node->get_args()) {
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
                     ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_hier().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -8280,18 +8361,13 @@ std::string DotGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">scope</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">args</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">scope</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">hier</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_scope()) {
-            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_args()) {
             for(const AST::Node::Ptr &n : *node->get_args()) {
                 if(n) {
@@ -8299,10 +8375,20 @@ std::string DotGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
                 }
             }
         }
-        uint64_t childID;
         if(node->get_scope()) {
-            int i = 0;
             for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
+        if(node->get_hier().get()) {
+            ss << render(node->get_hier());
+        }
+        uint64_t childID;
+        if(node->get_args()) {
+            int i = 0;
+            for(const AST::Node::Ptr &n : *node->get_args()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
                     ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
@@ -8310,15 +8396,19 @@ std::string DotGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
                 }
             }
         }
-        if(node->get_args()) {
+        if(node->get_scope()) {
             int i = 0;
-            for(const AST::Node::Ptr &n : *node->get_args()) {
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
                     ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_hier().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -8506,9 +8596,18 @@ std::string DotGenerator::render_disable(const AST::Disable::Ptr node) const
            << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
            << "<FONT COLOR=\"white\">Disable</FONT></TD></TR>\n"
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
-        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">dest: " << node->get_dest() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">dest</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_dest().get()) {
+            ss << render(node->get_dest());
+        }
+        uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_dest().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
     }
 
     return ss.str();

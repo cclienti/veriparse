@@ -33,6 +33,7 @@ private:
     AST::Node::Ptr convert_package(const YAML::Node node) const;
     AST::Node::Ptr convert_import(const YAML::Node node) const;
     AST::Node::Ptr convert_identifier(const YAML::Node node) const;
+    AST::Node::Ptr convert_call(const YAML::Node node) const;
     AST::Node::Ptr convert_constant(const YAML::Node node) const;
     AST::Node::Ptr convert_stringconst(const YAML::Node node) const;
     AST::Node::Ptr convert_intconst(const YAML::Node node) const;
