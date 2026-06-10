@@ -6,42 +6,55 @@ Source:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/var0.v
           items:
-          - Reg:
+          - Var:
               filename: ../../test/parser/testcases/var0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 8
               name: a
-              right:
-                Rvalue: null
-              sign: false
-          - Reg:
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/var0.v
+                  line: 8
+                  signing: NONE
+          - Var:
               filename: ../../test/parser/testcases/var0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 9
               name: b
-              right:
-                Rvalue: null
-              sign: true
-              widths:
-              - Width:
+              type:
+                RegType:
                   filename: ../../test/parser/testcases/var0.v
                   line: 9
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/var0.v
-                      line: 9
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    Minus:
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/var0.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/var0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/var0.v
+                              hier:
+                                HierName: null
+                              line: 9
+                              name: WIDTH
                           line: 9
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/var0.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 9
                       right:
                         IntConstN:
@@ -50,22 +63,57 @@ Source:
                           line: 9
                           sign: false
                           size: -1
-                          value: 1
-          - Reg:
+                          value: 0
+                  signing: SIGNED
+          - Var:
               filename: ../../test/parser/testcases/var0.v
-              lengths:
-              - Length:
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 10
+              name: c
+              type:
+                RegType:
                   filename: ../../test/parser/testcases/var0.v
                   line: 10
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/var0.v
+                      left:
+                        Minus:
+                          filename: ../../test/parser/testcases/var0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/var0.v
+                              hier:
+                                HierName: null
+                              line: 10
+                              name: WIDTH
+                          line: 10
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/var0.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 10
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/var0.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/var0.v
+                  left:
                     Minus:
                       filename: ../../test/parser/testcases/var0.v
                       left:
@@ -83,10 +131,10 @@ Source:
                           right:
                             Identifier:
                               filename: ../../test/parser/testcases/var0.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: WIDTH
-                              scope:
-                                IdentifierScope: null
                       line: 10
                       right:
                         IntConstN:
@@ -96,16 +144,8 @@ Source:
                           sign: false
                           size: -1
                           value: 1
-              line: 10
-              name: c
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/parser/testcases/var0.v
                   line: 10
-                  lsb:
+                  right:
                     IntConstN:
                       base: 10
                       filename: ../../test/parser/testcases/var0.v
@@ -113,16 +153,41 @@ Source:
                       sign: false
                       size: -1
                       value: 0
-                  msb:
-                    Minus:
+          - Var:
+              filename: ../../test/parser/testcases/var0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 10
+              name: h
+              type:
+                RegType:
+                  filename: ../../test/parser/testcases/var0.v
+                  line: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/var0.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/var0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/var0.v
+                              hier:
+                                HierName: null
+                              line: 10
+                              name: WIDTH
                           line: 10
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/var0.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 10
                       right:
                         IntConstN:
@@ -131,22 +196,12 @@ Source:
                           line: 10
                           sign: false
                           size: -1
-                          value: 1
-          - Reg:
-              filename: ../../test/parser/testcases/var0.v
-              lengths:
-              - Length:
+                          value: 0
+                  signing: NONE
+              unpacked_dims:
+              - RangeDim:
                   filename: ../../test/parser/testcases/var0.v
-                  line: 10
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/var0.v
-                      line: 10
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
+                  left:
                     IntConstN:
                       base: 10
                       filename: ../../test/parser/testcases/var0.v
@@ -154,10 +209,8 @@ Source:
                       sign: false
                       size: -1
                       value: 63
-              - Length:
-                  filename: ../../test/parser/testcases/var0.v
                   line: 10
-                  lsb:
+                  right:
                     IntConstN:
                       base: 10
                       filename: ../../test/parser/testcases/var0.v
@@ -165,7 +218,9 @@ Source:
                       sign: false
                       size: -1
                       value: 0
-                  msb:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/var0.v
+                  left:
                     IntConstN:
                       base: 10
                       filename: ../../test/parser/testcases/var0.v
@@ -173,16 +228,8 @@ Source:
                       sign: false
                       size: -1
                       value: 31
-              line: 10
-              name: h
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/parser/testcases/var0.v
                   line: 10
-                  lsb:
+                  right:
                     IntConstN:
                       base: 10
                       filename: ../../test/parser/testcases/var0.v
@@ -190,30 +237,9 @@ Source:
                       sign: false
                       size: -1
                       value: 0
-                  msb:
-                    Minus:
-                      filename: ../../test/parser/testcases/var0.v
-                      left:
-                        Identifier:
-                          filename: ../../test/parser/testcases/var0.v
-                          line: 10
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
-                      line: 10
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/var0.v
-                          line: 10
-                          sign: false
-                          size: -1
-                          value: 1
-          - Reg:
+          - Var:
               filename: ../../test/parser/testcases/var0.v
-              line: 11
-              name: d
-              right:
+              init:
                 Rvalue:
                   filename: ../../test/parser/testcases/var0.v
                   line: 11
@@ -225,29 +251,37 @@ Source:
                       sign: false
                       size: -1
                       value: 1
-              sign: false
-              widths:
-              - Width:
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 11
+              name: d
+              type:
+                RegType:
                   filename: ../../test/parser/testcases/var0.v
                   line: 11
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/var0.v
-                      line: 11
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    Minus:
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/var0.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/var0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/var0.v
+                              hier:
+                                HierName: null
+                              line: 11
+                              name: WIDTH
                           line: 11
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/var0.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 11
                       right:
                         IntConstN:
@@ -256,36 +290,43 @@ Source:
                           line: 11
                           sign: false
                           size: -1
-                          value: 1
-          - Reg:
+                          value: 0
+                  signing: NONE
+          - Var:
               filename: ../../test/parser/testcases/var0.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 11
               name: e
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              type:
+                RegType:
                   filename: ../../test/parser/testcases/var0.v
                   line: 11
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/var0.v
-                      line: 11
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    Minus:
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/var0.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/var0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/var0.v
+                              hier:
+                                HierName: null
+                              line: 11
+                              name: WIDTH
                           line: 11
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/var0.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 11
                       right:
                         IntConstN:
@@ -294,12 +335,11 @@ Source:
                           line: 11
                           sign: false
                           size: -1
-                          value: 1
-          - Reg:
+                          value: 0
+                  signing: NONE
+          - Var:
               filename: ../../test/parser/testcases/var0.v
-              line: 11
-              name: f
-              right:
+              init:
                 Rvalue:
                   filename: ../../test/parser/testcases/var0.v
                   line: 11
@@ -311,29 +351,37 @@ Source:
                       sign: false
                       size: -1
                       value: 2
-              sign: false
-              widths:
-              - Width:
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 11
+              name: f
+              type:
+                RegType:
                   filename: ../../test/parser/testcases/var0.v
                   line: 11
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/var0.v
-                      line: 11
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    Minus:
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/var0.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/var0.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/var0.v
+                              hier:
+                                HierName: null
+                              line: 11
+                              name: WIDTH
                           line: 11
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/var0.v
+                              line: 11
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 11
                       right:
                         IntConstN:
@@ -342,16 +390,22 @@ Source:
                           line: 11
                           sign: false
                           size: -1
-                          value: 1
+                          value: 0
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: var0
           params:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/var0.v
+              is_local: false
               line: 2
               name: WIDTH
-              sign: true
-              type: INTEGER
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/var0.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/var0.v
@@ -365,78 +419,100 @@ Source:
                       size: -1
                       value: 8
           ports:
-          - Ioport:
-              filename: ../../test/parser/testcases/var0.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/var0.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: reset
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/var0.v
+                      line: 3
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/var0.v
               line: 3
-              second:
-                Wire:
+              name: reset
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/var0.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 3
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/var0.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/var0.v
                   line: 4
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/var0.v
+                      line: 4
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/var0.v
               line: 4
-              second:
-                Wire:
+              name: clk
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/var0.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 4
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/var0.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/var0.v
                   line: 5
                   name: in
-                  sign: false
-                  widths:
-                  - Width:
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/var0.v
                       line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/var0.v
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/var0.v
                           left:
-                            Identifier:
+                            Minus:
                               filename: ../../test/parser/testcases/var0.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/var0.v
+                                  hier:
+                                    HierName: null
+                                  line: 5
+                                  name: WIDTH
                               line: 5
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/var0.v
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 5
                           right:
                             IntConstN:
@@ -445,70 +521,40 @@ Source:
                               line: 5
                               sign: false
                               size: -1
-                              value: 1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/var0.v
               line: 5
-              second:
-                Wire:
+              name: in
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/var0.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 5
-                  name: in
+                  line: 6
+                  name: out
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
                       filename: ../../test/parser/testcases/var0.v
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/var0.v
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: ../../test/parser/testcases/var0.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/var0.v
-                              line: 5
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/var0.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 1
-          - Ioport:
+                      line: 6
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
               filename: ../../test/parser/testcases/var0.v
-              first:
-                Output:
-                  filename: ../../test/parser/testcases/var0.v
-                  line: 6
-                  name: out
-                  sign: false
               line: 6
-              second:
-                Reg:
-                  filename: ../../test/parser/testcases/var0.v
-                  line: 6
-                  name: out
-                  right:
-                    Rvalue: null
-                  sign: false
+              name: out
       filename: ../../test/parser/testcases/var0.v
       line: 1
   filename: ../../test/parser/testcases/var0.v
   line: 1
-
