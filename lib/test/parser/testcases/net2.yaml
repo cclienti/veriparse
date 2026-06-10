@@ -6,50 +6,65 @@ Source:
           default_nettype: WIRE
           filename: ../../test/parser/testcases/net2.v
           items:
-          - Supply0:
+          - Supply0Net:
+              cont_assign:
+                Rvalue: null
               filename: ../../test/parser/testcases/net2.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: a
               rdelay:
                 DelayStatement: null
-              right:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/net2.v
+                  line: 8
+                  signing: NONE
+          - Supply0Net:
+              cont_assign:
                 Rvalue: null
-              sign: false
-          - Supply0:
               filename: ../../test/parser/testcases/net2.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 9
               name: b
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: true
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/net2.v
                   line: 9
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/net2.v
-                      line: 9
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    Minus:
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/net2.v
                       left:
-                        Identifier:
+                        Minus:
                           filename: ../../test/parser/testcases/net2.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/net2.v
+                              hier:
+                                HierName: null
+                              line: 9
+                              name: WIDTH
                           line: 9
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/net2.v
+                              line: 9
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 9
                       right:
                         IntConstN:
@@ -58,24 +73,62 @@ Source:
                           line: 9
                           sign: false
                           size: -1
-                          value: 1
-          - Supply0:
+                          value: 0
+                  signing: SIGNED
+          - Supply0Net:
+              cont_assign:
+                Rvalue: null
               filename: ../../test/parser/testcases/net2.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
-              lengths:
-              - Length:
+              line: 10
+              name: c
+              rdelay:
+                DelayStatement: null
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/net2.v
                   line: 10
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ../../test/parser/testcases/net2.v
+                      left:
+                        Minus:
+                          filename: ../../test/parser/testcases/net2.v
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/net2.v
+                              hier:
+                                HierName: null
+                              line: 10
+                              name: WIDTH
+                          line: 10
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../../test/parser/testcases/net2.v
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
                       line: 10
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../../test/parser/testcases/net2.v
+                          line: 10
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/net2.v
+                  left:
                     Minus:
                       filename: ../../test/parser/testcases/net2.v
                       left:
@@ -93,10 +146,10 @@ Source:
                           right:
                             Identifier:
                               filename: ../../test/parser/testcases/net2.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: WIDTH
-                              scope:
-                                IdentifierScope: null
                       line: 10
                       right:
                         IntConstN:
@@ -106,18 +159,8 @@ Source:
                           sign: false
                           size: -1
                           value: 1
-              line: 10
-              name: c
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/parser/testcases/net2.v
                   line: 10
-                  lsb:
+                  right:
                     IntConstN:
                       base: 10
                       filename: ../../test/parser/testcases/net2.v
@@ -125,34 +168,20 @@ Source:
                       sign: false
                       size: -1
                       value: 0
-                  msb:
-                    Minus:
-                      filename: ../../test/parser/testcases/net2.v
-                      left:
-                        Identifier:
-                          filename: ../../test/parser/testcases/net2.v
-                          line: 10
-                          name: WIDTH
-                          scope:
-                            IdentifierScope: null
-                      line: 10
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/net2.v
-                          line: 10
-                          sign: false
-                          size: -1
-                          value: 1
+          lifetime: NONE
           line: 1
           name: net2
           params:
-          - Parameter:
+          - Param:
               filename: ../../test/parser/testcases/net2.v
+              is_local: false
               line: 2
               name: WIDTH
-              sign: true
-              type: INTEGER
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/net2.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/net2.v
@@ -166,78 +195,100 @@ Source:
                       size: -1
                       value: 8
           ports:
-          - Ioport:
-              filename: ../../test/parser/testcases/net2.v
-              first:
-                Input:
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/net2.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: reset
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/net2.v
+                      line: 3
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/net2.v
               line: 3
-              second:
-                Wire:
+              name: reset
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/net2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 3
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/net2.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/net2.v
                   line: 4
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/net2.v
+                      line: 4
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/net2.v
               line: 4
-              second:
-                Wire:
+              name: clk
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/net2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 4
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/parser/testcases/net2.v
-              first:
-                Input:
-                  filename: ../../test/parser/testcases/net2.v
                   line: 5
                   name: in
-                  sign: false
-                  widths:
-                  - Width:
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
                       filename: ../../test/parser/testcases/net2.v
                       line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/net2.v
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
+                      packed_dims:
+                      - RangeDim:
                           filename: ../../test/parser/testcases/net2.v
                           left:
-                            Identifier:
+                            Minus:
                               filename: ../../test/parser/testcases/net2.v
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/net2.v
+                                  hier:
+                                    HierName: null
+                                  line: 5
+                                  name: WIDTH
                               line: 5
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../../test/parser/testcases/net2.v
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 1
                           line: 5
                           right:
                             IntConstN:
@@ -246,70 +297,40 @@ Source:
                               line: 5
                               sign: false
                               size: -1
-                              value: 1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../../test/parser/testcases/net2.v
               line: 5
-              second:
-                Wire:
+              name: in
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
                   filename: ../../test/parser/testcases/net2.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 5
-                  name: in
+                  line: 6
+                  name: out
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
                       filename: ../../test/parser/testcases/net2.v
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/net2.v
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        Minus:
-                          filename: ../../test/parser/testcases/net2.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/net2.v
-                              line: 5
-                              name: WIDTH
-                              scope:
-                                IdentifierScope: null
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/net2.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 1
-          - Ioport:
+                      line: 6
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
               filename: ../../test/parser/testcases/net2.v
-              first:
-                Output:
-                  filename: ../../test/parser/testcases/net2.v
-                  line: 6
-                  name: out
-                  sign: false
               line: 6
-              second:
-                Reg:
-                  filename: ../../test/parser/testcases/net2.v
-                  line: 6
-                  name: out
-                  right:
-                    Rvalue: null
-                  sign: false
+              name: out
       filename: ../../test/parser/testcases/net2.v
       line: 1
   filename: ../../test/parser/testcases/net2.v
   line: 1
-
