@@ -183,8 +183,8 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_taskcall(const AST::TaskCall::Ptr node) const;
     virtual YAML::Node render_generatestatement(const AST::GenerateStatement::Ptr node) const;
     virtual YAML::Node render_systemcall(const AST::SystemCall::Ptr node) const;
-    virtual YAML::Node render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr node) const;
-    virtual YAML::Node render_identifierscope(const AST::IdentifierScope::Ptr node) const;
+    virtual YAML::Node render_hierlabel(const AST::HierLabel::Ptr node) const;
+    virtual YAML::Node render_hiername(const AST::HierName::Ptr node) const;
     virtual YAML::Node render_disable(const AST::Disable::Ptr node) const;
     virtual YAML::Node render_parallelblock(const AST::ParallelBlock::Ptr node) const;
     virtual YAML::Node render_singlestatement(const AST::SingleStatement::Ptr node) const;

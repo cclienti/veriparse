@@ -187,9 +187,8 @@ private:
     virtual std::string render_taskcall(const AST::TaskCall::Ptr node) const;
     virtual std::string render_generatestatement(const AST::GenerateStatement::Ptr node) const;
     virtual std::string render_systemcall(const AST::SystemCall::Ptr node) const;
-    virtual std::string
-    render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr node) const;
-    virtual std::string render_identifierscope(const AST::IdentifierScope::Ptr node) const;
+    virtual std::string render_hierlabel(const AST::HierLabel::Ptr node) const;
+    virtual std::string render_hiername(const AST::HierName::Ptr node) const;
     virtual std::string render_disable(const AST::Disable::Ptr node) const;
     virtual std::string render_parallelblock(const AST::ParallelBlock::Ptr node) const;
     virtual std::string render_singlestatement(const AST::SingleStatement::Ptr node) const;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#ifndef VERIPARSE_AST_IDENTIFIERSCOPELABEL_HPP
-#define VERIPARSE_AST_IDENTIFIERSCOPELABEL_HPP
+#ifndef VERIPARSE_AST_HIERLABEL_HPP
+#define VERIPARSE_AST_HIERLABEL_HPP
 
 #include <veriparse/AST/node.hpp>
 
@@ -17,31 +17,31 @@ namespace Veriparse
 namespace AST
 {
 
-class IdentifierScopeLabel : public Node
+class HierLabel : public Node
 {
 public:
-    using Ptr = typename NodePointers<IdentifierScopeLabel>::Ptr;
-    using List = typename NodePointers<IdentifierScopeLabel>::List;
-    using ListPtr = typename NodePointers<IdentifierScopeLabel>::ListPtr;
+    using Ptr = typename NodePointers<HierLabel>::Ptr;
+    using List = typename NodePointers<HierLabel>::List;
+    using ListPtr = typename NodePointers<HierLabel>::ListPtr;
     using Node::operator=;
     using Node::operator==;
     using Node::operator!=;
 
     /**
-     * Constructor, m_node_type is set to NodeType::IdentifierScopeLabel.
+     * Constructor, m_node_type is set to NodeType::HierLabel.
      */
-    IdentifierScopeLabel(const std::string &filename = "", uint32_t line = 0);
+    HierLabel(const std::string &filename = "", uint32_t line = 0);
 
     /**
-     * Constructor, m_node_type is set to NodeType::IdentifierScopeLabel.
+     * Constructor, m_node_type is set to NodeType::HierLabel.
      */
-    IdentifierScopeLabel(const Node::Ptr loop, const std::string &scope,
-                         const std::string &filename = "", uint32_t line = 0);
+    HierLabel(const Node::Ptr loop, const std::string &name, const std::string &filename = "",
+              uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
      */
-    virtual IdentifierScopeLabel &operator=(const IdentifierScopeLabel &rhs);
+    virtual HierLabel &operator=(const HierLabel &rhs);
 
     /**
      * Assignment operator, do not affect children.
@@ -49,22 +49,22 @@ public:
     virtual Node &operator=(const Node &rhs) override;
 
     /**
-     * Return true if the IdentifierScopeLabel nodes are the same, do not check children.
+     * Return true if the HierLabel nodes are the same, do not check children.
      */
-    virtual bool operator==(const IdentifierScopeLabel &rhs) const;
+    virtual bool operator==(const HierLabel &rhs) const;
 
     /**
-     * Return true if the IdentifierScopeLabel nodes are the same, do not check children.
+     * Return true if the HierLabel nodes are the same, do not check children.
      */
     virtual bool operator==(const Node &rhs) const override;
 
     /**
-     * Return true if the IdentifierScopeLabel nodes are the same, do not check children.
+     * Return true if the HierLabel nodes are the same, do not check children.
      */
-    virtual bool operator!=(const IdentifierScopeLabel &rhs) const;
+    virtual bool operator!=(const HierLabel &rhs) const;
 
     /**
-     * Return true if the IdentifierScopeLabel nodes are the same, do not check children.
+     * Return true if the HierLabel nodes are the same, do not check children.
      */
     virtual bool operator!=(const Node &rhs) const override;
 
@@ -94,14 +94,14 @@ public:
     virtual void set_loop(Node::Ptr loop) { m_loop = loop; }
 
     /**
-     * Return the property scope.
+     * Return the property name.
      */
-    virtual const std::string &get_scope(void) const { return m_scope; }
+    virtual const std::string &get_name(void) const { return m_name; }
 
     /**
-     * Change the property scope.
+     * Change the property name.
      */
-    virtual void set_scope(const std::string &scope) { m_scope = scope; }
+    virtual void set_name(const std::string &name) { m_name = name; }
 
     /**
      * Return the children list using the private children member
@@ -128,11 +128,11 @@ private:
     virtual Node::Ptr alloc_same(void) const override;
 
     Node::Ptr m_loop{};
-    std::string m_scope{};
+    std::string m_name{};
 };
 
-std::ostream &operator<<(std::ostream &os, const IdentifierScopeLabel &p);
-std::ostream &operator<<(std::ostream &os, const IdentifierScopeLabel::Ptr p);
+std::ostream &operator<<(std::ostream &os, const HierLabel &p);
+std::ostream &operator<<(std::ostream &os, const HierLabel::Ptr p);
 
 } // namespace AST
 } // namespace Veriparse

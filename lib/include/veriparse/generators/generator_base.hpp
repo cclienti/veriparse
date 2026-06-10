@@ -539,11 +539,11 @@ public:
             case AST::NodeType::SystemCall:
                 return render_systemcall(AST::cast_to<AST::SystemCall>(node));
 
-            case AST::NodeType::IdentifierScopeLabel:
-                return render_identifierscopelabel(AST::cast_to<AST::IdentifierScopeLabel>(node));
+            case AST::NodeType::HierLabel:
+                return render_hierlabel(AST::cast_to<AST::HierLabel>(node));
 
-            case AST::NodeType::IdentifierScope:
-                return render_identifierscope(AST::cast_to<AST::IdentifierScope>(node));
+            case AST::NodeType::HierName:
+                return render_hiername(AST::cast_to<AST::HierName>(node));
 
             case AST::NodeType::Disable:
                 return render_disable(AST::cast_to<AST::Disable>(node));
@@ -1912,23 +1912,20 @@ public:
     T render(const AST::SystemCall::Ptr node) const { return render_systemcall(node); }
 
     /**
-     * Main rendering method for the IdentifierScopeLabel node, we
+     * Main rendering method for the HierLabel node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr &node)
+     * @see GeneratorBase::render_hierlabel(const AST::HierLabel::Ptr &node)
      */
-    T render(const AST::IdentifierScopeLabel::Ptr node) const
-    {
-        return render_identifierscopelabel(node);
-    }
+    T render(const AST::HierLabel::Ptr node) const { return render_hierlabel(node); }
 
     /**
-     * Main rendering method for the IdentifierScope node, we
+     * Main rendering method for the HierName node, we
      * dispatch directly to the right rendering method.
      *
-     * @see GeneratorBase::render_identifierscope(const AST::IdentifierScope::Ptr &node)
+     * @see GeneratorBase::render_hiername(const AST::HierName::Ptr &node)
      */
-    T render(const AST::IdentifierScope::Ptr node) const { return render_identifierscope(node); }
+    T render(const AST::HierName::Ptr node) const { return render_hiername(node); }
 
     /**
      * Main rendering method for the Disable node, we
@@ -2970,19 +2967,16 @@ protected:
     virtual T render_systemcall(const AST::SystemCall::Ptr node) const { return T(); }
 
     /**
-     * Render the IdentifierScopeLabel node. This method must be
+     * Render the HierLabel node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr node) const
-    {
-        return T();
-    }
+    virtual T render_hierlabel(const AST::HierLabel::Ptr node) const { return T(); }
 
     /**
-     * Render the IdentifierScope node. This method must be
+     * Render the HierName node. This method must be
      * overloaded in a derived class to your needs.
      */
-    virtual T render_identifierscope(const AST::IdentifierScope::Ptr node) const { return T(); }
+    virtual T render_hiername(const AST::HierName::Ptr node) const { return T(); }
 
     /**
      * Render the Disable node. This method must be

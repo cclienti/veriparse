@@ -189,8 +189,8 @@ private:
     AST::Node::Ptr convert_taskcall(const YAML::Node node) const;
     AST::Node::Ptr convert_generatestatement(const YAML::Node node) const;
     AST::Node::Ptr convert_systemcall(const YAML::Node node) const;
-    AST::Node::Ptr convert_identifierscopelabel(const YAML::Node node) const;
-    AST::Node::Ptr convert_identifierscope(const YAML::Node node) const;
+    AST::Node::Ptr convert_hierlabel(const YAML::Node node) const;
+    AST::Node::Ptr convert_hiername(const YAML::Node node) const;
     AST::Node::Ptr convert_disable(const YAML::Node node) const;
     AST::Node::Ptr convert_parallelblock(const YAML::Node node) const;
     AST::Node::Ptr convert_singlestatement(const YAML::Node node) const;

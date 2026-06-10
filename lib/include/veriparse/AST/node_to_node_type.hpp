@@ -215,14 +215,8 @@ template <> constexpr NodeType get_node_type<GenerateStatement>()
     return NodeType::GenerateStatement;
 }
 template <> constexpr NodeType get_node_type<SystemCall>() { return NodeType::SystemCall; }
-template <> constexpr NodeType get_node_type<IdentifierScopeLabel>()
-{
-    return NodeType::IdentifierScopeLabel;
-}
-template <> constexpr NodeType get_node_type<IdentifierScope>()
-{
-    return NodeType::IdentifierScope;
-}
+template <> constexpr NodeType get_node_type<HierLabel>() { return NodeType::HierLabel; }
+template <> constexpr NodeType get_node_type<HierName>() { return NodeType::HierName; }
 template <> constexpr NodeType get_node_type<Disable>() { return NodeType::Disable; }
 template <> constexpr NodeType get_node_type<ParallelBlock>() { return NodeType::ParallelBlock; }
 template <> constexpr NodeType get_node_type<SingleStatement>()

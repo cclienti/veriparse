@@ -161,6 +161,36 @@ package/`$unit`. Empty scope = unscoped. Replaces the flat `package` string —
 which only held one level. The **value side** (`Identifier`, `FunctionCall`,
 `TaskCall`) takes the same `scope: list(ScopeName)`.
 
+#### 3.3.1 Two scope axes — SV `::` resolution vs Verilog `.` hierarchy (SETTLED)
+
+These are **two orthogonal axes** and must not be conflated:
+
+- **SV `::` scope-resolution** — `pkg::x`, `$unit::x`, `A::B::T`, `A#(8)::T`. A
+  *compile-time namespace qualifier* on a name; applies to **types and values
+  alike**. Modelled by `scope: list(ScopeName)`.
+- **Verilog `.` hierarchical reference** — `top.u1.sig`, `genblk[i].sig`. A *path
+  through the instance/generate hierarchy*; a **value-side-only** axis. Modelled
+  by the existing `IdentifierScope` child.
+
+The original draft (§3.3/§5.10/§6) said "`Identifier` takes `scope:
+list(ScopeName)`" but **missed a name clash**: `Identifier` *already* has a child
+literally named `scope` — the hierarchical `IdentifierScope`. The two axes are
+genuinely different, so they get genuinely different fields.
+
+**Resolution (SETTLED):** the field name `scope` is reserved for the **SV `::`**
+axis *everywhere* (type ref and value ref); the misnamed hierarchical node/child
+is renamed to its honest name:
+
+- `IdentifierScope → HierName`, `IdentifierScopeLabel → HierLabel`;
+- `Identifier.scope` (the hierarchy child) → `Identifier.hier: HierName`.
+
+So a value ref carries the two axes as orthogonal fields:
+`Identifier { name, scope: list(ScopeName) (::), hier: HierName (.) }`, and
+`scope` now means the **same thing** on `NamedType` (type) and on
+`Identifier`/`FunctionCall`/`TaskCall` (value). `FunctionCall`/`TaskCall` gain
+`scope` (the `::` axis); a hierarchical *call* (`u1.t()`) is not modelled yet
+(additive later).
+
 ### 3.4 Aggregates
 `StructType`/`UnionType` carry `is_packed`, `signing`, `members:[Member]`,
 `packed_dims`; `UnionType` also `is_tagged` (`union tagged`). `EnumType` carries
@@ -469,13 +499,23 @@ typedef enum E;                 Typedef{ name:E, type: null, fwd_kind: ENUM }   
 names** ⇒ the `h` bug fixed at the root (the obfuscator guard becomes unnecessary,
 but harmless).
 
-### 5.10 Package scope (`pkg::`)
-- **type** ref: `NamedType{ name, scope: list(ScopeName) }` (`pkg::T`, `A::B::T`).
-- **value** ref: `Identifier{ name, scope: list(ScopeName) }` (`pkg::sig`,
-  `A::B::x`); `FunctionCall`/`TaskCall` take the same `scope`.
-- `import pkg::*` / `import pkg::x`: `Import` (existing, kept).
-Scope is an ordered **scope list** on the name ref (`ScopeName{ name, params }`),
-replacing the old single `package` string. A resolution pass attributes it.
+### 5.10 Scope — SV `::` resolution vs Verilog `.` hierarchy (two axes, cf. §3.3.1)
+- **SV `::` scope-resolution** — `scope: list(ScopeName)`, `ScopeName{ name,
+  params }`:
+  - **type** ref: `NamedType{ name, scope }` (`pkg::T`, `$unit::T`, `A::B::T`,
+    `A#(8)::T`).
+  - **value** ref: `Identifier{ name, scope }` (`pkg::sig`, `A::B::x`);
+    `FunctionCall`/`TaskCall` take the same `scope`.
+  - Replaces the old single-level `package` string (which could not express
+    `A::B::x`).
+- **Verilog `.` hierarchical reference** — `hier: HierName` (renamed from
+  `IdentifierScope`): `top.u1.sig`, `genblk[i].sig`, a path through the
+  instance/generate hierarchy. Value-side-only, **orthogonal** to `::`.
+- `import pkg::*` / `import pkg::x`: `Import` (existing, kept — SV imports are
+  single-level, so its flat `package` + `symbol` suffices).
+
+A resolution pass (PackageInliner) consumes the `::` `scope` list (instead of the
+old flat `package` string).
 
 ### 5.11 Cast — node per form
 A cast's target (`casting_type`) is broader than a type: type, signing, or size.
@@ -533,7 +573,13 @@ segment, used by the scope list). (Advanced, §10: `Interface`/`Class`/`Program`
 `InterfaceType`/`ClassType`/`CovergroupType` + `Modport`/`Constraint`.)
 
 **Modified (value side)**: `Identifier`, `FunctionCall`, `TaskCall` — their flat
-`package` string → `scope: list(ScopeName)` (cf. §3.3, handles nested `A::B::x`).
+`package` string → `scope: list(ScopeName)` (the SV `::` axis; cf. §3.3.1/§5.10,
+handles nested `A::B::x` and parameterized `A#(8)::x`).
+
+**Renamed (hierarchical axis, cf. §3.3.1)**: `IdentifierScope → HierName`,
+`IdentifierScopeLabel → HierLabel`, and `Identifier.scope` (the hierarchical
+child) → `Identifier.hier` — freeing `scope` to mean the SV `::` axis everywhere
+(type and value).
 
 **Dimensions**: `Width` + `Length` → **`Dimension`** (node per form:
 `RangeDim`/`SizeDim`/`UnsizedDim`/`QueueDim`/`AssocDim`, cf. §3.8).

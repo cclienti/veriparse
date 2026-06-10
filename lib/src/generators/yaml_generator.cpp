@@ -313,9 +313,15 @@ YAML::Node YAMLGenerator::render_identifier(const AST::Identifier::Ptr node) con
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
-        content["package"] = node->get_package();
 
-        content["scope"] = render(node->get_scope());
+        if(node->get_scope()) {
+            content["scope"] = YAML::Load("[]");
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                content["scope"].push_back(render(n));
+            }
+        }
+
+        content["hier"] = render(node->get_hier());
     }
 
     node_identifier["Identifier"] = content;
@@ -4464,7 +4470,13 @@ YAML::Node YAMLGenerator::render_functioncall(const AST::FunctionCall::Ptr node)
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
-        content["package"] = node->get_package();
+
+        if(node->get_scope()) {
+            content["scope"] = YAML::Load("[]");
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                content["scope"].push_back(render(n));
+            }
+        }
 
         if(node->get_args()) {
             content["args"] = YAML::Load("[]");
@@ -4534,7 +4546,13 @@ YAML::Node YAMLGenerator::render_taskcall(const AST::TaskCall::Ptr node) const
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
         content["name"] = node->get_name();
-        content["package"] = node->get_package();
+
+        if(node->get_scope()) {
+            content["scope"] = YAML::Load("[]");
+            for(const AST::ScopeName::Ptr &n : *node->get_scope()) {
+                content["scope"].push_back(render(n));
+            }
+        }
 
         if(node->get_args()) {
             content["args"] = YAML::Load("[]");
@@ -4599,35 +4617,34 @@ YAML::Node YAMLGenerator::render_systemcall(const AST::SystemCall::Ptr node) con
     return node_systemcall;
 }
 
-YAML::Node
-YAMLGenerator::render_identifierscopelabel(const AST::IdentifierScopeLabel::Ptr node) const
+YAML::Node YAMLGenerator::render_hierlabel(const AST::HierLabel::Ptr node) const
 {
-    YAML::Node node_identifierscopelabel;
+    YAML::Node node_hierlabel;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IdentifierScopeLabel) {
+        if(node->get_node_type() != AST::NodeType::HierLabel) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
         content["filename"] = node->get_filename();
         content["line"] = node->get_line();
-        content["scope"] = node->get_scope();
+        content["name"] = node->get_name();
 
         content["loop"] = render(node->get_loop());
     }
 
-    node_identifierscopelabel["IdentifierScopeLabel"] = content;
-    return node_identifierscopelabel;
+    node_hierlabel["HierLabel"] = content;
+    return node_hierlabel;
 }
 
-YAML::Node YAMLGenerator::render_identifierscope(const AST::IdentifierScope::Ptr node) const
+YAML::Node YAMLGenerator::render_hiername(const AST::HierName::Ptr node) const
 {
-    YAML::Node node_identifierscope;
+    YAML::Node node_hiername;
     YAML::Node content;
 
     if(node) {
-        if(node->get_node_type() != AST::NodeType::IdentifierScope) {
+        if(node->get_node_type() != AST::NodeType::HierName) {
             return render(AST::cast_to<AST::Node>(node));
         }
 
@@ -4636,14 +4653,14 @@ YAML::Node YAMLGenerator::render_identifierscope(const AST::IdentifierScope::Ptr
 
         if(node->get_labellist()) {
             content["labellist"] = YAML::Load("[]");
-            for(const AST::IdentifierScopeLabel::Ptr &n : *node->get_labellist()) {
+            for(const AST::HierLabel::Ptr &n : *node->get_labellist()) {
                 content["labellist"].push_back(render(n));
             }
         }
     }
 
-    node_identifierscope["IdentifierScope"] = content;
-    return node_identifierscope;
+    node_hiername["HierName"] = content;
+    return node_hiername;
 }
 
 YAML::Node YAMLGenerator::render_disable(const AST::Disable::Ptr node) const

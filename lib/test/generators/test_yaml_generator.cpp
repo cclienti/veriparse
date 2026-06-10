@@ -174,19 +174,18 @@ TEST(YAMLGenerator, Identifier)
     Logger::add_text_sink("YAMLGenerator.Identifier.log");
     Logger::add_stderr_sink();
 
-    AST::IdentifierScope::Ptr c_scope(new AST::IdentifierScope);
+    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
+    AST::HierName::Ptr c_hier(new AST::HierName);
     std::string p_name = "mynbiqpmzj";
-    std::string p_package = "plsgqejeyd";
 
-    AST::Identifier::Ptr m_identifier(
-        new AST::Identifier(c_scope, p_name, p_package, "filename", 0));
+    AST::Identifier::Ptr m_identifier(new AST::Identifier(c_scope, c_hier, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_identifier);
 
     ASSERT_TRUE(yaml["Identifier"]);
     ASSERT_TRUE(yaml["Identifier"]["scope"]);
+    ASSERT_TRUE(yaml["Identifier"]["hier"]);
     ASSERT_TRUE(yaml["Identifier"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["Identifier"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLGenerator, Constant)
@@ -3280,19 +3279,19 @@ TEST(YAMLGenerator, FunctionCall)
     Logger::add_text_sink("YAMLGenerator.FunctionCall.log");
     Logger::add_stderr_sink();
 
+    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
     AST::Node::ListPtr c_args(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
-    std::string p_package = "plsgqejeyd";
 
     AST::FunctionCall::Ptr m_functioncall(
-        new AST::FunctionCall(c_args, p_name, p_package, "filename", 0));
+        new AST::FunctionCall(c_scope, c_args, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_functioncall);
 
     ASSERT_TRUE(yaml["FunctionCall"]);
+    ASSERT_TRUE(yaml["FunctionCall"]["scope"]);
     ASSERT_TRUE(yaml["FunctionCall"]["args"]);
     ASSERT_TRUE(yaml["FunctionCall"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["FunctionCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLGenerator, Task)
@@ -3324,18 +3323,18 @@ TEST(YAMLGenerator, TaskCall)
     Logger::add_text_sink("YAMLGenerator.TaskCall.log");
     Logger::add_stderr_sink();
 
+    AST::ScopeName::ListPtr c_scope(new AST::ScopeName::List);
     AST::Node::ListPtr c_args(new AST::Node::List);
     std::string p_name = "mynbiqpmzj";
-    std::string p_package = "plsgqejeyd";
 
-    AST::TaskCall::Ptr m_taskcall(new AST::TaskCall(c_args, p_name, p_package, "filename", 0));
+    AST::TaskCall::Ptr m_taskcall(new AST::TaskCall(c_scope, c_args, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_taskcall);
 
     ASSERT_TRUE(yaml["TaskCall"]);
+    ASSERT_TRUE(yaml["TaskCall"]["scope"]);
     ASSERT_TRUE(yaml["TaskCall"]["args"]);
     ASSERT_TRUE(yaml["TaskCall"]["name"].as<std::string>() == "mynbiqpmzj");
-    ASSERT_TRUE(yaml["TaskCall"]["package"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLGenerator, GenerateStatement)
@@ -3373,40 +3372,38 @@ TEST(YAMLGenerator, SystemCall)
     ASSERT_TRUE(yaml["SystemCall"]["syscall"].as<std::string>() == "mynbiqpmzj");
 }
 
-TEST(YAMLGenerator, IdentifierScopeLabel)
+TEST(YAMLGenerator, HierLabel)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.IdentifierScopeLabel.log");
+    Logger::add_text_sink("YAMLGenerator.HierLabel.log");
     Logger::add_stderr_sink();
 
     AST::Node::Ptr c_loop(new AST::Node);
-    std::string p_scope = "mynbiqpmzj";
+    std::string p_name = "mynbiqpmzj";
 
-    AST::IdentifierScopeLabel::Ptr m_identifierscopelabel(
-        new AST::IdentifierScopeLabel(c_loop, p_scope, "filename", 0));
+    AST::HierLabel::Ptr m_hierlabel(new AST::HierLabel(c_loop, p_name, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_identifierscopelabel);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_hierlabel);
 
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]);
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]["loop"]);
-    ASSERT_TRUE(yaml["IdentifierScopeLabel"]["scope"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["HierLabel"]);
+    ASSERT_TRUE(yaml["HierLabel"]["loop"]);
+    ASSERT_TRUE(yaml["HierLabel"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
-TEST(YAMLGenerator, IdentifierScope)
+TEST(YAMLGenerator, HierName)
 {
     Logger::remove_all_sinks();
-    Logger::add_text_sink("YAMLGenerator.IdentifierScope.log");
+    Logger::add_text_sink("YAMLGenerator.HierName.log");
     Logger::add_stderr_sink();
 
-    AST::IdentifierScopeLabel::ListPtr c_labellist(new AST::IdentifierScopeLabel::List);
+    AST::HierLabel::ListPtr c_labellist(new AST::HierLabel::List);
 
-    AST::IdentifierScope::Ptr m_identifierscope(
-        new AST::IdentifierScope(c_labellist, "filename", 0));
+    AST::HierName::Ptr m_hiername(new AST::HierName(c_labellist, "filename", 0));
 
-    YAML::Node yaml = Generators::YAMLGenerator().render(m_identifierscope);
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_hiername);
 
-    ASSERT_TRUE(yaml["IdentifierScope"]);
-    ASSERT_TRUE(yaml["IdentifierScope"]["labellist"]);
+    ASSERT_TRUE(yaml["HierName"]);
+    ASSERT_TRUE(yaml["HierName"]["labellist"]);
 }
 
 TEST(YAMLGenerator, Disable)
