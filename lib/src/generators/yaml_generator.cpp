@@ -2135,6 +2135,29 @@ YAML::Node YAMLGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) c
     return node_implicitnet;
 }
 
+YAML::Node YAMLGenerator::render_nettypedecl(const AST::NetTypeDecl::Ptr node) const
+{
+    YAML::Node node_nettypedecl;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::NetTypeDecl) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        content["resolver"] = render(node->get_resolver());
+
+        content["type"] = render(node->get_type());
+    }
+
+    node_nettypedecl["NetTypeDecl"] = content;
+    return node_nettypedecl;
+}
+
 YAML::Node YAMLGenerator::render_strength(const AST::Strength::Ptr node) const
 {
     YAML::Node node_strength;

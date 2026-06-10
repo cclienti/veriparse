@@ -719,7 +719,11 @@ an existing node**, never a redesign. Inventory of where each lives.
 ### User-defined nettypes, covergroup types, and the loose ends
 - **`nettype`** (`nettype data_type my_net_t [with f];`) → a `NetTypeDecl{ name,
   type: DataType, resolver }` declaration. A net using it: `UserNet{ type:
-  NamedType(my_net_t) }` (cf. §4/§5.2).
+  NamedType(my_net_t) }` (cf. §4/§5.2). Concretely it is a `Declaration` subtype
+  (`name`/`type` from the base) with `resolver: Identifier` (the optional
+  resolution-function ref, null absent). The node is realized **now** in the
+  big-bang schema — small and fully specified, like `Strength`/`TypeOp*`/the
+  `Dimension` variants — while its *grammar* is wired up later (§8 phasing).
 - **`covergroup` as a type** (`ps_covergroup_identifier` in `data_type`) →
   a `CovergroupType { name }` `DataType` variant (covergroup *definition* is a
   module-like node when we get there).

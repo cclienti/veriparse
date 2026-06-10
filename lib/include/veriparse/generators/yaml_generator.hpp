@@ -78,6 +78,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_interconnectnet(const AST::InterconnectNet::Ptr node) const;
     virtual YAML::Node render_usernet(const AST::UserNet::Ptr node) const;
     virtual YAML::Node render_implicitnet(const AST::ImplicitNet::Ptr node) const;
+    virtual YAML::Node render_nettypedecl(const AST::NetTypeDecl::Ptr node) const;
     virtual YAML::Node render_strength(const AST::Strength::Ptr node) const;
     virtual YAML::Node render_drivestrength(const AST::DriveStrength::Ptr node) const;
     virtual YAML::Node render_chargestrength(const AST::ChargeStrength::Ptr node) const;

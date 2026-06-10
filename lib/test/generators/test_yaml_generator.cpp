@@ -1496,6 +1496,27 @@ TEST(YAMLGenerator, ImplicitNet)
     ASSERT_TRUE(yaml["ImplicitNet"]["name"].as<std::string>() == "biqpmzjpls");
 }
 
+TEST(YAMLGenerator, NetTypeDecl)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.NetTypeDecl.log");
+    Logger::add_stderr_sink();
+
+    AST::Identifier::Ptr c_resolver(new AST::Identifier);
+    AST::DataType::Ptr c_type(new AST::DataType);
+    std::string p_name = "mynbiqpmzj";
+
+    AST::NetTypeDecl::Ptr m_nettypedecl(
+        new AST::NetTypeDecl(c_resolver, c_type, p_name, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_nettypedecl);
+
+    ASSERT_TRUE(yaml["NetTypeDecl"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["resolver"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["type"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
 TEST(YAMLGenerator, Strength)
 {
     Logger::remove_all_sinks();

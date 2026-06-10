@@ -203,6 +203,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::ImplicitNet:
         os << static_cast<const AST::ImplicitNet &>(p);
         break;
+    case NodeType::NetTypeDecl:
+        os << static_cast<const AST::NetTypeDecl &>(p);
+        break;
     case NodeType::Strength:
         os << static_cast<const AST::Strength &>(p);
         break;

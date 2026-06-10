@@ -88,6 +88,7 @@ private:
     AST::Node::Ptr convert_interconnectnet(const YAML::Node node) const;
     AST::Node::Ptr convert_usernet(const YAML::Node node) const;
     AST::Node::Ptr convert_implicitnet(const YAML::Node node) const;
+    AST::Node::Ptr convert_nettypedecl(const YAML::Node node) const;
     AST::Node::Ptr convert_strength(const YAML::Node node) const;
     AST::Node::Ptr convert_drivestrength(const YAML::Node node) const;
     AST::Node::Ptr convert_chargestrength(const YAML::Node node) const;

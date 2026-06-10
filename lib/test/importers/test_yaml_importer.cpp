@@ -1686,6 +1686,29 @@ TEST(YAMLImporter, ImplicitNet)
     ASSERT_TRUE(yaml["ImplicitNet"]["name"].as<std::string>() == "biqpmzjpls");
 }
 
+TEST(YAMLImporter, NetTypeDecl)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.NetTypeDecl.log");
+    Logger::add_stderr_sink();
+    std::string str("NetTypeDecl:\n"
+                    "  filename: nettypedecl.v\n"
+                    "  line: 11\n"
+                    "  resolver:\n"
+                    "  type:\n"
+                    "  name: mynbiqpmzj\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["NetTypeDecl"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["filename"].as<std::string>() == "nettypedecl.v");
+    ASSERT_TRUE(yaml["NetTypeDecl"]["line"].as<int>() == 11);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["resolver"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["type"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
 TEST(YAMLImporter, Strength)
 {
     Logger::remove_all_sinks();
