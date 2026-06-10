@@ -364,6 +364,16 @@ UserNet: {inherit: Net}
 # via `default_nettype. Parallel to ImplicitType.
 ImplicitNet: {inherit: Net}
 
+# User-defined nettype DECLARATION (`nettype logic [7:0] my_net_t;`, optionally
+# `... with resolver_fn;`, IEEE 1800-2017 §6.6.7). Declares a new nettype NAME
+# aliasing a DataType (the inherited `type`); `resolver` is the optional
+# resolution-function reference (null if absent). USING the nettype is
+# UserNet + NamedType; this is the declaration form.
+NetTypeDecl:
+  inherit: Declaration
+  children:
+    resolver: Identifier
+
 # Net strength, node per form (no kind enum).
 Strength:
   properties:

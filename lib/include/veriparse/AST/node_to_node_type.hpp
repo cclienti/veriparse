@@ -81,6 +81,7 @@ template <> constexpr NodeType get_node_type<InterconnectNet>()
 }
 template <> constexpr NodeType get_node_type<UserNet>() { return NodeType::UserNet; }
 template <> constexpr NodeType get_node_type<ImplicitNet>() { return NodeType::ImplicitNet; }
+template <> constexpr NodeType get_node_type<NetTypeDecl>() { return NodeType::NetTypeDecl; }
 template <> constexpr NodeType get_node_type<Strength>() { return NodeType::Strength; }
 template <> constexpr NodeType get_node_type<DriveStrength>() { return NodeType::DriveStrength; }
 template <> constexpr NodeType get_node_type<ChargeStrength>() { return NodeType::ChargeStrength; }

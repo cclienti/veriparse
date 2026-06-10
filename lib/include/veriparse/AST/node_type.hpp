@@ -76,6 +76,7 @@ enum class NodeType
     InterconnectNet,
     UserNet,
     ImplicitNet,
+    NetTypeDecl,
     Strength,
     DriveStrength,
     ChargeStrength,

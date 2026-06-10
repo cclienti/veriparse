@@ -81,6 +81,7 @@ private:
     virtual std::string render_interconnectnet(const AST::InterconnectNet::Ptr node) const;
     virtual std::string render_usernet(const AST::UserNet::Ptr node) const;
     virtual std::string render_implicitnet(const AST::ImplicitNet::Ptr node) const;
+    virtual std::string render_nettypedecl(const AST::NetTypeDecl::Ptr node) const;
     virtual std::string render_strength(const AST::Strength::Ptr node) const;
     virtual std::string render_drivestrength(const AST::DriveStrength::Ptr node) const;
     virtual std::string render_chargestrength(const AST::ChargeStrength::Ptr node) const;

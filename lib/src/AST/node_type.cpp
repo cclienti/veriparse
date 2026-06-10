@@ -141,6 +141,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "UserNet";
     case NodeType::ImplicitNet:
         return "ImplicitNet";
+    case NodeType::NetTypeDecl:
+        return "NetTypeDecl";
     case NodeType::Strength:
         return "Strength";
     case NodeType::DriveStrength:

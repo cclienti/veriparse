@@ -247,6 +247,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["ImplicitNet"]) {
             return convert_implicitnet(node["ImplicitNet"]);
         }
+        if(node["NetTypeDecl"]) {
+            return convert_nettypedecl(node["NetTypeDecl"]);
+        }
         if(node["Strength"]) {
             return convert_strength(node["Strength"]);
         }
@@ -6142,6 +6145,70 @@ AST::Node::Ptr YAMLImporter::convert_implicitnet(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::ImplicitNet>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_nettypedecl(const YAML::Node node) const
+{
+    AST::NetTypeDecl::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::NetTypeDecl>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::NetTypeDecl>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::NetTypeDecl>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child resolver
+        if(node["resolver"]) {
+            const YAML::Node node_resolver = node["resolver"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_resolver);
+            if(child) {
+                AST::Identifier::Ptr child_cast = AST::cast_to<AST::Identifier>(child);
+                if(!result) {
+                    result = std::make_shared<AST::NetTypeDecl>();
+                }
+                result->set_resolver(child_cast);
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
+                if(!result) {
+                    result = std::make_shared<AST::NetTypeDecl>();
+                }
+                result->set_type(child_cast);
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::NetTypeDecl>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_strength(const YAML::Node node) const

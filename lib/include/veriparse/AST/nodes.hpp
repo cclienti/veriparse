@@ -68,6 +68,7 @@
 #include <veriparse/AST/interconnectnet.hpp>
 #include <veriparse/AST/usernet.hpp>
 #include <veriparse/AST/implicitnet.hpp>
+#include <veriparse/AST/nettypedecl.hpp>
 #include <veriparse/AST/strength.hpp>
 #include <veriparse/AST/drivestrength.hpp>
 #include <veriparse/AST/chargestrength.hpp>

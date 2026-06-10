@@ -3890,6 +3890,49 @@ std::string DotGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) c
     return ss.str();
 }
 
+std::string DotGenerator::render_nettypedecl(const AST::NetTypeDecl::Ptr node) const
+{
+    std::stringstream ss;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::NetTypeDecl) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        uint64_t nodeID = reinterpret_cast<uint64_t>(node.get());
+
+        ss << "\tn" << nodeID
+           << " [label=< <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"4\">\n"
+           << "\t\t<TR><TD PORT=\"p0\" BGCOLOR=\"gray10\">"
+           << "<FONT COLOR=\"white\">NetTypeDecl</FONT></TD></TR>\n"
+           << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">resolver</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+
+        ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_resolver().get()) {
+            ss << render(node->get_resolver());
+        }
+        if(node->get_type().get()) {
+            ss << render(node->get_type());
+        }
+        uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_resolver().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+    }
+
+    return ss.str();
+}
+
 std::string DotGenerator::render_strength(const AST::Strength::Ptr node) const
 {
     std::stringstream ss;

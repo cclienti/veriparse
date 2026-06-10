@@ -234,6 +234,9 @@ public:
             case AST::NodeType::ImplicitNet:
                 return render_implicitnet(AST::cast_to<AST::ImplicitNet>(node));
 
+            case AST::NodeType::NetTypeDecl:
+                return render_nettypedecl(AST::cast_to<AST::NetTypeDecl>(node));
+
             case AST::NodeType::Strength:
                 return render_strength(AST::cast_to<AST::Strength>(node));
 
@@ -1070,6 +1073,14 @@ public:
      * @see GeneratorBase::render_implicitnet(const AST::ImplicitNet::Ptr &node)
      */
     T render(const AST::ImplicitNet::Ptr node) const { return render_implicitnet(node); }
+
+    /**
+     * Main rendering method for the NetTypeDecl node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_nettypedecl(const AST::NetTypeDecl::Ptr &node)
+     */
+    T render(const AST::NetTypeDecl::Ptr node) const { return render_nettypedecl(node); }
 
     /**
      * Main rendering method for the Strength node, we
@@ -2333,6 +2344,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_implicitnet(const AST::ImplicitNet::Ptr node) const { return T(); }
+
+    /**
+     * Render the NetTypeDecl node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_nettypedecl(const AST::NetTypeDecl::Ptr node) const { return T(); }
 
     /**
      * Render the Strength node. This method must be
