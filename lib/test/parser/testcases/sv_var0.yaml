@@ -109,27 +109,17 @@ Source:
           - Var:
               filename: ../../test/parser/testcases/sv_var0.sv
               init:
-                Rvalue:
-                  filename: ../../test/parser/testcases/sv_var0.sv
-                  line: 13
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_var0.sv
-                      line: 13
-                      sign: false
-                      size: -1
-                      value: 5
-              is_const: true
-              is_var: false
+                Rvalue: null
+              is_const: false
+              is_var: true
               lifetime: NONE
               line: 13
-              name: f
+              name: i
               type:
-                IntType:
+                ImplicitType:
                   filename: ../../test/parser/testcases/sv_var0.sv
                   line: 13
-                  signing: NONE
+                  signing: UNSIGNED
           - Var:
               filename: ../../test/parser/testcases/sv_var0.sv
               init:
@@ -143,12 +133,12 @@ Source:
                       line: 14
                       sign: false
                       size: -1
-                      value: 7
+                      value: 5
               is_const: true
-              is_var: true
+              is_var: false
               lifetime: NONE
               line: 14
-              name: g
+              name: f
               type:
                 IntType:
                   filename: ../../test/parser/testcases/sv_var0.sv
@@ -157,16 +147,40 @@ Source:
           - Var:
               filename: ../../test/parser/testcases/sv_var0.sv
               init:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_var0.sv
+                  line: 15
+                  var:
+                    IntConstN:
+                      base: 10
+                      filename: ../../test/parser/testcases/sv_var0.sv
+                      line: 15
+                      sign: false
+                      size: -1
+                      value: 7
+              is_const: true
+              is_var: true
+              lifetime: NONE
+              line: 15
+              name: g
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_var0.sv
+                  line: 15
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_var0.sv
+              init:
                 Rvalue: null
               is_const: false
               is_var: false
               lifetime: NONE
-              line: 15
+              line: 16
               name: h
               type:
                 RegType:
                   filename: ../../test/parser/testcases/sv_var0.sv
-                  line: 15
+                  line: 16
                   signing: NONE
           lifetime: NONE
           line: 1

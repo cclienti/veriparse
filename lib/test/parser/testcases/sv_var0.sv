@@ -10,6 +10,7 @@ module sv_var0;
   var           c = 2;    // implicit type -> ImplicitType, with initializer
   var [3:0]     d;        // implicit type with packed dimensions
   var signed    e;        // implicit type, signed
+  var unsigned  i;        // implicit type, unsigned (tri-state preserved)
   const int     f = 5;    // DataModifier{is_const} over Int
   const var int g = 7;    // qualifiers stack on one DataModifier (const needs init)
   reg           h;        // bare: plain Reg, unchanged

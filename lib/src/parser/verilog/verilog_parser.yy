@@ -83,7 +83,7 @@ struct data_qualifiers_t {
 // `var`/`const` declaration with no type keyword. Materialised as an ImplicitType
 // node (implied type logic, IEEE 1800-2017 §6.8).
 struct implicit_type_t {
-	 bool is_signed;
+	 signing_t signing;          // tri-state, preserved (default resolved by a pass)
 	 AST::Dimension::ListPtr widths;
 };
 
@@ -234,7 +234,7 @@ AST::Var::Ptr build_variable(const data_type_t &dt, const decl_name_t &decl,
 
 // Build the Var for an implicit-type declaration (`var a`, `var [3:0] a`):
 // type = ImplicitType(signing, packed dims).
-AST::Var::Ptr build_implicit_type(bool is_signed, AST::Dimension::ListPtr widths,
+AST::Var::Ptr build_implicit_type(signing_t signing, AST::Dimension::ListPtr widths,
                                   const decl_name_t &decl,
                                   const std::string &filename="", uint32_t line=0);
 
@@ -1982,7 +1982,7 @@ data_declaration:
                         AST::Dimension::ListPtr widths =
                             $2.widths ? AST::Dimension::clone_list($2.widths) : nullptr;
                         AST::Var::Ptr var = ParserHelpers::build_implicit_type(
-                            $2.is_signed, widths, decl_name, scanner.get_filename(),
+                            $2.signing, widths, decl_name, scanner.get_filename(),
                             @1.begin.line);
                         $$->push_back(ParserHelpers::wrap_data_modifier(
                             var, $1, scanner.get_filename(), @1.begin.line));
@@ -2040,7 +2040,7 @@ data_declaration:
                                           "(IEEE 1800-2017 6.8)");
                             }
                             AST::Var::Ptr var = ParserHelpers::build_implicit_type(
-                                false, nullptr, decl_name, scanner.get_filename(), @1.begin.line);
+                                signing_t::NONE, nullptr, decl_name, scanner.get_filename(), @1.begin.line);
                             $$->push_back(ParserHelpers::wrap_data_modifier(
                                 var, $1, scanner.get_filename(), @1.begin.line));
                         }
@@ -2104,9 +2104,9 @@ data_qualifier: TK_VAR
 // does NOT start with an identifier — the bare `var a` form is handled by the
 // id_decl_tail rule). Non-empty: at least a signing keyword or a packed dim.
 implicit_signing_or_dims:
-                TK_SIGNED packed_dimensions   { $$ = implicit_type_t{true, $2}; }
-        |       TK_UNSIGNED packed_dimensions { $$ = implicit_type_t{false, $2}; }
-        |       widths                        { $$ = implicit_type_t{false, $1}; }
+                TK_SIGNED packed_dimensions   { $$ = implicit_type_t{signing_t::SIGNED, $2}; }
+        |       TK_UNSIGNED packed_dimensions { $$ = implicit_type_t{signing_t::UNSIGNED, $2}; }
+        |       widths                        { $$ = implicit_type_t{signing_t::NONE, $1}; }
         ;
 
 // What follows `data_qualifiers TK_IDENTIFIER`: see id_decl_tail_t. A leading
@@ -5594,12 +5594,12 @@ namespace Veriparse {
                 return var;
             }
 
-            AST::Var::Ptr build_implicit_type(bool is_signed, AST::Dimension::ListPtr widths,
+            AST::Var::Ptr build_implicit_type(signing_t signing, AST::Dimension::ListPtr widths,
                                               const decl_name_t &decl,
                                               const std::string &filename, uint32_t line) {
                 auto type = std::make_shared<AST::ImplicitType>(filename, line);
-                if(is_signed) {
-                    type->set_signing(AST::DataType::SigningEnum::SIGNED);
+                if(signing != signing_t::NONE) {
+                    type->set_signing(to_signing(signing));
                 }
                 if(widths) {
                     type->set_packed_dims(widths);
