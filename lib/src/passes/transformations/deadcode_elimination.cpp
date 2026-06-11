@@ -467,7 +467,9 @@ int DeadcodeElimination::collect_identifier(DeadcodeElimination::DSet &identifie
 
     if(node->is_node_type(AST::NodeType::Identifier)) {
         const auto &identifier = AST::cast_to<AST::Identifier>(node);
-        if(!identifier->get_scope()) {
+        // Only count simple local names: a hierarchical '.' path (hier) or an SV
+        // '::' scope references something declared elsewhere, not a local signal.
+        if(!identifier->get_hier() && !identifier->get_scope()) {
             identifiers.emplace(identifier->get_name());
         }
     } else {

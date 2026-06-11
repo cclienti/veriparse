@@ -668,7 +668,10 @@ Source:
               line: 2
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/module2.v
@@ -698,7 +701,10 @@ Source:
               line: 3
               name: LOG2_WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 3
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/module2.v
@@ -717,7 +723,10 @@ Source:
               line: 4
               name: LOG2
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 4
+                  signing: NONE
               value: null
           ports:
           - Port:

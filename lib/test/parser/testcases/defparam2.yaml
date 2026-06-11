@@ -249,7 +249,10 @@ Source:
               line: 15
               name: VALUE_0
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 15
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam2.v
@@ -268,7 +271,10 @@ Source:
               line: 16
               name: VALUE_1
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 16
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam2.v
@@ -326,7 +332,10 @@ Source:
               line: 23
               name: OTHER
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 23
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam2.v

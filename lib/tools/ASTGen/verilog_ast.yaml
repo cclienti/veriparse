@@ -19,12 +19,14 @@
 # fabricated Logic). A resolution pass turns ImplicitType/NamedType into a
 # concrete type.
 #
-# NOTE (phased, ADR §10): module-like definitions (Interface/Class/Program),
-# their DataType variants (InterfaceType/ClassType/CovergroupType), Modport,
-# Constraint and `nettype` declarations (NetTypeDecl) are part of the model but
-# are added when their grammar is wired up — additively, no redesign. The
-# value-side scope migration (Identifier/FunctionCall/TaskCall `package` string ->
-# `scope: list(ScopeName)`) is likewise deferred; `package` stays for now.
+# NOTE (phased, ADR-0001 §10): module-like definitions (Interface/Class/Program),
+# their DataType variants (InterfaceType/ClassType/CovergroupType), Modport and
+# Constraint are part of the model but are added when their grammar is wired up —
+# additively, no redesign. `NetTypeDecl` (user-defined nettype) is realized now in
+# this schema (ADR-0001 §8/§10); only its grammar is wired up later. The value-side
+# scope migration is DONE: Identifier — and Call/FunctionCall/TaskCall, which now
+# inherit it — carry `scope: list(ScopeName)` for the SV `::` axis and `hier` for
+# the Verilog `.` axis; the old flat `package` string is gone.
 
 #####################################################################
 # Top level
@@ -62,7 +64,7 @@ Module:
     # Module default lifetime (`module automatic m;`). NONE = unspecified (static).
     lifetime: enum(NONE, AUTOMATIC, STATIC)
     # `default_nettype directive: a net-type keyword tag or NONE. The legacy
-    # INTEGER/REAL/REG values are gone (ADR §9.6) — only real net types remain.
+    # INTEGER/REAL/REG values are gone (ADR-0001 §9.6) — only real net types remain.
     default_nettype: enum(WIRE, TRI, TRI0, TRI1, TRIAND, TRIOR, TRIREG, WAND, WOR, UWIRE, SUPPLY0, SUPPLY1, NONE)
   children:
     # #(...) parameter ports: Param | TypeParam (both Declaration).
@@ -71,7 +73,7 @@ Module:
     ports: list(Port)
     items: list(Node)
 
-# A module port. ADR §4/§5.3 — a port is a directed declaration (wrapper):
+# A module port. ADR-0001 §4/§5.3 — a port is a directed declaration (wrapper):
 #   * ANSI typed port (`input logic [7:0] p`): direction set + `decl` holds the
 #     inner Var/Net (its name/type carry the port's name/type; Port.name empty).
 #   * non-ANSI header ref (`module m(a, b)`): name-only, direction NONE, decl null;
@@ -112,7 +114,7 @@ Identifier:
     scope: list(ScopeName)
     # Verilog `.` hierarchical reference path (top.u1.sig, genblk[i].sig) — a path
     # through the instance/generate hierarchy. Orthogonal to `scope`, value-side
-    # only. Renamed from the old IdentifierScope (ADR §3.3.1).
+    # only. Renamed from the old IdentifierScope (ADR-0001 §3.3.1).
     hier: HierName
 
 # A subroutine call: a scoped/hierarchical name (name/scope/hier from Identifier)
@@ -161,7 +163,7 @@ FloatConst:
   children:
 
 #####################################################################
-# DataType hierarchy (nameless) — ADR §3
+# DataType hierarchy (nameless) — ADR-0001 §3
 #####################################################################
 
 # Abstract base of every type. `signing` is tri-state (preserve what was written;
@@ -275,7 +277,7 @@ TypeOpType:
     arg_type: DataType
 
 #####################################################################
-# Dimensions (node per form) — ADR §3.8. Replaces Width / Length.
+# Dimensions (node per form) — ADR-0001 §3.8. Replaces Width / Length.
 # Used for packed (DataType.packed_dims) and unpacked
 # (Declaration.unpacked_dims); the context decides what is legal.
 #####################################################################
@@ -313,7 +315,7 @@ AssocDim:
     index_type: DataType
 
 #####################################################################
-# Declaration hierarchy — ADR §4
+# Declaration hierarchy — ADR-0001 §4
 #####################################################################
 
 # Abstract base: binds a `name` to a `type` (DataType). For a forward typedef the
@@ -495,7 +497,7 @@ PatternItem:
     key: Node
     value: Node
 
-# SystemVerilog cast, node per form (ADR §5.11) — each slot well-typed:
+# SystemVerilog cast, node per form (ADR-0001 §5.11) — each slot well-typed:
 #   int'(x)      -> TypeCast{ target: IntType, expr }
 #   8'(x)        -> SizeCast{ size: 8, expr }
 #   signed'(x)   -> SigningCast{ signing: SIGNED, expr }
@@ -814,7 +816,7 @@ SystemCall:
 # A single segment of a Verilog hierarchical reference (top.u1.sig, genblk[i].sig):
 # `name` is the segment identifier, `loop` the optional array index. Renamed from
 # IdentifierScopeLabel — the SV `::` axis now owns the field name `scope`
-# (ADR §3.3.1), so the hierarchical segment's identifier is honestly `name`.
+# (ADR-0001 §3.3.1), so the hierarchical segment's identifier is honestly `name`.
 HierLabel:
   properties:
     name: "std::string"

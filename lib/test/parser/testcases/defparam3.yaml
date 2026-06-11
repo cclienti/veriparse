@@ -211,7 +211,10 @@ Source:
               line: 11
               name: VALUE_0
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam3.v
+                  line: 11
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam3.v
@@ -230,7 +233,10 @@ Source:
               line: 12
               name: VALUE_1
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam3.v
+                  line: 12
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam3.v

@@ -444,7 +444,10 @@ Source:
               line: 2
               name: CONFIG
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/generate2.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/generate2.v
@@ -463,7 +466,10 @@ Source:
               line: 3
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/generate2.v
+                  line: 3
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/generate2.v

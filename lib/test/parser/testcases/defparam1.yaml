@@ -150,7 +150,10 @@ Source:
               line: 10
               name: VALUE
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam1.v
+                  line: 10
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam1.v

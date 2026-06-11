@@ -113,7 +113,10 @@ Module:
       line: 2
       name: X
       type:
-        DataType: null
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/constant_folding2.v
+          line: 2
+          signing: NONE
       value:
         Rvalue:
           filename: ../test/passes/transformations/testcases/constant_folding2.v

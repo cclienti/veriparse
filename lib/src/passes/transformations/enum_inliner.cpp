@@ -85,8 +85,10 @@ int EnumInliner::replace_identifiers(AST::Node::Ptr node, AST::Node::Ptr parent)
 
     if(node->get_node_type() == AST::NodeType::Identifier) {
         const auto &id = AST::cast_to<AST::Identifier>(node);
-        // Only replace simple identifiers (no scope)
-        if(!id->get_scope()) {
+        // Only replace simple identifiers: no hierarchical '.' path (hier) and no
+        // SV '::' scope. An enum item is a local name; a qualified reference names
+        // something in another scope/namespace and must not be inlined.
+        if(!id->get_hier() && !id->get_scope()) {
             auto it = m_replace_map.find(id->get_name());
             if(it != m_replace_map.end() && parent) {
                 auto replacement = AST::cast_to<AST::IntConstN>(it->second->clone());

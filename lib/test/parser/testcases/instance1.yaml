@@ -658,7 +658,10 @@ Source:
               line: 22
               name: INPUT_WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 22
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance1.v
@@ -677,7 +680,10 @@ Source:
               line: 23
               name: OUTPUT_WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance1.v
+                  line: 23
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance1.v
