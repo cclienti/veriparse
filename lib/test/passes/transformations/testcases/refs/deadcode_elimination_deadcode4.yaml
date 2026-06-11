@@ -4,48 +4,79 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/deadcode4.v
+          filename: ../test/passes/transformations/testcases/deadcode4.v
           items:
-          - Reg:
-              filename: ../../test/passes/transformations/testcases/deadcode4.v
+          - Var:
+              filename: ../test/passes/transformations/testcases/deadcode4.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 3
               name: out1
-              right:
-                Rvalue: null
-              sign: false
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/deadcode4.v
+                  line: 3
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: deadcode4
           ports:
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/deadcode4.v
-              first:
-                Output:
-                  filename: ../../test/passes/transformations/testcases/deadcode4.v
-                  line: 1
-                  name: out0
-                  sign: false
-              line: 1
-              second:
-                Reg:
-                  filename: ../../test/passes/transformations/testcases/deadcode4.v
-                  line: 1
-                  name: out0
-                  right:
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
                     Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/deadcode4.v
-              first:
-                Output:
-                  filename: ../../test/passes/transformations/testcases/deadcode4.v
+                  filename: ../test/passes/transformations/testcases/deadcode4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
+                  line: 1
+                  name: out0
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/deadcode4.v
+                      line: 1
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/deadcode4.v
+              line: 1
+              name: out0
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/deadcode4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: out1
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/deadcode4.v
+                      line: 2
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/deadcode4.v
               line: 2
-              second:
-                Variable: null
-      filename: ../../test/passes/transformations/testcases/deadcode4.v
+              name: out1
+      filename: ../test/passes/transformations/testcases/deadcode4.v
       line: 1
-  filename: ../../test/passes/transformations/testcases/deadcode4.v
+  filename: ../test/passes/transformations/testcases/deadcode4.v
   line: 1
-

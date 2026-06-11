@@ -66,9 +66,10 @@ int AnnotateDeclaration::get_declaration_names(const AST::Node::Ptr node, Replac
     bool found_name = true;
     std::string name;
 
-    if(node->is_node_category(AST::NodeType::VariableBase)) {
-        const auto &varbase = AST::cast_to<AST::VariableBase>(node);
-        name = varbase->get_name();
+    if(node->is_node_type(AST::NodeType::Var) || node->is_node_category(AST::NodeType::Net)) {
+        name = AST::cast_to<AST::Declaration>(node)->get_name();
+    } else if(node->is_node_type(AST::NodeType::Genvar)) {
+        name = AST::cast_to<AST::Genvar>(node)->get_name();
     } else if(node->is_node_type(AST::NodeType::Instance)) {
         const auto &instance = AST::cast_to<AST::Instance>(node);
         name = instance->get_name();
@@ -78,9 +79,9 @@ int AnnotateDeclaration::get_declaration_names(const AST::Node::Ptr node, Replac
     } else if(node->is_node_type(AST::NodeType::Function)) {
         const auto &function = AST::cast_to<AST::Function>(node);
         name = function->get_name();
-    } else if(node->is_node_type(AST::NodeType::Localparam)) {
-        const auto &localparam = AST::cast_to<AST::Localparam>(node);
-        name = localparam->get_name();
+    } else if(node->is_node_type(AST::NodeType::Param) &&
+              AST::cast_to<AST::Param>(node)->get_is_local()) {
+        name = AST::cast_to<AST::Param>(node)->get_name();
     } else {
         found_name = false;
         const auto &children = node->get_children();
@@ -107,12 +108,21 @@ int AnnotateDeclaration::annotate_names(AST::Node::Ptr node, ReplaceDict &replac
         return 1;
     }
 
-    if(node->is_node_category(AST::NodeType::VariableBase)) {
-        const auto &variable = AST::cast_to<AST::VariableBase>(node);
+    if(node->is_node_type(AST::NodeType::Var) || node->is_node_category(AST::NodeType::Net)) {
+        const auto &variable = AST::cast_to<AST::Declaration>(node);
         const std::string &name = variable->get_name();
         if(replace_dict.count(name)) {
             const std::string &new_name = replace_dict[name];
             variable->set_name(new_name);
+        }
+    }
+
+    else if(node->is_node_type(AST::NodeType::Genvar)) {
+        const auto &genvar = AST::cast_to<AST::Genvar>(node);
+        const std::string &name = genvar->get_name();
+        if(replace_dict.count(name)) {
+            const std::string &new_name = replace_dict[name];
+            genvar->set_name(new_name);
         }
     }
 
@@ -125,8 +135,9 @@ int AnnotateDeclaration::annotate_names(AST::Node::Ptr node, ReplaceDict &replac
         }
     }
 
-    else if(node->is_node_type(AST::NodeType::Localparam)) {
-        const auto &localparam = AST::cast_to<AST::Localparam>(node);
+    else if(node->is_node_type(AST::NodeType::Param) &&
+            AST::cast_to<AST::Param>(node)->get_is_local()) {
+        const auto &localparam = AST::cast_to<AST::Param>(node);
         const std::string &name = localparam->get_name();
         if(replace_dict.count(name)) {
             const std::string &new_name = replace_dict[name];
@@ -161,12 +172,14 @@ int AnnotateDeclaration::annotate_names(AST::Node::Ptr node, ReplaceDict &replac
         return rc;
     }
 
-    else if(node->is_node_type(AST::NodeType::FunctionCall)) {
-        const auto &fcall = AST::cast_to<AST::FunctionCall>(node);
-        const std::string &name = fcall->get_name();
+    // A call to a renamed function/task: the neutral Call, FunctionCall and
+    // TaskCall all derive from Call and carry the callee name.
+    else if(node->is_node_category(AST::NodeType::Call)) {
+        const auto &call = AST::cast_to<AST::Call>(node);
+        const std::string &name = call->get_name();
         if(replace_dict.count(name)) {
             const std::string &new_name = replace_dict[name];
-            fcall->set_name(new_name);
+            call->set_name(new_name);
         }
     }
 
@@ -185,15 +198,6 @@ int AnnotateDeclaration::annotate_names(AST::Node::Ptr node, ReplaceDict &replac
             rc |= annotate_names(child, new_replace_dict);
         }
         return rc;
-    }
-
-    else if(node->is_node_type(AST::NodeType::TaskCall)) {
-        const auto &tcall = AST::cast_to<AST::TaskCall>(node);
-        const std::string &name = tcall->get_name();
-        if(replace_dict.count(name)) {
-            const std::string &new_name = replace_dict[name];
-            tcall->set_name(new_name);
-        }
     }
 
     const auto &children = node->get_children();

@@ -78,7 +78,7 @@ int ParameterInliner::resolve_paramlist()
         for(const auto &pinst : *m_paramlist_inst) {
             auto result = std::find_if(
                 std::begin(*m_paramlist), std::end(*m_paramlist),
-                [&](AST::Parameter::Ptr const &p) { return p->get_name() == pinst->get_name(); });
+                [&](AST::Param::Ptr const &p) { return p->get_name() == pinst->get_name(); });
 
             if(result != std::end(*m_paramlist)) {
                 const auto &p = *result;
@@ -100,8 +100,8 @@ int ParameterInliner::resolve_paramlist()
     // Inline parameters rvalue in all others parameters. The algorithm is
     // in O(n^2). For each parameter, we replace the parameter rvalue
     // in all other parameters.
-    for(AST::Parameter::Ptr &pa : *m_paramlist) {
-        for(AST::Parameter::Ptr &pb : *m_paramlist) {
+    for(AST::Param::Ptr &pa : *m_paramlist) {
+        for(AST::Param::Ptr &pb : *m_paramlist) {
             if(pa->get_name() != pb->get_name()) {
                 auto val = pa->get_value();
                 if(val) {
@@ -121,11 +121,12 @@ int ParameterInliner::remove_parameter(AST::Node::Ptr node, std::string name, AS
 {
     if(node) {
         switch(node->get_node_type()) {
-        case AST::NodeType::Parameter:
-            if((parent) && (AST::cast_to<AST::Parameter>(node)->get_name() == name)) {
+        case AST::NodeType::Param: {
+            const auto &param = AST::cast_to<AST::Param>(node);
+            if((parent) && (!param->get_is_local()) && (param->get_name() == name)) {
                 parent->remove(node);
             }
-            break;
+        } break;
 
         case AST::NodeType::Function:
             break;

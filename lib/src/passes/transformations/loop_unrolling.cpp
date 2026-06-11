@@ -300,7 +300,7 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
     if(node->is_node_type(AST::NodeType::Defparam)) {
         const auto &defparam = AST::cast_to<AST::Defparam>(node);
         const auto &identifier = defparam->get_identifier();
-        const auto &scope = identifier->get_scope();
+        const auto &scope = identifier->get_hier();
         if(scope) {
             const auto &labellist = scope->get_labellist();
             if(labellist && labellist->size() >= 2) {
@@ -308,8 +308,8 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
                 auto itfind = m_scope_map.find(scope_str);
                 if(itfind != m_scope_map.end()) {
                     labellist->pop_front();
-                    const auto new_name = labellist->front()->get_scope() + itfind->second;
-                    labellist->front()->set_scope(new_name);
+                    const auto new_name = labellist->front()->get_name() + itfind->second;
+                    labellist->front()->set_name(new_name);
                 }
             }
         }
@@ -319,12 +319,12 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
     // Else check if identifier
     else if(node->is_node_type(AST::NodeType::Identifier)) {
         const auto &identifier = AST::cast_to<AST::Identifier>(node);
-        const auto &scope = identifier->get_scope();
+        const auto &scope = identifier->get_hier();
         if(scope) {
             const auto scope_str = Generators::VerilogGenerator().render(scope);
             auto itfind = m_scope_map.find(scope_str);
             if(itfind != m_scope_map.end()) {
-                identifier->set_scope(nullptr);
+                identifier->set_hier(nullptr);
                 const auto new_name = identifier->get_name() + itfind->second;
                 identifier->set_name(new_name);
             } else {

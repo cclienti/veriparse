@@ -38,7 +38,7 @@ private:
      * @brief Elaborate a single EnumDef node in-place.
      * @return zero on success
      */
-    int elaborate_enumdef(const AST::EnumDef::Ptr &enumdef);
+    int elaborate_enumdef(const AST::EnumType::Ptr &enumdef);
 };
 
 } // namespace Transformations

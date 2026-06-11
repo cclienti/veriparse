@@ -91,13 +91,13 @@ int AnnotateScope::annotate_names(AST::Node::Ptr node, ReplaceDict &replace_dict
                 block->set_scope(new_scope);
             }
         }
-    } else if(node->is_node_type(AST::NodeType::IdentifierScopeLabel)) {
-        const auto &id_scope_label = AST::cast_to<AST::IdentifierScopeLabel>(node);
-        const auto &scope = id_scope_label->get_scope();
+    } else if(node->is_node_type(AST::NodeType::HierLabel)) {
+        const auto &id_scope_label = AST::cast_to<AST::HierLabel>(node);
+        const auto &scope = id_scope_label->get_name();
         if(scope.size()) {
             if(replace_dict.count(scope)) {
                 const std::string &new_scope = replace_dict[scope];
-                id_scope_label->set_scope(new_scope);
+                id_scope_label->set_name(new_scope);
             }
         }
     }

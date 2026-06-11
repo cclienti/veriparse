@@ -4,568 +4,561 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
           items:
           - Typedef:
-              def:
-                EnumDef:
-                  base_type: NONE
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                  items:
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 8
-                      name: NONE0
-                      value: null
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 8
-                      name: NONE1
-                      value: null
-                  line: 8
-                  sign: false
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+              fwd_kind: NONE
               line: 8
               name: plain_t
-          - Typedef:
-              def:
-                EnumDef:
-                  base_type: LOGIC
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              type:
+                EnumType:
+                  base:
+                    DataType: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   items:
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 9
-                      name: LG0
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 8
+                      name: NONE0
+                      range:
+                        Dimension: null
                       value: null
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 9
-                      name: LG1
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 8
+                      name: NONE1
+                      range:
+                        Dimension: null
                       value: null
-                  line: 9
-                  sign: false
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 8
+                  signing: NONE
+          - Typedef:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+              fwd_kind: NONE
               line: 9
               name: logic1_t
-          - Typedef:
-              def:
-                EnumDef:
-                  base_type: BIT
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              type:
+                EnumType:
+                  base:
+                    LogicType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 9
+                      signing: NONE
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   items:
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 10
-                      name: B0
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 9
+                      name: LG0
+                      range:
+                        Dimension: null
                       value: null
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 10
-                      name: B1
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 9
+                      name: LG1
+                      range:
+                        Dimension: null
                       value: null
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 10
-                      name: B2
-                      value: null
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 10
-                      name: B3
-                      value: null
-                  line: 10
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 10
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 10
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 10
-                          sign: false
-                          size: -1
-                          value: 1
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 9
+                  signing: NONE
+          - Typedef:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+              fwd_kind: NONE
               line: 10
               name: bit2_t
-          - Typedef:
-              def:
-                EnumDef:
-                  base_type: BIT
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              type:
+                EnumType:
+                  base:
+                    BitType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      packed_dims:
+                      - RangeDim:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 1
+                          line: 10
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 10
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   items:
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 11
-                      name: BIT0
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B0
+                      range:
+                        Dimension: null
                       value: null
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 11
-                      name: BIT1
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B1
+                      range:
+                        Dimension: null
                       value: null
-                  line: 11
-                  sign: false
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  - EnumItem:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B2
+                      range:
+                        Dimension: null
+                      value: null
+                  - EnumItem:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 10
+                      name: B3
+                      range:
+                        Dimension: null
+                      value: null
+                  line: 10
+                  signing: NONE
+          - Typedef:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+              fwd_kind: NONE
               line: 11
               name: bit1_t
-          - Typedef:
-              def:
-                EnumDef:
-                  base_type: INT
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              type:
+                EnumType:
+                  base:
+                    BitType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 11
+                      signing: NONE
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   items:
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 12
-                      name: I0
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 11
+                      name: BIT0
+                      range:
+                        Dimension: null
                       value: null
                   - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 12
-                      name: I1
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 11
+                      name: BIT1
+                      range:
+                        Dimension: null
                       value: null
-                  - EnumItem:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 12
-                      name: I2
-                      value: null
-                  line: 12
-                  sign: false
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  line: 11
+                  signing: NONE
+          - Typedef:
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+              fwd_kind: NONE
               line: 12
               name: int_t
+              type:
+                EnumType:
+                  base:
+                    IntType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 12
+                      signing: NONE
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                  items:
+                  - EnumItem:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 12
+                      name: I0
+                      range:
+                        Dimension: null
+                      value: null
+                  - EnumItem:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 12
+                      name: I1
+                      range:
+                        Dimension: null
+                      value: null
+                  - EnumItem:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 12
+                      name: I2
+                      range:
+                        Dimension: null
+                      value: null
+                  line: 12
+                  signing: NONE
           - Assign:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 14
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      hier:
+                        HierName: null
                       line: 14
                       name: a
-                      scope:
-                        IdentifierScope: null
               line: 14
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 14
                   var:
                     IntConstN:
                       base: 16
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 14
                       sign: false
                       size: 2
                       value: 0
           - Assign:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 15
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      hier:
+                        HierName: null
                       line: 15
                       name: b
-                      scope:
-                        IdentifierScope: null
               line: 15
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 15
                   var:
                     IntConstN:
                       base: 16
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 15
                       sign: false
                       size: 1
                       value: 0
           - Assign:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 16
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      hier:
+                        HierName: null
                       line: 16
                       name: c
-                      scope:
-                        IdentifierScope: null
               line: 16
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 16
                   var:
                     IntConstN:
                       base: 16
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 16
                       sign: false
                       size: 2
                       value: 0
           - Assign:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 17
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      hier:
+                        HierName: null
                       line: 17
                       name: d
-                      scope:
-                        IdentifierScope: null
               line: 17
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 17
                   var:
                     IntConstN:
                       base: 16
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 17
                       sign: false
                       size: 2
                       value: 0
           - Assign:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 18
                   var:
                     Identifier:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      hier:
+                        HierName: null
                       line: 18
                       name: e
-                      scope:
-                        IdentifierScope: null
               line: 18
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 18
                   var:
                     IntConstN:
                       base: 16
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 18
                       sign: false
                       size: 2
                       value: 0
+          lifetime: NONE
           line: 1
           name: sv_typedef_enum2
           ports:
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-              first:
-                Output:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 1
                           line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 1
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               line: 2
-              second:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 2
-                  name: a
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 1
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-              first:
-                Output:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 3
                   name: b
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                      line: 3
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               line: 3
-              second:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 3
-                  name: b
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-              first:
-                Output:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 4
                   name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 4
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 1
                           line: 4
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 1
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 4
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               line: 4
-              second:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              name: c
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 4
-                  name: c
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 4
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 1
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-              first:
-                Output:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 5
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 1
                           line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 1
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               line: 5
-              second:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              name: d
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 5
-                  name: d
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 1
-          - Ioport:
-              filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-              first:
-                Output:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
                   line: 6
                   name: e
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
                       line: 6
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 1
                           line: 6
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 1
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
               line: 6
-              second:
-                Logic:
-                  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: e
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                      line: 6
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/parser/testcases/sv_typedef_enum2.sv
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 1
-      filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+              name: e
+      filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
       line: 1
-  filename: lib/test/parser/testcases/sv_typedef_enum2.sv
+  filename: /home/christophe/src/veriparse/lib/test/parser/testcases/sv_typedef_enum2.sv
   line: 1
-

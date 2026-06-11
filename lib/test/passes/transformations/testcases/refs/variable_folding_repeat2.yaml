@@ -4,86 +4,110 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/repeat2.v
+          filename: ../test/passes/transformations/testcases/repeat2.v
           items:
-          - Integer:
-              filename: ../../test/passes/transformations/testcases/repeat2.v
+          - Var:
+              filename: ../test/passes/transformations/testcases/repeat2.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 3
               name: i
-              right:
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/repeat2.v
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/repeat2.v
+              init:
                 Rvalue: null
-          - Integer:
-              filename: ../../test/passes/transformations/testcases/repeat2.v
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 3
               name: j
-              right:
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/repeat2.v
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/repeat2.v
+              init:
                 Rvalue: null
-          - Integer:
-              filename: ../../test/passes/transformations/testcases/repeat2.v
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 3
               name: k
-              right:
-                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/repeat2.v
+                  line: 3
+                  signing: NONE
           - Initial:
-              filename: ../../test/passes/transformations/testcases/repeat2.v
+              filename: ../test/passes/transformations/testcases/repeat2.v
               line: 5
               statement:
                 Block:
-                  filename: ../../test/passes/transformations/testcases/repeat2.v
+                  filename: ../test/passes/transformations/testcases/repeat2.v
                   line: 5
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 6
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 6
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 6
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 6
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 8
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 8
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 8
                           var:
                             IntConstN:
@@ -94,56 +118,56 @@ Source:
                               size: -1
                               value: 1
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 9
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 9
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 9
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 9
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 9
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             IntConstN:
@@ -154,56 +178,56 @@ Source:
                               size: -1
                               value: 1
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 12
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 12
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -216,14 +240,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -247,30 +271,30 @@ Source:
                               sign: false
                               size: -1
                               value: 1
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 8
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 8
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 8
                           var:
                             IntConstN:
@@ -281,56 +305,56 @@ Source:
                               size: -1
                               value: 2
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 9
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 9
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 9
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 9
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 9
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             IntConstN:
@@ -341,56 +365,56 @@ Source:
                               size: -1
                               value: 1
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 12
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 12
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -403,14 +427,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -434,30 +458,30 @@ Source:
                               sign: false
                               size: -1
                               value: 1
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             IntConstN:
@@ -468,56 +492,56 @@ Source:
                               size: -1
                               value: 2
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 12
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 12
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -530,14 +554,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -561,30 +585,30 @@ Source:
                               sign: false
                               size: -1
                               value: 1
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -597,14 +621,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -628,20 +652,20 @@ Source:
                               sign: false
                               size: -1
                               value: 2
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -665,30 +689,30 @@ Source:
                               sign: false
                               size: -1
                               value: 2
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 8
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 8
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 8
                           var:
                             IntConstN:
@@ -699,56 +723,56 @@ Source:
                               size: -1
                               value: 3
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 9
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 9
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 9
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 9
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 9
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             IntConstN:
@@ -759,56 +783,56 @@ Source:
                               size: -1
                               value: 1
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 12
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 12
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -821,14 +845,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -852,30 +876,30 @@ Source:
                               sign: false
                               size: -1
                               value: 1
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             IntConstN:
@@ -886,56 +910,56 @@ Source:
                               size: -1
                               value: 2
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 12
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 12
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -948,14 +972,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -979,30 +1003,30 @@ Source:
                               sign: false
                               size: -1
                               value: 1
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -1015,14 +1039,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1046,20 +1070,20 @@ Source:
                               sign: false
                               size: -1
                               value: 2
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1083,30 +1107,30 @@ Source:
                               sign: false
                               size: -1
                               value: 2
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: j
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 11
                           var:
                             IntConstN:
@@ -1117,56 +1141,56 @@ Source:
                               size: -1
                               value: 3
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 12
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 12
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 12
                           var:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -1179,14 +1203,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1210,30 +1234,30 @@ Source:
                               sign: false
                               size: -1
                               value: 1
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -1246,14 +1270,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1277,20 +1301,20 @@ Source:
                               sign: false
                               size: -1
                               value: 2
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1314,30 +1338,30 @@ Source:
                               sign: false
                               size: -1
                               value: 2
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - BlockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
+                              hier:
+                                HierName: null
                               line: 14
                               name: k
-                              scope:
-                                IdentifierScope: null
                       line: 14
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 14
                           var:
                             IntConstN:
@@ -1350,14 +1374,14 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1381,20 +1405,20 @@ Source:
                               sign: false
                               size: -1
                               value: 3
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1418,20 +1442,20 @@ Source:
                               sign: false
                               size: -1
                               value: 3
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/repeat2.v
+                      filename: ../test/passes/transformations/testcases/repeat2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../test/passes/transformations/testcases/repeat2.v
+                              filename: ../test/passes/transformations/testcases/repeat2.v
                               line: 15
                               value: repeat i=%0d j=%0d k=%0d
                           - IntConstN:
@@ -1455,13 +1479,13 @@ Source:
                               sign: false
                               size: -1
                               value: 3
-                          filename: ../../test/passes/transformations/testcases/repeat2.v
+                          filename: ../test/passes/transformations/testcases/repeat2.v
                           line: 15
                           syscall: display
+          lifetime: NONE
           line: 1
           name: repeat2
-      filename: ../../test/passes/transformations/testcases/repeat2.v
+      filename: ../test/passes/transformations/testcases/repeat2.v
       line: 1
-  filename: ../../test/passes/transformations/testcases/repeat2.v
+  filename: ../test/passes/transformations/testcases/repeat2.v
   line: 1
-

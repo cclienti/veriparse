@@ -4,114 +4,143 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/passes/transformations/testcases/scope4.v
+          filename: ../test/passes/transformations/testcases/scope4.v
           items:
           - Task:
-              automatic: false
-              filename: lib/test/passes/transformations/testcases/scope4.v
+              filename: ../test/passes/transformations/testcases/scope4.v
+              lifetime: NONE
               line: 3
               name: convert
               statements:
-              - Ioport:
-                  filename: lib/test/passes/transformations/testcases/scope4.v
-                  first:
-                    Input:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+              - Port:
+                  decl:
+                    ImplicitNet:
+                      cont_assign:
+                        Rvalue: null
+                      filename: ../test/passes/transformations/testcases/scope4.v
+                      is_scalared: false
+                      is_vectored: false
+                      ldelay:
+                        DelayStatement: null
                       line: 4
                       name: temp_in
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                      rdelay:
+                        DelayStatement: null
+                      strength:
+                        Strength: null
+                      type:
+                        ImplicitType:
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 4
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  line: 4
+                                  sign: false
+                                  size: -1
+                                  value: 7
                               line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 7
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  line: 4
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  direction: INPUT
+                  expr: null
+                  filename: ../test/passes/transformations/testcases/scope4.v
                   line: 4
-                  second:
-                    Variable: null
-              - Ioport:
-                  filename: lib/test/passes/transformations/testcases/scope4.v
-                  first:
-                    Output:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                  name: temp_in
+              - Port:
+                  decl:
+                    ImplicitNet:
+                      cont_assign:
+                        Rvalue: null
+                      filename: ../test/passes/transformations/testcases/scope4.v
+                      is_scalared: false
+                      is_vectored: false
+                      ldelay:
+                        DelayStatement: null
                       line: 5
                       name: temp_out
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                      rdelay:
+                        DelayStatement: null
+                      strength:
+                        Strength: null
+                      type:
+                        ImplicitType:
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 5
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 7
                               line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 7
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  line: 5
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  direction: OUTPUT
+                  expr: null
+                  filename: ../test/passes/transformations/testcases/scope4.v
                   line: 5
-                  second:
-                    Variable: null
+                  name: temp_out
               - Block:
-                  filename: lib/test/passes/transformations/testcases/scope4.v
+                  filename: ../test/passes/transformations/testcases/scope4.v
                   line: 6
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 7
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              hier:
+                                HierName: null
                               line: 7
                               name: temp_out
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 7
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 7
                           var:
                             Times:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               left:
                                 Divide:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   left:
                                     IntConstN:
                                       base: 10
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
                                       line: 7
                                       sign: false
                                       size: -1
@@ -120,7 +149,7 @@ Source:
                                   right:
                                     IntConstN:
                                       base: 10
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
                                       line: 7
                                       sign: false
                                       size: -1
@@ -128,476 +157,489 @@ Source:
                               line: 7
                               right:
                                 Plus:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   left:
                                     Identifier:
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
+                                      hier:
+                                        HierName: null
                                       line: 7
                                       name: temp_in
-                                      package: ''
-                                      scope:
-                                        IdentifierScope: null
                                   line: 7
                                   right:
                                     IntConstN:
                                       base: 10
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
                                       line: 7
                                       sign: false
                                       size: -1
                                       value: 32
           - Function:
-              automatic: true
-              filename: lib/test/passes/transformations/testcases/scope4.v
+              filename: ../test/passes/transformations/testcases/scope4.v
+              lifetime: AUTOMATIC
               line: 11
               name: clogb2
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Integer:
-                  filename: lib/test/passes/transformations/testcases/scope4.v
+              return_type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/scope4.v
                   line: 11
-                  name: ''
-                  right:
-                    Rvalue: null
+                  signing: NONE
               statements:
-              - Ioport:
-                  filename: lib/test/passes/transformations/testcases/scope4.v
-                  first:
-                    Input:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+              - Port:
+                  decl:
+                    ImplicitNet:
+                      cont_assign:
+                        Rvalue: null
+                      filename: ../test/passes/transformations/testcases/scope4.v
+                      is_scalared: false
+                      is_vectored: false
+                      ldelay:
+                        DelayStatement: null
                       line: 12
                       name: value
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                      rdelay:
+                        DelayStatement: null
+                      strength:
+                        Strength: null
+                      type:
+                        ImplicitType:
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 12
-                          lsb:
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              left:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  line: 12
+                                  sign: false
+                                  size: -1
+                                  value: 31
+                              line: 12
+                              right:
+                                IntConstN:
+                                  base: 10
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  line: 12
+                                  sign: false
+                                  size: -1
+                                  value: 0
+                          signing: NONE
+                  direction: INPUT
+                  expr: null
+                  filename: ../test/passes/transformations/testcases/scope4.v
+                  line: 12
+                  name: value
+              - Var:
+                  filename: ../test/passes/transformations/testcases/scope4.v
+                  init:
+                    Rvalue: null
+                  is_const: false
+                  is_var: false
+                  lifetime: NONE
+                  line: 13
+                  name: value
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/scope4.v
+                      line: 13
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/scope4.v
+                          left:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
-                              line: 12
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              line: 13
                               sign: false
                               size: -1
                               value: 31
-                  line: 12
-                  second:
-                    Variable: null
-              - Reg:
-                  filename: lib/test/passes/transformations/testcases/scope4.v
-                  line: 13
-                  name: value
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
-                      line: 13
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/passes/transformations/testcases/scope4.v
                           line: 13
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/passes/transformations/testcases/scope4.v
-                          line: 13
-                          sign: false
-                          size: -1
-                          value: 31
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
               - Block:
-                  filename: lib/test/passes/transformations/testcases/scope4.v
+                  filename: ../test/passes/transformations/testcases/scope4.v
                   line: 14
                   scope: ''
                   statements:
                   - IfStatement:
                       cond:
                         GreaterThan:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           left:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              hier:
+                                HierName: null
                               line: 15
                               name: value
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                           line: 15
                           right:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               line: 15
                               sign: false
                               size: -1
                               value: 1
                       false_statement:
                         Block:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 18
                           scope: ''
                           statements:
                           - BlockingSubstitution:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               ldelay:
                                 DelayStatement: null
                               left:
                                 Lvalue:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 19
                                   var:
                                     Identifier:
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
+                                      hier:
+                                        HierName: null
                                       line: 19
                                       name: clogb2
-                                      package: ''
-                                      scope:
-                                        IdentifierScope: null
                               line: 19
                               rdelay:
                                 DelayStatement: null
                               right:
                                 Rvalue:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 19
                                   var:
                                     IntConstN:
                                       base: 10
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
                                       line: 19
                                       sign: false
                                       size: -1
                                       value: 1
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       line: 15
                       true_statement:
                         Block:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 15
                           scope: ''
                           statements:
                           - BlockingSubstitution:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               ldelay:
                                 DelayStatement: null
                               left:
                                 Lvalue:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 16
                                   var:
                                     Identifier:
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
+                                      hier:
+                                        HierName: null
                                       line: 16
                                       name: clogb2
-                                      package: ''
-                                      scope:
-                                        IdentifierScope: null
                               line: 16
                               rdelay:
                                 DelayStatement: null
                               right:
                                 Rvalue:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 16
                                   var:
                                     Plus:
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                      filename: ../test/passes/transformations/testcases/scope4.v
                                       left:
                                         FunctionCall:
                                           args:
                                           - Srl:
-                                              filename: lib/test/passes/transformations/testcases/scope4.v
+                                              filename: ../test/passes/transformations/testcases/scope4.v
                                               left:
                                                 Identifier:
-                                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                                  hier:
+                                                    HierName: null
                                                   line: 16
                                                   name: value
-                                                  package: ''
-                                                  scope:
-                                                    IdentifierScope: null
                                               line: 16
                                               right:
                                                 IntConstN:
                                                   base: 10
-                                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                                  filename: ../test/passes/transformations/testcases/scope4.v
                                                   line: 16
                                                   sign: false
                                                   size: -1
                                                   value: 1
-                                          filename: lib/test/passes/transformations/testcases/scope4.v
+                                          filename: ../test/passes/transformations/testcases/scope4.v
+                                          hier:
+                                            HierName: null
                                           line: 16
                                           name: clogb2
-                                          package: ''
                                       line: 16
                                       right:
                                         IntConstN:
                                           base: 10
-                                          filename: lib/test/passes/transformations/testcases/scope4.v
+                                          filename: ../test/passes/transformations/testcases/scope4.v
                                           line: 16
                                           sign: false
                                           size: -1
                                           value: 1
           - Genvar:
-              filename: lib/test/passes/transformations/testcases/scope4.v
+              filename: ../test/passes/transformations/testcases/scope4.v
               line: 24
               name: i
           - GenerateStatement:
-              filename: lib/test/passes/transformations/testcases/scope4.v
+              filename: ../test/passes/transformations/testcases/scope4.v
               items:
               - ForStatement:
                   cond:
                     LessThan:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       left:
                         Identifier:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
+                          hier:
+                            HierName: null
                           line: 28
                           name: i
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                       line: 28
                       right:
                         IntConstN:
                           base: 10
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 28
                           sign: false
                           size: -1
                           value: 5
-                  filename: lib/test/passes/transformations/testcases/scope4.v
+                  filename: ../test/passes/transformations/testcases/scope4.v
                   line: 28
                   post:
                     BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 28
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              hier:
+                                HierName: null
                               line: 28
                               name: i
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 28
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 28
                           var:
                             Plus:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               left:
                                 Identifier:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  hier:
+                                    HierName: null
                                   line: 28
                                   name: i
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
                               line: 28
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 28
                                   sign: false
                                   size: -1
                                   value: 1
                   pre:
                     BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 28
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              hier:
+                                HierName: null
                               line: 28
                               name: i
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 28
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 28
                           var:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               line: 28
                               sign: false
                               size: -1
                               value: 0
                   statement:
                     Block:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       line: 28
                       scope: FOR_1
                       statements:
-                      - Integer:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
-                          line: 29
-                          name: TEST__x
-                          right:
+                      - Var:
+                          filename: ../test/passes/transformations/testcases/scope4.v
+                          init:
                             Rvalue:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               line: 29
                               var:
                                 Identifier:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  hier:
+                                    HierName: null
                                   line: 29
                                   name: i
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
+                          is_const: false
+                          is_var: false
+                          lifetime: NONE
+                          line: 29
+                          name: TEST__x
+                          type:
+                            IntegerType:
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              line: 29
+                              signing: NONE
               line: 26
           - GenerateStatement:
-              filename: lib/test/passes/transformations/testcases/scope4.v
+              filename: ../test/passes/transformations/testcases/scope4.v
               items:
               - ForStatement:
                   cond:
                     LessThan:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       left:
                         Identifier:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
+                          hier:
+                            HierName: null
                           line: 36
                           name: i
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                       line: 36
                       right:
                         IntConstN:
                           base: 10
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 36
                           sign: false
                           size: -1
                           value: 5
-                  filename: lib/test/passes/transformations/testcases/scope4.v
+                  filename: ../test/passes/transformations/testcases/scope4.v
                   line: 36
                   post:
                     BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 36
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              hier:
+                                HierName: null
                               line: 36
                               name: i
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 36
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 36
                           var:
                             Plus:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               left:
                                 Identifier:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
+                                  hier:
+                                    HierName: null
                                   line: 36
                                   name: i
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
                               line: 36
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 36
                                   sign: false
                                   size: -1
                                   value: 1
                   pre:
                     BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 36
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
+                              hier:
+                                HierName: null
                               line: 36
                               name: i
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 36
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 36
                           var:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               line: 36
                               sign: false
                               size: -1
                               value: 0
                   statement:
                     Block:
-                      filename: lib/test/passes/transformations/testcases/scope4.v
+                      filename: ../test/passes/transformations/testcases/scope4.v
                       line: 36
                       scope: FOR_2
                       statements:
                       - Always:
-                          filename: lib/test/passes/transformations/testcases/scope4.v
+                          filename: ../test/passes/transformations/testcases/scope4.v
                           line: 37
                           senslist:
                             Senslist:
-                              filename: lib/test/passes/transformations/testcases/scope4.v
+                              filename: ../test/passes/transformations/testcases/scope4.v
                               line: 37
                               list:
                               - Sens:
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 37
                                   sig: null
                                   type: ALL
@@ -610,41 +652,40 @@ Source:
                               - SingleStatement:
                                   delay:
                                     DelayStatement: null
-                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                  filename: ../test/passes/transformations/testcases/scope4.v
                                   line: 38
                                   scope: ''
                                   statement:
                                     SystemCall:
                                       args:
                                       - Identifier:
-                                          filename: lib/test/passes/transformations/testcases/scope4.v
-                                          line: 38
-                                          name: TEST__x
-                                          package: ''
-                                          scope:
-                                            IdentifierScope:
-                                              filename: lib/test/passes/transformations/testcases/scope4.v
+                                          filename: ../test/passes/transformations/testcases/scope4.v
+                                          hier:
+                                            HierName:
+                                              filename: ../test/passes/transformations/testcases/scope4.v
                                               labellist:
-                                              - IdentifierScopeLabel:
-                                                  filename: lib/test/passes/transformations/testcases/scope4.v
+                                              - HierLabel:
+                                                  filename: ../test/passes/transformations/testcases/scope4.v
                                                   line: 38
                                                   loop:
                                                     Identifier:
-                                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                                      filename: ../test/passes/transformations/testcases/scope4.v
+                                                      hier:
+                                                        HierName: null
                                                       line: 38
                                                       name: i
-                                                      package: ''
-                                                      scope:
-                                                        IdentifierScope: null
-                                                  scope: FOR_1
+                                                  name: FOR_1
                                               line: 38
-                                      filename: lib/test/passes/transformations/testcases/scope4.v
+                                          line: 38
+                                          name: TEST__x
+                                      filename: ../test/passes/transformations/testcases/scope4.v
                                       line: 38
                                       syscall: display
               line: 34
+          lifetime: NONE
           line: 1
           name: scope4
-      filename: lib/test/passes/transformations/testcases/scope4.v
+      filename: ../test/passes/transformations/testcases/scope4.v
       line: 1
-  filename: lib/test/passes/transformations/testcases/scope4.v
+  filename: ../test/passes/transformations/testcases/scope4.v
   line: 1

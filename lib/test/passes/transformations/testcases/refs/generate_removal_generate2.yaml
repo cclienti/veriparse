@@ -4,515 +4,535 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: lib/test/passes/transformations/testcases/generate2.v
+          filename: ../test/passes/transformations/testcases/generate2.v
           items:
-          - Localparam:
-              filename: lib/test/passes/transformations/testcases/generate2.v
+          - Param:
+              filename: ../test/passes/transformations/testcases/generate2.v
+              is_local: true
               line: 2
               name: DEC
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/generate2.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+                  filename: ../test/passes/transformations/testcases/generate2.v
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       line: 2
                       sign: false
                       size: -1
                       value: 1
-          - Localparam:
-              filename: lib/test/passes/transformations/testcases/generate2.v
+          - Param:
+              filename: ../test/passes/transformations/testcases/generate2.v
+              is_local: true
               line: 3
               name: SHIFT
-              sign: false
-              type: NONE
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/generate2.v
+                  line: 3
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+                  filename: ../test/passes/transformations/testcases/generate2.v
                   line: 3
                   var:
                     IntConstN:
                       base: 10
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       line: 3
                       sign: false
                       size: -1
                       value: 1
           - Function:
-              automatic: false
-              filename: lib/test/passes/transformations/testcases/generate2.v
-              line: 6
-              name: clogb2
-              ports:
-              - Ioport:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
-                  first:
-                    Input:
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+              args:
+              - Arg:
+                  default_value: null
+                  direction: INPUT
+                  filename: ../test/passes/transformations/testcases/generate2.v
+                  is_var: false
+                  line: 6
+                  name: value
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       line: 6
-                      name: value
-                      sign: false
-                      widths:
-                      - Width:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
-                          line: 6
-                          lsb:
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/generate2.v
+                          left:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/generate2.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                          msb:
-                            IntConstN:
-                              base: 10
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 6
                               sign: false
                               size: -1
                               value: 31
+                          line: 6
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              filename: ../test/passes/transformations/testcases/generate2.v
+              lifetime: NONE
+              line: 6
+              name: clogb2
+              return_type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/generate2.v
                   line: 6
-                  second:
-                    Variable: null
-              retsign: false
-              rettype: NONE
-              rettype_ref:
-                Integer:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
-                  line: 6
-                  name: ''
-                  right:
-                    Rvalue: null
+                  signing: NONE
               statements:
-              - Integer:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+              - Var:
+                  filename: ../test/passes/transformations/testcases/generate2.v
+                  init:
+                    Rvalue: null
+                  is_const: false
+                  is_var: false
+                  lifetime: NONE
                   line: 7
                   name: SHIFT
-                  right:
+                  type:
+                    IntegerType:
+                      filename: ../test/passes/transformations/testcases/generate2.v
+                      line: 7
+                      signing: NONE
+              - Var:
+                  filename: ../test/passes/transformations/testcases/generate2.v
+                  init:
                     Rvalue: null
-              - Reg:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+                  is_const: false
+                  is_var: false
+                  lifetime: NONE
                   line: 8
                   name: tmp
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       line: 8
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/generate2.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 31
                           line: 8
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: lib/test/passes/transformations/testcases/generate2.v
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 31
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
               - Block:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+                  filename: ../test/passes/transformations/testcases/generate2.v
                   line: 9
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 10
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: SHIFT
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 10
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 10
                           var:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 10
                               sign: false
                               size: -1
                               value: 1
                   - BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 11
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 11
                               name: tmp
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 11
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 11
                           var:
                             Minus:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               left:
                                 Identifier:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
+                                  hier:
+                                    HierName: null
                                   line: 11
                                   name: value
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
                               line: 11
                               right:
                                 Identifier:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
+                                  hier:
+                                    HierName: null
                                   line: 11
                                   name: DEC
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
                   - ForStatement:
                       cond:
                         GreaterThan:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           left:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 12
                               name: tmp
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                           line: 12
                           right:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 12
                               sign: false
                               size: -1
                               value: 0
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       line: 12
                       post:
                         BlockingSubstitution:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 12
                               var:
                                 Identifier:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
+                                  hier:
+                                    HierName: null
                                   line: 12
                                   name: clogb2
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
                           line: 12
                           rdelay:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 12
                               var:
                                 Plus:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
                                   left:
                                     Identifier:
-                                      filename: lib/test/passes/transformations/testcases/generate2.v
+                                      filename: ../test/passes/transformations/testcases/generate2.v
+                                      hier:
+                                        HierName: null
                                       line: 12
                                       name: clogb2
-                                      package: ''
-                                      scope:
-                                        IdentifierScope: null
                                   line: 12
                                   right:
                                     IntConstN:
                                       base: 10
-                                      filename: lib/test/passes/transformations/testcases/generate2.v
+                                      filename: ../test/passes/transformations/testcases/generate2.v
                                       line: 12
                                       sign: false
                                       size: -1
                                       value: 1
                       pre:
                         BlockingSubstitution:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           ldelay:
                             DelayStatement: null
                           left:
                             Lvalue:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 12
                               var:
                                 Identifier:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
+                                  hier:
+                                    HierName: null
                                   line: 12
                                   name: clogb2
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
                           line: 12
                           rdelay:
                             DelayStatement: null
                           right:
                             Rvalue:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 12
                               var:
                                 IntConstN:
                                   base: 10
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
                                   line: 12
                                   sign: false
                                   size: -1
                                   value: 0
                       statement:
                         Block:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 12
                           scope: ''
                           statements:
                           - BlockingSubstitution:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               ldelay:
                                 DelayStatement: null
                               left:
                                 Lvalue:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
                                   line: 13
                                   var:
                                     Identifier:
-                                      filename: lib/test/passes/transformations/testcases/generate2.v
+                                      filename: ../test/passes/transformations/testcases/generate2.v
+                                      hier:
+                                        HierName: null
                                       line: 13
                                       name: tmp
-                                      package: ''
-                                      scope:
-                                        IdentifierScope: null
                               line: 13
                               rdelay:
                                 DelayStatement: null
                               right:
                                 Rvalue:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
                                   line: 13
                                   var:
                                     Srl:
-                                      filename: lib/test/passes/transformations/testcases/generate2.v
+                                      filename: ../test/passes/transformations/testcases/generate2.v
                                       left:
                                         Identifier:
-                                          filename: lib/test/passes/transformations/testcases/generate2.v
+                                          filename: ../test/passes/transformations/testcases/generate2.v
+                                          hier:
+                                            HierName: null
                                           line: 13
                                           name: tmp
-                                          package: ''
-                                          scope:
-                                            IdentifierScope: null
                                       line: 13
                                       right:
                                         Identifier:
-                                          filename: lib/test/passes/transformations/testcases/generate2.v
+                                          filename: ../test/passes/transformations/testcases/generate2.v
+                                          hier:
+                                            HierName: null
                                           line: 13
                                           name: SHIFT
-                                          package: ''
-                                          scope:
-                                            IdentifierScope: null
-          - Reg:
-              filename: lib/test/passes/transformations/testcases/generate2.v
+          - Var:
+              filename: ../test/passes/transformations/testcases/generate2.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 19
               name: val
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/generate2.v
                   line: 19
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/generate2.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/generate2.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 31
                       line: 19
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/passes/transformations/testcases/generate2.v
-                      line: 19
-                      sign: false
-                      size: -1
-                      value: 31
-          - Reg:
-              filename: lib/test/passes/transformations/testcases/generate2.v
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/generate2.v
+                          line: 19
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/generate2.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 20
               name: clog_reg
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/generate2.v
                   line: 20
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/generate2.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/generate2.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 31
                       line: 20
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: lib/test/passes/transformations/testcases/generate2.v
-                      line: 20
-                      sign: false
-                      size: -1
-                      value: 31
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/generate2.v
+                          line: 20
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Initial:
-              filename: lib/test/passes/transformations/testcases/generate2.v
+              filename: ../test/passes/transformations/testcases/generate2.v
               line: 22
               statement:
                 Block:
-                  filename: lib/test/passes/transformations/testcases/generate2.v
+                  filename: ../test/passes/transformations/testcases/generate2.v
                   line: 22
                   scope: ''
                   statements:
                   - BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 23
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 23
                               name: val
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 23
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 23
                           var:
                             IntConstN:
                               base: 10
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 23
                               sign: false
                               size: -1
                               value: 53
                   - BlockingSubstitution:
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 24
                           var:
                             Identifier:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 24
                               name: clog_reg
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                       line: 24
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 24
                           var:
                             FunctionCall:
                               args:
                               - Identifier:
-                                  filename: lib/test/passes/transformations/testcases/generate2.v
+                                  filename: ../test/passes/transformations/testcases/generate2.v
+                                  hier:
+                                    HierName: null
                                   line: 24
                                   name: val
-                                  package: ''
-                                  scope:
-                                    IdentifierScope: null
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 24
                               name: clogb2
-                              package: ''
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: lib/test/passes/transformations/testcases/generate2.v
+                      filename: ../test/passes/transformations/testcases/generate2.v
                       line: 25
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
                               line: 25
                               value: clogb2(%0d) = %0d
                           - Identifier:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 25
                               name: val
-                              package: ''
-                              scope:
-                                IdentifierScope: null
                           - Identifier:
-                              filename: lib/test/passes/transformations/testcases/generate2.v
+                              filename: ../test/passes/transformations/testcases/generate2.v
+                              hier:
+                                HierName: null
                               line: 25
                               name: clog_reg
-                              package: ''
-                              scope:
-                                IdentifierScope: null
-                          filename: lib/test/passes/transformations/testcases/generate2.v
+                          filename: ../test/passes/transformations/testcases/generate2.v
                           line: 25
                           syscall: display
+          lifetime: NONE
           line: 1
           name: generate2
-      filename: lib/test/passes/transformations/testcases/generate2.v
+      filename: ../test/passes/transformations/testcases/generate2.v
       line: 1
-  filename: lib/test/passes/transformations/testcases/generate2.v
+  filename: ../test/passes/transformations/testcases/generate2.v
   line: 1

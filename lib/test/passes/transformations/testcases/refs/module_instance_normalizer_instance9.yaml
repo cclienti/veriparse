@@ -4,321 +4,466 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../lib/test/passes/transformations/testcases/instance9.v
+          filename: ../test/passes/transformations/testcases/instance9.v
           items:
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: a
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 2
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: b
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 2
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: c
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 2
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+              name: c
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: d
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      line: 2
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 2
-              second:
-                Variable: null
+              name: d
           - Always:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 4
               senslist:
                 Senslist:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 4
                   list:
                   - Sens:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 4
                       sig: null
                       type: ALL
               statement:
                 Block:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 4
                   scope: ''
                   statements:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 5
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - Identifier:
-                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 5
                               name: a
-                              scope:
-                                IdentifierScope: null
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          filename: ../test/passes/transformations/testcases/instance9.v
                           line: 5
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 6
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - Identifier:
-                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 6
                               name: b
-                              scope:
-                                IdentifierScope: null
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          filename: ../test/passes/transformations/testcases/instance9.v
                           line: 6
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 7
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - Identifier:
-                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 7
                               name: c
-                              scope:
-                                IdentifierScope: null
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          filename: ../test/passes/transformations/testcases/instance9.v
                           line: 7
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - Identifier:
-                              filename: ../lib/test/passes/transformations/testcases/instance9.v
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              hier:
+                                HierName: null
                               line: 8
                               name: d
-                              scope:
-                                IdentifierScope: null
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                          filename: ../test/passes/transformations/testcases/instance9.v
                           line: 8
                           syscall: display
+          lifetime: NONE
           line: 1
           name: my_module
           ports:
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 1
               name: a
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 1
               name: b
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 1
               name: c
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 1
               name: d
       - Module:
           default_nettype: WIRE
-          filename: ../lib/test/passes/transformations/testcases/instance9.v
+          filename: ../test/passes/transformations/testcases/instance9.v
           items:
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 13
                   name: a
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 13
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 13
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
-                          line: 13
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 13
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+              name: a
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 13
                   name: b
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 13
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 13
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
-                          line: 13
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 13
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+              name: b
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 13
                   name: c
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 13
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 13
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
-                          line: 13
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 13
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
-              first:
-                Input:
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+              name: c
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 13
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance9.v
                       line: 13
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance9.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 3
                           line: 13
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../lib/test/passes/transformations/testcases/instance9.v
-                          line: 13
-                          sign: false
-                          size: -1
-                          value: 3
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance9.v
+                              line: 13
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 13
-              second:
-                Variable: null
-          - Wire:
+              name: d
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: inst0_a
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 3
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -330,10 +475,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: inst0_a
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -343,18 +488,18 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      hier:
+                        HierName: null
                       line: 14
                       name: a
-                      scope:
-                        IdentifierScope: null
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 14
                   module: my_module
                   name: inst00
@@ -378,10 +523,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst0_a
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -400,12 +545,12 @@ Source:
               line: 14
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 14
                   module: my_module
                   name: inst01
@@ -429,10 +574,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst0_a
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -451,12 +596,12 @@ Source:
               line: 14
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 14
                   module: my_module
                   name: inst02
@@ -480,10 +625,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst0_a
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -502,12 +647,12 @@ Source:
               line: 14
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 14
                   module: my_module
                   name: inst03
@@ -531,10 +676,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst0_a
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -552,37 +697,45 @@ Source:
                       value: null
               line: 14
               module: my_module
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: inst1_b
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 3
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -594,10 +747,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: inst1_b
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -607,18 +760,18 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      hier:
+                        HierName: null
                       line: 15
                       name: b
-                      scope:
-                        IdentifierScope: null
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 15
                   module: my_module
                   name: inst10
@@ -647,10 +800,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst1_b
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -664,12 +817,12 @@ Source:
               line: 15
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 15
                   module: my_module
                   name: inst11
@@ -698,10 +851,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst1_b
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -715,12 +868,12 @@ Source:
               line: 15
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 15
                   module: my_module
                   name: inst12
@@ -749,10 +902,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst1_b
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -766,12 +919,12 @@ Source:
               line: 15
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 15
                   module: my_module
                   name: inst13
@@ -800,10 +953,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst1_b
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -816,37 +969,45 @@ Source:
                       value: null
               line: 15
               module: my_module
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: inst2_c
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 3
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -858,10 +1019,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: inst2_c
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -871,18 +1032,18 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      hier:
+                        HierName: null
                       line: 16
                       name: c
-                      scope:
-                        IdentifierScope: null
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 16
                   module: my_module
                   name: inst20
@@ -916,10 +1077,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst2_c
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -928,12 +1089,12 @@ Source:
               line: 16
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 16
                   module: my_module
                   name: inst21
@@ -967,10 +1128,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst2_c
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -979,12 +1140,12 @@ Source:
               line: 16
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 16
                   module: my_module
                   name: inst22
@@ -1018,10 +1179,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst2_c
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1030,12 +1191,12 @@ Source:
               line: 16
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 16
                   module: my_module
                   name: inst23
@@ -1069,10 +1230,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst2_c
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1080,37 +1241,45 @@ Source:
                       value: null
               line: 16
               module: my_module
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: inst3_d
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 3
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 3
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1122,10 +1291,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: inst3_d
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1135,18 +1304,18 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../lib/test/passes/transformations/testcases/instance9.v
+                      filename: ../test/passes/transformations/testcases/instance9.v
+                      hier:
+                        HierName: null
                       line: 17
                       name: d
-                      scope:
-                        IdentifierScope: null
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 17
                   module: my_module
                   name: inst30
@@ -1185,19 +1354,19 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst3_d
-                              scope:
-                                IdentifierScope: null
               line: 17
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 17
                   module: my_module
                   name: inst31
@@ -1236,19 +1405,19 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst3_d
-                              scope:
-                                IdentifierScope: null
               line: 17
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 17
                   module: my_module
                   name: inst32
@@ -1287,19 +1456,19 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst3_d
-                              scope:
-                                IdentifierScope: null
               line: 17
               module: my_module
           - Instancelist:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              filename: ../test/passes/transformations/testcases/instance9.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../lib/test/passes/transformations/testcases/instance9.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance9.v
                   line: 17
                   module: my_module
                   name: inst33
@@ -1338,33 +1507,49 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: inst3_d
-                              scope:
-                                IdentifierScope: null
               line: 17
               module: my_module
+          lifetime: NONE
           line: 12
           name: instance9
           ports:
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 12
               name: a
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 12
               name: b
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 12
               name: c
           - Port:
-              filename: ../lib/test/passes/transformations/testcases/instance9.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance9.v
               line: 12
               name: d
-      filename: ../lib/test/passes/transformations/testcases/instance9.v
+      filename: ../test/passes/transformations/testcases/instance9.v
       line: 1
-  filename: ../lib/test/passes/transformations/testcases/instance9.v
+  filename: ../test/passes/transformations/testcases/instance9.v
   line: 1
-

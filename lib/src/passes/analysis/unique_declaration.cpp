@@ -53,18 +53,18 @@ int UniqueDeclaration::analyze(const AST::Node::Ptr &node, IdentifierSet &id_set
     } else if(node->is_node_type(AST::NodeType::Instance)) {
         id_set.emplace(AST::cast_to<AST::Instance>(node)->get_name());
         id_set.emplace(AST::cast_to<AST::Instance>(node)->get_module());
-    } else if(node->is_node_category(AST::NodeType::Parameter)) {
-        id_set.emplace(AST::cast_to<AST::Parameter>(node)->get_name());
+    } else if(node->is_node_category(AST::NodeType::Param)) {
+        id_set.emplace(AST::cast_to<AST::Param>(node)->get_name());
     } else if(node->is_node_category(AST::NodeType::Port)) {
         id_set.emplace(AST::cast_to<AST::Port>(node)->get_name());
-    } else if(node->is_node_category(AST::NodeType::IODir)) {
-        id_set.emplace(AST::cast_to<AST::IODir>(node)->get_name());
-    } else if(node->is_node_category(AST::NodeType::VariableBase)) {
-        id_set.emplace(AST::cast_to<AST::VariableBase>(node)->get_name());
+    } else if(node->is_node_type(AST::NodeType::Arg)) {
+        id_set.emplace(AST::cast_to<AST::Arg>(node)->get_name());
+    } else if(node->is_node_category(AST::NodeType::Declaration)) {
+        id_set.emplace(AST::cast_to<AST::Declaration>(node)->get_name());
     } else if(node->is_node_category(AST::NodeType::Identifier)) {
         id_set.emplace(AST::cast_to<AST::Identifier>(node)->get_name());
-    } else if(node->is_node_category(AST::NodeType::IdentifierScopeLabel)) {
-        id_set.emplace(AST::cast_to<AST::IdentifierScopeLabel>(node)->get_scope());
+    } else if(node->is_node_category(AST::NodeType::HierLabel)) {
+        id_set.emplace(AST::cast_to<AST::HierLabel>(node)->get_name());
     } else if(node->is_node_category(AST::NodeType::Pragma)) {
         id_set.emplace(AST::cast_to<AST::Pragma>(node)->get_name());
     } else {

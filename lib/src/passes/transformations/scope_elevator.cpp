@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#include "veriparse/AST/identifierscopelabel.hpp"
+#include "veriparse/AST/hierlabel.hpp"
 #include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/ast_replace.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -39,12 +39,12 @@ std::string render_identifier(const AST::Identifier::Ptr &id)
 {
     std::string render;
 
-    const auto &scope = id->get_scope();
+    const auto &scope = id->get_hier();
     if(scope) {
         const auto &labels = scope->get_labellist();
         if(labels) {
             for(const auto &label : *labels) {
-                render += label->get_scope() + ".";
+                render += label->get_name() + ".";
             }
         }
     }
@@ -186,7 +186,7 @@ int ScopeElevator::process_scoped_identifiers(const AST::Node::Ptr &node, AST::N
 
     case AST::NodeType::Identifier: {
         const auto &id = AST::cast_to<AST::Identifier>(node);
-        const auto &scope = id->get_scope();
+        const auto &scope = id->get_hier();
         if(!scope) {
             break;
         }
@@ -222,19 +222,19 @@ int ScopeElevator::process_scoped_identifiers(const AST::Node::Ptr &node, AST::N
 
                     // Rewrite the scope of the identifier use the one
                     // that matched.
-                    const auto &labellist = id->get_scope()->get_labellist();
-                    const auto &new_labellist = std::make_shared<AST::IdentifierScopeLabel::List>();
+                    const auto &labellist = id->get_hier()->get_labellist();
+                    const auto &new_labellist = std::make_shared<AST::HierLabel::List>();
                     auto it_labellist = labellist->crbegin();
                     auto it_matched = matched_scope.crbegin();
                     while(it_labellist != labellist->crend() &&
                           it_matched != matched_scope.crend()) {
-                        if(*it_matched == (*it_labellist)->get_scope()) {
+                        if(*it_matched == (*it_labellist)->get_name()) {
                             new_labellist->push_front(*it_labellist);
                             ++it_matched;
                         }
                         ++it_labellist;
                     }
-                    id->get_scope()->set_labellist(new_labellist);
+                    id->get_hier()->set_labellist(new_labellist);
 
                     // The matched occured, we continue to search as we
                     // process only one scope level at a time.
@@ -261,7 +261,7 @@ int ScopeElevator::rename_nested_variables(const AST::Node::Ptr &node, const AST
         return 0;
     }
 
-    if(node->is_node_category(AST::NodeType::Variable)) {
+    if(node->is_node_category(AST::NodeType::Declaration)) {
         // Compute the new stack
         const auto scope_stack_str = render_scope_stack(m_scope_stack);
         ScopeStack new_scope_stack;
@@ -276,7 +276,7 @@ int ScopeElevator::rename_nested_variables(const AST::Node::Ptr &node, const AST
         const auto new_scope_stack_str = render_scope_stack(new_scope_stack);
 
         // Get the new variable name
-        const auto &var = AST::cast_to<AST::Variable>(node);
+        const auto &var = AST::cast_to<AST::Declaration>(node);
         const std::string var_name = var->get_name(); // no reference here.
         const std::string new_var_name = scope + "__" + var->get_name();
 
@@ -330,7 +330,7 @@ int ScopeElevator::rename_nested_identifiers(const AST::Node::Ptr &node,
 
     if(node->is_node_type(AST::NodeType::Identifier)) {
         const auto &id = AST::cast_to<AST::Identifier>(node);
-        if(!id->get_scope()) {
+        if(!id->get_hier()) {
             auto it = replace_map.find(id->get_name());
             if(it != replace_map.end()) {
                 id->set_name(it->second);

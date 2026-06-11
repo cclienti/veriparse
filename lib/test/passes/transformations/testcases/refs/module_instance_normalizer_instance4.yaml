@@ -4,255 +4,354 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/instance4.v
+          filename: ../test/passes/transformations/testcases/instance4.v
           items:
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Input:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: in0
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 2
                           line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 2
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 2
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Input:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              name: in0
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 2
                   name: in1
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 2
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 2
                           line: 2
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
-                          line: 2
-                          sign: false
-                          size: -1
-                          value: 2
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 2
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 2
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Output:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              name: in1
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: out0
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 2
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 2
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 3
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Output:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              name: out0
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: out1
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 3
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 2
                           line: 3
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
-                          line: 3
-                          sign: false
-                          size: -1
-                          value: 2
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 3
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 3
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Input:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              name: out1
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 4
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      line: 4
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 4
-              second:
-                Variable: null
-          - Wire:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              name: clk
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance4.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 6
               name: t0
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 6
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 9
                       line: 6
-                      sign: false
-                      size: -1
-                      value: 1
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 9
-          - Wire:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 6
+                          sign: false
+                          size: -1
+                          value: 1
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance4.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 7
               name: t1
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 7
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 21
                       line: 7
-                      sign: false
-                      size: -1
-                      value: 1
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
-                      line: 7
-                      sign: false
-                      size: -1
-                      value: 21
-          - Wire:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 7
+                          sign: false
+                          size: -1
+                          value: 1
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: p0_q
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 4
-                  msb:
-                    IntConstN:
-                      base: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 4
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 1
-              - Width:
-                  filename: ''
-                  line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 2
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -263,21 +362,21 @@ Source:
                   line: 0
                   var:
                     Lconcat:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 10
                       list:
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 10
                           name: out0
-                          scope:
-                            IdentifierScope: null
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 10
                           name: t0
-                          scope:
-                            IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -288,60 +387,68 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: p0_q
-                      scope:
-                        IdentifierScope: null
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: p0_d
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 4
-                  msb:
-                    IntConstN:
-                      base: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 4
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 1
-              - Width:
-                  filename: ''
-                  line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 2
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -353,10 +460,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: p0_d
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -366,32 +473,40 @@ Source:
                   line: 0
                   var:
                     Concat:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 10
                       list:
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 10
                           name: t0
-                          scope:
-                            IdentifierScope: null
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 10
                           name: in0
-                          scope:
-                            IdentifierScope: null
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: p0_clk
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -403,10 +518,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: p0_clk
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -416,18 +531,18 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      hier:
+                        HierName: null
                       line: 10
                       name: clk
-                      scope:
-                        IdentifierScope: null
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 10
                   module: dffn
                   name: p04
@@ -451,10 +566,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -474,10 +589,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -485,19 +600,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p0_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 10
                   module: dffn
                   name: p03
@@ -521,10 +636,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -544,10 +659,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -555,19 +670,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p0_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 10
                   module: dffn
                   name: p02
@@ -591,10 +706,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -614,10 +729,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -625,19 +740,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p0_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 10
                   module: dffn
                   name: p01
@@ -661,10 +776,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -684,10 +799,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p0_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -695,62 +810,70 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p0_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: p1_q
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 8
-                  msb:
-                    IntConstN:
-                      base: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 8
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 1
-              - Width:
-                  filename: ''
-                  line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 2
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -761,21 +884,21 @@ Source:
                   line: 0
                   var:
                     Lconcat:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 11
                       list:
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 11
                           name: out1
-                          scope:
-                            IdentifierScope: null
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 11
                           name: t1
-                          scope:
-                            IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -786,60 +909,68 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: p1_q
-                      scope:
-                        IdentifierScope: null
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: p1_d
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
                   filename: ''
                   line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
+                  packed_dims:
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 1
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 8
-                  msb:
-                    IntConstN:
-                      base: 10
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 8
+                  - RangeDim:
                       filename: ''
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 2
                       line: 0
-                      sign: true
-                      size: -1
-                      value: 1
-              - Width:
-                  filename: ''
-                  line: 0
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: true
-                      size: -1
-                      value: 2
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ''
+                          line: 0
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -851,10 +982,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: p1_d
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -864,32 +995,40 @@ Source:
                   line: 0
                   var:
                     Concat:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 11
                       list:
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 11
                           name: t1
-                          scope:
-                            IdentifierScope: null
                       - Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 11
                           name: in1
-                          scope:
-                            IdentifierScope: null
-          - Wire:
+          - WireNet:
+              cont_assign:
+                Rvalue: null
               filename: ''
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 0
               name: p1_clk
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -901,10 +1040,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: p1_clk
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -914,18 +1053,18 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      hier:
+                        HierName: null
                       line: 11
                       name: clk
-                      scope:
-                        IdentifierScope: null
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p18
@@ -949,10 +1088,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -972,10 +1111,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -983,19 +1122,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p17
@@ -1019,10 +1158,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1042,10 +1181,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1053,19 +1192,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p16
@@ -1089,10 +1228,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1112,10 +1251,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1123,19 +1262,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p15
@@ -1159,10 +1298,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1182,10 +1321,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1193,19 +1332,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p14
@@ -1229,10 +1368,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1252,10 +1391,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1263,19 +1402,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p13
@@ -1299,10 +1438,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1322,10 +1461,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1333,19 +1472,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p12
@@ -1369,10 +1508,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1392,10 +1531,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1403,19 +1542,19 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 11
                   module: dffn
                   name: p11
@@ -1439,10 +1578,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_q
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1462,10 +1601,10 @@ Source:
                           var:
                             Identifier:
                               filename: ''
+                              hier:
+                                HierName: null
                               line: 0
                               name: p1_d
-                              scope:
-                                IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -1473,252 +1612,338 @@ Source:
                       value:
                         Identifier:
                           filename: ''
+                          hier:
+                            HierName: null
                           line: 0
                           name: p1_clk
-                          scope:
-                            IdentifierScope: null
               line: 9
               module: dffn
+          lifetime: NONE
           line: 1
           name: instance4
           ports:
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 1
               name: in0
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 1
               name: in1
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 1
               name: out0
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 1
               name: out1
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 1
               name: clk
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/instance4.v
+          filename: ../test/passes/transformations/testcases/instance4.v
           items:
           - Always:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 16
               senslist:
                 Senslist:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 16
                   list:
                   - Sens:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 16
                       sig:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 16
                           name: clk
-                          scope:
-                            IdentifierScope: null
                       type: POSEDGE
               statement:
                 NonblockingSubstitution:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   ldelay:
                     DelayStatement: null
                   left:
                     Lvalue:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 16
                       var:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 16
                           name: q
-                          scope:
-                            IdentifierScope: null
                   line: 16
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 16
                       var:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 16
                           name: d
-                          scope:
-                            IdentifierScope: null
+          lifetime: NONE
           line: 14
           name: DFF
           ports:
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Output:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 14
                   name: q
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      line: 14
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 14
-              second:
-                Reg:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
-                  line: 14
-                  name: q
-                  right:
+              name: q
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
                     Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Input:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
-                  line: 15
-                  name: d
-                  sign: false
-              line: 15
-              second:
-                Wire:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 15
                   name: d
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Input:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
-                  line: 15
-                  name: clk
-                  sign: false
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      line: 15
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 15
-              second:
-                Wire:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              name: d
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 15
                   name: clk
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      line: 15
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
+              line: 15
+              name: clk
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/instance4.v
+          filename: ../test/passes/transformations/testcases/instance4.v
           items:
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Input:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 20
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 20
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 2
                           line: 20
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
-                          line: 20
-                          sign: false
-                          size: -1
-                          value: 2
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 20
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 20
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Output:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              name: d
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 21
                   name: q
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 21
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 21
+                              sign: false
+                              size: -1
+                              value: 2
                           line: 21
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 2
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              line: 21
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 21
-              second:
-                Variable: null
-          - Ioport:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              first:
-                Input:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              name: q
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 22
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      line: 22
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 22
-              second:
-                Variable: null
+              name: clk
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
-                      line: 24
-                      lsb:
+                    RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      left:
                         IntConstN:
                           base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
-                          line: 24
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 24
                           sign: false
                           size: -1
                           value: 2
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                      line: 24
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 24
+                          sign: false
+                          size: -1
+                          value: 0
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 24
                   module: DFF
                   name: dff
@@ -1729,416 +1954,474 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 24
                           name: q
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
                       name: ''
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 24
                           name: d
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
                       filename: ''
                       line: 0
                       name: ''
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 24
                           name: clk
-                          scope:
-                            IdentifierScope: null
               line: 24
               module: DFF
+          lifetime: NONE
           line: 19
           name: dffn
           ports:
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 19
               name: q
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 19
               name: d
           - Port:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              decl:
+                Declaration: null
+              direction: NONE
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 19
               name: clk
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/instance4.v
+          filename: ../test/passes/transformations/testcases/instance4.v
           items:
-          - Reg:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+          - Var:
+              filename: ../test/passes/transformations/testcases/instance4.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 30
               name: in0
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 30
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 2
                       line: 30
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
-                      line: 30
-                      sign: false
-                      size: -1
-                      value: 2
-          - Reg:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 30
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/instance4.v
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 31
               name: in1
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 31
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 31
+                          sign: false
+                          size: -1
+                          value: 2
                       line: 31
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
-                      line: 31
-                      sign: false
-                      size: -1
-                      value: 2
-          - Wire:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 31
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance4.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 32
               name: out0
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 32
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 32
+                          sign: false
+                          size: -1
+                          value: 2
                       line: 32
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
-                      line: 32
-                      sign: false
-                      size: -1
-                      value: 2
-          - Wire:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 32
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance4.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 33
               name: out1
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 33
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance4.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 33
+                          sign: false
+                          size: -1
+                          value: 2
                       line: 33
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
-                      line: 33
-                      sign: false
-                      size: -1
-                      value: 2
-          - Reg:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              line: 35
-              name: clk
-              right:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          line: 33
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/instance4.v
+              init:
                 Rvalue:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 35
                   var:
                     IntConstN:
                       base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 35
                       sign: false
                       size: -1
                       value: 0
-              sign: false
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 35
+              name: clk
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  line: 35
+                  signing: NONE
           - Always:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 36
               senslist:
                 Senslist: null
               statement:
                 BlockingSubstitution:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   ldelay:
                     DelayStatement:
                       delay:
                         IntConstN:
                           base: 10
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 37
                           sign: false
                           size: -1
                           value: 5
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 37
                   left:
                     Lvalue:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 37
                       var:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 37
                           name: clk
-                          scope:
-                            IdentifierScope: null
                   line: 37
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 37
                       var:
                         Unot:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 37
                           right:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 37
                               name: clk
-                              scope:
-                                IdentifierScope: null
           - Instancelist:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               instances:
               - Instance:
                   array:
-                    Length: null
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                    Dimension: null
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 39
                   module: instance4
                   name: instance4_inst
                   portlist:
                   - PortArg:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 41
                       name: in0
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 41
                           name: in0
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 42
                       name: in1
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 42
                           name: in1
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 43
                       name: out0
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 43
                           name: out0
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 44
                       name: out1
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 44
                           name: out1
-                          scope:
-                            IdentifierScope: null
                   - PortArg:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 45
                       name: clk
                       value:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 45
                           name: clk
-                          scope:
-                            IdentifierScope: null
               line: 39
               module: instance4
-          - Integer:
-              filename: ../../test/passes/transformations/testcases/instance4.v
-              line: 48
-              name: cpt
-              right:
+          - Var:
+              filename: ../test/passes/transformations/testcases/instance4.v
+              init:
                 Rvalue:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 48
                   var:
                     IntConstN:
                       base: 10
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 48
                       sign: false
                       size: -1
                       value: 0
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 48
+              name: cpt
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/instance4.v
+                  line: 48
+                  signing: NONE
           - Always:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 50
               senslist:
                 Senslist:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 50
                   list:
                   - Sens:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 50
                       sig:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 50
                           name: clk
-                          scope:
-                            IdentifierScope: null
                       type: POSEDGE
               statement:
                 Block:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 50
                   scope: ''
                   statements:
                   - NonblockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 51
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 51
                               name: cpt
-                              scope:
-                                IdentifierScope: null
                       line: 51
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 51
                           var:
                             Plus:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
                               left:
                                 Identifier:
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
+                                  hier:
+                                    HierName: null
                                   line: 51
                                   name: cpt
-                                  scope:
-                                    IdentifierScope: null
                               line: 51
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
                                   line: 51
                                   sign: false
                                   size: -1
                                   value: 1
                   - NonblockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 52
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 52
                               name: in0
-                              scope:
-                                IdentifierScope: null
                       line: 52
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 52
                           var:
                             Partselect:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
                               line: 52
                               lsb:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
                                   line: 52
                                   sign: false
                                   size: -1
@@ -2146,48 +2429,48 @@ Source:
                               msb:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
                                   line: 52
                                   sign: false
                                   size: -1
                                   value: 2
                               var:
                                 Identifier:
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
+                                  hier:
+                                    HierName: null
                                   line: 52
                                   name: cpt
-                                  scope:
-                                    IdentifierScope: null
                   - NonblockingSubstitution:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 53
                           var:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 53
                               name: in1
-                              scope:
-                                IdentifierScope: null
                       line: 53
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 53
                           var:
                             Partselect:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
                               line: 53
                               lsb:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
                                   line: 53
                                   sign: false
                                   size: -1
@@ -2195,118 +2478,118 @@ Source:
                               msb:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
                                   line: 53
                                   sign: false
                                   size: -1
                                   value: 5
                               var:
                                 Identifier:
-                                  filename: ../../test/passes/transformations/testcases/instance4.v
+                                  filename: ../test/passes/transformations/testcases/instance4.v
+                                  hier:
+                                    HierName: null
                                   line: 53
                                   name: cpt
-                                  scope:
-                                    IdentifierScope: null
                   - IfStatement:
                       cond:
                         Eq:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           left:
                             Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 54
                               name: cpt
-                              scope:
-                                IdentifierScope: null
                           line: 54
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
                               line: 54
                               sign: false
                               size: -1
                               value: 15
                       false_statement: null
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 54
                       true_statement:
                         SingleStatement:
                           delay:
                             DelayStatement: null
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 55
                           scope: ''
                           statement:
                             SystemCall:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
                               line: 55
                               syscall: finish
           - Always:
-              filename: ../../test/passes/transformations/testcases/instance4.v
+              filename: ../test/passes/transformations/testcases/instance4.v
               line: 58
               senslist:
                 Senslist:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 58
                   list:
                   - Sens:
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 58
                       sig:
                         Identifier:
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
+                          hier:
+                            HierName: null
                           line: 58
                           name: clk
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
-                  filename: ../../test/passes/transformations/testcases/instance4.v
+                  filename: ../test/passes/transformations/testcases/instance4.v
                   line: 58
                   scope: ''
                   statements:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../test/passes/transformations/testcases/instance4.v
+                      filename: ../test/passes/transformations/testcases/instance4.v
                       line: 59
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 59
                               name: in0
-                              scope:
-                                IdentifierScope: null
                           - Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 59
                               name: in1
-                              scope:
-                                IdentifierScope: null
                           - Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 59
                               name: out0
-                              scope:
-                                IdentifierScope: null
                           - Identifier:
-                              filename: ../../test/passes/transformations/testcases/instance4.v
+                              filename: ../test/passes/transformations/testcases/instance4.v
+                              hier:
+                                HierName: null
                               line: 59
                               name: out1
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../test/passes/transformations/testcases/instance4.v
+                          filename: ../test/passes/transformations/testcases/instance4.v
                           line: 59
                           syscall: display
+          lifetime: NONE
           line: 28
           name: testbench
-      filename: ../../test/passes/transformations/testcases/instance4.v
+      filename: ../test/passes/transformations/testcases/instance4.v
       line: 1
-  filename: ../../test/passes/transformations/testcases/instance4.v
+  filename: ../test/passes/transformations/testcases/instance4.v
   line: 1
-

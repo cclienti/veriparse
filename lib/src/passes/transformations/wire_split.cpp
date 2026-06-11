@@ -18,19 +18,19 @@ int WireSplit::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     }
 
     // Check if this is a Wire with an inline right-hand side
-    if(node->get_node_type() == AST::NodeType::Wire) {
-        auto wire = AST::cast_to<AST::Wire>(node);
-        auto rhs = wire->get_right();
+    if(node->get_node_type() == AST::NodeType::WireNet) {
+        auto wire = AST::cast_to<AST::WireNet>(node);
+        auto rhs = wire->get_cont_assign();
 
         if(rhs && parent) {
             LOG_DEBUG_N(wire) << "Splitting inline wire declaration: " << wire->get_name();
 
             // Clear the rhs from the wire declaration
-            wire->set_right(nullptr);
+            wire->set_cont_assign(nullptr);
 
             // Build: assign <name> = <rhs>;
             auto lvalue = std::make_shared<AST::Lvalue>(
-                std::make_shared<AST::Identifier>(nullptr, wire->get_name(), "",
+                std::make_shared<AST::Identifier>(nullptr, nullptr, wire->get_name(),
                                                   wire->get_filename(), wire->get_line()),
                 wire->get_filename(), wire->get_line());
 

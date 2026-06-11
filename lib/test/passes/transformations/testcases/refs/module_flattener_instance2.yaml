@@ -4,16 +4,18 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/instance2.v
+          filename: ../test/passes/transformations/testcases/instance2.v
+          items: []
+          lifetime: NONE
           line: 1
           name: instance2
       - Module:
           default_nettype: WIRE
-          filename: ../../test/passes/transformations/testcases/instance2.v
+          filename: ../test/passes/transformations/testcases/instance2.v
+          lifetime: NONE
           line: 5
           name: my_module2
-      filename: ../../test/passes/transformations/testcases/instance2.v
+      filename: ../test/passes/transformations/testcases/instance2.v
       line: 1
-  filename: ../../test/passes/transformations/testcases/instance2.v
+  filename: ../test/passes/transformations/testcases/instance2.v
   line: 1
-

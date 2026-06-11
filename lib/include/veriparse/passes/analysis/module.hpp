@@ -59,7 +59,7 @@ public:
     /**
      * @brief Return all parameters nodes.
      */
-    static AST::Parameter::ListPtr get_parameter_nodes(AST::Node::Ptr node);
+    static AST::Param::ListPtr get_parameter_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all parameters names.
@@ -89,7 +89,7 @@ public:
     /**
      * @brief Return all localparams nodes.
      */
-    static AST::Localparam::ListPtr get_localparam_nodes(AST::Node::Ptr node);
+    static AST::Param::ListPtr get_localparam_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all localparams names.
@@ -188,7 +188,7 @@ public:
     /**
      * @brief Return all input, output and inout port nodes.
      */
-    static AST::IODir::ListPtr get_iodir_nodes(AST::Node::Ptr node);
+    static AST::Port::ListPtr get_iodir_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all input, output and inout port names.
@@ -198,7 +198,7 @@ public:
     /**
      * @brief Return all output nodes.
      */
-    static AST::Output::ListPtr get_output_nodes(AST::Node::Ptr node);
+    static AST::Port::ListPtr get_output_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all output names.
@@ -208,7 +208,7 @@ public:
     /**
      * @brief Return all inout nodes.
      */
-    static AST::Inout::ListPtr get_inout_nodes(AST::Node::Ptr node);
+    static AST::Port::ListPtr get_inout_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all inout names.
@@ -218,7 +218,7 @@ public:
     /**
      * @brief Return all input nodes.
      */
-    static AST::Input::ListPtr get_input_nodes(AST::Node::Ptr node);
+    static AST::Port::ListPtr get_input_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all input names
@@ -228,7 +228,7 @@ public:
     /**
      * @brief Return all variables (excluding genvar) nodes.
      */
-    static AST::Variable::ListPtr get_variable_nodes(AST::Node::Ptr node);
+    static AST::Declaration::ListPtr get_variable_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all variables (excluding genvar) names.
@@ -238,7 +238,7 @@ public:
     /**
      * @brief Return all variable nodes that are not related to an IOPort.
      */
-    static AST::Variable::ListPtr get_variable_nodes_within_module(AST::Node::Ptr node);
+    static AST::Declaration::ListPtr get_variable_nodes_within_module(AST::Node::Ptr node);
 
     /**
      * @brief Return variable names that are not related to an IOPort.

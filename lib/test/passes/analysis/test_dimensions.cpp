@@ -775,7 +775,7 @@ TEST(PassesAnalysis_Dimensions, gen_decl)
                                    {87, 0, 88, true, true}, // dim 0
                                }};
 
-    const auto gen_dims_a = Dimensions::generate_decl("dims_a", AST::NodeType::Wire, dims_a);
+    const auto gen_dims_a = Dimensions::generate_decl("dims_a", AST::NodeType::WireNet, dims_a);
     ASSERT_NE(nullptr, gen_dims_a);
 
     std::string str_dims_a = Generators::VerilogGenerator().render(gen_dims_a);
@@ -791,12 +791,12 @@ TEST(PassesAnalysis_Dimensions, gen_decl)
                                    {7, 0, 8, true, true}, // dim 0
                                }};
 
-    const auto gen_dims_b = Dimensions::generate_decl("dims_b", AST::NodeType::Wire, dims_b);
+    const auto gen_dims_b = Dimensions::generate_decl("dims_b", AST::NodeType::WireNet, dims_b);
     ASSERT_NE(nullptr, gen_dims_b);
 
     std::string str_dims_b = Generators::VerilogGenerator().render(gen_dims_b);
     LOG_INFO << str_dims_b;
-    ASSERT_EQ("wire [3:0] [7:0] dims_b;", str_dims_b);
+    ASSERT_EQ("wire [3:0][7:0] dims_b;", str_dims_b);
 
     //---------------------------------------------------
     Dimensions::DimList dims_c{Dimensions::DimList::Decl::var, // decl
@@ -807,12 +807,12 @@ TEST(PassesAnalysis_Dimensions, gen_decl)
                                    {7, 0, 8, true, true},  // dim 0
                                }};
 
-    const auto gen_dims_c = Dimensions::generate_decl("dims_c", AST::NodeType::Reg, dims_c);
+    const auto gen_dims_c = Dimensions::generate_decl("dims_c", AST::NodeType::Var, dims_c);
     ASSERT_NE(nullptr, gen_dims_c);
 
     std::string str_dims_c = Generators::VerilogGenerator().render(gen_dims_c);
     LOG_INFO << str_dims_c;
-    ASSERT_EQ("reg [0:3] [7:0] dims_c;", str_dims_c);
+    ASSERT_EQ("reg [0:3][7:0] dims_c;", str_dims_c);
 
     //---------------------------------------------------
     Dimensions::DimList dims_d{Dimensions::DimList::Decl::var, // decl
@@ -824,12 +824,12 @@ TEST(PassesAnalysis_Dimensions, gen_decl)
                                    {7, 0, 8, true, true},  // dim 0
                                }};
 
-    const auto gen_dims_d = Dimensions::generate_decl("dims_d", AST::NodeType::Wire, dims_d);
+    const auto gen_dims_d = Dimensions::generate_decl("dims_d", AST::NodeType::WireNet, dims_d);
     ASSERT_NE(nullptr, gen_dims_d);
 
     std::string str_dims_d = Generators::VerilogGenerator().render(gen_dims_d);
     LOG_INFO << str_dims_d;
-    ASSERT_EQ("wire [0:3] [7:0] dims_d [7:0];", str_dims_d);
+    ASSERT_EQ("wire [0:3][7:0] dims_d [7:0];", str_dims_d);
 
     //---------------------------------------------------
     Dimensions::DimList dims_e{Dimensions::DimList::Decl::var, // decl
@@ -842,10 +842,10 @@ TEST(PassesAnalysis_Dimensions, gen_decl)
                                    {7, 0, 8, true, true},   // dim 0
                                }};
 
-    const auto gen_dims_e = Dimensions::generate_decl("dims_e", AST::NodeType::Reg, dims_e);
+    const auto gen_dims_e = Dimensions::generate_decl("dims_e", AST::NodeType::Var, dims_e);
     ASSERT_NE(nullptr, gen_dims_e);
 
     std::string str_dims_e = Generators::VerilogGenerator().render(gen_dims_e);
     LOG_INFO << str_dims_e;
-    ASSERT_EQ("reg [0:3] [7:0] dims_e [0:1][5:0];", str_dims_e);
+    ASSERT_EQ("reg [0:3][7:0] dims_e [0:1][5:0];", str_dims_e);
 }

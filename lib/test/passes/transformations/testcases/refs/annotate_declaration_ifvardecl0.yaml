@@ -4,14 +4,14 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+          filename: ../test/passes/transformations/testcases/ifvardecl0.v
           items:
           - Initial:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+              filename: ../test/passes/transformations/testcases/ifvardecl0.v
               line: 3
               statement:
                 Block:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
                   line: 3
                   scope: ''
                   statements:
@@ -19,105 +19,121 @@ Source:
                       cond:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                          filename: ../test/passes/transformations/testcases/ifvardecl0.v
                           line: 4
                           sign: false
                           size: -1
                           value: 1
                       false_statement:
                         Block:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                          filename: ../test/passes/transformations/testcases/ifvardecl0.v
                           line: 8
                           scope: ''
                           statements:
-                          - Integer:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
-                              line: 9
-                              name: prefix_x_suffix
-                              right:
+                          - Var:
+                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                              init:
                                 Rvalue:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                   line: 9
                                   var:
                                     IntConstN:
                                       base: 10
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                       line: 9
                                       sign: false
                                       size: -1
                                       value: 1
+                              is_const: false
+                              is_var: false
+                              lifetime: NONE
+                              line: 9
+                              name: prefix_x_suffix
+                              type:
+                                IntegerType:
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                  line: 9
+                                  signing: NONE
                           - SingleStatement:
                               delay:
                                 DelayStatement: null
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
                               line: 10
                               scope: ''
                               statement:
                                 SystemCall:
                                   args:
                                   - StringConst:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                       line: 10
                                       value: x = %0d
                                   - Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                      hier:
+                                        HierName: null
                                       line: 10
                                       name: prefix_x_suffix
-                                      scope:
-                                        IdentifierScope: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                   line: 10
                                   syscall: display
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
                       line: 4
                       true_statement:
                         Block:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                          filename: ../test/passes/transformations/testcases/ifvardecl0.v
                           line: 4
                           scope: ''
                           statements:
-                          - Integer:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
-                              line: 5
-                              name: prefix_x_suffix
-                              right:
+                          - Var:
+                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                              init:
                                 Rvalue:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                   line: 5
                                   var:
                                     IntConstN:
                                       base: 10
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                       line: 5
                                       sign: false
                                       size: -1
                                       value: 1
+                              is_const: false
+                              is_var: false
+                              lifetime: NONE
+                              line: 5
+                              name: prefix_x_suffix
+                              type:
+                                IntegerType:
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                  line: 5
+                                  signing: NONE
                           - SingleStatement:
                               delay:
                                 DelayStatement: null
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
                               line: 6
                               scope: ''
                               statement:
                                 SystemCall:
                                   args:
                                   - StringConst:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                       line: 6
                                       value: x = %0d
                                   - Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                      hier:
+                                        HierName: null
                                       line: 6
                                       name: prefix_x_suffix
-                                      scope:
-                                        IdentifierScope: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                   line: 6
                                   syscall: display
+          lifetime: NONE
           line: 1
           name: ifvardecl0
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+      filename: ../test/passes/transformations/testcases/ifvardecl0.v
       line: 1
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/ifvardecl0.v
+  filename: ../test/passes/transformations/testcases/ifvardecl0.v
   line: 1
-

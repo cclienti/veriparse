@@ -4,121 +4,113 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+          filename: ../test/passes/transformations/testcases/typedef0.sv
           items:
           - Typedef:
-              def:
-                Int:
-                  filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                  line: 6
-                  name: ''
-                  right:
-                    Rvalue: null
-                  sign: true
-              filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+              filename: ../test/passes/transformations/testcases/typedef0.sv
+              fwd_kind: NONE
               line: 6
               name: it
+              type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/typedef0.sv
+                  line: 6
+                  signing: NONE
           - Typedef:
-              def:
-                Logic:
-                  filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                  ldelay:
-                    DelayStatement: null
+              filename: ../test/passes/transformations/testcases/typedef0.sv
+              fwd_kind: NONE
+              line: 7
+              name: lt
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/typedef0.sv
                   line: 7
-                  name: ''
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  type: null
-                  widths:
-                  - Width:
-                      filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                      line: 7
-                      lsb:
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/typedef0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+                          filename: ../test/passes/transformations/testcases/typedef0.sv
                           line: 7
                           sign: false
                           size: -1
                           value: 3
-              filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-              line: 7
-              name: lt
-          - Typedef:
-              def:
-                CustomTypeVar:
-                  filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                  line: 8
-                  name: ''
-                  right:
-                    Rvalue: null
-                  type:
-                    CustomType:
-                      filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                      line: 8
-                      name: my_t
-                      package: ''
-                  widths:
-                  - Width:
-                      filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                      line: 8
-                      lsb:
+                      line: 7
+                      right:
                         IntConstN:
                           base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-                          line: 8
+                          filename: ../test/passes/transformations/testcases/typedef0.sv
+                          line: 7
                           sign: false
                           size: -1
                           value: 0
-                      msb:
+                  signing: NONE
+          - Typedef:
+              filename: ../test/passes/transformations/testcases/typedef0.sv
+              fwd_kind: NONE
+              line: 8
+              name: at
+              type:
+                NamedType:
+                  filename: ../test/passes/transformations/testcases/typedef0.sv
+                  line: 8
+                  name: my_t
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/typedef0.sv
+                      left:
                         IntConstN:
                           base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+                          filename: ../test/passes/transformations/testcases/typedef0.sv
                           line: 8
                           sign: false
                           size: -1
                           value: 1
-              filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
-              line: 8
-              name: at
-          - CustomTypeVar:
-              filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+                      line: 8
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/typedef0.sv
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/typedef0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 10
               name: h
-              right:
-                Rvalue: null
               type:
-                CustomType:
-                  filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+                NamedType:
+                  filename: ../test/passes/transformations/testcases/typedef0.sv
                   line: 10
                   name: it
-                  package: ''
-          - CustomTypeVar:
-              filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/typedef0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
               line: 11
               name: h_qpbqzrdzrrzyqvka
-              right:
-                Rvalue: null
               type:
-                CustomType:
-                  filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+                NamedType:
+                  filename: ../test/passes/transformations/testcases/typedef0.sv
                   line: 11
                   name: lt
-                  package: ''
+                  signing: NONE
+          lifetime: NONE
           line: 1
           name: typedef0
-      filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+      filename: ../test/passes/transformations/testcases/typedef0.sv
       line: 1
-  filename: ../../../lib/test/passes/transformations/testcases/typedef0.sv
+  filename: ../test/passes/transformations/testcases/typedef0.sv
   line: 1

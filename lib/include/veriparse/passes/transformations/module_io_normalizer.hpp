@@ -23,17 +23,24 @@ class ModuleIONormalizer : public TransformationBase
 
     void remove_module_parameters(AST::Node::Ptr node, AST::Node::Ptr parent = nullptr);
 
-    void remove_module_ioports(AST::Node::Ptr node, AST::Node::Ptr parent = nullptr);
+    /// Remove every Port node found in the subtree (body direction declarations
+    /// and non-ANSI header references); the normalized port list is rebuilt.
+    void remove_module_ports(AST::Node::Ptr node, AST::Node::Ptr parent = nullptr);
 
-    void remove_module_iodirs(AST::Node::Ptr node, AST::Node::Ptr parent = nullptr);
-
+    /// Collect (and detach) the body Var/Net declarations whose name matches
+    /// @p variable. Port-internal declarations are skipped: only standalone body
+    /// declarations (`wire x;`, `reg [..] x;`) are merged into the port.
     void remove_module_variable(const std::string &variable,
-                                AST::Variable::ListPtr removed_variables, AST::Node::Ptr node,
+                                AST::Declaration::ListPtr removed_variables, AST::Node::Ptr node,
                                 AST::Node::Ptr parent = nullptr);
 
-    AST::Variable::Ptr create_default_net_type_variable(AST::Module::Default_nettypeEnum defnt,
-                                                        AST::Width::ListPtr widths,
-                                                        const std::string &name);
+    /// Build a net of the module `default_nettype, carrying @p packed_dims and
+    /// @p signing on an ImplicitType data type. Returns null when no default net
+    /// type is defined.
+    AST::Net::Ptr create_default_net_type_variable(AST::Module::Default_nettypeEnum defnt,
+                                                   AST::Dimension::ListPtr packed_dims,
+                                                   AST::DataType::SigningEnum signing,
+                                                   const std::string &name);
 };
 
 } // namespace Transformations

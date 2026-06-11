@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/enum_inliner.hpp>
-#include <veriparse/AST/enumdef.hpp>
+#include <veriparse/AST/enumtype.hpp>
 #include <veriparse/AST/enumitem.hpp>
 #include <veriparse/AST/identifier.hpp>
 #include <veriparse/AST/intconstn.hpp>
@@ -41,8 +41,8 @@ int EnumInliner::collect_enum_items(const AST::Node::Ptr &node)
         return 0;
     }
 
-    if(node->get_node_type() == AST::NodeType::EnumDef) {
-        const auto &enumdef = AST::cast_to<AST::EnumDef>(node);
+    if(node->get_node_type() == AST::NodeType::EnumType) {
+        const auto &enumdef = AST::cast_to<AST::EnumType>(node);
         const auto &items = enumdef->get_items();
         if(items) {
             for(const AST::EnumItem::Ptr &item : *items) {
@@ -79,7 +79,7 @@ int EnumInliner::replace_identifiers(AST::Node::Ptr node, AST::Node::Ptr parent)
     }
 
     // Skip EnumDef subtrees — don't replace names inside the definition
-    if(node->get_node_type() == AST::NodeType::EnumDef) {
+    if(node->get_node_type() == AST::NodeType::EnumType) {
         return 0;
     }
 

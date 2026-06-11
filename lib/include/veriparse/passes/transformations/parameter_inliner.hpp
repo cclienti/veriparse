@@ -53,7 +53,7 @@ private:
     int remove_parameter(AST::Node::Ptr node, std::string name, AST::Node::Ptr parent = nullptr);
 
 private:
-    AST::Parameter::ListPtr m_paramlist;
+    AST::Param::ListPtr m_paramlist;
     AST::ParamArg::ListPtr m_paramlist_inst;
 };
 

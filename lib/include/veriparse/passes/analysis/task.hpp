@@ -27,7 +27,7 @@ public:
     /**
      * Return all input, output and inout port nodes.
      */
-    static AST::IODir::ListPtr get_iodir_nodes(AST::Node::Ptr node);
+    static AST::Arg::ListPtr get_iodir_nodes(AST::Node::Ptr node);
 
     /**
      * Return all input, output and inout port names.
@@ -37,7 +37,7 @@ public:
     /**
      * Return all declared variable nodes except genvar.
      */
-    static AST::Variable::ListPtr get_variable_nodes(AST::Node::Ptr node);
+    static AST::Declaration::ListPtr get_variable_nodes(AST::Node::Ptr node);
 
     /**
      * Return all declared variable names except genvar.

@@ -84,17 +84,15 @@ std::size_t Dimensions::DimList::packed_width() const
     return width;
 }
 
-template <typename TArray>
-bool Dimensions::extract_array(const TArray &array, Packing packing, DimInfo &dim)
+bool Dimensions::extract_range(const AST::Node::Ptr &msb_node, const AST::Node::Ptr &lsb_node,
+                               Packing packing, DimInfo &dim)
 {
     mpz_class msb, lsb;
-    const bool msb_valid =
-        Transformations::ExpressionEvaluation().evaluate_node(array->get_msb(), msb);
-    const bool lsb_valid =
-        Transformations::ExpressionEvaluation().evaluate_node(array->get_lsb(), lsb);
+    const bool msb_valid = Transformations::ExpressionEvaluation().evaluate_node(msb_node, msb);
+    const bool lsb_valid = Transformations::ExpressionEvaluation().evaluate_node(lsb_node, lsb);
 
     if(!msb_valid || !lsb_valid) {
-        LOG_WARNING_N(array) << "cannot evaluate dimension range";
+        LOG_WARNING_N(msb_node) << "cannot evaluate dimension range";
         return false;
     }
 
@@ -105,20 +103,62 @@ bool Dimensions::extract_array(const TArray &array, Packing packing, DimInfo &di
     dim.is_packed = (packing == Packing::packed);
 
     if(dim.msb < 0 || dim.lsb < 0) {
-        LOG_ERROR_N(array) << "invalid dimension range";
+        LOG_ERROR_N(msb_node) << "invalid dimension range";
         return false;
     }
 
     return true;
 }
 
-template <typename TArrays>
-bool Dimensions::extract_arrays(const TArrays &arrays, Packing packing, DimList &dims)
+bool Dimensions::extract_dimension(const AST::Dimension::Ptr &dimension, Packing packing,
+                                   DimInfo &dim)
+{
+    if(!dimension) {
+        return false;
+    }
+
+    switch(dimension->get_node_type()) {
+    case AST::NodeType::RangeDim: {
+        const auto &range = AST::cast_to<AST::RangeDim>(dimension);
+        return extract_range(range->get_left(), range->get_right(), packing, dim);
+    }
+
+    case AST::NodeType::SizeDim: {
+        // [N] is equivalent to [N-1:0].
+        const auto &size_dim = AST::cast_to<AST::SizeDim>(dimension);
+        mpz_class size;
+        if(!Transformations::ExpressionEvaluation().evaluate_node(size_dim->get_size(), size)) {
+            LOG_WARNING_N(dimension) << "cannot evaluate dimension size";
+            return false;
+        }
+
+        dim.msb = size.convert_to<long>() - 1;
+        dim.lsb = 0;
+        dim.width = size.convert_to<long>();
+        dim.is_big = true;
+        dim.is_packed = (packing == Packing::packed);
+
+        if(dim.msb < 0) {
+            LOG_ERROR_N(dimension) << "invalid dimension size";
+            return false;
+        }
+
+        return true;
+    }
+
+    default:
+        LOG_WARNING_N(dimension) << "unsupported dimension form";
+        return false;
+    }
+}
+
+bool Dimensions::extract_arrays(const AST::Dimension::ListPtr &arrays, Packing packing,
+                                DimList &dims)
 {
     if(arrays) {
         for(const auto &array : *arrays) {
             DimInfo dim;
-            if(extract_array(array, packing, dim)) {
+            if(extract_dimension(array, packing, dim)) {
                 // 1-bit signal are not inserted in list
                 if(dim.width > 1) {
                     dims.list.emplace_back(dim);
@@ -132,21 +172,70 @@ bool Dimensions::extract_arrays(const TArrays &arrays, Packing packing, DimList 
     return true;
 }
 
+namespace
+{
+// Unpacked dimensions of a Var/Net declaration (the base Declaration carries no
+// unpacked dims; only the concrete kinds do).
+AST::Dimension::ListPtr decl_unpacked_dims(const AST::Declaration::Ptr &decl)
+{
+    if(decl->is_node_type(AST::NodeType::Var)) {
+        return AST::cast_to<AST::Var>(decl)->get_unpacked_dims();
+    }
+    if(decl->is_node_category(AST::NodeType::Net)) {
+        return AST::cast_to<AST::Net>(decl)->get_unpacked_dims();
+    }
+    return nullptr;
+}
+
+// Append the packed dimensions of a declaration to @p dims. Packed dimensions
+// live on the data type; an `integer` is the special case of a fixed 32-bit type
+// with no explicit packed dims.
+bool extract_packed_type(const AST::DataType::Ptr &type, Dimensions::Packing packing,
+                         Dimensions::DimList &dims)
+{
+    if(!type) {
+        return true;
+    }
+    if(type->is_node_type(AST::NodeType::IntegerType)) {
+        Dimensions::DimInfo dim;
+        dim.msb = 31;
+        dim.lsb = 0;
+        dim.width = 32;
+        dim.is_big = true;
+        dim.is_packed = true;
+        dims.list.emplace_front(dim);
+        return true;
+    }
+    return Dimensions::extract_arrays(type->get_packed_dims(), packing, dims);
+}
+} // namespace
+
 int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
 {
     const auto &io_nodes = Analysis::Module::get_iodir_nodes(node);
 
     for(const auto &io : *io_nodes) {
-        DimList dims;
-        dims.decl = DimList::Decl::io;
-
-        if(!extract_arrays(io->get_widths(), Packing::packed, dims)) {
+        // Name-only (non-ANSI) header references carry no type information.
+        const auto &io_decl = io->get_decl();
+        if(!io_decl) {
             continue;
         }
 
-        auto ret = dim_map.insert(std::make_pair(io->get_name(), dims));
+        DimList dims;
+        dims.decl = DimList::Decl::io;
+
+        if(!extract_arrays(decl_unpacked_dims(io_decl), Packing::unpacked, dims)) {
+            continue;
+        }
+        if(!extract_packed_type(io_decl->get_type(), Packing::packed, dims)) {
+            continue;
+        }
+
+        const std::string io_name =
+            io_decl->get_name().empty() ? io->get_name() : io_decl->get_name();
+        auto ret = dim_map.insert(std::make_pair(io_name, dims));
         if(!ret.second) {
-            LOG_ERROR_N(io) << "'" << io->get_name() << "' already defined!";
+            LOG_ERROR_N(io) << "'" << io_name << "' already defined!";
             return 1;
         }
     }
@@ -157,26 +246,11 @@ int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
         DimList dims;
         dims.decl = DimList::Decl::var;
 
-        if(!extract_arrays(var->get_lengths(), Packing::unpacked, dims)) {
+        if(!extract_arrays(decl_unpacked_dims(var), Packing::unpacked, dims)) {
             continue;
         }
-
-        if(var->is_node_type(AST::NodeType::Reg)) {
-            if(!extract_arrays(AST::cast_to<AST::Reg>(var)->get_widths(), Packing::packed, dims)) {
-                continue;
-            }
-        } else if(var->is_node_type(AST::NodeType::Integer)) {
-            DimInfo dim;
-            dim.msb = 31;
-            dim.lsb = 0;
-            dim.width = 32;
-            dim.is_big = true;
-            dim.is_packed = true;
-            dims.list.emplace_front(dim);
-        } else if(var->is_node_category(AST::NodeType::Net)) {
-            if(!extract_arrays(AST::cast_to<AST::Net>(var)->get_widths(), Packing::packed, dims)) {
-                continue;
-            }
+        if(!extract_packed_type(var->get_type(), Packing::packed, dims)) {
+            continue;
         }
 
         auto ret = dim_map.emplace(var->get_name(), dims);
@@ -303,7 +377,8 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
             auto &cur_dim = dims.list.front();
 
             DimInfo dim;
-            if(extract_array(partselect, Packing::packed /*not used here*/, dim)) {
+            if(extract_range(partselect->get_msb(), partselect->get_lsb(),
+                             Packing::packed /*not used here*/, dim)) {
                 cur_dim.msb = dim.msb;
                 cur_dim.lsb = dim.lsb;
                 cur_dim.width = dim.width;
@@ -494,51 +569,56 @@ AST::Node::Ptr Dimensions::generate_decl(const std::string &name, const AST::Nod
                                          const DimList &dims, const std::string &filename,
                                          std::uint32_t line)
 {
-    const auto &widths = std::make_shared<AST::Width::List>();
-    const auto &lengths = std::make_shared<AST::Length::List>();
+    // Packed dimensions belong to the data type, unpacked to the declaration.
+    const auto &packed = std::make_shared<AST::Dimension::List>();
+    const auto &unpacked = std::make_shared<AST::Dimension::List>();
 
     for(const auto &dim : dims.list) {
-        const auto &msb = std::make_shared<AST::IntConstN>(
+        const auto &left = std::make_shared<AST::IntConstN>(
             10, -1, true, Misc::Math::i64_to_mpz(dim.msb), filename, line);
-        const auto &lsb = std::make_shared<AST::IntConstN>(
+        const auto &right = std::make_shared<AST::IntConstN>(
             10, -1, true, Misc::Math::i64_to_mpz(dim.lsb), filename, line);
 
+        const auto &range = std::make_shared<AST::RangeDim>(left, right, filename, line);
         if(dim.is_packed) {
-            widths->push_back(std::make_shared<AST::Width>(msb, lsb, filename, line));
+            packed->push_back(range);
         } else {
-            lengths->push_back(std::make_shared<AST::Length>(msb, lsb, filename, line));
+            unpacked->push_back(range);
         }
     }
 
+    auto set_packed = [&](const AST::DataType::Ptr &type) {
+        if(packed->size() > 0) {
+            type->set_packed_dims(packed);
+        }
+        return type;
+    };
+
     switch(node_type) {
-    case AST::NodeType::Wire: {
-        const auto &wire = std::make_shared<AST::Wire>();
-        wire->set_sign(false);
+    case AST::NodeType::WireNet: {
+        // A bare net: implicit (logic) data type carrying the packed dims.
+        const auto &wire = std::make_shared<AST::WireNet>();
         wire->set_name(name);
         wire->set_filename(filename);
         wire->set_line(line);
-        if(lengths->size() > 0) {
-            wire->set_lengths(lengths);
-        }
-        if(widths->size() > 0) {
-            wire->set_widths(widths);
+        wire->set_type(set_packed(std::make_shared<AST::ImplicitType>(filename, line)));
+        if(unpacked->size() > 0) {
+            wire->set_unpacked_dims(unpacked);
         }
         return wire;
     }
 
-    case AST::NodeType::Reg: {
-        const auto &reg = std::make_shared<AST::Reg>();
-        reg->set_sign(false);
-        reg->set_name(name);
-        reg->set_filename(filename);
-        reg->set_line(line);
-        if(lengths->size() > 0) {
-            reg->set_lengths(lengths);
+    case AST::NodeType::Var: {
+        // A reg variable (the legacy Reg form): a Var with a RegType.
+        const auto &var = std::make_shared<AST::Var>();
+        var->set_name(name);
+        var->set_filename(filename);
+        var->set_line(line);
+        var->set_type(set_packed(std::make_shared<AST::RegType>(filename, line)));
+        if(unpacked->size() > 0) {
+            var->set_unpacked_dims(unpacked);
         }
-        if(widths->size() > 0) {
-            reg->set_widths(widths);
-        }
-        return reg;
+        return var;
     }
 
     default:
