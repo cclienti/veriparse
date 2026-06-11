@@ -132,7 +132,7 @@ enum class direction_t {
 struct port_info_t {
 	 direction_t direction;
 	 net_type_t net_type;
-	 bool is_signed;
+	 signing_t signing;          // tri-state, preserved (default resolved by a pass)
 	 AST::Dimension::ListPtr widths;
 	 std::string name;
 	 std::string type_name;    // user-defined type name (typedef); empty if built-in
@@ -260,7 +260,7 @@ AST::DataType::Ptr build_data_type_def(const data_type_t &dt,
                                        const std::string &filename="", uint32_t line=0);
 
 // Build a Port wrapping a directed declaration.
-AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
+AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, signing_t signing,
                                    AST::Dimension::ListPtr widths, std::string name,
                                    const std::string &filename="", uint32_t line=0);
 
@@ -1065,7 +1065,7 @@ portname:       TK_IDENTIFIER
                 {
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $1;
                 }
@@ -1075,7 +1075,7 @@ portname:       TK_IDENTIFIER
                     // user-defined type port: `my_t name`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $2;
                     $$.type_name = $1;
@@ -1086,7 +1086,7 @@ portname:       TK_IDENTIFIER
                     // package-scoped type port: `pkg::T name`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $3;
                     $$.type_name = $2;
@@ -1095,15 +1095,17 @@ portname:       TK_IDENTIFIER
         ;
 
 
-// Implicit data type on a port (no type keyword): a range, optionally signed —
-// `[3:0] x`, `signed [3:0] x`. Lives on its own path so it never competes with
-// `integer_vector_type signing` inside port_data_type (the old type-vs-name wall).
+// Implicit data type on a port (no type keyword): a range, optionally signed or
+// unsigned — `[3:0] x`, `signed [3:0] x`, `unsigned [3:0] x` (implicit_data_type
+// ::= [ signing ] { packed_dimension }). Signing is tri-state and preserved.
+// Lives on its own path so it never competes with `integer_vector_type signing`
+// inside port_data_type (the old type-vs-name wall).
 implicit_port_type:
                 widths
                 {
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = $1;
                 }
 
@@ -1111,7 +1113,15 @@ implicit_port_type:
                 {
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = true;
+                    $$.signing = signing_t::SIGNED;
+                    $$.widths = $2;
+                }
+
+        |       TK_UNSIGNED widths
+                {
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.signing = signing_t::UNSIGNED;
                     $$.widths = $2;
                 }
         ;
@@ -1126,7 +1136,7 @@ port_typed_name:
                     // bit/logic/reg/atom/struct/enum port: `int d`, `reg [3:0] q`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $2;
                     $$.has_data_type = true;
@@ -1143,7 +1153,7 @@ port_typed_name:
                 {
                     $$.direction = direction_t::NONE;
                     $$.net_type = $1;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $2;
                 }
@@ -1168,7 +1178,7 @@ port_typed_name:
                     }
                     $$.direction = direction_t::NONE;
                     $$.net_type = $1;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $5;
                     $$.has_data_type = true;
@@ -4830,7 +4840,7 @@ function_ioport:portname
                     // `input bit [3:0] b`, `input reg/logic [3:0] r`, `input real r`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $2;
                     $$.has_data_type = true;
@@ -5112,7 +5122,7 @@ task_ioport:    portname
                     // `input bit [3:0] b`, `input reg/logic [3:0] r`, `input real r`
                     $$.direction = direction_t::NONE;
                     $$.net_type = net_type_t::NONE;
-                    $$.is_signed = false;
+                    $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
                     $$.name = $2;
                     $$.has_data_type = true;
@@ -5652,7 +5662,7 @@ namespace Veriparse {
                 return make_data_type(dt, filename, line);
             }
 
-            AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, bool is_signed,
+            AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, signing_t signing,
                                                AST::Dimension::ListPtr widths, std::string name,
                                                const std::string &filename, uint32_t line) {
                 auto port = std::make_shared<AST::Port>(filename, line);
@@ -5660,7 +5670,7 @@ namespace Veriparse {
                 port->set_direction(to_port_dir(direction));
 
                 auto type = std::make_shared<AST::ImplicitType>(filename, line);
-                if(is_signed) type->set_signing(AST::DataType::SigningEnum::SIGNED);
+                if(signing != signing_t::NONE) type->set_signing(to_signing(signing));
                 if(widths) type->set_packed_dims(AST::Dimension::clone_list(widths));
 
                 AST::Net::Ptr net;
@@ -5740,7 +5750,7 @@ namespace Veriparse {
                         arg->set_type(make_named_type(pinfo.type_name, pinfo.type_package, filename, line));
                     } else {
                         auto t = std::make_shared<AST::ImplicitType>(filename, line);
-                        if(pinfo.is_signed) t->set_signing(AST::DataType::SigningEnum::SIGNED);
+                        if(pinfo.signing != signing_t::NONE) t->set_signing(to_signing(pinfo.signing));
                         if(pinfo.widths) t->set_packed_dims(AST::Dimension::clone_list(pinfo.widths));
                         arg->set_type(t);
                     }
@@ -5755,7 +5765,7 @@ namespace Veriparse {
                                                   location &loc, std::string &error_message) {
                 direction_t last_dir = direction_t::NONE;
                 net_type_t last_net = net_type_t::NONE;
-                bool last_is_signed = false;
+                signing_t last_signing = signing_t::NONE;
                 AST::Dimension::ListPtr last_widths(nullptr);
                 std::string last_type_name;
                 std::string last_type_package;
@@ -5772,7 +5782,7 @@ namespace Veriparse {
                     // name-only ports (non-ANSI header references)
                     for(const port_info_t &pinfo: port_list) {
                         if ((pinfo.direction != direction_t::NONE) || (pinfo.net_type != net_type_t::NONE) ||
-                            (pinfo.is_signed) || (pinfo.widths) || (!pinfo.type_name.empty()) ||
+                            (pinfo.signing != signing_t::NONE) || (pinfo.widths) || (!pinfo.type_name.empty()) ||
                             (pinfo.has_data_type)) {
                             loc = pinfo.loc;
                             error_message = std::string("missing port direction qualifier");
@@ -5789,14 +5799,14 @@ namespace Veriparse {
                         direction_t dir;
                         net_type_t net_type;
                         AST::Dimension::ListPtr widths;
-                        bool is_signed;
+                        signing_t signing;
                         std::string type_name;
                         std::string type_package;
                         bool has_data_type;
                         data_type_t data_type;
 
                         if (pinfo.direction == direction_t::NONE) {
-                            if ((pinfo.net_type != net_type_t::NONE) || (pinfo.is_signed) ||
+                            if ((pinfo.net_type != net_type_t::NONE) || (pinfo.signing != signing_t::NONE) ||
                                 (pinfo.widths) || (!pinfo.type_name.empty()) || (pinfo.has_data_type)) {
                                 loc = pinfo.loc;
                                 error_message = std::string("missing port direction qualifier");
@@ -5805,7 +5815,7 @@ namespace Veriparse {
                             dir = last_dir;
                             net_type = last_net;
                             widths = last_widths;
-                            is_signed = last_is_signed;
+                            signing = last_signing;
                             type_name = last_type_name;
                             type_package = last_type_package;
                             has_data_type = last_has_data_type;
@@ -5815,7 +5825,7 @@ namespace Veriparse {
                             dir = pinfo.direction;
                             net_type = pinfo.net_type;
                             widths = pinfo.widths;
-                            is_signed = pinfo.is_signed;
+                            signing = pinfo.signing;
                             type_name = pinfo.type_name;
                             type_package = pinfo.type_package;
                             has_data_type = pinfo.has_data_type;
@@ -5838,14 +5848,14 @@ namespace Veriparse {
                                                             filename, pinfo.loc.begin.line);
                         }
                         else {
-                            iop = create_ioport_decls(dir, net_type, is_signed, widths, pinfo.name,
+                            iop = create_ioport_decls(dir, net_type, signing, widths, pinfo.name,
                                                       filename, pinfo.loc.begin.line);
                         }
                         node_list->push_back(iop);
                         last_dir = dir;
                         last_net = net_type;
                         last_widths = widths;
-                        last_is_signed = is_signed;
+                        last_signing = signing;
                         last_type_name = type_name;
                         last_type_package = type_package;
                         last_has_data_type = has_data_type;
