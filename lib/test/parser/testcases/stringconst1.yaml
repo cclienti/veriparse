@@ -63,7 +63,10 @@ Source:
               line: 2
               name: MY_STRING
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/stringconst1.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/stringconst1.v

@@ -262,6 +262,9 @@ int ModuleObfuscator::rename_procs(const AST::Node::Ptr &node)
             variable->set_name(value->get_name());
         }
     } else if(node->is_node_category(AST::NodeType::Identifier)) {
+        // The Identifier category also covers the neutral Call and its
+        // FunctionCall/TaskCall refinements (all derive from Identifier), so a
+        // call's callee name is renamed here too.
         const auto &identifier = AST::cast_to<AST::Identifier>(node);
         auto it = m_replace_map.find(identifier->get_name());
         if(it != m_replace_map.end()) {
@@ -269,24 +272,6 @@ int ModuleObfuscator::rename_procs(const AST::Node::Ptr &node)
             LOG_DEBUG_N(node) << "AST::NodeType::Identifier: Renaming " << identifier->get_name()
                               << " with " << value->get_name();
             identifier->set_name(value->get_name());
-        }
-    } else if(node->is_node_type(AST::NodeType::FunctionCall)) {
-        const auto &func_call = AST::cast_to<AST::FunctionCall>(node);
-        auto it = m_replace_map.find(func_call->get_name());
-        if(it != m_replace_map.end()) {
-            auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::FunctionCall: Renaming " << func_call->get_name()
-                              << " with " << value->get_name();
-            func_call->set_name(value->get_name());
-        }
-    } else if(node->is_node_type(AST::NodeType::TaskCall)) {
-        const auto &task_call = AST::cast_to<AST::TaskCall>(node);
-        auto it = m_replace_map.find(task_call->get_name());
-        if(it != m_replace_map.end()) {
-            auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::TaskCall: Renaming " << task_call->get_name()
-                              << " with " << value->get_name();
-            task_call->set_name(value->get_name());
         }
     }
 

@@ -862,6 +862,66 @@ Source:
                       sign: false
                       size: 8
                       value: 66
+          - Assign:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/scoped0.v
+                  line: 32
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/scoped0.v
+                      hier:
+                        HierName: null
+                      line: 32
+                      name: inst_y
+              line: 32
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/scoped0.v
+                  line: 32
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 32
+                      sign: false
+                      size: 8
+                      value: 67
+          - Assign:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/scoped0.v
+                  line: 33
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/scoped0.v
+                      hier:
+                        HierName: null
+                      line: 33
+                      name: inst_inst_z
+              line: 33
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/scoped0.v
+                  line: 33
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 33
+                      sign: false
+                      size: 8
+                      value: 68
           lifetime: NONE
           line: 24
           name: scoped0

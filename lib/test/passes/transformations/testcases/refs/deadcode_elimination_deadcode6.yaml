@@ -105,6 +105,44 @@ Source:
                   name: mod1_inst
               line: 11
               module: mod1
+          - Assign:
+              filename: ../test/passes/transformations/testcases/deadcode6.v
+              ldelay:
+                DelayStatement: null
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/deadcode6.v
+                  line: 12
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
+                      hier:
+                        HierName:
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
+                          labellist:
+                          - HierLabel:
+                              filename: ../test/passes/transformations/testcases/deadcode6.v
+                              line: 12
+                              loop: null
+                              name: mod1_inst
+                          line: 12
+                      line: 12
+                      name: x
+              line: 12
+              rdelay:
+                DelayStatement: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/deadcode6.v
+                  line: 12
+                  var:
+                    IntConstN:
+                      base: 16
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
+                      line: 12
+                      sign: false
+                      size: 8
+                      value: 66
           lifetime: NONE
           line: 10
           name: deadcode6

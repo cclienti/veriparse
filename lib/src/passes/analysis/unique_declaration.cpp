@@ -61,6 +61,12 @@ int UniqueDeclaration::analyze(const AST::Node::Ptr &node, IdentifierSet &id_set
         id_set.emplace(AST::cast_to<AST::Arg>(node)->get_name());
     } else if(node->is_node_category(AST::NodeType::Declaration)) {
         id_set.emplace(AST::cast_to<AST::Declaration>(node)->get_name());
+    } else if(node->is_node_category(AST::NodeType::Call)) {
+        // Call/FunctionCall/TaskCall derive from Identifier: collect the callee
+        // name, then still recurse so identifiers used in the arguments are seen
+        // (else a generated "unique" name could collide with an arg-only name).
+        id_set.emplace(AST::cast_to<AST::Call>(node)->get_name());
+        recurse();
     } else if(node->is_node_category(AST::NodeType::Identifier)) {
         id_set.emplace(AST::cast_to<AST::Identifier>(node)->get_name());
     } else if(node->is_node_category(AST::NodeType::HierLabel)) {

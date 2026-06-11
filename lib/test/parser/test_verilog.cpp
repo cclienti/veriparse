@@ -322,6 +322,19 @@ TEST(VerilogParserErrorTest, sv_const_named_requires_initializer)
                 ::testing::ExitedWithCode(1), "'const' variable shall have an initializer");
 }
 
+// A packed dimension admits only a range `[msb:lsb]` (or unsized `[]`), never the
+// single-size `[N]` form (IEEE 1800-2017 7.4.1, ADR-0001 §3.8). The `[N]` after a
+// named type (`var my_t [4] x`) is captured via `lengths`, which also accepts
+// `[N]`; the parser rejects it rather than building an illegal packed dim.
+TEST(VerilogParserErrorTest, sv_packed_dim_rejects_size)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    ASSERT_EXIT(verilog.parse(test_helpers.get_sv_filename("sv_err_packed_size_dim0")),
+                ::testing::ExitedWithCode(1), "packed dimension shall be a range");
+}
+
 // Focused multi-name node-sharing case (bit a,b + named e,f + inherited ports
 // p,q). The no-node-sharing tree invariant is now checked by TEST_CORE/
 // TEST_CORE_SV for *every* testcase; this just keeps a dedicated case for it.

@@ -654,7 +654,10 @@ Source:
               line: 2
               name: width
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/deadcode1.v
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/deadcode1.v

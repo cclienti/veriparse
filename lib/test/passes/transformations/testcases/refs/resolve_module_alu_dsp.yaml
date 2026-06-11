@@ -9344,7 +9344,10 @@ Source:
               line: 318
               name: ADD_EXTRA_INSTR
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 318
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -9363,7 +9366,10 @@ Source:
               line: 319
               name: ADD_SELECT_INSTR
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 319
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -11429,7 +11435,10 @@ Source:
               line: 585
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 585
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -12061,7 +12070,10 @@ Source:
               line: 622
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 622
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -13300,7 +13312,10 @@ Source:
               line: 657
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 657
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -13319,7 +13334,10 @@ Source:
               line: 658
               name: SHIFT_WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 658
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -13338,7 +13356,10 @@ Source:
               line: 659
               name: SHIFT_MAX
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 659
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -13357,7 +13378,10 @@ Source:
               line: 660
               name: IS_REG_IN
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 660
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -14526,7 +14550,10 @@ Source:
               line: 740
               name: WIDTH_A
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 740
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -14545,7 +14572,10 @@ Source:
               line: 741
               name: WIDTH_B
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 741
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -14564,7 +14594,10 @@ Source:
               line: 742
               name: NB_OUT_REG
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 742
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -15564,7 +15597,10 @@ Source:
               line: 806
               name: IS_REG_OUT
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 806
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v
@@ -15583,7 +15619,10 @@ Source:
               line: 807
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/alu_dsp.v
+                  line: 807
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/alu_dsp.v

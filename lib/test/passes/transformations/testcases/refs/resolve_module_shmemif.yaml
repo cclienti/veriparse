@@ -3672,7 +3672,10 @@ Source:
               line: 123
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/shmemif.v
+                  line: 123
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/shmemif.v
@@ -3691,7 +3694,10 @@ Source:
               line: 124
               name: LOG2_WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/shmemif.v
+                  line: 124
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/shmemif.v
@@ -3710,7 +3716,10 @@ Source:
               line: 125
               name: STATE_OFFSET
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/shmemif.v
+                  line: 125
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/shmemif.v

@@ -190,10 +190,10 @@ static inline bool const_without_init(const data_qualifiers_t &q,
 	 return false;
 }
 
-// Reinterpret a parsed bracket list as packed dimensions (Width) when the
-// leading identifier turns out to be a named type (`var my_t [3:0] x`): the same
-// `[..]` is captured as `lengths` (which also accepts the single-size `[N]`
-// form) and rebuilt as Width nodes here.
+// Reinterpret a parsed bracket list as packed dimensions when the leading
+// identifier turns out to be a named type (`var my_t [3:0] x`): the same `[..]`
+// is captured as `lengths` (which also accepts the single-size `[N]` form) and
+// cloned here. The caller rejects an illegal `[N]` packed dim (ADR-0001 §3.8).
 static inline AST::Dimension::ListPtr lengths_to_widths(const AST::Dimension::ListPtr &dims) {
 	 return dims ? AST::Dimension::clone_list(dims) : nullptr;
 }
@@ -970,6 +970,11 @@ params:         params TK_COMMA param_start
 param_start:    TK_PARAMETER param_assignment
                 {
                     $$ = $2;
+                    // No type keyword written -> ImplicitType, never a null type
+                    // (ADR-0001 §5.6), to match the module-body parameter_decl path.
+                    if(!$$->get_type()) {
+                        $$->set_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
+                    }
                 }
 
         |       TK_PARAMETER param_type param_assignment
@@ -982,6 +987,9 @@ param_start:    TK_PARAMETER param_assignment
                 {
                     $$ = $2;
                     $$->set_is_local(true);
+                    if(!$$->get_type()) {
+                        $$->set_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
+                    }
                 }
 
         |       TK_LOCALPARAM localparam_type localparam_assignment
@@ -1987,6 +1995,19 @@ data_declaration:
                         auto ref = ParserHelpers::make_named_type($2, "", scanner.get_filename(),
                                                                      @2.begin.line);
                         // The brackets after the type name are a packed dimension.
+                        // They were captured via `lengths`, which also accepts the
+                        // single-size `[N]` form, but a packed dimension admits only
+                        // a range `[msb:lsb]` (or unsized `[]`), never `[N]`
+                        // (IEEE 1800-2017 7.4.1, ADR-0001 §3.8).
+                        if($3.dims) {
+                            for(const AST::Dimension::Ptr &dim: *$3.dims) {
+                                if(dim->is_node_type(AST::NodeType::SizeDim)) {
+                                    error(@2, "a packed dimension shall be a range "
+                                              "'[msb:lsb]', not a size '[N]' "
+                                              "(IEEE 1800-2017 7.4.1)");
+                                }
+                            }
+                        }
                         $$ = ParserHelpers::build_named_modifier(
                             ref, lengths_to_widths($3.dims), $3.names, $1,
                             scanner.get_filename(), @1.begin.line);

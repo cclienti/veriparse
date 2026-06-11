@@ -453,7 +453,10 @@ Source:
               line: 4
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/deadcode3.v
+                  line: 4
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/deadcode3.v

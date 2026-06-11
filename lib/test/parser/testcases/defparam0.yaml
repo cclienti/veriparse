@@ -254,7 +254,10 @@ Source:
               line: 15
               name: WIDTH
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 15
+                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam0.v

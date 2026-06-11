@@ -523,7 +523,10 @@ Source:
               line: 4
               name: LOG2
               type:
-                DataType: null
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 4
+                  signing: NONE
               value: null
           ports:
           - Port:
