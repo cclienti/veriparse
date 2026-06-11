@@ -12,6 +12,7 @@
 #include <veriparse/AST/nodes.hpp>
 
 #include <set>
+#include <vector>
 #include <atomic>
 
 namespace Veriparse
@@ -20,6 +21,37 @@ namespace Passes
 {
 namespace Transformations
 {
+
+namespace
+{
+// Effective name of a port: its own name or that of its inner declaration.
+std::string port_name(const AST::Port::Ptr &p)
+{
+    if(!p->get_name().empty()) {
+        return p->get_name();
+    }
+    if(p->get_decl()) {
+        return p->get_decl()->get_name();
+    }
+    return std::string();
+}
+
+// Unpacked dimensions of a Var/Net declaration (only the concrete kinds carry
+// them).
+AST::Dimension::ListPtr decl_unpacked_dims(const AST::Declaration::Ptr &decl)
+{
+    if(!decl) {
+        return nullptr;
+    }
+    if(decl->is_node_type(AST::NodeType::Var)) {
+        return AST::cast_to<AST::Var>(decl)->get_unpacked_dims();
+    }
+    if(decl->is_node_category(AST::NodeType::Net)) {
+        return AST::cast_to<AST::Net>(decl)->get_unpacked_dims();
+    }
+    return nullptr;
+}
+} // namespace
 
 class FunctionCallCounter
 {
@@ -99,29 +131,37 @@ AST::Node::Ptr FunctionEvaluation::evaluate(const AST::FunctionCall::Ptr &functi
     // Construct a set of all input declaration name.
     std::set<std::string> decl_set;
     for(const auto &stmt : *main_stmts) {
-        if(stmt->is_node_category(AST::NodeType::Variable)) {
-            const auto &var = AST::cast_to<AST::Variable>(stmt);
-            decl_set.emplace(var->get_name());
+        if(stmt->is_node_type(AST::NodeType::Var)) {
+            decl_set.emplace(AST::cast_to<AST::Var>(stmt)->get_name());
         }
     }
 
-    // Remove input var definition as we already grabbed in the
+    // Remove the body declarations of the inputs (the port direction declaration
+    // and any backing variable), as we already grabbed them in the
     // get_input_declarations method.
     const auto &fct_stmts = function_copy->get_statements();
-    for(auto it = fct_stmts->begin(); it != fct_stmts->end(); ++it) {
+    for(auto it = fct_stmts->begin(); it != fct_stmts->end();) {
         const auto &stmt = *it;
-        if(stmt->is_node_category(AST::NodeType::Variable)) {
-            const auto &var = AST::cast_to<AST::Variable>(stmt);
-            if(decl_set.count(var->get_name())) {
+        bool erased = false;
+
+        if(stmt->is_node_type(AST::NodeType::Var) || stmt->is_node_category(AST::NodeType::Net)) {
+            const auto &decl = AST::cast_to<AST::Declaration>(stmt);
+            if(decl_set.count(decl->get_name())) {
                 it = fct_stmts->erase(it);
+                erased = true;
             }
-        } else if(stmt->is_node_type(AST::NodeType::Ioport)) {
-            const auto &ioport = AST::cast_to<AST::Ioport>(stmt);
-            const auto &iodir = AST::cast_to<AST::IODir>(ioport->get_first());
-            if(decl_set.count(iodir->get_name())) {
-                LOG_DEBUG << "removing " << iodir->get_name();
+        } else if(stmt->is_node_type(AST::NodeType::Port)) {
+            const auto &port = AST::cast_to<AST::Port>(stmt);
+            if(port->get_direction() != AST::Port::DirectionEnum::NONE &&
+               decl_set.count(port_name(port))) {
+                LOG_DEBUG << "removing " << port_name(port);
                 it = fct_stmts->erase(it);
+                erased = true;
             }
+        }
+
+        if(!erased) {
+            ++it;
         }
     }
 
@@ -152,54 +192,85 @@ FunctionEvaluation::get_input_declarations(const AST::Function::Ptr &function_de
                                            const AST::FunctionCall::Ptr &function_call)
 {
     const auto &decls = std::make_shared<AST::Node::List>();
-    const auto &ioports = Analysis::Function::get_ioport_nodes(function_decl);
-    const auto &args = function_call->get_args();
+    const auto &call_args = function_call->get_args();
 
-    auto it_ioports = ioports->begin();
-    auto it_args = args->begin();
-    for(; it_ioports != ioports->end() && it_args != args->end(); ++it_ioports, it_args++) {
-        const auto &ioport = AST::cast_to<AST::Ioport>((*it_ioports)->clone());
+    // Gather the formal parameters in order, each as (name, data type, unpacked
+    // dims). They are either ANSI args (Function::args) or, for the non-ANSI
+    // form, Port nodes in the body — the type then being carried by the port's
+    // own declaration or by a separate backing variable declaration.
+    struct ParamInfo
+    {
+        std::string name;
+        AST::DataType::Ptr type;
+        AST::Dimension::ListPtr unpacked;
+    };
+    std::vector<ParamInfo> params;
 
-        AST::Variable::Ptr decl;
-        const auto &input = ioport->get_first();
-
-        if(ioport->get_second()) {
-            decl = ioport->get_second();
-            if(decl->is_node_category(AST::NodeType::Net)) {
-                LOG_ERROR_N(ioport) << "incorrect parameter type ()" << decl->get_name()
-                                    << " in function declaration " << function_decl->get_name();
-                return nullptr;
-            }
-        } else {
-            // Search in statements for the variable declaration
-            const auto &stmts = function_decl->get_statements();
-
+    const auto &args = function_decl->get_args();
+    if(args && !args->empty()) {
+        for(const auto &arg : *args) {
+            params.push_back({arg->get_name(), arg->get_type(), arg->get_unpacked_dims()});
+        }
+    } else {
+        const auto &stmts = function_decl->get_statements();
+        if(stmts) {
             for(const auto &stmt : *stmts) {
-                if(stmt->is_node_category(AST::NodeType::Variable)) {
-                    const auto &var = AST::cast_to<AST::Variable>(stmt);
-                    if(var->get_name() == input->get_name()) {
-                        decl = AST::cast_to<AST::Variable>(var->clone());
+                if(!stmt->is_node_type(AST::NodeType::Port)) {
+                    continue;
+                }
+                const auto &port = AST::cast_to<AST::Port>(stmt);
+                if(port->get_direction() == AST::Port::DirectionEnum::NONE) {
+                    continue;
+                }
+
+                const std::string name = port_name(port);
+
+                // A separate body declaration (`reg [..] value;`) carries the
+                // real type, overriding the port's implicit one.
+                AST::DataType::Ptr type;
+                AST::Dimension::ListPtr unpacked;
+                for(const auto &s : *stmts) {
+                    if((s->is_node_type(AST::NodeType::Var) ||
+                        s->is_node_category(AST::NodeType::Net)) &&
+                       AST::cast_to<AST::Declaration>(s)->get_name() == name) {
+                        type = AST::cast_to<AST::Declaration>(s)->get_type();
+                        unpacked = decl_unpacked_dims(AST::cast_to<AST::Declaration>(s));
+                        break;
                     }
                 }
+                if(!type && port->get_decl()) {
+                    type = port->get_decl()->get_type();
+                    unpacked = decl_unpacked_dims(port->get_decl());
+                }
+
+                params.push_back({name, type, unpacked});
             }
         }
+    }
 
-        // If no declaration found in the statement, we assume this is a
-        // reg.
-        if(!decl) {
-            decl = std::make_shared<AST::Reg>(input->get_widths(), nullptr /*lengths*/,
-                                              nullptr /*right*/, false /*sign*/, input->get_name(),
-                                              ioport->get_filename(), ioport->get_line());
+    auto it_param = params.begin();
+    auto it_args = call_args->begin();
+    for(; it_param != params.end() && it_args != call_args->end(); ++it_param, ++it_args) {
+        // A function parameter behaves as a local (reg) variable initialized to
+        // the call argument.
+        const auto &var =
+            std::make_shared<AST::Var>(function_call->get_filename(), function_call->get_line());
+        var->set_name(it_param->name);
+        if(it_param->type) {
+            var->set_type(AST::cast_to<AST::DataType>(it_param->type->clone()));
+        }
+        if(it_param->unpacked) {
+            var->set_unpacked_dims(AST::Dimension::clone_list(it_param->unpacked));
         }
 
         const auto &arg = (*it_args)->clone();
         const auto &rvalue =
             std::make_shared<AST::Rvalue>(arg, arg->get_filename(), arg->get_line());
-        decl->set_right(rvalue);
-        decls->push_back(decl);
+        var->set_init(rvalue);
+        decls->push_back(var);
     }
 
-    if(it_ioports != ioports->end() || it_args != args->end()) {
+    if(it_param != params.end() || it_args != call_args->end()) {
         LOG_ERROR_N(function_call) << "too many arguments in call to " << function_call->get_name();
         return nullptr;
     }

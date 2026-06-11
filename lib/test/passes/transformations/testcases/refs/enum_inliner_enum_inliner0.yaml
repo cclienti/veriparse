@@ -1,158 +1,174 @@
 Module:
   default_nettype: WIRE
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
   items:
   - Typedef:
-      def:
-        EnumDef:
-          base_type: LOGIC
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+      fwd_kind: NONE
+      line: 2
+      name: state_t
+      type:
+        EnumType:
+          base:
+            LogicType:
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+              line: 2
+              packed_dims:
+              - RangeDim:
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                  left:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 1
+                  line: 2
+                  right:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                      line: 2
+                      sign: false
+                      size: -1
+                      value: 0
+              signing: NONE
+          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
           items:
           - EnumItem:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
               line: 2
               name: IDLE
+              range:
+                Dimension: null
               value:
                 IntConstN:
                   base: 10
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                   line: 2
                   sign: false
                   size: -1
                   value: 0
           - EnumItem:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
               line: 2
               name: RUN
+              range:
+                Dimension: null
               value:
                 IntConstN:
                   base: 10
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                   line: 2
                   sign: false
                   size: -1
                   value: 1
           - EnumItem:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
               line: 2
               name: DONE
+              range:
+                Dimension: null
               value:
                 IntConstN:
                   base: 10
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                   line: 2
                   sign: false
                   size: -1
                   value: 2
           - EnumItem:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
               line: 2
               name: ERROR
+              range:
+                Dimension: null
               value:
                 IntConstN:
                   base: 10
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                   line: 2
                   sign: false
                   size: -1
                   value: 3
           line: 2
-          sign: false
-          widths:
-          - Width:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-              line: 2
-              lsb:
+          signing: NONE
+  - Var:
+      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+      init:
+        Rvalue: null
+      is_const: false
+      is_var: false
+      lifetime: NONE
+      line: 3
+      name: state
+      type:
+        LogicType:
+          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+          line: 3
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+              left:
                 IntConstN:
                   base: 10
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-                  line: 2
-                  sign: false
-                  size: -1
-                  value: 0
-              msb:
-                IntConstN:
-                  base: 10
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-                  line: 2
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                  line: 3
                   sign: false
                   size: -1
                   value: 1
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-      line: 2
-      name: state_t
-  - Logic:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-      ldelay:
-        DelayStatement: null
-      line: 3
-      name: state
-      rdelay:
-        DelayStatement: null
-      right:
-        Rvalue: null
-      sign: false
-      widths:
-      - Width:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-          line: 3
-          lsb:
-            IntConstN:
-              base: 10
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
               line: 3
-              sign: false
-              size: -1
-              value: 0
-          msb:
-            IntConstN:
-              base: 10
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-              line: 3
-              sign: false
-              size: -1
-              value: 1
+              right:
+                IntConstN:
+                  base: 10
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                  line: 3
+                  sign: false
+                  size: -1
+                  value: 0
+          signing: NONE
   - AlwaysFF:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
       line: 4
       senslist:
         Senslist:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
           line: 4
           list:
           - Sens:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
               line: 4
               sig:
                 Identifier:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                  hier:
+                    HierName: null
                   line: 4
                   name: clk
-                  scope:
-                    IdentifierScope: null
               type: POSEDGE
       statement:
         Block:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
           line: 4
           scope: ''
           statements:
           - IfStatement:
               cond:
                 Eq:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                   left:
                     Identifier:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                      hier:
+                        HierName: null
                       line: 5
                       name: state
-                      scope:
-                        IdentifierScope: null
                   line: 5
                   right:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                       line: 2
                       sign: false
                       size: -1
@@ -161,163 +177,173 @@ Module:
                 IfStatement:
                   cond:
                     Eq:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                       left:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                          hier:
+                            HierName: null
                           line: 6
                           name: state
-                          scope:
-                            IdentifierScope: null
                       line: 6
                       right:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                           line: 2
                           sign: false
                           size: -1
                           value: 1
                   false_statement:
                     NonblockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                           line: 7
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                              hier:
+                                HierName: null
                               line: 7
                               name: state
-                              scope:
-                                IdentifierScope: null
                       line: 7
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                           line: 7
                           var:
                             IntConstN:
                               base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                               line: 2
                               sign: false
                               size: -1
                               value: 0
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                   line: 6
                   true_statement:
                     NonblockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                           line: 6
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                              hier:
+                                HierName: null
                               line: 6
                               name: state
-                              scope:
-                                IdentifierScope: null
                       line: 6
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                           line: 6
                           var:
                             IntConstN:
                               base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                               line: 2
                               sign: false
                               size: -1
                               value: 2
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
               line: 5
               true_statement:
                 NonblockingSubstitution:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                  filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                   ldelay:
                     DelayStatement: null
                   left:
                     Lvalue:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                       line: 5
                       var:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+                          hier:
+                            HierName: null
                           line: 5
                           name: state
-                          scope:
-                            IdentifierScope: null
                   line: 5
                   rdelay:
                     DelayStatement: null
                   right:
                     Rvalue:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                       line: 5
                       var:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+                          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
                           line: 2
                           sign: false
                           size: -1
                           value: 1
+  lifetime: NONE
   line: 1
   name: enum_inliner0
   ports:
-  - Ioport:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-      first:
-        Input:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-          line: 1
-          name: clk
-          sign: false
-      line: 1
-      second:
-        Logic:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+  - Port:
+      decl:
+        ImplicitNet:
+          cont_assign:
+            Rvalue: null
+          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+          is_scalared: false
+          is_vectored: false
           ldelay:
             DelayStatement: null
           line: 1
           name: clk
           rdelay:
             DelayStatement: null
-          right:
-            Rvalue: null
-          sign: false
-  - Ioport:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-      first:
-        Input:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
-          line: 1
-          name: rst
-          sign: false
+          strength:
+            Strength: null
+          type:
+            LogicType:
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+              line: 1
+              signing: NONE
+      direction: INPUT
+      expr: null
+      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
       line: 1
-      second:
-        Logic:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/enum_inliner0.sv
+      name: clk
+  - Port:
+      decl:
+        ImplicitNet:
+          cont_assign:
+            Rvalue: null
+          filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+          is_scalared: false
+          is_vectored: false
           ldelay:
             DelayStatement: null
           line: 1
           name: rst
           rdelay:
             DelayStatement: null
-          right:
-            Rvalue: null
-          sign: false
-
+          strength:
+            Strength: null
+          type:
+            LogicType:
+              filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+              line: 1
+              signing: NONE
+      direction: INPUT
+      expr: null
+      filename: ../test/passes/transformations/testcases/enum_inliner0.sv
+      line: 1
+      name: rst

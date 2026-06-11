@@ -34,7 +34,7 @@ public:
      */
     bool match_scope(const AST::Identifier::Ptr &identifier, std::string &matched) const
     {
-        auto scope = identifier->get_scope();
+        auto scope = identifier->get_hier();
         if(!scope) {
             return false;
         }
@@ -53,7 +53,7 @@ public:
 
             // Check each tree child if it matches with the scope
             for(const auto &child : node->get_children()) {
-                const auto &labelscope = (*labelit)->get_scope();
+                const auto &labelscope = (*labelit)->get_name();
                 if(child->get_value().second == labelscope) {
                     // We found the right instance that matches the scope
                     found = true;
@@ -214,7 +214,7 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
         for(auto it = defparams_range.first; it != defparams_range.second; it++) {
             LOG_INFO_N(node) << "applying defparam " << it->first << " to " << module_name;
             const auto &defp = it->second->get_list()->front();
-            defp->get_identifier()->get_scope()->get_labellist()->pop_front();
+            defp->get_identifier()->get_hier()->get_labellist()->pop_front();
             module_items->push_back(it->second);
         }
 
@@ -380,10 +380,10 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance,
     const auto &assign_items = std::make_shared<AST::Node::List>();
 
     // Generate
-    for(const auto &port : *ports) {
-        const auto &ioport = AST::cast_to<AST::Ioport>(port);
-        const auto &iodir = ioport->get_first();
-        const auto &var = ioport->get_second();
+    for(const auto &port_node : *ports) {
+        const auto &port = AST::cast_to<AST::Port>(port_node);
+        const auto direction = port->get_direction();
+        const auto &var = port->get_decl();
 
         // Don't take ref here because variable can be updated with a
         // new name and we need the original name for the matching.
@@ -418,7 +418,7 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance,
         }
 
         if(!inst_value) {
-            if(iodir->is_node_type(AST::NodeType::Input)) {
+            if(direction == AST::Port::DirectionEnum::INPUT) {
                 LOG_WARNING << instance->get_name() << " (" << module->get_name() << ") "
                             << "::" << var_name << ", "
                             << "input left unconnected";
@@ -430,10 +430,10 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance,
         AST::Lvalue::Ptr lvalue;
         AST::Rvalue::Ptr rvalue;
 
-        switch(iodir->get_node_type()) {
-        case AST::NodeType::Input:
+        switch(direction) {
+        case AST::Port::DirectionEnum::INPUT:
             lvalue = std::make_shared<AST::Lvalue>(
-                std::make_shared<AST::Identifier>(nullptr, var_new_name, ""));
+                std::make_shared<AST::Identifier>(nullptr, nullptr, var_new_name));
             rvalue = std::make_shared<AST::Rvalue>(inst_value->clone());
 
             if(var->is_node_category(AST::NodeType::Net)) {
@@ -450,10 +450,10 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance,
 
             break;
 
-        case AST::NodeType::Output:
+        case AST::Port::DirectionEnum::OUTPUT:
             lvalue = std::make_shared<AST::Lvalue>(inst_value->clone());
             rvalue = std::make_shared<AST::Rvalue>(
-                std::make_shared<AST::Identifier>(nullptr, var_new_name, ""));
+                std::make_shared<AST::Identifier>(nullptr, nullptr, var_new_name));
             if(check_output_rvalue_wire(lvalue)) {
                 convert_concat_to_lconcat(lvalue->get_var(), lvalue);
                 assign_items->push_back(
@@ -463,13 +463,13 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance,
             }
             break;
 
-        case AST::NodeType::Inout:
-            LOG_ERROR_N(iodir) << "Inout port not supported during flattening, giving up "
-                               << instance->get_name() << " (" << module->get_name() << ") ";
+        case AST::Port::DirectionEnum::INOUT:
+            LOG_ERROR_N(port) << "Inout port not supported during flattening, giving up "
+                              << instance->get_name() << " (" << module->get_name() << ") ";
             return nullptr;
 
         default:
-            LOG_FATAL_N(iodir) << "Unknown IO type";
+            LOG_FATAL_N(port) << "Unknown IO type";
             return nullptr;
         }
     }
@@ -492,7 +492,7 @@ bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
         const auto &id = AST::cast_to<AST::Identifier>(node);
         const auto it = m_var_type_map.find(id->get_name());
         if(it != m_var_type_map.end()) {
-            if(it->second == AST::NodeType::Wire) {
+            if(it->second == AST::NodeType::WireNet) {
                 ret = true;
             } else {
                 LOG_ERROR_N(node) << "Identifier '" << id->get_name()
@@ -518,7 +518,6 @@ bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
     case AST::NodeType::FloatConst:
     case AST::NodeType::IntConst:
     case AST::NodeType::IntConstN:
-    case AST::NodeType::Real:
         LOG_ERROR << "Invalid expression in an output port";
         ret = false;
         break;
@@ -585,7 +584,7 @@ int ModuleFlattener::extract_defparam(const AST::Node::Ptr &node, const AST::Nod
             new_defparaml->set_list(defplist);
             defplist->push_back(defp);
             const auto &scope =
-                defp->get_identifier()->get_scope()->get_labellist()->front()->get_scope();
+                defp->get_identifier()->get_hier()->get_labellist()->front()->get_name();
             m_defparams.emplace(scope, new_defparaml);
         }
         parent->remove(node);
@@ -650,7 +649,7 @@ int ModuleFlattener::replace_scoped_identifiers(const AST::Node::Ptr &node)
     case AST::NodeType::Identifier: {
         const auto &identifier = AST::cast_to<AST::Identifier>(node);
 
-        const auto &scope = identifier->get_scope();
+        const auto &scope = identifier->get_hier();
         if(!scope) {
             return 0;
         }
@@ -667,7 +666,7 @@ int ModuleFlattener::replace_scoped_identifiers(const AST::Node::Ptr &node)
         const auto &tree = static_cast<const InstTreeNode &>(*m_instance_tree);
         std::string matched;
         if(tree.match_scope(identifier, matched)) {
-            identifier->set_scope(nullptr);
+            identifier->set_hier(nullptr);
             matched += "_" + identifier->get_name();
             identifier->set_name(matched);
         }

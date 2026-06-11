@@ -225,20 +225,23 @@ std::string VerilogGenerator::render_port(const AST::Port::Ptr node) const
         return result;
     }
 
-    // ANSI typed port: a directed inner declaration (Var/Net). Render the
-    // declaration without its trailing ';'.
+    // A directed inner declaration (Var/Net). Emit it as a full declaration
+    // statement (trailing ';'); in a header port list the ';' is stripped by
+    // ports_list_to_string, while a non-ANSI body declaration keeps it.
     if(node->get_decl()) {
         std::string decl = StringUtils::remove_last_semicolon(render(as_node(node->get_decl())));
         result = dir.empty() ? decl : dir + " " + decl;
-        return result;
+        return result + ";";
     }
 
-    // Non-ANSI header reference: just the name (optionally a direction).
+    // Non-ANSI header reference / body direction declaration: the name (optionally
+    // a direction). The trailing ';' makes the body form a valid statement and is
+    // stripped in the header port list.
     result = StringUtils::escape(node->get_name());
     if(!dir.empty()) {
         result = dir + " " + result;
     }
-    return result;
+    return result + ";";
 }
 
 std::string VerilogGenerator::render_identifier(const AST::Identifier::Ptr node) const
@@ -2414,7 +2417,7 @@ std::string VerilogGenerator::parameters_list_to_string(const AST::Declaration::
     std::string result;
     std::string blanks(length + 2, ' ');
 
-    if(parameters) {
+    if(parameters && !parameters->empty()) {
         auto func = [&](const AST::Declaration::Ptr n) {
             return StringUtils::remove_last_semicolon(render(as_node(n))) + ",\n" + blanks;
         };

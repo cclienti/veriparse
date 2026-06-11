@@ -87,10 +87,21 @@ int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifi
         return 1;
     }
 
-    if(node->is_node_category(AST::NodeType::IODir)) {
-        // We do not want to remove IO so we add them
-        const auto &io = AST::cast_to<AST::IODir>(node);
-        identifiers.insert(io->get_name());
+    if(node->is_node_type(AST::NodeType::Port)) {
+        // We do not want to remove IO so we add them. Recurse to keep any
+        // identifier referenced in the port's type ranges (e.g. a parameter).
+        const auto &port = AST::cast_to<AST::Port>(node);
+        std::string name = port->get_name();
+        if(name.empty() && port->get_decl()) {
+            name = port->get_decl()->get_name();
+        }
+        if(!name.empty()) {
+            identifiers.insert(name);
+        }
+        AST::Node::ListPtr children = node->get_children();
+        for(AST::Node::Ptr &child : *children) {
+            rc += analyze_identifiers(child, identifiers);
+        }
     } else if(node->is_node_type(AST::NodeType::Function)) {
         // Look for local variables
         auto locals = merge_set(to_set(Analysis::Function::get_iodir_names(node)),
@@ -135,12 +146,9 @@ int DeadcodeElimination::analyze_identifiers(AST::Node::Ptr node, DSet &identifi
     } else if(node->is_node_type(AST::NodeType::Identifier)) {
         const auto &id = AST::cast_to<AST::Identifier>(node);
         identifiers.insert(id->get_name());
-    } else if(node->is_node_type(AST::NodeType::Parameter)) {
-        const auto &param = AST::cast_to<AST::Parameter>(node);
+    } else if(node->is_node_type(AST::NodeType::Param)) {
+        const auto &param = AST::cast_to<AST::Param>(node);
         identifiers.insert(param->get_name());
-    } else if(node->is_node_type(AST::NodeType::Localparam)) {
-        const auto &lparam = AST::cast_to<AST::Localparam>(node);
-        identifiers.insert(lparam->get_name());
     } else {
         AST::Node::ListPtr children = node->get_children();
         for(AST::Node::Ptr &child : *children) {
@@ -250,8 +258,9 @@ int DeadcodeElimination::remove_deaddecl(const DeadcodeElimination::DSet &remove
             // Nothing
         }
 
-        else if(node->is_node_category(Veriparse::AST::NodeType::Variable)) {
-            AST::Variable::Ptr var = AST::cast_to<AST::Variable>(node);
+        else if(node->is_node_type(AST::NodeType::Var) ||
+                node->is_node_category(AST::NodeType::Net)) {
+            AST::Declaration::Ptr var = AST::cast_to<AST::Declaration>(node);
             if(removedset.count(var->get_name()) != 0) {
                 parent->remove(node);
                 LOG_INFO_N(node) << "removing " << var->get_node_type() << ' ' << var->get_name()
@@ -423,9 +432,13 @@ int DeadcodeElimination::remove_unused_decl(const DeadcodeElimination::DSet &ide
         return 0;
     }
 
-    if(node->is_node_category(AST::NodeType::VariableBase)) {
-        const auto &varbase = AST::cast_to<AST::VariableBase>(node);
-        if(identifiers.count(varbase->get_name()) == 0 && iodirs.count(varbase->get_name()) == 0) {
+    const bool is_decl =
+        node->is_node_type(AST::NodeType::Var) || node->is_node_category(AST::NodeType::Net);
+    const bool is_genvar = node->is_node_type(AST::NodeType::Genvar);
+    if(is_decl || is_genvar) {
+        const std::string &name = is_decl ? AST::cast_to<AST::Declaration>(node)->get_name()
+                                          : AST::cast_to<AST::Genvar>(node)->get_name();
+        if(identifiers.count(name) == 0 && iodirs.count(name) == 0) {
             if(!parent) {
                 LOG_ERROR_N(node) << "the parent node is null";
                 return -1;

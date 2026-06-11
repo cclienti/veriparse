@@ -69,11 +69,8 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
         case AST::NodeType::SingleStatement:
             return execute_in_childs(node);
 
-        case AST::NodeType::Real:
-        case AST::NodeType::Logic:
-        case AST::NodeType::Reg:
-        case AST::NodeType::Integer:
-            return execute_variable_decl(AST::cast_to<AST::Variable>(node), parent);
+        case AST::NodeType::Var:
+            return execute_variable_decl(AST::cast_to<AST::Var>(node), parent);
 
         case AST::NodeType::BlockingSubstitution:
             return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node),
@@ -91,6 +88,9 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
         case AST::NodeType::RepeatStatement:
             return execute_repeat(AST::cast_to<AST::RepeatStatement>(node), parent);
 
+        // A statement call may be a neutral Call (task-vs-function unresolved at
+        // parse time), a FunctionCall, a TaskCall or a SystemCall.
+        case AST::NodeType::Call:
         case AST::NodeType::FunctionCall:
         case AST::NodeType::TaskCall:
         case AST::NodeType::SystemCall:
@@ -112,9 +112,9 @@ int VariableFolding::execute_in_childs(AST::Node::Ptr node)
     return ret;
 }
 
-int VariableFolding::execute_variable_decl(AST::Variable::Ptr var, AST::Node::Ptr parent)
+int VariableFolding::execute_variable_decl(AST::Var::Ptr var, AST::Node::Ptr parent)
 {
-    if(!var->get_right()) {
+    if(!var->get_init()) {
         return 0;
     }
 
@@ -127,7 +127,7 @@ int VariableFolding::execute_variable_decl(AST::Variable::Ptr var, AST::Node::Pt
     const auto &subst =
         std::make_shared<AST::BlockingSubstitution>(var->get_filename(), var->get_line());
     subst->set_left(lvalue);
-    subst->set_right(AST::cast_to<AST::Rvalue>(var->get_right()->clone()));
+    subst->set_right(AST::cast_to<AST::Rvalue>(var->get_init()->clone()));
 
     return execute_blocking_substitution(subst, parent);
 }
@@ -346,17 +346,13 @@ int VariableFolding::execute_call(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
     AST::Node::ListPtr args;
 
-    switch(node->get_node_type()) {
-    case AST::NodeType::FunctionCall:
-        args = AST::cast_to<AST::FunctionCall>(node)->get_args();
-        break;
-    case AST::NodeType::TaskCall:
-        args = AST::cast_to<AST::TaskCall>(node)->get_args();
-        break;
-    case AST::NodeType::SystemCall:
+    // Call (neutral), FunctionCall and TaskCall all derive from Call and share
+    // get_args(); SystemCall is separate.
+    if(node->is_node_category(AST::NodeType::Call)) {
+        args = AST::cast_to<AST::Call>(node)->get_args();
+    } else if(node->is_node_type(AST::NodeType::SystemCall)) {
         args = AST::cast_to<AST::SystemCall>(node)->get_args();
-        break;
-    default:
+    } else {
         LOG_ERROR_N(node) << "VariableFolding: unknown node type";
         return 1;
     }

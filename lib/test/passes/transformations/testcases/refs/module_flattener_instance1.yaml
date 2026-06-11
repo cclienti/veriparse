@@ -4,116 +4,132 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          filename: ../test/passes/transformations/testcases/instance1.v
           items:
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 2
               name: disp_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 2
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 2
+                          sign: true
+                          size: -1
+                          value: 10
                       line: 2
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 2
+                          sign: true
+                          size: -1
+                          value: 0
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 2
+                          sign: true
+                          size: -1
+                          value: 7
                       line: 2
-                      sign: true
-                      size: -1
-                      value: 10
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                  line: 2
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 2
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 2
-                      sign: true
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 2
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 2
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 2
                       name: disp_car
-                      scope:
-                        IdentifierScope: null
               line: 2
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 2
                   var:
                     StringConst:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 2
                       value: Hello World
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp0_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -125,10 +141,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp0_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -150,29 +166,29 @@ Source:
                           value: 0
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp0_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -183,67 +199,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp0_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp1_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -255,10 +279,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp1_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -280,29 +304,29 @@ Source:
                           value: 1
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp1_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -313,67 +337,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp1_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp2_car_mhmpjw
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -385,10 +417,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp2_car_mhmpjw
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -410,29 +442,29 @@ Source:
                           value: 2
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp2_car_mhmpjw
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -443,67 +475,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp2_car_mhmpjw
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp3_car_bupezv
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -515,10 +555,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp3_car_bupezv
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -540,29 +580,29 @@ Source:
                           value: 3
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp3_car_bupezv
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -573,67 +613,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp3_car_bupezv
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp4_car_ebllzx
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -645,10 +693,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp4_car_ebllzx
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -670,29 +718,29 @@ Source:
                           value: 4
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp4_car_ebllzx
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -703,67 +751,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp4_car_ebllzx
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp5_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -775,10 +831,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp5_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -800,29 +856,29 @@ Source:
                           value: 5
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp5_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -833,67 +889,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp5_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp6_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -905,10 +969,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp6_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -930,29 +994,29 @@ Source:
                           value: 6
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp6_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -963,67 +1027,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp6_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp7_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1035,10 +1107,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp7_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1060,29 +1132,29 @@ Source:
                           value: 7
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp7_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -1093,67 +1165,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp7_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp8_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1165,10 +1245,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp8_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1190,29 +1270,29 @@ Source:
                           value: 8
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp8_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -1223,67 +1303,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp8_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp9_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1295,10 +1383,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp9_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1320,29 +1408,29 @@ Source:
                           value: 9
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp9_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -1353,67 +1441,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp9_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp10_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1425,10 +1521,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp10_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1450,29 +1546,29 @@ Source:
                           value: 10
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 2
                           name: disp_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp10_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -1483,125 +1579,141 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp10_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 3
               name: disp2_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 3
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 3
+                          sign: true
+                          size: -1
+                          value: 7
                       line: 3
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 3
-                      sign: true
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 3
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 3
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 3
                       name: disp2_car
-                      scope:
-                        IdentifierScope: null
               line: 3
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 3
                   var:
                     StringConst:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 3
                       value: 1
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp20_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1613,10 +1725,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp20_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1626,29 +1738,29 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 3
                       name: disp2_car
-                      scope:
-                        IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp20_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -1659,67 +1771,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp20_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp21_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1731,10 +1851,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp21_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1744,29 +1864,29 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 3
                       name: disp2_car
-                      scope:
-                        IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp21_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -1777,125 +1897,141 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp21_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 4
               name: disp3_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 4
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 4
+                          sign: true
+                          size: -1
+                          value: 7
                       line: 4
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 4
-                      sign: true
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 4
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 4
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 4
                       name: disp3_car
-                      scope:
-                        IdentifierScope: null
               line: 4
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 4
                   var:
                     StringConst:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 4
                       value: ''
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp30_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -1907,10 +2043,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp30_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -1920,29 +2056,29 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 4
                       name: disp3_car
-                      scope:
-                        IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp30_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -1953,67 +2089,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp30_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp31_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -2025,10 +2169,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp31_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -2038,29 +2182,29 @@ Source:
                   line: 0
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 4
                       name: disp3_car
-                      scope:
-                        IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp31_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -2071,144 +2215,160 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp31_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 5
               name: disp4_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 5
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 5
+                          sign: true
+                          size: -1
+                          value: 1
                       line: 5
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 5
+                          sign: true
+                          size: -1
+                          value: 0
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 5
+                          sign: true
+                          size: -1
+                          value: 7
                       line: 5
-                      sign: true
-                      size: -1
-                      value: 1
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                  line: 5
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 5
-                      sign: true
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 5
-                      sign: true
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 5
+                          sign: true
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 5
                   var:
                     Identifier:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      hier:
+                        HierName: null
                       line: 5
                       name: disp4_car
-                      scope:
-                        IdentifierScope: null
               line: 5
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 5
                   var:
                     StringConst:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 5
                       value: 22
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp40_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -2220,10 +2380,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp40_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -2245,29 +2405,29 @@ Source:
                           value: 0
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 5
                           name: disp4_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp40_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -2278,67 +2438,75 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp40_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
-          - Wire:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 8
               name: disp41_car
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 8
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance1.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 8
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          line: 8
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Assign:
               filename: ''
               ldelay:
@@ -2350,10 +2518,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
+                      hier:
+                        HierName: null
                       line: 0
                       name: disp41_car
-                      scope:
-                        IdentifierScope: null
               line: 0
               rdelay:
                 DelayStatement: null
@@ -2375,29 +2543,29 @@ Source:
                           value: 1
                       var:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 5
                           name: disp4_car
-                          scope:
-                            IdentifierScope: null
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: disp41_car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
@@ -2408,166 +2576,152 @@ Source:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: disp41_car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
+          lifetime: NONE
           line: 1
           name: instance1
       - Module:
           default_nettype: WIRE
-          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          filename: ../test/passes/transformations/testcases/instance1.v
           items:
           - Always:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+              filename: ../test/passes/transformations/testcases/instance1.v
               line: 9
               senslist:
                 Senslist:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   list:
                   - Sens:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 9
                       sig:
                         Identifier:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          hier:
+                            HierName: null
                           line: 9
                           name: car
-                          scope:
-                            IdentifierScope: null
                       type: NONE
               statement:
                 Block:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  filename: ../test/passes/transformations/testcases/instance1.v
                   line: 9
                   scope: ''
                   statements:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
                               line: 10
                               value: '%c'
                           - Identifier:
-                              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              hier:
+                                HierName: null
                               line: 10
                               name: car
-                              scope:
-                                IdentifierScope: null
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 10
                           syscall: display
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 11
                       scope: ''
                       statement:
                         SystemCall:
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          filename: ../test/passes/transformations/testcases/instance1.v
                           line: 11
                           syscall: finish
+          lifetime: NONE
           line: 8
           name: string_test_mod
           ports:
-          - Ioport:
-              filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-              first:
-                Input:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                  line: 8
-                  name: car
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                      line: 8
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 7
-              line: 8
-              second:
-                Wire:
-                  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+          - Port:
+              decl:
+                WireNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/instance1.v
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
                   line: 8
                   name: car
                   rdelay:
                     DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                  strength:
+                    Strength: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance1.v
                       line: 8
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance1.v
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 8
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: ../../../lib/test/passes/transformations/testcases/instance1.v
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 7
-      filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/instance1.v
+                              line: 8
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/instance1.v
+              line: 8
+              name: car
+      filename: ../test/passes/transformations/testcases/instance1.v
       line: 1
-  filename: ../../../lib/test/passes/transformations/testcases/instance1.v
+  filename: ../test/passes/transformations/testcases/instance1.v
   line: 1
-

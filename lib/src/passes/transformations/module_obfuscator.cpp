@@ -65,10 +65,8 @@ int ModuleObfuscator::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
     for(const auto &decl : *decls) {
         std::string decl_name;
-        if(decl->is_node_category(AST::NodeType::Variable)) {
-            decl_name = AST::cast_to<AST::Variable>(decl)->get_name();
-        } else if(decl->is_node_type(AST::NodeType::Localparam)) {
-            decl_name = AST::cast_to<AST::Localparam>(decl)->get_name();
+        if(decl->is_node_category(AST::NodeType::Declaration)) {
+            decl_name = AST::cast_to<AST::Declaration>(decl)->get_name();
         } else if(decl->is_node_type(AST::NodeType::Function)) {
             decl_name = AST::cast_to<AST::Function>(decl)->get_name();
         } else if(decl->is_node_type(AST::NodeType::Task)) {
@@ -150,41 +148,24 @@ int ModuleObfuscator::rename_locals(const AST::Node::Ptr &node)
         return 0;
     }
 
-    if(node->is_node_category(AST::NodeType::Variable)) {
-        const auto &variable = AST::cast_to<AST::Variable>(node);
-        auto it = m_replace_map.find(variable->get_name());
+    if(node->is_node_category(AST::NodeType::Declaration)) {
+        const auto &decl = AST::cast_to<AST::Declaration>(node);
+        auto it = m_replace_map.find(decl->get_name());
         if(it != m_replace_map.end()) {
             auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::Variable: Renaming " << variable->get_name()
-                              << " with " << value->get_name();
-            variable->set_name(value->get_name());
+            LOG_DEBUG_N(node) << "Declaration: Renaming " << decl->get_name() << " with "
+                              << value->get_name();
+            decl->set_name(value->get_name());
         }
-    } else if(node->is_node_type(AST::NodeType::Localparam)) {
-        const auto &localparam = AST::cast_to<AST::Localparam>(node);
-        auto it = m_replace_map.find(localparam->get_name());
+    } else if(node->is_node_category(AST::NodeType::Call)) {
+        // Neutral Call, FunctionCall and TaskCall all derive from Call.
+        const auto &call = AST::cast_to<AST::Call>(node);
+        auto it = m_replace_map.find(call->get_name());
         if(it != m_replace_map.end()) {
             auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::Localparam: Renaming " << localparam->get_name()
-                              << " with " << value->get_name();
-            localparam->set_name(value->get_name());
-        }
-    } else if(node->is_node_type(AST::NodeType::FunctionCall)) {
-        const auto &func_call = AST::cast_to<AST::FunctionCall>(node);
-        auto it = m_replace_map.find(func_call->get_name());
-        if(it != m_replace_map.end()) {
-            auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::FunctionCall: Renaming " << func_call->get_name()
-                              << " with " << value->get_name();
-            func_call->set_name(value->get_name());
-        }
-    } else if(node->is_node_type(AST::NodeType::TaskCall)) {
-        const auto &task_call = AST::cast_to<AST::TaskCall>(node);
-        auto it = m_replace_map.find(task_call->get_name());
-        if(it != m_replace_map.end()) {
-            auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::TaskCall: Renaming " << task_call->get_name()
-                              << " with " << value->get_name();
-            task_call->set_name(value->get_name());
+            LOG_DEBUG_N(node) << "AST::NodeType::Call: Renaming " << call->get_name() << " with "
+                              << value->get_name();
+            call->set_name(value->get_name());
         }
     } else if(node->is_node_type(AST::NodeType::Function) ||
               node->is_node_type(AST::NodeType::Task)) {
@@ -262,22 +243,22 @@ int ModuleObfuscator::rename_procs(const AST::Node::Ptr &node)
                 }
             }
         }
-    } else if(node->is_node_category(AST::NodeType::IODir)) {
-        const auto &iodir = AST::cast_to<AST::IODir>(node);
-        auto it = m_replace_map.find(iodir->get_name());
+    } else if(node->is_node_type(AST::NodeType::Arg)) {
+        const auto &arg = AST::cast_to<AST::Arg>(node);
+        auto it = m_replace_map.find(arg->get_name());
         if(it != m_replace_map.end()) {
             auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::IODir: Renaming " << iodir->get_name() << " with "
+            LOG_DEBUG_N(node) << "Arg: Renaming " << arg->get_name() << " with "
                               << value->get_name();
-            iodir->set_name(value->get_name());
+            arg->set_name(value->get_name());
         }
-    } else if(node->is_node_category(AST::NodeType::Variable)) {
-        const auto &variable = AST::cast_to<AST::Variable>(node);
+    } else if(node->is_node_category(AST::NodeType::Declaration)) {
+        const auto &variable = AST::cast_to<AST::Declaration>(node);
         auto it = m_replace_map.find(variable->get_name());
         if(it != m_replace_map.end()) {
             auto value = AST::cast_to<AST::Identifier>(it->second);
-            LOG_DEBUG_N(node) << "AST::NodeType::Variable: Renaming " << variable->get_name()
-                              << " with " << value->get_name();
+            LOG_DEBUG_N(node) << "Declaration: Renaming " << variable->get_name() << " with "
+                              << value->get_name();
             variable->set_name(value->get_name());
         }
     } else if(node->is_node_category(AST::NodeType::Identifier)) {

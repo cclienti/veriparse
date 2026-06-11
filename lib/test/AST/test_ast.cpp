@@ -13,17 +13,19 @@ TEST(ASTTest, Clone)
     Logger::add_text_sink("ASTTest.Clone.log");
     Logger::add_stderr_sink();
 
-    AST::Parameter::ListPtr params1;
-    AST::Node::ListPtr ports1;
+    AST::Declaration::ListPtr params1;
+    AST::Port::ListPtr ports1;
     AST::Node::ListPtr items1(new AST::Node::List);
 
-    AST::Parameter::ListPtr params2;
-    AST::Node::ListPtr ports2;
+    AST::Declaration::ListPtr params2;
+    AST::Port::ListPtr ports2;
     AST::Node::ListPtr items2(new AST::Node::List);
 
     AST::Node::Ptr mod1(new AST::Module(params1, ports1, items1, std::string("module1"),
+                                        AST::Module::LifetimeEnum::NONE,
                                         AST::Module::Default_nettypeEnum::WIRE));
     AST::Node::Ptr mod2(new AST::Module(params2, ports2, items2, std::string("module2"),
+                                        AST::Module::LifetimeEnum::NONE,
                                         AST::Module::Default_nettypeEnum::WIRE));
 
     AST::Node::ListPtr module_list(new AST::Node::List);
@@ -58,41 +60,38 @@ TEST(ASTTest, CloneList)
     Logger::add_text_sink("ASTTest.CloneList.log");
     Logger::add_stderr_sink();
 
-    AST::IntConst::Ptr width_msb = std::make_shared<AST::IntConst>("filename.v", 3);
-    width_msb->set_value("7");
-    AST::IntConst::Ptr width_lsb = std::make_shared<AST::IntConst>("filename.v", 3);
-    width_lsb->set_value("0");
+    // Packed dimension [7:0], carried by the net data type.
+    AST::IntConst::Ptr packed_left = std::make_shared<AST::IntConst>("filename.v", 3);
+    packed_left->set_value("7");
+    AST::IntConst::Ptr packed_right = std::make_shared<AST::IntConst>("filename.v", 3);
+    packed_right->set_value("0");
+    AST::Dimension::ListPtr packed_dims = std::make_shared<AST::Dimension::List>();
+    packed_dims->push_back(std::make_shared<AST::RangeDim>(
+        AST::to_node(packed_left), AST::to_node(packed_right), "filename.v", 3));
 
-    AST::Width::Ptr width = std::make_shared<AST::Width>(AST::to_node(width_msb),
-                                                         AST::to_node(width_lsb), "filename.v", 3);
-    AST::Width::ListPtr widths = std::make_shared<AST::Width::List>();
-    widths->push_back(width);
+    AST::ImplicitType::Ptr type = std::make_shared<AST::ImplicitType>("filename.v", 3);
+    type->set_packed_dims(packed_dims);
 
-    AST::IntConst::Ptr length_msb = std::make_shared<AST::IntConst>("filename.v", 3);
-    length_msb->set_value("1023");
-    AST::IntConst::Ptr length_lsb = std::make_shared<AST::IntConst>("filename.v", 3);
-    length_lsb->set_value("0");
+    // Unpacked dimension [1023:0], carried by the declaration.
+    AST::IntConst::Ptr unpacked_left = std::make_shared<AST::IntConst>("filename.v", 3);
+    unpacked_left->set_value("1023");
+    AST::IntConst::Ptr unpacked_right = std::make_shared<AST::IntConst>("filename.v", 3);
+    unpacked_right->set_value("0");
+    AST::Dimension::ListPtr unpacked_dims = std::make_shared<AST::Dimension::List>();
+    unpacked_dims->push_back(std::make_shared<AST::RangeDim>(
+        AST::to_node(unpacked_left), AST::to_node(unpacked_right), "filename.v", 3));
 
-    AST::Length::Ptr length = std::make_shared<AST::Length>(
-        AST::to_node(length_msb), AST::to_node(length_lsb), "filename.v", 3);
-    AST::Length::ListPtr lengths = std::make_shared<AST::Length::List>();
-    lengths->push_back(length);
+    AST::WireNet::Ptr wire0 = std::make_shared<AST::WireNet>(
+        unpacked_dims, AST::Rvalue::Ptr(), AST::Strength::Ptr(), AST::DelayStatement::Ptr(),
+        AST::DelayStatement::Ptr(), type, false, false, "wire0", "filename", 3);
 
-    AST::Wire::Ptr wire0 = std::make_shared<AST::Wire>(
-        widths, AST::DelayStatement::Ptr(), AST::DelayStatement::Ptr(), AST::Node::Ptr(), lengths,
-        AST::Rvalue::Ptr(), false, "wire0", "filename", 3);
+    AST::WireNet::Ptr wire1 = std::make_shared<AST::WireNet>("filename", 3);
+    wire1->set_name("wire1");
 
-    AST::Wire::Ptr wire1 = std::make_shared<AST::Wire>(
-        AST::Width::ListPtr(), AST::DelayStatement::Ptr(), AST::DelayStatement::Ptr(),
-        AST::Node::Ptr(), AST::Length::ListPtr(), AST::Rvalue::Ptr(), false, "wire1", "filename",
-        3);
+    AST::WireNet::Ptr wire2 = std::make_shared<AST::WireNet>("filename", 3);
+    wire2->set_name("wire2");
 
-    AST::Wire::Ptr wire2 = std::make_shared<AST::Wire>(
-        AST::Width::ListPtr(), AST::DelayStatement::Ptr(), AST::DelayStatement::Ptr(),
-        AST::Node::Ptr(), AST::Length::ListPtr(), AST::Rvalue::Ptr(), false, "wire2", "filename",
-        3);
-
-    AST::Wire::ListPtr wire_list = std::make_shared<AST::Wire::List>();
+    AST::WireNet::ListPtr wire_list = std::make_shared<AST::WireNet::List>();
 
     wire_list->push_back(wire0);
     wire_list->push_back(wire1);
@@ -100,14 +99,14 @@ TEST(ASTTest, CloneList)
 
     // We clone the list and we expect that all list elements with the
     // cloned version are the same
-    AST::Wire::ListPtr wire_list_cloned = AST::Wire::clone_list(wire_list);
+    AST::WireNet::ListPtr wire_list_cloned = AST::WireNet::clone_list(wire_list);
 
-    AST::Wire::List::const_iterator it = wire_list->begin();
-    AST::Wire::List::const_iterator itc = wire_list_cloned->begin();
+    AST::WireNet::List::const_iterator it = wire_list->begin();
+    AST::WireNet::List::const_iterator itc = wire_list_cloned->begin();
 
     for(; (it != wire_list->end()) && (itc != wire_list_cloned->end()); ++it, ++itc) {
-        AST::Wire::Ptr v = *it;
-        AST::Wire::Ptr vc = *itc;
+        AST::WireNet::Ptr v = *it;
+        AST::WireNet::Ptr vc = *itc;
         ASSERT_TRUE(v->is_equal(*vc));
     }
 
@@ -122,8 +121,8 @@ TEST(ASTTest, CloneList)
     itc = wire_list_cloned->begin();
 
     for(; (it != wire_list->end()) && (itc != wire_list_cloned->end()); ++it, ++itc) {
-        AST::Wire::Ptr v = *it;
-        AST::Wire::Ptr vc = *itc;
+        AST::WireNet::Ptr v = *it;
+        AST::WireNet::Ptr vc = *itc;
         if(v->is_not_equal(*vc)) {
             broken = true;
         }
@@ -138,7 +137,7 @@ TEST(ASTTest, CloneList)
     wire_list.reset();
     ASSERT_FALSE(wire_list);
 
-    for(const AST::Wire::Ptr &wc : *wire_list_cloned) {
+    for(const AST::WireNet::Ptr &wc : *wire_list_cloned) {
         if(wc->is_not_equal(*wc)) {
             broken = true;
         }
@@ -151,29 +150,32 @@ TEST(ASTTest, UpdateChildren)
     Logger::add_text_sink("ASTTest.UpdateChildren.log");
     Logger::add_stderr_sink();
 
-    AST::Parameter::ListPtr params1 = std::make_shared<AST::Parameter::List>();
-    params1->push_back(std::make_shared<AST::Parameter>());
+    AST::Declaration::ListPtr params1 = std::make_shared<AST::Declaration::List>();
+    params1->push_back(std::make_shared<AST::Param>());
 
-    AST::Node::ListPtr ports1 = std::make_shared<AST::Node::List>();
+    AST::Port::ListPtr ports1 = std::make_shared<AST::Port::List>();
     ports1->push_back(std::make_shared<AST::Port>());
 
     AST::Node::ListPtr items1(new AST::Node::List);
 
-    AST::Parameter::ListPtr params2 = std::make_shared<AST::Parameter::List>();
-    params2->push_back(std::make_shared<AST::Parameter>());
+    AST::Declaration::ListPtr params2 = std::make_shared<AST::Declaration::List>();
+    params2->push_back(std::make_shared<AST::Param>());
 
-    AST::Node::ListPtr ports2 = std::make_shared<AST::Node::List>();
+    AST::Port::ListPtr ports2 = std::make_shared<AST::Port::List>();
     ports2->push_back(std::make_shared<AST::Port>());
 
     AST::Node::ListPtr items2(new AST::Node::List);
 
     AST::Node::Ptr mod1(new AST::Module(params1, ports1, items1, std::string("module1"),
+                                        AST::Module::LifetimeEnum::NONE,
                                         AST::Module::Default_nettypeEnum::WIRE));
     AST::Node::Ptr mod2(new AST::Module(params2, ports2, items2, std::string("module2"),
+                                        AST::Module::LifetimeEnum::NONE,
                                         AST::Module::Default_nettypeEnum::WIRE));
 
-    AST::Parameter::ListPtr params_null = nullptr;
+    AST::Declaration::ListPtr params_null = nullptr;
     AST::Node::Ptr mod3(new AST::Module(params_null, ports2, items2, std::string("module2"),
+                                        AST::Module::LifetimeEnum::NONE,
                                         AST::Module::Default_nettypeEnum::WIRE));
 
     AST::Node::ListPtr module_list(new AST::Node::List);

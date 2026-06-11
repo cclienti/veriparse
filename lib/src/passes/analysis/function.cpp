@@ -13,49 +13,62 @@ namespace Passes
 namespace Analysis
 {
 
-AST::Ioport::ListPtr Function::get_ioport_nodes(AST::Node::Ptr node)
-{
-    AST::Ioport::ListPtr list = std::make_shared<AST::Ioport::List>();
-    get_node_list_by_category<AST::Ioport>(node, AST::NodeType::Ioport, list);
-    return list;
-}
+AST::Arg::ListPtr Function::get_ioport_nodes(AST::Node::Ptr node) { return get_iodir_nodes(node); }
 
-AST::IODir::ListPtr Function::get_iodir_nodes(AST::Node::Ptr node)
+AST::Arg::ListPtr Function::get_iodir_nodes(AST::Node::Ptr node)
 {
-    AST::IODir::ListPtr list = std::make_shared<AST::IODir::List>();
-    get_node_list_by_category<AST::IODir>(node, AST::NodeType::IODir, list);
+    AST::Arg::ListPtr list = std::make_shared<AST::Arg::List>();
+    get_node_list<AST::Arg>(node, AST::NodeType::Arg, list);
     return list;
 }
 
 std::vector<std::string> Function::get_iodir_names(AST::Node::Ptr node)
 {
-    AST::IODir::ListPtr iodirs = get_iodir_nodes(node);
-    return get_property_in_list<std::string, AST::IODir>(
-        iodirs, [](AST::IODir::Ptr n) { return n->get_name(); });
+    AST::Arg::ListPtr iodirs = get_iodir_nodes(node);
+    return get_property_in_list<std::string, AST::Arg>(
+        iodirs, [](AST::Arg::Ptr n) { return n->get_name(); });
 }
 
-AST::Variable::ListPtr Function::get_variable_nodes(AST::Node::Ptr node)
+AST::Declaration::ListPtr Function::get_variable_nodes(AST::Node::Ptr node)
 {
-    AST::Variable::ListPtr list = std::make_shared<AST::Variable::List>();
+    // A function's local variables are the Var/Net declared in its body — NOT its
+    // arguments (those are Arg, via get_iodir_nodes) and NOT its return type.
+    AST::Declaration::ListPtr list = std::make_shared<AST::Declaration::List>();
 
-    if(node && node->is_node_type(AST::NodeType::Function)) {
-        // A function's variables are its ports and the variables declared in its
-        // body — NOT its return type. rettype_ref/retwidths are signature
-        // metadata and must not be mistaken for a declared variable (e.g. by
-        // is_like_automatic), which lets the return type be a real type node.
-        const auto func = AST::cast_to<AST::Function>(node);
-        if(func->get_ports()) {
-            for(const AST::Node::Ptr &p : *func->get_ports()) {
-                get_node_list_by_category<AST::Variable>(p, AST::NodeType::Variable, list);
+    // A bare directional placeholder (`input value` -> ImplicitNet + ImplicitType)
+    // is not a real variable declaration; only Var/Net with a concrete type are.
+    auto is_declared_signal = [](const AST::Declaration::Ptr &d) {
+        if(!(d->is_node_type(AST::NodeType::Var) || d->is_node_category(AST::NodeType::Net))) {
+            return false;
+        }
+        if(d->is_node_type(AST::NodeType::ImplicitNet)) {
+            const AST::DataType::Ptr type = d->get_type();
+            if(!type || type->is_node_type(AST::NodeType::ImplicitType)) {
+                return false;
             }
         }
+        return true;
+    };
+
+    auto collect = [&](AST::Node::Ptr root) {
+        AST::Declaration::ListPtr decls = std::make_shared<AST::Declaration::List>();
+        get_node_list_by_category<AST::Declaration>(root, AST::NodeType::Declaration, decls);
+        for(const AST::Declaration::Ptr &d : *decls) {
+            if(is_declared_signal(d)) {
+                list->push_back(d);
+            }
+        }
+    };
+
+    if(node && node->is_node_type(AST::NodeType::Function)) {
+        const auto func = AST::cast_to<AST::Function>(node);
         if(func->get_statements()) {
             for(const AST::Node::Ptr &s : *func->get_statements()) {
-                get_node_list_by_category<AST::Variable>(s, AST::NodeType::Variable, list);
+                collect(s);
             }
         }
     } else {
-        get_node_list_by_category<AST::Variable>(node, AST::NodeType::Variable, list);
+        collect(node);
     }
 
     return list;
@@ -63,14 +76,14 @@ AST::Variable::ListPtr Function::get_variable_nodes(AST::Node::Ptr node)
 
 std::vector<std::string> Function::get_variable_names(AST::Node::Ptr node)
 {
-    AST::Variable::ListPtr variables = get_variable_nodes(node);
-    return get_property_in_list<std::string, AST::Variable>(
-        variables, [](AST::Variable::Ptr n) { return n->get_name(); });
+    AST::Declaration::ListPtr variables = get_variable_nodes(node);
+    return get_property_in_list<std::string, AST::Declaration>(
+        variables, [](AST::Declaration::Ptr n) { return n->get_name(); });
 }
 
 bool Function::is_like_automatic(const AST::Function::Ptr &node)
 {
-    if(node->get_automatic()) {
+    if(node->get_lifetime() == AST::Function::LifetimeEnum::AUTOMATIC) {
         return true;
     }
 
@@ -87,7 +100,7 @@ bool Function::is_like_automatic(const AST::Function::Ptr &node)
 
     const auto iodirs = Function::get_iodir_nodes(node);
     for(const auto &io : *iodirs) {
-        if(io->is_node_type(AST::NodeType::Input)) {
+        if(io->get_direction() == AST::Arg::DirectionEnum::INPUT) {
             io_set.emplace(io->get_name());
         } else {
             return false;

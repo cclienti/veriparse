@@ -4,632 +4,604 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+          filename: ../test/passes/transformations/testcases/sv_generate0.sv
           items:
-          - Logic:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-              ldelay:
-                DelayStatement: null
-              lengths:
-              - Length:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+          - Var:
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+              init:
+                Rvalue: null
+              is_const: false
+              is_var: false
+              lifetime: NONE
+              line: 9
+              name: mem
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                   line: 9
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 9
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          line: 9
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                  left:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 9
                       sign: false
                       size: -1
                       value: 1
-              line: 9
-              name: mem
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
                   line: 9
-                  lsb:
+                  right:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 9
                       sign: false
                       size: -1
                       value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                      line: 9
-                      sign: false
-                      size: -1
-                      value: 7
           - Genvar:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               line: 11
               name: i
           - GenerateStatement:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               items:
               - ForStatement:
                   cond:
                     LessThan:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       left:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          hier:
+                            HierName: null
                           line: 13
                           name: i
-                          scope:
-                            IdentifierScope: null
                       line: 13
                       right:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 13
                           sign: false
                           size: -1
                           value: 2
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                   line: 13
                   post:
                     BlockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 13
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              hier:
+                                HierName: null
                               line: 13
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 13
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 13
                           var:
                             Plus:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
                               left:
                                 Identifier:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                  hier:
+                                    HierName: null
                                   line: 13
                                   name: i
-                                  scope:
-                                    IdentifierScope: null
                               line: 13
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                   line: 13
                                   sign: false
                                   size: -1
                                   value: 1
                   pre:
                     BlockingSubstitution:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       ldelay:
                         DelayStatement: null
                       left:
                         Lvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 13
                           var:
                             Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              hier:
+                                HierName: null
                               line: 13
                               name: i
-                              scope:
-                                IdentifierScope: null
                       line: 13
                       rdelay:
                         DelayStatement: null
                       right:
                         Rvalue:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 13
                           var:
                             IntConstN:
                               base: 10
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
                               line: 13
                               sign: false
                               size: -1
                               value: 0
                   statement:
                     Block:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 13
                       scope: gen_regs
                       statements:
                       - AlwaysFF:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 14
                           senslist:
                             Senslist:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
                               line: 14
                               list:
                               - Sens:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                   line: 14
                                   sig:
                                     Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                      hier:
+                                        HierName: null
                                       line: 14
                                       name: clk
-                                      scope:
-                                        IdentifierScope: null
                                   type: POSEDGE
                               - Sens:
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                   line: 14
                                   sig:
                                     Identifier:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                      hier:
+                                        HierName: null
                                       line: 14
                                       name: rst_n
-                                      scope:
-                                        IdentifierScope: null
                                   type: NEGEDGE
                           statement:
                             Block:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
                               line: 14
                               scope: ''
                               statements:
                               - IfStatement:
                                   cond:
                                     Ulnot:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                       line: 15
                                       right:
                                         Identifier:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                          hier:
+                                            HierName: null
                                           line: 15
                                           name: rst_n
-                                          scope:
-                                            IdentifierScope: null
                                   false_statement:
                                     NonblockingSubstitution:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                       ldelay:
                                         DelayStatement: null
                                       left:
                                         Lvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                           line: 18
                                           var:
                                             Pointer:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                               line: 18
                                               ptr:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 18
                                                   name: i
-                                                  scope:
-                                                    IdentifierScope: null
                                               var:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 18
                                                   name: mem
-                                                  scope:
-                                                    IdentifierScope: null
                                       line: 18
                                       rdelay:
                                         DelayStatement: null
                                       right:
                                         Rvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                           line: 18
                                           var:
                                             Identifier:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                              hier:
+                                                HierName: null
                                               line: 18
                                               name: d
-                                              scope:
-                                                IdentifierScope: null
-                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                   line: 15
                                   true_statement:
                                     NonblockingSubstitution:
-                                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                       ldelay:
                                         DelayStatement: null
                                       left:
                                         Lvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                           line: 16
                                           var:
                                             Pointer:
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                               line: 16
                                               ptr:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 16
                                                   name: i
-                                                  scope:
-                                                    IdentifierScope: null
                                               var:
                                                 Identifier:
-                                                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                                                  hier:
+                                                    HierName: null
                                                   line: 16
                                                   name: mem
-                                                  scope:
-                                                    IdentifierScope: null
                                       line: 16
                                       rdelay:
                                         DelayStatement: null
                                       right:
                                         Rvalue:
-                                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                           line: 16
                                           var:
                                             IntConstN:
                                               base: 16
-                                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
                                               line: 16
                                               sign: false
                                               size: 8
                                               value: 0
               line: 12
           - Assign:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                   line: 23
                   var:
                     Identifier:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                      hier:
+                        HierName: null
                       line: 23
                       name: q0
-                      scope:
-                        IdentifierScope: null
               line: 23
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                   line: 23
                   var:
                     Pointer:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 23
                       ptr:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 23
                           sign: false
                           size: -1
                           value: 0
                       var:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          hier:
+                            HierName: null
                           line: 23
                           name: mem
-                          scope:
-                            IdentifierScope: null
           - Assign:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                   line: 24
                   var:
                     Identifier:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                      hier:
+                        HierName: null
                       line: 24
                       name: q1
-                      scope:
-                        IdentifierScope: null
               line: 24
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                   line: 24
                   var:
                     Pointer:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 24
                       ptr:
                         IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
                           line: 24
                           sign: false
                           size: -1
                           value: 1
                       var:
                         Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          hier:
+                            HierName: null
                           line: 24
                           name: mem
-                          scope:
-                            IdentifierScope: null
+          lifetime: NONE
           line: 1
           name: sv_generate0
           params:
-          - Parameter:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+          - Param:
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+              is_local: false
               line: 2
               name: NUM
-              sign: true
-              type: INT
+              type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                  line: 2
+                  signing: NONE
               value:
                 Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
                   line: 2
                   var:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 2
                       sign: false
                       size: -1
                       value: 4
           ports:
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-              first:
-                Input:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                  is_scalared: false
+                  is_vectored: false
+                  ldelay:
+                    DelayStatement: null
                   line: 3
                   name: clk
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                      line: 3
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               line: 3
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              name: clk
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 3
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-              first:
-                Input:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
                   line: 4
                   name: rst_n
-                  sign: false
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                      line: 4
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               line: 4
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              name: rst_n
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 4
-                  name: rst_n
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-              first:
-                Input:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
                   line: 5
                   name: d
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              line: 5
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: INPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               line: 5
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              name: d
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 5
-                  name: d
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                      line: 5
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 7
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
                   line: 6
                   name: q0
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 6
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 6
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              line: 6
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               line: 6
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              name: q0
+          - Port:
+              decl:
+                ImplicitNet:
+                  cont_assign:
+                    Rvalue: null
+                  filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                  is_scalared: false
+                  is_vectored: false
                   ldelay:
                     DelayStatement: null
-                  line: 6
-                  name: q0
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                      line: 6
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 7
-          - Ioport:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-              first:
-                Output:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
                   line: 7
                   name: q1
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                  rdelay:
+                    DelayStatement: null
+                  strength:
+                    Strength: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/sv_generate0.sv
                       line: 7
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                          left:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 7
                           line: 7
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 7
+                          right:
+                            IntConstN:
+                              base: 10
+                              filename: ../test/passes/transformations/testcases/sv_generate0.sv
+                              line: 7
+                              sign: false
+                              size: -1
+                              value: 0
+                      signing: NONE
+              direction: OUTPUT
+              expr: null
+              filename: ../test/passes/transformations/testcases/sv_generate0.sv
               line: 7
-              second:
-                Logic:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                  ldelay:
-                    DelayStatement: null
-                  line: 7
-                  name: q1
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue: null
-                  sign: false
-                  widths:
-                  - Width:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                      line: 7
-                      lsb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 0
-                      msb:
-                        IntConstN:
-                          base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 7
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+              name: q1
+      filename: ../test/passes/transformations/testcases/sv_generate0.sv
       line: 1
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/sv_generate0.sv
+  filename: ../test/passes/transformations/testcases/sv_generate0.sv
   line: 1
-

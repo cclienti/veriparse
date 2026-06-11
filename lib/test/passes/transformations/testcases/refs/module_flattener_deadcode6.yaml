@@ -4,192 +4,179 @@ Source:
       definitions:
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+          filename: ../test/passes/transformations/testcases/deadcode6.v
           items:
-          - Wire:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/deadcode6.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 2
               name: x
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 2
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 2
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-                      line: 2
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Always:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+              filename: ../test/passes/transformations/testcases/deadcode6.v
               line: 4
               senslist:
                 Senslist:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                  filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 4
                   list:
                   - Sens:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 4
                       sig: null
                       type: ALL
               statement:
                 Block:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                  filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 4
                   scope: ''
                   statements:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 5
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                              filename: ../test/passes/transformations/testcases/deadcode6.v
                               line: 5
                               value: x=%0h
                           - Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                              filename: ../test/passes/transformations/testcases/deadcode6.v
+                              hier:
+                                HierName: null
                               line: 5
                               name: x
-                              scope:
-                                IdentifierScope: null
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
                           line: 5
                           syscall: display
+          lifetime: NONE
           line: 1
           name: mod1
       - Module:
           default_nettype: WIRE
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+          filename: ../test/passes/transformations/testcases/deadcode6.v
           items:
-          - Wire:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+          - WireNet:
+              cont_assign:
+                Rvalue: null
+              filename: ../test/passes/transformations/testcases/deadcode6.v
+              is_scalared: false
+              is_vectored: false
               ldelay:
                 DelayStatement: null
               line: 2
               name: mod1_inst_x
               rdelay:
                 DelayStatement: null
-              right:
-                Rvalue: null
-              sign: false
-              widths:
-              - Width:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+              strength:
+                Strength: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 2
-                  lsb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
+                      left:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 7
                       line: 2
-                      sign: false
-                      size: -1
-                      value: 0
-                  msb:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-                      line: 2
-                      sign: false
-                      size: -1
-                      value: 7
+                      right:
+                        IntConstN:
+                          base: 10
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
+                          line: 2
+                          sign: false
+                          size: -1
+                          value: 0
+                  signing: NONE
           - Always:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+              filename: ../test/passes/transformations/testcases/deadcode6.v
               line: 4
               senslist:
                 Senslist:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                  filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 4
                   list:
                   - Sens:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 4
                       sig: null
                       type: ALL
               statement:
                 Block:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-                  line: 4
+                  filename: ''
+                  line: 0
                   scope: ''
                   statements:
                   - SingleStatement:
                       delay:
                         DelayStatement: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                      filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 5
                       scope: ''
                       statement:
                         SystemCall:
                           args:
                           - StringConst:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                              filename: ../test/passes/transformations/testcases/deadcode6.v
                               line: 5
                               value: x=%0h
                           - Identifier:
-                              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                              filename: ../test/passes/transformations/testcases/deadcode6.v
+                              hier:
+                                HierName: null
                               line: 5
                               name: mod1_inst_x
-                              scope:
-                                IdentifierScope: null
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
                           line: 5
                           syscall: display
-          - Assign:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-                  line: 12
-                  var:
-                    Identifier:
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-                      line: 12
-                      name: mod1_inst_x
-                      scope:
-                        IdentifierScope: null
-              line: 12
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-                  line: 12
-                  var:
-                    IntConstN:
-                      base: 16
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
-                      line: 12
-                      sign: false
-                      size: 8
-                      value: 66
+          lifetime: NONE
           line: 10
           name: deadcode6
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+      filename: ../test/passes/transformations/testcases/deadcode6.v
       line: 1
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/deadcode6.v
+  filename: ../test/passes/transformations/testcases/deadcode6.v
   line: 1
-

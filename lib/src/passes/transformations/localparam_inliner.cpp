@@ -30,7 +30,7 @@ int LocalparamInliner::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     }
 
     ASTReplace::ReplaceMap rmap;
-    for(AST::Localparam::Ptr &p : *m_localparamlist) {
+    for(AST::Param::Ptr &p : *m_localparamlist) {
         const auto &val = p->get_value();
         if(val) {
             const auto &var = AST::cast_to<AST::Rvalue>(val)->get_var();
@@ -76,11 +76,12 @@ int LocalparamInliner::remove_localparam(const AST::Node::Ptr &node, const std::
 {
     if(node) {
         switch(node->get_node_type()) {
-        case AST::NodeType::Localparam:
-            if((parent) && (AST::cast_to<AST::Localparam>(node)->get_name() == name)) {
+        case AST::NodeType::Param: {
+            const auto &param = AST::cast_to<AST::Param>(node);
+            if((parent) && (param->get_is_local()) && (param->get_name() == name)) {
                 parent->remove(node);
             }
-            break;
+        } break;
 
         case AST::NodeType::Function:
             break;

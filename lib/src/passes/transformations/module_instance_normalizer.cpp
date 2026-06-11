@@ -215,8 +215,8 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 
     // Extract the instance array dimensions
     Analysis::Dimensions::DimInfo array_dim;
-    if(!Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::packed,
-                                            array_dim)) {
+    if(!Analysis::Dimensions::extract_dimension(array, Analysis::Dimensions::Packing::packed,
+                                                array_dim)) {
         LOG_WARNING_N(node) << "could not split instance array, dimensions cannot be resolved";
         return 1;
     }
@@ -493,7 +493,7 @@ int ModuleInstanceNormalizer::fill_defparam_map(const AST::Node::Ptr &node,
         const auto &defparam = AST::cast_to<AST::Defparam>(node);
         const auto &rvalue = defparam->get_right();
         const auto &identifier = defparam->get_identifier();
-        const auto &scope = identifier->get_scope();
+        const auto &scope = identifier->get_hier();
         const auto &labellist = scope->get_labellist();
 
         if(rvalue && labellist && labellist->size() == 1) {
@@ -816,8 +816,8 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 
     // Extract the instance array dimensions
     Analysis::Dimensions::DimInfo array_dim;
-    if(!Analysis::Dimensions::extract_array(array, Analysis::Dimensions::Packing::packed,
-                                            array_dim)) {
+    if(!Analysis::Dimensions::extract_dimension(array, Analysis::Dimensions::Packing::packed,
+                                                array_dim)) {
         LOG_WARNING_N(node) << "instance array dimensions cannot be resolved";
         return 0;
     }
@@ -864,7 +864,7 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
         }
 
         const auto &decl = Analysis::Dimensions::generate_decl(
-            id_str, AST::NodeType::Wire, decl_dims, port->get_filename(), port->get_line());
+            id_str, AST::NodeType::WireNet, decl_dims, port->get_filename(), port->get_line());
         new_stmts->push_back(decl);
 
         // update the dimensions map
@@ -872,7 +872,7 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
 
         // Replace the port value by the identifier
         const auto &identifier = std::make_shared<AST::Identifier>(
-            nullptr, id_str, "", port->get_filename(), port->get_line());
+            nullptr, nullptr, id_str, port->get_filename(), port->get_line());
         port->set_value(identifier);
 
         // Prepare the assignation.

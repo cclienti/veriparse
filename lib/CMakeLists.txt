@@ -82,13 +82,6 @@ add_flex_bison_dependency (Veriparse_VerilogNumberScanner Veriparse_VerilogNumbe
 # Build library
 file(GLOB_RECURSE source_files src/*.cpp)
 
-# TEMPORARY (ADR-0001 migration, "passes last"): the type/declaration big-bang
-# leaves the transformation/analysis passes red until their phase. Exclude them
-# from the library so the front-end (parser + generators + importer) can be built
-# and its tests run first. Restore by deleting this filter once the passes are
-# ported (and re-enable the passes/cosim test dirs in test/CMakeLists.txt).
-list(FILTER source_files EXCLUDE REGEX "/src/passes/")
-
 add_library (veriparse_static STATIC
   ${source_files} ${veriparse_version_file}
   ${BISON_Veriparse_VerilogParser_OUTPUTS}

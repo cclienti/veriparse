@@ -46,7 +46,7 @@ private:
                           const AST::Node::Ptr &parent);
 
 private:
-    AST::Localparam::ListPtr m_localparamlist;
+    AST::Param::ListPtr m_localparamlist;
 };
 
 } // namespace Transformations

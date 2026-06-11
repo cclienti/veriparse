@@ -133,25 +133,35 @@ public:
 
 public:
     /**
-     * @brief Analyze a AST::Length::Ptr or AST::Width::Ptr.
+     * @brief Analyze a [msb:lsb] range given by its two bound expressions.
      *
-     * Fill a DimInfo structure with all gathered dimensions information.
+     * Fill a DimInfo structure from the (evaluated) bounds. Used both for
+     * AST::RangeDim dimensions and for the range of a part-select.
      *
-     * @param[in] array (AST::Length::Ptr or AST::Width::Ptr)
+     * @param[in] msb_node bound left of `:` (or the larger bound)
+     * @param[in] lsb_node bound right of `:`
      * @param[in] packing
      * @param[out] dim
      * @return true if the dimensions are correctly resolved
      */
-    template <typename TArray>
-    static bool extract_array(const TArray &array, Packing packing, DimInfo &dim);
+    static bool extract_range(const AST::Node::Ptr &msb_node, const AST::Node::Ptr &lsb_node,
+                              Packing packing, DimInfo &dim);
 
     /**
-     * @brief Analyze a list of AST::Length::Ptr or AST::Width::Ptr.
+     * @brief Analyze a single AST::Dimension (RangeDim / SizeDim).
+     *
+     * Fill a DimInfo structure with all gathered dimensions information.
+     */
+    static bool extract_dimension(const AST::Dimension::Ptr &dimension, Packing packing,
+                                  DimInfo &dim);
+
+    /**
+     * @brief Analyze a list of AST::Dimension.
      *
      * Fill a DimList structure with all gathered dimensions information.
      */
-    template <typename TArrays>
-    static bool extract_arrays(const TArrays &arrays, Packing packing, DimList &dims);
+    static bool extract_arrays(const AST::Dimension::ListPtr &arrays, Packing packing,
+                               DimList &dims);
 
     /**
      * @brief analyse all I/O and variables of a module and fill a map

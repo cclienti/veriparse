@@ -15,14 +15,6 @@ foreach(subdir ${SUBDIRS})
     continue()
   endif()
 
-  # TEMPORARY (ADR-0001 migration, "passes last"): the passes are excluded from
-  # the library until their phase, so their tests cannot link yet. Skip them
-  # (and the cosim end-to-end tests, which exercise passes). Re-enable once the
-  # passes are ported.
-  if(subdir STREQUAL "passes")
-    continue()
-  endif()
-
   file(GLOB_RECURSE test_source_files ${subdir}/*.cpp)
   if (test_source_files)
     set(testname test_veriparse_${subdir})

@@ -27,7 +27,7 @@ TEST(YAMLImporter, MySource)
                     "      - Module:\n"
                     "          filename: test.v\n"
                     "          line: 33\n"
-                    "          default_nettype: REG\n"
+                    "          default_nettype: TRI\n"
                     "          name: module0\n"
                     "      - Module:\n"
                     "          filename: test.v\n"
@@ -54,7 +54,7 @@ TEST(YAMLImporter, MySource)
     ASSERT_EQ(module0["filename"].as<std::string>(), "test.v");
     ASSERT_EQ(module0["name"].as<std::string>(), "module0");
     ASSERT_EQ(module0["default_nettype"].as<AST::Module::Default_nettypeEnum>(),
-              AST::Module::Default_nettypeEnum::REG);
+              AST::Module::Default_nettypeEnum::TRI);
 
     ASSERT_EQ(module1["line"].as<int>(), 7);
     ASSERT_EQ(module1["filename"].as<std::string>(), "test.v");

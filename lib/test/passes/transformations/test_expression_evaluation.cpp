@@ -28,7 +28,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
     AST::Node::ListPtr module_stmt = AST::cast_to<AST::Module>(node_defs->front())->get_items();
 
     // TEST1 localparam
-    AST::Node::Ptr rvalue1 = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalue1 = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr expr1 = AST::cast_to<AST::Rvalue>(rvalue1)->get_var();
     AST::Node::Ptr eval1 = Passes::Transformations::ExpressionEvaluation().evaluate_node(expr1);
     ASSERT_TRUE(eval1 != nullptr);
@@ -36,14 +36,14 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
 
     // X localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalue2 = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalue2 = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr expr2 = AST::cast_to<AST::Rvalue>(rvalue2)->get_var();
     Passes::Transformations::ExpressionEvaluation::ReplaceMap map_id;
     map_id["X"] = AST::cast_to<AST::Constant>(expr2);
 
     // Y localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalue3 = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalue3 = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr expr3 = AST::cast_to<AST::Rvalue>(rvalue3)->get_var();
     AST::Node::Ptr eval3 =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(expr3);
@@ -53,7 +53,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
     // Z localparam
     map_id["i"] = std::make_shared<AST::IntConstN>(10, -1, true, 1);
     module_stmt->pop_front();
-    AST::Node::Ptr rvalue4 = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalue4 = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr expr4 = AST::cast_to<AST::Rvalue>(rvalue4)->get_var();
     AST::Node::Ptr eval4 =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(expr4);
@@ -68,7 +68,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
 
     // A localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalueA = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueA = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprA = AST::cast_to<AST::Rvalue>(rvalueA)->get_var();
     AST::Node::Ptr evalA =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprA);
@@ -77,7 +77,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
 
     // B localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalueB = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueB = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprB = AST::cast_to<AST::Rvalue>(rvalueB)->get_var();
     AST::Node::Ptr evalB =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprB);
@@ -86,7 +86,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
 
     // C localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalueC = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueC = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprC = AST::cast_to<AST::Rvalue>(rvalueC)->get_var();
     AST::Node::Ptr evalC =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprC);
@@ -95,7 +95,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
 
     // D localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalueD = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueD = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprD = AST::cast_to<AST::Rvalue>(rvalueD)->get_var();
     AST::Node::Ptr evalD =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprD);
@@ -104,7 +104,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
 
     // E localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalueE = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueE = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprE = AST::cast_to<AST::Rvalue>(rvalueE)->get_var();
     AST::Node::Ptr evalE =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprE);
@@ -114,7 +114,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
     // F localparam
     module_stmt->pop_front();
     map_id["MYVAR"] = std::make_shared<AST::IntConstN>(10, -1, true, 5);
-    AST::Node::Ptr rvalueF = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueF = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprF = AST::cast_to<AST::Rvalue>(rvalueF)->get_var();
     AST::Node::Ptr evalF =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprF);
@@ -124,7 +124,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
     // G localparam
     module_stmt->pop_front();
     map_id["MYVAR"] = std::make_shared<AST::IntConstN>(10, 4, true, 5);
-    AST::Node::Ptr rvalueG = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueG = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprG = AST::cast_to<AST::Rvalue>(rvalueG)->get_var();
     AST::Node::Ptr evalG =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprG);
@@ -134,7 +134,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
     // H localparam
     module_stmt->pop_front();
     map_id["MYVAR"] = std::make_shared<AST::IntConstN>(10, 4, true, 47);
-    AST::Node::Ptr rvalueH = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueH = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprH = AST::cast_to<AST::Rvalue>(rvalueH)->get_var();
     AST::Node::Ptr evalH =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprH);
@@ -144,7 +144,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
     // I localparam
     module_stmt->pop_front();
     map_id["MYVAR"] = std::make_shared<AST::IntConstN>(10, 32, false, 0x12345678);
-    AST::Node::Ptr rvalueI = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueI = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprI = AST::cast_to<AST::Rvalue>(rvalueI)->get_var();
     AST::Node::Ptr evalI =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprI);
@@ -154,7 +154,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
     // J localparam
     module_stmt->pop_front();
     map_id["MYVAR"] = std::make_shared<AST::IntConstN>(10, 32, false, 0x12345678);
-    AST::Node::Ptr rvalueJ = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueJ = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprJ = AST::cast_to<AST::Rvalue>(rvalueJ)->get_var();
     AST::Node::Ptr evalJ =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprJ);
@@ -163,7 +163,7 @@ TEST(PassesTransformation_ExpressionEvaluation, expression_evaluation0)
 
     // K localparam
     module_stmt->pop_front();
-    AST::Node::Ptr rvalueK = AST::cast_to<AST::Localparam>(module_stmt->front())->get_value();
+    AST::Node::Ptr rvalueK = AST::cast_to<AST::Param>(module_stmt->front())->get_value();
     AST::Node::Ptr exprK = AST::cast_to<AST::Rvalue>(rvalueK)->get_var();
     AST::Node::Ptr evalK =
         Passes::Transformations::ExpressionEvaluation(map_id).evaluate_node(exprK);

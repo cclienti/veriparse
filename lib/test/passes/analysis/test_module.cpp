@@ -77,7 +77,7 @@ TEST(PassesAnalysis_Module, parameter0)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Parameter::ListPtr nodes;
+    AST::Param::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_parameter_nodes(source);
     ASSERT_EQ(2u, nodes->size());
 
@@ -97,7 +97,7 @@ TEST(PassesAnalysis_Module, localparam0)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Localparam::ListPtr nodes;
+    AST::Param::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_localparam_nodes(source);
     ASSERT_EQ(3u, nodes->size());
 
@@ -117,7 +117,7 @@ TEST(PassesAnalysis_Module, parameter1)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Parameter::ListPtr nodes;
+    AST::Param::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_parameter_nodes(source);
     ASSERT_EQ(2u, nodes->size());
 
@@ -374,7 +374,7 @@ TEST(PassesAnalysis_Module, module0)
     ASSERT_EQ(5u, port_names.size());
     ASSERT_EQ(ref_port_names, port_names);
 
-    AST::IODir::ListPtr iodir_nodes;
+    AST::Port::ListPtr iodir_nodes;
     iodir_nodes = Passes::Analysis::Module::get_iodir_nodes(source);
     ASSERT_EQ(5u, iodir_nodes->size());
     std::vector<std::string> iodir_names;
@@ -383,7 +383,7 @@ TEST(PassesAnalysis_Module, module0)
     ASSERT_EQ(5u, iodir_names.size());
     ASSERT_EQ(ref_iodir_names, iodir_names);
 
-    AST::Output::ListPtr output_nodes;
+    AST::Port::ListPtr output_nodes;
     output_nodes = Passes::Analysis::Module::get_output_nodes(source);
     ASSERT_EQ(1u, output_nodes->size());
     std::vector<std::string> output_names;
@@ -392,7 +392,7 @@ TEST(PassesAnalysis_Module, module0)
     ASSERT_EQ(1u, output_names.size());
     ASSERT_EQ(ref_output_names, output_names);
 
-    AST::Input::ListPtr input_nodes;
+    AST::Port::ListPtr input_nodes;
     input_nodes = Passes::Analysis::Module::get_input_nodes(source);
     ASSERT_EQ(4u, input_nodes->size());
     std::vector<std::string> input_names;
@@ -419,7 +419,7 @@ TEST(PassesAnalysis_Module, bidir0)
     ASSERT_EQ(5u, port_names.size());
     ASSERT_EQ(ref_port_names, port_names);
 
-    AST::IODir::ListPtr iodir_nodes;
+    AST::Port::ListPtr iodir_nodes;
     iodir_nodes = Passes::Analysis::Module::get_iodir_nodes(source);
     ASSERT_EQ(5u, iodir_nodes->size());
     std::vector<std::string> iodir_names;
@@ -428,7 +428,7 @@ TEST(PassesAnalysis_Module, bidir0)
     ASSERT_EQ(5u, iodir_names.size());
     ASSERT_EQ(ref_iodir_names, iodir_names);
 
-    AST::Output::ListPtr output_nodes;
+    AST::Port::ListPtr output_nodes;
     output_nodes = Passes::Analysis::Module::get_output_nodes(source);
     ASSERT_EQ(1u, output_nodes->size());
     std::vector<std::string> output_names;
@@ -437,7 +437,7 @@ TEST(PassesAnalysis_Module, bidir0)
     ASSERT_EQ(1u, output_names.size());
     ASSERT_EQ(ref_output_names, output_names);
 
-    AST::Inout::ListPtr inout_nodes;
+    AST::Port::ListPtr inout_nodes;
     inout_nodes = Passes::Analysis::Module::get_inout_nodes(source);
     ASSERT_EQ(1u, inout_nodes->size());
     std::vector<std::string> inout_names;
@@ -446,7 +446,7 @@ TEST(PassesAnalysis_Module, bidir0)
     ASSERT_EQ(1u, inout_names.size());
     ASSERT_EQ(ref_inout_names, inout_names);
 
-    AST::Input::ListPtr input_nodes;
+    AST::Port::ListPtr input_nodes;
     input_nodes = Passes::Analysis::Module::get_input_nodes(source);
     ASSERT_EQ(3u, input_nodes->size());
     std::vector<std::string> input_names;
@@ -473,7 +473,7 @@ TEST(PassesAnalysis_Module, module1)
     ASSERT_EQ(5u, port_names.size());
     ASSERT_EQ(ref_port_names, port_names);
 
-    AST::IODir::ListPtr nodes;
+    AST::Port::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_iodir_nodes(source);
     ASSERT_EQ(5u, nodes->size());
     std::vector<std::string> names;
@@ -500,7 +500,7 @@ TEST(PassesAnalysis_Module, module2)
     ASSERT_EQ(7u, port_names.size());
     ASSERT_EQ(ref_port_names, port_names);
 
-    AST::IODir::ListPtr nodes;
+    AST::Port::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_iodir_nodes(source);
     ASSERT_EQ(7u, nodes->size());
     std::vector<std::string> names;
@@ -519,7 +519,7 @@ TEST(PassesAnalysis_Module, net0)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Variable::ListPtr nodes;
+    AST::Declaration::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_variable_nodes(source);
     ASSERT_EQ(12u, nodes->size());
 
@@ -536,24 +536,24 @@ TEST(PassesAnalysis_Module, net0)
     ASSERT_EQ(8u, net_only_names.size());
     ASSERT_EQ(net_only_ref_names, net_only_names);
 
-    AST::Variable::ListPtr net_only_nodes;
+    AST::Declaration::ListPtr net_only_nodes;
     net_only_nodes = Passes::Analysis::Module::get_variable_nodes_within_module(source);
     ASSERT_EQ(8u, net_only_nodes->size());
-    ASSERT_EQ("a", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("a", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("b", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("b", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("x", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("x", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("c", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("c", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("h", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("h", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("d", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("d", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("e", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("e", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("f", AST::cast_to<AST::Wire>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("f", AST::cast_to<AST::WireNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
 }
 
@@ -566,7 +566,7 @@ TEST(PassesAnalysis_Module, net1)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Variable::ListPtr nodes;
+    AST::Declaration::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_variable_nodes(source);
     ASSERT_EQ(7u, nodes->size());
 
@@ -582,14 +582,14 @@ TEST(PassesAnalysis_Module, net1)
     ASSERT_EQ(3u, net_only_names.size());
     ASSERT_EQ(net_only_ref_names, net_only_names);
 
-    AST::Variable::ListPtr net_only_nodes;
+    AST::Declaration::ListPtr net_only_nodes;
     net_only_nodes = Passes::Analysis::Module::get_variable_nodes_within_module(source);
     ASSERT_EQ(3u, net_only_nodes->size());
-    ASSERT_EQ("a", AST::cast_to<AST::Tri>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("a", AST::cast_to<AST::TriNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("b", AST::cast_to<AST::Tri>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("b", AST::cast_to<AST::TriNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("c", AST::cast_to<AST::Tri>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("c", AST::cast_to<AST::TriNet>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
 }
 
@@ -602,7 +602,7 @@ TEST(PassesAnalysis_Module, net2)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Variable::ListPtr nodes;
+    AST::Declaration::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_variable_nodes(source);
     ASSERT_EQ(7u, nodes->size());
 
@@ -618,14 +618,14 @@ TEST(PassesAnalysis_Module, net2)
     ASSERT_EQ(3u, net_only_names.size());
     ASSERT_EQ(net_only_ref_names, net_only_names);
 
-    AST::Variable::ListPtr net_only_nodes;
+    AST::Declaration::ListPtr net_only_nodes;
     net_only_nodes = Passes::Analysis::Module::get_variable_nodes_within_module(source);
     ASSERT_EQ(3u, net_only_nodes->size());
-    ASSERT_EQ("a", AST::cast_to<AST::Supply0>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("a", AST::cast_to<AST::Supply0Net>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("b", AST::cast_to<AST::Supply0>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("b", AST::cast_to<AST::Supply0Net>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("c", AST::cast_to<AST::Supply0>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("c", AST::cast_to<AST::Supply0Net>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
 }
 
@@ -638,7 +638,7 @@ TEST(PassesAnalysis_Module, net3)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Variable::ListPtr nodes;
+    AST::Declaration::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_variable_nodes(source);
     ASSERT_EQ(7u, nodes->size());
 
@@ -654,14 +654,14 @@ TEST(PassesAnalysis_Module, net3)
     ASSERT_EQ(3u, net_only_names.size());
     ASSERT_EQ(net_only_ref_names, net_only_names);
 
-    AST::Variable::ListPtr net_only_nodes;
+    AST::Declaration::ListPtr net_only_nodes;
     net_only_nodes = Passes::Analysis::Module::get_variable_nodes_within_module(source);
     ASSERT_EQ(3u, net_only_nodes->size());
-    ASSERT_EQ("a", AST::cast_to<AST::Supply1>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("a", AST::cast_to<AST::Supply1Net>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("b", AST::cast_to<AST::Supply1>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("b", AST::cast_to<AST::Supply1Net>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("c", AST::cast_to<AST::Supply1>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("c", AST::cast_to<AST::Supply1Net>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
 }
 
@@ -674,7 +674,7 @@ TEST(PassesAnalysis_Module, var0)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Variable::ListPtr nodes;
+    AST::Declaration::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_variable_nodes(source);
     ASSERT_EQ(11u, nodes->size());
 
@@ -691,22 +691,22 @@ TEST(PassesAnalysis_Module, var0)
     ASSERT_EQ(7u, net_only_names.size());
     ASSERT_EQ(net_only_ref_names, net_only_names);
 
-    AST::Variable::ListPtr net_only_nodes;
+    AST::Declaration::ListPtr net_only_nodes;
     net_only_nodes = Passes::Analysis::Module::get_variable_nodes_within_module(source);
     ASSERT_EQ(7u, net_only_nodes->size());
-    ASSERT_EQ("a", AST::cast_to<AST::Reg>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("a", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("b", AST::cast_to<AST::Reg>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("b", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("c", AST::cast_to<AST::Reg>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("c", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("h", AST::cast_to<AST::Reg>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("h", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("d", AST::cast_to<AST::Reg>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("d", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("e", AST::cast_to<AST::Reg>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("e", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("f", AST::cast_to<AST::Reg>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("f", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
 }
 
@@ -719,7 +719,7 @@ TEST(PassesAnalysis_Module, var1)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Variable::ListPtr nodes;
+    AST::Declaration::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_variable_nodes(source);
     ASSERT_EQ(11u, nodes->size());
 
@@ -736,22 +736,22 @@ TEST(PassesAnalysis_Module, var1)
     ASSERT_EQ(7u, net_only_names.size());
     ASSERT_EQ(net_only_ref_names, net_only_names);
 
-    AST::Variable::ListPtr net_only_nodes;
+    AST::Declaration::ListPtr net_only_nodes;
     net_only_nodes = Passes::Analysis::Module::get_variable_nodes_within_module(source);
     ASSERT_EQ(7u, net_only_nodes->size());
-    ASSERT_EQ("a", AST::cast_to<AST::Integer>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("a", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("b", AST::cast_to<AST::Integer>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("b", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("c", AST::cast_to<AST::Integer>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("c", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("h", AST::cast_to<AST::Integer>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("h", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("d", AST::cast_to<AST::Integer>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("d", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("e", AST::cast_to<AST::Integer>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("e", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("f", AST::cast_to<AST::Integer>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("f", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
 }
 
@@ -764,7 +764,7 @@ TEST(PassesAnalysis_Module, var2)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::Variable::ListPtr nodes;
+    AST::Declaration::ListPtr nodes;
     nodes = Passes::Analysis::Module::get_variable_nodes(source);
     ASSERT_EQ(11u, nodes->size());
 
@@ -781,22 +781,22 @@ TEST(PassesAnalysis_Module, var2)
     ASSERT_EQ(7u, net_only_names.size());
     ASSERT_EQ(net_only_ref_names, net_only_names);
 
-    AST::Variable::ListPtr net_only_nodes;
+    AST::Declaration::ListPtr net_only_nodes;
     net_only_nodes = Passes::Analysis::Module::get_variable_nodes_within_module(source);
     ASSERT_EQ(7u, net_only_nodes->size());
-    ASSERT_EQ("a", AST::cast_to<AST::Real>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("a", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("b", AST::cast_to<AST::Real>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("b", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("c", AST::cast_to<AST::Real>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("c", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("h", AST::cast_to<AST::Real>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("h", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("d", AST::cast_to<AST::Real>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("d", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("e", AST::cast_to<AST::Real>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("e", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
-    ASSERT_EQ("f", AST::cast_to<AST::Real>(net_only_nodes->front())->get_name());
+    ASSERT_EQ("f", AST::cast_to<AST::Var>(net_only_nodes->front())->get_name());
     net_only_nodes->pop_front();
 }
 

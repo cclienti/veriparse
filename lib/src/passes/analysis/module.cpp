@@ -54,48 +54,67 @@ AST::Node::ListPtr Module::get_port_nodes(AST::Node::Ptr node)
     }
 
     const auto &module = modules->front();
-    const auto &ports = module->get_ports();
+    const AST::Port::ListPtr ports = module->get_ports();
 
-    return ports;
+    AST::Node::ListPtr list = std::make_shared<AST::Node::List>();
+    if(ports) {
+        for(const AST::Port::Ptr &p : *ports) {
+            list->push_back(p);
+        }
+    }
+    return list;
 }
+
+namespace
+{
+// A declared signal is a Var or any Net — but NOT a bare port placeholder. A
+// non-ANSI directional declaration with neither a net nor a data type keyword
+// (`input clock`, `input [7:0] x`) parses as an ImplicitNet carrying an
+// ImplicitType; its real signal is declared separately (`wire clock`) or defaults
+// to a net, so it is not itself a variable declaration. An ImplicitNet with a
+// concrete data type (`output reg valid` -> ImplicitNet + RegType) IS a real
+// declaration and is kept.
+bool is_declared_signal(const AST::Declaration::Ptr &d)
+{
+    if(!(d->is_node_type(AST::NodeType::Var) || d->is_node_category(AST::NodeType::Net))) {
+        return false;
+    }
+    if(d->is_node_type(AST::NodeType::ImplicitNet)) {
+        const AST::DataType::Ptr type = d->get_type();
+        if(!type || type->is_node_type(AST::NodeType::ImplicitType)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Effective signal name of a port: the port's own name (non-ANSI / explicit)
+// or, for an ANSI typed port, the name carried by its inner declaration.
+std::string port_name(const AST::Port::Ptr &p)
+{
+    if(!p->get_name().empty()) {
+        return p->get_name();
+    }
+    if(p->get_decl()) {
+        return p->get_decl()->get_name();
+    }
+    return std::string();
+}
+} // namespace
 
 std::vector<std::string> Module::get_port_names(AST::Node::Ptr node)
 {
     const auto &nodes = get_port_nodes(node);
-
     if(!nodes) {
         return std::vector<std::string>();
     }
-
-    const auto &plist = std::make_shared<AST::Port::List>();
-    const auto &iolist = std::make_shared<AST::IODir::List>();
-
+    std::vector<std::string> names;
     for(const auto &item : *nodes) {
-        get_node_list<AST::Port>(item, AST::NodeType::Port, plist);
-        get_node_list_by_category<AST::IODir>(item, AST::NodeType::IODir, iolist);
+        if(item && item->is_node_type(AST::NodeType::Port)) {
+            names.push_back(port_name(AST::cast_to<AST::Port>(item)));
+        }
     }
-
-    auto pnames = get_property_in_list<std::string, AST::Port>(
-        plist, [](const AST::Port::Ptr &id) { return id->get_name(); });
-
-    const auto &ionames = get_property_in_list<std::string, AST::IODir>(
-        iolist, [](const AST::IODir::Ptr &id) { return id->get_name(); });
-
-    if(pnames.size() == 0) {
-        return ionames;
-    }
-
-    if(ionames.size() == 0) {
-        return pnames;
-    }
-
-    LOG_ERROR_N(node) << "mixing port declaration type in module";
-
-    pnames.insert(pnames.end(), ionames.begin(), ionames.end());
-    std::sort(pnames.begin(), pnames.end());
-    pnames.erase(std::unique(pnames.begin(), pnames.end()), pnames.end());
-
-    return pnames;
+    return names;
 }
 
 AST::Module::ListPtr Module::get_module_nodes(AST::Node::Ptr node)
@@ -112,32 +131,44 @@ std::vector<std::string> Module::get_module_names(AST::Node::Ptr node)
         modules, [](AST::Module::Ptr n) { return n->get_name(); });
 }
 
-AST::Parameter::ListPtr Module::get_parameter_nodes(AST::Node::Ptr node)
+AST::Param::ListPtr Module::get_parameter_nodes(AST::Node::Ptr node)
 {
-    AST::Parameter::ListPtr list = std::make_shared<AST::Parameter::List>();
-    get_node_list<AST::Parameter>(node, AST::NodeType::Parameter, list);
+    AST::Param::ListPtr all = std::make_shared<AST::Param::List>();
+    get_node_list<AST::Param>(node, AST::NodeType::Param, all);
+    AST::Param::ListPtr list = std::make_shared<AST::Param::List>();
+    for(const AST::Param::Ptr &p : *all) {
+        if(!p->get_is_local()) {
+            list->push_back(p);
+        }
+    }
     return list;
 }
 
 std::vector<std::string> Module::get_parameter_names(AST::Node::Ptr node)
 {
-    AST::Parameter::ListPtr parameters = get_parameter_nodes(node);
-    return get_property_in_list<std::string, AST::Parameter>(
-        parameters, [](AST::Parameter::Ptr n) { return n->get_name(); });
+    AST::Param::ListPtr parameters = get_parameter_nodes(node);
+    return get_property_in_list<std::string, AST::Param>(
+        parameters, [](AST::Param::Ptr n) { return n->get_name(); });
 }
 
-AST::Localparam::ListPtr Module::get_localparam_nodes(AST::Node::Ptr node)
+AST::Param::ListPtr Module::get_localparam_nodes(AST::Node::Ptr node)
 {
-    AST::Localparam::ListPtr list = std::make_shared<AST::Localparam::List>();
-    get_node_list<AST::Localparam>(node, AST::NodeType::Localparam, list);
+    AST::Param::ListPtr all = std::make_shared<AST::Param::List>();
+    get_node_list<AST::Param>(node, AST::NodeType::Param, all);
+    AST::Param::ListPtr list = std::make_shared<AST::Param::List>();
+    for(const AST::Param::Ptr &p : *all) {
+        if(p->get_is_local()) {
+            list->push_back(p);
+        }
+    }
     return list;
 }
 
 std::vector<std::string> Module::get_localparam_names(AST::Node::Ptr node)
 {
-    AST::Localparam::ListPtr localparams = get_localparam_nodes(node);
-    return get_property_in_list<std::string, AST::Localparam>(
-        localparams, [](AST::Localparam::Ptr n) { return n->get_name(); });
+    AST::Param::ListPtr localparams = get_localparam_nodes(node);
+    return get_property_in_list<std::string, AST::Param>(
+        localparams, [](AST::Param::Ptr n) { return n->get_name(); });
 }
 
 int Module::get_function_dictionary(const AST::Node::ListPtr &node_list, FunctionMap &function_map)
@@ -277,85 +308,110 @@ std::vector<std::string> Module::get_rvalue_identifier_names(AST::Node::Ptr node
         identifiers, [](AST::Identifier::Ptr n) { return n->get_name(); });
 }
 
-AST::IODir::ListPtr Module::get_iodir_nodes(AST::Node::Ptr node)
+AST::Port::ListPtr Module::get_iodir_nodes(AST::Node::Ptr node)
 {
-    AST::IODir::ListPtr list = std::make_shared<AST::IODir::List>();
-    get_node_list_by_category<AST::IODir>(node, AST::NodeType::IODir, list);
+    // The direction-carrying ports (ANSI header ports, or non-ANSI body
+    // direction declarations). Non-ANSI header references (direction NONE) are
+    // name-only placeholders and are excluded — they are not IO directions.
+    AST::Port::ListPtr all = std::make_shared<AST::Port::List>();
+    get_node_list<AST::Port>(node, AST::NodeType::Port, all);
+    AST::Port::ListPtr list = std::make_shared<AST::Port::List>();
+    for(const AST::Port::Ptr &p : *all) {
+        if(p->get_direction() != AST::Port::DirectionEnum::NONE) {
+            list->push_back(p);
+        }
+    }
     return list;
 }
 
 std::vector<std::string> Module::get_iodir_names(AST::Node::Ptr node)
 {
-    AST::IODir::ListPtr iodirs = get_iodir_nodes(node);
-    return get_property_in_list<std::string, AST::IODir>(
-        iodirs, [](AST::IODir::Ptr n) { return n->get_name(); });
+    AST::Port::ListPtr iodirs = get_iodir_nodes(node);
+    return get_property_in_list<std::string, AST::Port>(
+        iodirs, [](AST::Port::Ptr n) { return port_name(n); });
 }
 
-AST::Output::ListPtr Module::get_output_nodes(AST::Node::Ptr node)
+namespace
 {
-    AST::Output::ListPtr list = std::make_shared<AST::Output::List>();
-    get_node_list<AST::Output>(node, AST::NodeType::Output, list);
+AST::Port::ListPtr ports_by_direction(AST::Node::Ptr node, AST::Port::DirectionEnum dir)
+{
+    AST::Port::ListPtr all = Module::get_iodir_nodes(node);
+    AST::Port::ListPtr list = std::make_shared<AST::Port::List>();
+    for(const AST::Port::Ptr &p : *all) {
+        if(p->get_direction() == dir) {
+            list->push_back(p);
+        }
+    }
     return list;
+}
+} // namespace
+
+AST::Port::ListPtr Module::get_output_nodes(AST::Node::Ptr node)
+{
+    return ports_by_direction(node, AST::Port::DirectionEnum::OUTPUT);
 }
 
 std::vector<std::string> Module::get_output_names(AST::Node::Ptr node)
 {
-    AST::Output::ListPtr outputs = get_output_nodes(node);
-    return get_property_in_list<std::string, AST::Output>(
-        outputs, [](AST::Output::Ptr n) { return n->get_name(); });
+    AST::Port::ListPtr outputs = get_output_nodes(node);
+    return get_property_in_list<std::string, AST::Port>(
+        outputs, [](AST::Port::Ptr n) { return port_name(n); });
 }
 
-AST::Inout::ListPtr Module::get_inout_nodes(AST::Node::Ptr node)
+AST::Port::ListPtr Module::get_inout_nodes(AST::Node::Ptr node)
 {
-    AST::Inout::ListPtr list = std::make_shared<AST::Inout::List>();
-    get_node_list<AST::Inout>(node, AST::NodeType::Inout, list);
-    return list;
+    return ports_by_direction(node, AST::Port::DirectionEnum::INOUT);
 }
 
 std::vector<std::string> Module::get_inout_names(AST::Node::Ptr node)
 {
-    AST::Inout::ListPtr inouts = get_inout_nodes(node);
-    return get_property_in_list<std::string, AST::Inout>(
-        inouts, [](AST::Inout::Ptr n) { return n->get_name(); });
+    AST::Port::ListPtr inouts = get_inout_nodes(node);
+    return get_property_in_list<std::string, AST::Port>(
+        inouts, [](AST::Port::Ptr n) { return port_name(n); });
 }
 
-AST::Input::ListPtr Module::get_input_nodes(AST::Node::Ptr node)
+AST::Port::ListPtr Module::get_input_nodes(AST::Node::Ptr node)
 {
-    AST::Input::ListPtr list = std::make_shared<AST::Input::List>();
-    get_node_list<AST::Input>(node, AST::NodeType::Input, list);
-    return list;
+    return ports_by_direction(node, AST::Port::DirectionEnum::INPUT);
 }
 
 std::vector<std::string> Module::get_input_names(AST::Node::Ptr node)
 {
-    AST::Input::ListPtr inputs = get_input_nodes(node);
-    return get_property_in_list<std::string, AST::Input>(
-        inputs, [](AST::Input::Ptr n) { return n->get_name(); });
+    AST::Port::ListPtr inputs = get_input_nodes(node);
+    return get_property_in_list<std::string, AST::Port>(
+        inputs, [](AST::Port::Ptr n) { return port_name(n); });
 }
 
-AST::Variable::ListPtr Module::get_variable_nodes(AST::Node::Ptr node)
+AST::Declaration::ListPtr Module::get_variable_nodes(AST::Node::Ptr node)
 {
-    AST::Variable::ListPtr list = std::make_shared<AST::Variable::List>();
-    get_node_list_by_category<AST::Variable>(node, AST::NodeType::Variable, list);
+    // Declared signals: Var and the node-per-net-type Net hierarchy (not params,
+    // ports, args, members or typedefs). Single category walk preserves order.
+    AST::Declaration::ListPtr decls = std::make_shared<AST::Declaration::List>();
+    get_node_list_by_category<AST::Declaration>(node, AST::NodeType::Declaration, decls);
+    AST::Declaration::ListPtr list = std::make_shared<AST::Declaration::List>();
+    for(const AST::Declaration::Ptr &d : *decls) {
+        if(is_declared_signal(d)) {
+            list->push_back(d);
+        }
+    }
     return list;
 }
 
 std::vector<std::string> Module::get_variable_names(AST::Node::Ptr node)
 {
-    AST::Variable::ListPtr variables = get_variable_nodes(node);
-    return get_property_in_list<std::string, AST::Variable>(
-        variables, [](AST::Variable::Ptr n) { return n->get_name(); });
+    AST::Declaration::ListPtr variables = get_variable_nodes(node);
+    return get_property_in_list<std::string, AST::Declaration>(
+        variables, [](AST::Declaration::Ptr n) { return n->get_name(); });
 }
 
-AST::Variable::ListPtr Module::get_variable_nodes_within_module(AST::Node::Ptr node)
+AST::Declaration::ListPtr Module::get_variable_nodes_within_module(AST::Node::Ptr node)
 {
-    AST::Variable::ListPtr varlist = get_variable_nodes(node);
-    AST::Variable::ListPtr varlist_w = std::make_shared<AST::Variable::List>();
+    AST::Declaration::ListPtr varlist = get_variable_nodes(node);
+    AST::Declaration::ListPtr varlist_w = std::make_shared<AST::Declaration::List>();
     std::vector<std::string> varname_w = get_variable_names_within_module(node);
 
-    for(AST::Variable::Ptr var : *varlist) {
+    for(AST::Declaration::Ptr var : *varlist) {
         const std::string name = var->get_name();
-
         if(std::find(varname_w.begin(), varname_w.end(), name) != varname_w.end()) {
             varlist_w->push_back(var);
         }

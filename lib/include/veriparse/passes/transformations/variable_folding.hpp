@@ -56,7 +56,7 @@ private:
      *
      * @return zero on success
      */
-    virtual int execute_variable_decl(AST::Variable::Ptr var, AST::Node::Ptr parent);
+    virtual int execute_variable_decl(AST::Var::Ptr var, AST::Node::Ptr parent);
 
     /**
      * @brief Walk through a blocking substitution.

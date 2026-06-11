@@ -1,33 +1,67 @@
 Module:
   default_nettype: WIRE
-  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+  filename: ../test/passes/transformations/testcases/scope1.v
   items:
   - Genvar:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+      filename: ../test/passes/transformations/testcases/scope1.v
       line: 3
       name: i
   - Genvar:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+      filename: ../test/passes/transformations/testcases/scope1.v
       line: 3
       name: j
   - GenerateStatement:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+      filename: ../test/passes/transformations/testcases/scope1.v
       items:
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  left:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 6
+                      sign: false
+                      size: -1
+                      value: 0
+                  line: 8
+                  right:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_0_j_0
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
                       sign: false
                       size: -1
@@ -36,26 +70,34 @@ Module:
                   right:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-                      line: 7
+                      filename: ''
+                      line: 0
                       sign: false
                       size: -1
-                      value: 0
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 1
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_0_j_1
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
                       sign: false
                       size: -1
@@ -68,22 +110,30 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 1
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 2
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_0_j_2
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
                       sign: false
                       size: -1
@@ -96,22 +146,30 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 2
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 3
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_0_j_3
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
                       sign: false
                       size: -1
@@ -124,46 +182,62 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 3
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 4
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_0_j_4
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
-                    IntConstN:
-                      base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 8
-                  right:
                     IntConstN:
                       base: 10
                       filename: ''
                       line: 0
                       sign: false
                       size: -1
-                      value: 4
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 1
+                  line: 8
+                  right:
+                    IntConstN:
+                      base: 10
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
+                      sign: false
+                      size: -1
+                      value: 0
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_1_j_0
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -176,22 +250,30 @@ Module:
                   right:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-                      line: 7
+                      filename: ''
+                      line: 0
                       sign: false
                       size: -1
-                      value: 0
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 1
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_1_j_1
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -208,18 +290,26 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 1
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 2
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_1_j_2
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -236,18 +326,26 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 2
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 3
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_1_j_3
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -264,18 +362,26 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 3
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 4
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_1_j_4
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -283,27 +389,35 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 1
+                      value: 2
                   line: 8
                   right:
                     IntConstN:
                       base: 10
-                      filename: ''
-                      line: 0
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
                       sign: false
                       size: -1
-                      value: 4
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 0
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_2_j_0
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -316,22 +430,30 @@ Module:
                   right:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-                      line: 7
+                      filename: ''
+                      line: 0
                       sign: false
                       size: -1
-                      value: 0
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 1
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_2_j_1
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -348,18 +470,26 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 1
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 2
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_2_j_2
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -376,18 +506,26 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 2
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 3
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_2_j_3
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -404,18 +542,26 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 3
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 4
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_2_j_4
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -423,27 +569,35 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 2
+                      value: 3
                   line: 8
                   right:
                     IntConstN:
                       base: 10
-                      filename: ''
-                      line: 0
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
                       sign: false
                       size: -1
-                      value: 4
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 0
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_3_j_0
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -456,50 +610,30 @@ Module:
                   right:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-                      line: 7
+                      filename: ''
+                      line: 0
                       sign: false
                       size: -1
-                      value: 0
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 1
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_3_j_1
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 3
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 1
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-          line: 8
-          name: x_i_3_j_2
-          right:
-            Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -517,17 +651,61 @@ Module:
                       sign: false
                       size: -1
                       value: 2
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          is_const: false
+          is_var: false
+          lifetime: NONE
+          line: 8
+          name: x_i_3_j_2
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  left:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+                  line: 8
+                  right:
+                    IntConstN:
+                      base: 10
+                      filename: ''
+                      line: 0
+                      sign: false
+                      size: -1
+                      value: 3
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_3_j_3
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -544,46 +722,26 @@ Module:
                       line: 0
                       sign: false
                       size: -1
-                      value: 3
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      value: 4
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
           name: x_i_3_j_4
-          right:
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 3
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 4
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-          line: 8
-          name: x_i_4_j_0
-          right:
-            Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -596,22 +754,30 @@ Module:
                   right:
                     IntConstN:
                       base: 10
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 7
                       sign: false
                       size: -1
                       value: 0
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
-          name: x_i_4_j_1
-          right:
+          name: x_i_4_j_0
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -629,17 +795,25 @@ Module:
                       sign: false
                       size: -1
                       value: 1
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
-          name: x_i_4_j_2
-          right:
+          name: x_i_4_j_1
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -657,17 +831,25 @@ Module:
                       sign: false
                       size: -1
                       value: 2
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
-          name: x_i_4_j_3
-          right:
+          name: x_i_4_j_2
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -685,17 +867,25 @@ Module:
                       sign: false
                       size: -1
                       value: 3
-      - Integer:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          is_const: false
+          is_var: false
+          lifetime: NONE
           line: 8
-          name: x_i_4_j_4
-          right:
+          name: x_i_4_j_3
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          init:
             Rvalue:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               var:
                 Times:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   left:
                     IntConstN:
                       base: 10
@@ -713,100 +903,110 @@ Module:
                       sign: false
                       size: -1
                       value: 4
+          is_const: false
+          is_var: false
+          lifetime: NONE
+          line: 8
+          name: x_i_4_j_4
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
       line: 5
   - GenerateStatement:
-      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+      filename: ../test/passes/transformations/testcases/scope1.v
       items:
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
                           sign: false
                           size: -1
                           value: 0
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
                           sign: false
                           size: -1
                           value: 0
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_0_j_0
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
                           sign: false
                           size: -1
@@ -819,49 +1019,49 @@ Module:
                           size: -1
                           value: 1
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_0_j_1
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
                           sign: false
                           size: -1
@@ -874,49 +1074,49 @@ Module:
                           size: -1
                           value: 2
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_0_j_2
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
                           sign: false
                           size: -1
@@ -929,49 +1129,49 @@ Module:
                           size: -1
                           value: 3
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_0_j_3
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
                           sign: false
                           size: -1
@@ -984,44 +1184,44 @@ Module:
                           size: -1
                           value: 4
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_0_j_4
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1033,50 +1233,50 @@ Module:
                           value: 1
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
                           sign: false
                           size: -1
                           value: 0
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_1_j_0
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1094,44 +1294,44 @@ Module:
                           size: -1
                           value: 1
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_1_j_1
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1149,44 +1349,44 @@ Module:
                           size: -1
                           value: 2
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_1_j_2
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1204,44 +1404,44 @@ Module:
                           size: -1
                           value: 3
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_1_j_3
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1259,44 +1459,44 @@ Module:
                           size: -1
                           value: 4
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_1_j_4
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1308,50 +1508,50 @@ Module:
                           value: 2
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
                           sign: false
                           size: -1
                           value: 0
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_2_j_0
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1369,44 +1569,44 @@ Module:
                           size: -1
                           value: 1
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_2_j_1
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1424,44 +1624,44 @@ Module:
                           size: -1
                           value: 2
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_2_j_2
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1479,44 +1679,44 @@ Module:
                           size: -1
                           value: 3
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_2_j_3
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1534,44 +1734,44 @@ Module:
                           size: -1
                           value: 4
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_2_j_4
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1583,50 +1783,50 @@ Module:
                           value: 3
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
                           sign: false
                           size: -1
                           value: 0
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_3_j_0
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1644,44 +1844,44 @@ Module:
                           size: -1
                           value: 1
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_3_j_1
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1699,44 +1899,44 @@ Module:
                           size: -1
                           value: 2
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_3_j_2
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1754,44 +1954,44 @@ Module:
                           size: -1
                           value: 3
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_3_j_3
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1809,44 +2009,44 @@ Module:
                           size: -1
                           value: 4
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_3_j_4
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1858,50 +2058,50 @@ Module:
                           value: 4
                       - IntConstN:
                           base: 10
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
                           sign: false
                           size: -1
                           value: 0
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_4_j_0
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1919,44 +2119,44 @@ Module:
                           size: -1
                           value: 1
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_4_j_1
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -1974,44 +2174,44 @@ Module:
                           size: -1
                           value: 2
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_4_j_2
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -2029,44 +2229,44 @@ Module:
                           size: -1
                           value: 3
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_4_j_3
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       - Always:
-          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
           senslist:
             Senslist:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               list:
               - Sens:
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
                   sig: null
                   type: ALL
           statement:
             Block:
-              filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+              filename: ../test/passes/transformations/testcases/scope1.v
               line: 16
               scope: ''
               statements:
               - SingleStatement:
                   delay:
                     DelayStatement: null
-                  filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                  filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
                       args:
                       - StringConst:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
@@ -2084,15 +2284,15 @@ Module:
                           size: -1
                           value: 4
                       - Identifier:
-                          filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                          filename: ../test/passes/transformations/testcases/scope1.v
+                          hier:
+                            HierName: null
                           line: 17
                           name: x_i_4_j_4
-                          scope:
-                            IdentifierScope: null
-                      filename: /home/christophe/src/veriparse/lib/test/passes/transformations/testcases/scope1.v
+                      filename: ../test/passes/transformations/testcases/scope1.v
                       line: 17
                       syscall: display
       line: 13
+  lifetime: NONE
   line: 1
   name: scope1
-

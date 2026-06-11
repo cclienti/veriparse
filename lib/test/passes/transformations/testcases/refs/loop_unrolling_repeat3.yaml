@@ -1,298 +1,286 @@
 Module:
   default_nettype: WIRE
-  filename: lib/test/passes/transformations/testcases/repeat3.v
+  filename: ../test/passes/transformations/testcases/repeat3.v
   items:
   - Function:
-      automatic: false
-      filename: lib/test/passes/transformations/testcases/repeat3.v
+      args:
+      - Arg:
+          default_value: null
+          direction: INPUT
+          filename: ../test/passes/transformations/testcases/repeat3.v
+          is_var: false
+          line: 3
+          name: value
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/repeat3.v
+              line: 3
+              signing: NONE
+      filename: ../test/passes/transformations/testcases/repeat3.v
+      lifetime: NONE
       line: 3
       name: myfunc
-      ports:
-      - Ioport:
-          filename: lib/test/passes/transformations/testcases/repeat3.v
-          first:
-            Input:
-              filename: lib/test/passes/transformations/testcases/repeat3.v
-              line: 3
-              name: value
-              sign: true
+      return_type:
+        IntegerType:
+          filename: ../test/passes/transformations/testcases/repeat3.v
           line: 3
-          second:
-            Integer:
-              filename: lib/test/passes/transformations/testcases/repeat3.v
-              line: 3
-              name: value
-              right:
-                Rvalue: null
-      retsign: false
-      rettype: NONE
-      rettype_ref:
-        Integer:
-          filename: lib/test/passes/transformations/testcases/repeat3.v
-          line: 3
-          name: ''
-          right:
-            Rvalue: null
+          signing: NONE
       statements:
       - Block:
-          filename: lib/test/passes/transformations/testcases/repeat3.v
+          filename: ../test/passes/transformations/testcases/repeat3.v
           line: 4
           scope: ''
           statements:
           - BlockingSubstitution:
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 5
                   var:
                     Identifier:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
+                      hier:
+                        HierName: null
                       line: 5
                       name: myfunc
-                      package: ''
-                      scope:
-                        IdentifierScope: null
               line: 5
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 5
                   var:
                     Times:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       left:
                         Identifier:
-                          filename: lib/test/passes/transformations/testcases/repeat3.v
+                          filename: ../test/passes/transformations/testcases/repeat3.v
+                          hier:
+                            HierName: null
                           line: 5
                           name: value
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                       line: 5
                       right:
                         IntConstN:
                           base: 10
-                          filename: lib/test/passes/transformations/testcases/repeat3.v
+                          filename: ../test/passes/transformations/testcases/repeat3.v
                           line: 5
                           sign: false
                           size: -1
                           value: 2
           - BlockingSubstitution:
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               ldelay:
                 DelayStatement: null
               left:
                 Lvalue:
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 6
                   var:
                     Identifier:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
+                      hier:
+                        HierName: null
                       line: 6
                       name: myfunc
-                      package: ''
-                      scope:
-                        IdentifierScope: null
               line: 6
               rdelay:
                 DelayStatement: null
               right:
                 Rvalue:
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 6
                   var:
                     Minus:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       left:
                         Identifier:
-                          filename: lib/test/passes/transformations/testcases/repeat3.v
+                          filename: ../test/passes/transformations/testcases/repeat3.v
+                          hier:
+                            HierName: null
                           line: 6
                           name: myfunc
-                          package: ''
-                          scope:
-                            IdentifierScope: null
                       line: 6
                       right:
                         Identifier:
-                          filename: lib/test/passes/transformations/testcases/repeat3.v
+                          filename: ../test/passes/transformations/testcases/repeat3.v
+                          hier:
+                            HierName: null
                           line: 6
                           name: value
-                          package: ''
-                          scope:
-                            IdentifierScope: null
   - Initial:
-      filename: lib/test/passes/transformations/testcases/repeat3.v
+      filename: ../test/passes/transformations/testcases/repeat3.v
       line: 10
       statement:
         Block:
-          filename: lib/test/passes/transformations/testcases/repeat3.v
+          filename: ../test/passes/transformations/testcases/repeat3.v
           line: 10
           scope: ''
           statements:
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
           - SingleStatement:
               delay:
                 DelayStatement: null
-              filename: lib/test/passes/transformations/testcases/repeat3.v
+              filename: ../test/passes/transformations/testcases/repeat3.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
                   args:
                   - StringConst:
-                      filename: lib/test/passes/transformations/testcases/repeat3.v
+                      filename: ../test/passes/transformations/testcases/repeat3.v
                       line: 12
                       value: repeat!
-                  filename: lib/test/passes/transformations/testcases/repeat3.v
+                  filename: ../test/passes/transformations/testcases/repeat3.v
                   line: 12
                   syscall: display
+  lifetime: NONE
   line: 1
   name: repeat3
