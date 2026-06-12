@@ -1,41 +1,44 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/constant_folding1.v
+  line: 1
+  name: constant_folding1
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Var:
       filename: ../test/passes/transformations/testcases/constant_folding1.v
+      line: 2
+      is_var: false
+      is_const: false
+      lifetime: NONE
+      name: invert
       init:
         Rvalue: null
-      is_const: false
-      is_var: false
-      lifetime: NONE
-      line: 2
-      name: invert
       type:
         RegType:
           filename: ../test/passes/transformations/testcases/constant_folding1.v
           line: 2
+          signing: NONE
           packed_dims:
           - RangeDim:
               filename: ../test/passes/transformations/testcases/constant_folding1.v
+              line: 2
               left:
                 IntConstN:
-                  base: 10
                   filename: ../test/passes/transformations/testcases/constant_folding1.v
                   line: 2
-                  sign: false
+                  base: 10
                   size: -1
+                  sign: false
                   value: 31
-              line: 2
               right:
                 IntConstN:
-                  base: 10
                   filename: ../test/passes/transformations/testcases/constant_folding1.v
                   line: 2
-                  sign: false
+                  base: 10
                   size: -1
+                  sign: false
                   value: 0
-          signing: NONE
   - Initial:
       filename: ../test/passes/transformations/testcases/constant_folding1.v
       line: 4
@@ -47,8 +50,7 @@ Module:
           statements:
           - BlockingSubstitution:
               filename: ../test/passes/transformations/testcases/constant_folding1.v
-              ldelay:
-                DelayStatement: null
+              line: 5
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/constant_folding1.v
@@ -56,25 +58,23 @@ Module:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/constant_folding1.v
-                      hier:
-                        HierName: null
                       line: 5
                       name: invert
-              line: 5
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/constant_folding1.v
                   line: 5
                   var:
                     IntConstN:
-                      base: 16
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 16
                       size: 32
+                      sign: false
                       value: -1
-  lifetime: NONE
-  line: 1
-  name: constant_folding1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

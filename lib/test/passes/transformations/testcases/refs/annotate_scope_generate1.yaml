@@ -1,23 +1,31 @@
 Source:
+  filename: ../test/passes/transformations/testcases/generate1.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/generate1.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/generate1.v
+          line: 1
+          name: generate1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/generate1.v
+              line: 3
               items:
               - Var:
                   filename: ../test/passes/transformations/testcases/generate1.v
+                  line: 4
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: x
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 4
-                  name: x
                   type:
                     IntegerType:
                       filename: ../test/passes/transformations/testcases/generate1.v
@@ -25,94 +33,29 @@ Source:
                       signing: NONE
               - Var:
                   filename: ../test/passes/transformations/testcases/generate1.v
+                  line: 4
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: y
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 4
-                  name: y
                   type:
                     IntegerType:
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 4
                       signing: NONE
               - IfStatement:
-                  cond:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/generate1.v
-                      line: 5
-                      sign: false
-                      size: -1
-                      value: 1
-                  false_statement:
-                    Block:
-                      filename: ../test/passes/transformations/testcases/generate1.v
-                      line: 10
-                      scope: ''
-                      statements:
-                      - Always:
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 11
-                          senslist:
-                            Senslist:
-                              filename: ../test/passes/transformations/testcases/generate1.v
-                              line: 11
-                              list:
-                              - Sens:
-                                  filename: ../test/passes/transformations/testcases/generate1.v
-                                  line: 11
-                                  sig: null
-                                  type: ALL
-                          statement:
-                            Block:
-                              filename: ../test/passes/transformations/testcases/generate1.v
-                              line: 11
-                              scope: ''
-                              statements:
-                              - BlockingSubstitution:
-                                  filename: ../test/passes/transformations/testcases/generate1.v
-                                  ldelay:
-                                    DelayStatement: null
-                                  left:
-                                    Lvalue:
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 12
-                                      var:
-                                        Identifier:
-                                          filename: ../test/passes/transformations/testcases/generate1.v
-                                          hier:
-                                            HierName: null
-                                          line: 12
-                                          name: a
-                                  line: 12
-                                  rdelay:
-                                    DelayStatement: null
-                                  right:
-                                    Rvalue:
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 12
-                                      var:
-                                        Times:
-                                          filename: ../test/passes/transformations/testcases/generate1.v
-                                          left:
-                                            Identifier:
-                                              filename: ../test/passes/transformations/testcases/generate1.v
-                                              hier:
-                                                HierName: null
-                                              line: 12
-                                              name: x
-                                          line: 12
-                                          right:
-                                            Identifier:
-                                              filename: ../test/passes/transformations/testcases/generate1.v
-                                              hier:
-                                                HierName: null
-                                              line: 12
-                                              name: y
                   filename: ../test/passes/transformations/testcases/generate1.v
                   line: 5
+                  cond:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/generate1.v
+                      line: 5
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 1
                   true_statement:
                     Block:
                       filename: ../test/passes/transformations/testcases/generate1.v
@@ -130,8 +73,8 @@ Source:
                               - Sens:
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 6
-                                  sig: null
                                   type: ALL
+                                  sig: null
                           statement:
                             Block:
                               filename: ../test/passes/transformations/testcases/generate1.v
@@ -140,8 +83,7 @@ Source:
                               statements:
                               - BlockingSubstitution:
                                   filename: ../test/passes/transformations/testcases/generate1.v
-                                  ldelay:
-                                    DelayStatement: null
+                                  line: 7
                                   left:
                                     Lvalue:
                                       filename: ../test/passes/transformations/testcases/generate1.v
@@ -149,13 +91,10 @@ Source:
                                       var:
                                         Identifier:
                                           filename: ../test/passes/transformations/testcases/generate1.v
-                                          hier:
-                                            HierName: null
                                           line: 7
                                           name: a
-                                  line: 7
-                                  rdelay:
-                                    DelayStatement: null
+                                          hier:
+                                            HierName: null
                                   right:
                                     Rvalue:
                                       filename: ../test/passes/transformations/testcases/generate1.v
@@ -163,38 +102,117 @@ Source:
                                       var:
                                         Plus:
                                           filename: ../test/passes/transformations/testcases/generate1.v
+                                          line: 7
                                           left:
                                             Identifier:
                                               filename: ../test/passes/transformations/testcases/generate1.v
-                                              hier:
-                                                HierName: null
                                               line: 7
                                               name: x
-                                          line: 7
+                                              hier:
+                                                HierName: null
                                           right:
                                             Identifier:
                                               filename: ../test/passes/transformations/testcases/generate1.v
-                                              hier:
-                                                HierName: null
                                               line: 7
                                               name: y
-              line: 3
+                                              hier:
+                                                HierName: null
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
+                  false_statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/generate1.v
+                      line: 10
+                      scope: ''
+                      statements:
+                      - Always:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 11
+                          senslist:
+                            Senslist:
+                              filename: ../test/passes/transformations/testcases/generate1.v
+                              line: 11
+                              list:
+                              - Sens:
+                                  filename: ../test/passes/transformations/testcases/generate1.v
+                                  line: 11
+                                  type: ALL
+                                  sig: null
+                          statement:
+                            Block:
+                              filename: ../test/passes/transformations/testcases/generate1.v
+                              line: 11
+                              scope: ''
+                              statements:
+                              - BlockingSubstitution:
+                                  filename: ../test/passes/transformations/testcases/generate1.v
+                                  line: 12
+                                  left:
+                                    Lvalue:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 12
+                                      var:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/generate1.v
+                                          line: 12
+                                          name: a
+                                          hier:
+                                            HierName: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 12
+                                      var:
+                                        Times:
+                                          filename: ../test/passes/transformations/testcases/generate1.v
+                                          line: 12
+                                          left:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/generate1.v
+                                              line: 12
+                                              name: x
+                                              hier:
+                                                HierName: null
+                                          right:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/generate1.v
+                                              line: 12
+                                              name: y
+                                              hier:
+                                                HierName: null
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/generate1.v
+              line: 17
               items:
               - CaseStatement:
+                  filename: ../test/passes/transformations/testcases/generate1.v
+                  line: 18
+                  comp:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/generate1.v
+                      line: 18
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
                   caselist:
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 19
-                          sign: false
-                          size: -1
-                          value: 0
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 19
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 19
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -206,32 +224,32 @@ Source:
                               line: 19
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 19
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 19
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 19
                                           value: 0
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 19
-                                      syscall: display
+                                  delay:
+                                    DelayStatement: null
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 20
-                          sign: false
-                          size: -1
-                          value: 1
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 20
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 20
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -243,32 +261,32 @@ Source:
                               line: 20
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 20
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 20
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 20
                                           value: 1
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 20
-                                      syscall: display
+                                  delay:
+                                    DelayStatement: null
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 21
-                          sign: false
-                          size: -1
-                          value: 2
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 21
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 21
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 2
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -280,32 +298,32 @@ Source:
                               line: 21
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 21
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 21
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 21
                                           value: 2
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 21
-                                      syscall: display
+                                  delay:
+                                    DelayStatement: null
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 22
-                          sign: false
-                          size: -1
-                          value: 3
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 22
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -317,48 +335,48 @@ Source:
                               line: 22
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 22
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 22
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 22
                                           value: 3
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 22
-                                      syscall: display
-                  comp:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/generate1.v
-                      line: 18
-                      sign: false
-                      size: -1
-                      value: 3
-                  filename: ../test/passes/transformations/testcases/generate1.v
-                  line: 18
-              line: 17
+                                  delay:
+                                    DelayStatement: null
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/generate1.v
+              line: 26
               items:
               - CaseStatement:
+                  filename: ../test/passes/transformations/testcases/generate1.v
+                  line: 27
+                  comp:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/generate1.v
+                      line: 27
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
                   caselist:
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 28
-                          sign: false
-                          size: -1
-                          value: 0
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 28
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 28
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -370,32 +388,32 @@ Source:
                               line: 28
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 28
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 28
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 28
                                           value: 0
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 28
-                                      syscall: display
+                                  delay:
+                                    DelayStatement: null
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 29
-                          sign: false
-                          size: -1
-                          value: 1
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 29
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 29
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -407,32 +425,32 @@ Source:
                               line: 29
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 29
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 29
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 29
                                           value: 1
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 29
-                                      syscall: display
+                                  delay:
+                                    DelayStatement: null
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 30
-                          sign: false
-                          size: -1
-                          value: 2
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 30
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 30
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 2
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -444,32 +462,32 @@ Source:
                               line: 30
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 30
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 30
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 30
                                           value: 2
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 30
-                                      syscall: display
+                                  delay:
+                                    DelayStatement: null
                   - Case:
-                      cond:
-                      - IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 3
                       filename: ../test/passes/transformations/testcases/generate1.v
                       line: 31
+                      cond:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 31
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -481,66 +499,36 @@ Source:
                               line: 31
                               statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 31
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 31
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 31
                                           value: 3
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      line: 31
-                                      syscall: display
-                  comp:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/generate1.v
-                      line: 27
-                      sign: false
-                      size: -1
-                      value: 3
-                  filename: ../test/passes/transformations/testcases/generate1.v
-                  line: 27
-              line: 26
+                                  delay:
+                                    DelayStatement: null
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/generate1.v
+              line: 35
               items:
               - Genvar:
                   filename: ../test/passes/transformations/testcases/generate1.v
                   line: 36
                   name: i
               - ForStatement:
-                  cond:
-                    LessThan:
-                      filename: ../test/passes/transformations/testcases/generate1.v
-                      left:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          hier:
-                            HierName: null
-                          line: 37
-                          name: i
-                      line: 37
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 37
-                          sign: false
-                          size: -1
-                          value: 10
                   filename: ../test/passes/transformations/testcases/generate1.v
                   line: 37
-                  post:
+                  pre:
                     BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/generate1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 37
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -548,13 +536,60 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/generate1.v
-                              hier:
-                                HierName: null
                               line: 37
                               name: i
-                      line: 37
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/generate1.v
+                              line: 37
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
                       rdelay:
                         DelayStatement: null
+                  cond:
+                    LessThan:
+                      filename: ../test/passes/transformations/testcases/generate1.v
+                      line: 37
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          name: i
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 10
+                  post:
+                    BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/generate1.v
+                      line: 37
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/generate1.v
+                          line: 37
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/generate1.v
+                              line: 37
+                              name: i
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/generate1.v
@@ -562,53 +597,26 @@ Source:
                           var:
                             Plus:
                               filename: ../test/passes/transformations/testcases/generate1.v
+                              line: 37
                               left:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/generate1.v
-                                  hier:
-                                    HierName: null
                                   line: 37
                                   name: i
-                              line: 37
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 37
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                  pre:
-                    BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/generate1.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 37
-                          var:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/generate1.v
-                              hier:
-                                HierName: null
-                              line: 37
-                              name: i
-                      line: 37
                       rdelay:
                         DelayStatement: null
-                      right:
-                        Rvalue:
-                          filename: ../test/passes/transformations/testcases/generate1.v
-                          line: 37
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/generate1.v
-                              line: 37
-                              sign: false
-                              size: -1
-                              value: 0
                   statement:
                     Block:
                       filename: ../test/passes/transformations/testcases/generate1.v
@@ -620,32 +628,12 @@ Source:
                           line: 38
                           name: j
                       - ForStatement:
-                          cond:
-                            GreaterEq:
-                              filename: ../test/passes/transformations/testcases/generate1.v
-                              left:
-                                Identifier:
-                                  filename: ../test/passes/transformations/testcases/generate1.v
-                                  hier:
-                                    HierName: null
-                                  line: 39
-                                  name: j
-                              line: 39
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/generate1.v
-                                  line: 39
-                                  sign: false
-                                  size: -1
-                                  value: 1
                           filename: ../test/passes/transformations/testcases/generate1.v
                           line: 39
-                          post:
+                          pre:
                             BlockingSubstitution:
                               filename: ../test/passes/transformations/testcases/generate1.v
-                              ldelay:
-                                DelayStatement: null
+                              line: 39
                               left:
                                 Lvalue:
                                   filename: ../test/passes/transformations/testcases/generate1.v
@@ -653,13 +641,59 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../test/passes/transformations/testcases/generate1.v
-                                      hier:
-                                        HierName: null
                                       line: 39
                                       name: j
-                              line: 39
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 39
+                                      name: i
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
                               rdelay:
                                 DelayStatement: null
+                          cond:
+                            GreaterEq:
+                              filename: ../test/passes/transformations/testcases/generate1.v
+                              line: 39
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  name: j
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          post:
+                            BlockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/generate1.v
+                              line: 39
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/generate1.v
+                                  line: 39
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 39
+                                      name: j
+                                      hier:
+                                        HierName: null
                               right:
                                 Rvalue:
                                   filename: ../test/passes/transformations/testcases/generate1.v
@@ -667,52 +701,26 @@ Source:
                                   var:
                                     Minus:
                                       filename: ../test/passes/transformations/testcases/generate1.v
+                                      line: 39
                                       left:
                                         Identifier:
                                           filename: ../test/passes/transformations/testcases/generate1.v
-                                          hier:
-                                            HierName: null
                                           line: 39
                                           name: j
-                                      line: 39
+                                          hier:
+                                            HierName: null
                                       right:
                                         IntConstN:
-                                          base: 10
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 39
-                                          sign: false
+                                          base: 10
                                           size: -1
+                                          sign: false
                                           value: 1
-                          pre:
-                            BlockingSubstitution:
-                              filename: ../test/passes/transformations/testcases/generate1.v
                               ldelay:
                                 DelayStatement: null
-                              left:
-                                Lvalue:
-                                  filename: ../test/passes/transformations/testcases/generate1.v
-                                  line: 39
-                                  var:
-                                    Identifier:
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      hier:
-                                        HierName: null
-                                      line: 39
-                                      name: j
-                              line: 39
                               rdelay:
                                 DelayStatement: null
-                              right:
-                                Rvalue:
-                                  filename: ../test/passes/transformations/testcases/generate1.v
-                                  line: 39
-                                  var:
-                                    Identifier:
-                                      filename: ../test/passes/transformations/testcases/generate1.v
-                                      hier:
-                                        HierName: null
-                                      line: 39
-                                      name: i
                           statement:
                             Block:
                               filename: ../test/passes/transformations/testcases/generate1.v
@@ -721,37 +729,37 @@ Source:
                               statements:
                               - Var:
                                   filename: ../test/passes/transformations/testcases/generate1.v
+                                  line: 40
+                                  is_var: false
+                                  is_const: false
+                                  lifetime: NONE
+                                  name: R
                                   init:
                                     Rvalue: null
-                                  is_const: false
-                                  is_var: false
-                                  lifetime: NONE
-                                  line: 40
-                                  name: R
                                   type:
                                     RegType:
                                       filename: ../test/passes/transformations/testcases/generate1.v
                                       line: 40
+                                      signing: NONE
                                       packed_dims:
                                       - RangeDim:
                                           filename: ../test/passes/transformations/testcases/generate1.v
+                                          line: 40
                                           left:
                                             Identifier:
                                               filename: ../test/passes/transformations/testcases/generate1.v
-                                              hier:
-                                                HierName: null
                                               line: 40
                                               name: i
-                                          line: 40
+                                              hier:
+                                                HierName: null
                                           right:
                                             IntConstN:
-                                              base: 10
                                               filename: ../test/passes/transformations/testcases/generate1.v
                                               line: 40
-                                              sign: false
+                                              base: 10
                                               size: -1
+                                              sign: false
                                               value: 0
-                                      signing: NONE
                               - Initial:
                                   filename: ../test/passes/transformations/testcases/generate1.v
                                   line: 41
@@ -763,8 +771,7 @@ Source:
                                       statements:
                                       - BlockingSubstitution:
                                           filename: ../test/passes/transformations/testcases/generate1.v
-                                          ldelay:
-                                            DelayStatement: null
+                                          line: 42
                                           left:
                                             Lvalue:
                                               filename: ../test/passes/transformations/testcases/generate1.v
@@ -772,13 +779,10 @@ Source:
                                               var:
                                                 Identifier:
                                                   filename: ../test/passes/transformations/testcases/generate1.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 42
                                                   name: R
-                                          line: 42
-                                          rdelay:
-                                            DelayStatement: null
+                                                  hier:
+                                                    HierName: null
                                           right:
                                             Rvalue:
                                               filename: ../test/passes/transformations/testcases/generate1.v
@@ -786,18 +790,23 @@ Source:
                                               var:
                                                 Identifier:
                                                   filename: ../test/passes/transformations/testcases/generate1.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 42
                                                   name: i
-                                      - SingleStatement:
-                                          delay:
+                                                  hier:
+                                                    HierName: null
+                                          ldelay:
                                             DelayStatement: null
+                                          rdelay:
+                                            DelayStatement: null
+                                      - SingleStatement:
                                           filename: ../test/passes/transformations/testcases/generate1.v
                                           line: 43
                                           scope: ''
                                           statement:
                                             SystemCall:
+                                              filename: ../test/passes/transformations/testcases/generate1.v
+                                              line: 43
+                                              syscall: display
                                               args:
                                               - StringConst:
                                                   filename: ../test/passes/transformations/testcases/generate1.v
@@ -805,18 +814,9 @@ Source:
                                                   value: '%m'
                                               - Identifier:
                                                   filename: ../test/passes/transformations/testcases/generate1.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 43
                                                   name: R
-                                              filename: ../test/passes/transformations/testcases/generate1.v
-                                              line: 43
-                                              syscall: display
-              line: 35
-          lifetime: NONE
-          line: 1
-          name: generate1
-      filename: ../test/passes/transformations/testcases/generate1.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/generate1.v
-  line: 1
+                                                  hier:
+                                                    HierName: null
+                                          delay:
+                                            DelayStatement: null

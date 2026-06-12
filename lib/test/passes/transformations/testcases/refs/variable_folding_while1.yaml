@@ -1,20 +1,27 @@
 Source:
+  filename: ../test/passes/transformations/testcases/while1.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/while1.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/while1.v
+          line: 1
+          name: while1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../test/passes/transformations/testcases/while1.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 3
-              name: i
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/while1.v
@@ -22,13 +29,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/while1.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: j
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 3
-              name: j
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/while1.v
@@ -45,8 +52,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 6
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -54,89 +60,89 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 6
                               name: i
-                      line: 6
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 6
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/while1.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 8
-                          var:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
-                              line: 8
-                              name: j
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/while1.v
                       line: 8
-                      rdelay:
-                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/while1.v
+                              line: 8
+                              name: j
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 8
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -144,59 +150,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -204,59 +210,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -264,59 +270,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -324,89 +330,89 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/while1.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 8
-                          var:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
-                              line: 8
-                              name: j
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/while1.v
                       line: 8
-                      rdelay:
-                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/while1.v
+                              line: 8
+                              name: j
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 8
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -414,59 +420,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -474,59 +480,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -534,59 +540,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -594,89 +600,89 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/while1.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 8
-                          var:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
-                              line: 8
-                              name: j
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/while1.v
                       line: 8
-                      rdelay:
-                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/while1.v
+                              line: 8
+                              name: j
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 8
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -684,59 +690,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -744,59 +750,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -804,59 +810,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -864,89 +870,89 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/while1.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 8
-                          var:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
-                              line: 8
-                              name: j
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/while1.v
                       line: 8
-                      rdelay:
-                        DelayStatement: null
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/while1.v
+                              line: 8
+                              name: j
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 8
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -954,59 +960,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -1014,59 +1020,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -1074,59 +1080,59 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/while1.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/while1.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/while1.v
                               line: 10
                               value: while i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/while1.v
-                          line: 10
-                          syscall: display
+                      delay:
+                        DelayStatement: null
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/while1.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
@@ -1134,29 +1140,23 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/while1.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: j
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/while1.v
                           line: 11
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-          lifetime: NONE
-          line: 1
-          name: while1
-      filename: ../test/passes/transformations/testcases/while1.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/while1.v
-  line: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

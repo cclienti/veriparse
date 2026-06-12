@@ -1,6 +1,9 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/repeat1.v
+  line: 1
+  name: repeat1
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Initial:
       filename: ../test/passes/transformations/testcases/repeat1.v
@@ -12,165 +15,162 @@ Module:
           scope: ''
           statements:
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
+              delay:
+                DelayStatement: null
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/repeat1.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/repeat1.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/repeat1.v
                       line: 5
                       value: repeat!
-                  filename: ../test/passes/transformations/testcases/repeat1.v
-                  line: 5
-                  syscall: display
-  lifetime: NONE
-  line: 1
-  name: repeat1
+              delay:
+                DelayStatement: null

@@ -1,132 +1,277 @@
 Source:
+  filename: ../test/passes/transformations/testcases/instance7.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/instance7.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance7.v
+          line: 1
+          name: instance7
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 2
+              name: a
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 2
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 2
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance7.v
+                              line: 2
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance7.v
+                              line: 2
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 3
+              name: b
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 3
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 3
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance7.v
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance7.v
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 4
+              name: c
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 4
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance7.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance7.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 36
+              is_vectored: false
+              is_scalared: false
+              name: my_mod0_inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 36
-              name: my_mod0_inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 36
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 36
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 36
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 36
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 36
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 37
+              is_vectored: false
+              is_scalared: false
+              name: my_mod0_inst_y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 37
-              name: my_mod0_inst_y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 37
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 37
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 37
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 37
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 37
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 38
+              is_vectored: false
+              is_scalared: false
+              name: my_mod0_inst_z
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 38
-              name: my_mod0_inst_z
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 38
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 38
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 38
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 38
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 38
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ''
-              ldelay:
-                DelayStatement: null
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -134,13 +279,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: my_mod0_inst_x
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -148,14 +290,17 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance7.v
-                      hier:
-                        HierName: null
                       line: 8
                       name: a
-          - Assign:
-              filename: ''
+                      hier:
+                        HierName: null
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -163,13 +308,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: my_mod0_inst_y
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -177,10 +319,14 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance7.v
-                      hier:
-                        HierName: null
                       line: 9
                       name: b
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 40
@@ -192,8 +338,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 40
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -201,13 +347,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 41
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 41
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -215,140 +362,138 @@ Source:
                               value: x=%0d, y=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 41
                               name: my_mod0_inst_x
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance7.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance7.v
                               line: 41
                               name: my_mod0_inst_y
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 41
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 46
+              is_vectored: false
+              is_scalared: false
+              name: my_mod1_inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 46
-              name: my_mod1_inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 46
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 46
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 46
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 46
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 46
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 47
+              is_vectored: false
+              is_scalared: false
+              name: my_mod1_inst_y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 47
-              name: my_mod1_inst_y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 47
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 47
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 47
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 47
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 47
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 48
+              is_vectored: false
+              is_scalared: false
+              name: my_mod1_inst_z
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 48
-              name: my_mod1_inst_z
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 48
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 48
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 48
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 48
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 48
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ''
-              ldelay:
-                DelayStatement: null
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -356,13 +501,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: my_mod1_inst_x
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -370,14 +512,17 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance7.v
-                      hier:
-                        HierName: null
                       line: 14
                       name: a
-          - Assign:
-              filename: ''
+                      hier:
+                        HierName: null
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -385,13 +530,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: my_mod1_inst_z
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -399,10 +541,14 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance7.v
-                      hier:
-                        HierName: null
                       line: 15
                       name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 50
@@ -414,8 +560,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 50
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -423,13 +569,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 51
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 51
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -437,140 +584,138 @@ Source:
                               value: x=%0d, z=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 51
                               name: my_mod1_inst_x
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance7.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance7.v
                               line: 51
                               name: my_mod1_inst_z
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 51
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 56
+              is_vectored: false
+              is_scalared: false
+              name: my_mod2_inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 56
-              name: my_mod2_inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 56
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 56
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 56
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 56
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 56
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 57
+              is_vectored: false
+              is_scalared: false
+              name: my_mod2_inst_y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 57
-              name: my_mod2_inst_y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 57
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 57
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 57
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 57
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 57
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 58
+              is_vectored: false
+              is_scalared: false
+              name: my_mod2_inst_z
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 58
-              name: my_mod2_inst_z
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 58
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 58
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 58
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 58
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 58
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ''
-              ldelay:
-                DelayStatement: null
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -578,13 +723,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: my_mod2_inst_y
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -592,14 +734,17 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance7.v
-                      hier:
-                        HierName: null
                       line: 20
                       name: b
-          - Assign:
-              filename: ''
+                      hier:
+                        HierName: null
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -607,13 +752,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: my_mod2_inst_z
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -621,10 +763,14 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance7.v
-                      hier:
-                        HierName: null
                       line: 21
                       name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 60
@@ -636,8 +782,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 60
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -645,13 +791,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 61
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 61
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -659,140 +806,138 @@ Source:
                               value: y=%0d, z=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 61
                               name: my_mod2_inst_y
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance7.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance7.v
                               line: 61
                               name: my_mod2_inst_z
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 61
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 66
+              is_vectored: false
+              is_scalared: false
+              name: my_mod3_inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 66
-              name: my_mod3_inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 66
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 66
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 66
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 66
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 66
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 67
+              is_vectored: false
+              is_scalared: false
+              name: my_mod3_inst_y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 67
-              name: my_mod3_inst_y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 67
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 67
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 67
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 67
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 67
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 68
+              is_vectored: false
+              is_scalared: false
+              name: my_mod3_inst_z
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 68
-              name: my_mod3_inst_z
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 68
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 68
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 68
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 68
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 68
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ''
-              ldelay:
-                DelayStatement: null
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -800,13 +945,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: my_mod3_inst_z
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -814,10 +956,14 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance7.v
-                      hier:
-                        HierName: null
                       line: 26
                       name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 70
@@ -829,8 +975,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 70
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -838,13 +984,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 71
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 71
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -852,130 +999,129 @@ Source:
                               value: z=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 71
                               name: my_mod3_inst_z
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 71
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 76
+              is_vectored: false
+              is_scalared: false
+              name: my_mod4_inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 76
-              name: my_mod4_inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 76
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 76
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 76
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 76
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 76
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 77
+              is_vectored: false
+              is_scalared: false
+              name: my_mod4_inst_y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 77
-              name: my_mod4_inst_y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 77
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 77
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 77
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 77
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 77
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 78
+              is_vectored: false
+              is_scalared: false
+              name: my_mod4_inst_z
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 78
-              name: my_mod4_inst_z
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 78
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance7.v
+                      line: 78
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 78
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 78
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 78
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Initial:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 80
@@ -986,21 +1132,21 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 81
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 81
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 81
                               value: nothing
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 81
-                          syscall: display
+                      delay:
+                        DelayStatement: null
           - Initial:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 86
@@ -1011,305 +1157,191 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 87
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 87
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 87
                               value: no ports in the module
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 87
-                          syscall: display
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance7.v
+          line: 35
+          name: my_mod0
           lifetime: NONE
-          line: 1
-          name: instance7
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: a
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/instance7.v
-                      line: 2
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance7.v
-                              line: 2
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 2
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance7.v
-                              line: 2
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 2
-              name: a
+              line: 35
+              name: x
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: b
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/instance7.v
-                      line: 3
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance7.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 3
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance7.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 3
-              name: b
+              line: 35
+              name: y
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: c
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/instance7.v
-                      line: 4
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance7.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 4
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance7.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 4
-              name: c
-      - Module:
-          default_nettype: WIRE
-          filename: ../test/passes/transformations/testcases/instance7.v
+              line: 35
+              name: z
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 36
+              name: x
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 36
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 36
-                  name: x
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 36
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 36
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 36
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 36
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 36
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 36
-              name: x
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 37
+              name: y
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 37
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 37
-                  name: y
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 37
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 37
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 37
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 37
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 37
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 37
-              name: y
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 38
+              name: z
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 38
+                  is_vectored: false
+                  is_scalared: false
+                  name: z
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 38
-                  name: z
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 38
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 38
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 38
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 38
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 38
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 38
-              name: z
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 40
@@ -1321,8 +1353,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 40
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/instance7.v
@@ -1330,13 +1362,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 41
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 41
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -1344,189 +1377,188 @@ Source:
                               value: x=%0d, y=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 41
                               name: x
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance7.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance7.v
                               line: 41
                               name: y
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 41
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance7.v
+          line: 45
+          name: my_mod1
           lifetime: NONE
-          line: 35
-          name: my_mod0
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 35
+              line: 45
               name: x
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 35
+              line: 45
               name: y
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 35
+              line: 45
               name: z
-      - Module:
-          default_nettype: WIRE
-          filename: ../test/passes/transformations/testcases/instance7.v
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 46
+              name: x
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 46
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 46
-                  name: x
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 46
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 46
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 46
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 46
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 46
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 46
-              name: x
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 47
+              name: y
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 47
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 47
-                  name: y
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 47
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 47
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 47
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 47
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 47
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 47
-              name: y
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 48
+              name: z
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 48
+                  is_vectored: false
+                  is_scalared: false
+                  name: z
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 48
-                  name: z
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 48
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 48
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 48
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 48
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 48
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 48
-              name: z
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 50
@@ -1538,8 +1570,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 50
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/instance7.v
@@ -1547,13 +1579,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 51
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 51
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -1561,189 +1594,188 @@ Source:
                               value: x=%0d, z=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 51
                               name: x
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance7.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance7.v
                               line: 51
                               name: z
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 51
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance7.v
+          line: 55
+          name: my_mod2
           lifetime: NONE
-          line: 45
-          name: my_mod1
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 45
+              line: 55
               name: x
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 45
+              line: 55
               name: y
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 45
+              line: 55
               name: z
-      - Module:
-          default_nettype: WIRE
-          filename: ../test/passes/transformations/testcases/instance7.v
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 56
+              name: x
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 56
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 56
-                  name: x
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 56
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 56
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 56
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 56
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 56
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 56
-              name: x
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 57
+              name: y
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 57
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 57
-                  name: y
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 57
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 57
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 57
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 57
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 57
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 57
-              name: y
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 58
+              name: z
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 58
+                  is_vectored: false
+                  is_scalared: false
+                  name: z
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 58
-                  name: z
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 58
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 58
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 58
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 58
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 58
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 58
-              name: z
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 60
@@ -1755,8 +1787,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 60
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/instance7.v
@@ -1764,13 +1796,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 61
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 61
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -1778,189 +1811,188 @@ Source:
                               value: y=%0d, z=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 61
                               name: y
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance7.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance7.v
                               line: 61
                               name: z
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 61
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance7.v
+          line: 65
+          name: my_mod3
           lifetime: NONE
-          line: 55
-          name: my_mod2
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 55
+              line: 65
               name: x
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 55
+              line: 65
               name: y
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 55
+              line: 65
               name: z
-      - Module:
-          default_nettype: WIRE
-          filename: ../test/passes/transformations/testcases/instance7.v
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 66
+              name: x
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 66
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 66
-                  name: x
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 66
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 66
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 66
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 66
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 66
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 66
-              name: x
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 67
+              name: y
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 67
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 67
-                  name: y
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 67
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 67
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 67
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 67
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 67
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 67
-              name: y
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 68
+              name: z
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 68
+                  is_vectored: false
+                  is_scalared: false
+                  name: z
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 68
-                  name: z
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 68
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 68
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 68
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 68
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 68
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 68
-              name: z
           - Always:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 70
@@ -1972,8 +2004,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 70
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/instance7.v
@@ -1981,13 +2013,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 71
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 71
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
@@ -1995,183 +2028,182 @@ Source:
                               value: z=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance7.v
-                              hier:
-                                HierName: null
                               line: 71
                               name: z
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 71
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance7.v
+          line: 75
+          name: my_mod4
           lifetime: NONE
-          line: 65
-          name: my_mod3
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 65
+              line: 75
               name: x
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 65
+              line: 75
               name: y
-          - Port:
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance7.v
-              line: 65
+              line: 75
               name: z
-      - Module:
-          default_nettype: WIRE
-          filename: ../test/passes/transformations/testcases/instance7.v
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 76
+              name: x
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 76
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 76
-                  name: x
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 76
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 76
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 76
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 76
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 76
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 76
-              name: x
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 77
+              name: y
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 77
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 77
-                  name: y
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 77
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 77
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 77
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 77
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 77
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 77
-              name: y
           - Port:
+              filename: ../test/passes/transformations/testcases/instance7.v
+              line: 78
+              name: z
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance7.v
+                  line: 78
+                  is_vectored: false
+                  is_scalared: false
+                  name: z
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance7.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 78
-                  name: z
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 78
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 78
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 78
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 78
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 78
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 78
-              name: z
           - Initial:
               filename: ../test/passes/transformations/testcases/instance7.v
               line: 80
@@ -2182,52 +2214,27 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 81
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 81
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 81
                               value: nothing
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 81
-                          syscall: display
-          lifetime: NONE
-          line: 75
-          name: my_mod4
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 75
-              name: x
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 75
-              name: y
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../test/passes/transformations/testcases/instance7.v
-              line: 75
-              name: z
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance7.v
+          line: 85
+          name: my_mod5
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Initial:
               filename: ../test/passes/transformations/testcases/instance7.v
@@ -2239,38 +2246,40 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance7.v
                       line: 87
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance7.v
+                          line: 87
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance7.v
                               line: 87
                               value: no ports in the module
-                          filename: ../test/passes/transformations/testcases/instance7.v
-                          line: 87
-                          syscall: display
-          lifetime: NONE
-          line: 85
-          name: my_mod5
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance7.v
+          line: 91
+          name: testbench
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Instancelist:
               filename: ../test/passes/transformations/testcases/instance7.v
+              line: 92
+              module: instance7
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../test/passes/transformations/testcases/instance7.v
                   line: 92
                   module: instance7
                   name: inst7
+                  array:
+                    Dimension: null
                   portlist:
                   - PortArg:
                       filename: ''
@@ -2278,11 +2287,11 @@ Source:
                       name: ''
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 92
-                          sign: false
+                          base: 10
                           size: 8
+                          sign: false
                           value: 5
                   - PortArg:
                       filename: ''
@@ -2290,11 +2299,11 @@ Source:
                       name: ''
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 92
-                          sign: false
+                          base: 10
                           size: 8
+                          sign: false
                           value: 6
                   - PortArg:
                       filename: ''
@@ -2302,18 +2311,9 @@ Source:
                       name: ''
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance7.v
                           line: 92
-                          sign: false
+                          base: 10
                           size: 8
+                          sign: false
                           value: 7
-              line: 92
-              module: instance7
-          lifetime: NONE
-          line: 91
-          name: testbench
-      filename: ../test/passes/transformations/testcases/instance7.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/instance7.v
-  line: 1

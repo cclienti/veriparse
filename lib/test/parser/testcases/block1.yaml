@@ -1,10 +1,17 @@
 Source:
+  filename: ../../test/parser/testcases/block1.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/block1.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/block1.v
+          line: 1
+          name: block1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Initial:
               filename: ../../test/parser/testcases/block1.v
@@ -47,6 +54,7 @@ Source:
                       scope: BLOCKB
           - GenerateStatement:
               filename: ../../test/parser/testcases/block1.v
+              line: 18
               items:
               - Block:
                   filename: ../../test/parser/testcases/block1.v
@@ -57,9 +65,9 @@ Source:
                       filename: ../../test/parser/testcases/block1.v
                       line: 20
                       scope: ''
-              line: 18
           - GenerateStatement:
               filename: ../../test/parser/testcases/block1.v
+              line: 25
               items:
               - Block:
                   filename: ../../test/parser/testcases/block1.v
@@ -70,11 +78,3 @@ Source:
                       filename: ../../test/parser/testcases/block1.v
                       line: 27
                       scope: BLOCK1
-              line: 25
-          lifetime: NONE
-          line: 1
-          name: block1
-      filename: ../../test/parser/testcases/block1.v
-      line: 1
-  filename: ../../test/parser/testcases/block1.v
-  line: 1

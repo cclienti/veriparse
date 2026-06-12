@@ -1,33 +1,40 @@
 Source:
+  filename: ../test/passes/transformations/testcases/defparam0.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/defparam0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/defparam0.v
+          line: 1
+          name: parametrized
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Param:
               filename: ../test/passes/transformations/testcases/defparam0.v
-              is_local: false
               line: 2
+              is_local: false
               name: X
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/defparam0.v
-                  line: 2
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam0.v
                   line: 2
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/defparam0.v
                       line: 2
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/defparam0.v
+                  line: 2
+                  signing: NONE
           - Initial:
               filename: ../test/passes/transformations/testcases/defparam0.v
               line: 4
@@ -38,13 +45,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/defparam0.v
                       line: 5
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/defparam0.v
+                          line: 5
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/defparam0.v
@@ -52,43 +60,21 @@ Source:
                               value: X=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/defparam0.v
-                              hier:
-                                HierName: null
                               line: 5
                               name: X
-                          filename: ../test/passes/transformations/testcases/defparam0.v
-                          line: 5
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: parametrized
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/defparam0.v
+          line: 10
+          name: defparam0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Instancelist:
               filename: ../test/passes/transformations/testcases/defparam0.v
-              instances:
-              - Instance:
-                  array:
-                    Dimension: null
-                  filename: ../test/passes/transformations/testcases/defparam0.v
-                  line: 11
-                  module: parametrized
-                  name: modinst2
-                  parameterlist:
-                  - ParamArg:
-                      filename: ../test/passes/transformations/testcases/defparam0.v
-                      line: 11
-                      name: X
-                      value:
-                        IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/defparam0.v
-                          line: 12
-                          sign: false
-                          size: -1
-                          value: 2
               line: 11
               module: parametrized
               parameterlist:
@@ -98,16 +84,30 @@ Source:
                   name: X
                   value:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/defparam0.v
                       line: 12
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 2
-          lifetime: NONE
-          line: 10
-          name: defparam0
-      filename: ../test/passes/transformations/testcases/defparam0.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/defparam0.v
-  line: 1
+              instances:
+              - Instance:
+                  filename: ../test/passes/transformations/testcases/defparam0.v
+                  line: 11
+                  module: parametrized
+                  name: modinst2
+                  array:
+                    Dimension: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../test/passes/transformations/testcases/defparam0.v
+                      line: 11
+                      name: X
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/defparam0.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 2

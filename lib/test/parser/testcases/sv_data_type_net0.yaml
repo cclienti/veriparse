@@ -1,151 +1,151 @@
 Source:
+  filename: ../../test/parser/testcases/sv_data_type_net0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_data_type_net0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_data_type_net0.sv
+          line: 1
+          name: sv_data_type_net0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - WireNet:
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              line: 5
+              is_vectored: false
+              is_scalared: false
+              name: a
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/sv_data_type_net0.sv
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 5
-              name: a
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 5
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                      line: 5
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_net0.sv
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 5
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_net0.sv
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              line: 6
+              is_vectored: false
+              is_scalared: false
+              name: b
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/sv_data_type_net0.sv
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 6
-              name: b
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 6
+                  signing: SIGNED
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                      line: 6
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_net0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 6
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_net0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: SIGNED
           - TriNet:
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              line: 7
+              is_vectored: false
+              is_scalared: false
+              name: c
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/sv_data_type_net0.sv
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 7
-              name: c
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 7
                   signing: NONE
           - WireNet:
+              filename: ../../test/parser/testcases/sv_data_type_net0.sv
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: d
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/sv_data_type_net0.sv
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: d
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_data_type_net0.sv
                   line: 8
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_net0.sv
+                      line: 8
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_net0.sv
                           line: 8
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 8
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_net0.sv
                           line: 8
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-          lifetime: NONE
-          line: 1
-          name: sv_data_type_net0
-      filename: ../../test/parser/testcases/sv_data_type_net0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_data_type_net0.sv
-  line: 1

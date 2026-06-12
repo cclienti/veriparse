@@ -1,155 +1,195 @@
 Source:
+  filename: ../../test/parser/testcases/pragma2.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/pragma2.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/pragma2.v
+          line: 1
+          name: pragma2
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/pragma2.v
+              line: 1
+              name: reset
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma2.v
+              line: 1
+              name: clk
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma2.v
+              line: 1
+              name: in
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma2.v
+              line: 1
+              name: out
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/pragma2.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/pragma2.v
-                      line: 2
-                      signing: NONE
-              direction: INPUT
-              expr: null
               filename: ../../test/parser/testcases/pragma2.v
               line: 2
               name: reset
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../../test/parser/testcases/pragma2.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: reset
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/pragma2.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/pragma2.v
                       line: 2
                       signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/pragma2.v
               line: 2
               name: clk
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../../test/parser/testcases/pragma2.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/pragma2.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: in
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/pragma2.v
+                      line: 2
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma2.v
+              line: 3
+              name: in
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/pragma2.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: in
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/pragma2.v
                       line: 3
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/pragma2.v
+                          line: 3
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma2.v
                               line: 3
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 3
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma2.v
                               line: 3
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/pragma2.v
-              line: 3
-              name: in
           - Port:
+              filename: ../../test/parser/testcases/pragma2.v
+              line: 4
+              name: out
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/pragma2.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: out
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/pragma2.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: out
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     RegType:
                       filename: ../../test/parser/testcases/pragma2.v
                       line: 4
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/pragma2.v
+                          line: 4
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma2.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 15
-                          line: 4
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma2.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../../test/parser/testcases/pragma2.v
-              line: 4
-              name: out
           - Always:
               filename: ../../test/parser/testcases/pragma2.v
               line: 6
@@ -161,8 +201,8 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/pragma2.v
                       line: 6
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../../test/parser/testcases/pragma2.v
@@ -174,41 +214,49 @@ Source:
                       line: 7
                       pragmas:
                       - Pragma:
-                          expression: null
                           filename: ../../test/parser/testcases/pragma2.v
                           line: 7
                           name: full_case
+                          expression: null
                       - Pragma:
-                          expression:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/pragma2.v
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 3
                           filename: ../../test/parser/testcases/pragma2.v
                           line: 7
                           name: other
+                          expression:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/pragma2.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
                       statements:
                       - CaseStatement:
+                          filename: ../../test/parser/testcases/pragma2.v
+                          line: 8
+                          comp:
+                            Identifier:
+                              filename: ../../test/parser/testcases/pragma2.v
+                              line: 8
+                              name: in
+                              hier:
+                                HierName: null
                           caselist:
                           - Case:
-                              cond:
-                              - IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/pragma2.v
-                                  line: 9
-                                  sign: false
-                                  size: -1
-                                  value: 0
                               filename: ../../test/parser/testcases/pragma2.v
                               line: 9
+                              cond:
+                              - IntConstN:
+                                  filename: ../../test/parser/testcases/pragma2.v
+                                  line: 9
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
                               statement:
                                 BlockingSubstitution:
                                   filename: ../../test/parser/testcases/pragma2.v
-                                  ldelay:
-                                    DelayStatement: null
+                                  line: 9
                                   left:
                                     Lvalue:
                                       filename: ../../test/parser/testcases/pragma2.v
@@ -216,13 +264,10 @@ Source:
                                       var:
                                         Identifier:
                                           filename: ../../test/parser/testcases/pragma2.v
-                                          hier:
-                                            HierName: null
                                           line: 9
                                           name: out
-                                  line: 9
-                                  rdelay:
-                                    DelayStatement: null
+                                          hier:
+                                            HierName: null
                                   right:
                                     Rvalue:
                                       filename: ../../test/parser/testcases/pragma2.v
@@ -233,34 +278,37 @@ Source:
                                           line: 9
                                           list:
                                           - IntConstN:
-                                              base: 10
                                               filename: ../../test/parser/testcases/pragma2.v
                                               line: 9
-                                              sign: false
+                                              base: 10
                                               size: 8
+                                              sign: false
                                               value: 0
                                           - Identifier:
                                               filename: ../../test/parser/testcases/pragma2.v
-                                              hier:
-                                                HierName: null
                                               line: 9
                                               name: in
+                                              hier:
+                                                HierName: null
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
                           - Case:
-                              cond:
-                              - IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/pragma2.v
-                                  line: 10
-                                  sign: false
-                                  size: -1
-                                  value: 1
                               filename: ../../test/parser/testcases/pragma2.v
                               line: 10
+                              cond:
+                              - IntConstN:
+                                  filename: ../../test/parser/testcases/pragma2.v
+                                  line: 10
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
                               statement:
                                 BlockingSubstitution:
                                   filename: ../../test/parser/testcases/pragma2.v
-                                  ldelay:
-                                    DelayStatement: null
+                                  line: 10
                                   left:
                                     Lvalue:
                                       filename: ../../test/parser/testcases/pragma2.v
@@ -268,13 +316,10 @@ Source:
                                       var:
                                         Identifier:
                                           filename: ../../test/parser/testcases/pragma2.v
-                                          hier:
-                                            HierName: null
                                           line: 10
                                           name: out
-                                  line: 10
-                                  rdelay:
-                                    DelayStatement: null
+                                          hier:
+                                            HierName: null
                                   right:
                                     Rvalue:
                                       filename: ../../test/parser/testcases/pragma2.v
@@ -282,30 +327,33 @@ Source:
                                       var:
                                         Times:
                                           filename: ../../test/parser/testcases/pragma2.v
+                                          line: 10
                                           left:
                                             IntConstN:
-                                              base: 10
                                               filename: ../../test/parser/testcases/pragma2.v
                                               line: 10
-                                              sign: false
+                                              base: 10
                                               size: -1
+                                              sign: false
                                               value: 2
-                                          line: 10
                                           right:
                                             Identifier:
                                               filename: ../../test/parser/testcases/pragma2.v
-                                              hier:
-                                                HierName: null
                                               line: 10
                                               name: in
+                                              hier:
+                                                HierName: null
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
                           - Case:
                               filename: ../../test/parser/testcases/pragma2.v
                               line: 11
                               statement:
                                 BlockingSubstitution:
                                   filename: ../../test/parser/testcases/pragma2.v
-                                  ldelay:
-                                    DelayStatement: null
+                                  line: 11
                                   left:
                                     Lvalue:
                                       filename: ../../test/parser/testcases/pragma2.v
@@ -313,13 +361,10 @@ Source:
                                       var:
                                         Identifier:
                                           filename: ../../test/parser/testcases/pragma2.v
-                                          hier:
-                                            HierName: null
                                           line: 11
                                           name: out
-                                  line: 11
-                                  rdelay:
-                                    DelayStatement: null
+                                          hier:
+                                            HierName: null
                                   right:
                                     Rvalue:
                                       filename: ../../test/parser/testcases/pragma2.v
@@ -327,43 +372,38 @@ Source:
                                       var:
                                         Minus:
                                           filename: ../../test/parser/testcases/pragma2.v
+                                          line: 11
                                           left:
                                             Times:
                                               filename: ../../test/parser/testcases/pragma2.v
+                                              line: 11
                                               left:
                                                 IntConstN:
-                                                  base: 10
                                                   filename: ../../test/parser/testcases/pragma2.v
                                                   line: 11
-                                                  sign: false
+                                                  base: 10
                                                   size: -1
+                                                  sign: false
                                                   value: 2
-                                              line: 11
                                               right:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/pragma2.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 11
                                                   name: in
-                                          line: 11
+                                                  hier:
+                                                    HierName: null
                                           right:
                                             IntConstN:
-                                              base: 10
                                               filename: ../../test/parser/testcases/pragma2.v
                                               line: 11
-                                              sign: false
+                                              base: 10
                                               size: -1
+                                              sign: false
                                               value: 1
-                          comp:
-                            Identifier:
-                              filename: ../../test/parser/testcases/pragma2.v
-                              hier:
-                                HierName: null
-                              line: 8
-                              name: in
-                          filename: ../../test/parser/testcases/pragma2.v
-                          line: 8
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
           - Always:
               filename: ../../test/parser/testcases/pragma2.v
               line: 15
@@ -375,27 +415,28 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/pragma2.v
                       line: 15
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Pragmalist:
                   filename: ../../test/parser/testcases/pragma2.v
                   line: 15
                   pragmas:
                   - Pragma:
-                      expression: null
                       filename: ../../test/parser/testcases/pragma2.v
                       line: 15
                       name: pragma
+                      expression: null
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../../test/parser/testcases/pragma2.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../../test/parser/testcases/pragma2.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../../test/parser/testcases/pragma2.v
@@ -403,50 +444,9 @@ Source:
                               value: out=%d
                           - Identifier:
                               filename: ../../test/parser/testcases/pragma2.v
-                              hier:
-                                HierName: null
                               line: 15
                               name: out
-                          filename: ../../test/parser/testcases/pragma2.v
-                          line: 15
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: pragma2
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma2.v
-              line: 1
-              name: reset
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma2.v
-              line: 1
-              name: clk
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma2.v
-              line: 1
-              name: in
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma2.v
-              line: 1
-              name: out
-      filename: ../../test/parser/testcases/pragma2.v
-      line: 1
-  filename: ../../test/parser/testcases/pragma2.v
-  line: 1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null

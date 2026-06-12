@@ -1,103 +1,86 @@
 Source:
+  filename: ../test/passes/transformations/testcases/instance10.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/instance10.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance10.v
+          line: 1
+          name: instance10
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Param:
               filename: ../test/passes/transformations/testcases/instance10.v
-              is_local: false
               line: 2
+              is_local: false
               name: MY_X
-              type:
-                IntegerType:
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 2
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 2
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 2
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 5
-          - Param:
-              filename: ../test/passes/transformations/testcases/instance10.v
-              is_local: false
-              line: 3
-              name: MY_Y
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 3
+                  line: 2
                   signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/instance10.v
+              line: 3
+              is_local: false
+              name: MY_Y
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 3
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 3
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 6
-          - Param:
-              filename: ../test/passes/transformations/testcases/instance10.v
-              is_local: false
-              line: 4
-              name: MY_Z
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 4
+                  line: 3
                   signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/instance10.v
+              line: 4
+              is_local: false
+              name: MY_Z
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 4
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 4
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 7
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 4
+                  signing: NONE
           - Instancelist:
               filename: ../test/passes/transformations/testcases/instance10.v
-              instances:
-              - Instance:
-                  array:
-                    Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 6
-                  module: my_mod
-                  name: mod0
-                  parameterlist:
-                  - ParamArg:
-                      filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 6
-                      name: X
-                      value: null
-                  - ParamArg:
-                      filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 6
-                      name: Y
-                      value: null
-                  - ParamArg:
-                      filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 6
-                      name: Z
-                      value: null
               line: 6
               module: my_mod
               parameterlist:
@@ -116,38 +99,32 @@ Source:
                   line: 6
                   name: Z
                   value: null
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 6
+                  module: my_mod
+                  name: mod0
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 7
-                  module: my_mod
-                  name: mod1
                   parameterlist:
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 7
+                      line: 6
                       name: X
-                      value:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          hier:
-                            HierName: null
-                          line: 7
-                          name: MY_X
+                      value: null
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 7
+                      line: 6
                       name: Y
                       value: null
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 7
+                      line: 6
                       name: Z
                       value: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 7
               module: my_mod
               parameterlist:
@@ -158,10 +135,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 7
                       name: MY_X
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 7
@@ -172,38 +149,38 @@ Source:
                   line: 7
                   name: Z
                   value: null
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 7
+                  module: my_mod
+                  name: mod1
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 8
-                  module: my_mod
-                  name: mod2
                   parameterlist:
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 8
+                      line: 7
                       name: X
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 7
+                          name: MY_X
                           hier:
                             HierName: null
-                          line: 8
-                          name: MY_X
                   - ParamArg:
-                      filename: ''
-                      line: 0
+                      filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 7
                       name: Y
                       value: null
                   - ParamArg:
-                      filename: ''
-                      line: 0
+                      filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 7
                       name: Z
                       value: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 8
               module: my_mod
               parameterlist:
@@ -214,10 +191,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 8
                       name: MY_X
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ''
                   line: 0
@@ -228,38 +205,38 @@ Source:
                   line: 0
                   name: Z
                   value: null
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 8
+                  module: my_mod
+                  name: mod2
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 9
-                  module: my_mod
-                  name: mod3
                   parameterlist:
                   - ParamArg:
-                      filename: ''
-                      line: 0
-                      name: X
-                      value: null
-                  - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 9
-                      name: Y
+                      line: 8
+                      name: X
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 8
+                          name: MY_X
                           hier:
                             HierName: null
-                          line: 9
-                          name: MY_Y
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: Y
+                      value: null
                   - ParamArg:
                       filename: ''
                       line: 0
                       name: Z
                       value: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 9
               module: my_mod
               parameterlist:
@@ -275,25 +252,23 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 9
                       name: MY_Y
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ''
                   line: 0
                   name: Z
                   value: null
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 9
+                  module: my_mod
+                  name: mod3
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 10
-                  module: my_mod
-                  name: mod4
                   parameterlist:
                   - ParamArg:
                       filename: ''
@@ -301,21 +276,23 @@ Source:
                       name: X
                       value: null
                   - ParamArg:
-                      filename: ''
-                      line: 0
-                      name: Y
-                      value: null
-                  - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 10
-                      name: Z
+                      line: 9
+                      name: Y
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 9
+                          name: MY_Y
                           hier:
                             HierName: null
-                          line: 10
-                          name: MY_Z
+                  - ParamArg:
+                      filename: ''
+                      line: 0
+                      name: Z
+                      value: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 10
               module: my_mod
               parameterlist:
@@ -336,54 +313,42 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 10
                       name: MY_Z
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
+                      hier:
+                        HierName: null
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 10
+                  module: my_mod
+                  name: mod4
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 11
-                  module: my_mod
-                  name: mod5
                   parameterlist:
                   - ParamArg:
-                      filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 11
+                      filename: ''
+                      line: 0
                       name: X
-                      value:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          hier:
-                            HierName: null
-                          line: 11
-                          name: MY_X
+                      value: null
                   - ParamArg:
-                      filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 11
+                      filename: ''
+                      line: 0
                       name: Y
-                      value:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          hier:
-                            HierName: null
-                          line: 11
-                          name: MY_Y
+                      value: null
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 11
+                      line: 10
                       name: Z
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 10
+                          name: MY_Z
                           hier:
                             HierName: null
-                          line: 11
-                          name: MY_Z
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 11
               module: my_mod
               parameterlist:
@@ -394,10 +359,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 11
                       name: MY_X
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 11
@@ -405,10 +370,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 11
                       name: MY_Y
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 11
@@ -416,42 +381,54 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 11
                       name: MY_Z
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
+                      hier:
+                        HierName: null
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 11
+                  module: my_mod
+                  name: mod5
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 12
-                  module: my_mod
-                  name: mod6
                   parameterlist:
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 12
+                      line: 11
                       name: X
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 11
+                          name: MY_X
                           hier:
                             HierName: null
-                          line: 12
-                          name: MY_X
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 12
+                      line: 11
                       name: Y
-                      value: null
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 11
+                          name: MY_Y
+                          hier:
+                            HierName: null
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 12
+                      line: 11
                       name: Z
-                      value: null
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 11
+                          name: MY_Z
+                          hier:
+                            HierName: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 12
               module: my_mod
               parameterlist:
@@ -462,10 +439,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 12
                       name: MY_X
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 12
@@ -476,44 +453,38 @@ Source:
                   line: 12
                   name: Z
                   value: null
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 12
+                  module: my_mod
+                  name: mod6
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 13
-                  module: my_mod
-                  name: mod7
                   parameterlist:
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 13
-                      name: Y
-                      value:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          hier:
-                            HierName: null
-                          line: 13
-                          name: MY_Y
-                  - ParamArg:
-                      filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 13
+                      line: 12
                       name: X
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 12
+                          name: MY_X
                           hier:
                             HierName: null
-                          line: 13
-                          name: MY_X
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 13
+                      line: 12
+                      name: Y
+                      value: null
+                  - ParamArg:
+                      filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 12
                       name: Z
                       value: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 13
               module: my_mod
               parameterlist:
@@ -524,10 +495,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 13
                       name: MY_Y
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 13
@@ -535,54 +506,53 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 13
                       name: MY_X
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 13
                   name: Z
                   value: null
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 13
+                  module: my_mod
+                  name: mod7
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 14
-                  module: my_mod
-                  name: mod8
                   parameterlist:
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 14
+                      line: 13
                       name: Y
                       value:
-                        IntConstN:
-                          base: 10
+                        Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
-                          line: 14
-                          sign: false
-                          size: -1
-                          value: 8
+                          line: 13
+                          name: MY_Y
+                          hier:
+                            HierName: null
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 14
+                      line: 13
                       name: X
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 13
+                          name: MY_X
                           hier:
                             HierName: null
-                          line: 14
-                          name: MY_X
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 14
+                      line: 13
                       name: Z
                       value: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 14
               module: my_mod
               parameterlist:
@@ -592,11 +562,11 @@ Source:
                   name: Y
                   value:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 14
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 8
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
@@ -605,60 +575,54 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 14
                       name: MY_X
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 14
                   name: Z
                   value: null
-          - Instancelist:
-              filename: ../test/passes/transformations/testcases/instance10.v
               instances:
               - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 14
+                  module: my_mod
+                  name: mod8
                   array:
                     Dimension: null
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 15
-                  module: my_mod
-                  name: mod9
                   parameterlist:
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 15
+                      line: 14
                       name: Y
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance10.v
-                          line: 15
-                          sign: false
+                          line: 14
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 15
+                      line: 14
                       name: X
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 14
+                          name: MY_X
                           hier:
                             HierName: null
-                          line: 15
-                          name: MY_X
                   - ParamArg:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      line: 15
+                      line: 14
                       name: Z
-                      value:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          hier:
-                            HierName: null
-                          line: 15
-                          name: MY_Z
+                      value: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/instance10.v
               line: 15
               module: my_mod
               parameterlist:
@@ -668,11 +632,11 @@ Source:
                   name: Y
                   value:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 15
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 8
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
@@ -681,10 +645,10 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 15
                       name: MY_X
+                      hier:
+                        HierName: null
               - ParamArg:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 15
@@ -692,49 +656,87 @@ Source:
                   value:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/instance10.v
-                      hier:
-                        HierName: null
                       line: 15
                       name: MY_Z
-          lifetime: NONE
-          line: 1
-          name: instance10
+                      hier:
+                        HierName: null
+              instances:
+              - Instance:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 15
+                  module: my_mod
+                  name: mod9
+                  array:
+                    Dimension: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: Y
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 15
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 8
+                  - ParamArg:
+                      filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: X
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 15
+                          name: MY_X
+                          hier:
+                            HierName: null
+                  - ParamArg:
+                      filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 15
+                      name: Z
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 15
+                          name: MY_Z
+                          hier:
+                            HierName: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance10.v
+          line: 18
+          name: my_mod
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Param:
               filename: ../test/passes/transformations/testcases/instance10.v
-              is_local: false
               line: 19
+              is_local: false
               name: X
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 19
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance10.v
                   line: 19
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 19
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 3
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 19
+                  signing: NONE
           - Param:
               filename: ../test/passes/transformations/testcases/instance10.v
-              is_local: false
               line: 20
+              is_local: false
               name: Y
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 20
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance10.v
@@ -742,32 +744,32 @@ Source:
                   var:
                     Times:
                       filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 20
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance10.v
                           line: 20
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 20
                       right:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
-                          hier:
-                            HierName: null
                           line: 20
                           name: X
+                          hier:
+                            HierName: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 20
+                  signing: NONE
           - Param:
               filename: ../test/passes/transformations/testcases/instance10.v
-              is_local: false
               line: 21
+              is_local: false
               name: Z
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance10.v
-                  line: 21
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance10.v
@@ -775,22 +777,27 @@ Source:
                   var:
                     Times:
                       filename: ../test/passes/transformations/testcases/instance10.v
+                      line: 21
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance10.v
                           line: 21
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 21
                       right:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance10.v
-                          hier:
-                            HierName: null
                           line: 21
                           name: X
+                          hier:
+                            HierName: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance10.v
+                  line: 21
+                  signing: NONE
           - Initial:
               filename: ../test/passes/transformations/testcases/instance10.v
               line: 23
@@ -801,13 +808,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 24
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 24
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance10.v
@@ -815,21 +823,21 @@ Source:
                               value: X=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance10.v
-                              hier:
-                                HierName: null
                               line: 24
                               name: X
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          line: 24
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 25
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 25
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance10.v
@@ -837,21 +845,21 @@ Source:
                               value: Y=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance10.v
-                              hier:
-                                HierName: null
                               line: 25
                               name: Y
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          line: 25
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance10.v
                       line: 26
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance10.v
+                          line: 26
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance10.v
@@ -859,17 +867,9 @@ Source:
                               value: Z=%0d\n
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance10.v
-                              hier:
-                                HierName: null
                               line: 26
                               name: Z
-                          filename: ../test/passes/transformations/testcases/instance10.v
-                          line: 26
-                          syscall: display
-          lifetime: NONE
-          line: 18
-          name: my_mod
-      filename: ../test/passes/transformations/testcases/instance10.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/instance10.v
-  line: 1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null

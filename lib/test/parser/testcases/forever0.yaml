@@ -1,20 +1,27 @@
 Source:
+  filename: ../../test/parser/testcases/forever0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/forever0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/forever0.v
+          line: 1
+          name: forever_example
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../../test/parser/testcases/forever0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: clk
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 3
-              name: clk
               type:
                 RegType:
                   filename: ../../test/parser/testcases/forever0.v
@@ -31,18 +38,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../../test/parser/testcases/forever0.v
-                      ldelay:
-                        DelayStatement:
-                          delay:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/forever0.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 1
-                          filename: ../../test/parser/testcases/forever0.v
-                          line: 6
+                      line: 6
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/forever0.v
@@ -50,25 +46,36 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/forever0.v
-                              hier:
-                                HierName: null
                               line: 6
                               name: clk
-                      line: 6
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/forever0.v
                           line: 6
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/forever0.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
+                      ldelay:
+                        DelayStatement:
+                          filename: ../../test/parser/testcases/forever0.v
+                          line: 6
+                          delay:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/forever0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      rdelay:
+                        DelayStatement: null
                   - ForeverStatement:
                       filename: ''
                       line: 0
@@ -80,18 +87,7 @@ Source:
                           statements:
                           - BlockingSubstitution:
                               filename: ../../test/parser/testcases/forever0.v
-                              ldelay:
-                                DelayStatement:
-                                  delay:
-                                    IntConstN:
-                                      base: 10
-                                      filename: ../../test/parser/testcases/forever0.v
-                                      line: 8
-                                      sign: false
-                                      size: -1
-                                      value: 5
-                                  filename: ../../test/parser/testcases/forever0.v
-                                  line: 8
+                              line: 8
                               left:
                                 Lvalue:
                                   filename: ../../test/parser/testcases/forever0.v
@@ -99,13 +95,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/forever0.v
-                                      hier:
-                                        HierName: null
                                       line: 8
                                       name: clk
-                              line: 8
-                              rdelay:
-                                DelayStatement: null
+                                      hier:
+                                        HierName: null
                               right:
                                 Rvalue:
                                   filename: ../../test/parser/testcases/forever0.v
@@ -117,10 +110,24 @@ Source:
                                       right:
                                         Identifier:
                                           filename: ../../test/parser/testcases/forever0.v
-                                          hier:
-                                            HierName: null
                                           line: 8
                                           name: clk
+                                          hier:
+                                            HierName: null
+                              ldelay:
+                                DelayStatement:
+                                  filename: ../../test/parser/testcases/forever0.v
+                                  line: 8
+                                  delay:
+                                    IntConstN:
+                                      filename: ../../test/parser/testcases/forever0.v
+                                      line: 8
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 5
+                              rdelay:
+                                DelayStatement: null
           - Initial:
               filename: ../../test/parser/testcases/forever0.v
               line: 12
@@ -131,13 +138,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../../test/parser/testcases/forever0.v
                       line: 13
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../../test/parser/testcases/forever0.v
+                          line: 13
+                          syscall: monitor
                           args:
                           - StringConst:
                               filename: ../../test/parser/testcases/forever0.v
@@ -149,26 +157,13 @@ Source:
                               syscall: time
                           - Identifier:
                               filename: ../../test/parser/testcases/forever0.v
-                              hier:
-                                HierName: null
                               line: 13
                               name: clk
-                          filename: ../../test/parser/testcases/forever0.v
-                          line: 13
-                          syscall: monitor
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
-                        DelayStatement:
-                          delay:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/forever0.v
-                              line: 14
-                              sign: false
-                              size: -1
-                              value: 100
-                          filename: ../../test/parser/testcases/forever0.v
-                          line: 14
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../../test/parser/testcases/forever0.v
                       line: 14
                       scope: ''
@@ -177,10 +172,15 @@ Source:
                           filename: ../../test/parser/testcases/forever0.v
                           line: 14
                           syscall: finish
-          lifetime: NONE
-          line: 1
-          name: forever_example
-      filename: ../../test/parser/testcases/forever0.v
-      line: 1
-  filename: ../../test/parser/testcases/forever0.v
-  line: 1
+                      delay:
+                        DelayStatement:
+                          filename: ../../test/parser/testcases/forever0.v
+                          line: 14
+                          delay:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/forever0.v
+                              line: 14
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 100

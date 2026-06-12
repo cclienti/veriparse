@@ -6,8 +6,9 @@
 # files a test run drops in the build test dir. Each pass test renders its
 # transformed AST to `<Suite>.<case>.yaml`, then compares it (via is_equal,
 # attrs=false) against `refs/<prefix>_<case>.yaml`. The golden is that rendered
-# AST re-emitted block-style, keys sorted, the testcase path normalized to the
-# committed form (`../test/passes/transformations/testcases/<name>.v`).
+# AST re-emitted block-style in document order (sort_keys=False, matching
+# lib/tools/misc/yaml_printer.py), the testcase path normalized to the committed
+# form (`../test/passes/transformations/testcases/<name>.v`).
 # `is_equal(attrs=false)` ignores filename/line, so the path is cosmetic.
 #
 # Run the pass tests first (they write the `<Suite>.<case>.yaml`), VERIFY the
@@ -89,7 +90,7 @@ def regen(ref_basename):
     normalize_paths(tree)
     out = os.path.join(REFS_DIR, ref_basename + ".yaml")
     with open(out, "w") as f:
-        yaml.dump(tree, f, default_flow_style=False, sort_keys=True)
+        yaml.dump(tree, f, default_flow_style=False, sort_keys=False)
     sys.stderr.write("regenerated {}\n".format(out))
     return True
 

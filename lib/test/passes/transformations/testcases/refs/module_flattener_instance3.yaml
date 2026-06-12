@@ -1,1375 +1,1407 @@
 Source:
+  filename: ../test/passes/transformations/testcases/instance3.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/instance3.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance3.v
-          items:
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ''
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 0
-              name: inst_ia
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ''
-                  line: 0
-                  packed_dims:
-                  - RangeDim:
-                      filename: ''
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 3
-                      line: 0
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 0
-                  signing: NONE
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst_ia
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      hier:
-                        HierName: null
-                      line: 4
-                      name: a
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ''
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 0
-              name: inst_ib
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ''
-                  line: 0
-                  packed_dims:
-                  - RangeDim:
-                      filename: ''
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 3
-                      line: 0
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 0
-                  signing: NONE
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst_ib
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      hier:
-                        HierName: null
-                      line: 4
-                      name: b
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ''
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 0
-              name: inst_oc
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ''
-                  line: 0
-                  packed_dims:
-                  - RangeDim:
-                      filename: ''
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 3
-                      line: 0
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 0
-                  signing: NONE
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      hier:
-                        HierName: null
-                      line: 4
-                      name: c
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst_oc
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst0_ia
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst0_ib
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - ImplicitNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 9
-              name: inst0_oc
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                RegType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 9
-                  signing: NONE
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst0_ia
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 0
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ia
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst0_ib
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 0
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ib
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 0
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_oc
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst0_oc
-          - Always:
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 11
-              senslist:
-                Senslist:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 11
-                  list:
-                  - Sens:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      sig: null
-                      type: ALL
-              statement:
-                BlockingSubstitution:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  ldelay:
-                    DelayStatement: null
-                  left:
-                    Lvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
-                          line: 11
-                          name: inst0_oc
-                  line: 11
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Land:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst0_ia
-                          line: 11
-                          right:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst0_ib
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst1_ia
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst1_ib
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - ImplicitNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 9
-              name: inst1_oc
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                RegType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 9
-                  signing: NONE
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst1_ia
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 1
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ia
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst1_ib
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 1
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ib
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 1
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_oc
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst1_oc
-          - Always:
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 11
-              senslist:
-                Senslist:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 11
-                  list:
-                  - Sens:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      sig: null
-                      type: ALL
-              statement:
-                BlockingSubstitution:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  ldelay:
-                    DelayStatement: null
-                  left:
-                    Lvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
-                          line: 11
-                          name: inst1_oc
-                  line: 11
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Land:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst1_ia
-                          line: 11
-                          right:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst1_ib
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst2_ia
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst2_ib
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - ImplicitNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 9
-              name: inst2_oc
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                RegType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 9
-                  signing: NONE
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst2_ia
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 2
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ia
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst2_ib
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 2
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ib
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 2
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_oc
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst2_oc
-          - Always:
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 11
-              senslist:
-                Senslist:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 11
-                  list:
-                  - Sens:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      sig: null
-                      type: ALL
-              statement:
-                BlockingSubstitution:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  ldelay:
-                    DelayStatement: null
-                  left:
-                    Lvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
-                          line: 11
-                          name: inst2_oc
-                  line: 11
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Land:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst2_ia
-                          line: 11
-                          right:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst2_ib
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst3_ia
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 8
-              name: inst3_ib
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 8
-                  signing: NONE
-          - ImplicitNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 9
-              name: inst3_oc
-              rdelay:
-                DelayStatement: null
-              strength:
-                Strength: null
-              type:
-                RegType:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 9
-                  signing: NONE
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst3_ia
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 3
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ia
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst3_ib
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 3
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_ib
-          - Assign:
-              filename: ''
-              ldelay:
-                DelayStatement: null
-              left:
-                Lvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Pointer:
-                      filename: ''
-                      line: 0
-                      ptr:
-                        IntConstN:
-                          base: 10
-                          filename: ''
-                          line: 0
-                          sign: true
-                          size: -1
-                          value: 3
-                      var:
-                        Identifier:
-                          filename: ''
-                          hier:
-                            HierName: null
-                          line: 0
-                          name: inst_oc
-              line: 0
-              rdelay:
-                DelayStatement: null
-              right:
-                Rvalue:
-                  filename: ''
-                  line: 0
-                  var:
-                    Identifier:
-                      filename: ''
-                      hier:
-                        HierName: null
-                      line: 0
-                      name: inst3_oc
-          - Always:
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 11
-              senslist:
-                Senslist:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  line: 11
-                  list:
-                  - Sens:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      sig: null
-                      type: ALL
-              statement:
-                BlockingSubstitution:
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  ldelay:
-                    DelayStatement: null
-                  left:
-                    Lvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
-                          line: 11
-                          name: inst3_oc
-                  line: 11
-                  rdelay:
-                    DelayStatement: null
-                  right:
-                    Rvalue:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 11
-                      var:
-                        Land:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst3_ia
-                          line: 11
-                          right:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 11
-                              name: inst3_ib
-          lifetime: NONE
           line: 1
           name: instance3
+          lifetime: NONE
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: a
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ''
-                      line: 0
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              line: 2
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 2
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              line: 2
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 2
               name: a
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
                   cont_assign:
                     Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: b
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ''
                       line: 0
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 2
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance3.v
                               line: 2
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          line: 2
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance3.v
                               line: 2
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 2
               name: b
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
                   cont_assign:
                     Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: c
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ''
                       line: 0
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 2
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              line: 3
-                              sign: false
+                              line: 2
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          line: 3
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              line: 3
-                              sign: false
+                              line: 2
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 3
               name: c
-      - Module:
-          default_nettype: WIRE
-          filename: ../test/passes/transformations/testcases/instance3.v
-          items:
-          - Port:
+              direction: OUTPUT
               decl:
                 WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 8
-                  name: ia
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 8
+                      filename: ''
+                      line: 0
                       signing: NONE
-              direction: INPUT
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 3
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
               expr: null
+          items:
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: inst_ia
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ''
+                      line: 0
+                      left:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst_ia
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 4
+                      name: a
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: inst_ib
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ''
+                      line: 0
+                      left:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst_ib
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 4
+                      name: b
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: inst_oc
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ''
+                      line: 0
+                      left:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 4
+                      name: c
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst_oc
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst0_ia
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst0_ib
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 9
+              is_vectored: false
+              is_scalared: false
+              name: inst0_oc
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 9
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_ia
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ia
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_ib
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ib
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_oc
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst0_oc
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Always:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 11
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      type: ALL
+                      sig: null
+              statement:
+                BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          name: inst0_oc
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Land:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst0_ia
+                              hier:
+                                HierName: null
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst0_ib
+                              hier:
+                                HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst1_ia
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst1_ib
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 9
+              is_vectored: false
+              is_scalared: false
+              name: inst1_oc
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 9
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_ia
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ia
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_ib
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ib
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_oc
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst1_oc
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Always:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 11
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      type: ALL
+                      sig: null
+              statement:
+                BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          name: inst1_oc
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Land:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst1_ia
+                              hier:
+                                HierName: null
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst1_ib
+                              hier:
+                                HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst2_ia
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst2_ib
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 9
+              is_vectored: false
+              is_scalared: false
+              name: inst2_oc
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 9
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_ia
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ia
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_ib
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ib
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 2
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_oc
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst2_oc
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Always:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 11
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      type: ALL
+                      sig: null
+              statement:
+                BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          name: inst2_oc
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Land:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst2_ia
+                              hier:
+                                HierName: null
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst2_ib
+                              hier:
+                                HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst3_ia
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 8
+              is_vectored: false
+              is_scalared: false
+              name: inst3_ib
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  signing: NONE
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 9
+              is_vectored: false
+              is_scalared: false
+              name: inst3_oc
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 9
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_ia
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ia
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_ib
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_ib
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 3
+                      var:
+                        Identifier:
+                          filename: ''
+                          line: 0
+                          name: inst_oc
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: inst3_oc
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Always:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 11
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      type: ALL
+                      sig: null
+              statement:
+                BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 11
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          name: inst3_oc
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 11
+                      var:
+                        Land:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst3_ia
+                              hier:
+                                HierName: null
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 11
+                              name: inst3_ib
+                              hier:
+                                HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance3.v
+          line: 7
+          name: my_module3
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 7
+              name: ia
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 7
+              name: ib
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 7
+              name: oc
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          items:
+          - Port:
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 8
               name: ia
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: ia
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 8
-                  name: ib
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 8
                       signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 8
               name: ib
-          - Port:
+              direction: INPUT
               decl:
-                ImplicitNet:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: ib
                   cont_assign:
                     Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance3.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 9
-                  name: oc
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 8
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 9
+              name: oc
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/instance3.v
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: oc
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     RegType:
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 9
                       signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 9
-              name: oc
           - Always:
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 11
@@ -1381,13 +1413,12 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 11
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 BlockingSubstitution:
                   filename: ../test/passes/transformations/testcases/instance3.v
-                  ldelay:
-                    DelayStatement: null
+                  line: 11
                   left:
                     Lvalue:
                       filename: ../test/passes/transformations/testcases/instance3.v
@@ -1395,13 +1426,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
                           line: 11
                           name: oc
-                  line: 11
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../test/passes/transformations/testcases/instance3.v
@@ -1409,72 +1437,51 @@ Source:
                       var:
                         Land:
                           filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 11
                           left:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: ia
-                          line: 11
+                              hier:
+                                HierName: null
                           right:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: ib
-          lifetime: NONE
-          line: 7
-          name: my_module3
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 7
-              name: ia
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 7
-              name: ib
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              line: 7
-              name: oc
+                              hier:
+                                HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance3.v
+          line: 14
+          name: testbench
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../test/passes/transformations/testcases/instance3.v
+              line: 16
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: clk
               init:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 16
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 16
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 16
-              name: clk
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/instance3.v
@@ -1488,18 +1495,7 @@ Source:
               statement:
                 BlockingSubstitution:
                   filename: ../test/passes/transformations/testcases/instance3.v
-                  ldelay:
-                    DelayStatement:
-                      delay:
-                        IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/instance3.v
-                          line: 18
-                          sign: false
-                          size: -1
-                          value: 5
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 18
+                  line: 18
                   left:
                     Lvalue:
                       filename: ../test/passes/transformations/testcases/instance3.v
@@ -1507,13 +1503,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
                           line: 18
                           name: clk
-                  line: 18
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../test/passes/transformations/testcases/instance3.v
@@ -1525,29 +1518,43 @@ Source:
                           right:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
                               line: 18
                               name: clk
+                              hier:
+                                HierName: null
+                  ldelay:
+                    DelayStatement:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 18
+                      delay:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 5
+                  rdelay:
+                    DelayStatement: null
           - Var:
               filename: ../test/passes/transformations/testcases/instance3.v
+              line: 20
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: cpt
               init:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 20
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 20
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 20
-              name: cpt
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/instance3.v
@@ -1555,141 +1562,143 @@ Source:
                   signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/instance3.v
+              line: 22
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: a
               init:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 22
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 22
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 22
-              name: a
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 22
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 22
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 22
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 22
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 22
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/instance3.v
+              line: 23
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: b
               init:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 23
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 23
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 23
-              name: b
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 23
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 23
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 23
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/instance3.v
+              line: 24
+              is_vectored: false
+              is_scalared: false
+              name: c
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/instance3.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 24
-              name: c
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 24
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 24
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 24
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 24
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 24
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Instancelist:
               filename: ../test/passes/transformations/testcases/instance3.v
+              line: 26
+              module: instance3
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../test/passes/transformations/testcases/instance3.v
                   line: 26
                   module: instance3
                   name: instance3_inst
+                  array:
+                    Dimension: null
                   portlist:
                   - PortArg:
                       filename: ../test/passes/transformations/testcases/instance3.v
@@ -1698,10 +1707,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
                           line: 28
                           name: a
+                          hier:
+                            HierName: null
                   - PortArg:
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 29
@@ -1709,10 +1718,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
                           line: 29
                           name: b
+                          hier:
+                            HierName: null
                   - PortArg:
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 30
@@ -1720,12 +1729,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
                           line: 30
                           name: c
-              line: 26
-              module: instance3
+                          hier:
+                            HierName: null
           - Always:
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 33
@@ -1737,14 +1744,14 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 33
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance3.v
-                          hier:
-                            HierName: null
                           line: 33
                           name: clk
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/instance3.v
@@ -1753,8 +1760,7 @@ Source:
                   statements:
                   - NonblockingSubstitution:
                       filename: ../test/passes/transformations/testcases/instance3.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 34
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/instance3.v
@@ -1762,13 +1768,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
                               line: 34
                               name: cpt
-                      line: 34
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/instance3.v
@@ -1776,26 +1779,29 @@ Source:
                           var:
                             Plus:
                               filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 34
                               left:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/instance3.v
-                                  hier:
-                                    HierName: null
                                   line: 34
                                   name: cpt
-                              line: 34
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/instance3.v
                                   line: 34
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                  - NonblockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/instance3.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 35
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/instance3.v
@@ -1803,13 +1809,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
                               line: 35
                               name: a
-                      line: 35
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/instance3.v
@@ -1818,33 +1821,36 @@ Source:
                             Partselect:
                               filename: ../test/passes/transformations/testcases/instance3.v
                               line: 35
-                              lsb:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/instance3.v
-                                  line: 35
-                                  sign: false
-                                  size: -1
-                                  value: 0
                               msb:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/instance3.v
                                   line: 35
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 3
+                              lsb:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/instance3.v
+                                  line: 35
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/instance3.v
-                                  hier:
-                                    HierName: null
                                   line: 35
                                   name: cpt
-                  - NonblockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/instance3.v
+                                  hier:
+                                    HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 36
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/instance3.v
@@ -1852,13 +1858,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
                               line: 36
                               name: b
-                      line: 36
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/instance3.v
@@ -1867,56 +1870,57 @@ Source:
                             Partselect:
                               filename: ../test/passes/transformations/testcases/instance3.v
                               line: 36
-                              lsb:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/instance3.v
-                                  line: 36
-                                  sign: false
-                                  size: -1
-                                  value: 1
                               msb:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/instance3.v
                                   line: 36
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 4
+                              lsb:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/instance3.v
+                                  line: 36
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/instance3.v
-                                  hier:
-                                    HierName: null
                                   line: 36
                                   name: cpt
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
                   - IfStatement:
+                      filename: ../test/passes/transformations/testcases/instance3.v
+                      line: 37
                       cond:
                         Eq:
                           filename: ../test/passes/transformations/testcases/instance3.v
+                          line: 37
                           left:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
                               line: 37
                               name: cpt
-                          line: 37
+                              hier:
+                                HierName: null
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance3.v
                               line: 37
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                      false_statement: null
-                      filename: ../test/passes/transformations/testcases/instance3.v
-                      line: 37
                       true_statement:
                         SingleStatement:
-                          delay:
-                            DelayStatement: null
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 38
                           scope: ''
@@ -1925,6 +1929,9 @@ Source:
                               filename: ../test/passes/transformations/testcases/instance3.v
                               line: 38
                               syscall: finish
+                          delay:
+                            DelayStatement: null
+                      false_statement: null
           - Always:
               filename: ../test/passes/transformations/testcases/instance3.v
               line: 42
@@ -1936,8 +1943,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 42
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/instance3.v
@@ -1945,39 +1952,32 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance3.v
                       line: 43
                       scope: ''
                       statement:
                         SystemCall:
-                          args:
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 43
-                              name: a
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 43
-                              name: b
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/instance3.v
-                              hier:
-                                HierName: null
-                              line: 43
-                              name: c
                           filename: ../test/passes/transformations/testcases/instance3.v
                           line: 43
                           syscall: display
-          lifetime: NONE
-          line: 14
-          name: testbench
-      filename: ../test/passes/transformations/testcases/instance3.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/instance3.v
-  line: 1
+                          args:
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 43
+                              name: a
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 43
+                              name: b
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/instance3.v
+                              line: 43
+                              name: c
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null

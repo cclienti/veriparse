@@ -1,118 +1,125 @@
 Source:
+  filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+          line: 1
+          name: sv_data_type_funcbody0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Function:
-              args:
-              - Arg:
-                  default_value: null
-                  direction: INPUT
-                  filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                  is_var: false
-                  line: 3
-                  name: a
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                      line: 3
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 3
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
               filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-              lifetime: NONE
               line: 3
               name: f
+              lifetime: NONE
               return_type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
                   line: 3
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 3
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 3
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
+              args:
+              - Arg:
+                  filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 3
+                  is_var: false
+                  direction: INPUT
+                  name: a
+                  default_value: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                      line: 3
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 3
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
               statements:
               - Var:
                   filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 4
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: tmp
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 4
-                  name: tmp
                   type:
                     LogicType:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
                       line: 4
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                          line: 4
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          line: 4
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
               - Var:
                   filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 5
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: flag
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 5
-                  name: flag
                   type:
                     BitType:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
@@ -120,13 +127,13 @@ Source:
                       signing: NONE
               - Var:
                   filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 6
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: b
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 6
-                  name: b
                   type:
                     ByteType:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
@@ -134,8 +141,7 @@ Source:
                       signing: NONE
               - BlockingSubstitution:
                   filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                  ldelay:
-                    DelayStatement: null
+                  line: 7
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
@@ -143,13 +149,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                          hier:
-                            HierName: null
                           line: 7
                           name: tmp
-                  line: 7
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
@@ -157,14 +160,17 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                          hier:
-                            HierName: null
                           line: 7
                           name: a
-              - BlockingSubstitution:
-                  filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                          hier:
+                            HierName: null
                   ldelay:
                     DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+              - BlockingSubstitution:
+                  filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
+                  line: 8
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
@@ -172,13 +178,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                          hier:
-                            HierName: null
                           line: 8
                           name: f
-                  line: 8
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
@@ -186,14 +189,11 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-                          hier:
-                            HierName: null
                           line: 8
                           name: tmp
-          lifetime: NONE
-          line: 1
-          name: sv_data_type_funcbody0
-      filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_data_type_funcbody0.sv
-  line: 1
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null

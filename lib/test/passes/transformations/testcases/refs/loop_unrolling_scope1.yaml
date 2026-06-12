@@ -1,6 +1,9 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/scope1.v
+  line: 1
+  name: scope1
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Genvar:
       filename: ../test/passes/transformations/testcases/scope1.v
@@ -12,45 +15,15 @@ Module:
       name: j
   - GenerateStatement:
       filename: ../test/passes/transformations/testcases/scope1.v
+      line: 5
       items:
       - Var:
           filename: ../test/passes/transformations/testcases/scope1.v
-          init:
-            Rvalue:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: ../test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 7
-                      sign: false
-                      size: -1
-                      value: 0
-          is_const: false
-          is_var: false
-          lifetime: NONE
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_0_j_0
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -58,35 +31,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-                  line: 8
                   right:
                     IntConstN:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
                       base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
                       size: -1
-                      value: 1
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 0
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_0_j_1
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -94,35 +67,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 2
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 1
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_0_j_2
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -130,35 +103,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 3
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 2
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_0_j_3
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -166,35 +139,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/scope1.v
                       line: 6
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 4
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 3
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_0_j_4
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -202,35 +175,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 6
                       base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
                       size: -1
-                      value: 1
-                  line: 8
+                      sign: false
+                      value: 0
                   right:
                     IntConstN:
+                      filename: ''
+                      line: 0
                       base: 10
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 7
-                      sign: false
                       size: -1
-                      value: 0
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 4
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_1_j_0
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -238,35 +211,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
-                  line: 8
                   right:
                     IntConstN:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
                       base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
                       size: -1
-                      value: 1
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 0
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_1_j_1
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -274,35 +247,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 2
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 1
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_1_j_2
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -310,35 +283,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 3
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 2
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_1_j_3
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -346,35 +319,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 4
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 3
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_1_j_4
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -382,35 +355,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 2
-                  line: 8
+                      sign: false
+                      value: 1
                   right:
                     IntConstN:
+                      filename: ''
+                      line: 0
                       base: 10
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 7
-                      sign: false
                       size: -1
-                      value: 0
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 4
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_2_j_0
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -418,35 +391,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 2
-                  line: 8
                   right:
                     IntConstN:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
                       base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
                       size: -1
-                      value: 1
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 0
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_2_j_1
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -454,35 +427,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 2
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 2
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 1
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_2_j_2
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -490,35 +463,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 2
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 3
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 2
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_2_j_3
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -526,35 +499,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 2
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 4
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 3
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_2_j_4
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -562,35 +535,35 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 3
-                  line: 8
+                      sign: false
+                      value: 2
                   right:
                     IntConstN:
+                      filename: ''
+                      line: 0
                       base: 10
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 7
-                      sign: false
                       size: -1
-                      value: 0
-          is_const: false
-          is_var: false
-          lifetime: NONE
+                      sign: false
+                      value: 4
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
           line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
           name: x_i_3_j_0
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -598,172 +571,23 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 3
-                  line: 8
                   right:
                     IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 1
-          is_const: false
-          is_var: false
-          lifetime: NONE
-          line: 8
-          name: x_i_3_j_1
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
-          init:
-            Rvalue:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: ../test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 3
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 2
-          is_const: false
-          is_var: false
-          lifetime: NONE
-          line: 8
-          name: x_i_3_j_2
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
-          init:
-            Rvalue:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: ../test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 3
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 3
-          is_const: false
-          is_var: false
-          lifetime: NONE
-          line: 8
-          name: x_i_3_j_3
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
-          init:
-            Rvalue:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: ../test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 3
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 4
-          is_const: false
-          is_var: false
-          lifetime: NONE
-          line: 8
-          name: x_i_3_j_4
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
-          init:
-            Rvalue:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: ../test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 4
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/scope1.v
                       line: 7
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-          is_const: false
-          is_var: false
-          lifetime: NONE
-          line: 8
-          name: x_i_4_j_0
           type:
             IntegerType:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -771,78 +595,11 @@ Module:
               signing: NONE
       - Var:
           filename: ../test/passes/transformations/testcases/scope1.v
-          init:
-            Rvalue:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: ../test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 4
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 1
-          is_const: false
-          is_var: false
-          lifetime: NONE
           line: 8
-          name: x_i_4_j_1
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
-          init:
-            Rvalue:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              var:
-                Times:
-                  filename: ../test/passes/transformations/testcases/scope1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 4
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 2
-          is_const: false
           is_var: false
+          is_const: false
           lifetime: NONE
-          line: 8
-          name: x_i_4_j_2
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/scope1.v
-              line: 8
-              signing: NONE
-      - Var:
-          filename: ../test/passes/transformations/testcases/scope1.v
+          name: x_i_3_j_1
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -850,28 +607,23 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
-                      size: -1
-                      value: 4
-                  line: 8
-                  right:
-                    IntConstN:
                       base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
                       size: -1
+                      sign: false
                       value: 3
-          is_const: false
-          is_var: false
-          lifetime: NONE
-          line: 8
-          name: x_i_4_j_3
+                  right:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 1
           type:
             IntegerType:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -879,6 +631,11 @@ Module:
               signing: NONE
       - Var:
           filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_3_j_2
           init:
             Rvalue:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -886,36 +643,283 @@ Module:
               var:
                 Times:
                   filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
                   left:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 4
-                  line: 8
+                      sign: false
+                      value: 3
                   right:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
-                      value: 4
-          is_const: false
-          is_var: false
-          lifetime: NONE
-          line: 8
-          name: x_i_4_j_4
+                      sign: false
+                      value: 2
           type:
             IntegerType:
               filename: ../test/passes/transformations/testcases/scope1.v
               line: 8
               signing: NONE
-      line: 5
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_3_j_3
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
+                  right:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_3_j_4
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
+                  right:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_4_j_0
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+                  right:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 7
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_4_j_1
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+                  right:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 1
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_4_j_2
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+                  right:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 2
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_4_j_3
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+                  right:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
+      - Var:
+          filename: ../test/passes/transformations/testcases/scope1.v
+          line: 8
+          is_var: false
+          is_const: false
+          lifetime: NONE
+          name: x_i_4_j_4
+          init:
+            Rvalue:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              var:
+                Times:
+                  filename: ../test/passes/transformations/testcases/scope1.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+                  right:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/scope1.v
+              line: 8
+              signing: NONE
   - GenerateStatement:
       filename: ../test/passes/transformations/testcases/scope1.v
+      line: 13
       items:
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
@@ -928,8 +932,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -937,41 +941,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_0_j_0
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -983,8 +987,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -992,41 +996,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_0_j_1
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1038,8 +1042,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1047,41 +1051,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_0_j_2
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1093,8 +1097,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1102,41 +1106,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_0_j_3
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1148,8 +1152,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1157,41 +1161,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_0_j_4
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1203,8 +1207,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1212,41 +1216,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_1_j_0
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1258,8 +1262,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1267,41 +1271,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_1_j_1
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1313,8 +1317,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1322,41 +1326,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_1_j_2
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1368,8 +1372,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1377,41 +1381,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_1_j_3
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1423,8 +1427,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1432,41 +1436,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_1_j_4
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1478,8 +1482,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1487,41 +1491,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_2_j_0
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1533,8 +1537,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1542,41 +1546,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_2_j_1
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1588,8 +1592,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1597,41 +1601,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_2_j_2
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1643,8 +1647,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1652,41 +1656,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_2_j_3
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1698,8 +1702,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1707,41 +1711,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_2_j_4
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1753,8 +1757,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1762,41 +1766,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_3_j_0
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1808,8 +1812,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1817,41 +1821,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_3_j_1
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1863,8 +1867,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1872,41 +1876,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_3_j_2
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1918,8 +1922,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1927,41 +1931,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_3_j_3
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -1973,8 +1977,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -1982,41 +1986,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_3_j_4
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -2028,8 +2032,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -2037,41 +2041,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_4_j_0
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -2083,8 +2087,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -2092,41 +2096,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_4_j_1
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -2138,8 +2142,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -2147,41 +2151,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_4_j_2
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -2193,8 +2197,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -2202,41 +2206,41 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_4_j_3
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
       - Always:
           filename: ../test/passes/transformations/testcases/scope1.v
           line: 16
@@ -2248,8 +2252,8 @@ Module:
               - Sens:
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 16
-                  sig: null
                   type: ALL
+                  sig: null
           statement:
             Block:
               filename: ../test/passes/transformations/testcases/scope1.v
@@ -2257,42 +2261,38 @@ Module:
               scope: ''
               statements:
               - SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../test/passes/transformations/testcases/scope1.v
                   line: 17
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../test/passes/transformations/testcases/scope1.v
+                      line: 17
+                      syscall: display
                       args:
                       - StringConst:
                           filename: ../test/passes/transformations/testcases/scope1.v
                           line: 17
                           value: '%1d * %1d = %2d'
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
                       - Identifier:
                           filename: ../test/passes/transformations/testcases/scope1.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: x_i_4_j_4
-                      filename: ../test/passes/transformations/testcases/scope1.v
-                      line: 17
-                      syscall: display
-      line: 13
-  lifetime: NONE
-  line: 1
-  name: scope1
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null

@@ -1,638 +1,493 @@
 Source:
+  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+  line: 3
   description:
     Description:
+      filename: ../../test/parser/testcases/vpp_default_nettype4.v
+      line: 3
       definitions:
       - Module:
-          default_nettype: TRI
           filename: ../../test/parser/testcases/vpp_default_nettype4.v
+          line: 3
+          name: MxN_pipeline
+          lifetime: NONE
+          default_nettype: TRI
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 3
+              name: in0
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 3
+              name: in1
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 3
+              name: out0
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 3
+              name: out1
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 3
+              name: clk
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Param:
               filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              is_local: false
               line: 4
+              is_local: false
               name: M
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  line: 4
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                   line: 4
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
                       line: 4
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 3
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 4
+                  signing: NONE
           - Param:
               filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              is_local: false
               line: 4
+              is_local: false
               name: N
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  line: 4
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                   line: 4
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
                       line: 4
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 4
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: in0
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                      line: 6
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                                  hier:
-                                    HierName: null
-                                  line: 6
-                                  name: M
-                              line: 6
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                                  line: 6
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
+                  line: 4
+                  signing: NONE
+          - Port:
               filename: ../../test/parser/testcases/vpp_default_nettype4.v
               line: 6
               name: in0
-          - Port:
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: in0
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: in1
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
                       line: 6
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 6
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 6
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                                  hier:
-                                    HierName: null
                                   line: 6
                                   name: M
-                              line: 6
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                                   line: 6
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 6
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/vpp_default_nettype4.v
               line: 6
               name: in1
-          - Port:
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: in1
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 7
-                  name: out0
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                      line: 7
+                      line: 6
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 6
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 6
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                                  line: 6
+                                  name: M
                                   hier:
                                     HierName: null
-                                  line: 7
-                                  name: M
-                              line: 7
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                                  line: 7
-                                  sign: false
+                                  line: 6
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 7
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              line: 7
-                              sign: false
+                              line: 6
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/vpp_default_nettype4.v
               line: 7
               name: out0
-          - Port:
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: out0
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 7
-                  name: out1
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
                       line: 7
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 7
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 7
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                                  hier:
-                                    HierName: null
                                   line: 7
                                   name: M
-                              line: 7
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                                   line: 7
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 7
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/vpp_default_nettype4.v
               line: 7
               name: out1
-          - Port:
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: out1
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 8
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 7
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 7
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                                  line: 7
+                                  name: M
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                                  line: 7
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 8
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
                       line: 8
                       signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              line: 8
-              name: clk
           - WireNet:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 10
+              is_vectored: false
+              is_scalared: false
+              name: t0
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 10
-              name: t0
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                   line: 10
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                      line: 10
                       left:
                         Times:
                           filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 10
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: M
-                          line: 10
+                              hier:
+                                HierName: null
                           right:
                             Minus:
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 10
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                                  hier:
-                                    HierName: null
                                   line: 10
                                   name: N
-                              line: 10
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                                   line: 10
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                      line: 10
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/vpp_default_nettype4.v
                           line: 10
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  signing: NONE
           - WireNet:
+              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+              line: 11
+              is_vectored: false
+              is_scalared: false
+              name: t1
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 11
-              name: t1
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                   line: 11
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                      line: 11
                       left:
                         Times:
                           filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 11
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: M
-                          line: 11
+                              hier:
+                                HierName: null
                           right:
                             Minus:
                               filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 11
                               left:
                                 Times:
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                                  line: 11
                                   left:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
                                       line: 11
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 2
-                                  line: 11
                                   right:
                                     Identifier:
                                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                                      hier:
-                                        HierName: null
                                       line: 11
                                       name: N
-                              line: 11
+                                      hier:
+                                        HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/vpp_default_nettype4.v
                                   line: 11
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                      line: 11
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/vpp_default_nettype4.v
                           line: 11
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  signing: NONE
           - Instancelist:
               filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              instances:
-              - Instance:
-                  array:
-                    RangeDim:
-                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          line: 18
-                          sign: false
-                          size: -1
-                          value: 1
-                      line: 18
-                      right:
-                        Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          hier:
-                            HierName: null
-                          line: 18
-                          name: N
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  line: 18
-                  module: dffn
-                  name: p0
-                  parameterlist:
-                  - ParamArg:
-                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                      line: 18
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          hier:
-                            HierName: null
-                          line: 18
-                          name: M
-                  portlist:
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          line: 18
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 18
-                              name: out0
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 18
-                              name: t0
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          line: 18
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 18
-                              name: t0
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 18
-                              name: in0
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          hier:
-                            HierName: null
-                          line: 18
-                          name: clk
-              - Instance:
-                  array:
-                    RangeDim:
-                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          line: 19
-                          sign: false
-                          size: -1
-                          value: 1
-                      line: 19
-                      right:
-                        Times:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              line: 19
-                              sign: false
-                              size: -1
-                              value: 2
-                          line: 19
-                          right:
-                            Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 19
-                              name: N
-                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                  line: 19
-                  module: dffn
-                  name: p1
-                  parameterlist:
-                  - ParamArg:
-                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                      line: 18
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          hier:
-                            HierName: null
-                          line: 18
-                          name: M
-                  portlist:
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          line: 19
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 19
-                              name: out1
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 19
-                              name: t1
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          line: 19
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 19
-                              name: t1
-                          - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                              hier:
-                                HierName: null
-                              line: 19
-                              name: in1
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                          hier:
-                            HierName: null
-                          line: 19
-                          name: clk
               line: 18
               module: dffn
               parameterlist:
@@ -643,55 +498,200 @@ Source:
                   value:
                     Identifier:
                       filename: ../../test/parser/testcases/vpp_default_nettype4.v
-                      hier:
-                        HierName: null
                       line: 18
                       name: M
-          lifetime: NONE
-          line: 3
-          name: MxN_pipeline
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              line: 3
-              name: in0
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              line: 3
-              name: in1
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              line: 3
-              name: out0
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              line: 3
-              name: out1
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype4.v
-              line: 3
-              name: clk
-      filename: ../../test/parser/testcases/vpp_default_nettype4.v
-      line: 3
-  filename: ../../test/parser/testcases/vpp_default_nettype4.v
-  line: 3
+                      hier:
+                        HierName: null
+              instances:
+              - Instance:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 18
+                  module: dffn
+                  name: p0
+                  array:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                      line: 18
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 18
+                          name: N
+                          hier:
+                            HierName: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                      line: 18
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 18
+                          name: M
+                          hier:
+                            HierName: null
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 18
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 18
+                              name: out0
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 18
+                              name: t0
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 18
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 18
+                              name: t0
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 18
+                              name: in0
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 18
+                          name: clk
+                          hier:
+                            HierName: null
+              - Instance:
+                  filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                  line: 19
+                  module: dffn
+                  name: p1
+                  array:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                      line: 19
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 19
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        Times:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 19
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 19
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 2
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 19
+                              name: N
+                              hier:
+                                HierName: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                      line: 18
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 18
+                          name: M
+                          hier:
+                            HierName: null
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 19
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 19
+                              name: out1
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 19
+                              name: t1
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 19
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 19
+                              name: t1
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                              line: 19
+                              name: in1
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/vpp_default_nettype4.v
+                          line: 19
+                          name: clk
+                          hier:
+                            HierName: null

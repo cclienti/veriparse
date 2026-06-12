@@ -1,13 +1,13 @@
 Source:
+  filename: ../../test/parser/testcases/sv_package_empty0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_package_empty0.sv
+      line: 1
       definitions:
       - Package:
           filename: ../../test/parser/testcases/sv_package_empty0.sv
-          lifetime: NONE
           line: 1
           name: sv_package_empty0
-      filename: ../../test/parser/testcases/sv_package_empty0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_package_empty0.sv
-  line: 1
+          lifetime: NONE

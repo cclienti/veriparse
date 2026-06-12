@@ -1,20 +1,27 @@
 Source:
+  filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+          line: 1
+          name: sv_data_type_scalar0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: a
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 3
-              name: a
               type:
                 BitType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
@@ -22,135 +29,135 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: b
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 4
-              name: b
               type:
                 BitType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                   line: 4
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 4
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 4
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: c
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 5
-              name: c
               type:
                 BitType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                   line: 5
+                  signing: SIGNED
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 5
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 5
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: SIGNED
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 6
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: d
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                  line: 6
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 6
-              name: d
               type:
                 BitType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                   line: 6
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 6
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 6
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 6
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 3
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 7
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: e
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 7
-              name: e
               type:
                 ByteType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
@@ -158,13 +165,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 8
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: f
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 8
-              name: f
               type:
                 ShortintType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
@@ -172,13 +179,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 9
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: g
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 9
-              name: g
               type:
                 IntType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
@@ -186,47 +193,47 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 10
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: h
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                  line: 10
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 10
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+                      line: 10
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 9
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 10
-              name: h
               type:
                 IntType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                   line: 10
                   signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-                      line: 10
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 10
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-                      line: 10
-                      sign: false
-                      size: -1
-                      value: 9
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 11
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 11
-              name: i
               type:
                 LongintType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
@@ -234,13 +241,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 12
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: j
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 12
-              name: j
               type:
                 ShortrealType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
@@ -248,22 +255,15 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
+              line: 13
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: k
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 13
-              name: k
               type:
                 RealtimeType:
                   filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
                   line: 13
                   signing: NONE
-          lifetime: NONE
-          line: 1
-          name: sv_data_type_scalar0
-      filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_data_type_scalar0.sv
-  line: 1

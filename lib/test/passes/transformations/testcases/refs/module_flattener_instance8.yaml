@@ -1,10 +1,17 @@
 Source:
+  filename: ../test/passes/transformations/testcases/instance8.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/instance8.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance8.v
+          line: 1
+          name: instance8
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Initial:
               filename: ../test/passes/transformations/testcases/instance8.v
@@ -16,51 +23,51 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 15
                               value: X=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 11
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 15
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 16
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 16
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 16
                               value: Y=%0d\n
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 6
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 16
-                          syscall: display
+                      delay:
+                        DelayStatement: null
           - Initial:
               filename: ../test/passes/transformations/testcases/instance8.v
               line: 14
@@ -71,51 +78,51 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 15
                               value: X=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 3
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 15
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 16
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 16
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 16
                               value: Y=%0d\n
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 16
-                          syscall: display
+                      delay:
+                        DelayStatement: null
           - Initial:
               filename: ../test/passes/transformations/testcases/instance8.v
               line: 14
@@ -126,51 +133,51 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 15
                               value: X=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 15
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 16
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 16
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 16
                               value: Y=%0d\n
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 16
-                          syscall: display
+                      delay:
+                        DelayStatement: null
           - Initial:
               filename: ../test/passes/transformations/testcases/instance8.v
               line: 14
@@ -181,51 +188,51 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 15
                               value: X=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 5
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 5
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 15
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 16
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 16
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 16
                               value: Y=%0d\n
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 10
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 16
-                          syscall: display
+                      delay:
+                        DelayStatement: null
           - Initial:
               filename: ../test/passes/transformations/testcases/instance8.v
               line: 14
@@ -236,51 +243,51 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 15
                               value: X=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 6
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 15
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 16
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 16
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 16
                               value: Y=%0d\n
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 16
-                          syscall: display
+                      delay:
+                        DelayStatement: null
           - Initial:
               filename: ../test/passes/transformations/testcases/instance8.v
               line: 14
@@ -291,90 +298,85 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 15
                               value: X=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 11
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 15
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 16
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 16
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
                               line: 16
                               value: Y=%0d\n
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 6
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 16
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: instance8
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance8.v
+          line: 10
+          name: my_mod
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Param:
               filename: ../test/passes/transformations/testcases/instance8.v
-              is_local: false
               line: 11
+              is_local: false
               name: X
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/instance8.v
-                  line: 11
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance8.v
                   line: 11
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 11
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 3
-          - Param:
-              filename: ../test/passes/transformations/testcases/instance8.v
-              is_local: false
-              line: 12
-              name: Y
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/instance8.v
-                  line: 12
+                  line: 11
                   signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/instance8.v
+              line: 12
+              is_local: false
+              name: Y
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance8.v
@@ -382,22 +384,27 @@ Source:
                   var:
                     Times:
                       filename: ../test/passes/transformations/testcases/instance8.v
+                      line: 12
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/instance8.v
                           line: 12
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 12
                       right:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance8.v
-                          hier:
-                            HierName: null
                           line: 12
                           name: X
+                          hier:
+                            HierName: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance8.v
+                  line: 12
+                  signing: NONE
           - Initial:
               filename: ../test/passes/transformations/testcases/instance8.v
               line: 14
@@ -408,13 +415,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 15
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 15
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
@@ -422,21 +430,21 @@ Source:
                               value: X=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance8.v
-                              hier:
-                                HierName: null
                               line: 15
                               name: X
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 15
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/instance8.v
                       line: 16
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance8.v
+                          line: 16
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance8.v
@@ -444,17 +452,9 @@ Source:
                               value: Y=%0d\n
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance8.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: Y
-                          filename: ../test/passes/transformations/testcases/instance8.v
-                          line: 16
-                          syscall: display
-          lifetime: NONE
-          line: 10
-          name: my_mod
-      filename: ../test/passes/transformations/testcases/instance8.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/instance8.v
-  line: 1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null

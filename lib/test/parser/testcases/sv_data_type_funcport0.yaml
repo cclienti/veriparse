@@ -1,95 +1,101 @@
 Source:
+  filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
+          line: 1
+          name: sv_data_type_funcport0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Function:
+              filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
+              line: 3
+              name: f
+              lifetime: NONE
+              return_type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
+                  line: 3
+                  signing: NONE
               args:
               - Arg:
-                  default_value: null
-                  direction: INPUT
                   filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  is_var: false
                   line: 3
+                  is_var: false
+                  direction: INPUT
                   name: a
+                  default_value: null
                   type:
                     IntType:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                       line: 3
                       signing: NONE
               - Arg:
-                  default_value: null
-                  direction: INPUT
                   filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  is_var: false
                   line: 3
+                  is_var: false
+                  direction: INPUT
                   name: b
+                  default_value: null
                   type:
                     BitType:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                       line: 3
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
+                          line: 3
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                               line: 3
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          line: 3
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                               line: 3
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
               - Arg:
-                  default_value: null
-                  direction: INPUT
                   filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  is_var: false
                   line: 3
+                  is_var: false
+                  direction: INPUT
                   name: c
+                  default_value: null
                   type:
                     LogicType:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                       line: 3
                       signing: NONE
               - Arg:
-                  default_value: null
-                  direction: INPUT
                   filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  is_var: false
                   line: 3
+                  is_var: false
+                  direction: INPUT
                   name: i
+                  default_value: null
                   type:
                     IntegerType:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                       line: 3
                       signing: NONE
-              filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-              lifetime: NONE
-              line: 3
-              name: f
-              return_type:
-                IntType:
-                  filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  line: 3
-                  signing: NONE
               statements:
               - BlockingSubstitution:
                   filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  ldelay:
-                    DelayStatement: null
+                  line: 4
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
@@ -97,13 +103,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                          hier:
-                            HierName: null
                           line: 4
                           name: f
-                  line: 4
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
@@ -111,45 +114,42 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                          hier:
-                            HierName: null
                           line: 4
                           name: a
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
           - Task:
+              filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
+              line: 7
+              name: t
+              lifetime: NONE
               args:
               - Arg:
-                  default_value: null
-                  direction: INPUT
                   filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  is_var: false
                   line: 7
+                  is_var: false
+                  direction: INPUT
                   name: x
+                  default_value: null
                   type:
                     ByteType:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                       line: 7
                       signing: NONE
               - Arg:
-                  default_value: null
-                  direction: INPUT
                   filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-                  is_var: false
                   line: 7
+                  is_var: false
+                  direction: INPUT
                   name: y
+                  default_value: null
                   type:
                     ShortintType:
                       filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
                       line: 7
                       signing: NONE
-              filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-              lifetime: NONE
-              line: 7
-              name: t
               statements: []
-          lifetime: NONE
-          line: 1
-          name: sv_data_type_funcport0
-      filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_data_type_funcport0.sv
-  line: 1

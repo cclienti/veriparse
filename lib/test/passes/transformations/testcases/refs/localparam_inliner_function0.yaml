@@ -1,64 +1,71 @@
 Source:
+  filename: ../test/passes/transformations/testcases/function0.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/function0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/function0.v
+          line: 1
+          name: function0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Function:
-              args:
-              - Arg:
-                  default_value: null
-                  direction: INPUT
-                  filename: ../test/passes/transformations/testcases/function0.v
-                  is_var: false
-                  line: 6
-                  name: value
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/function0.v
-                      line: 6
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/function0.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/function0.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 31
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/function0.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
               filename: ../test/passes/transformations/testcases/function0.v
-              lifetime: NONE
               line: 6
               name: clogb2
+              lifetime: NONE
               return_type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/function0.v
                   line: 6
                   signing: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/function0.v
+                  line: 6
+                  is_var: false
+                  direction: INPUT
+                  name: value
+                  default_value: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/function0.v
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/function0.v
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/function0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 31
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/function0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
               statements:
               - Var:
                   filename: ../test/passes/transformations/testcases/function0.v
+                  line: 7
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: SHIFT
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 7
-                  name: SHIFT
                   type:
                     IntegerType:
                       filename: ../test/passes/transformations/testcases/function0.v
@@ -66,38 +73,38 @@ Source:
                       signing: NONE
               - Var:
                   filename: ../test/passes/transformations/testcases/function0.v
+                  line: 8
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: tmp
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 8
-                  name: tmp
                   type:
                     RegType:
                       filename: ../test/passes/transformations/testcases/function0.v
                       line: 8
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/function0.v
+                          line: 8
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/function0.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 31
-                          line: 8
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/function0.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
               - Block:
                   filename: ../test/passes/transformations/testcases/function0.v
                   line: 9
@@ -105,8 +112,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/function0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 10
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
@@ -114,29 +120,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/function0.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: SHIFT
-                      line: 10
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
                           line: 10
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/function0.v
                               line: 10
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/function0.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/function0.v
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
@@ -144,13 +150,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/function0.v
-                              hier:
-                                HierName: null
                               line: 11
                               name: tmp
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
@@ -158,49 +161,33 @@ Source:
                           var:
                             Minus:
                               filename: ../test/passes/transformations/testcases/function0.v
+                              line: 11
                               left:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/function0.v
-                                  hier:
-                                    HierName: null
                                   line: 11
                                   name: value
-                              line: 11
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/function0.v
                                   line: 3
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
                   - ForStatement:
-                      cond:
-                        GreaterThan:
-                          filename: ../test/passes/transformations/testcases/function0.v
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/function0.v
-                              hier:
-                                HierName: null
-                              line: 12
-                              name: tmp
-                          line: 12
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/function0.v
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 0
                       filename: ../test/passes/transformations/testcases/function0.v
                       line: 12
-                      post:
+                      pre:
                         BlockingSubstitution:
                           filename: ../test/passes/transformations/testcases/function0.v
-                          ldelay:
-                            DelayStatement: null
+                          line: 12
                           left:
                             Lvalue:
                               filename: ../test/passes/transformations/testcases/function0.v
@@ -208,13 +195,60 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/function0.v
-                                  hier:
-                                    HierName: null
                                   line: 12
                                   name: clogb2
-                          line: 12
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/function0.v
+                              line: 12
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/function0.v
+                                  line: 12
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
                           rdelay:
                             DelayStatement: null
+                      cond:
+                        GreaterThan:
+                          filename: ../test/passes/transformations/testcases/function0.v
+                          line: 12
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/function0.v
+                              line: 12
+                              name: tmp
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/function0.v
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      post:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/function0.v
+                          line: 12
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/function0.v
+                              line: 12
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/function0.v
+                                  line: 12
+                                  name: clogb2
+                                  hier:
+                                    HierName: null
                           right:
                             Rvalue:
                               filename: ../test/passes/transformations/testcases/function0.v
@@ -222,53 +256,26 @@ Source:
                               var:
                                 Plus:
                                   filename: ../test/passes/transformations/testcases/function0.v
+                                  line: 12
                                   left:
                                     Identifier:
                                       filename: ../test/passes/transformations/testcases/function0.v
-                                      hier:
-                                        HierName: null
                                       line: 12
                                       name: clogb2
-                                  line: 12
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../test/passes/transformations/testcases/function0.v
                                       line: 12
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 1
-                      pre:
-                        BlockingSubstitution:
-                          filename: ../test/passes/transformations/testcases/function0.v
                           ldelay:
                             DelayStatement: null
-                          left:
-                            Lvalue:
-                              filename: ../test/passes/transformations/testcases/function0.v
-                              line: 12
-                              var:
-                                Identifier:
-                                  filename: ../test/passes/transformations/testcases/function0.v
-                                  hier:
-                                    HierName: null
-                                  line: 12
-                                  name: clogb2
-                          line: 12
                           rdelay:
                             DelayStatement: null
-                          right:
-                            Rvalue:
-                              filename: ../test/passes/transformations/testcases/function0.v
-                              line: 12
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/function0.v
-                                  line: 12
-                                  sign: false
-                                  size: -1
-                                  value: 0
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/function0.v
@@ -277,8 +284,7 @@ Source:
                           statements:
                           - BlockingSubstitution:
                               filename: ../test/passes/transformations/testcases/function0.v
-                              ldelay:
-                                DelayStatement: null
+                              line: 13
                               left:
                                 Lvalue:
                                   filename: ../test/passes/transformations/testcases/function0.v
@@ -286,13 +292,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../test/passes/transformations/testcases/function0.v
-                                      hier:
-                                        HierName: null
                                       line: 13
                                       name: tmp
-                              line: 13
-                              rdelay:
-                                DelayStatement: null
+                                      hier:
+                                        HierName: null
                               right:
                                 Rvalue:
                                   filename: ../test/passes/transformations/testcases/function0.v
@@ -300,89 +303,93 @@ Source:
                                   var:
                                     Srl:
                                       filename: ../test/passes/transformations/testcases/function0.v
+                                      line: 13
                                       left:
                                         Identifier:
                                           filename: ../test/passes/transformations/testcases/function0.v
-                                          hier:
-                                            HierName: null
                                           line: 13
                                           name: tmp
-                                      line: 13
+                                          hier:
+                                            HierName: null
                                       right:
                                         Identifier:
                                           filename: ../test/passes/transformations/testcases/function0.v
-                                          hier:
-                                            HierName: null
                                           line: 13
                                           name: SHIFT
+                                          hier:
+                                            HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
           - Var:
               filename: ../test/passes/transformations/testcases/function0.v
+              line: 18
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: val
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 18
-              name: val
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/function0.v
                   line: 18
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/function0.v
+                      line: 18
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/function0.v
                           line: 18
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 31
-                      line: 18
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/function0.v
                           line: 18
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/function0.v
+              line: 19
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: clog_reg
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 19
-              name: clog_reg
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/function0.v
                   line: 19
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/function0.v
+                      line: 19
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/function0.v
                           line: 19
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 31
-                      line: 19
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/function0.v
                           line: 19
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Initial:
               filename: ../test/passes/transformations/testcases/function0.v
               line: 21
@@ -394,8 +401,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/function0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 22
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
@@ -403,29 +409,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/function0.v
-                              hier:
-                                HierName: null
                               line: 22
                               name: val
-                      line: 22
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
                           line: 22
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/function0.v
                               line: 22
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 53
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/function0.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/function0.v
+                      line: 23
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
@@ -433,39 +439,41 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/function0.v
-                              hier:
-                                HierName: null
                               line: 23
                               name: clog_reg
-                      line: 23
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/function0.v
                           line: 23
                           var:
                             FunctionCall:
+                              filename: ../test/passes/transformations/testcases/function0.v
+                              line: 23
+                              name: clogb2
                               args:
                               - Identifier:
                                   filename: ../test/passes/transformations/testcases/function0.v
-                                  hier:
-                                    HierName: null
                                   line: 23
                                   name: val
-                              filename: ../test/passes/transformations/testcases/function0.v
+                                  hier:
+                                    HierName: null
                               hier:
                                 HierName: null
-                              line: 23
-                              name: clogb2
-                  - SingleStatement:
-                      delay:
+                      ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/function0.v
                       line: 24
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/function0.v
+                          line: 24
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/function0.v
@@ -473,23 +481,15 @@ Source:
                               value: clogb2(%0d) = %0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/function0.v
-                              hier:
-                                HierName: null
                               line: 24
                               name: val
-                          - Identifier:
-                              filename: ../test/passes/transformations/testcases/function0.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/function0.v
                               line: 24
                               name: clog_reg
-                          filename: ../test/passes/transformations/testcases/function0.v
-                          line: 24
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: function0
-      filename: ../test/passes/transformations/testcases/function0.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/function0.v
-  line: 1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null

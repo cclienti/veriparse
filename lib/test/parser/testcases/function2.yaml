@@ -1,74 +1,76 @@
 Source:
+  filename: ../../test/parser/testcases/function2.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/function2.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/function2.v
+          line: 1
+          name: function2
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Function:
               filename: ../../test/parser/testcases/function2.v
-              lifetime: NONE
               line: 3
               name: my_func
+              lifetime: NONE
               return_type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/function2.v
                   line: 3
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/function2.v
+                      line: 3
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/function2.v
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 3
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/function2.v
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
               statements:
               - Param:
                   filename: ../../test/parser/testcases/function2.v
-                  is_local: false
                   line: 4
+                  is_local: false
                   name: WIDTH
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/function2.v
-                      line: 4
-                      signing: NONE
                   value:
                     Rvalue:
                       filename: ../../test/parser/testcases/function2.v
                       line: 4
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/function2.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
-              - Param:
-                  filename: ../../test/parser/testcases/function2.v
-                  is_local: true
-                  line: 5
-                  name: DWIDTH
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/function2.v
-                      line: 5
+                      line: 4
                       signing: NONE
+              - Param:
+                  filename: ../../test/parser/testcases/function2.v
+                  line: 5
+                  is_local: true
+                  name: DWIDTH
                   value:
                     Rvalue:
                       filename: ../../test/parser/testcases/function2.v
@@ -76,133 +78,138 @@ Source:
                       var:
                         Times:
                           filename: ../../test/parser/testcases/function2.v
+                          line: 5
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/function2.v
-                              hier:
-                                HierName: null
                               line: 5
                               name: WIDTH
-                          line: 5
+                              hier:
+                                HierName: null
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/function2.v
                               line: 5
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/function2.v
+                      line: 5
+                      signing: NONE
               - Port:
+                  filename: ../../test/parser/testcases/function2.v
+                  line: 6
+                  name: i
+                  direction: INPUT
                   decl:
                     ImplicitNet:
+                      filename: ../../test/parser/testcases/function2.v
+                      line: 6
+                      is_vectored: false
+                      is_scalared: false
+                      name: i
                       cont_assign:
                         Rvalue: null
-                      filename: ../../test/parser/testcases/function2.v
-                      is_scalared: false
-                      is_vectored: false
-                      ldelay:
-                        DelayStatement: null
-                      line: 6
-                      name: i
-                      rdelay:
-                        DelayStatement: null
                       strength:
                         Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
                       type:
                         ImplicitType:
                           filename: ../../test/parser/testcases/function2.v
                           line: 6
+                          signing: NONE
                           packed_dims:
                           - RangeDim:
                               filename: ../../test/parser/testcases/function2.v
+                              line: 6
                               left:
                                 Minus:
                                   filename: ../../test/parser/testcases/function2.v
+                                  line: 6
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/function2.v
-                                      hier:
-                                        HierName: null
                                       line: 6
                                       name: WIDTH
-                                  line: 6
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/function2.v
                                       line: 6
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 1
-                              line: 6
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/function2.v
                                   line: 6
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 0
-                          signing: NONE
-                  direction: INPUT
                   expr: null
-                  filename: ../../test/parser/testcases/function2.v
-                  line: 6
-                  name: i
               - Var:
                   filename: ../../test/parser/testcases/function2.v
+                  line: 7
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: temp
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 7
-                  name: temp
                   type:
                     RegType:
                       filename: ../../test/parser/testcases/function2.v
                       line: 7
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/function2.v
+                          line: 7
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/function2.v
+                              line: 7
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/function2.v
-                                  hier:
-                                    HierName: null
                                   line: 7
                                   name: DWIDTH
-                              line: 7
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/function2.v
                                   line: 7
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 7
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/function2.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
               - Var:
                   filename: ../../test/parser/testcases/function2.v
+                  line: 8
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: n
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 8
-                  name: n
                   type:
                     IntegerType:
                       filename: ../../test/parser/testcases/function2.v
@@ -210,8 +217,7 @@ Source:
                       signing: NONE
               - BlockingSubstitution:
                   filename: ../../test/parser/testcases/function2.v
-                  ldelay:
-                    DelayStatement: null
+                  line: 9
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/function2.v
@@ -219,13 +225,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/function2.v
-                          hier:
-                            HierName: null
                           line: 9
                           name: temp
-                  line: 9
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/function2.v
@@ -233,25 +236,28 @@ Source:
                       var:
                         Times:
                           filename: ../../test/parser/testcases/function2.v
+                          line: 9
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/function2.v
-                              hier:
-                                HierName: null
                               line: 9
                               name: i
-                          line: 9
+                              hier:
+                                HierName: null
                           right:
                             Identifier:
                               filename: ../../test/parser/testcases/function2.v
-                              hier:
-                                HierName: null
                               line: 9
                               name: i
-              - BlockingSubstitution:
-                  filename: ../../test/parser/testcases/function2.v
+                              hier:
+                                HierName: null
                   ldelay:
                     DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+              - BlockingSubstitution:
+                  filename: ../../test/parser/testcases/function2.v
+                  line: 10
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/function2.v
@@ -259,13 +265,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/function2.v
-                          hier:
-                            HierName: null
                           line: 10
                           name: my_func
-                  line: 10
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/function2.v
@@ -274,44 +277,41 @@ Source:
                         Partselect:
                           filename: ../../test/parser/testcases/function2.v
                           line: 10
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/function2.v
-                              line: 10
-                              sign: false
-                              size: -1
-                              value: 0
                           msb:
                             Minus:
                               filename: ../../test/parser/testcases/function2.v
+                              line: 10
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/function2.v
-                                  hier:
-                                    HierName: null
                                   line: 10
                                   name: WIDTH
-                              line: 10
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/function2.v
                                   line: 10
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
+                          lsb:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/function2.v
+                              line: 10
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/function2.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: temp
-          lifetime: NONE
-          line: 1
-          name: function2
-      filename: ../../test/parser/testcases/function2.v
-      line: 1
-  filename: ../../test/parser/testcases/function2.v
-  line: 1
+                              hier:
+                                HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null

@@ -1,273 +1,320 @@
 Source:
+  filename: ../../test/parser/testcases/bidir0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/bidir0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/bidir0.v
+          line: 1
+          name: bidirec
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: oe
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: clk
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: inp
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: outp
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 1
+              name: bidir
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 2
+              name: oe
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: oe
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/bidir0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: oe
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/bidir0.v
                       line: 2
                       signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 2
-              name: oe
           - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 3
+              name: clk
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/bidir0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/bidir0.v
                       line: 3
                       signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 3
-              name: clk
           - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 4
+              name: inp
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: inp
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/bidir0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: inp
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/bidir0.v
                       line: 4
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/bidir0.v
+                          line: 4
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/bidir0.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 4
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/bidir0.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 4
-              name: inp
           - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 5
+              name: outp
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: outp
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/bidir0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: outp
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/bidir0.v
                       line: 5
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/bidir0.v
+                          line: 5
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/bidir0.v
                               line: 5
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 5
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/bidir0.v
                               line: 5
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 5
-              name: outp
           - Port:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 6
+              name: bidir
+              direction: INOUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/bidir0.v
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: bidir
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/bidir0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: bidir
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/bidir0.v
                       line: 6
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/bidir0.v
+                          line: 6
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/bidir0.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 6
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/bidir0.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INOUT
               expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 6
-              name: bidir
           - Var:
               filename: ../../test/parser/testcases/bidir0.v
+              line: 8
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: a
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 8
-              name: a
               type:
                 RegType:
                   filename: ../../test/parser/testcases/bidir0.v
                   line: 8
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/bidir0.v
+                      line: 8
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/bidir0.v
                           line: 8
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 8
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/bidir0.v
                           line: 8
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../../test/parser/testcases/bidir0.v
+              line: 9
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: b
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 9
-              name: b
               type:
                 RegType:
                   filename: ../../test/parser/testcases/bidir0.v
                   line: 9
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/bidir0.v
+                      line: 9
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/bidir0.v
                           line: 9
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 9
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/bidir0.v
                           line: 9
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ../../test/parser/testcases/bidir0.v
-              ldelay:
-                DelayStatement: null
+              line: 11
               left:
                 Lvalue:
                   filename: ../../test/parser/testcases/bidir0.v
@@ -275,44 +322,44 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/bidir0.v
-                      hier:
-                        HierName: null
                       line: 11
                       name: bidir
-              line: 11
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../../test/parser/testcases/bidir0.v
                   line: 11
                   var:
                     Cond:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 11
                       cond:
                         Identifier:
                           filename: ../../test/parser/testcases/bidir0.v
-                          hier:
-                            HierName: null
                           line: 11
                           name: oe
-                      filename: ../../test/parser/testcases/bidir0.v
+                          hier:
+                            HierName: null
                       left:
                         Identifier:
                           filename: ../../test/parser/testcases/bidir0.v
-                          hier:
-                            HierName: null
                           line: 11
                           name: a
-                      line: 11
+                          hier:
+                            HierName: null
                       right:
                         IntConst:
                           filename: ../../test/parser/testcases/bidir0.v
                           line: 11
                           value: 8'bZ
-          - Assign:
-              filename: ../../test/parser/testcases/bidir0.v
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../../test/parser/testcases/bidir0.v
+              line: 12
               left:
                 Lvalue:
                   filename: ../../test/parser/testcases/bidir0.v
@@ -320,13 +367,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/bidir0.v
-                      hier:
-                        HierName: null
                       line: 12
                       name: outp
-              line: 12
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../../test/parser/testcases/bidir0.v
@@ -334,10 +378,14 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/bidir0.v
-                      hier:
-                        HierName: null
                       line: 12
                       name: b
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
           - Always:
               filename: ../../test/parser/testcases/bidir0.v
               line: 14
@@ -349,14 +397,14 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/bidir0.v
                       line: 14
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/bidir0.v
-                          hier:
-                            HierName: null
                           line: 14
                           name: clk
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 Block:
                   filename: ../../test/parser/testcases/bidir0.v
@@ -365,8 +413,7 @@ Source:
                   statements:
                   - NonblockingSubstitution:
                       filename: ../../test/parser/testcases/bidir0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 15
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/bidir0.v
@@ -374,13 +421,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/bidir0.v
-                              hier:
-                                HierName: null
                               line: 15
                               name: b
-                      line: 15
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/bidir0.v
@@ -388,14 +432,17 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/bidir0.v
-                              hier:
-                                HierName: null
                               line: 15
                               name: bidir
-                  - NonblockingSubstitution:
-                      filename: ../../test/parser/testcases/bidir0.v
+                              hier:
+                                HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/bidir0.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/bidir0.v
@@ -403,13 +450,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/bidir0.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: a
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/bidir0.v
@@ -417,55 +461,11 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/bidir0.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: inp
-          lifetime: NONE
-          line: 1
-          name: bidirec
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 1
-              name: oe
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 1
-              name: clk
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 1
-              name: inp
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 1
-              name: outp
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/bidir0.v
-              line: 1
-              name: bidir
-      filename: ../../test/parser/testcases/bidir0.v
-      line: 1
-  filename: ../../test/parser/testcases/bidir0.v
-  line: 1
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

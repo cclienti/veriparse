@@ -1,20 +1,27 @@
 Source:
+  filename: ../../test/parser/testcases/sv_data_type_named0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_data_type_named0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_data_type_named0.sv
+          line: 1
+          name: sv_data_type_named0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_named0.sv
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: a
+              init:
+                Rvalue: null
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_data_type_named0.sv
@@ -23,13 +30,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_named0.sv
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: b
+              init:
+                Rvalue: null
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_data_type_named0.sv
@@ -38,158 +45,151 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_named0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: c
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 4
-              name: c
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_data_type_named0.sv
                   line: 4
                   name: my_t
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                      line: 4
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_named0.sv
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 4
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_named0.sv
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_named0.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: d
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                  line: 5
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                      line: 5
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                      line: 5
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 2
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 5
-              name: d
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_data_type_named0.sv
                   line: 5
                   name: my_t
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                      line: 5
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_named0.sv
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 5
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_data_type_named0.sv
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../../test/parser/testcases/sv_data_type_named0.sv
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_data_type_named0.sv
-                      line: 5
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 5
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_data_type_named0.sv
-                      line: 5
-                      sign: false
-                      size: -1
-                      value: 2
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_named0.sv
+              line: 6
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: e
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 6
-              name: e
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_data_type_named0.sv
                   line: 6
                   name: t
+                  signing: NONE
                   scope:
                   - ScopeName:
                       filename: ../../test/parser/testcases/sv_data_type_named0.sv
                       line: 6
                       name: pkg
-                  signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_data_type_named0.sv
+              line: 7
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: f
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 7
-              name: f
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_data_type_named0.sv
                   line: 7
                   name: t
-                  packed_dims:
-                  - RangeDim:
-                      filename: ../../test/parser/testcases/sv_data_type_named0.sv
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/sv_data_type_named0.sv
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 15
-                      line: 7
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/sv_data_type_named0.sv
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 0
+                  signing: NONE
                   scope:
                   - ScopeName:
                       filename: ../../test/parser/testcases/sv_data_type_named0.sv
                       line: 7
                       name: pkg
-                  signing: NONE
-          lifetime: NONE
-          line: 1
-          name: sv_data_type_named0
-      filename: ../../test/parser/testcases/sv_data_type_named0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_data_type_named0.sv
-  line: 1
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                      line: 7
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 15
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_data_type_named0.sv
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0

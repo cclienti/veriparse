@@ -1,33 +1,40 @@
 Source:
+  filename: ../test/passes/transformations/testcases/defparam3.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/defparam3.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/defparam3.v
+          line: 1
+          name: parametrized
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Param:
               filename: ../test/passes/transformations/testcases/defparam3.v
-              is_local: false
               line: 3
+              is_local: false
               name: X
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/defparam3.v
-                  line: 3
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam3.v
                   line: 3
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/defparam3.v
                       line: 3
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/defparam3.v
+                  line: 3
+                  signing: NONE
           - Initial:
               filename: ../test/passes/transformations/testcases/defparam3.v
               line: 5
@@ -38,13 +45,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/defparam3.v
                       line: 6
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/defparam3.v
+                          line: 6
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/defparam3.v
@@ -52,19 +60,18 @@ Source:
                               value: X=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/defparam3.v
-                              hier:
-                                HierName: null
                               line: 6
                               name: X
-                          filename: ../test/passes/transformations/testcases/defparam3.v
-                          line: 6
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: parametrized
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/defparam3.v
+          line: 11
+          name: defparam3
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Genvar:
               filename: ../test/passes/transformations/testcases/defparam3.v
@@ -72,30 +79,10 @@ Source:
               name: i
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/defparam3.v
+              line: 15
               items:
               - Instancelist:
                   filename: ../test/passes/transformations/testcases/defparam3.v
-                  instances:
-                  - Instance:
-                      array:
-                        Dimension: null
-                      filename: ../test/passes/transformations/testcases/defparam3.v
-                      line: 17
-                      module: parametrized
-                      name: modinst_i_0
-                      parameterlist:
-                      - ParamArg:
-                          filename: ../test/passes/transformations/testcases/defparam3.v
-                          line: 17
-                          name: X
-                          value:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/defparam3.v
-                              line: 30
-                              sign: false
-                              size: -1
-                              value: 0
                   line: 17
                   module: parametrized
                   parameterlist:
@@ -105,35 +92,35 @@ Source:
                       name: X
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/defparam3.v
                           line: 30
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-              - Instancelist:
-                  filename: ../test/passes/transformations/testcases/defparam3.v
                   instances:
                   - Instance:
+                      filename: ../test/passes/transformations/testcases/defparam3.v
+                      line: 17
+                      module: parametrized
+                      name: modinst_i_0
                       array:
                         Dimension: null
-                      filename: ../test/passes/transformations/testcases/defparam3.v
-                      line: 19
-                      module: parametrized
-                      name: modinst_i_1
                       parameterlist:
                       - ParamArg:
                           filename: ../test/passes/transformations/testcases/defparam3.v
-                          line: 19
+                          line: 17
                           name: X
                           value:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/defparam3.v
-                              line: 32
-                              sign: false
+                              line: 30
+                              base: 10
                               size: -1
-                              value: 1
+                              sign: false
+                              value: 0
+              - Instancelist:
+                  filename: ../test/passes/transformations/testcases/defparam3.v
                   line: 19
                   module: parametrized
                   parameterlist:
@@ -143,35 +130,35 @@ Source:
                       name: X
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/defparam3.v
                           line: 32
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-              - Instancelist:
-                  filename: ../test/passes/transformations/testcases/defparam3.v
                   instances:
                   - Instance:
+                      filename: ../test/passes/transformations/testcases/defparam3.v
+                      line: 19
+                      module: parametrized
+                      name: modinst_i_1
                       array:
                         Dimension: null
-                      filename: ../test/passes/transformations/testcases/defparam3.v
-                      line: 21
-                      module: parametrized
-                      name: modinst_i_2
                       parameterlist:
                       - ParamArg:
                           filename: ../test/passes/transformations/testcases/defparam3.v
-                          line: 21
+                          line: 19
                           name: X
                           value:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/defparam3.v
-                              line: 34
-                              sign: false
+                              line: 32
+                              base: 10
                               size: -1
-                              value: 2
+                              sign: false
+                              value: 1
+              - Instancelist:
+                  filename: ../test/passes/transformations/testcases/defparam3.v
                   line: 21
                   module: parametrized
                   parameterlist:
@@ -181,35 +168,35 @@ Source:
                       name: X
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/defparam3.v
                           line: 34
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-              - Instancelist:
-                  filename: ../test/passes/transformations/testcases/defparam3.v
                   instances:
                   - Instance:
+                      filename: ../test/passes/transformations/testcases/defparam3.v
+                      line: 21
+                      module: parametrized
+                      name: modinst_i_2
                       array:
                         Dimension: null
-                      filename: ../test/passes/transformations/testcases/defparam3.v
-                      line: 23
-                      module: parametrized
-                      name: modinst_i_3
                       parameterlist:
                       - ParamArg:
                           filename: ../test/passes/transformations/testcases/defparam3.v
-                          line: 23
+                          line: 21
                           name: X
                           value:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/defparam3.v
-                              line: 36
-                              sign: false
+                              line: 34
+                              base: 10
                               size: -1
-                              value: 3
+                              sign: false
+                              value: 2
+              - Instancelist:
+                  filename: ../test/passes/transformations/testcases/defparam3.v
                   line: 23
                   module: parametrized
                   parameterlist:
@@ -219,35 +206,35 @@ Source:
                       name: X
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/defparam3.v
                           line: 36
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-              - Instancelist:
-                  filename: ../test/passes/transformations/testcases/defparam3.v
                   instances:
                   - Instance:
+                      filename: ../test/passes/transformations/testcases/defparam3.v
+                      line: 23
+                      module: parametrized
+                      name: modinst_i_3
                       array:
                         Dimension: null
-                      filename: ../test/passes/transformations/testcases/defparam3.v
-                      line: 25
-                      module: parametrized
-                      name: modinst_i_4
                       parameterlist:
                       - ParamArg:
                           filename: ../test/passes/transformations/testcases/defparam3.v
-                          line: 25
+                          line: 23
                           name: X
                           value:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/defparam3.v
-                              line: 38
-                              sign: false
+                              line: 36
+                              base: 10
                               size: -1
-                              value: 4
+                              sign: false
+                              value: 3
+              - Instancelist:
+                  filename: ../test/passes/transformations/testcases/defparam3.v
                   line: 25
                   module: parametrized
                   parameterlist:
@@ -257,20 +244,33 @@ Source:
                       name: X
                       value:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/defparam3.v
                           line: 38
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-              line: 15
+                  instances:
+                  - Instance:
+                      filename: ../test/passes/transformations/testcases/defparam3.v
+                      line: 25
+                      module: parametrized
+                      name: modinst_i_4
+                      array:
+                        Dimension: null
+                      parameterlist:
+                      - ParamArg:
+                          filename: ../test/passes/transformations/testcases/defparam3.v
+                          line: 25
+                          name: X
+                          value:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/defparam3.v
+                              line: 38
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 4
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/defparam3.v
               line: 28
-          lifetime: NONE
-          line: 11
-          name: defparam3
-      filename: ../test/passes/transformations/testcases/defparam3.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/defparam3.v
-  line: 1

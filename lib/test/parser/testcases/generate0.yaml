@@ -1,45 +1,33 @@
 Source:
+  filename: ../../test/parser/testcases/generate0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/generate0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/generate0.v
+          line: 1
+          name: generate0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - GenerateStatement:
               filename: ../../test/parser/testcases/generate0.v
+              line: 3
               items:
               - Genvar:
                   filename: ../../test/parser/testcases/generate0.v
                   line: 4
                   name: i
               - ForStatement:
-                  cond:
-                    LessThan:
-                      filename: ../../test/parser/testcases/generate0.v
-                      left:
-                        Identifier:
-                          filename: ../../test/parser/testcases/generate0.v
-                          hier:
-                            HierName: null
-                          line: 5
-                          name: i
-                      line: 5
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/generate0.v
-                          line: 5
-                          sign: false
-                          size: -1
-                          value: 10
                   filename: ../../test/parser/testcases/generate0.v
                   line: 5
-                  post:
+                  pre:
                     BlockingSubstitution:
                       filename: ../../test/parser/testcases/generate0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 5
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/generate0.v
@@ -47,13 +35,60 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/generate0.v
-                              hier:
-                                HierName: null
                               line: 5
                               name: i
-                      line: 5
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          var:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
                       rdelay:
                         DelayStatement: null
+                  cond:
+                    LessThan:
+                      filename: ../../test/parser/testcases/generate0.v
+                      line: 5
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          name: i
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 10
+                  post:
+                    BlockingSubstitution:
+                      filename: ../../test/parser/testcases/generate0.v
+                      line: 5
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/generate0.v
+                          line: 5
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 5
+                              name: i
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/generate0.v
@@ -61,53 +96,26 @@ Source:
                           var:
                             Plus:
                               filename: ../../test/parser/testcases/generate0.v
+                              line: 5
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/generate0.v
-                                  hier:
-                                    HierName: null
                                   line: 5
                                   name: i
-                              line: 5
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/generate0.v
                                   line: 5
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                  pre:
-                    BlockingSubstitution:
-                      filename: ../../test/parser/testcases/generate0.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../../test/parser/testcases/generate0.v
-                          line: 5
-                          var:
-                            Identifier:
-                              filename: ../../test/parser/testcases/generate0.v
-                              hier:
-                                HierName: null
-                              line: 5
-                              name: i
-                      line: 5
                       rdelay:
                         DelayStatement: null
-                      right:
-                        Rvalue:
-                          filename: ../../test/parser/testcases/generate0.v
-                          line: 5
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/generate0.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
                   statement:
                     Block:
                       filename: ../../test/parser/testcases/generate0.v
@@ -119,32 +127,12 @@ Source:
                           line: 6
                           name: j
                       - ForStatement:
-                          cond:
-                            GreaterEq:
-                              filename: ../../test/parser/testcases/generate0.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/generate0.v
-                                  hier:
-                                    HierName: null
-                                  line: 7
-                                  name: j
-                              line: 7
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/generate0.v
-                                  line: 7
-                                  sign: false
-                                  size: -1
-                                  value: 1
                           filename: ../../test/parser/testcases/generate0.v
                           line: 7
-                          post:
+                          pre:
                             BlockingSubstitution:
                               filename: ../../test/parser/testcases/generate0.v
-                              ldelay:
-                                DelayStatement: null
+                              line: 7
                               left:
                                 Lvalue:
                                   filename: ../../test/parser/testcases/generate0.v
@@ -152,13 +140,59 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/generate0.v
-                                      hier:
-                                        HierName: null
                                       line: 7
                                       name: j
-                              line: 7
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      line: 7
+                                      name: i
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
                               rdelay:
                                 DelayStatement: null
+                          cond:
+                            GreaterEq:
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 7
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  name: j
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          post:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/generate0.v
+                              line: 7
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/generate0.v
+                                  line: 7
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/generate0.v
+                                      line: 7
+                                      name: j
+                                      hier:
+                                        HierName: null
                               right:
                                 Rvalue:
                                   filename: ../../test/parser/testcases/generate0.v
@@ -166,52 +200,26 @@ Source:
                                   var:
                                     Minus:
                                       filename: ../../test/parser/testcases/generate0.v
+                                      line: 7
                                       left:
                                         Identifier:
                                           filename: ../../test/parser/testcases/generate0.v
-                                          hier:
-                                            HierName: null
                                           line: 7
                                           name: j
-                                      line: 7
+                                          hier:
+                                            HierName: null
                                       right:
                                         IntConstN:
-                                          base: 10
                                           filename: ../../test/parser/testcases/generate0.v
                                           line: 7
-                                          sign: false
+                                          base: 10
                                           size: -1
+                                          sign: false
                                           value: 1
-                          pre:
-                            BlockingSubstitution:
-                              filename: ../../test/parser/testcases/generate0.v
                               ldelay:
                                 DelayStatement: null
-                              left:
-                                Lvalue:
-                                  filename: ../../test/parser/testcases/generate0.v
-                                  line: 7
-                                  var:
-                                    Identifier:
-                                      filename: ../../test/parser/testcases/generate0.v
-                                      hier:
-                                        HierName: null
-                                      line: 7
-                                      name: j
-                              line: 7
                               rdelay:
                                 DelayStatement: null
-                              right:
-                                Rvalue:
-                                  filename: ../../test/parser/testcases/generate0.v
-                                  line: 7
-                                  var:
-                                    Identifier:
-                                      filename: ../../test/parser/testcases/generate0.v
-                                      hier:
-                                        HierName: null
-                                      line: 7
-                                      name: i
                           statement:
                             Block:
                               filename: ../../test/parser/testcases/generate0.v
@@ -220,37 +228,37 @@ Source:
                               statements:
                               - Var:
                                   filename: ../../test/parser/testcases/generate0.v
+                                  line: 8
+                                  is_var: false
+                                  is_const: false
+                                  lifetime: NONE
+                                  name: R
                                   init:
                                     Rvalue: null
-                                  is_const: false
-                                  is_var: false
-                                  lifetime: NONE
-                                  line: 8
-                                  name: R
                                   type:
                                     RegType:
                                       filename: ../../test/parser/testcases/generate0.v
                                       line: 8
+                                      signing: NONE
                                       packed_dims:
                                       - RangeDim:
                                           filename: ../../test/parser/testcases/generate0.v
+                                          line: 8
                                           left:
                                             Identifier:
                                               filename: ../../test/parser/testcases/generate0.v
-                                              hier:
-                                                HierName: null
                                               line: 8
                                               name: i
-                                          line: 8
+                                              hier:
+                                                HierName: null
                                           right:
                                             IntConstN:
-                                              base: 10
                                               filename: ../../test/parser/testcases/generate0.v
                                               line: 8
-                                              sign: false
+                                              base: 10
                                               size: -1
+                                              sign: false
                                               value: 0
-                                      signing: NONE
                               - Initial:
                                   filename: ../../test/parser/testcases/generate0.v
                                   line: 9
@@ -262,8 +270,7 @@ Source:
                                       statements:
                                       - BlockingSubstitution:
                                           filename: ../../test/parser/testcases/generate0.v
-                                          ldelay:
-                                            DelayStatement: null
+                                          line: 10
                                           left:
                                             Lvalue:
                                               filename: ../../test/parser/testcases/generate0.v
@@ -271,13 +278,10 @@ Source:
                                               var:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/generate0.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 10
                                                   name: R
-                                          line: 10
-                                          rdelay:
-                                            DelayStatement: null
+                                                  hier:
+                                                    HierName: null
                                           right:
                                             Rvalue:
                                               filename: ../../test/parser/testcases/generate0.v
@@ -285,18 +289,23 @@ Source:
                                               var:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/generate0.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 10
                                                   name: i
-                                      - SingleStatement:
-                                          delay:
+                                                  hier:
+                                                    HierName: null
+                                          ldelay:
                                             DelayStatement: null
+                                          rdelay:
+                                            DelayStatement: null
+                                      - SingleStatement:
                                           filename: ../../test/parser/testcases/generate0.v
                                           line: 11
                                           scope: ''
                                           statement:
                                             SystemCall:
+                                              filename: ../../test/parser/testcases/generate0.v
+                                              line: 11
+                                              syscall: display
                                               args:
                                               - StringConst:
                                                   filename: ../../test/parser/testcases/generate0.v
@@ -304,18 +313,9 @@ Source:
                                                   value: '%m\n'
                                               - Identifier:
                                                   filename: ../../test/parser/testcases/generate0.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 11
                                                   name: R
-                                              filename: ../../test/parser/testcases/generate0.v
-                                              line: 11
-                                              syscall: display
-              line: 3
-          lifetime: NONE
-          line: 1
-          name: generate0
-      filename: ../../test/parser/testcases/generate0.v
-      line: 1
-  filename: ../../test/parser/testcases/generate0.v
-  line: 1
+                                                  hier:
+                                                    HierName: null
+                                          delay:
+                                            DelayStatement: null

@@ -1,94 +1,101 @@
 Source:
+  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+          line: 1
+          name: sv_assign_pattern0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Typedef:
               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-              fwd_kind: NONE
               line: 3
+              fwd_kind: NONE
               name: pair_t
               type:
                 StructType:
                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                  is_packed: true
                   line: 3
+                  is_packed: true
+                  signing: NONE
                   members:
                   - Member:
                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                      init:
-                        Rvalue: null
                       line: 3
                       name: hi
-                      type:
-                        LogicType:
-                          filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                          line: 3
-                          packed_dims:
-                          - RangeDim:
-                              filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                              left:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                                  line: 3
-                                  sign: false
-                                  size: -1
-                                  value: 3
-                              line: 3
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                                  line: 3
-                                  sign: false
-                                  size: -1
-                                  value: 0
-                          signing: NONE
-                  - Member:
-                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                       init:
                         Rvalue: null
-                      line: 3
-                      name: lo
                       type:
                         LogicType:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                           line: 3
+                          signing: NONE
                           packed_dims:
                           - RangeDim:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                              line: 3
                               left:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                   line: 3
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 3
-                              line: 3
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                   line: 3
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 0
+                  - Member:
+                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 3
+                      name: lo
+                      init:
+                        Rvalue: null
+                      type:
+                        LogicType:
+                          filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                          line: 3
                           signing: NONE
-                  signing: NONE
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                              line: 3
+                              left:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                                  line: 3
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 3
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                                  line: 3
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
           - Var:
               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: p
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 5
-              name: p
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -97,58 +104,58 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+              line: 6
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: mem
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                  line: 6
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 6
-              name: mem
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                   line: 6
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 6
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 6
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 6
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                      line: 6
-                      sign: false
-                      size: -1
-                      value: 3
           - Initial:
               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
               line: 8
@@ -160,8 +167,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                      ldelay:
-                        DelayStatement: null
+                      line: 9
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -169,13 +175,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                              hier:
-                                HierName: null
                               line: 9
                               name: p
-                      line: 9
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -183,27 +186,30 @@ Source:
                           var:
                             AssignmentPattern:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                              line: 9
                               items:
                               - IntConstN:
-                                  base: 16
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                   line: 9
-                                  sign: false
+                                  base: 16
                                   size: 4
+                                  sign: false
                                   value: 10
                               - IntConstN:
-                                  base: 16
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                   line: 9
-                                  sign: false
+                                  base: 16
                                   size: 4
+                                  sign: false
                                   value: 5
-                              line: 9
                               times: null
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 10
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -211,13 +217,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                              hier:
-                                HierName: null
                               line: 10
                               name: p
-                      line: 10
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -225,51 +228,54 @@ Source:
                           var:
                             AssignmentPattern:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                              line: 10
                               items:
                               - PatternItem:
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                                  line: 10
                                   is_default: false
                                   key:
                                     Identifier:
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                                      hier:
-                                        HierName: null
                                       line: 10
                                       name: hi
-                                  line: 10
+                                      hier:
+                                        HierName: null
                                   value:
                                     IntConstN:
-                                      base: 16
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                       line: 10
-                                      sign: false
+                                      base: 16
                                       size: 4
+                                      sign: false
                                       value: 12
                               - PatternItem:
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                                  line: 10
                                   is_default: false
                                   key:
                                     Identifier:
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                                      hier:
-                                        HierName: null
                                       line: 10
                                       name: lo
-                                  line: 10
+                                      hier:
+                                        HierName: null
                                   value:
                                     IntConstN:
-                                      base: 16
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                       line: 10
-                                      sign: false
+                                      base: 16
                                       size: 4
+                                      sign: false
                                       value: 3
-                              line: 10
                               times: null
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -277,13 +283,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                              hier:
-                                HierName: null
                               line: 11
                               name: mem
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -291,26 +294,29 @@ Source:
                           var:
                             AssignmentPattern:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                              line: 11
                               items:
                               - PatternItem:
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                                  line: 11
                                   is_default: true
                                   key: null
-                                  line: 11
                                   value:
                                     IntConstN:
-                                      base: 16
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                       line: 11
-                                      sign: false
+                                      base: 16
                                       size: 8
+                                      sign: false
                                       value: 0
-                              line: 11
                               times: null
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 12
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -318,13 +324,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                              hier:
-                                HierName: null
                               line: 12
                               name: mem
-                      line: 12
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -332,46 +335,49 @@ Source:
                           var:
                             AssignmentPattern:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                              line: 12
                               items:
                               - PatternItem:
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                                  line: 12
                                   is_default: false
                                   key:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                       line: 12
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 0
-                                  line: 12
                                   value:
                                     IntConstN:
-                                      base: 16
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                       line: 12
-                                      sign: false
+                                      base: 16
                                       size: 8
+                                      sign: false
                                       value: 1
                               - PatternItem:
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                                  line: 12
                                   is_default: true
                                   key: null
-                                  line: 12
                                   value:
                                     IntConstN:
-                                      base: 16
                                       filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                       line: 12
-                                      sign: false
+                                      base: 16
                                       size: 8
+                                      sign: false
                                       value: 255
-                              line: 12
                               times: null
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                      line: 13
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -379,13 +385,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-                              hier:
-                                HierName: null
                               line: 13
                               name: mem
-                      line: 13
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_assign_pattern0.sv
@@ -393,27 +396,24 @@ Source:
                           var:
                             AssignmentPattern:
                               filename: ../../test/parser/testcases/sv_assign_pattern0.sv
+                              line: 13
                               items:
                               - IntConstN:
-                                  base: 16
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                   line: 13
-                                  sign: false
+                                  base: 16
                                   size: 8
+                                  sign: false
                                   value: 170
-                              line: 13
                               times:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/sv_assign_pattern0.sv
                                   line: 13
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 4
-          lifetime: NONE
-          line: 1
-          name: sv_assign_pattern0
-      filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_assign_pattern0.sv
-  line: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

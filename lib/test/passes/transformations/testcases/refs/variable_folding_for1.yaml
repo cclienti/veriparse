@@ -1,20 +1,27 @@
 Source:
+  filename: ../test/passes/transformations/testcases/for1.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/for1.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/for1.v
+          line: 1
+          name: for1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../test/passes/transformations/testcases/for1.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 3
-              name: i
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/for1.v
@@ -22,13 +29,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/for1.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: j
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 3
-              name: j
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/for1.v
@@ -44,489 +51,482 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-                  - SingleStatement:
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/for1.v
                       line: 8
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/for1.v
+                          line: 8
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/for1.v
                               line: 8
                               value: for i=%0d j=%0d
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
                           - IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                          filename: ../test/passes/transformations/testcases/for1.v
-                          line: 8
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: for1
-      filename: ../test/passes/transformations/testcases/for1.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/for1.v
-  line: 1
+                      delay:
+                        DelayStatement: null

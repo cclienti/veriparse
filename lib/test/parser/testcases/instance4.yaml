@@ -1,10 +1,96 @@
 Source:
+  filename: ../../test/parser/testcases/instance4.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/instance4.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/instance4.v
+          line: 1
+          name: DFF
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 1
+              name: q
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 1
+                  is_vectored: false
+                  is_scalared: false
+                  name: q
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    RegType:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 1
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 2
+              name: d
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: d
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 2
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 2
+              name: clk
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 2
+                      signing: NONE
+              expr: null
           items:
           - Always:
               filename: ../../test/parser/testcases/instance4.v
@@ -17,19 +103,18 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/instance4.v
                       line: 3
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
                           line: 3
                           name: clk
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 NonblockingSubstitution:
                   filename: ../../test/parser/testcases/instance4.v
-                  ldelay:
-                    DelayStatement: null
+                  line: 3
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/instance4.v
@@ -37,13 +122,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
                           line: 3
                           name: q
-                  line: 3
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/instance4.v
@@ -51,297 +133,249 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
                           line: 3
                           name: d
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+      - Module:
+          filename: ../../test/parser/testcases/instance4.v
+          line: 6
+          name: dffn
           lifetime: NONE
-          line: 1
-          name: DFF
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 1
-                  name: q
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    RegType:
-                      filename: ../../test/parser/testcases/instance4.v
-                      line: 1
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
               filename: ../../test/parser/testcases/instance4.v
-              line: 1
+              line: 6
               name: q
-          - Port:
+              direction: NONE
               decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: d
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/instance4.v
-                      line: 2
-                      signing: NONE
-              direction: INPUT
+                Declaration: null
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/instance4.v
-              line: 2
+              line: 6
               name: d
-          - Port:
+              direction: NONE
               decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/instance4.v
-                      line: 2
-                      signing: NONE
-              direction: INPUT
+                Declaration: null
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/instance4.v
-              line: 2
+              line: 6
               name: clk
-      - Module:
-          default_nettype: WIRE
-          filename: ../../test/parser/testcases/instance4.v
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Param:
               filename: ../../test/parser/testcases/instance4.v
-              is_local: false
               line: 7
+              is_local: false
               name: bits
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/instance4.v
-                  line: 7
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance4.v
                   line: 7
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/instance4.v
                       line: 7
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 7
+                  signing: NONE
           - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 9
+              name: d
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: d
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 9
-                  name: d
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/instance4.v
                       line: 9
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/instance4.v
+                          line: 9
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/instance4.v
+                              line: 9
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/instance4.v
-                                  hier:
-                                    HierName: null
                                   line: 9
                                   name: bits
-                              line: 9
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/instance4.v
                                   line: 9
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 9
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/instance4.v
                               line: 9
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 9
-              name: d
           - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 10
+              name: q
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 10
+                  is_vectored: false
+                  is_scalared: false
+                  name: q
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 10
-                  name: q
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/instance4.v
                       line: 10
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/instance4.v
+                          line: 10
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/instance4.v
+                              line: 10
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/instance4.v
-                                  hier:
-                                    HierName: null
                                   line: 10
                                   name: bits
-                              line: 10
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/instance4.v
                                   line: 10
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 10
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/instance4.v
                               line: 10
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 10
-              name: q
           - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 11
+              name: clk
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 11
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 11
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/instance4.v
                       line: 11
                       signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 11
-              name: clk
           - Instancelist:
               filename: ../../test/parser/testcases/instance4.v
+              line: 13
+              module: DFF
               instances:
               - Instance:
-                  array:
-                    RangeDim:
-                      filename: ../../test/parser/testcases/instance4.v
-                      left:
-                        Minus:
-                          filename: ../../test/parser/testcases/instance4.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 13
-                              name: bits
-                          line: 13
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/instance4.v
-                              line: 13
-                              sign: false
-                              size: -1
-                              value: 1
-                      line: 13
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance4.v
-                          line: 13
-                          sign: false
-                          size: -1
-                          value: 0
                   filename: ../../test/parser/testcases/instance4.v
                   line: 13
                   module: DFF
                   name: dff
+                  array:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 13
+                      left:
+                        Minus:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 13
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 13
+                              name: bits
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 13
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
                   portlist:
                   - PortArg:
                       filename: ''
@@ -350,10 +384,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
                           line: 13
                           name: q
+                          hier:
+                            HierName: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -361,10 +395,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
                           line: 13
                           name: d
+                          hier:
+                            HierName: null
                   - PortArg:
                       filename: ''
                       line: 0
@@ -372,671 +406,492 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
                           line: 13
                           name: clk
-              line: 13
-              module: DFF
+                          hier:
+                            HierName: null
+      - Module:
+          filename: ../../test/parser/testcases/instance4.v
+          line: 16
+          name: MxN_pipeline
           lifetime: NONE
-          line: 6
-          name: dffn
+          default_nettype: WIRE
           ports:
           - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: in0
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 6
-              name: q
           - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: in1
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 6
-              name: d
           - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
+              name: out0
+              direction: NONE
               decl:
                 Declaration: null
-              direction: NONE
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/instance4.v
-              line: 6
+              line: 16
+              name: out1
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 16
               name: clk
-      - Module:
-          default_nettype: WIRE
-          filename: ../../test/parser/testcases/instance4.v
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Param:
               filename: ../../test/parser/testcases/instance4.v
-              is_local: false
               line: 17
+              is_local: false
               name: M
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/instance4.v
-                  line: 17
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance4.v
                   line: 17
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/instance4.v
                       line: 17
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 3
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 17
+                  signing: NONE
           - Param:
               filename: ../../test/parser/testcases/instance4.v
-              is_local: false
               line: 17
+              is_local: false
               name: N
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/instance4.v
-                  line: 17
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/instance4.v
                   line: 17
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/instance4.v
                       line: 17
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 4
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
+              type:
+                ImplicitType:
                   filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 19
-                  name: in0
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/instance4.v
-                      line: 19
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/instance4.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/instance4.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/instance4.v
-                                  hier:
-                                    HierName: null
-                                  line: 19
-                                  name: M
-                              line: 19
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/instance4.v
-                                  line: 19
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 19
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/instance4.v
-                              line: 19
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
+                  line: 17
+                  signing: NONE
+          - Port:
               filename: ../../test/parser/testcases/instance4.v
               line: 19
               name: in0
-          - Port:
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 19
+                  is_vectored: false
+                  is_scalared: false
+                  name: in0
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 19
-                  name: in1
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/instance4.v
                       line: 19
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/instance4.v
+                          line: 19
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/instance4.v
+                              line: 19
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/instance4.v
-                                  hier:
-                                    HierName: null
                                   line: 19
                                   name: M
-                              line: 19
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/instance4.v
                                   line: 19
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 19
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/instance4.v
                               line: 19
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/instance4.v
               line: 19
               name: in1
-          - Port:
+              direction: INPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 19
+                  is_vectored: false
+                  is_scalared: false
+                  name: in1
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 20
-                  name: out0
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/instance4.v
-                      line: 20
+                      line: 19
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/instance4.v
+                          line: 19
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/instance4.v
+                              line: 19
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/instance4.v
+                                  line: 19
+                                  name: M
                                   hier:
                                     HierName: null
-                                  line: 20
-                                  name: M
-                              line: 20
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/instance4.v
-                                  line: 20
-                                  sign: false
+                                  line: 19
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 20
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/instance4.v
-                              line: 20
-                              sign: false
+                              line: 19
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/instance4.v
               line: 20
               name: out0
-          - Port:
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 20
+                  is_vectored: false
+                  is_scalared: false
+                  name: out0
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 20
-                  name: out1
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/instance4.v
                       line: 20
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/instance4.v
+                          line: 20
                           left:
                             Minus:
                               filename: ../../test/parser/testcases/instance4.v
+                              line: 20
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/instance4.v
-                                  hier:
-                                    HierName: null
                                   line: 20
                                   name: M
-                              line: 20
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/instance4.v
                                   line: 20
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                          line: 20
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/instance4.v
                               line: 20
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: OUTPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/instance4.v
               line: 20
               name: out1
-          - Port:
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 20
+                  is_vectored: false
+                  is_scalared: false
+                  name: out1
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/instance4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 21
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 20
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 20
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 20
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/instance4.v
+                                  line: 20
+                                  name: M
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/instance4.v
+                                  line: 20
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 20
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 21
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 21
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/instance4.v
                       line: 21
                       signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 21
-              name: clk
           - WireNet:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 23
+              is_vectored: false
+              is_scalared: false
+              name: t0
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/instance4.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 23
-              name: t0
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/instance4.v
                   line: 23
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/instance4.v
+                      line: 23
                       left:
                         Times:
                           filename: ../../test/parser/testcases/instance4.v
+                          line: 23
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
                               line: 23
                               name: M
-                          line: 23
+                              hier:
+                                HierName: null
                           right:
                             Minus:
                               filename: ../../test/parser/testcases/instance4.v
+                              line: 23
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/instance4.v
-                                  hier:
-                                    HierName: null
                                   line: 23
                                   name: N
-                              line: 23
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/instance4.v
                                   line: 23
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                      line: 23
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/instance4.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  signing: NONE
           - WireNet:
+              filename: ../../test/parser/testcases/instance4.v
+              line: 24
+              is_vectored: false
+              is_scalared: false
+              name: t1
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/instance4.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 24
-              name: t1
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/instance4.v
                   line: 24
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/instance4.v
+                      line: 24
                       left:
                         Times:
                           filename: ../../test/parser/testcases/instance4.v
+                          line: 24
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
                               line: 24
                               name: M
-                          line: 24
+                              hier:
+                                HierName: null
                           right:
                             Minus:
                               filename: ../../test/parser/testcases/instance4.v
+                              line: 24
                               left:
                                 Times:
                                   filename: ../../test/parser/testcases/instance4.v
+                                  line: 24
                                   left:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/instance4.v
                                       line: 24
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 2
-                                  line: 24
                                   right:
                                     Identifier:
                                       filename: ../../test/parser/testcases/instance4.v
-                                      hier:
-                                        HierName: null
                                       line: 24
                                       name: N
-                              line: 24
+                                      hier:
+                                        HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/instance4.v
                                   line: 24
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                      line: 24
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/instance4.v
                           line: 24
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  signing: NONE
           - Instancelist:
               filename: ../../test/parser/testcases/instance4.v
-              instances:
-              - Instance:
-                  array:
-                    RangeDim:
-                      filename: ../../test/parser/testcases/instance4.v
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance4.v
-                          line: 31
-                          sign: false
-                          size: -1
-                          value: 1
-                      line: 31
-                      right:
-                        Identifier:
-                          filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
-                          line: 31
-                          name: N
-                  filename: ../../test/parser/testcases/instance4.v
-                  line: 31
-                  module: dffn
-                  name: p0
-                  parameterlist:
-                  - ParamArg:
-                      filename: ../../test/parser/testcases/instance4.v
-                      line: 31
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
-                          line: 31
-                          name: M
-                  portlist:
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/instance4.v
-                          line: 31
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 31
-                              name: out0
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 31
-                              name: t0
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/instance4.v
-                          line: 31
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 31
-                              name: t0
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 31
-                              name: in0
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
-                          line: 31
-                          name: clk
-              - Instance:
-                  array:
-                    RangeDim:
-                      filename: ../../test/parser/testcases/instance4.v
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/instance4.v
-                          line: 32
-                          sign: false
-                          size: -1
-                          value: 1
-                      line: 32
-                      right:
-                        Times:
-                          filename: ../../test/parser/testcases/instance4.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/instance4.v
-                              line: 32
-                              sign: false
-                              size: -1
-                              value: 2
-                          line: 32
-                          right:
-                            Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 32
-                              name: N
-                  filename: ../../test/parser/testcases/instance4.v
-                  line: 32
-                  module: dffn
-                  name: p1
-                  parameterlist:
-                  - ParamArg:
-                      filename: ../../test/parser/testcases/instance4.v
-                      line: 31
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
-                          line: 31
-                          name: M
-                  portlist:
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/instance4.v
-                          line: 32
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 32
-                              name: out1
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 32
-                              name: t1
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Concat:
-                          filename: ../../test/parser/testcases/instance4.v
-                          line: 32
-                          list:
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 32
-                              name: t1
-                          - Identifier:
-                              filename: ../../test/parser/testcases/instance4.v
-                              hier:
-                                HierName: null
-                              line: 32
-                              name: in1
-                  - PortArg:
-                      filename: ''
-                      line: 0
-                      name: ''
-                      value:
-                        Identifier:
-                          filename: ../../test/parser/testcases/instance4.v
-                          hier:
-                            HierName: null
-                          line: 32
-                          name: clk
               line: 31
               module: dffn
               parameterlist:
@@ -1047,55 +902,200 @@ Source:
                   value:
                     Identifier:
                       filename: ../../test/parser/testcases/instance4.v
-                      hier:
-                        HierName: null
                       line: 31
                       name: M
-          lifetime: NONE
-          line: 16
-          name: MxN_pipeline
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 16
-              name: in0
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 16
-              name: in1
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 16
-              name: out0
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 16
-              name: out1
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/instance4.v
-              line: 16
-              name: clk
-      filename: ../../test/parser/testcases/instance4.v
-      line: 1
-  filename: ../../test/parser/testcases/instance4.v
-  line: 1
+                      hier:
+                        HierName: null
+              instances:
+              - Instance:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 31
+                  module: dffn
+                  name: p0
+                  array:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 31
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: N
+                          hier:
+                            HierName: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 31
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: M
+                          hier:
+                            HierName: null
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: out0
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: t0
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: t0
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 31
+                              name: in0
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: clk
+                          hier:
+                            HierName: null
+              - Instance:
+                  filename: ../../test/parser/testcases/instance4.v
+                  line: 32
+                  module: dffn
+                  name: p1
+                  array:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 32
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        Times:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 2
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: N
+                              hier:
+                                HierName: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/instance4.v
+                      line: 31
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 31
+                          name: M
+                          hier:
+                            HierName: null
+                  portlist:
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: out1
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: t1
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: t1
+                              hier:
+                                HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/instance4.v
+                              line: 32
+                              name: in1
+                              hier:
+                                HierName: null
+                  - PortArg:
+                      filename: ''
+                      line: 0
+                      name: ''
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/instance4.v
+                          line: 32
+                          name: clk
+                          hier:
+                            HierName: null

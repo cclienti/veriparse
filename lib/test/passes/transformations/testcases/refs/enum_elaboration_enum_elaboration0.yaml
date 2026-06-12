@@ -1,99 +1,99 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
+  line: 1
+  name: enum_elaboration0
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Typedef:
       filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
-      fwd_kind: NONE
       line: 2
+      fwd_kind: NONE
       name: state_t
       type:
         EnumType:
+          filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
+          line: 2
+          signing: NONE
           base:
             LogicType:
               filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
               line: 2
+              signing: NONE
               packed_dims:
               - RangeDim:
                   filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
+                  line: 2
                   left:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
                       line: 2
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
-                  line: 2
                   right:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
                       line: 2
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
-              signing: NONE
-          filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
           items:
           - EnumItem:
               filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
               line: 2
               name: IDLE
-              range:
-                Dimension: null
               value:
                 IntConstN:
-                  base: 10
                   filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
                   line: 2
-                  sign: false
+                  base: 10
                   size: -1
+                  sign: false
                   value: 0
+              range:
+                Dimension: null
           - EnumItem:
               filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
               line: 2
               name: RUN
-              range:
-                Dimension: null
               value:
                 IntConstN:
-                  base: 10
                   filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
                   line: 2
-                  sign: false
+                  base: 10
                   size: -1
+                  sign: false
                   value: 1
+              range:
+                Dimension: null
           - EnumItem:
               filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
               line: 2
               name: DONE
-              range:
-                Dimension: null
               value:
                 IntConstN:
-                  base: 10
                   filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
                   line: 2
-                  sign: false
+                  base: 10
                   size: -1
+                  sign: false
                   value: 2
+              range:
+                Dimension: null
           - EnumItem:
               filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
               line: 2
               name: ERROR
-              range:
-                Dimension: null
               value:
                 IntConstN:
-                  base: 10
                   filename: ../test/passes/transformations/testcases/enum_elaboration0.sv
                   line: 2
-                  sign: false
+                  base: 10
                   size: -1
+                  sign: false
                   value: 3
-          line: 2
-          signing: NONE
-  lifetime: NONE
-  line: 1
-  name: enum_elaboration0
+              range:
+                Dimension: null

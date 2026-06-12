@@ -1,10 +1,17 @@
 Source:
+  filename: ../../test/parser/testcases/defparam2.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/defparam2.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/defparam2.v
+          line: 1
+          name: defparm2
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Defparamlist:
               filename: ../../test/parser/testcases/defparam2.v
@@ -12,158 +19,137 @@ Source:
               list:
               - Defparam:
                   filename: ../../test/parser/testcases/defparam2.v
+                  line: 3
                   identifier:
                     Identifier:
                       filename: ../../test/parser/testcases/defparam2.v
+                      line: 3
+                      name: VALUE_0
                       hier:
                         HierName:
                           filename: ../../test/parser/testcases/defparam2.v
+                          line: 3
                           labellist:
                           - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 3
-                              loop: null
                               name: my_proxy_inst
+                              loop: null
                           - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 3
-                              loop: null
                               name: my_module_inst
-                          line: 3
-                      line: 3
-                      name: VALUE_0
-                  line: 3
+                              loop: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/defparam2.v
                       line: 3
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam2.v
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 32
               - Defparam:
                   filename: ../../test/parser/testcases/defparam2.v
+                  line: 4
                   identifier:
                     Identifier:
                       filename: ../../test/parser/testcases/defparam2.v
+                      line: 4
+                      name: VALUE_1
                       hier:
                         HierName:
                           filename: ../../test/parser/testcases/defparam2.v
+                          line: 4
                           labellist:
                           - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 4
-                              loop: null
                               name: my_proxy_inst
+                              loop: null
                           - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 4
-                              loop: null
                               name: my_module_inst
-                          line: 4
-                      line: 4
-                      name: VALUE_1
-                  line: 4
+                              loop: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/defparam2.v
                       line: 4
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam2.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 33
               - Defparam:
                   filename: ../../test/parser/testcases/defparam2.v
+                  line: 5
                   identifier:
                     Identifier:
                       filename: ../../test/parser/testcases/defparam2.v
+                      line: 5
+                      name: OTHER
                       hier:
                         HierName:
                           filename: ../../test/parser/testcases/defparam2.v
+                          line: 5
                           labellist:
                           - HierLabel:
                               filename: ../../test/parser/testcases/defparam2.v
                               line: 5
-                              loop: null
                               name: another_module_inst
-                          line: 5
-                      line: 5
-                      name: OTHER
-                  line: 5
+                              loop: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/defparam2.v
                       line: 5
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam2.v
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 15
           - Instancelist:
               filename: ../../test/parser/testcases/defparam2.v
+              line: 7
+              module: my_proxy
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../../test/parser/testcases/defparam2.v
                   line: 7
                   module: my_proxy
                   name: my_proxy_inst
-              line: 7
-              module: my_proxy
-          - Instancelist:
-              filename: ../../test/parser/testcases/defparam2.v
-              instances:
-              - Instance:
                   array:
                     Dimension: null
+          - Instancelist:
+              filename: ../../test/parser/testcases/defparam2.v
+              line: 8
+              module: another_module
+              instances:
+              - Instance:
                   filename: ../../test/parser/testcases/defparam2.v
                   line: 8
                   module: another_module
                   name: another_module_inst
-              line: 8
-              module: another_module
-          lifetime: NONE
-          line: 1
-          name: defparm2
+                  array:
+                    Dimension: null
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/defparam2.v
+          line: 11
+          name: my_proxy
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Instancelist:
               filename: ../../test/parser/testcases/defparam2.v
-              instances:
-              - Instance:
-                  array:
-                    Dimension: null
-                  filename: ../../test/parser/testcases/defparam2.v
-                  line: 12
-                  module: my_module
-                  name: my_module_inst
-                  parameterlist:
-                  - ParamArg:
-                      filename: ../../test/parser/testcases/defparam2.v
-                      line: 12
-                      name: ''
-                      value:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/defparam2.v
-                          line: 12
-                          sign: false
-                          size: -1
-                          value: 7
               line: 12
               module: my_module
               parameterlist:
@@ -173,18 +159,84 @@ Source:
                   name: ''
                   value:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/defparam2.v
                       line: 12
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 7
-          lifetime: NONE
-          line: 11
-          name: my_proxy
+              instances:
+              - Instance:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 12
+                  module: my_module
+                  name: my_module_inst
+                  array:
+                    Dimension: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/defparam2.v
+                      line: 12
+                      name: ''
+                      value:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/defparam2.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/defparam2.v
+          line: 15
+          name: my_module
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/defparam2.v
+              line: 15
+              is_local: false
+              name: VALUE_0
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 15
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/defparam2.v
+                      line: 15
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 5
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 15
+                  signing: NONE
+          - Param:
+              filename: ../../test/parser/testcases/defparam2.v
+              line: 16
+              is_local: false
+              name: VALUE_1
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 16
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/defparam2.v
+                      line: 16
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 9
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam2.v
+                  line: 16
+                  signing: NONE
           items:
           - Initial:
               filename: ../../test/parser/testcases/defparam2.v
@@ -196,13 +248,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../../test/parser/testcases/defparam2.v
                       line: 18
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../../test/parser/testcases/defparam2.v
+                          line: 18
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../../test/parser/testcases/defparam2.v
@@ -210,21 +263,21 @@ Source:
                               value: VALUE_0=%0d
                           - Identifier:
                               filename: ../../test/parser/testcases/defparam2.v
-                              hier:
-                                HierName: null
                               line: 18
                               name: VALUE_0
-                          filename: ../../test/parser/testcases/defparam2.v
-                          line: 18
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../../test/parser/testcases/defparam2.v
                       line: 19
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../../test/parser/testcases/defparam2.v
+                          line: 19
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../../test/parser/testcases/defparam2.v
@@ -232,64 +285,41 @@ Source:
                               value: VALUE_1=%0d
                           - Identifier:
                               filename: ../../test/parser/testcases/defparam2.v
-                              hier:
-                                HierName: null
                               line: 19
                               name: VALUE_1
-                          filename: ../../test/parser/testcases/defparam2.v
-                          line: 19
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../../test/parser/testcases/defparam2.v
+          line: 23
+          name: another_module
           lifetime: NONE
-          line: 15
-          name: my_module
+          default_nettype: WIRE
           params:
           - Param:
               filename: ../../test/parser/testcases/defparam2.v
+              line: 23
               is_local: false
-              line: 15
-              name: VALUE_0
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/defparam2.v
-                  line: 15
-                  signing: NONE
+              name: OTHER
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/defparam2.v
-                  line: 15
+                  line: 23
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/defparam2.v
-                      line: 15
-                      sign: false
+                      line: 23
+                      base: 10
                       size: -1
-                      value: 5
-          - Param:
-              filename: ../../test/parser/testcases/defparam2.v
-              is_local: false
-              line: 16
-              name: VALUE_1
+                      sign: false
+                      value: 1
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/defparam2.v
-                  line: 16
+                  line: 23
                   signing: NONE
-              value:
-                Rvalue:
-                  filename: ../../test/parser/testcases/defparam2.v
-                  line: 16
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/defparam2.v
-                      line: 16
-                      sign: false
-                      size: -1
-                      value: 9
-      - Module:
-          default_nettype: WIRE
-          filename: ../../test/parser/testcases/defparam2.v
           items:
           - Initial:
               filename: ../../test/parser/testcases/defparam2.v
@@ -301,13 +331,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../../test/parser/testcases/defparam2.v
                       line: 25
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../../test/parser/testcases/defparam2.v
+                          line: 25
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../../test/parser/testcases/defparam2.v
@@ -315,40 +346,9 @@ Source:
                               value: OTHER=%0d
                           - Identifier:
                               filename: ../../test/parser/testcases/defparam2.v
-                              hier:
-                                HierName: null
                               line: 25
                               name: OTHER
-                          filename: ../../test/parser/testcases/defparam2.v
-                          line: 25
-                          syscall: display
-          lifetime: NONE
-          line: 23
-          name: another_module
-          params:
-          - Param:
-              filename: ../../test/parser/testcases/defparam2.v
-              is_local: false
-              line: 23
-              name: OTHER
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/defparam2.v
-                  line: 23
-                  signing: NONE
-              value:
-                Rvalue:
-                  filename: ../../test/parser/testcases/defparam2.v
-                  line: 23
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/defparam2.v
-                      line: 23
-                      sign: false
-                      size: -1
-                      value: 1
-      filename: ../../test/parser/testcases/defparam2.v
-      line: 1
-  filename: ../../test/parser/testcases/defparam2.v
-  line: 1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null

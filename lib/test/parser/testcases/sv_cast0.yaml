@@ -1,131 +1,138 @@
 Source:
+  filename: ../../test/parser/testcases/sv_cast0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_cast0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_cast0.sv
+          line: 1
+          name: sv_cast0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Typedef:
               filename: ../../test/parser/testcases/sv_cast0.sv
-              fwd_kind: NONE
               line: 3
+              fwd_kind: NONE
               name: byte_t
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 3
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 3
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 3
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Param:
               filename: ../../test/parser/testcases/sv_cast0.sv
-              is_local: true
               line: 4
+              is_local: true
               name: WIDTH
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/sv_cast0.sv
-                  line: 4
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 4
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/sv_cast0.sv
                       line: 4
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 8
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_cast0.sv
+                  line: 4
+                  signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_cast0.sv
+              line: 6
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: a
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 6
-              name: a
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 6
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 6
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 15
-                      line: 6
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_cast0.sv
+              line: 7
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: b
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 7
-              name: b
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_cast0.sv
                   line: 7
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 7
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 7
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 7
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 7
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Initial:
               filename: ../../test/parser/testcases/sv_cast0.sv
               line: 9
@@ -137,8 +144,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../../test/parser/testcases/sv_cast0.sv
-                      ldelay:
-                        DelayStatement: null
+                      line: 10
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
@@ -146,26 +152,16 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_cast0.sv
-                              hier:
-                                HierName: null
                               line: 10
                               name: b
-                      line: 10
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 10
                           var:
                             TypeCast:
-                              expr:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/sv_cast0.sv
-                                  hier:
-                                    HierName: null
-                                  line: 10
-                                  name: a
                               filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 10
                               target:
@@ -173,10 +169,20 @@ Source:
                                   filename: ../../test/parser/testcases/sv_cast0.sv
                                   line: 10
                                   signing: NONE
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_cast0.sv
+                              expr:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  line: 10
+                                  name: a
+                                  hier:
+                                    HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
@@ -184,26 +190,16 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_cast0.sv
-                              hier:
-                                HierName: null
                               line: 11
                               name: b
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 11
                           var:
                             TypeCast:
-                              expr:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/sv_cast0.sv
-                                  hier:
-                                    HierName: null
-                                  line: 11
-                                  name: a
                               filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 11
                               target:
@@ -211,10 +207,20 @@ Source:
                                   filename: ../../test/parser/testcases/sv_cast0.sv
                                   line: 11
                                   signing: NONE
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_cast0.sv
+                              expr:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  line: 11
+                                  name: a
+                                  hier:
+                                    HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 12
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
@@ -222,33 +228,33 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_cast0.sv
-                              hier:
-                                HierName: null
                               line: 12
                               name: b
-                      line: 12
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 12
                           var:
                             SigningCast:
-                              expr:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/sv_cast0.sv
-                                  hier:
-                                    HierName: null
-                                  line: 12
-                                  name: a
                               filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 12
                               signing: UNSIGNED
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_cast0.sv
+                              expr:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  line: 12
+                                  name: a
+                                  hier:
+                                    HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 13
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
@@ -256,33 +262,33 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_cast0.sv
-                              hier:
-                                HierName: null
                               line: 13
                               name: b
-                      line: 13
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 13
                           var:
                             SigningCast:
-                              expr:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/sv_cast0.sv
-                                  hier:
-                                    HierName: null
-                                  line: 13
-                                  name: a
                               filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 13
                               signing: SIGNED
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_cast0.sv
+                              expr:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  line: 13
+                                  name: a
+                                  hier:
+                                    HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 14
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
@@ -290,26 +296,16 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_cast0.sv
-                              hier:
-                                HierName: null
                               line: 14
                               name: b
-                      line: 14
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 14
                           var:
                             TypeCast:
-                              expr:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/sv_cast0.sv
-                                  hier:
-                                    HierName: null
-                                  line: 14
-                                  name: a
                               filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 14
                               target:
@@ -318,10 +314,20 @@ Source:
                                   line: 14
                                   name: byte_t
                                   signing: NONE
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_cast0.sv
+                              expr:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  line: 14
+                                  name: a
+                                  hier:
+                                    HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_cast0.sv
+                      line: 15
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
@@ -329,26 +335,16 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_cast0.sv
-                              hier:
-                                HierName: null
                               line: 15
                               name: b
-                      line: 15
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_cast0.sv
                           line: 15
                           var:
                             TypeCast:
-                              expr:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/sv_cast0.sv
-                                  hier:
-                                    HierName: null
-                                  line: 15
-                                  name: a
                               filename: ../../test/parser/testcases/sv_cast0.sv
                               line: 15
                               target:
@@ -357,10 +353,14 @@ Source:
                                   line: 15
                                   name: WIDTH
                                   signing: NONE
-          lifetime: NONE
-          line: 1
-          name: sv_cast0
-      filename: ../../test/parser/testcases/sv_cast0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_cast0.sv
-  line: 1
+                              expr:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast0.sv
+                                  line: 15
+                                  name: a
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

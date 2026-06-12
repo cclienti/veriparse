@@ -1,20 +1,27 @@
 Source:
+  filename: ../../test/parser/testcases/for1.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/for1.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/for1.v
+          line: 1
+          name: for1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../../test/parser/testcases/for1.v
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: i
+              init:
+                Rvalue: null
               type:
                 IntegerType:
                   filename: ../../test/parser/testcases/for1.v
@@ -22,13 +29,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/for1.v
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: j
+              init:
+                Rvalue: null
               type:
                 IntegerType:
                   filename: ../../test/parser/testcases/for1.v
@@ -36,77 +43,77 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/for1.v
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: ram
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/for1.v
+                  line: 4
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/for1.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/for1.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 255
+              - RangeDim:
+                  filename: ../../test/parser/testcases/for1.v
+                  line: 4
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/for1.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/for1.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 7
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 4
-              name: ram
               type:
                 RegType:
                   filename: ../../test/parser/testcases/for1.v
                   line: 4
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/for1.v
+                      line: 4
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/for1.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 4
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/for1.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../../test/parser/testcases/for1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/for1.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 4
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/for1.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 255
-              - RangeDim:
-                  filename: ../../test/parser/testcases/for1.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/for1.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 4
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/for1.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 7
           - Initial:
               filename: ../../test/parser/testcases/for1.v
               line: 6
@@ -117,32 +124,12 @@ Source:
                   scope: ''
                   statements:
                   - ForStatement:
-                      cond:
-                        LessThan:
-                          filename: ../../test/parser/testcases/for1.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/for1.v
-                              hier:
-                                HierName: null
-                              line: 7
-                              name: i
-                          line: 7
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/for1.v
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 256
                       filename: ../../test/parser/testcases/for1.v
                       line: 7
-                      post:
+                      pre:
                         BlockingSubstitution:
                           filename: ../../test/parser/testcases/for1.v
-                          ldelay:
-                            DelayStatement: null
+                          line: 7
                           left:
                             Lvalue:
                               filename: ../../test/parser/testcases/for1.v
@@ -150,13 +137,60 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/for1.v
-                                  hier:
-                                    HierName: null
                                   line: 7
                                   name: i
-                          line: 7
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/for1.v
+                              line: 7
+                              var:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/for1.v
+                                  line: 7
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
                           rdelay:
                             DelayStatement: null
+                      cond:
+                        LessThan:
+                          filename: ../../test/parser/testcases/for1.v
+                          line: 7
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/for1.v
+                              line: 7
+                              name: i
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/for1.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 256
+                      post:
+                        BlockingSubstitution:
+                          filename: ../../test/parser/testcases/for1.v
+                          line: 7
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/for1.v
+                              line: 7
+                              var:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/for1.v
+                                  line: 7
+                                  name: i
+                                  hier:
+                                    HierName: null
                           right:
                             Rvalue:
                               filename: ../../test/parser/testcases/for1.v
@@ -164,81 +198,34 @@ Source:
                               var:
                                 Plus:
                                   filename: ../../test/parser/testcases/for1.v
+                                  line: 7
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/for1.v
-                                      hier:
-                                        HierName: null
                                       line: 7
                                       name: i
-                                  line: 7
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/for1.v
                                       line: 7
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 1
-                      pre:
-                        BlockingSubstitution:
-                          filename: ../../test/parser/testcases/for1.v
                           ldelay:
                             DelayStatement: null
-                          left:
-                            Lvalue:
-                              filename: ../../test/parser/testcases/for1.v
-                              line: 7
-                              var:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/for1.v
-                                  hier:
-                                    HierName: null
-                                  line: 7
-                                  name: i
-                          line: 7
                           rdelay:
                             DelayStatement: null
-                          right:
-                            Rvalue:
-                              filename: ../../test/parser/testcases/for1.v
-                              line: 7
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/for1.v
-                                  line: 7
-                                  sign: false
-                                  size: -1
-                                  value: 0
                       statement:
                         ForStatement:
-                          cond:
-                            LessThan:
-                              filename: ../../test/parser/testcases/for1.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/for1.v
-                                  hier:
-                                    HierName: null
-                                  line: 8
-                                  name: j
-                              line: 8
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/for1.v
-                                  line: 8
-                                  sign: false
-                                  size: -1
-                                  value: 8
                           filename: ../../test/parser/testcases/for1.v
                           line: 8
-                          post:
+                          pre:
                             BlockingSubstitution:
                               filename: ../../test/parser/testcases/for1.v
-                              ldelay:
-                                DelayStatement: null
+                              line: 8
                               left:
                                 Lvalue:
                                   filename: ../../test/parser/testcases/for1.v
@@ -246,13 +233,60 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/for1.v
-                                      hier:
-                                        HierName: null
                                       line: 8
                                       name: j
-                              line: 8
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../../test/parser/testcases/for1.v
+                                  line: 8
+                                  var:
+                                    IntConstN:
+                                      filename: ../../test/parser/testcases/for1.v
+                                      line: 8
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 0
+                              ldelay:
+                                DelayStatement: null
                               rdelay:
                                 DelayStatement: null
+                          cond:
+                            LessThan:
+                              filename: ../../test/parser/testcases/for1.v
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/for1.v
+                                  line: 8
+                                  name: j
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/for1.v
+                                  line: 8
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 8
+                          post:
+                            BlockingSubstitution:
+                              filename: ../../test/parser/testcases/for1.v
+                              line: 8
+                              left:
+                                Lvalue:
+                                  filename: ../../test/parser/testcases/for1.v
+                                  line: 8
+                                  var:
+                                    Identifier:
+                                      filename: ../../test/parser/testcases/for1.v
+                                      line: 8
+                                      name: j
+                                      hier:
+                                        HierName: null
                               right:
                                 Rvalue:
                                   filename: ../../test/parser/testcases/for1.v
@@ -260,58 +294,30 @@ Source:
                                   var:
                                     Plus:
                                       filename: ../../test/parser/testcases/for1.v
+                                      line: 8
                                       left:
                                         Identifier:
                                           filename: ../../test/parser/testcases/for1.v
-                                          hier:
-                                            HierName: null
                                           line: 8
                                           name: j
-                                      line: 8
+                                          hier:
+                                            HierName: null
                                       right:
                                         IntConstN:
-                                          base: 10
                                           filename: ../../test/parser/testcases/for1.v
                                           line: 8
-                                          sign: false
+                                          base: 10
                                           size: -1
+                                          sign: false
                                           value: 1
-                          pre:
-                            BlockingSubstitution:
-                              filename: ../../test/parser/testcases/for1.v
                               ldelay:
                                 DelayStatement: null
-                              left:
-                                Lvalue:
-                                  filename: ../../test/parser/testcases/for1.v
-                                  line: 8
-                                  var:
-                                    Identifier:
-                                      filename: ../../test/parser/testcases/for1.v
-                                      hier:
-                                        HierName: null
-                                      line: 8
-                                      name: j
-                              line: 8
                               rdelay:
                                 DelayStatement: null
-                              right:
-                                Rvalue:
-                                  filename: ../../test/parser/testcases/for1.v
-                                  line: 8
-                                  var:
-                                    IntConstN:
-                                      base: 10
-                                      filename: ../../test/parser/testcases/for1.v
-                                      line: 8
-                                      sign: false
-                                      size: -1
-                                      value: 0
                           statement:
                             BlockingSubstitution:
                               filename: ../../test/parser/testcases/for1.v
-                              ldelay:
-                                DelayStatement: null
+                              line: 8
                               left:
                                 Lvalue:
                                   filename: ../../test/parser/testcases/for1.v
@@ -323,10 +329,10 @@ Source:
                                       ptr:
                                         Identifier:
                                           filename: ../../test/parser/testcases/for1.v
-                                          hier:
-                                            HierName: null
                                           line: 8
                                           name: j
+                                          hier:
+                                            HierName: null
                                       var:
                                         Pointer:
                                           filename: ../../test/parser/testcases/for1.v
@@ -334,20 +340,17 @@ Source:
                                           ptr:
                                             Identifier:
                                               filename: ../../test/parser/testcases/for1.v
-                                              hier:
-                                                HierName: null
                                               line: 8
                                               name: i
+                                              hier:
+                                                HierName: null
                                           var:
                                             Identifier:
                                               filename: ../../test/parser/testcases/for1.v
-                                              hier:
-                                                HierName: null
                                               line: 8
                                               name: ram
-                              line: 8
-                              rdelay:
-                                DelayStatement: null
+                                              hier:
+                                                HierName: null
                               right:
                                 Rvalue:
                                   filename: ../../test/parser/testcases/for1.v
@@ -355,46 +358,38 @@ Source:
                                   var:
                                     Plus:
                                       filename: ../../test/parser/testcases/for1.v
+                                      line: 8
                                       left:
                                         Times:
                                           filename: ../../test/parser/testcases/for1.v
+                                          line: 8
                                           left:
                                             Identifier:
                                               filename: ../../test/parser/testcases/for1.v
-                                              hier:
-                                                HierName: null
                                               line: 8
                                               name: i
-                                          line: 8
+                                              hier:
+                                                HierName: null
                                           right:
                                             Identifier:
                                               filename: ../../test/parser/testcases/for1.v
-                                              hier:
-                                                HierName: null
                                               line: 8
                                               name: j
-                                      line: 8
+                                              hier:
+                                                HierName: null
                                       right:
                                         IntConstN:
-                                          base: 10
                                           filename: ../../test/parser/testcases/for1.v
                                           line: 8
-                                          sign: false
+                                          base: 10
                                           size: -1
+                                          sign: false
                                           value: 1
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
                   - SingleStatement:
-                      delay:
-                        DelayStatement:
-                          delay:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/for1.v
-                              line: 9
-                              sign: false
-                              size: -1
-                              value: 1
-                          filename: ../../test/parser/testcases/for1.v
-                          line: 9
                       filename: ../../test/parser/testcases/for1.v
                       line: 9
                       scope: ''
@@ -403,10 +398,15 @@ Source:
                           filename: ../../test/parser/testcases/for1.v
                           line: 9
                           syscall: finish
-          lifetime: NONE
-          line: 1
-          name: for1
-      filename: ../../test/parser/testcases/for1.v
-      line: 1
-  filename: ../../test/parser/testcases/for1.v
-  line: 1
+                      delay:
+                        DelayStatement:
+                          filename: ../../test/parser/testcases/for1.v
+                          line: 9
+                          delay:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/for1.v
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1

@@ -1,10 +1,17 @@
 Source:
+  filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
+          line: 1
+          name: sv_scoped_taskcall0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Initial:
               filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
@@ -16,49 +23,45 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                       line: 4
                       scope: ''
                       statement:
                         TaskCall:
-                          args:
-                          - IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 1
-                          - IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 2
                           filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
-                          hier:
-                            HierName: null
                           line: 4
                           name: do_it
+                          args:
+                          - IntConstN:
+                              filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          - IntConstN:
+                              filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 2
                           scope:
                           - ScopeName:
                               filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                               line: 4
                               name: mypkg
-                  - SingleStatement:
+                          hier:
+                            HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                       line: 5
                       scope: ''
                       statement:
                         TaskCall:
                           filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
-                          hier:
-                            HierName: null
                           line: 5
                           name: reset
                           scope:
@@ -66,17 +69,17 @@ Source:
                               filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                               line: 5
                               name: mypkg
-                  - SingleStatement:
+                          hier:
+                            HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                       line: 6
                       scope: ''
                       statement:
                         TaskCall:
                           filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
-                          hier:
-                            HierName: null
                           line: 6
                           name: tick
                           scope:
@@ -84,10 +87,7 @@ Source:
                               filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                               line: 6
                               name: mypkg
-          lifetime: NONE
-          line: 1
-          name: sv_scoped_taskcall0
-      filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
-  line: 1
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null

@@ -1,30 +1,33 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+  line: 1
+  name: loop_unrolling3
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Function:
-      args:
-      - Arg:
-          default_value: null
-          direction: INPUT
-          filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-          is_var: false
-          line: 3
-          name: value
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-              line: 3
-              signing: NONE
       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-      lifetime: AUTOMATIC
       line: 3
       name: inc
+      lifetime: AUTOMATIC
       return_type:
         IntegerType:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 3
           signing: NONE
+      args:
+      - Arg:
+          filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+          line: 3
+          is_var: false
+          direction: INPUT
+          name: value
+          default_value: null
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+              line: 3
+              signing: NONE
       statements:
       - Block:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -33,8 +36,7 @@ Module:
           statements:
           - BlockingSubstitution:
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-              ldelay:
-                DelayStatement: null
+              line: 5
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -42,13 +44,10 @@ Module:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                      hier:
-                        HierName: null
                       line: 5
                       name: inc
-              line: 5
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -56,45 +55,49 @@ Module:
                   var:
                     Plus:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 5
                       left:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                          hier:
-                            HierName: null
                           line: 5
                           name: value
-                      line: 5
+                          hier:
+                            HierName: null
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
   - Function:
-      args:
-      - Arg:
-          default_value: null
-          direction: INPUT
-          filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-          is_var: false
-          line: 9
-          name: value
-          type:
-            IntegerType:
-              filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-              line: 9
-              signing: NONE
       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-      lifetime: AUTOMATIC
       line: 9
       name: dec
+      lifetime: AUTOMATIC
       return_type:
         IntegerType:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 9
           signing: NONE
+      args:
+      - Arg:
+          filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+          line: 9
+          is_var: false
+          direction: INPUT
+          name: value
+          default_value: null
+          type:
+            IntegerType:
+              filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+              line: 9
+              signing: NONE
       statements:
       - Block:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -103,8 +106,7 @@ Module:
           statements:
           - BlockingSubstitution:
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-              ldelay:
-                DelayStatement: null
+              line: 11
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -112,13 +114,10 @@ Module:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                      hier:
-                        HierName: null
                       line: 11
                       name: dec
-              line: 11
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -126,57 +125,61 @@ Module:
                   var:
                     Minus:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 11
                       left:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                          hier:
-                            HierName: null
                           line: 11
                           name: value
-                      line: 11
+                          hier:
+                            HierName: null
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 11
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
   - Function:
+      filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+      line: 15
+      name: less
+      lifetime: AUTOMATIC
+      return_type:
+        IntegerType:
+          filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+          line: 15
+          signing: NONE
       args:
       - Arg:
-          default_value: null
-          direction: INPUT
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-          is_var: false
           line: 15
+          is_var: false
+          direction: INPUT
           name: a
+          default_value: null
           type:
             IntegerType:
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 15
               signing: NONE
       - Arg:
-          default_value: null
-          direction: INPUT
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-          is_var: false
           line: 15
+          is_var: false
+          direction: INPUT
           name: b
+          default_value: null
           type:
             ImplicitType:
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 15
               signing: NONE
-      filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-      lifetime: AUTOMATIC
-      line: 15
-      name: less
-      return_type:
-        IntegerType:
-          filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-          line: 15
-          signing: NONE
       statements:
       - Block:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -185,8 +188,7 @@ Module:
           statements:
           - BlockingSubstitution:
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-              ldelay:
-                DelayStatement: null
+              line: 17
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -194,13 +196,10 @@ Module:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                      hier:
-                        HierName: null
                       line: 17
                       name: less
-              line: 17
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -208,21 +207,25 @@ Module:
                   var:
                     LessThan:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 17
                       left:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: a
-                      line: 17
+                          hier:
+                            HierName: null
                       right:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                          hier:
-                            HierName: null
                           line: 17
                           name: b
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
   - Genvar:
       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
       line: 21
@@ -233,19 +236,21 @@ Module:
       name: j
   - GenerateStatement:
       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+      line: 22
       items:
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -253,38 +258,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 10
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -292,38 +297,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 9
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -331,38 +336,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -370,38 +375,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -409,38 +414,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -448,38 +453,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -487,38 +492,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -526,38 +531,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -565,38 +570,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -604,38 +609,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -643,38 +648,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 9
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -682,38 +687,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -721,38 +726,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -760,38 +765,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -799,38 +804,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -838,38 +843,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -877,38 +882,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -916,38 +921,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -955,38 +960,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -994,38 +999,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1033,38 +1038,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1072,38 +1077,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1111,38 +1116,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1150,38 +1155,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1189,38 +1194,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1228,38 +1233,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1267,38 +1272,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1306,38 +1311,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1345,38 +1350,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1384,38 +1389,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1423,38 +1428,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1462,38 +1467,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1501,38 +1506,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1540,38 +1545,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1579,38 +1584,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1618,38 +1623,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1657,38 +1662,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1696,38 +1701,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1735,38 +1740,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1774,38 +1779,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1813,38 +1818,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1852,38 +1857,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1891,38 +1896,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1930,38 +1935,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -1969,38 +1974,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 5
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2008,38 +2013,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2047,38 +2052,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2086,38 +2091,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2125,38 +2130,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 6
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2164,38 +2169,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2203,38 +2208,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2242,38 +2247,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2281,38 +2286,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 2
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2320,38 +2325,38 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
+              delay:
+                DelayStatement: null
       - Initial:
           filename: ../test/passes/transformations/testcases/loop_unrolling3.v
           line: 25
           statement:
             SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 25
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                  line: 25
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
@@ -2359,27 +2364,22 @@ Module:
                       value: '%m'
                   - Times:
                       filename: ../test/passes/transformations/testcases/loop_unrolling3.v
+                      line: 25
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 9
-                      line: 25
                       right:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
-                  filename: ../test/passes/transformations/testcases/loop_unrolling3.v
-                  line: 25
-                  syscall: display
-      line: 22
-  lifetime: NONE
-  line: 1
-  name: loop_unrolling3
+              delay:
+                DelayStatement: null
