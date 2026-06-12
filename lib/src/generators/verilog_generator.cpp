@@ -467,8 +467,8 @@ std::string VerilogGenerator::data_type_to_string(const AST::DataType::Ptr type)
         result = "type(" + render(AST::cast_to<AST::TypeOpExpr>(type)->get_expr()) + ")";
         break;
     case AST::NodeType::TypeOpType:
-        result = "type(" +
-                 data_type_to_string(AST::cast_to<AST::TypeOpType>(type)->get_arg_type()) + ")";
+        result =
+            "type(" + data_type_to_string(AST::cast_to<AST::TypeOpType>(type)->get_type()) + ")";
         break;
     default:
         break;

@@ -1373,7 +1373,7 @@ YAML::Node YAMLGenerator::render_typeoptype(const AST::TypeOpType::Ptr node) con
             content["signing"] = "UNSIGNED";
         }
 
-        content["arg_type"] = render(node->get_arg_type());
+        content["type"] = render(node->get_type());
 
         if(node->get_packed_dims()) {
             content["packed_dims"] = YAML::Load("[]");

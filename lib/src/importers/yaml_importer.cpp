@@ -3349,17 +3349,17 @@ AST::Node::Ptr YAMLImporter::convert_typeoptype(const YAML::Node node) const
             }
         }
 
-        // Manage Child arg_type
-        if(node["arg_type"]) {
-            const YAML::Node node_arg_type = node["arg_type"];
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
             // Set the child
-            AST::Node::Ptr child = convert(node_arg_type);
+            AST::Node::Ptr child = convert(node_type);
             if(child) {
                 AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
                 if(!result) {
                     result = std::make_shared<AST::TypeOpType>();
                 }
-                result->set_arg_type(child_cast);
+                result->set_type(child_cast);
             }
         }
 

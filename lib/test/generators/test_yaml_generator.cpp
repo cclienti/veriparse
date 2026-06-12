@@ -817,18 +817,18 @@ TEST(YAMLGenerator, TypeOpType)
     Logger::add_text_sink("YAMLGenerator.TypeOpType.log");
     Logger::add_stderr_sink();
 
-    AST::DataType::Ptr c_arg_type(new AST::DataType);
+    AST::DataType::Ptr c_type(new AST::DataType);
     AST::Dimension::ListPtr c_packed_dims(new AST::Dimension::List);
     AST::TypeOpType::DataType::SigningEnum p_signing =
         AST::TypeOpType::DataType::SigningEnum::SIGNED;
 
     AST::TypeOpType::Ptr m_typeoptype(
-        new AST::TypeOpType(c_arg_type, c_packed_dims, p_signing, "filename", 0));
+        new AST::TypeOpType(c_type, c_packed_dims, p_signing, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_typeoptype);
 
     ASSERT_TRUE(yaml["TypeOpType"]);
-    ASSERT_TRUE(yaml["TypeOpType"]["arg_type"]);
+    ASSERT_TRUE(yaml["TypeOpType"]["type"]);
     ASSERT_TRUE(yaml["TypeOpType"]["packed_dims"]);
     ASSERT_TRUE(yaml["TypeOpType"]["signing"].as<AST::TypeOpType::DataType::SigningEnum>() ==
                 AST::TypeOpType::DataType::SigningEnum::SIGNED);
