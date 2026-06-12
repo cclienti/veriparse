@@ -1,20 +1,27 @@
 Source:
+  filename: ../../test/parser/testcases/while0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/while0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/while0.v
+          line: 1
+          name: while0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../../test/parser/testcases/while0.v
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: i
+              init:
+                Rvalue: null
               type:
                 IntegerType:
                   filename: ../../test/parser/testcases/while0.v
@@ -22,13 +29,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/while0.v
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: j
+              init:
+                Rvalue: null
               type:
                 IntegerType:
                   filename: ../../test/parser/testcases/while0.v
@@ -36,77 +43,77 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/while0.v
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: ram
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/while0.v
+                  line: 4
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 255
+              - RangeDim:
+                  filename: ../../test/parser/testcases/while0.v
+                  line: 4
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 7
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 4
-              name: ram
               type:
                 RegType:
                   filename: ../../test/parser/testcases/while0.v
                   line: 4
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/while0.v
+                      line: 4
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/while0.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 4
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/while0.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../../test/parser/testcases/while0.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/while0.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 4
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/while0.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 255
-              - RangeDim:
-                  filename: ../../test/parser/testcases/while0.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/while0.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 0
-                  line: 4
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/while0.v
-                      line: 4
-                      sign: false
-                      size: -1
-                      value: 7
           - Initial:
               filename: ../../test/parser/testcases/while0.v
               line: 6
@@ -118,8 +125,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../../test/parser/testcases/while0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 7
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/while0.v
@@ -127,29 +133,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/while0.v
-                              hier:
-                                HierName: null
                               line: 7
                               name: i
-                      line: 7
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/while0.v
                           line: 7
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/while0.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                  - BlockingSubstitution:
-                      filename: ../../test/parser/testcases/while0.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 8
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/while0.v
@@ -157,47 +163,48 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/while0.v
-                              hier:
-                                HierName: null
                               line: 8
                               name: j
-                      line: 8
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/while0.v
                           line: 8
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/while0.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
                   - WhileStatement:
+                      filename: ../../test/parser/testcases/while0.v
+                      line: 9
                       cond:
                         LessThan:
                           filename: ../../test/parser/testcases/while0.v
+                          line: 9
                           left:
                             Identifier:
                               filename: ../../test/parser/testcases/while0.v
-                              hier:
-                                HierName: null
                               line: 9
                               name: i
-                          line: 9
+                              hier:
+                                HierName: null
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/while0.v
                               line: 9
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 256
-                      filename: ../../test/parser/testcases/while0.v
-                      line: 9
                       statement:
                         Block:
                           filename: ../../test/parser/testcases/while0.v
@@ -205,27 +212,27 @@ Source:
                           scope: ''
                           statements:
                           - WhileStatement:
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 10
                               cond:
                                 LessThan:
                                   filename: ../../test/parser/testcases/while0.v
+                                  line: 10
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/while0.v
-                                      hier:
-                                        HierName: null
                                       line: 10
                                       name: i
-                                  line: 10
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/while0.v
                                       line: 10
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 8
-                              filename: ../../test/parser/testcases/while0.v
-                              line: 10
                               statement:
                                 Block:
                                   filename: ../../test/parser/testcases/while0.v
@@ -234,8 +241,7 @@ Source:
                                   statements:
                                   - BlockingSubstitution:
                                       filename: ../../test/parser/testcases/while0.v
-                                      ldelay:
-                                        DelayStatement: null
+                                      line: 11
                                       left:
                                         Lvalue:
                                           filename: ../../test/parser/testcases/while0.v
@@ -247,10 +253,10 @@ Source:
                                               ptr:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/while0.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 11
                                                   name: j
+                                                  hier:
+                                                    HierName: null
                                               var:
                                                 Pointer:
                                                   filename: ../../test/parser/testcases/while0.v
@@ -258,20 +264,17 @@ Source:
                                                   ptr:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/while0.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 11
                                                       name: i
+                                                      hier:
+                                                        HierName: null
                                                   var:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/while0.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 11
                                                       name: ram
-                                      line: 11
-                                      rdelay:
-                                        DelayStatement: null
+                                                      hier:
+                                                        HierName: null
                                       right:
                                         Rvalue:
                                           filename: ../../test/parser/testcases/while0.v
@@ -279,41 +282,46 @@ Source:
                                           var:
                                             Plus:
                                               filename: ../../test/parser/testcases/while0.v
+                                              line: 11
                                               left:
                                                 Times:
                                                   filename: ../../test/parser/testcases/while0.v
+                                                  line: 11
                                                   left:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/while0.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 11
                                                       name: i
-                                                  line: 11
+                                                      hier:
+                                                        HierName: null
                                                   right:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/while0.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 11
                                                       name: j
-                                              line: 11
+                                                      hier:
+                                                        HierName: null
                                               right:
                                                 IntConstN:
-                                                  base: 10
                                                   filename: ../../test/parser/testcases/while0.v
                                                   line: 11
-                                                  sign: false
+                                                  base: 10
                                                   size: -1
+                                                  sign: false
                                                   value: 1
-                                  - SingleStatement:
-                                      delay:
+                                      ldelay:
                                         DelayStatement: null
+                                      rdelay:
+                                        DelayStatement: null
+                                  - SingleStatement:
                                       filename: ../../test/parser/testcases/while0.v
                                       line: 12
                                       scope: ''
                                       statement:
                                         SystemCall:
+                                          filename: ../../test/parser/testcases/while0.v
+                                          line: 12
+                                          syscall: display
                                           args:
                                           - StringConst:
                                               filename: ../../test/parser/testcases/while0.v
@@ -321,26 +329,26 @@ Source:
                                               value: Address = [%g][%g]  Data = %h
                                           - Identifier:
                                               filename: ../../test/parser/testcases/while0.v
-                                              hier:
-                                                HierName: null
                                               line: 12
                                               name: i
-                                          - Identifier:
-                                              filename: ../../test/parser/testcases/while0.v
                                               hier:
                                                 HierName: null
+                                          - Identifier:
+                                              filename: ../../test/parser/testcases/while0.v
                                               line: 12
                                               name: j
+                                              hier:
+                                                HierName: null
                                           - Pointer:
                                               filename: ../../test/parser/testcases/while0.v
                                               line: 12
                                               ptr:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/while0.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 12
                                                   name: j
+                                                  hier:
+                                                    HierName: null
                                               var:
                                                 Pointer:
                                                   filename: ../../test/parser/testcases/while0.v
@@ -348,33 +356,20 @@ Source:
                                                   ptr:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/while0.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 12
                                                       name: i
+                                                      hier:
+                                                        HierName: null
                                                   var:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/while0.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 12
                                                       name: ram
-                                          filename: ../../test/parser/testcases/while0.v
-                                          line: 12
-                                          syscall: display
+                                                      hier:
+                                                        HierName: null
+                                      delay:
+                                        DelayStatement: null
                   - SingleStatement:
-                      delay:
-                        DelayStatement:
-                          delay:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/while0.v
-                              line: 15
-                              sign: false
-                              size: -1
-                              value: 1
-                          filename: ../../test/parser/testcases/while0.v
-                          line: 15
                       filename: ../../test/parser/testcases/while0.v
                       line: 15
                       scope: ''
@@ -383,10 +378,15 @@ Source:
                           filename: ../../test/parser/testcases/while0.v
                           line: 15
                           syscall: finish
-          lifetime: NONE
-          line: 1
-          name: while0
-      filename: ../../test/parser/testcases/while0.v
-      line: 1
-  filename: ../../test/parser/testcases/while0.v
-  line: 1
+                      delay:
+                        DelayStatement:
+                          filename: ../../test/parser/testcases/while0.v
+                          line: 15
+                          delay:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/while0.v
+                              line: 15
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1

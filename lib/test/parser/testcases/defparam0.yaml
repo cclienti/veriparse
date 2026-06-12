@@ -1,152 +1,161 @@
 Source:
+  filename: ../../test/parser/testcases/defparam0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/defparam0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/defparam0.v
+          line: 1
+          name: defparm0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - WireNet:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 3
+              is_vectored: false
+              is_scalared: false
+              name: clock
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/defparam0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 3
-              name: clock
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/defparam0.v
                   line: 3
                   signing: NONE
           - WireNet:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 4
+              is_vectored: false
+              is_scalared: false
+              name: in0
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/defparam0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 4
-              name: in0
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/defparam0.v
                   line: 4
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/defparam0.v
+                      line: 4
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam0.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 31
-                      line: 4
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam0.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 5
+              is_vectored: false
+              is_scalared: false
+              name: out
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/defparam0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 5
-              name: out
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../../test/parser/testcases/defparam0.v
                   line: 5
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/defparam0.v
+                      line: 5
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam0.v
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 31
-                      line: 5
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam0.v
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Defparamlist:
               filename: ../../test/parser/testcases/defparam0.v
               line: 7
               list:
               - Defparam:
                   filename: ../../test/parser/testcases/defparam0.v
+                  line: 7
                   identifier:
                     Identifier:
                       filename: ../../test/parser/testcases/defparam0.v
+                      line: 7
+                      name: WIDTH
                       hier:
                         HierName:
                           filename: ../../test/parser/testcases/defparam0.v
+                          line: 7
                           labellist:
                           - HierLabel:
                               filename: ../../test/parser/testcases/defparam0.v
                               line: 7
-                              loop: null
                               name: myregister_inst
-                          line: 7
-                      line: 7
-                      name: WIDTH
-                  line: 7
+                              loop: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/defparam0.v
                       line: 7
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/defparam0.v
                           line: 7
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 32
           - Instancelist:
               filename: ../../test/parser/testcases/defparam0.v
+              line: 9
+              module: myregister
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../../test/parser/testcases/defparam0.v
                   line: 9
                   module: myregister
                   name: myregister_inst
+                  array:
+                    Dimension: null
                   portlist:
                   - PortArg:
                       filename: ../../test/parser/testcases/defparam0.v
@@ -155,10 +164,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/defparam0.v
-                          hier:
-                            HierName: null
                           line: 9
                           name: clock
+                          hier:
+                            HierName: null
                   - PortArg:
                       filename: ../../test/parser/testcases/defparam0.v
                       line: 10
@@ -166,10 +175,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/defparam0.v
-                          hier:
-                            HierName: null
                           line: 10
                           name: in0
+                          hier:
+                            HierName: null
                   - PortArg:
                       filename: ../../test/parser/testcases/defparam0.v
                       line: 11
@@ -177,18 +186,180 @@ Source:
                       value:
                         Identifier:
                           filename: ../../test/parser/testcases/defparam0.v
-                          hier:
-                            HierName: null
                           line: 11
                           name: out
-              line: 9
-              module: myregister
-          lifetime: NONE
-          line: 1
-          name: defparm0
+                          hier:
+                            HierName: null
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/defparam0.v
+          line: 14
+          name: myregister
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 15
+              is_local: false
+              name: WIDTH
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 15
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 15
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 2
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 15
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 16
+              name: clock
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 16
+                  is_vectored: false
+                  is_scalared: false
+                  name: clock
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 16
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 17
+              name: in0
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 17
+                  is_vectored: false
+                  is_scalared: false
+                  name: in0
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 17
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 17
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 17
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/defparam0.v
+                                  line: 17
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/defparam0.v
+                                  line: 17
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 17
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/defparam0.v
+              line: 18
+              name: out
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/defparam0.v
+                  line: 18
+                  is_vectored: false
+                  is_scalared: false
+                  name: out
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    RegType:
+                      filename: ../../test/parser/testcases/defparam0.v
+                      line: 18
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/defparam0.v
+                          line: 18
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 18
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/defparam0.v
+                                  line: 18
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/defparam0.v
+                                  line: 18
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/defparam0.v
+                              line: 18
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Always:
               filename: ../../test/parser/testcases/defparam0.v
@@ -201,14 +372,14 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/defparam0.v
                       line: 20
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/defparam0.v
-                          hier:
-                            HierName: null
                           line: 20
                           name: clock
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 Block:
                   filename: ../../test/parser/testcases/defparam0.v
@@ -217,8 +388,7 @@ Source:
                   statements:
                   - NonblockingSubstitution:
                       filename: ../../test/parser/testcases/defparam0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/defparam0.v
@@ -226,13 +396,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/defparam0.v
-                              hier:
-                                HierName: null
                               line: 21
                               name: out
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/defparam0.v
@@ -240,178 +407,11 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/defparam0.v
-                              hier:
-                                HierName: null
                               line: 21
                               name: in0
-          lifetime: NONE
-          line: 14
-          name: myregister
-          params:
-          - Param:
-              filename: ../../test/parser/testcases/defparam0.v
-              is_local: false
-              line: 15
-              name: WIDTH
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/defparam0.v
-                  line: 15
-                  signing: NONE
-              value:
-                Rvalue:
-                  filename: ../../test/parser/testcases/defparam0.v
-                  line: 15
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/defparam0.v
-                      line: 15
-                      sign: false
-                      size: -1
-                      value: 2
-          ports:
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/defparam0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 16
-                  name: clock
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/defparam0.v
-                      line: 16
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/defparam0.v
-              line: 16
-              name: clock
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/defparam0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 17
-                  name: in0
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/defparam0.v
-                      line: 17
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/defparam0.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/defparam0.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/defparam0.v
-                                  hier:
-                                    HierName: null
-                                  line: 17
-                                  name: WIDTH
-                              line: 17
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/defparam0.v
-                                  line: 17
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 17
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/defparam0.v
-                              line: 17
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/defparam0.v
-              line: 17
-              name: in0
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/defparam0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 18
-                  name: out
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    RegType:
-                      filename: ../../test/parser/testcases/defparam0.v
-                      line: 18
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/defparam0.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/defparam0.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/defparam0.v
-                                  hier:
-                                    HierName: null
-                                  line: 18
-                                  name: WIDTH
-                              line: 18
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/defparam0.v
-                                  line: 18
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 18
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/defparam0.v
-                              line: 18
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../../test/parser/testcases/defparam0.v
-              line: 18
-              name: out
-      filename: ../../test/parser/testcases/defparam0.v
-      line: 1
-  filename: ../../test/parser/testcases/defparam0.v
-  line: 1
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

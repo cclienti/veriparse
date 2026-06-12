@@ -1,10 +1,321 @@
 Source:
+  filename: ../../test/parser/testcases/systemcall0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/systemcall0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/systemcall0.v
+          line: 1
+          name: systemcall0
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/systemcall0.v
+              line: 2
+              is_local: false
+              name: WIDTH
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 2
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 8
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 2
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/systemcall0.v
+              line: 3
+              name: reset
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: reset
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 3
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/systemcall0.v
+              line: 4
+              name: clk
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 4
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/systemcall0.v
+              line: 5
+              name: in0
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: in0
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/systemcall0.v
+                          line: 5
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 5
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 5
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 5
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/systemcall0.v
+              line: 6
+              name: in1
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: in1
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/systemcall0.v
+                          line: 6
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 6
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 6
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 6
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/systemcall0.v
+              line: 7
+              name: in2
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: in2
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/systemcall0.v
+                          line: 7
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 7
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 7
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 7
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/systemcall0.v
+              line: 8
+              name: in3
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/systemcall0.v
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: in3
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/systemcall0.v
+                          line: 8
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 8
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/systemcall0.v
+                                  line: 8
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/systemcall0.v
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Always:
               filename: ../../test/parser/testcases/systemcall0.v
@@ -17,23 +328,24 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/systemcall0.v
                       line: 10
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/systemcall0.v
-                          hier:
-                            HierName: null
                           line: 10
                           name: clk
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 SingleStatement:
-                  delay:
-                    DelayStatement: null
                   filename: ../../test/parser/testcases/systemcall0.v
                   line: 10
                   scope: ''
                   statement:
                     SystemCall:
+                      filename: ../../test/parser/testcases/systemcall0.v
+                      line: 10
+                      syscall: display
                       args:
                       - Concat:
                           filename: ../../test/parser/testcases/systemcall0.v
@@ -41,346 +353,34 @@ Source:
                           list:
                           - Identifier:
                               filename: ../../test/parser/testcases/systemcall0.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: in1
-                          - Identifier:
-                              filename: ../../test/parser/testcases/systemcall0.v
                               hier:
                                 HierName: null
+                          - Identifier:
+                              filename: ../../test/parser/testcases/systemcall0.v
                               line: 10
                               name: in2
+                              hier:
+                                HierName: null
                       - Identifier:
                           filename: ../../test/parser/testcases/systemcall0.v
-                          hier:
-                            HierName: null
                           line: 10
                           name: in0
+                          hier:
+                            HierName: null
                       - FunctionCall:
+                          filename: ../../test/parser/testcases/systemcall0.v
+                          line: 10
+                          name: otherfunc
                           args:
                           - Identifier:
                               filename: ../../test/parser/testcases/systemcall0.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: in3
-                          filename: ../../test/parser/testcases/systemcall0.v
+                              hier:
+                                HierName: null
                           hier:
                             HierName: null
-                          line: 10
-                          name: otherfunc
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 10
-                      syscall: display
-          lifetime: NONE
-          line: 1
-          name: systemcall0
-          params:
-          - Param:
-              filename: ../../test/parser/testcases/systemcall0.v
-              is_local: false
-              line: 2
-              name: WIDTH
-              type:
-                IntegerType:
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  line: 2
-                  signing: NONE
-              value:
-                Rvalue:
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  line: 2
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 2
-                      sign: false
-                      size: -1
-                      value: 8
-          ports:
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
+                  delay:
                     DelayStatement: null
-                  line: 3
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 3
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/systemcall0.v
-              line: 3
-              name: reset
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 4
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/systemcall0.v
-              line: 4
-              name: clk
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: in0
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 5
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/systemcall0.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  hier:
-                                    HierName: null
-                                  line: 5
-                                  name: WIDTH
-                              line: 5
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  line: 5
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/systemcall0.v
-              line: 5
-              name: in0
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: in1
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 6
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/systemcall0.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  hier:
-                                    HierName: null
-                                  line: 6
-                                  name: WIDTH
-                              line: 6
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  line: 6
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/systemcall0.v
-              line: 6
-              name: in1
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 7
-                  name: in2
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 7
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/systemcall0.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  hier:
-                                    HierName: null
-                                  line: 7
-                                  name: WIDTH
-                              line: 7
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  line: 7
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 7
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/systemcall0.v
-              line: 7
-              name: in2
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/systemcall0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 8
-                  name: in3
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/systemcall0.v
-                      line: 8
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/systemcall0.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  hier:
-                                    HierName: null
-                                  line: 8
-                                  name: WIDTH
-                              line: 8
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/systemcall0.v
-                                  line: 8
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 8
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/systemcall0.v
-                              line: 8
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/systemcall0.v
-              line: 8
-              name: in3
-      filename: ../../test/parser/testcases/systemcall0.v
-      line: 1
-  filename: ../../test/parser/testcases/systemcall0.v
-  line: 1

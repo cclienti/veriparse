@@ -1,10 +1,17 @@
 Source:
+  filename: ../../test/parser/testcases/var3.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/var3.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/var3.v
+          line: 1
+          name: var3
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Initial:
               filename: ../../test/parser/testcases/var3.v
@@ -17,32 +24,25 @@ Source:
                   statements:
                   - Var:
                       filename: ../../test/parser/testcases/var3.v
+                      line: 4
+                      is_var: false
+                      is_const: false
+                      lifetime: NONE
+                      name: x
                       init:
                         Rvalue:
                           filename: ../../test/parser/testcases/var3.v
                           line: 4
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/var3.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      is_const: false
-                      is_var: false
-                      lifetime: NONE
-                      line: 4
-                      name: x
                       type:
                         IntegerType:
                           filename: ../../test/parser/testcases/var3.v
                           line: 4
                           signing: NONE
-          lifetime: NONE
-          line: 1
-          name: var3
-      filename: ../../test/parser/testcases/var3.v
-      line: 1
-  filename: ../../test/parser/testcases/var3.v
-  line: 1

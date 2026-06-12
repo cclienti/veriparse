@@ -1,10 +1,17 @@
 Source:
+  filename: ../test/passes/transformations/testcases/ifvardecl0.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/ifvardecl0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/ifvardecl0.v
+          line: 1
+          name: ifvardecl0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Initial:
               filename: ../test/passes/transformations/testcases/ifvardecl0.v
@@ -16,68 +23,16 @@ Source:
                   scope: ''
                   statements:
                   - IfStatement:
-                      cond:
-                        IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                          line: 4
-                          sign: false
-                          size: -1
-                          value: 1
-                      false_statement:
-                        Block:
-                          filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                          line: 8
-                          scope: ''
-                          statements:
-                          - Var:
-                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                              init:
-                                Rvalue:
-                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                  line: 9
-                                  var:
-                                    IntConstN:
-                                      base: 10
-                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                      line: 9
-                                      sign: false
-                                      size: -1
-                                      value: 1
-                              is_const: false
-                              is_var: false
-                              lifetime: NONE
-                              line: 9
-                              name: prefix_x_suffix
-                              type:
-                                IntegerType:
-                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                  line: 9
-                                  signing: NONE
-                          - SingleStatement:
-                              delay:
-                                DelayStatement: null
-                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                              line: 10
-                              scope: ''
-                              statement:
-                                SystemCall:
-                                  args:
-                                  - StringConst:
-                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                      line: 10
-                                      value: x = %0d
-                                  - Identifier:
-                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                      hier:
-                                        HierName: null
-                                      line: 10
-                                      name: prefix_x_suffix
-                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                  line: 10
-                                  syscall: display
                       filename: ../test/passes/transformations/testcases/ifvardecl0.v
                       line: 4
+                      cond:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
                       true_statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/ifvardecl0.v
@@ -86,36 +41,37 @@ Source:
                           statements:
                           - Var:
                               filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                              line: 5
+                              is_var: false
+                              is_const: false
+                              lifetime: NONE
+                              name: prefix_x_suffix
                               init:
                                 Rvalue:
                                   filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                   line: 5
                                   var:
                                     IntConstN:
-                                      base: 10
                                       filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                       line: 5
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 1
-                              is_const: false
-                              is_var: false
-                              lifetime: NONE
-                              line: 5
-                              name: prefix_x_suffix
                               type:
                                 IntegerType:
                                   filename: ../test/passes/transformations/testcases/ifvardecl0.v
                                   line: 5
                                   signing: NONE
                           - SingleStatement:
-                              delay:
-                                DelayStatement: null
                               filename: ../test/passes/transformations/testcases/ifvardecl0.v
                               line: 6
                               scope: ''
                               statement:
                                 SystemCall:
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                  line: 6
+                                  syscall: display
                                   args:
                                   - StringConst:
                                       filename: ../test/passes/transformations/testcases/ifvardecl0.v
@@ -123,17 +79,61 @@ Source:
                                       value: x = %0d
                                   - Identifier:
                                       filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                      hier:
-                                        HierName: null
                                       line: 6
                                       name: prefix_x_suffix
+                                      hier:
+                                        HierName: null
+                              delay:
+                                DelayStatement: null
+                      false_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                          line: 8
+                          scope: ''
+                          statements:
+                          - Var:
+                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                              line: 9
+                              is_var: false
+                              is_const: false
+                              lifetime: NONE
+                              name: prefix_x_suffix
+                              init:
+                                Rvalue:
                                   filename: ../test/passes/transformations/testcases/ifvardecl0.v
-                                  line: 6
+                                  line: 9
+                                  var:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                      line: 9
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 1
+                              type:
+                                IntegerType:
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                  line: 9
+                                  signing: NONE
+                          - SingleStatement:
+                              filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                              line: 10
+                              scope: ''
+                              statement:
+                                SystemCall:
+                                  filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                  line: 10
                                   syscall: display
-          lifetime: NONE
-          line: 1
-          name: ifvardecl0
-      filename: ../test/passes/transformations/testcases/ifvardecl0.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/ifvardecl0.v
-  line: 1
+                                  args:
+                                  - StringConst:
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                      line: 10
+                                      value: x = %0d
+                                  - Identifier:
+                                      filename: ../test/passes/transformations/testcases/ifvardecl0.v
+                                      line: 10
+                                      name: prefix_x_suffix
+                                      hier:
+                                        HierName: null
+                              delay:
+                                DelayStatement: null

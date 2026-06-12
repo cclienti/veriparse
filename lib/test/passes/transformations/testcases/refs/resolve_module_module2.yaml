@@ -1,110 +1,290 @@
 Source:
+  filename: ../test/passes/transformations/testcases/module2.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/module2.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/module2.v
+          line: 1
+          name: module2
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../test/passes/transformations/testcases/module2.v
+              line: 4
+              is_local: false
+              name: LOG2
+              value: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 4
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/module2.v
+              line: 7
+              name: clock
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: clock
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/module2.v
+              line: 8
+              name: reset_n
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: reset_n
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/module2.v
+              line: 9
+              name: in
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: in
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 9
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/module2.v
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/module2.v
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/module2.v
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/module2.v
+              line: 10
+              name: out
+              direction: OUTPUT
+              decl:
+                Var:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 12
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: out
+                  init:
+                    Rvalue: null
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 12
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/module2.v
+                          line: 12
+                          left:
+                            IntConstN:
+                              filename: ''
+                              line: 0
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/module2.v
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/module2.v
+              line: 11
+              name: strobe
+              direction: OUTPUT
+              decl:
+                Var:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 13
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: strobe
+                  init:
+                    Rvalue: null
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 13
+                      signing: NONE
+              expr: null
           items:
           - Var:
               filename: ../test/passes/transformations/testcases/module2.v
+              line: 14
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: l
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 14
-              name: l
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/module2.v
                   line: 14
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/module2.v
+                      line: 14
                       left:
                         Minus:
                           filename: ../test/passes/transformations/testcases/module2.v
+                          line: 14
                           left:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/module2.v
-                              hier:
-                                HierName: null
                               line: 14
                               name: LOG2
-                          line: 14
+                              hier:
+                                HierName: null
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/module2.v
                               line: 14
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                      line: 14
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/module2.v
+              line: 17
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: lut
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../test/passes/transformations/testcases/module2.v
+                  line: 17
+                  left:
+                    IntConstN:
+                      filename: ''
+                      line: 0
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 7
+                  right:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 17
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 17
-              name: lut
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/module2.v
                   line: 17
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/module2.v
+                      line: 17
                       left:
                         IntConstN:
-                          base: 10
                           filename: ''
                           line: 0
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 17
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 17
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../test/passes/transformations/testcases/module2.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ''
-                      line: 0
-                      sign: false
-                      size: -1
-                      value: 7
-                  line: 17
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/module2.v
-                      line: 17
-                      sign: false
-                      size: -1
-                      value: 0
           - Initial:
               filename: ../test/passes/transformations/testcases/module2.v
               line: 19
@@ -116,8 +296,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/module2.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -128,38 +307,38 @@ Source:
                               line: 21
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/module2.v
                                   line: 20
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 0
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: lut
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 21
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -170,38 +349,38 @@ Source:
                               line: 21
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: lut
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 21
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 2
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -212,38 +391,38 @@ Source:
                               line: 21
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 2
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: lut
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 21
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -254,38 +433,38 @@ Source:
                               line: 21
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 3
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: lut
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 21
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -296,38 +475,38 @@ Source:
                               line: 21
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 4
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: lut
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 21
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 5
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -338,38 +517,38 @@ Source:
                               line: 21
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 5
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: lut
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 21
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 6
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 21
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -380,34 +559,35 @@ Source:
                               line: 21
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 6
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: lut
-                      line: 21
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
                           line: 21
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/module2.v
               line: 25
@@ -419,25 +599,25 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/module2.v
                       line: 25
+                      type: NEGEDGE
                       sig:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/module2.v
-                          hier:
-                            HierName: null
                           line: 25
                           name: reset_n
-                      type: NEGEDGE
+                          hier:
+                            HierName: null
                   - Sens:
                       filename: ../test/passes/transformations/testcases/module2.v
                       line: 25
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/module2.v
-                          hier:
-                            HierName: null
                           line: 25
                           name: clock
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 Block:
                   filename: ''
@@ -446,8 +626,7 @@ Source:
                   statements:
                   - NonblockingSubstitution:
                       filename: ../test/passes/transformations/testcases/module2.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 26
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -455,13 +634,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/module2.v
-                              hier:
-                                HierName: null
                               line: 26
                               name: l
-                      line: 26
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -469,14 +645,17 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/module2.v
-                              hier:
-                                HierName: null
                               line: 26
                               name: in
-                  - NonblockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/module2.v
+                              hier:
+                                HierName: null
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/module2.v
+                      line: 27
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -484,13 +663,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/module2.v
-                              hier:
-                                HierName: null
                               line: 27
                               name: out
-                      line: 27
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/module2.v
@@ -502,194 +678,18 @@ Source:
                               ptr:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 27
                                   name: l
+                                  hier:
+                                    HierName: null
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/module2.v
-                                  hier:
-                                    HierName: null
                                   line: 27
                                   name: lut
-          lifetime: NONE
-          line: 1
-          name: module2
-          params:
-          - Param:
-              filename: ../test/passes/transformations/testcases/module2.v
-              is_local: false
-              line: 4
-              name: LOG2
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/module2.v
-                  line: 4
-                  signing: NONE
-              value: null
-          ports:
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: clock
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ''
-                      line: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/module2.v
-              line: 7
-              name: clock
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: reset_n
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ''
-                      line: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/module2.v
-              line: 8
-              name: reset_n
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/module2.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 9
-                  name: in
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/module2.v
-                      line: 9
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/module2.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 9
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
-                              line: 9
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/module2.v
-              line: 9
-              name: in
-          - Port:
-              decl:
-                Var:
-                  filename: ../test/passes/transformations/testcases/module2.v
-                  init:
-                    Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 12
-                  name: out
-                  type:
-                    RegType:
-                      filename: ../test/passes/transformations/testcases/module2.v
-                      line: 12
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/module2.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ''
-                              line: 0
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 12
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/module2.v
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/module2.v
-              line: 10
-              name: out
-          - Port:
-              decl:
-                Var:
-                  filename: ../test/passes/transformations/testcases/module2.v
-                  init:
-                    Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 13
-                  name: strobe
-                  type:
-                    RegType:
-                      filename: ../test/passes/transformations/testcases/module2.v
-                      line: 13
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/module2.v
-              line: 11
-              name: strobe
-      filename: ../test/passes/transformations/testcases/module2.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/module2.v
-  line: 1
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

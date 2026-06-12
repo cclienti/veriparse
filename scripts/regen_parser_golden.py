@@ -4,8 +4,9 @@
 #
 # Regenerate parser-test golden YAML from the `<Test>_parsed.yaml` files a test
 # run drops in the repo root. The golden is the parsed AST re-emitted block-style
-# with sorted keys and the testcase path normalized to the form the committed
-# goldens use (`../../test/parser/testcases/<name>.v`). `is_equal(attrs=false)`
+# in document order (sort_keys=False, matching lib/tools/misc/yaml_printer.py) with
+# the testcase path normalized to the form the committed goldens use
+# (`../../test/parser/testcases/<name>.v`). `is_equal(attrs=false)`
 # ignores filename/line, so the path is cosmetic — normalized only for a clean,
 # stable diff.
 #
@@ -54,7 +55,7 @@ def regen(name):
     normalize_paths(tree)
     out = os.path.join(GOLDEN_DIR, name + ".yaml")
     with open(out, "w") as f:
-        yaml.dump(tree, f, default_flow_style=False, sort_keys=True)
+        yaml.dump(tree, f, default_flow_style=False, sort_keys=False)
     sys.stderr.write("regenerated {}\n".format(out))
     return True
 

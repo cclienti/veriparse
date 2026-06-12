@@ -1,10 +1,17 @@
 Source:
+  filename: ../test/passes/transformations/testcases/scope2.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/scope2.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/scope2.v
+          line: 1
+          name: scope2
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Genvar:
               filename: ../test/passes/transformations/testcases/scope2.v
@@ -16,34 +23,15 @@ Source:
               name: j
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/scope2.v
+              line: 5
               items:
               - ForStatement:
-                  cond:
-                    LessThan:
-                      filename: ../test/passes/transformations/testcases/scope2.v
-                      left:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          hier:
-                            HierName: null
-                          line: 6
-                          name: i
-                      line: 6
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          line: 6
-                          sign: false
-                          size: -1
-                          value: 5
                   filename: ../test/passes/transformations/testcases/scope2.v
                   line: 6
-                  post:
+                  pre:
                     BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/scope2.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 6
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/scope2.v
@@ -51,13 +39,60 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/scope2.v
-                              hier:
-                                HierName: null
                               line: 6
                               name: i
-                      line: 6
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 6
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
                       rdelay:
                         DelayStatement: null
+                  cond:
+                    LessThan:
+                      filename: ../test/passes/transformations/testcases/scope2.v
+                      line: 6
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 6
+                          name: i
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 6
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 5
+                  post:
+                    BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/scope2.v
+                      line: 6
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 6
+                              name: i
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/scope2.v
@@ -65,53 +100,26 @@ Source:
                           var:
                             Plus:
                               filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 6
                               left:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/scope2.v
-                                  hier:
-                                    HierName: null
                                   line: 6
                                   name: i
-                              line: 6
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/scope2.v
                                   line: 6
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                  pre:
-                    BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/scope2.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          line: 6
-                          var:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              hier:
-                                HierName: null
-                              line: 6
-                              name: i
-                      line: 6
                       rdelay:
                         DelayStatement: null
-                      right:
-                        Rvalue:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          line: 6
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
                   statement:
                     Block:
                       filename: ../test/passes/transformations/testcases/scope2.v
@@ -120,6 +128,11 @@ Source:
                       statements:
                       - Var:
                           filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 7
+                          is_var: false
+                          is_const: false
+                          lifetime: NONE
+                          name: x
                           init:
                             Rvalue:
                               filename: ../test/passes/transformations/testcases/scope2.v
@@ -127,51 +140,26 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/scope2.v
-                                  hier:
-                                    HierName: null
                                   line: 7
                                   name: i
-                          is_const: false
-                          is_var: false
-                          lifetime: NONE
-                          line: 7
-                          name: x
+                                  hier:
+                                    HierName: null
                           type:
                             IntegerType:
                               filename: ../test/passes/transformations/testcases/scope2.v
                               line: 7
                               signing: NONE
-              line: 5
           - GenerateStatement:
               filename: ../test/passes/transformations/testcases/scope2.v
+              line: 11
               items:
               - ForStatement:
-                  cond:
-                    LessThan:
-                      filename: ../test/passes/transformations/testcases/scope2.v
-                      left:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          hier:
-                            HierName: null
-                          line: 12
-                          name: i
-                      line: 12
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          line: 12
-                          sign: false
-                          size: -1
-                          value: 5
                   filename: ../test/passes/transformations/testcases/scope2.v
                   line: 12
-                  post:
+                  pre:
                     BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/scope2.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 12
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/scope2.v
@@ -179,13 +167,60 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/scope2.v
-                              hier:
-                                HierName: null
                               line: 12
                               name: i
-                      line: 12
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 12
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
                       rdelay:
                         DelayStatement: null
+                  cond:
+                    LessThan:
+                      filename: ../test/passes/transformations/testcases/scope2.v
+                      line: 12
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 12
+                          name: i
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 5
+                  post:
+                    BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/scope2.v
+                      line: 12
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 12
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 12
+                              name: i
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/scope2.v
@@ -193,53 +228,26 @@ Source:
                           var:
                             Plus:
                               filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 12
                               left:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/scope2.v
-                                  hier:
-                                    HierName: null
                                   line: 12
                                   name: i
-                              line: 12
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/scope2.v
                                   line: 12
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                  pre:
-                    BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/scope2.v
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          line: 12
-                          var:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              hier:
-                                HierName: null
-                              line: 12
-                              name: i
-                      line: 12
                       rdelay:
                         DelayStatement: null
-                      right:
-                        Rvalue:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          line: 12
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 0
                   statement:
                     Block:
                       filename: ../test/passes/transformations/testcases/scope2.v
@@ -257,8 +265,8 @@ Source:
                               - Sens:
                                   filename: ../test/passes/transformations/testcases/scope2.v
                                   line: 13
-                                  sig: null
                                   type: ALL
+                                  sig: null
                           statement:
                             Block:
                               filename: ''
@@ -266,13 +274,14 @@ Source:
                               scope: ''
                               statements:
                               - SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../test/passes/transformations/testcases/scope2.v
                                   line: 14
                                   scope: ''
                                   statement:
                                     SystemCall:
+                                      filename: ../test/passes/transformations/testcases/scope2.v
+                                      line: 14
+                                      syscall: display
                                       args:
                                       - StringConst:
                                           filename: ../test/passes/transformations/testcases/scope2.v
@@ -280,43 +289,41 @@ Source:
                                           value: x[%0d]=%0d
                                       - Identifier:
                                           filename: ../test/passes/transformations/testcases/scope2.v
-                                          hier:
-                                            HierName: null
                                           line: 14
                                           name: i
+                                          hier:
+                                            HierName: null
                                       - Identifier:
                                           filename: ../test/passes/transformations/testcases/scope2.v
+                                          line: 14
+                                          name: x
                                           hier:
                                             HierName:
                                               filename: ../test/passes/transformations/testcases/scope2.v
+                                              line: 14
                                               labellist:
                                               - HierLabel:
                                                   filename: ../test/passes/transformations/testcases/scope2.v
                                                   line: 14
+                                                  name: GEN_LOOP_1
                                                   loop:
                                                     Identifier:
                                                       filename: ../test/passes/transformations/testcases/scope2.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 14
                                                       name: i
-                                                  name: GEN_LOOP_1
-                                              line: 14
-                                          line: 14
-                                          name: x
-                                      filename: ../test/passes/transformations/testcases/scope2.v
-                                      line: 14
-                                      syscall: display
-              line: 11
+                                                      hier:
+                                                        HierName: null
+                                  delay:
+                                    DelayStatement: null
           - Var:
               filename: ../test/passes/transformations/testcases/scope2.v
+              line: 19
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: k
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 19
-              name: k
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/scope2.v
@@ -332,32 +339,12 @@ Source:
                   scope: ANOTHER
                   statements:
                   - ForStatement:
-                      cond:
-                        LessThan:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              hier:
-                                HierName: null
-                              line: 21
-                              name: k
-                          line: 21
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 21
-                              sign: false
-                              size: -1
-                              value: 5
                       filename: ../test/passes/transformations/testcases/scope2.v
                       line: 21
-                      post:
+                      pre:
                         BlockingSubstitution:
                           filename: ../test/passes/transformations/testcases/scope2.v
-                          ldelay:
-                            DelayStatement: null
+                          line: 21
                           left:
                             Lvalue:
                               filename: ../test/passes/transformations/testcases/scope2.v
@@ -365,13 +352,60 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/scope2.v
-                                  hier:
-                                    HierName: null
                                   line: 21
                                   name: k
-                          line: 21
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 21
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 21
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
                           rdelay:
                             DelayStatement: null
+                      cond:
+                        LessThan:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 21
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 21
+                              name: k
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 21
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 5
+                      post:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 21
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 21
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 21
+                                  name: k
+                                  hier:
+                                    HierName: null
                           right:
                             Rvalue:
                               filename: ../test/passes/transformations/testcases/scope2.v
@@ -379,53 +413,26 @@ Source:
                               var:
                                 Plus:
                                   filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 21
                                   left:
                                     Identifier:
                                       filename: ../test/passes/transformations/testcases/scope2.v
-                                      hier:
-                                        HierName: null
                                       line: 21
                                       name: k
-                                  line: 21
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../test/passes/transformations/testcases/scope2.v
                                       line: 21
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 1
-                      pre:
-                        BlockingSubstitution:
-                          filename: ../test/passes/transformations/testcases/scope2.v
                           ldelay:
                             DelayStatement: null
-                          left:
-                            Lvalue:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 21
-                              var:
-                                Identifier:
-                                  filename: ../test/passes/transformations/testcases/scope2.v
-                                  hier:
-                                    HierName: null
-                                  line: 21
-                                  name: k
-                          line: 21
                           rdelay:
                             DelayStatement: null
-                          right:
-                            Rvalue:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 21
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/scope2.v
-                                  line: 21
-                                  sign: false
-                                  size: -1
-                                  value: 0
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/scope2.v
@@ -433,13 +440,14 @@ Source:
                           scope: LOOP_1
                           statements:
                           - SingleStatement:
-                              delay:
-                                DelayStatement: null
                               filename: ../test/passes/transformations/testcases/scope2.v
                               line: 22
                               scope: ''
                               statement:
                                 SystemCall:
+                                  filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 22
+                                  syscall: display
                                   args:
                                   - StringConst:
                                       filename: ../test/passes/transformations/testcases/scope2.v
@@ -447,22 +455,21 @@ Source:
                                       value: k=%0d
                                   - Identifier:
                                       filename: ../test/passes/transformations/testcases/scope2.v
-                                      hier:
-                                        HierName: null
                                       line: 22
                                       name: k
-                                  filename: ../test/passes/transformations/testcases/scope2.v
-                                  line: 22
-                                  syscall: display
+                                      hier:
+                                        HierName: null
+                              delay:
+                                DelayStatement: null
           - Var:
               filename: ../test/passes/transformations/testcases/scope2.v
+              line: 26
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: l
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 26
-              name: l
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/scope2.v
@@ -478,32 +485,12 @@ Source:
                   scope: ''
                   statements:
                   - ForStatement:
-                      cond:
-                        LessThan:
-                          filename: ../test/passes/transformations/testcases/scope2.v
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              hier:
-                                HierName: null
-                              line: 28
-                              name: l
-                          line: 28
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 28
-                              sign: false
-                              size: -1
-                              value: 5
                       filename: ../test/passes/transformations/testcases/scope2.v
                       line: 28
-                      post:
+                      pre:
                         BlockingSubstitution:
                           filename: ../test/passes/transformations/testcases/scope2.v
-                          ldelay:
-                            DelayStatement: null
+                          line: 28
                           left:
                             Lvalue:
                               filename: ../test/passes/transformations/testcases/scope2.v
@@ -511,13 +498,60 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/scope2.v
-                                  hier:
-                                    HierName: null
                                   line: 28
                                   name: l
-                          line: 28
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 28
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 28
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
                           rdelay:
                             DelayStatement: null
+                      cond:
+                        LessThan:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 28
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 28
+                              name: l
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 28
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 5
+                      post:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/scope2.v
+                          line: 28
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/scope2.v
+                              line: 28
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 28
+                                  name: l
+                                  hier:
+                                    HierName: null
                           right:
                             Rvalue:
                               filename: ../test/passes/transformations/testcases/scope2.v
@@ -525,53 +559,26 @@ Source:
                               var:
                                 Plus:
                                   filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 28
                                   left:
                                     Identifier:
                                       filename: ../test/passes/transformations/testcases/scope2.v
-                                      hier:
-                                        HierName: null
                                       line: 28
                                       name: l
-                                  line: 28
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../test/passes/transformations/testcases/scope2.v
                                       line: 28
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 1
-                      pre:
-                        BlockingSubstitution:
-                          filename: ../test/passes/transformations/testcases/scope2.v
                           ldelay:
                             DelayStatement: null
-                          left:
-                            Lvalue:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 28
-                              var:
-                                Identifier:
-                                  filename: ../test/passes/transformations/testcases/scope2.v
-                                  hier:
-                                    HierName: null
-                                  line: 28
-                                  name: l
-                          line: 28
                           rdelay:
                             DelayStatement: null
-                          right:
-                            Rvalue:
-                              filename: ../test/passes/transformations/testcases/scope2.v
-                              line: 28
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/scope2.v
-                                  line: 28
-                                  sign: false
-                                  size: -1
-                                  value: 0
                       statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/scope2.v
@@ -579,13 +586,14 @@ Source:
                           scope: LOOP_2
                           statements:
                           - SingleStatement:
-                              delay:
-                                DelayStatement: null
                               filename: ../test/passes/transformations/testcases/scope2.v
                               line: 29
                               scope: ''
                               statement:
                                 SystemCall:
+                                  filename: ../test/passes/transformations/testcases/scope2.v
+                                  line: 29
+                                  syscall: display
                                   args:
                                   - StringConst:
                                       filename: ../test/passes/transformations/testcases/scope2.v
@@ -593,17 +601,9 @@ Source:
                                       value: l=%0d
                                   - Identifier:
                                       filename: ../test/passes/transformations/testcases/scope2.v
-                                      hier:
-                                        HierName: null
                                       line: 29
                                       name: l
-                                  filename: ../test/passes/transformations/testcases/scope2.v
-                                  line: 29
-                                  syscall: display
-          lifetime: NONE
-          line: 1
-          name: scope2
-      filename: ../test/passes/transformations/testcases/scope2.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/scope2.v
-  line: 1
+                                      hier:
+                                        HierName: null
+                              delay:
+                                DelayStatement: null

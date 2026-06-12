@@ -1,99 +1,301 @@
 Source:
+  filename: ../../test/parser/testcases/sv_generate0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_generate0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_generate0.sv
+          line: 1
+          name: sv_generate0
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 2
+              is_local: false
+              name: NUM
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 2
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 2
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 2
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 3
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 3
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 4
+              name: rst_n
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: rst_n
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 4
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 5
+              name: d
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: d
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_generate0.sv
+                          line: 5
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 6
+              name: q0
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: q0
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_generate0.sv
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 7
+              name: q1
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: q1
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_generate0.sv
+                          line: 7
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Var:
               filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 9
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: mem
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/sv_generate0.sv
+                  line: 9
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 9
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 1
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 9
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 9
-              name: mem
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_generate0.sv
                   line: 9
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 9
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_generate0.sv
                           line: 9
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 9
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_generate0.sv
                           line: 9
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 9
-                      sign: false
-                      size: -1
-                      value: 1
-                  line: 9
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 9
-                      sign: false
-                      size: -1
-                      value: 0
           - Genvar:
               filename: ../../test/parser/testcases/sv_generate0.sv
               line: 11
               name: i
           - GenerateStatement:
               filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 12
               items:
               - ForStatement:
-                  cond:
-                    LessThan:
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      left:
-                        Identifier:
-                          filename: ../../test/parser/testcases/sv_generate0.sv
-                          hier:
-                            HierName: null
-                          line: 13
-                          name: i
-                      line: 13
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/sv_generate0.sv
-                          line: 13
-                          sign: false
-                          size: -1
-                          value: 2
                   filename: ../../test/parser/testcases/sv_generate0.sv
                   line: 13
-                  post:
+                  pre:
                     BlockingSubstitution:
                       filename: ../../test/parser/testcases/sv_generate0.sv
-                      ldelay:
-                        DelayStatement: null
+                      line: 13
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_generate0.sv
@@ -101,13 +303,60 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_generate0.sv
-                              hier:
-                                HierName: null
                               line: 13
                               name: i
-                      line: 13
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/sv_generate0.sv
+                          line: 13
+                          var:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 13
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
                       rdelay:
                         DelayStatement: null
+                  cond:
+                    LessThan:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 13
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_generate0.sv
+                          line: 13
+                          name: i
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_generate0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 2
+                  post:
+                    BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_generate0.sv
+                      line: 13
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/sv_generate0.sv
+                          line: 13
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 13
+                              name: i
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_generate0.sv
@@ -115,53 +364,26 @@ Source:
                           var:
                             Plus:
                               filename: ../../test/parser/testcases/sv_generate0.sv
+                              line: 13
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/sv_generate0.sv
-                                  hier:
-                                    HierName: null
                                   line: 13
                                   name: i
-                              line: 13
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/sv_generate0.sv
                                   line: 13
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
-                  pre:
-                    BlockingSubstitution:
-                      filename: ../../test/parser/testcases/sv_generate0.sv
                       ldelay:
                         DelayStatement: null
-                      left:
-                        Lvalue:
-                          filename: ../../test/parser/testcases/sv_generate0.sv
-                          line: 13
-                          var:
-                            Identifier:
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              hier:
-                                HierName: null
-                              line: 13
-                              name: i
-                      line: 13
                       rdelay:
                         DelayStatement: null
-                      right:
-                        Rvalue:
-                          filename: ../../test/parser/testcases/sv_generate0.sv
-                          line: 13
-                          var:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              line: 13
-                              sign: false
-                              size: -1
-                              value: 0
                   statement:
                     Block:
                       filename: ../../test/parser/testcases/sv_generate0.sv
@@ -179,25 +401,25 @@ Source:
                               - Sens:
                                   filename: ../../test/parser/testcases/sv_generate0.sv
                                   line: 14
+                                  type: POSEDGE
                                   sig:
                                     Identifier:
                                       filename: ../../test/parser/testcases/sv_generate0.sv
-                                      hier:
-                                        HierName: null
                                       line: 14
                                       name: clk
-                                  type: POSEDGE
+                                      hier:
+                                        HierName: null
                               - Sens:
                                   filename: ../../test/parser/testcases/sv_generate0.sv
                                   line: 14
+                                  type: NEGEDGE
                                   sig:
                                     Identifier:
                                       filename: ../../test/parser/testcases/sv_generate0.sv
-                                      hier:
-                                        HierName: null
                                       line: 14
                                       name: rst_n
-                                  type: NEGEDGE
+                                      hier:
+                                        HierName: null
                           statement:
                             Block:
                               filename: ../../test/parser/testcases/sv_generate0.sv
@@ -205,6 +427,8 @@ Source:
                               scope: ''
                               statements:
                               - IfStatement:
+                                  filename: ../../test/parser/testcases/sv_generate0.sv
+                                  line: 15
                                   cond:
                                     Ulnot:
                                       filename: ../../test/parser/testcases/sv_generate0.sv
@@ -212,15 +436,56 @@ Source:
                                       right:
                                         Identifier:
                                           filename: ../../test/parser/testcases/sv_generate0.sv
-                                          hier:
-                                            HierName: null
                                           line: 15
                                           name: rst_n
+                                          hier:
+                                            HierName: null
+                                  true_statement:
+                                    NonblockingSubstitution:
+                                      filename: ../../test/parser/testcases/sv_generate0.sv
+                                      line: 16
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/sv_generate0.sv
+                                          line: 16
+                                          var:
+                                            Pointer:
+                                              filename: ../../test/parser/testcases/sv_generate0.sv
+                                              line: 16
+                                              ptr:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/sv_generate0.sv
+                                                  line: 16
+                                                  name: i
+                                                  hier:
+                                                    HierName: null
+                                              var:
+                                                Identifier:
+                                                  filename: ../../test/parser/testcases/sv_generate0.sv
+                                                  line: 16
+                                                  name: mem
+                                                  hier:
+                                                    HierName: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/sv_generate0.sv
+                                          line: 16
+                                          var:
+                                            IntConstN:
+                                              filename: ../../test/parser/testcases/sv_generate0.sv
+                                              line: 16
+                                              base: 16
+                                              size: 8
+                                              sign: false
+                                              value: 0
+                                      ldelay:
+                                        DelayStatement: null
+                                      rdelay:
+                                        DelayStatement: null
                                   false_statement:
                                     NonblockingSubstitution:
                                       filename: ../../test/parser/testcases/sv_generate0.sv
-                                      ldelay:
-                                        DelayStatement: null
+                                      line: 18
                                       left:
                                         Lvalue:
                                           filename: ../../test/parser/testcases/sv_generate0.sv
@@ -232,20 +497,17 @@ Source:
                                               ptr:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/sv_generate0.sv
-                                                  hier:
-                                                    HierName: null
                                                   line: 18
                                                   name: i
+                                                  hier:
+                                                    HierName: null
                                               var:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/sv_generate0.sv
-                                                  hier:
-                                                    HierName: null
                                                   line: 18
                                                   name: mem
-                                      line: 18
-                                      rdelay:
-                                        DelayStatement: null
+                                                  hier:
+                                                    HierName: null
                                       right:
                                         Rvalue:
                                           filename: ../../test/parser/testcases/sv_generate0.sv
@@ -253,59 +515,17 @@ Source:
                                           var:
                                             Identifier:
                                               filename: ../../test/parser/testcases/sv_generate0.sv
-                                              hier:
-                                                HierName: null
                                               line: 18
                                               name: d
-                                  filename: ../../test/parser/testcases/sv_generate0.sv
-                                  line: 15
-                                  true_statement:
-                                    NonblockingSubstitution:
-                                      filename: ../../test/parser/testcases/sv_generate0.sv
+                                              hier:
+                                                HierName: null
                                       ldelay:
                                         DelayStatement: null
-                                      left:
-                                        Lvalue:
-                                          filename: ../../test/parser/testcases/sv_generate0.sv
-                                          line: 16
-                                          var:
-                                            Pointer:
-                                              filename: ../../test/parser/testcases/sv_generate0.sv
-                                              line: 16
-                                              ptr:
-                                                Identifier:
-                                                  filename: ../../test/parser/testcases/sv_generate0.sv
-                                                  hier:
-                                                    HierName: null
-                                                  line: 16
-                                                  name: i
-                                              var:
-                                                Identifier:
-                                                  filename: ../../test/parser/testcases/sv_generate0.sv
-                                                  hier:
-                                                    HierName: null
-                                                  line: 16
-                                                  name: mem
-                                      line: 16
                                       rdelay:
                                         DelayStatement: null
-                                      right:
-                                        Rvalue:
-                                          filename: ../../test/parser/testcases/sv_generate0.sv
-                                          line: 16
-                                          var:
-                                            IntConstN:
-                                              base: 16
-                                              filename: ../../test/parser/testcases/sv_generate0.sv
-                                              line: 16
-                                              sign: false
-                                              size: 8
-                                              value: 0
-              line: 12
           - Assign:
               filename: ../../test/parser/testcases/sv_generate0.sv
-              ldelay:
-                DelayStatement: null
+              line: 23
               left:
                 Lvalue:
                   filename: ../../test/parser/testcases/sv_generate0.sv
@@ -313,13 +533,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/sv_generate0.sv
-                      hier:
-                        HierName: null
                       line: 23
                       name: q0
-              line: 23
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../../test/parser/testcases/sv_generate0.sv
@@ -330,23 +547,26 @@ Source:
                       line: 23
                       ptr:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_generate0.sv
                           line: 23
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_generate0.sv
-                          hier:
-                            HierName: null
                           line: 23
                           name: mem
-          - Assign:
-              filename: ../../test/parser/testcases/sv_generate0.sv
+                          hier:
+                            HierName: null
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../../test/parser/testcases/sv_generate0.sv
+              line: 24
               left:
                 Lvalue:
                   filename: ../../test/parser/testcases/sv_generate0.sv
@@ -354,13 +574,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/sv_generate0.sv
-                      hier:
-                        HierName: null
                       line: 24
                       name: q1
-              line: 24
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../../test/parser/testcases/sv_generate0.sv
@@ -371,237 +588,20 @@ Source:
                       line: 24
                       ptr:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_generate0.sv
                           line: 24
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 1
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_generate0.sv
-                          hier:
-                            HierName: null
                           line: 24
                           name: mem
-          lifetime: NONE
-          line: 1
-          name: sv_generate0
-          params:
-          - Param:
-              filename: ../../test/parser/testcases/sv_generate0.sv
-              is_local: false
-              line: 2
-              name: NUM
-              type:
-                IntType:
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  line: 2
-                  signing: NONE
-              value:
-                Rvalue:
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  line: 2
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 2
-                      sign: false
-                      size: -1
-                      value: 4
-          ports:
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 3
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_generate0.sv
-              line: 3
-              name: clk
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: rst_n
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 4
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_generate0.sv
-              line: 4
-              name: rst_n
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: d
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 5
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_generate0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_generate0.sv
-              line: 5
-              name: d
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: q0
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 6
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_generate0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_generate0.sv
-              line: 6
-              name: q0
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_generate0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 7
-                  name: q1
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_generate0.sv
-                      line: 7
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_generate0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 7
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_generate0.sv
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_generate0.sv
-              line: 7
-              name: q1
-      filename: ../../test/parser/testcases/sv_generate0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_generate0.sv
-  line: 1
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

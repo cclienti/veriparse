@@ -1,91 +1,282 @@
 Source:
+  filename: ../../test/parser/testcases/sv_port_signing0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_port_signing0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_port_signing0.sv
+          line: 1
+          name: sv_port_signing0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_port_signing0.sv
+              line: 6
+              name: a
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_port_signing0.sv
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_port_signing0.sv
+                      line: 6
+                      signing: SIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_port_signing0.sv
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_port_signing0.sv
+              line: 7
+              name: b
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_port_signing0.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_port_signing0.sv
+                      line: 7
+                      signing: UNSIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_port_signing0.sv
+                          line: 7
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_port_signing0.sv
+              line: 8
+              name: c
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_port_signing0.sv
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_port_signing0.sv
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_port_signing0.sv
+                          line: 8
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_port_signing0.sv
+              line: 9
+              name: d
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_port_signing0.sv
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: d
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_port_signing0.sv
+                      line: 9
+                      signing: UNSIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_port_signing0.sv
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Function:
-              args:
-              - Arg:
-                  default_value: null
-                  direction: INPUT
-                  filename: ../../test/parser/testcases/sv_port_signing0.sv
-                  is_var: false
-                  line: 12
-                  name: x
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_port_signing0.sv
-                      line: 12
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_port_signing0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 12
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: SIGNED
-              - Arg:
-                  default_value: null
-                  direction: INPUT
-                  filename: ../../test/parser/testcases/sv_port_signing0.sv
-                  is_var: false
-                  line: 12
-                  name: y
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_port_signing0.sv
-                      line: 12
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_port_signing0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 12
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 12
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: UNSIGNED
               filename: ../../test/parser/testcases/sv_port_signing0.sv
-              lifetime: AUTOMATIC
               line: 12
               name: f
+              lifetime: AUTOMATIC
               return_type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_port_signing0.sv
                   line: 12
                   signing: NONE
+              args:
+              - Arg:
+                  filename: ../../test/parser/testcases/sv_port_signing0.sv
+                  line: 12
+                  is_var: false
+                  direction: INPUT
+                  name: x
+                  default_value: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_port_signing0.sv
+                      line: 12
+                      signing: SIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_port_signing0.sv
+                          line: 12
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              - Arg:
+                  filename: ../../test/parser/testcases/sv_port_signing0.sv
+                  line: 12
+                  is_var: false
+                  direction: INPUT
+                  name: y
+                  default_value: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_port_signing0.sv
+                      line: 12
+                      signing: UNSIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_port_signing0.sv
+                          line: 12
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_port_signing0.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
               statements:
               - BlockingSubstitution:
                   filename: ../../test/parser/testcases/sv_port_signing0.sv
-                  ldelay:
-                    DelayStatement: null
+                  line: 13
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/sv_port_signing0.sv
@@ -93,13 +284,10 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_port_signing0.sv
-                          hier:
-                            HierName: null
                           line: 13
                           name: f
-                  line: 13
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/sv_port_signing0.sv
@@ -107,234 +295,46 @@ Source:
                       var:
                         Xor:
                           filename: ../../test/parser/testcases/sv_port_signing0.sv
+                          line: 13
                           left:
                             Pointer:
                               filename: ../../test/parser/testcases/sv_port_signing0.sv
                               line: 13
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/sv_port_signing0.sv
                                   line: 13
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 0
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/sv_port_signing0.sv
-                                  hier:
-                                    HierName: null
                                   line: 13
                                   name: x
-                          line: 13
+                                  hier:
+                                    HierName: null
                           right:
                             Pointer:
                               filename: ../../test/parser/testcases/sv_port_signing0.sv
                               line: 13
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/sv_port_signing0.sv
                                   line: 13
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 0
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/sv_port_signing0.sv
-                                  hier:
-                                    HierName: null
                                   line: 13
                                   name: y
-          lifetime: NONE
-          line: 1
-          name: sv_port_signing0
-          ports:
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_port_signing0.sv
-                  is_scalared: false
-                  is_vectored: false
+                                  hier:
+                                    HierName: null
                   ldelay:
                     DelayStatement: null
-                  line: 6
-                  name: a
                   rdelay:
                     DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_port_signing0.sv
-                      line: 6
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_port_signing0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: SIGNED
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_port_signing0.sv
-              line: 6
-              name: a
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_port_signing0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 7
-                  name: b
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_port_signing0.sv
-                      line: 7
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_port_signing0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 7
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: UNSIGNED
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_port_signing0.sv
-              line: 7
-              name: b
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_port_signing0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 8
-                  name: c
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_port_signing0.sv
-                      line: 8
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_port_signing0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 8
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 8
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 8
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_port_signing0.sv
-              line: 8
-              name: c
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_port_signing0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 9
-                  name: d
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_port_signing0.sv
-                      line: 9
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_port_signing0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 9
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 9
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_port_signing0.sv
-                              line: 9
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: UNSIGNED
-              direction: OUTPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_port_signing0.sv
-              line: 9
-              name: d
-      filename: ../../test/parser/testcases/sv_port_signing0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_port_signing0.sv
-  line: 1

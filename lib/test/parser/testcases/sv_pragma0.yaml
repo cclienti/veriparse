@@ -1,88 +1,214 @@
 Source:
+  filename: ../../test/parser/testcases/sv_pragma0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_pragma0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_pragma0.sv
+          line: 1
+          name: sv_pragma0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_pragma0.sv
+              line: 2
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_pragma0.sv
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_pragma0.sv
+                      line: 2
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_pragma0.sv
+              line: 3
+              name: d
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_pragma0.sv
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: d
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_pragma0.sv
+                      line: 3
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_pragma0.sv
+                          line: 3
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_pragma0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_pragma0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_pragma0.sv
+              line: 4
+              name: q
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_pragma0.sv
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: q
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_pragma0.sv
+                      line: 4
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_pragma0.sv
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_pragma0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_pragma0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Pragmalist:
               filename: ../../test/parser/testcases/sv_pragma0.sv
               line: 6
               pragmas:
               - Pragma:
+                  filename: ../../test/parser/testcases/sv_pragma0.sv
+                  line: 6
+                  name: ram_style
                   expression:
                     StringConst:
                       filename: ../../test/parser/testcases/sv_pragma0.sv
                       line: 6
                       value: distributed
-                  filename: ../../test/parser/testcases/sv_pragma0.sv
-                  line: 6
-                  name: ram_style
               - Pragma:
+                  filename: ../../test/parser/testcases/sv_pragma0.sv
+                  line: 7
+                  name: ramstyle
                   expression:
                     StringConst:
                       filename: ../../test/parser/testcases/sv_pragma0.sv
                       line: 7
                       value: logic
-                  filename: ../../test/parser/testcases/sv_pragma0.sv
-                  line: 7
-                  name: ramstyle
               statements:
               - Var:
                   filename: ../../test/parser/testcases/sv_pragma0.sv
+                  line: 8
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: mem
+                  unpacked_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_pragma0.sv
+                      line: 8
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_pragma0.sv
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 15
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_pragma0.sv
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 8
-                  name: mem
                   type:
                     LogicType:
                       filename: ../../test/parser/testcases/sv_pragma0.sv
                       line: 8
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/sv_pragma0.sv
+                          line: 8
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_pragma0.sv
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 8
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_pragma0.sv
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-                  unpacked_dims:
-                  - RangeDim:
-                      filename: ../../test/parser/testcases/sv_pragma0.sv
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/sv_pragma0.sv
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 15
-                      line: 8
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/sv_pragma0.sv
-                          line: 8
-                          sign: false
-                          size: -1
-                          value: 0
           - AlwaysFF:
               filename: ../../test/parser/testcases/sv_pragma0.sv
               line: 10
@@ -94,14 +220,14 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/sv_pragma0.sv
                       line: 10
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/sv_pragma0.sv
-                          hier:
-                            HierName: null
                           line: 10
                           name: clk
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 Block:
                   filename: ../../test/parser/testcases/sv_pragma0.sv
@@ -110,8 +236,7 @@ Source:
                   statements:
                   - NonblockingSubstitution:
                       filename: ../../test/parser/testcases/sv_pragma0.sv
-                      ldelay:
-                        DelayStatement: null
+                      line: 11
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/sv_pragma0.sv
@@ -119,13 +244,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/sv_pragma0.sv
-                              hier:
-                                HierName: null
                               line: 11
                               name: q
-                      line: 11
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/sv_pragma0.sv
@@ -136,142 +258,20 @@ Source:
                               line: 11
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/sv_pragma0.sv
                                   line: 11
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 0
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/sv_pragma0.sv
-                                  hier:
-                                    HierName: null
                                   line: 11
                                   name: mem
-          lifetime: NONE
-          line: 1
-          name: sv_pragma0
-          ports:
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_pragma0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_pragma0.sv
-                      line: 2
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_pragma0.sv
-              line: 2
-              name: clk
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_pragma0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: d
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_pragma0.sv
-                      line: 3
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_pragma0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_pragma0.sv
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 3
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_pragma0.sv
-                              line: 3
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_pragma0.sv
-              line: 3
-              name: d
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_pragma0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: q
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    LogicType:
-                      filename: ../../test/parser/testcases/sv_pragma0.sv
-                      line: 4
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_pragma0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_pragma0.sv
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 4
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_pragma0.sv
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_pragma0.sv
-              line: 4
-              name: q
-      filename: ../../test/parser/testcases/sv_pragma0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_pragma0.sv
-  line: 1
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

@@ -1,114 +1,114 @@
 Source:
+  filename: ../../test/parser/testcases/sv_package0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_package0.sv
+      line: 1
       definitions:
       - Package:
           filename: ../../test/parser/testcases/sv_package0.sv
+          line: 1
+          name: sv_package0
+          lifetime: NONE
           items:
           - Param:
               filename: ../../test/parser/testcases/sv_package0.sv
-              is_local: true
               line: 3
+              is_local: true
               name: WIDTH
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/sv_package0.sv
-                  line: 3
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../../test/parser/testcases/sv_package0.sv
                   line: 3
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../../test/parser/testcases/sv_package0.sv
                       line: 3
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 8
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_package0.sv
+                  line: 3
+                  signing: NONE
           - Typedef:
               filename: ../../test/parser/testcases/sv_package0.sv
-              fwd_kind: NONE
               line: 5
+              fwd_kind: NONE
               name: state_t
               type:
                 EnumType:
+                  filename: ../../test/parser/testcases/sv_package0.sv
+                  line: 5
+                  signing: NONE
                   base:
                     LogicType:
                       filename: ../../test/parser/testcases/sv_package0.sv
                       line: 5
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/sv_package0.sv
+                          line: 5
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_package0.sv
                               line: 5
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                          line: 5
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/sv_package0.sv
                               line: 5
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-                  filename: ../../test/parser/testcases/sv_package0.sv
                   items:
                   - EnumItem:
                       filename: ../../test/parser/testcases/sv_package0.sv
                       line: 5
                       name: IDLE
-                      range:
-                        Dimension: null
                       value:
                         IntConstN:
-                          base: 16
                           filename: ../../test/parser/testcases/sv_package0.sv
                           line: 5
-                          sign: false
+                          base: 16
                           size: 2
+                          sign: false
                           value: 0
+                      range:
+                        Dimension: null
                   - EnumItem:
                       filename: ../../test/parser/testcases/sv_package0.sv
                       line: 5
                       name: RUN
-                      range:
-                        Dimension: null
                       value:
                         IntConstN:
-                          base: 16
                           filename: ../../test/parser/testcases/sv_package0.sv
                           line: 5
-                          sign: false
+                          base: 16
                           size: 2
+                          sign: false
                           value: 1
+                      range:
+                        Dimension: null
                   - EnumItem:
                       filename: ../../test/parser/testcases/sv_package0.sv
                       line: 5
                       name: DONE
-                      range:
-                        Dimension: null
                       value:
                         IntConstN:
-                          base: 16
                           filename: ../../test/parser/testcases/sv_package0.sv
                           line: 5
-                          sign: false
+                          base: 16
                           size: 2
+                          sign: false
                           value: 2
-                  line: 5
-                  signing: NONE
-          lifetime: NONE
-          line: 1
-          name: sv_package0
-      filename: ../../test/parser/testcases/sv_package0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_package0.sv
-  line: 1
+                      range:
+                        Dimension: null

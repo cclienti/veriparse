@@ -1,6 +1,9 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/ifstmt_case0.v
+  line: 1
+  name: ifstmt_case0
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Initial:
       filename: ../test/passes/transformations/testcases/ifstmt_case0.v
@@ -12,85 +15,82 @@ Module:
           scope: ''
           statements:
           - SingleStatement:
-              delay:
-                DelayStatement: null
               filename: ../test/passes/transformations/testcases/ifstmt_case0.v
               line: 5
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
+                  line: 5
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/ifstmt_case0.v
                       line: 5
                       value: 1
-                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
-                  line: 5
-                  syscall: display
-          - SingleStatement:
               delay:
                 DelayStatement: null
+          - SingleStatement:
               filename: ../test/passes/transformations/testcases/ifstmt_case0.v
               line: 7
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
+                  line: 7
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/ifstmt_case0.v
                       line: 7
                       value: 2
-                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
-                  line: 7
-                  syscall: display
-          - SingleStatement:
               delay:
                 DelayStatement: null
+          - SingleStatement:
               filename: ../test/passes/transformations/testcases/ifstmt_case0.v
               line: 12
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
+                  line: 12
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/ifstmt_case0.v
                       line: 12
                       value: 3
-                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
-                  line: 12
-                  syscall: display
-          - SingleStatement:
               delay:
                 DelayStatement: null
+          - SingleStatement:
               filename: ../test/passes/transformations/testcases/ifstmt_case0.v
               line: 16
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
+                  line: 16
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/ifstmt_case0.v
                       line: 16
                       value: 4
-                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
-                  line: 16
-                  syscall: display
-          - SingleStatement:
               delay:
                 DelayStatement: null
+          - SingleStatement:
               filename: ../test/passes/transformations/testcases/ifstmt_case0.v
               line: 18
               scope: ''
               statement:
                 SystemCall:
+                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
+                  line: 18
+                  syscall: display
                   args:
                   - StringConst:
                       filename: ../test/passes/transformations/testcases/ifstmt_case0.v
                       line: 18
                       value: 5
-                  filename: ../test/passes/transformations/testcases/ifstmt_case0.v
-                  line: 18
-                  syscall: display
-  lifetime: NONE
-  line: 1
-  name: ifstmt_case0
+              delay:
+                DelayStatement: null

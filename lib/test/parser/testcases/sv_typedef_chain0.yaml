@@ -1,45 +1,99 @@
 Source:
+  filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+          line: 1
+          name: sv_typedef_chain0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+              line: 2
+              name: out
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: out
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+                      line: 2
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+                          line: 2
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+                              line: 2
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+                              line: 2
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Typedef:
               filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-              fwd_kind: NONE
               line: 4
+              fwd_kind: NONE
               name: base_t
               type:
                 LogicType:
                   filename: ../../test/parser/testcases/sv_typedef_chain0.sv
                   line: 4
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+                      line: 4
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_typedef_chain0.sv
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 4
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/sv_typedef_chain0.sv
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Typedef:
               filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-              fwd_kind: NONE
               line: 5
+              fwd_kind: NONE
               name: alias_t
               type:
                 NamedType:
@@ -49,29 +103,29 @@ Source:
                   signing: NONE
           - Typedef:
               filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-              fwd_kind: NONE
               line: 6
+              fwd_kind: NONE
               name: imported_t
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_typedef_chain0.sv
                   line: 6
                   name: data_t
+                  signing: NONE
                   scope:
                   - ScopeName:
                       filename: ../../test/parser/testcases/sv_typedef_chain0.sv
                       line: 6
                       name: mypkg
-                  signing: NONE
           - Var:
               filename: ../../test/parser/testcases/sv_typedef_chain0.sv
+              line: 8
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: x
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 8
-              name: x
               type:
                 NamedType:
                   filename: ../../test/parser/testcases/sv_typedef_chain0.sv
@@ -80,8 +134,7 @@ Source:
                   signing: NONE
           - Assign:
               filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-              ldelay:
-                DelayStatement: null
+              line: 10
               left:
                 Lvalue:
                   filename: ../../test/parser/testcases/sv_typedef_chain0.sv
@@ -89,13 +142,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-                      hier:
-                        HierName: null
                       line: 10
                       name: out
-              line: 10
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../../test/parser/testcases/sv_typedef_chain0.sv
@@ -103,61 +153,11 @@ Source:
                   var:
                     Identifier:
                       filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-                      hier:
-                        HierName: null
                       line: 10
                       name: x
-          lifetime: NONE
-          line: 1
-          name: sv_typedef_chain0
-          ports:
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: out
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-                      line: 2
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-                              line: 2
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 2
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-                              line: 2
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-              line: 2
-              name: out
-      filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_typedef_chain0.sv
-  line: 1
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

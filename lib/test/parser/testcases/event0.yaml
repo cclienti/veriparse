@@ -1,46 +1,62 @@
 Source:
+  filename: ../../test/parser/testcases/event0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/event0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/event0.v
+          line: 1
+          name: event0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/event0.v
+              line: 1
+              name: clk
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
+              filename: ../../test/parser/testcases/event0.v
+              line: 2
+              name: clk
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../../test/parser/testcases/event0.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/event0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 2
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/event0.v
                       line: 2
                       signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/event0.v
-              line: 2
-              name: clk
           - Var:
               filename: ../../test/parser/testcases/event0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 3
-              name: i
               type:
                 IntegerType:
                   filename: ../../test/parser/testcases/event0.v
@@ -57,8 +73,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../../test/parser/testcases/event0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 6
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/event0.v
@@ -66,36 +81,37 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/event0.v
-                              hier:
-                                HierName: null
                               line: 6
                               name: i
-                      line: 6
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/event0.v
                           line: 6
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/event0.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
                   - WhileStatement:
-                      cond:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/event0.v
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 1
                       filename: ../../test/parser/testcases/event0.v
                       line: 7
+                      cond:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/event0.v
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
                       statement:
                         Block:
                           filename: ../../test/parser/testcases/event0.v
@@ -113,14 +129,14 @@ Source:
                                   - Sens:
                                       filename: ../../test/parser/testcases/event0.v
                                       line: 8
+                                      type: POSEDGE
                                       sig:
                                         Identifier:
                                           filename: ../../test/parser/testcases/event0.v
-                                          hier:
-                                            HierName: null
                                           line: 8
                                           name: clock
-                                      type: POSEDGE
+                                          hier:
+                                            HierName: null
                               statement:
                                 Block:
                                   filename: ../../test/parser/testcases/event0.v
@@ -129,8 +145,7 @@ Source:
                                   statements:
                                   - NonblockingSubstitution:
                                       filename: ../../test/parser/testcases/event0.v
-                                      ldelay:
-                                        DelayStatement: null
+                                      line: 9
                                       left:
                                         Lvalue:
                                           filename: ../../test/parser/testcases/event0.v
@@ -138,13 +153,10 @@ Source:
                                           var:
                                             Identifier:
                                               filename: ../../test/parser/testcases/event0.v
-                                              hier:
-                                                HierName: null
                                               line: 9
                                               name: i
-                                      line: 9
-                                      rdelay:
-                                        DelayStatement: null
+                                              hier:
+                                                HierName: null
                                       right:
                                         Rvalue:
                                           filename: ../../test/parser/testcases/event0.v
@@ -152,30 +164,35 @@ Source:
                                           var:
                                             Plus:
                                               filename: ../../test/parser/testcases/event0.v
+                                              line: 9
                                               left:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/event0.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 9
                                                   name: i
-                                              line: 9
+                                                  hier:
+                                                    HierName: null
                                               right:
                                                 IntConstN:
-                                                  base: 10
                                                   filename: ../../test/parser/testcases/event0.v
                                                   line: 9
-                                                  sign: false
+                                                  base: 10
                                                   size: -1
+                                                  sign: false
                                                   value: 1
-                                  - SingleStatement:
-                                      delay:
+                                      ldelay:
                                         DelayStatement: null
+                                      rdelay:
+                                        DelayStatement: null
+                                  - SingleStatement:
                                       filename: ../../test/parser/testcases/event0.v
                                       line: 10
                                       scope: ''
                                       statement:
                                         SystemCall:
+                                          filename: ../../test/parser/testcases/event0.v
+                                          line: 10
+                                          syscall: display
                                           args:
                                           - StringConst:
                                               filename: ../../test/parser/testcases/event0.v
@@ -183,40 +200,36 @@ Source:
                                               value: clock cycle %d
                                           - Identifier:
                                               filename: ../../test/parser/testcases/event0.v
-                                              hier:
-                                                HierName: null
                                               line: 10
                                               name: i
-                                          filename: ../../test/parser/testcases/event0.v
-                                          line: 10
-                                          syscall: display
+                                              hier:
+                                                HierName: null
+                                      delay:
+                                        DelayStatement: null
                           - IfStatement:
+                              filename: ../../test/parser/testcases/event0.v
+                              line: 12
                               cond:
                                 Eq:
                                   filename: ../../test/parser/testcases/event0.v
+                                  line: 12
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/event0.v
-                                      hier:
-                                        HierName: null
                                       line: 12
                                       name: i
-                                  line: 12
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/event0.v
                                       line: 12
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 256
-                              false_statement: null
-                              filename: ../../test/parser/testcases/event0.v
-                              line: 12
                               true_statement:
                                 SingleStatement:
-                                  delay:
-                                    DelayStatement: null
                                   filename: ../../test/parser/testcases/event0.v
                                   line: 12
                                   scope: ''
@@ -225,19 +238,6 @@ Source:
                                       filename: ../../test/parser/testcases/event0.v
                                       line: 12
                                       syscall: finish
-          lifetime: NONE
-          line: 1
-          name: event0
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/event0.v
-              line: 1
-              name: clk
-      filename: ../../test/parser/testcases/event0.v
-      line: 1
-  filename: ../../test/parser/testcases/event0.v
-  line: 1
+                                  delay:
+                                    DelayStatement: null
+                              false_statement: null

@@ -1,243 +1,243 @@
 Source:
+  filename: ../../test/parser/testcases/pragma0.v
+  line: 2
   description:
     Description:
+      filename: ../../test/parser/testcases/pragma0.v
+      line: 2
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/pragma0.v
+          line: 2
+          name: pragma0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/pragma0.v
+              line: 2
+              name: reset
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma0.v
+              line: 2
+              name: clk
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma0.v
+              line: 2
+              name: in
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma0.v
+              line: 2
+              name: out
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
           items:
           - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/pragma0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/pragma0.v
-                      line: 3
-                      signing: NONE
-              direction: INPUT
-              expr: null
               filename: ../../test/parser/testcases/pragma0.v
               line: 3
               name: reset
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../../test/parser/testcases/pragma0.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: reset
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/pragma0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 3
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/pragma0.v
                       line: 3
                       signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../../test/parser/testcases/pragma0.v
               line: 3
               name: clk
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../../test/parser/testcases/pragma0.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/pragma0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: in
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/pragma0.v
+                      line: 3
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/pragma0.v
+              line: 4
+              name: in
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/pragma0.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: in
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/pragma0.v
                       line: 4
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/pragma0.v
+                          line: 4
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma0.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 4
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma0.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/pragma0.v
-              line: 4
-              name: in
           - Port:
+              filename: ../../test/parser/testcases/pragma0.v
+              line: 5
+              name: out
+              direction: OUTPUT
               decl:
                 ImplicitNet:
+                  filename: ../../test/parser/testcases/pragma0.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: out
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/pragma0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: out
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     RegType:
                       filename: ../../test/parser/testcases/pragma0.v
                       line: 5
                       signing: NONE
-              direction: OUTPUT
               expr: null
-              filename: ../../test/parser/testcases/pragma0.v
-              line: 5
-              name: out
           - Pragmalist:
               filename: ../../test/parser/testcases/pragma0.v
               line: 7
               pragmas:
               - Pragma:
-                  expression:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/pragma0.v
-                      line: 7
-                      sign: false
-                      size: -1
-                      value: 512
                   filename: ../../test/parser/testcases/pragma0.v
                   line: 7
                   name: max_depth
+                  expression:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/pragma0.v
+                      line: 7
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 512
               statements:
               - Var:
                   filename: ../../test/parser/testcases/pragma0.v
+                  line: 7
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: ram
+                  unpacked_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/pragma0.v
+                      line: 7
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/pragma0.v
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/pragma0.v
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1023
                   init:
                     Rvalue: null
-                  is_const: false
-                  is_var: false
-                  lifetime: NONE
-                  line: 7
-                  name: ram
                   type:
                     RegType:
                       filename: ../../test/parser/testcases/pragma0.v
                       line: 7
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../../test/parser/testcases/pragma0.v
+                          line: 7
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma0.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 7
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../../test/parser/testcases/pragma0.v
                               line: 7
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-                  unpacked_dims:
-                  - RangeDim:
-                      filename: ../../test/parser/testcases/pragma0.v
-                      left:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/pragma0.v
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 0
-                      line: 7
-                      right:
-                        IntConstN:
-                          base: 10
-                          filename: ../../test/parser/testcases/pragma0.v
-                          line: 7
-                          sign: false
-                          size: -1
-                          value: 1023
-          lifetime: NONE
-          line: 2
-          name: pragma0
-          ports:
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma0.v
-              line: 2
-              name: reset
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma0.v
-              line: 2
-              name: clk
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma0.v
-              line: 2
-              name: in
-          - Port:
-              decl:
-                Declaration: null
-              direction: NONE
-              expr: null
-              filename: ../../test/parser/testcases/pragma0.v
-              line: 2
-              name: out
-      filename: ../../test/parser/testcases/pragma0.v
-      line: 2
-  filename: ../../test/parser/testcases/pragma0.v
-  line: 2

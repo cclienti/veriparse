@@ -1,6 +1,9 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/defparam2.v
+  line: 14
+  name: defparam2
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Genvar:
       filename: ../test/passes/transformations/testcases/defparam2.v
@@ -8,70 +11,71 @@ Module:
       name: i
   - GenerateStatement:
       filename: ../test/passes/transformations/testcases/defparam2.v
+      line: 17
       items:
       - Instancelist:
           filename: ../test/passes/transformations/testcases/defparam2.v
+          line: 19
+          module: forward
           instances:
           - Instance:
-              array:
-                Dimension: null
               filename: ../test/passes/transformations/testcases/defparam2.v
               line: 19
               module: forward
               name: finst_i_0
-          line: 19
-          module: forward
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam2.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam2.v
+          line: 19
+          module: forward
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam2.v
               line: 19
               module: forward
               name: finst_i_1
-          line: 19
-          module: forward
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam2.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam2.v
+          line: 19
+          module: forward
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam2.v
               line: 19
               module: forward
               name: finst_i_2
-          line: 19
-          module: forward
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam2.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam2.v
+          line: 19
+          module: forward
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam2.v
               line: 19
               module: forward
               name: finst_i_3
-          line: 19
-          module: forward
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam2.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam2.v
+          line: 19
+          module: forward
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam2.v
               line: 19
               module: forward
               name: finst_i_4
-          line: 19
-          module: forward
-      line: 17
+              array:
+                Dimension: null
   - GenerateStatement:
       filename: ../test/passes/transformations/testcases/defparam2.v
+      line: 23
       items:
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam2.v
@@ -79,38 +83,38 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam2.v
+              line: 25
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam2.v
+                  line: 25
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam2.v
+                      line: 25
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: finst_i_0
+                          loop: null
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: pinst
-                      line: 25
-                  line: 25
-                  name: X
-              line: 25
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam2.v
                   line: 25
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/defparam2.v
                       line: 24
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam2.v
@@ -118,38 +122,38 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam2.v
+              line: 25
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam2.v
+                  line: 25
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam2.v
+                      line: 25
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: finst_i_1
+                          loop: null
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: pinst
-                      line: 25
-                  line: 25
-                  name: X
-              line: 25
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam2.v
                   line: 25
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam2.v
@@ -157,38 +161,38 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam2.v
+              line: 25
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam2.v
+                  line: 25
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam2.v
+                      line: 25
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: finst_i_2
+                          loop: null
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: pinst
-                      line: 25
-                  line: 25
-                  name: X
-              line: 25
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam2.v
                   line: 25
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 2
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam2.v
@@ -196,38 +200,38 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam2.v
+              line: 25
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam2.v
+                  line: 25
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam2.v
+                      line: 25
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: finst_i_3
+                          loop: null
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: pinst
-                      line: 25
-                  line: 25
-                  name: X
-              line: 25
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam2.v
                   line: 25
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 3
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam2.v
@@ -235,40 +239,36 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam2.v
+              line: 25
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam2.v
+                  line: 25
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam2.v
+                      line: 25
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: finst_i_4
+                          loop: null
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam2.v
                           line: 25
-                          loop: null
                           name: pinst
-                      line: 25
-                  line: 25
-                  name: X
-              line: 25
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam2.v
                   line: 25
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 4
-      line: 23
-  lifetime: NONE
-  line: 14
-  name: defparam2

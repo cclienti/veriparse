@@ -1,50 +1,57 @@
 Source:
+  filename: ../test/passes/transformations/testcases/deadcode6.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/deadcode6.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/deadcode6.v
+          line: 1
+          name: mod1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - WireNet:
+              filename: ../test/passes/transformations/testcases/deadcode6.v
+              line: 2
+              is_vectored: false
+              is_scalared: false
+              name: x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/deadcode6.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 2
-              name: x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 2
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/deadcode6.v
+                      line: 2
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/deadcode6.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 2
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/deadcode6.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Always:
               filename: ../test/passes/transformations/testcases/deadcode6.v
               line: 4
@@ -56,8 +63,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 4
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/deadcode6.v
@@ -65,13 +72,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 5
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
+                          line: 5
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/deadcode6.v
@@ -79,59 +87,58 @@ Source:
                               value: x=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/deadcode6.v
-                              hier:
-                                HierName: null
                               line: 5
                               name: x
-                          filename: ../test/passes/transformations/testcases/deadcode6.v
-                          line: 5
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: mod1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/deadcode6.v
+          line: 10
+          name: deadcode6
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - WireNet:
+              filename: ../test/passes/transformations/testcases/deadcode6.v
+              line: 2
+              is_vectored: false
+              is_scalared: false
+              name: mod1_inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/deadcode6.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 2
-              name: mod1_inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 2
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/deadcode6.v
+                      line: 2
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/deadcode6.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 2
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/deadcode6.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Always:
               filename: ../test/passes/transformations/testcases/deadcode6.v
               line: 4
@@ -143,8 +150,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 4
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -152,13 +159,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 5
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/deadcode6.v
+                          line: 5
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/deadcode6.v
@@ -166,17 +174,15 @@ Source:
                               value: x=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/deadcode6.v
-                              hier:
-                                HierName: null
                               line: 5
                               name: mod1_inst_x
-                          filename: ../test/passes/transformations/testcases/deadcode6.v
-                          line: 5
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - Assign:
               filename: ../test/passes/transformations/testcases/deadcode6.v
-              ldelay:
-                DelayStatement: null
+              line: 12
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/deadcode6.v
@@ -184,29 +190,23 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/deadcode6.v
-                      hier:
-                        HierName: null
                       line: 12
                       name: mod1_inst_x
-              line: 12
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/deadcode6.v
                   line: 12
                   var:
                     IntConstN:
-                      base: 16
                       filename: ../test/passes/transformations/testcases/deadcode6.v
                       line: 12
-                      sign: false
+                      base: 16
                       size: 8
+                      sign: false
                       value: 66
-          lifetime: NONE
-          line: 10
-          name: deadcode6
-      filename: ../test/passes/transformations/testcases/deadcode6.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/deadcode6.v
-  line: 1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

@@ -1,65 +1,74 @@
 Source:
+  filename: ../test/passes/transformations/testcases/instance11.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/instance11.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance11.v
+          line: 1
+          name: instance11
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Param:
               filename: ../test/passes/transformations/testcases/instance11.v
-              is_local: false
               line: 2
+              is_local: false
               name: PARAM_0
-              type:
-                IntegerType:
-                  filename: ../test/passes/transformations/testcases/instance11.v
-                  line: 2
-                  signing: NONE
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance11.v
                   line: 2
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance11.v
                       line: 2
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 6
-          - Param:
-              filename: ../test/passes/transformations/testcases/instance11.v
-              is_local: false
-              line: 3
-              name: PARAM_1
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/instance11.v
-                  line: 3
+                  line: 2
                   signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/instance11.v
+              line: 3
+              is_local: false
+              name: PARAM_1
               value:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/instance11.v
                   line: 3
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/instance11.v
                       line: 3
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 5
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/instance11.v
+                  line: 3
+                  signing: NONE
           - Instancelist:
               filename: ../test/passes/transformations/testcases/instance11.v
+              line: 5
+              module: my_mod
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../test/passes/transformations/testcases/instance11.v
                   line: 5
                   module: my_mod
                   name: mod0
+                  array:
+                    Dimension: null
                   portlist:
                   - PortArg:
                       filename: ''
@@ -68,22 +77,22 @@ Source:
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/instance11.v
-                          hier:
-                            HierName: null
                           line: 5
                           name: PARAM_0
-              line: 5
-              module: my_mod
+                          hier:
+                            HierName: null
           - Instancelist:
               filename: ../test/passes/transformations/testcases/instance11.v
+              line: 6
+              module: my_mod
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../test/passes/transformations/testcases/instance11.v
                   line: 6
                   module: my_mod
                   name: mod1
+                  array:
+                    Dimension: null
                   portlist:
                   - PortArg:
                       filename: ''
@@ -93,37 +102,82 @@ Source:
                         Partselect:
                           filename: ../test/passes/transformations/testcases/instance11.v
                           line: 6
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance11.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
                           msb:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/instance11.v
                               line: 6
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
+                          lsb:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance11.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/instance11.v
-                              hier:
-                                HierName: null
                               line: 6
                               name: PARAM_1
-              line: 6
-              module: my_mod
-          lifetime: NONE
-          line: 1
-          name: instance11
+                              hier:
+                                HierName: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/instance11.v
+          line: 9
+          name: my_mod
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance11.v
+              line: 9
+              name: x
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/instance11.v
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance11.v
+                      line: 9
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance11.v
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance11.v
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance11.v
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Always:
               filename: ../test/passes/transformations/testcases/instance11.v
@@ -136,8 +190,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/instance11.v
                       line: 11
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/instance11.v
@@ -145,13 +199,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/instance11.v
                       line: 12
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/instance11.v
+                          line: 12
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/instance11.v
@@ -159,64 +214,9 @@ Source:
                               value: x=%0d
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/instance11.v
-                              hier:
-                                HierName: null
                               line: 12
                               name: x
-                          filename: ../test/passes/transformations/testcases/instance11.v
-                          line: 12
-                          syscall: display
-          lifetime: NONE
-          line: 9
-          name: my_mod
-          ports:
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/instance11.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 9
-                  name: x
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/instance11.v
-                      line: 9
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/instance11.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance11.v
-                              line: 9
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 9
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/instance11.v
-                              line: 9
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/instance11.v
-              line: 9
-              name: x
-      filename: ../test/passes/transformations/testcases/instance11.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/instance11.v
-  line: 1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null

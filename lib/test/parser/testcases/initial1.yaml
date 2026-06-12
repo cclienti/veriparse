@@ -1,20 +1,27 @@
 Source:
+  filename: ../../test/parser/testcases/initial1.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/initial1.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/initial1.v
+          line: 1
+          name: initial1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../../test/parser/testcases/initial1.v
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: clk
+              init:
+                Rvalue: null
               type:
                 RegType:
                   filename: ../../test/parser/testcases/initial1.v
@@ -22,13 +29,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/initial1.v
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: reset
+              init:
+                Rvalue: null
               type:
                 RegType:
                   filename: ../../test/parser/testcases/initial1.v
@@ -36,13 +43,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/initial1.v
-              init:
-                Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
               line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
               name: enable
+              init:
+                Rvalue: null
               type:
                 RegType:
                   filename: ../../test/parser/testcases/initial1.v
@@ -50,13 +57,13 @@ Source:
                   signing: NONE
           - Var:
               filename: ../../test/parser/testcases/initial1.v
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 2
-              name: data
               type:
                 RegType:
                   filename: ../../test/parser/testcases/initial1.v
@@ -68,8 +75,7 @@ Source:
               statement:
                 BlockingSubstitution:
                   filename: ../../test/parser/testcases/initial1.v
-                  ldelay:
-                    DelayStatement: null
+                  line: 4
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/initial1.v
@@ -77,33 +83,33 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/initial1.v
-                          hier:
-                            HierName: null
                           line: 4
                           name: clk
-                  line: 4
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/initial1.v
                       line: 4
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/initial1.v
                           line: 4
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
           - Initial:
               filename: ../../test/parser/testcases/initial1.v
               line: 5
               statement:
                 BlockingSubstitution:
                   filename: ../../test/parser/testcases/initial1.v
-                  ldelay:
-                    DelayStatement: null
+                  line: 5
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/initial1.v
@@ -111,33 +117,33 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/initial1.v
-                          hier:
-                            HierName: null
                           line: 5
                           name: reset
-                  line: 5
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/initial1.v
                       line: 5
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/initial1.v
                           line: 5
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
           - Initial:
               filename: ../../test/parser/testcases/initial1.v
               line: 6
               statement:
                 BlockingSubstitution:
                   filename: ../../test/parser/testcases/initial1.v
-                  ldelay:
-                    DelayStatement: null
+                  line: 6
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/initial1.v
@@ -145,33 +151,33 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/initial1.v
-                          hier:
-                            HierName: null
                           line: 6
                           name: enable
-                  line: 6
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/initial1.v
                       line: 6
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/initial1.v
                           line: 6
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
           - Initial:
               filename: ../../test/parser/testcases/initial1.v
               line: 7
               statement:
                 BlockingSubstitution:
                   filename: ../../test/parser/testcases/initial1.v
-                  ldelay:
-                    DelayStatement: null
+                  line: 7
                   left:
                     Lvalue:
                       filename: ../../test/parser/testcases/initial1.v
@@ -179,29 +185,23 @@ Source:
                       var:
                         Identifier:
                           filename: ../../test/parser/testcases/initial1.v
-                          hier:
-                            HierName: null
                           line: 7
                           name: data
-                  line: 7
-                  rdelay:
-                    DelayStatement: null
+                          hier:
+                            HierName: null
                   right:
                     Rvalue:
                       filename: ../../test/parser/testcases/initial1.v
                       line: 7
                       var:
                         IntConstN:
-                          base: 10
                           filename: ../../test/parser/testcases/initial1.v
                           line: 7
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-          lifetime: NONE
-          line: 1
-          name: initial1
-      filename: ../../test/parser/testcases/initial1.v
-      line: 1
-  filename: ../../test/parser/testcases/initial1.v
-  line: 1
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null

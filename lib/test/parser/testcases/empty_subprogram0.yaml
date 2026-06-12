@@ -1,16 +1,23 @@
 Source:
+  filename: ../../test/parser/testcases/empty_subprogram0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/empty_subprogram0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/empty_subprogram0.v
+          line: 1
+          name: empty_subprogram0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Function:
               filename: ../../test/parser/testcases/empty_subprogram0.v
-              lifetime: NONE
               line: 3
               name: f
+              lifetime: NONE
               return_type:
                 IntegerType:
                   filename: ../../test/parser/testcases/empty_subprogram0.v
@@ -19,14 +26,7 @@ Source:
               statements: []
           - Task:
               filename: ../../test/parser/testcases/empty_subprogram0.v
-              lifetime: NONE
               line: 6
               name: t
+              lifetime: NONE
               statements: []
-          lifetime: NONE
-          line: 1
-          name: empty_subprogram0
-      filename: ../../test/parser/testcases/empty_subprogram0.v
-      line: 1
-  filename: ../../test/parser/testcases/empty_subprogram0.v
-  line: 1

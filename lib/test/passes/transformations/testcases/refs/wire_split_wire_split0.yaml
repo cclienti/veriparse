@@ -1,93 +1,264 @@
 Source:
+  filename: ../test/passes/transformations/testcases/wire_split0.v
+  line: 3
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/wire_split0.v
+      line: 3
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/wire_split0.v
+          line: 3
+          name: wire_split0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 4
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/wire_split0.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 4
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 5
+              name: a
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/wire_split0.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/wire_split0.v
+                          line: 5
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/wire_split0.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/wire_split0.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 6
+              name: b
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/wire_split0.v
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/wire_split0.v
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/wire_split0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/wire_split0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 7
+              name: result
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/wire_split0.v
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: result
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/wire_split0.v
+                          line: 7
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/wire_split0.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 8
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/wire_split0.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - WireNet:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 9
+              is_vectored: false
+              is_scalared: false
+              name: x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 9
-              name: x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
                   line: 9
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 9
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 9
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 9
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 9
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 10
+              is_vectored: false
+              is_scalared: false
+              name: sum
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 10
-              name: sum
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
                   line: 10
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 10
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 10
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 8
-                      line: 10
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 10
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ../test/passes/transformations/testcases/wire_split0.v
-              ldelay:
-                DelayStatement: null
+              line: 10
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -95,13 +266,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
-                      hier:
-                        HierName: null
                       line: 10
                       name: sum
-              line: 10
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -109,86 +277,89 @@ Source:
                   var:
                     Plus:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 10
                       left:
                         Concat:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 10
                           list:
                           - IntConstN:
-                              base: 2
                               filename: ../test/passes/transformations/testcases/wire_split0.v
                               line: 10
-                              sign: false
+                              base: 2
                               size: 1
+                              sign: false
                               value: 0
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/wire_split0.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: a
-                      line: 10
+                              hier:
+                                HierName: null
                       right:
                         Concat:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 10
                           list:
                           - IntConstN:
-                              base: 2
                               filename: ../test/passes/transformations/testcases/wire_split0.v
                               line: 10
-                              sign: false
+                              base: 2
                               size: 1
+                              sign: false
                               value: 0
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/wire_split0.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: b
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              is_scalared: false
-              is_vectored: false
+                              hier:
+                                HierName: null
               ldelay:
                 DelayStatement: null
-              line: 11
-              name: y
               rdelay:
                 DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 11
+              is_vectored: false
+              is_scalared: false
+              name: y
+              cont_assign:
+                Rvalue: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
                   line: 11
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 11
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 11
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 11
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 11
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ../test/passes/transformations/testcases/wire_split0.v
-              ldelay:
-                DelayStatement: null
+              line: 11
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -196,13 +367,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
-                      hier:
-                        HierName: null
                       line: 11
                       name: y
-              line: 11
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -210,64 +378,67 @@ Source:
                   var:
                     And:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 11
                       left:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
-                          hier:
-                            HierName: null
                           line: 11
                           name: a
-                      line: 11
+                          hier:
+                            HierName: null
                       right:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
-                          hier:
-                            HierName: null
                           line: 11
                           name: b
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              is_scalared: false
-              is_vectored: false
+                          hier:
+                            HierName: null
               ldelay:
                 DelayStatement: null
-              line: 12
-              name: z
               rdelay:
                 DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 12
+              is_vectored: false
+              is_scalared: false
+              name: z
+              cont_assign:
+                Rvalue: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
                   line: 12
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 12
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 12
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 12
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/wire_split0.v
                           line: 12
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ../test/passes/transformations/testcases/wire_split0.v
-              ldelay:
-                DelayStatement: null
+              line: 12
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -275,13 +446,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
-                      hier:
-                        HierName: null
                       line: 12
                       name: z
-              line: 12
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -289,25 +457,28 @@ Source:
                   var:
                     Or:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 12
                       left:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
-                          hier:
-                            HierName: null
                           line: 12
                           name: x
-                      line: 12
+                          hier:
+                            HierName: null
                       right:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
-                          hier:
-                            HierName: null
                           line: 12
                           name: y
-          - Assign:
-              filename: ../test/passes/transformations/testcases/wire_split0.v
+                          hier:
+                            HierName: null
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 14
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -315,13 +486,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
-                      hier:
-                        HierName: null
                       line: 14
                       name: x
-              line: 14
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -329,25 +497,28 @@ Source:
                   var:
                     Xor:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
+                      line: 14
                       left:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
-                          hier:
-                            HierName: null
                           line: 14
                           name: a
-                      line: 14
+                          hier:
+                            HierName: null
                       right:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/wire_split0.v
-                          hier:
-                            HierName: null
                           line: 14
                           name: b
-          - Assign:
-              filename: ../test/passes/transformations/testcases/wire_split0.v
+                          hier:
+                            HierName: null
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/wire_split0.v
+              line: 15
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -355,13 +526,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
-                      hier:
-                        HierName: null
                       line: 15
                       name: result
-              line: 15
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/wire_split0.v
@@ -369,179 +537,11 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/wire_split0.v
-                      hier:
-                        HierName: null
                       line: 15
                       name: sum
-          lifetime: NONE
-          line: 3
-          name: wire_split0
-          ports:
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/wire_split0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/wire_split0.v
-                      line: 4
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              line: 4
-              name: clk
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/wire_split0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: a
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/wire_split0.v
-                      line: 5
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/wire_split0.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/wire_split0.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/wire_split0.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              line: 5
-              name: a
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/wire_split0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: b
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/wire_split0.v
-                      line: 6
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/wire_split0.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/wire_split0.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/wire_split0.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              line: 6
-              name: b
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/wire_split0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 7
-                  name: result
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/wire_split0.v
-                      line: 7
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/wire_split0.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/wire_split0.v
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 8
-                          line: 7
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/wire_split0.v
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/wire_split0.v
-              line: 7
-              name: result
-      filename: ../test/passes/transformations/testcases/wire_split0.v
-      line: 3
-  filename: ../test/passes/transformations/testcases/wire_split0.v
-  line: 3
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

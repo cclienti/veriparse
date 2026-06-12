@@ -1,16 +1,23 @@
 Source:
+  filename: ../../test/parser/testcases/function0.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/function0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/function0.v
+          line: 1
+          name: function0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Function:
               filename: ../../test/parser/testcases/function0.v
-              lifetime: NONE
               line: 3
               name: clogb2
+              lifetime: NONE
               return_type:
                 IntegerType:
                   filename: ../../test/parser/testcases/function0.v
@@ -18,51 +25,51 @@ Source:
                   signing: NONE
               statements:
               - Port:
+                  filename: ../../test/parser/testcases/function0.v
+                  line: 4
+                  name: value
+                  direction: INPUT
                   decl:
                     ImplicitNet:
+                      filename: ../../test/parser/testcases/function0.v
+                      line: 4
+                      is_vectored: false
+                      is_scalared: false
+                      name: value
                       cont_assign:
                         Rvalue: null
-                      filename: ../../test/parser/testcases/function0.v
-                      is_scalared: false
-                      is_vectored: false
-                      ldelay:
-                        DelayStatement: null
-                      line: 4
-                      name: value
-                      rdelay:
-                        DelayStatement: null
                       strength:
                         Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
                       type:
                         ImplicitType:
                           filename: ../../test/parser/testcases/function0.v
                           line: 4
+                          signing: NONE
                           packed_dims:
                           - RangeDim:
                               filename: ../../test/parser/testcases/function0.v
+                              line: 4
                               left:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/function0.v
                                   line: 4
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 31
-                              line: 4
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/function0.v
                                   line: 4
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 0
-                          signing: NONE
-                  direction: INPUT
                   expr: null
-                  filename: ../../test/parser/testcases/function0.v
-                  line: 4
-                  name: value
               - Block:
                   filename: ../../test/parser/testcases/function0.v
                   line: 5
@@ -70,8 +77,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../../test/parser/testcases/function0.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 6
                       left:
                         Lvalue:
                           filename: ../../test/parser/testcases/function0.v
@@ -79,13 +85,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../../test/parser/testcases/function0.v
-                              hier:
-                                HierName: null
                               line: 6
                               name: value
-                      line: 6
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../../test/parser/testcases/function0.v
@@ -93,49 +96,33 @@ Source:
                           var:
                             Minus:
                               filename: ../../test/parser/testcases/function0.v
+                              line: 6
                               left:
                                 Identifier:
                                   filename: ../../test/parser/testcases/function0.v
-                                  hier:
-                                    HierName: null
                                   line: 6
                                   name: value
-                              line: 6
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../../test/parser/testcases/function0.v
                                   line: 6
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
                   - ForStatement:
-                      cond:
-                        GreaterThan:
-                          filename: ../../test/parser/testcases/function0.v
-                          left:
-                            Identifier:
-                              filename: ../../test/parser/testcases/function0.v
-                              hier:
-                                HierName: null
-                              line: 7
-                              name: value
-                          line: 7
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/function0.v
-                              line: 7
-                              sign: false
-                              size: -1
-                              value: 0
                       filename: ../../test/parser/testcases/function0.v
                       line: 7
-                      post:
+                      pre:
                         BlockingSubstitution:
                           filename: ../../test/parser/testcases/function0.v
-                          ldelay:
-                            DelayStatement: null
+                          line: 7
                           left:
                             Lvalue:
                               filename: ../../test/parser/testcases/function0.v
@@ -143,13 +130,60 @@ Source:
                               var:
                                 Identifier:
                                   filename: ../../test/parser/testcases/function0.v
-                                  hier:
-                                    HierName: null
                                   line: 7
                                   name: clogb2
-                          line: 7
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../../test/parser/testcases/function0.v
+                              line: 7
+                              var:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/function0.v
+                                  line: 7
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
                           rdelay:
                             DelayStatement: null
+                      cond:
+                        GreaterThan:
+                          filename: ../../test/parser/testcases/function0.v
+                          line: 7
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/function0.v
+                              line: 7
+                              name: value
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/function0.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      post:
+                        BlockingSubstitution:
+                          filename: ../../test/parser/testcases/function0.v
+                          line: 7
+                          left:
+                            Lvalue:
+                              filename: ../../test/parser/testcases/function0.v
+                              line: 7
+                              var:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/function0.v
+                                  line: 7
+                                  name: clogb2
+                                  hier:
+                                    HierName: null
                           right:
                             Rvalue:
                               filename: ../../test/parser/testcases/function0.v
@@ -157,53 +191,26 @@ Source:
                               var:
                                 Plus:
                                   filename: ../../test/parser/testcases/function0.v
+                                  line: 7
                                   left:
                                     Identifier:
                                       filename: ../../test/parser/testcases/function0.v
-                                      hier:
-                                        HierName: null
                                       line: 7
                                       name: clogb2
-                                  line: 7
+                                      hier:
+                                        HierName: null
                                   right:
                                     IntConstN:
-                                      base: 10
                                       filename: ../../test/parser/testcases/function0.v
                                       line: 7
-                                      sign: false
+                                      base: 10
                                       size: -1
+                                      sign: false
                                       value: 1
-                      pre:
-                        BlockingSubstitution:
-                          filename: ../../test/parser/testcases/function0.v
                           ldelay:
                             DelayStatement: null
-                          left:
-                            Lvalue:
-                              filename: ../../test/parser/testcases/function0.v
-                              line: 7
-                              var:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/function0.v
-                                  hier:
-                                    HierName: null
-                                  line: 7
-                                  name: clogb2
-                          line: 7
                           rdelay:
                             DelayStatement: null
-                          right:
-                            Rvalue:
-                              filename: ../../test/parser/testcases/function0.v
-                              line: 7
-                              var:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/function0.v
-                                  line: 7
-                                  sign: false
-                                  size: -1
-                                  value: 0
                       statement:
                         Block:
                           filename: ../../test/parser/testcases/function0.v
@@ -212,8 +219,7 @@ Source:
                           statements:
                           - BlockingSubstitution:
                               filename: ../../test/parser/testcases/function0.v
-                              ldelay:
-                                DelayStatement: null
+                              line: 8
                               left:
                                 Lvalue:
                                   filename: ../../test/parser/testcases/function0.v
@@ -221,13 +227,10 @@ Source:
                                   var:
                                     Identifier:
                                       filename: ../../test/parser/testcases/function0.v
-                                      hier:
-                                        HierName: null
                                       line: 8
                                       name: value
-                              line: 8
-                              rdelay:
-                                DelayStatement: null
+                                      hier:
+                                        HierName: null
                               right:
                                 Rvalue:
                                   filename: ../../test/parser/testcases/function0.v
@@ -235,26 +238,23 @@ Source:
                                   var:
                                     Srl:
                                       filename: ../../test/parser/testcases/function0.v
+                                      line: 8
                                       left:
                                         Identifier:
                                           filename: ../../test/parser/testcases/function0.v
-                                          hier:
-                                            HierName: null
                                           line: 8
                                           name: value
-                                      line: 8
+                                          hier:
+                                            HierName: null
                                       right:
                                         IntConstN:
-                                          base: 10
                                           filename: ../../test/parser/testcases/function0.v
                                           line: 8
-                                          sign: false
+                                          base: 10
                                           size: -1
+                                          sign: false
                                           value: 1
-          lifetime: NONE
-          line: 1
-          name: function0
-      filename: ../../test/parser/testcases/function0.v
-      line: 1
-  filename: ../../test/parser/testcases/function0.v
-  line: 1
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null

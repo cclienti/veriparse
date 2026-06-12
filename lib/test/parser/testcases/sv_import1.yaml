@@ -1,6 +1,10 @@
 Source:
+  filename: ../../test/parser/testcases/sv_import1.sv
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/sv_import1.sv
+      line: 1
       definitions:
       - Import:
           filename: ../../test/parser/testcases/sv_import1.sv
@@ -13,39 +17,35 @@ Source:
           package: sv_package0
           symbol: state_t
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/sv_import1.sv
-          lifetime: NONE
           line: 3
           name: sv_import1
+          lifetime: NONE
+          default_nettype: WIRE
           ports:
           - Port:
+              filename: ../../test/parser/testcases/sv_import1.sv
+              line: 4
+              name: clk
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ../../test/parser/testcases/sv_import1.sv
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/sv_import1.sv
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ../../test/parser/testcases/sv_import1.sv
                       line: 4
                       signing: NONE
-              direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/sv_import1.sv
-              line: 4
-              name: clk
-      filename: ../../test/parser/testcases/sv_import1.sv
-      line: 1
-  filename: ../../test/parser/testcases/sv_import1.sv
-  line: 1

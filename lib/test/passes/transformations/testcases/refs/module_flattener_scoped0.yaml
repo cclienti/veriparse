@@ -1,99 +1,108 @@
 Source:
+  filename: ../test/passes/transformations/testcases/scoped0.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/scoped0.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/scoped0.v
+          line: 1
+          name: mod1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 2
+              is_vectored: false
+              is_scalared: false
+              name: x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 2
-              name: x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 2
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 2
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 2
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 3
+              is_vectored: false
+              is_scalared: false
+              name: y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 3
-              name: y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 3
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 3
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 3
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Instancelist:
               filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 5
+              module: mod2
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 5
                   module: mod2
                   name: inst
+                  array:
+                    Dimension: null
                   portlist:
                   - PortArg:
                       filename: ../test/passes/transformations/testcases/scoped0.v
@@ -102,16 +111,13 @@ Source:
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/scoped0.v
-                          hier:
-                            HierName: null
                           line: 5
                           name: x
-              line: 5
-              module: mod2
+                          hier:
+                            HierName: null
           - Assign:
               filename: ../test/passes/transformations/testcases/scoped0.v
-              ldelay:
-                DelayStatement: null
+              line: 7
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
@@ -119,33 +125,34 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 7
+                      name: y
                       hier:
                         HierName:
                           filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 7
                           labellist:
                           - HierLabel:
                               filename: ../test/passes/transformations/testcases/scoped0.v
                               line: 7
-                              loop: null
                               name: inst
-                          line: 7
-                      line: 7
-                      name: y
-              line: 7
-              rdelay:
-                DelayStatement: null
+                              loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 7
                   var:
                     IntConstN:
-                      base: 16
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 7
-                      sign: false
+                      base: 16
                       size: 8
+                      sign: false
                       value: 69
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/scoped0.v
               line: 9
@@ -157,8 +164,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 9
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/scoped0.v
@@ -166,13 +173,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -180,98 +188,144 @@ Source:
                               value: mod1 y=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: y
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 10
-                          syscall: display
-          lifetime: NONE
-          line: 1
-          name: mod1
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/scoped0.v
+          line: 14
+          name: mod2
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 14
+              name: x
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/scoped0.v
+                  line: 14
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 14
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 14
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/scoped0.v
+                              line: 14
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/scoped0.v
+                              line: 14
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 15
+              is_vectored: false
+              is_scalared: false
+              name: z
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 15
-              name: z
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 15
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 15
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 15
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 16
+              is_vectored: false
+              is_scalared: false
+              name: y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 16
-              name: y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 16
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 16
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 16
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 16
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 16
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Always:
               filename: ../test/passes/transformations/testcases/scoped0.v
               line: 17
@@ -283,8 +337,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 17
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/scoped0.v
@@ -292,13 +346,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 18
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 18
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -306,21 +361,21 @@ Source:
                               value: mod2 x=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 18
                               name: x
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 18
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 19
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 19
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -328,21 +383,21 @@ Source:
                               value: mod2 z=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 19
                               name: z
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 19
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 20
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 20
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -350,188 +405,139 @@ Source:
                               value: mod2 y=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 20
                               name: y
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 20
-                          syscall: display
-          lifetime: NONE
-          line: 14
-          name: mod2
-          ports:
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/scoped0.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 14
-                  name: x
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/scoped0.v
-                      line: 14
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/scoped0.v
-                              line: 14
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 14
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/scoped0.v
-                              line: 14
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              line: 14
-              name: x
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/scoped0.v
+          line: 24
+          name: scoped0
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 2
+              is_vectored: false
+              is_scalared: false
+              name: inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 2
-              name: inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 2
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 2
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 2
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 2
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 3
+              is_vectored: false
+              is_scalared: false
+              name: inst_y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 3
-              name: inst_y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 3
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 3
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 3
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 3
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 14
+              is_vectored: false
+              is_scalared: false
+              name: inst_inst_x
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 14
-              name: inst_inst_x
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 14
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 14
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 14
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 14
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Assign:
               filename: ''
-              ldelay:
-                DelayStatement: null
+              line: 0
               left:
                 Lvalue:
                   filename: ''
@@ -539,13 +545,10 @@ Source:
                   var:
                     Identifier:
                       filename: ''
-                      hier:
-                        HierName: null
                       line: 0
                       name: inst_inst_x
-              line: 0
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ''
@@ -553,88 +556,92 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/scoped0.v
-                      hier:
-                        HierName: null
                       line: 5
                       name: inst_x
-          - WireNet:
-              cont_assign:
-                Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
+                      hier:
+                        HierName: null
               ldelay:
                 DelayStatement: null
-              line: 15
-              name: inst_inst_z
               rdelay:
                 DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 15
+              is_vectored: false
+              is_scalared: false
+              name: inst_inst_z
+              cont_assign:
+                Rvalue: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 15
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 15
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 15
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 15
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 16
+              is_vectored: false
+              is_scalared: false
+              name: inst_inst_y
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/scoped0.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 16
-              name: inst_inst_y
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 16
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/scoped0.v
+                      line: 16
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 16
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 7
-                      line: 16
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/scoped0.v
                           line: 16
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Always:
               filename: ../test/passes/transformations/testcases/scoped0.v
               line: 17
@@ -646,8 +653,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 17
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -655,13 +662,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 18
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 18
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -669,21 +677,21 @@ Source:
                               value: mod2 x=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 18
                               name: inst_inst_x
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 18
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 19
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 19
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -691,21 +699,21 @@ Source:
                               value: mod2 z=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 19
                               name: inst_inst_z
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 19
-                          syscall: display
-                  - SingleStatement:
+                              hier:
+                                HierName: null
                       delay:
                         DelayStatement: null
+                  - SingleStatement:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 20
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 20
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -713,17 +721,15 @@ Source:
                               value: mod2 y=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 20
                               name: inst_inst_y
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 20
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - Assign:
               filename: ../test/passes/transformations/testcases/scoped0.v
-              ldelay:
-                DelayStatement: null
+              line: 7
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
@@ -731,25 +737,26 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/scoped0.v
-                      hier:
-                        HierName: null
                       line: 7
                       name: inst_inst_y
-              line: 7
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 7
                   var:
                     IntConstN:
-                      base: 16
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 7
-                      sign: false
+                      base: 16
                       size: 8
+                      sign: false
                       value: 69
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/scoped0.v
               line: 9
@@ -761,8 +768,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 9
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -770,13 +777,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 10
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 10
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -784,13 +792,12 @@ Source:
                               value: mod1 y=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 10
                               name: inst_y
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 10
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/scoped0.v
               line: 27
@@ -802,8 +809,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 27
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ''
@@ -811,13 +818,14 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 28
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/scoped0.v
+                          line: 28
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/scoped0.v
@@ -825,17 +833,15 @@ Source:
                               value: mod1_inst.mod2_inst.x=%0h
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/scoped0.v
-                              hier:
-                                HierName: null
                               line: 28
                               name: inst_inst_x
-                          filename: ../test/passes/transformations/testcases/scoped0.v
-                          line: 28
-                          syscall: display
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
           - Assign:
               filename: ../test/passes/transformations/testcases/scoped0.v
-              ldelay:
-                DelayStatement: null
+              line: 31
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
@@ -843,29 +849,29 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/scoped0.v
-                      hier:
-                        HierName: null
                       line: 31
                       name: inst_x
-              line: 31
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 31
                   var:
                     IntConstN:
-                      base: 16
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 31
-                      sign: false
+                      base: 16
                       size: 8
+                      sign: false
                       value: 66
-          - Assign:
-              filename: ../test/passes/transformations/testcases/scoped0.v
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 32
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
@@ -873,29 +879,29 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/scoped0.v
-                      hier:
-                        HierName: null
                       line: 32
                       name: inst_y
-              line: 32
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 32
                   var:
                     IntConstN:
-                      base: 16
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 32
-                      sign: false
+                      base: 16
                       size: 8
+                      sign: false
                       value: 67
-          - Assign:
-              filename: ../test/passes/transformations/testcases/scoped0.v
               ldelay:
                 DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/scoped0.v
+              line: 33
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
@@ -903,29 +909,23 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/scoped0.v
-                      hier:
-                        HierName: null
                       line: 33
                       name: inst_inst_z
-              line: 33
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/scoped0.v
                   line: 33
                   var:
                     IntConstN:
-                      base: 16
                       filename: ../test/passes/transformations/testcases/scoped0.v
                       line: 33
-                      sign: false
+                      base: 16
                       size: 8
+                      sign: false
                       value: 68
-          lifetime: NONE
-          line: 24
-          name: scoped0
-      filename: ../test/passes/transformations/testcases/scoped0.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/scoped0.v
-  line: 1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

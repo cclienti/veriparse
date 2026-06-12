@@ -1,16 +1,23 @@
 Source:
+  filename: ../../test/parser/testcases/taskcall1.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/taskcall1.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/taskcall1.v
+          line: 1
+          name: taskcall1
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Task:
               filename: ../../test/parser/testcases/taskcall1.v
-              lifetime: NONE
               line: 3
               name: empty
+              lifetime: NONE
               statements:
               - Block:
                   filename: ../../test/parser/testcases/taskcall1.v
@@ -27,14 +34,14 @@ Source:
                   - Sens:
                       filename: ../../test/parser/testcases/taskcall1.v
                       line: 8
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../../test/parser/testcases/taskcall1.v
-                          hier:
-                            HierName: null
                           line: 8
                           name: clk
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 Block:
                   filename: ../../test/parser/testcases/taskcall1.v
@@ -42,22 +49,15 @@ Source:
                   scope: ''
                   statements:
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../../test/parser/testcases/taskcall1.v
                       line: 9
                       scope: ''
                       statement:
                         TaskCall:
                           filename: ../../test/parser/testcases/taskcall1.v
-                          hier:
-                            HierName: null
                           line: 9
                           name: empty
-          lifetime: NONE
-          line: 1
-          name: taskcall1
-      filename: ../../test/parser/testcases/taskcall1.v
-      line: 1
-  filename: ../../test/parser/testcases/taskcall1.v
-  line: 1
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null

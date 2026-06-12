@@ -1,6 +1,9 @@
 Module:
-  default_nettype: WIRE
   filename: ../test/passes/transformations/testcases/defparam1.v
+  line: 10
+  name: defparam1
+  lifetime: NONE
+  default_nettype: WIRE
   items:
   - Genvar:
       filename: ../test/passes/transformations/testcases/defparam1.v
@@ -8,70 +11,71 @@ Module:
       name: i
   - GenerateStatement:
       filename: ../test/passes/transformations/testcases/defparam1.v
+      line: 13
       items:
       - Instancelist:
           filename: ../test/passes/transformations/testcases/defparam1.v
+          line: 15
+          module: parametrized
           instances:
           - Instance:
-              array:
-                Dimension: null
               filename: ../test/passes/transformations/testcases/defparam1.v
               line: 15
               module: parametrized
               name: modinst_i_0
-          line: 15
-          module: parametrized
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam1.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam1.v
+          line: 15
+          module: parametrized
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam1.v
               line: 15
               module: parametrized
               name: modinst_i_1
-          line: 15
-          module: parametrized
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam1.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam1.v
+          line: 15
+          module: parametrized
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam1.v
               line: 15
               module: parametrized
               name: modinst_i_2
-          line: 15
-          module: parametrized
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam1.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam1.v
+          line: 15
+          module: parametrized
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam1.v
               line: 15
               module: parametrized
               name: modinst_i_3
-          line: 15
-          module: parametrized
-      - Instancelist:
-          filename: ../test/passes/transformations/testcases/defparam1.v
-          instances:
-          - Instance:
               array:
                 Dimension: null
+      - Instancelist:
+          filename: ../test/passes/transformations/testcases/defparam1.v
+          line: 15
+          module: parametrized
+          instances:
+          - Instance:
               filename: ../test/passes/transformations/testcases/defparam1.v
               line: 15
               module: parametrized
               name: modinst_i_4
-          line: 15
-          module: parametrized
-      line: 13
+              array:
+                Dimension: null
   - GenerateStatement:
       filename: ../test/passes/transformations/testcases/defparam1.v
+      line: 19
       items:
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam1.v
@@ -79,33 +83,33 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam1.v
+              line: 21
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam1.v
+                      line: 21
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam1.v
                           line: 21
-                          loop: null
                           name: modinst_i_0
-                      line: 21
-                  line: 21
-                  name: X
-              line: 21
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam1.v
                   line: 21
                   var:
                     IntConstN:
-                      base: 10
                       filename: ../test/passes/transformations/testcases/defparam1.v
                       line: 20
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 0
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam1.v
@@ -113,33 +117,33 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam1.v
+              line: 21
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam1.v
+                      line: 21
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam1.v
                           line: 21
-                          loop: null
                           name: modinst_i_1
-                      line: 21
-                  line: 21
-                  name: X
-              line: 21
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam1.v
                   line: 21
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 1
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam1.v
@@ -147,33 +151,33 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam1.v
+              line: 21
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam1.v
+                      line: 21
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam1.v
                           line: 21
-                          loop: null
                           name: modinst_i_2
-                      line: 21
-                  line: 21
-                  name: X
-              line: 21
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam1.v
                   line: 21
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 2
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam1.v
@@ -181,33 +185,33 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam1.v
+              line: 21
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam1.v
+                      line: 21
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam1.v
                           line: 21
-                          loop: null
                           name: modinst_i_3
-                      line: 21
-                  line: 21
-                  name: X
-              line: 21
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam1.v
                   line: 21
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 3
       - Defparamlist:
           filename: ../test/passes/transformations/testcases/defparam1.v
@@ -215,35 +219,31 @@ Module:
           list:
           - Defparam:
               filename: ../test/passes/transformations/testcases/defparam1.v
+              line: 21
               identifier:
                 Identifier:
                   filename: ../test/passes/transformations/testcases/defparam1.v
+                  line: 21
+                  name: X
                   hier:
                     HierName:
                       filename: ../test/passes/transformations/testcases/defparam1.v
+                      line: 21
                       labellist:
                       - HierLabel:
                           filename: ../test/passes/transformations/testcases/defparam1.v
                           line: 21
-                          loop: null
                           name: modinst_i_4
-                      line: 21
-                  line: 21
-                  name: X
-              line: 21
+                          loop: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/defparam1.v
                   line: 21
                   var:
                     IntConstN:
-                      base: 10
                       filename: ''
                       line: 0
-                      sign: false
+                      base: 10
                       size: -1
+                      sign: false
                       value: 4
-      line: 19
-  lifetime: NONE
-  line: 10
-  name: defparam1

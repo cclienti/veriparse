@@ -1,185 +1,185 @@
 Source:
+  filename: ../test/passes/transformations/testcases/module3.v
+  line: 1
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/module3.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/module3.v
-          lifetime: NONE
           line: 1
           name: module3
+          lifetime: NONE
+          default_nettype: WIRE
           ports:
           - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: reset
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ''
-                      line: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
               filename: ../test/passes/transformations/testcases/module3.v
               line: 2
               name: reset
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: reset
                   cont_assign:
                     Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: clk
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ''
                       line: 0
                       signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/module3.v
               line: 3
               name: clk
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
                   cont_assign:
                     Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: in0
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ''
                       line: 0
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/module3.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/module3.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 7
-                          line: 4
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/module3.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 0
                       signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/module3.v
               line: 4
               name: in0
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: in0
                   cont_assign:
                     Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: in1
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ''
                       line: 0
+                      signing: NONE
                       packed_dims:
                       - RangeDim:
                           filename: ../test/passes/transformations/testcases/module3.v
+                          line: 4
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/module3.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 7
-                          line: 4
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/module3.v
                               line: 4
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                      signing: NONE
-              direction: INPUT
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/module3.v
               line: 4
               name: in1
-          - Port:
+              direction: INPUT
               decl:
                 WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: in1
                   cont_assign:
                     Rvalue: null
-                  filename: ''
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 0
-                  name: out
-                  rdelay:
-                    DelayStatement: null
                   strength:
                     Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
                   type:
                     ImplicitType:
                       filename: ''
                       line: 0
                       signing: NONE
-              direction: OUTPUT
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/module3.v
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/module3.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/module3.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
               expr: null
+          - Port:
               filename: ../test/passes/transformations/testcases/module3.v
               line: 5
               name: out
-      filename: ../test/passes/transformations/testcases/module3.v
-      line: 1
-  filename: ../test/passes/transformations/testcases/module3.v
-  line: 1
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: out
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null

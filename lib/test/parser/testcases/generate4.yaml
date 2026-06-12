@@ -1,10 +1,260 @@
 Source:
+  filename: ../../test/parser/testcases/generate4.v
+  line: 1
   description:
     Description:
+      filename: ../../test/parser/testcases/generate4.v
+      line: 1
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../../test/parser/testcases/generate4.v
+          line: 1
+          name: generate4
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/generate4.v
+              line: 2
+              is_local: false
+              name: CONFIG
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 2
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/generate4.v
+                      line: 2
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 2
+                  signing: NONE
+          - Param:
+              filename: ../../test/parser/testcases/generate4.v
+              line: 3
+              is_local: false
+              name: WIDTH
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 3
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/generate4.v
+                      line: 3
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 3
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/generate4.v
+              line: 4
+              name: clock
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: clock
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/generate4.v
+                      line: 4
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/generate4.v
+              line: 5
+              name: in0
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: in0
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/generate4.v
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/generate4.v
+                          line: 5
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 5
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/generate4.v
+                                  line: 5
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/generate4.v
+                                  line: 5
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/generate4.v
+              line: 5
+              name: in1
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: in1
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/generate4.v
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/generate4.v
+                          line: 5
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 5
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/generate4.v
+                                  line: 5
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/generate4.v
+                                  line: 5
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/generate4.v
+              line: 6
+              name: out
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/generate4.v
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: out
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    RegType:
+                      filename: ../../test/parser/testcases/generate4.v
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/generate4.v
+                          line: 6
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 6
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/generate4.v
+                                  line: 6
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/generate4.v
+                                  line: 6
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Genvar:
               filename: ../../test/parser/testcases/generate4.v
@@ -12,22 +262,23 @@ Source:
               name: i
           - GenerateStatement:
               filename: ../../test/parser/testcases/generate4.v
+              line: 10
               items:
               - Block:
                   filename: ../../test/parser/testcases/generate4.v
                   line: 11
                   scope: TEST
-              line: 10
           - GenerateStatement:
               filename: ../../test/parser/testcases/generate4.v
+              line: 15
               items:
               - Block:
                   filename: ../../test/parser/testcases/generate4.v
                   line: 16
                   scope: ''
-              line: 15
           - GenerateStatement:
               filename: ../../test/parser/testcases/generate4.v
+              line: 20
               items:
               - Block:
                   filename: ../../test/parser/testcases/generate4.v
@@ -35,25 +286,34 @@ Source:
                   scope: BLK1
                   statements:
                   - CaseStatement:
+                      filename: ../../test/parser/testcases/generate4.v
+                      line: 22
+                      comp:
+                        Identifier:
+                          filename: ../../test/parser/testcases/generate4.v
+                          line: 22
+                          name: CONFIG
+                          hier:
+                            HierName: null
                       caselist:
                       - Case:
-                          cond:
-                          - IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/generate4.v
-                              line: 23
-                              sign: false
-                              size: -1
-                              value: 0
-                          - IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/generate4.v
-                              line: 23
-                              sign: false
-                              size: -1
-                              value: 2
                           filename: ../../test/parser/testcases/generate4.v
                           line: 23
+                          cond:
+                          - IntConstN:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 23
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                          - IntConstN:
+                              filename: ../../test/parser/testcases/generate4.v
+                              line: 23
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 2
                           statement:
                             Block:
                               filename: ../../test/parser/testcases/generate4.v
@@ -61,31 +321,12 @@ Source:
                               scope: ''
                               statements:
                               - ForStatement:
-                                  cond:
-                                    LessThan:
-                                      filename: ../../test/parser/testcases/generate4.v
-                                      left:
-                                        Identifier:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          hier:
-                                            HierName: null
-                                          line: 24
-                                          name: i
-                                      line: 24
-                                      right:
-                                        Identifier:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          hier:
-                                            HierName: null
-                                          line: 24
-                                          name: WIDTH
                                   filename: ../../test/parser/testcases/generate4.v
                                   line: 24
-                                  post:
+                                  pre:
                                     BlockingSubstitution:
                                       filename: ../../test/parser/testcases/generate4.v
-                                      ldelay:
-                                        DelayStatement: null
+                                      line: 24
                                       left:
                                         Lvalue:
                                           filename: ../../test/parser/testcases/generate4.v
@@ -93,13 +334,59 @@ Source:
                                           var:
                                             Identifier:
                                               filename: ../../test/parser/testcases/generate4.v
-                                              hier:
-                                                HierName: null
                                               line: 24
                                               name: i
-                                      line: 24
+                                              hier:
+                                                HierName: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 24
+                                          var:
+                                            IntConstN:
+                                              filename: ../../test/parser/testcases/generate4.v
+                                              line: 24
+                                              base: 10
+                                              size: -1
+                                              sign: false
+                                              value: 0
+                                      ldelay:
+                                        DelayStatement: null
                                       rdelay:
                                         DelayStatement: null
+                                  cond:
+                                    LessThan:
+                                      filename: ../../test/parser/testcases/generate4.v
+                                      line: 24
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 24
+                                          name: i
+                                          hier:
+                                            HierName: null
+                                      right:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 24
+                                          name: WIDTH
+                                          hier:
+                                            HierName: null
+                                  post:
+                                    BlockingSubstitution:
+                                      filename: ../../test/parser/testcases/generate4.v
+                                      line: 24
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 24
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/generate4.v
+                                              line: 24
+                                              name: i
+                                              hier:
+                                                HierName: null
                                       right:
                                         Rvalue:
                                           filename: ../../test/parser/testcases/generate4.v
@@ -107,53 +394,26 @@ Source:
                                           var:
                                             Plus:
                                               filename: ../../test/parser/testcases/generate4.v
+                                              line: 24
                                               left:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/generate4.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 24
                                                   name: i
-                                              line: 24
+                                                  hier:
+                                                    HierName: null
                                               right:
                                                 IntConstN:
-                                                  base: 10
                                                   filename: ../../test/parser/testcases/generate4.v
                                                   line: 24
-                                                  sign: false
+                                                  base: 10
                                                   size: -1
+                                                  sign: false
                                                   value: 1
-                                  pre:
-                                    BlockingSubstitution:
-                                      filename: ../../test/parser/testcases/generate4.v
                                       ldelay:
                                         DelayStatement: null
-                                      left:
-                                        Lvalue:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          line: 24
-                                          var:
-                                            Identifier:
-                                              filename: ../../test/parser/testcases/generate4.v
-                                              hier:
-                                                HierName: null
-                                              line: 24
-                                              name: i
-                                      line: 24
                                       rdelay:
                                         DelayStatement: null
-                                      right:
-                                        Rvalue:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          line: 24
-                                          var:
-                                            IntConstN:
-                                              base: 10
-                                              filename: ../../test/parser/testcases/generate4.v
-                                              line: 24
-                                              sign: false
-                                              size: -1
-                                              value: 0
                                   statement:
                                     Block:
                                       filename: ../../test/parser/testcases/generate4.v
@@ -171,19 +431,18 @@ Source:
                                               - Sens:
                                                   filename: ../../test/parser/testcases/generate4.v
                                                   line: 25
+                                                  type: POSEDGE
                                                   sig:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/generate4.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 25
                                                       name: clock
-                                                  type: POSEDGE
+                                                      hier:
+                                                        HierName: null
                                           statement:
                                             NonblockingSubstitution:
                                               filename: ../../test/parser/testcases/generate4.v
-                                              ldelay:
-                                                DelayStatement: null
+                                              line: 25
                                               left:
                                                 Lvalue:
                                                   filename: ../../test/parser/testcases/generate4.v
@@ -195,20 +454,17 @@ Source:
                                                       ptr:
                                                         Identifier:
                                                           filename: ../../test/parser/testcases/generate4.v
-                                                          hier:
-                                                            HierName: null
                                                           line: 25
                                                           name: i
+                                                          hier:
+                                                            HierName: null
                                                       var:
                                                         Identifier:
                                                           filename: ../../test/parser/testcases/generate4.v
-                                                          hier:
-                                                            HierName: null
                                                           line: 25
                                                           name: out
-                                              line: 25
-                                              rdelay:
-                                                DelayStatement: null
+                                                          hier:
+                                                            HierName: null
                                               right:
                                                 Rvalue:
                                                   filename: ../../test/parser/testcases/generate4.v
@@ -216,6 +472,7 @@ Source:
                                                   var:
                                                     Lor:
                                                       filename: ../../test/parser/testcases/generate4.v
+                                                      line: 25
                                                       left:
                                                         Pointer:
                                                           filename: ../../test/parser/testcases/generate4.v
@@ -223,18 +480,17 @@ Source:
                                                           ptr:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 25
                                                               name: i
+                                                              hier:
+                                                                HierName: null
                                                           var:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 25
                                                               name: in0
-                                                      line: 25
+                                                              hier:
+                                                                HierName: null
                                                       right:
                                                         Pointer:
                                                           filename: ../../test/parser/testcases/generate4.v
@@ -242,17 +498,21 @@ Source:
                                                           ptr:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 25
                                                               name: i
+                                                              hier:
+                                                                HierName: null
                                                           var:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 25
                                                               name: in1
+                                                              hier:
+                                                                HierName: null
+                                              ldelay:
+                                                DelayStatement: null
+                                              rdelay:
+                                                DelayStatement: null
                       - Case:
                           filename: ../../test/parser/testcases/generate4.v
                           line: 29
@@ -263,31 +523,12 @@ Source:
                               scope: ''
                               statements:
                               - ForStatement:
-                                  cond:
-                                    LessThan:
-                                      filename: ../../test/parser/testcases/generate4.v
-                                      left:
-                                        Identifier:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          hier:
-                                            HierName: null
-                                          line: 30
-                                          name: i
-                                      line: 30
-                                      right:
-                                        Identifier:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          hier:
-                                            HierName: null
-                                          line: 30
-                                          name: WIDTH
                                   filename: ../../test/parser/testcases/generate4.v
                                   line: 30
-                                  post:
+                                  pre:
                                     BlockingSubstitution:
                                       filename: ../../test/parser/testcases/generate4.v
-                                      ldelay:
-                                        DelayStatement: null
+                                      line: 30
                                       left:
                                         Lvalue:
                                           filename: ../../test/parser/testcases/generate4.v
@@ -295,13 +536,59 @@ Source:
                                           var:
                                             Identifier:
                                               filename: ../../test/parser/testcases/generate4.v
-                                              hier:
-                                                HierName: null
                                               line: 30
                                               name: i
-                                      line: 30
+                                              hier:
+                                                HierName: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 30
+                                          var:
+                                            IntConstN:
+                                              filename: ../../test/parser/testcases/generate4.v
+                                              line: 30
+                                              base: 10
+                                              size: -1
+                                              sign: false
+                                              value: 0
+                                      ldelay:
+                                        DelayStatement: null
                                       rdelay:
                                         DelayStatement: null
+                                  cond:
+                                    LessThan:
+                                      filename: ../../test/parser/testcases/generate4.v
+                                      line: 30
+                                      left:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 30
+                                          name: i
+                                          hier:
+                                            HierName: null
+                                      right:
+                                        Identifier:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 30
+                                          name: WIDTH
+                                          hier:
+                                            HierName: null
+                                  post:
+                                    BlockingSubstitution:
+                                      filename: ../../test/parser/testcases/generate4.v
+                                      line: 30
+                                      left:
+                                        Lvalue:
+                                          filename: ../../test/parser/testcases/generate4.v
+                                          line: 30
+                                          var:
+                                            Identifier:
+                                              filename: ../../test/parser/testcases/generate4.v
+                                              line: 30
+                                              name: i
+                                              hier:
+                                                HierName: null
                                       right:
                                         Rvalue:
                                           filename: ../../test/parser/testcases/generate4.v
@@ -309,53 +596,26 @@ Source:
                                           var:
                                             Plus:
                                               filename: ../../test/parser/testcases/generate4.v
+                                              line: 30
                                               left:
                                                 Identifier:
                                                   filename: ../../test/parser/testcases/generate4.v
-                                                  hier:
-                                                    HierName: null
                                                   line: 30
                                                   name: i
-                                              line: 30
+                                                  hier:
+                                                    HierName: null
                                               right:
                                                 IntConstN:
-                                                  base: 10
                                                   filename: ../../test/parser/testcases/generate4.v
                                                   line: 30
-                                                  sign: false
+                                                  base: 10
                                                   size: -1
+                                                  sign: false
                                                   value: 1
-                                  pre:
-                                    BlockingSubstitution:
-                                      filename: ../../test/parser/testcases/generate4.v
                                       ldelay:
                                         DelayStatement: null
-                                      left:
-                                        Lvalue:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          line: 30
-                                          var:
-                                            Identifier:
-                                              filename: ../../test/parser/testcases/generate4.v
-                                              hier:
-                                                HierName: null
-                                              line: 30
-                                              name: i
-                                      line: 30
                                       rdelay:
                                         DelayStatement: null
-                                      right:
-                                        Rvalue:
-                                          filename: ../../test/parser/testcases/generate4.v
-                                          line: 30
-                                          var:
-                                            IntConstN:
-                                              base: 10
-                                              filename: ../../test/parser/testcases/generate4.v
-                                              line: 30
-                                              sign: false
-                                              size: -1
-                                              value: 0
                                   statement:
                                     Block:
                                       filename: ../../test/parser/testcases/generate4.v
@@ -373,19 +633,18 @@ Source:
                                               - Sens:
                                                   filename: ../../test/parser/testcases/generate4.v
                                                   line: 31
+                                                  type: POSEDGE
                                                   sig:
                                                     Identifier:
                                                       filename: ../../test/parser/testcases/generate4.v
-                                                      hier:
-                                                        HierName: null
                                                       line: 31
                                                       name: clock
-                                                  type: POSEDGE
+                                                      hier:
+                                                        HierName: null
                                           statement:
                                             NonblockingSubstitution:
                                               filename: ../../test/parser/testcases/generate4.v
-                                              ldelay:
-                                                DelayStatement: null
+                                              line: 31
                                               left:
                                                 Lvalue:
                                                   filename: ../../test/parser/testcases/generate4.v
@@ -397,20 +656,17 @@ Source:
                                                       ptr:
                                                         Identifier:
                                                           filename: ../../test/parser/testcases/generate4.v
-                                                          hier:
-                                                            HierName: null
                                                           line: 31
                                                           name: i
+                                                          hier:
+                                                            HierName: null
                                                       var:
                                                         Identifier:
                                                           filename: ../../test/parser/testcases/generate4.v
-                                                          hier:
-                                                            HierName: null
                                                           line: 31
                                                           name: out
-                                              line: 31
-                                              rdelay:
-                                                DelayStatement: null
+                                                          hier:
+                                                            HierName: null
                                               right:
                                                 Rvalue:
                                                   filename: ../../test/parser/testcases/generate4.v
@@ -418,6 +674,7 @@ Source:
                                                   var:
                                                     Land:
                                                       filename: ../../test/parser/testcases/generate4.v
+                                                      line: 31
                                                       left:
                                                         Pointer:
                                                           filename: ../../test/parser/testcases/generate4.v
@@ -425,18 +682,17 @@ Source:
                                                           ptr:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 31
                                                               name: i
+                                                              hier:
+                                                                HierName: null
                                                           var:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 31
                                                               name: in0
-                                                      line: 31
+                                                              hier:
+                                                                HierName: null
                                                       right:
                                                         Pointer:
                                                           filename: ../../test/parser/testcases/generate4.v
@@ -444,274 +700,18 @@ Source:
                                                           ptr:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 31
                                                               name: i
+                                                              hier:
+                                                                HierName: null
                                                           var:
                                                             Identifier:
                                                               filename: ../../test/parser/testcases/generate4.v
-                                                              hier:
-                                                                HierName: null
                                                               line: 31
                                                               name: in1
-                      comp:
-                        Identifier:
-                          filename: ../../test/parser/testcases/generate4.v
-                          hier:
-                            HierName: null
-                          line: 22
-                          name: CONFIG
-                      filename: ../../test/parser/testcases/generate4.v
-                      line: 22
-              line: 20
-          lifetime: NONE
-          line: 1
-          name: generate4
-          params:
-          - Param:
-              filename: ../../test/parser/testcases/generate4.v
-              is_local: false
-              line: 2
-              name: CONFIG
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/generate4.v
-                  line: 2
-                  signing: NONE
-              value:
-                Rvalue:
-                  filename: ../../test/parser/testcases/generate4.v
-                  line: 2
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/generate4.v
-                      line: 2
-                      sign: false
-                      size: -1
-                      value: 0
-          - Param:
-              filename: ../../test/parser/testcases/generate4.v
-              is_local: false
-              line: 3
-              name: WIDTH
-              type:
-                ImplicitType:
-                  filename: ../../test/parser/testcases/generate4.v
-                  line: 3
-                  signing: NONE
-              value:
-                Rvalue:
-                  filename: ../../test/parser/testcases/generate4.v
-                  line: 3
-                  var:
-                    IntConstN:
-                      base: 10
-                      filename: ../../test/parser/testcases/generate4.v
-                      line: 3
-                      sign: false
-                      size: -1
-                      value: 4
-          ports:
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/generate4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: clock
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/generate4.v
-                      line: 4
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/generate4.v
-              line: 4
-              name: clock
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/generate4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: in0
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/generate4.v
-                      line: 5
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/generate4.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/generate4.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/generate4.v
-                                  hier:
-                                    HierName: null
-                                  line: 5
-                                  name: WIDTH
-                              line: 5
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/generate4.v
-                                  line: 5
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/generate4.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/generate4.v
-              line: 5
-              name: in0
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/generate4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: in1
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../../test/parser/testcases/generate4.v
-                      line: 5
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/generate4.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/generate4.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/generate4.v
-                                  hier:
-                                    HierName: null
-                                  line: 5
-                                  name: WIDTH
-                              line: 5
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/generate4.v
-                                  line: 5
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/generate4.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../../test/parser/testcases/generate4.v
-              line: 5
-              name: in1
-          - Port:
-              decl:
-                ImplicitNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../../test/parser/testcases/generate4.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 6
-                  name: out
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    RegType:
-                      filename: ../../test/parser/testcases/generate4.v
-                      line: 6
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../../test/parser/testcases/generate4.v
-                          left:
-                            Minus:
-                              filename: ../../test/parser/testcases/generate4.v
-                              left:
-                                Identifier:
-                                  filename: ../../test/parser/testcases/generate4.v
-                                  hier:
-                                    HierName: null
-                                  line: 6
-                                  name: WIDTH
-                              line: 6
-                              right:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../../test/parser/testcases/generate4.v
-                                  line: 6
-                                  sign: false
-                                  size: -1
-                                  value: 1
-                          line: 6
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../../test/parser/testcases/generate4.v
-                              line: 6
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../../test/parser/testcases/generate4.v
-              line: 6
-              name: out
-      filename: ../../test/parser/testcases/generate4.v
-      line: 1
-  filename: ../../test/parser/testcases/generate4.v
-  line: 1
+                                                              hier:
+                                                                HierName: null
+                                              ldelay:
+                                                DelayStatement: null
+                                              rdelay:
+                                                DelayStatement: null

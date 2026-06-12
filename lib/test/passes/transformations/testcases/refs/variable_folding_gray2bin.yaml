@@ -1,178 +1,278 @@
 Source:
+  filename: ../test/passes/transformations/testcases/gray2bin.v
+  line: 3
   description:
     Description:
+      filename: ../test/passes/transformations/testcases/gray2bin.v
+      line: 3
       definitions:
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/gray2bin.v
+          line: 3
+          name: gray2bin
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 4
+              name: gray
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/gray2bin.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: gray
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 4
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/gray2bin.v
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/gray2bin.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/gray2bin.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 5
+              name: bin
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/gray2bin.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: bin
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/gray2bin.v
+                          line: 5
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/gray2bin.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/gray2bin.v
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
           items:
           - Var:
               filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 8
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: lut_array
+              unpacked_dims:
+              - RangeDim:
+                  filename: ../test/passes/transformations/testcases/gray2bin.v
+                  line: 8
+                  left:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 8
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 15
+                  right:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 8
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 8
-              name: lut_array
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
                   line: 8
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 8
                       left:
                         Minus:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
+                          line: 8
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                          line: 8
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 8
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                      line: 8
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 8
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
-              unpacked_dims:
-              - RangeDim:
-                  filename: ../test/passes/transformations/testcases/gray2bin.v
-                  left:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 15
-                  line: 8
-                  right:
-                    IntConstN:
-                      base: 10
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
-                      line: 8
-                      sign: false
-                      size: -1
-                      value: 0
           - Var:
               filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 9
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bin_temp
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 9
-              name: bin_temp
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
                   line: 9
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 9
                       left:
                         Minus:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
+                          line: 9
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 9
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                          line: 9
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 9
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                      line: 9
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 9
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 10
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: gray_temp
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 10
-              name: gray_temp
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
                   line: 10
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 10
                       left:
                         Minus:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
+                          line: 10
                           left:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 10
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
-                          line: 10
                           right:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 10
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 1
-                      line: 10
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 10
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 12
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 12
-              name: i
               type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -189,8 +289,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -198,29 +297,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 0
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -228,29 +327,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 0
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -261,38 +360,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 0
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 0
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -300,29 +399,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 1
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -330,29 +429,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 1
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -363,38 +462,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 1
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 1
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -402,29 +501,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 2
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -432,29 +531,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 3
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -465,38 +564,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 3
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 2
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -504,29 +603,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 3
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -534,29 +633,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 2
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -567,38 +666,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 2
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 3
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -606,29 +705,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 4
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -636,29 +735,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 6
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -669,38 +768,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 6
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 4
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -708,29 +807,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 5
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -738,29 +837,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 7
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -771,38 +870,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 7
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 5
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -810,29 +909,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 6
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -840,29 +939,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 5
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -873,38 +972,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 5
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 6
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -912,29 +1011,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 7
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -942,29 +1041,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 4
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -975,38 +1074,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 4
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 7
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1014,29 +1113,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 8
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1044,29 +1143,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 12
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1077,38 +1176,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 12
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 8
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1116,29 +1215,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 9
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1146,29 +1245,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 13
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1179,38 +1278,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 13
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 9
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1218,29 +1317,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 10
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1248,29 +1347,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 15
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1281,38 +1380,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 15
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 10
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1320,29 +1419,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 11
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1350,29 +1449,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 14
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1383,38 +1482,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 14
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 11
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1422,29 +1521,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 12
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1452,29 +1551,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 10
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1485,38 +1584,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 10
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 12
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1524,29 +1623,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 13
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1554,29 +1653,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 11
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1587,38 +1686,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 11
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 13
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1626,29 +1725,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 14
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1656,29 +1755,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 9
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1689,38 +1788,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 9
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 14
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 16
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1728,29 +1827,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 16
                               name: bin_temp
-                      line: 16
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 16
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 15
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 17
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1758,29 +1857,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 17
                               name: gray_temp
-                      line: 17
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 17
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 8
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 18
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1791,38 +1890,38 @@ Source:
                               line: 18
                               ptr:
                                 IntConstN:
-                                  base: 10
                                   filename: ''
                                   line: 0
-                                  sign: false
+                                  base: 10
                                   size: 4
+                                  sign: false
                                   value: 8
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 18
                                   name: lut_array
-                      line: 18
-                      rdelay:
-                        DelayStatement: null
+                                  hier:
+                                    HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 18
                           var:
                             IntConstN:
-                              base: 10
                               filename: ''
                               line: 0
-                              sign: false
+                              base: 10
                               size: 4
+                              sign: false
                               value: 15
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
           - Assign:
               filename: ../test/passes/transformations/testcases/gray2bin.v
-              ldelay:
-                DelayStatement: null
+              line: 22
               left:
                 Lvalue:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1830,13 +1929,10 @@ Source:
                   var:
                     Identifier:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
-                      hier:
-                        HierName: null
                       line: 22
                       name: bin
-              line: 22
-              rdelay:
-                DelayStatement: null
+                      hier:
+                        HierName: null
               right:
                 Rvalue:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -1848,199 +1944,110 @@ Source:
                       ptr:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
-                          hier:
-                            HierName: null
                           line: 22
                           name: gray
+                          hier:
+                            HierName: null
                       var:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
-                          hier:
-                            HierName: null
                           line: 22
                           name: lut_array
-          lifetime: NONE
-          line: 3
-          name: gray2bin
-          ports:
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/gray2bin.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 4
-                  name: gray
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
-                      line: 4
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/gray2bin.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/gray2bin.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 4
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/gray2bin.v
-                              line: 4
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: INPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/gray2bin.v
-              line: 4
-              name: gray
-          - Port:
-              decl:
-                WireNet:
-                  cont_assign:
-                    Rvalue: null
-                  filename: ../test/passes/transformations/testcases/gray2bin.v
-                  is_scalared: false
-                  is_vectored: false
-                  ldelay:
-                    DelayStatement: null
-                  line: 5
-                  name: bin
-                  rdelay:
-                    DelayStatement: null
-                  strength:
-                    Strength: null
-                  type:
-                    ImplicitType:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
-                      line: 5
-                      packed_dims:
-                      - RangeDim:
-                          filename: ../test/passes/transformations/testcases/gray2bin.v
-                          left:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/gray2bin.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 3
-                          line: 5
-                          right:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/gray2bin.v
-                              line: 5
-                              sign: false
-                              size: -1
-                              value: 0
-                      signing: NONE
-              direction: OUTPUT
-              expr: null
-              filename: ../test/passes/transformations/testcases/gray2bin.v
-              line: 5
-              name: bin
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
       - Module:
-          default_nettype: WIRE
           filename: ../test/passes/transformations/testcases/gray2bin.v
+          line: 27
+          name: testbench
+          lifetime: NONE
+          default_nettype: WIRE
           items:
           - Var:
               filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 29
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: gray
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 29
-              name: gray
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
                   line: 29
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 29
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 29
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 4
-                      line: 29
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 29
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - WireNet:
+              filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 30
+              is_vectored: false
+              is_scalared: false
+              name: bin
               cont_assign:
                 Rvalue: null
-              filename: ../test/passes/transformations/testcases/gray2bin.v
-              is_scalared: false
-              is_vectored: false
-              ldelay:
-                DelayStatement: null
-              line: 30
-              name: bin
-              rdelay:
-                DelayStatement: null
               strength:
                 Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
               type:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
                   line: 30
+                  signing: NONE
                   packed_dims:
                   - RangeDim:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 30
                       left:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 30
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 3
-                      line: 30
                       right:
                         IntConstN:
-                          base: 10
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 30
-                          sign: false
+                          base: 10
                           size: -1
+                          sign: false
                           value: 0
-                  signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 31
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: clk
               init:
                 Rvalue: null
-              is_const: false
-              is_var: false
-              lifetime: NONE
-              line: 31
-              name: clk
               type:
                 RegType:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2057,8 +2064,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 34
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2066,29 +2072,29 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 34
                               name: clk
-                      line: 34
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 34
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 34
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
-                  - BlockingSubstitution:
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
                       ldelay:
                         DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 35
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2096,25 +2102,26 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 35
                               name: gray
-                      line: 35
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 35
                           var:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 35
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/gray2bin.v
               line: 38
@@ -2128,18 +2135,7 @@ Source:
                   statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
-                      ldelay:
-                        DelayStatement:
-                          delay:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/gray2bin.v
-                              line: 39
-                              sign: false
-                              size: -1
-                              value: 4
-                          filename: ../test/passes/transformations/testcases/gray2bin.v
-                          line: 39
+                      line: 39
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2147,13 +2143,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 39
                               name: clk
-                      line: 39
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2165,20 +2158,36 @@ Source:
                               right:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 39
                                   name: clk
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement:
+                          filename: ../test/passes/transformations/testcases/gray2bin.v
+                          line: 39
+                          delay:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/gray2bin.v
+                              line: 39
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 4
+                      rdelay:
+                        DelayStatement: null
           - Instancelist:
               filename: ../test/passes/transformations/testcases/gray2bin.v
+              line: 42
+              module: gray2bin
               instances:
               - Instance:
-                  array:
-                    Dimension: null
                   filename: ../test/passes/transformations/testcases/gray2bin.v
                   line: 42
                   module: gray2bin
                   name: DUT
+                  array:
+                    Dimension: null
                   portlist:
                   - PortArg:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2188,29 +2197,29 @@ Source:
                         Partselect:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 42
-                          lsb:
-                            IntConstN:
-                              base: 10
-                              filename: ../test/passes/transformations/testcases/gray2bin.v
-                              line: 42
-                              sign: false
-                              size: -1
-                              value: 0
                           msb:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 42
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 3
+                          lsb:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/gray2bin.v
+                              line: 42
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 42
                               name: gray
+                              hier:
+                                HierName: null
                   - PortArg:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
                       line: 42
@@ -2218,12 +2227,10 @@ Source:
                       value:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
-                          hier:
-                            HierName: null
                           line: 42
                           name: bin
-              line: 42
-              module: gray2bin
+                          hier:
+                            HierName: null
           - Always:
               filename: ../test/passes/transformations/testcases/gray2bin.v
               line: 44
@@ -2235,14 +2242,14 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
                       line: 44
+                      type: POSEDGE
                       sig:
                         Identifier:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
-                          hier:
-                            HierName: null
                           line: 44
                           name: clk
-                      type: POSEDGE
+                          hier:
+                            HierName: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2251,8 +2258,7 @@ Source:
                   statements:
                   - NonblockingSubstitution:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
-                      ldelay:
-                        DelayStatement: null
+                      line: 45
                       left:
                         Lvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2260,13 +2266,10 @@ Source:
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 45
                               name: gray
-                      line: 45
-                      rdelay:
-                        DelayStatement: null
+                              hier:
+                                HierName: null
                       right:
                         Rvalue:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2274,22 +2277,26 @@ Source:
                           var:
                             Plus:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
+                              line: 45
                               left:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 45
                                   name: gray
-                              line: 45
+                                  hier:
+                                    HierName: null
                               right:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
                                   line: 45
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
           - Always:
               filename: ../test/passes/transformations/testcases/gray2bin.v
               line: 48
@@ -2301,8 +2308,8 @@ Source:
                   - Sens:
                       filename: ../test/passes/transformations/testcases/gray2bin.v
                       line: 48
-                      sig: null
                       type: ALL
+                      sig: null
               statement:
                 Block:
                   filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2310,28 +2317,27 @@ Source:
                   scope: ''
                   statements:
                   - IfStatement:
+                      filename: ../test/passes/transformations/testcases/gray2bin.v
+                      line: 49
                       cond:
                         Pointer:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
                           line: 49
                           ptr:
                             IntConstN:
-                              base: 10
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 49
-                              sign: false
+                              base: 10
                               size: -1
+                              sign: false
                               value: 4
                           var:
                             Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 49
                               name: gray
-                      false_statement: null
-                      filename: ../test/passes/transformations/testcases/gray2bin.v
-                      line: 49
+                              hier:
+                                HierName: null
                       true_statement:
                         Block:
                           filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2339,8 +2345,6 @@ Source:
                           scope: ''
                           statements:
                           - SingleStatement:
-                              delay:
-                                DelayStatement: null
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 50
                               scope: ''
@@ -2349,14 +2353,18 @@ Source:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
                                   line: 50
                                   syscall: finish
+                              delay:
+                                DelayStatement: null
+                      false_statement: null
                   - SingleStatement:
-                      delay:
-                        DelayStatement: null
                       filename: ../test/passes/transformations/testcases/gray2bin.v
                       line: 53
                       scope: ''
                       statement:
                         SystemCall:
+                          filename: ../test/passes/transformations/testcases/gray2bin.v
+                          line: 53
+                          syscall: display
                           args:
                           - StringConst:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
@@ -2365,42 +2373,34 @@ Source:
                           - Partselect:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
                               line: 53
-                              lsb:
-                                IntConstN:
-                                  base: 10
-                                  filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  line: 53
-                                  sign: false
-                                  size: -1
-                                  value: 0
                               msb:
                                 IntConstN:
-                                  base: 10
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
                                   line: 53
-                                  sign: false
+                                  base: 10
                                   size: -1
+                                  sign: false
                                   value: 3
+                              lsb:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/gray2bin.v
+                                  line: 53
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
                               var:
                                 Identifier:
                                   filename: ../test/passes/transformations/testcases/gray2bin.v
-                                  hier:
-                                    HierName: null
                                   line: 53
                                   name: gray
+                                  hier:
+                                    HierName: null
                           - Identifier:
                               filename: ../test/passes/transformations/testcases/gray2bin.v
-                              hier:
-                                HierName: null
                               line: 53
                               name: bin
-                          filename: ../test/passes/transformations/testcases/gray2bin.v
-                          line: 53
-                          syscall: display
-          lifetime: NONE
-          line: 27
-          name: testbench
-      filename: ../test/passes/transformations/testcases/gray2bin.v
-      line: 3
-  filename: ../test/passes/transformations/testcases/gray2bin.v
-  line: 3
+                              hier:
+                                HierName: null
+                      delay:
+                        DelayStatement: null
