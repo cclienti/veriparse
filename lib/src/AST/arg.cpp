@@ -245,6 +245,9 @@ std::ostream &operator<<(std::ostream &os, const Arg::Ptr p)
 std::ostream &operator<<(std::ostream &os, const Arg::DirectionEnum p)
 {
     switch(p) {
+    case Arg::DirectionEnum::NONE:
+        os << "NONE";
+        break;
     case Arg::DirectionEnum::INPUT:
         os << "INPUT";
         break;

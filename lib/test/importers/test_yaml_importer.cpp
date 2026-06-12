@@ -1907,7 +1907,7 @@ TEST(YAMLImporter, Arg)
                     "  default_value:\n"
                     "  type:\n"
                     "  is_var: false\n"
-                    "  direction: REF\n"
+                    "  direction: INOUT\n"
                     "  name: biqpmzjpls\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -1921,7 +1921,7 @@ TEST(YAMLImporter, Arg)
     ASSERT_TRUE(yaml["Arg"]["type"]);
     ASSERT_TRUE(yaml["Arg"]["is_var"].as<bool>() == false);
     ASSERT_TRUE(yaml["Arg"]["direction"].as<AST::Arg::DirectionEnum>() ==
-                AST::Arg::DirectionEnum::REF);
+                AST::Arg::DirectionEnum::INOUT);
     ASSERT_TRUE(yaml["Arg"]["name"].as<std::string>() == "biqpmzjpls");
 }
 

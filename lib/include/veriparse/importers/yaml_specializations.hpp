@@ -534,6 +534,8 @@ template <> struct convert<Veriparse::AST::Arg::DirectionEnum>
     static Node encode(const Veriparse::AST::Arg::DirectionEnum &rhs)
     {
         switch(rhs) {
+        case Veriparse::AST::Arg::DirectionEnum::NONE:
+            return Node("NONE");
         case Veriparse::AST::Arg::DirectionEnum::INPUT:
             return Node("INPUT");
         case Veriparse::AST::Arg::DirectionEnum::OUTPUT:
@@ -551,6 +553,11 @@ template <> struct convert<Veriparse::AST::Arg::DirectionEnum>
     {
         if(!node.IsScalar()) {
             return false;
+        }
+
+        if(node.as<std::string>() == "NONE") {
+            rhs = Veriparse::AST::Arg::DirectionEnum::NONE;
+            return true;
         }
 
         if(node.as<std::string>() == "INPUT") {
