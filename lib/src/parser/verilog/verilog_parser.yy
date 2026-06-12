@@ -239,8 +239,7 @@ AST::Var::Ptr build_implicit_type(signing_t signing, AST::Dimension::ListPtr wid
                                   const std::string &filename="", uint32_t line=0);
 
 // Set the [const][var][lifetime] qualifiers on a Var and return it.
-AST::Node::Ptr wrap_data_modifier(AST::Var::Ptr inner, const data_qualifiers_t &q,
-                                  const std::string &filename="", uint32_t line=0);
+AST::Node::Ptr wrap_data_modifier(AST::Var::Ptr inner, const data_qualifiers_t &q);
 
 // Build a named-type declaration (`var my_t x`): one Var per name carrying the
 // NamedType (cloned) + packed dims and the qualifiers.
@@ -1960,7 +1959,7 @@ data_declaration:
                         AST::Var::Ptr var = ParserHelpers::build_variable(
                             $2, decl_name, scanner.get_filename(), @1.begin.line);
                         $$->push_back(ParserHelpers::wrap_data_modifier(
-                            var, $1, scanner.get_filename(), @1.begin.line));
+                            var, $1));
                     }
                 }
 
@@ -1985,7 +1984,7 @@ data_declaration:
                             $2.signing, widths, decl_name, scanner.get_filename(),
                             @1.begin.line);
                         $$->push_back(ParserHelpers::wrap_data_modifier(
-                            var, $1, scanner.get_filename(), @1.begin.line));
+                            var, $1));
                     }
                 }
 
@@ -2042,7 +2041,7 @@ data_declaration:
                             AST::Var::Ptr var = ParserHelpers::build_implicit_type(
                                 signing_t::NONE, nullptr, decl_name, scanner.get_filename(), @1.begin.line);
                             $$->push_back(ParserHelpers::wrap_data_modifier(
-                                var, $1, scanner.get_filename(), @1.begin.line));
+                                var, $1));
                         }
                     }
                 }
@@ -5612,8 +5611,7 @@ namespace Veriparse {
                 return var;
             }
 
-            AST::Node::Ptr wrap_data_modifier(AST::Var::Ptr inner, const data_qualifiers_t &q,
-                                              const std::string &, uint32_t) {
+            AST::Node::Ptr wrap_data_modifier(AST::Var::Ptr inner, const data_qualifiers_t &q) {
                 if(inner) {
                     inner->set_is_var(q.is_var);
                     inner->set_is_const(q.is_const);
@@ -5632,7 +5630,7 @@ namespace Veriparse {
                 auto list = std::make_shared<AST::Node::List>();
                 for(const decl_name_t &d : names) {
                     AST::Var::Ptr var = build_variable(dt, d, filename, line);
-                    list->push_back(wrap_data_modifier(var, q, filename, line));
+                    list->push_back(wrap_data_modifier(var, q));
                 }
                 return list;
             }
