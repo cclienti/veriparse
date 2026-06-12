@@ -231,9 +231,31 @@ TEST(VerilogParserTest, vpp_default_nettype1) { TEST_CORE; }
 TEST(VerilogParserTest, vpp_default_nettype2) { TEST_CORE; }
 TEST(VerilogParserTest, vpp_default_nettype3) { TEST_CORE; }
 TEST(VerilogParserTest, vpp_default_nettype4) { TEST_CORE; }
-TEST(VerilogParserTest, vpp_default_nettype5) { TEST_CORE; }
-TEST(VerilogParserTest, vpp_default_nettype6) { TEST_CORE; }
-TEST(VerilogParserTest, vpp_default_nettype7) { TEST_CORE; }
+TEST(VerilogParserTest, vpp_default_nettype8) { TEST_CORE; } // trireg
+TEST(VerilogParserTest, vpp_default_nettype9) { TEST_CORE; } // wand
+
+// reg/integer/real are NOT valid `default_nettype` values (IEEE 1364-2005 §19.2;
+// the old INTEGER/REAL/REG enum was dropped, ADR-0001 §9.6). The scanner rejects
+// them — the parse fails rather than silently treating them as `none`.
+// (testcases 5/6/7 are `default_nettype reg|real|integer`.)
+TEST(VerilogParserErrorTest, vpp_default_nettype_reg)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    ASSERT_NE(verilog.parse(test_helpers.get_verilog_filename("vpp_default_nettype5")), 0);
+}
+TEST(VerilogParserErrorTest, vpp_default_nettype_real)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    ASSERT_NE(verilog.parse(test_helpers.get_verilog_filename("vpp_default_nettype6")), 0);
+}
+TEST(VerilogParserErrorTest, vpp_default_nettype_integer)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    ASSERT_NE(verilog.parse(test_helpers.get_verilog_filename("vpp_default_nettype7")), 0);
+}
 
 // SystemVerilog tests
 TEST(VerilogParserTest, sv_logic0) { TEST_CORE_SV; }

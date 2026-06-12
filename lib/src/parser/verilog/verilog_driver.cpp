@@ -63,6 +63,11 @@ int VerilogDriver::parse_helper(std::istream &stream, const std::string &filenam
         return 1;
     }
 
+    if(scanner->get_lexer_error()) {
+        LOG_ERROR << "Parse failed (lexer error)!\n";
+        return 1;
+    }
+
     return 0;
 }
 
