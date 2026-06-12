@@ -33,6 +33,7 @@ public:
 
     enum class DirectionEnum
     {
+        NONE,
         INPUT,
         OUTPUT,
         INOUT,

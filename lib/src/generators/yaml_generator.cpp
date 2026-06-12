@@ -2439,6 +2439,9 @@ YAML::Node YAMLGenerator::render_arg(const AST::Arg::Ptr node) const
         content["line"] = node->get_line();
         content["is_var"] = node->get_is_var();
         switch(node->get_direction()) {
+        case Veriparse::AST::Arg::DirectionEnum::NONE:
+            content["direction"] = "NONE";
+            break;
         case Veriparse::AST::Arg::DirectionEnum::INPUT:
             content["direction"] = "INPUT";
             break;

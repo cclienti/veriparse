@@ -1690,7 +1690,7 @@ TEST(YAMLGenerator, Arg)
     AST::Node::Ptr c_default_value(new AST::Node);
     AST::DataType::Ptr c_type(new AST::DataType);
     bool p_is_var = false;
-    AST::Arg::DirectionEnum p_direction = AST::Arg::DirectionEnum::REF;
+    AST::Arg::DirectionEnum p_direction = AST::Arg::DirectionEnum::INOUT;
     std::string p_name = "biqpmzjpls";
 
     AST::Arg::Ptr m_arg(new AST::Arg(c_unpacked_dims, c_default_value, c_type, p_is_var,
@@ -1704,7 +1704,7 @@ TEST(YAMLGenerator, Arg)
     ASSERT_TRUE(yaml["Arg"]["type"]);
     ASSERT_TRUE(yaml["Arg"]["is_var"].as<bool>() == false);
     ASSERT_TRUE(yaml["Arg"]["direction"].as<AST::Arg::DirectionEnum>() ==
-                AST::Arg::DirectionEnum::REF);
+                AST::Arg::DirectionEnum::INOUT);
     ASSERT_TRUE(yaml["Arg"]["name"].as<std::string>() == "biqpmzjpls");
 }
 

@@ -450,7 +450,10 @@ Arg:
   inherit: Declaration
   properties:
     is_var: bool
-    direction: enum(INPUT, OUTPUT, INOUT, REF, CONST_REF)
+    # NONE leads so a default-constructed Arg is an honest "unset" (like Port),
+    # not a silent INPUT. The parser still resolves a bare arg to INPUT
+    # (Verilog tf_port default); NONE is only the neutral programmatic default.
+    direction: enum(NONE, INPUT, OUTPUT, INOUT, REF, CONST_REF)
   children:
     unpacked_dims: list(Dimension)
     default_value: Node

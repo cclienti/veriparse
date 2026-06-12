@@ -4385,6 +4385,9 @@ std::string DotGenerator::render_arg(const AST::Arg::Ptr node) const
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">is_var: " << node->get_is_var() << "</TD></TR>\n";
         switch(node->get_direction()) {
+        case Veriparse::AST::Arg::DirectionEnum::NONE:
+            ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">direction: NONE</TD></TR>\n";
+            break;
         case Veriparse::AST::Arg::DirectionEnum::INPUT:
             ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">direction: INPUT</TD></TR>\n";
             break;

@@ -990,6 +990,8 @@ std::string VerilogGenerator::render_arg(const AST::Arg::Ptr node) const
     case AST::Arg::DirectionEnum::CONST_REF:
         result = "const ref ";
         break;
+    case AST::Arg::DirectionEnum::NONE:
+        break;
     }
     if(node->get_is_var()) {
         result += "var ";
