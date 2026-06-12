@@ -44,6 +44,11 @@ public:
     virtual AST::Module::Default_nettypeEnum get_default_nettype() { return m_default_nettype; }
     virtual bool get_sv_mode() { return m_sv_mode; }
 
+    // Set when the lexer reports a hard error (e.g. an illegal `default_nettype`
+    // value). The bison `return -1` path does not reliably fail the parse, so the
+    // driver checks this flag after parsing.
+    virtual bool get_lexer_error() { return m_lexer_error; }
+
     using yyFlexLexer::yylex;
     virtual int yylex(Veriparse::Parser::VerilogParser::semantic_type *const lval,
                       Veriparse::Parser::VerilogParser::location_type *location);
@@ -68,6 +73,9 @@ private:
     /* SystemVerilog mode */
     bool m_sv_mode{false};
     std::string m_filename;
+
+    /* Set on a hard lexer error (checked by the driver after parsing) */
+    bool m_lexer_error{false};
 };
 
 } // namespace Parser

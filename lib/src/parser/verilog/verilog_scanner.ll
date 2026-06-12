@@ -409,20 +409,28 @@ using token = Veriparse::Parser::VerilogParser::token;
                                      if (m_vpp_queue.size() > 1) {
                                          LOG_ERROR << "file \"" << m_filename << "\", line " << loc->begin.line
                                                    << ", cannot define multiple default_nettype in the same directive";
-                                         return -1;
+                                         m_lexer_error = true;
                                      }
-                                     if (nt == "integer")      m_default_nettype = AST::Module::Default_nettypeEnum::NONE;
-                                     else if (nt == "real")    m_default_nettype = AST::Module::Default_nettypeEnum::NONE;
-                                     else if (nt == "reg")     m_default_nettype = AST::Module::Default_nettypeEnum::NONE;
+                                     // IEEE 1364-2005 §19.2 default_nettype values (the net types) + none.
+                                     // reg/integer/real are NOT net types: they fall through to the error
+                                     // below (the old INTEGER/REAL/REG enum was dropped, ADR-0001 §9.6).
+                                     if (nt == "wire")         m_default_nettype = AST::Module::Default_nettypeEnum::WIRE;
                                      else if (nt == "tri")     m_default_nettype = AST::Module::Default_nettypeEnum::TRI;
-                                     else if (nt == "wire")    m_default_nettype = AST::Module::Default_nettypeEnum::WIRE;
+                                     else if (nt == "tri0")    m_default_nettype = AST::Module::Default_nettypeEnum::TRI0;
+                                     else if (nt == "tri1")    m_default_nettype = AST::Module::Default_nettypeEnum::TRI1;
+                                     else if (nt == "triand")  m_default_nettype = AST::Module::Default_nettypeEnum::TRIAND;
+                                     else if (nt == "trior")   m_default_nettype = AST::Module::Default_nettypeEnum::TRIOR;
+                                     else if (nt == "trireg")  m_default_nettype = AST::Module::Default_nettypeEnum::TRIREG;
+                                     else if (nt == "wand")    m_default_nettype = AST::Module::Default_nettypeEnum::WAND;
+                                     else if (nt == "wor")     m_default_nettype = AST::Module::Default_nettypeEnum::WOR;
+                                     else if (nt == "uwire")   m_default_nettype = AST::Module::Default_nettypeEnum::UWIRE;
                                      else if (nt == "supply0") m_default_nettype = AST::Module::Default_nettypeEnum::SUPPLY0;
                                      else if (nt == "supply1") m_default_nettype = AST::Module::Default_nettypeEnum::SUPPLY1;
                                      else if (nt == "none")    m_default_nettype = AST::Module::Default_nettypeEnum::NONE;
                                      else {
                                          LOG_ERROR << "file \"" << m_filename << "\", line " << loc->begin.line
-                                                   << ", unknown default_nettype value: " << nt;
-                                         return -1;
+                                                   << ", invalid default_nettype value: " << nt;
+                                         m_lexer_error = true;
                                      }}
 
 <VPP_DEFAULT_NETTYPE>\n             {BEGIN(INITIAL);

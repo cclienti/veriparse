@@ -3,49 +3,49 @@ Source:
     Description:
       definitions:
       - Module:
-          default_nettype: NONE
-          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+          default_nettype: TRIREG
+          filename: ../../test/parser/testcases/vpp_default_nettype8.v
           items:
           - Param:
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               is_local: false
               line: 4
               name: M
               type:
                 ImplicitType:
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 4
                   signing: NONE
               value:
                 Rvalue:
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 4
                   var:
                     IntConstN:
                       base: 10
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 4
                       sign: false
                       size: -1
                       value: 3
           - Param:
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               is_local: false
               line: 4
               name: N
               type:
                 ImplicitType:
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 4
                   signing: NONE
               value:
                 Rvalue:
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 4
                   var:
                     IntConstN:
                       base: 10
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 4
                       sign: false
                       size: -1
@@ -55,7 +55,7 @@ Source:
                 ImplicitNet:
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   is_scalared: false
                   is_vectored: false
                   ldelay:
@@ -68,17 +68,17 @@ Source:
                     Strength: null
                   type:
                     ImplicitType:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 6
                       packed_dims:
                       - RangeDim:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           left:
                             Minus:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               left:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   hier:
                                     HierName: null
                                   line: 6
@@ -87,7 +87,7 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   line: 6
                                   sign: false
                                   size: -1
@@ -96,7 +96,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               line: 6
                               sign: false
                               size: -1
@@ -104,7 +104,7 @@ Source:
                       signing: NONE
               direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 6
               name: in0
           - Port:
@@ -112,7 +112,7 @@ Source:
                 ImplicitNet:
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   is_scalared: false
                   is_vectored: false
                   ldelay:
@@ -125,17 +125,17 @@ Source:
                     Strength: null
                   type:
                     ImplicitType:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 6
                       packed_dims:
                       - RangeDim:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           left:
                             Minus:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               left:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   hier:
                                     HierName: null
                                   line: 6
@@ -144,7 +144,7 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   line: 6
                                   sign: false
                                   size: -1
@@ -153,7 +153,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               line: 6
                               sign: false
                               size: -1
@@ -161,7 +161,7 @@ Source:
                       signing: NONE
               direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 6
               name: in1
           - Port:
@@ -169,7 +169,7 @@ Source:
                 ImplicitNet:
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   is_scalared: false
                   is_vectored: false
                   ldelay:
@@ -182,17 +182,17 @@ Source:
                     Strength: null
                   type:
                     ImplicitType:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 7
                       packed_dims:
                       - RangeDim:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           left:
                             Minus:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               left:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   hier:
                                     HierName: null
                                   line: 7
@@ -201,7 +201,7 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   line: 7
                                   sign: false
                                   size: -1
@@ -210,7 +210,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               line: 7
                               sign: false
                               size: -1
@@ -218,7 +218,7 @@ Source:
                       signing: NONE
               direction: OUTPUT
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 7
               name: out0
           - Port:
@@ -226,7 +226,7 @@ Source:
                 ImplicitNet:
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   is_scalared: false
                   is_vectored: false
                   ldelay:
@@ -239,17 +239,17 @@ Source:
                     Strength: null
                   type:
                     ImplicitType:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 7
                       packed_dims:
                       - RangeDim:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           left:
                             Minus:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               left:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   hier:
                                     HierName: null
                                   line: 7
@@ -258,7 +258,7 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   line: 7
                                   sign: false
                                   size: -1
@@ -267,7 +267,7 @@ Source:
                           right:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               line: 7
                               sign: false
                               size: -1
@@ -275,7 +275,7 @@ Source:
                       signing: NONE
               direction: OUTPUT
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 7
               name: out1
           - Port:
@@ -283,7 +283,7 @@ Source:
                 ImplicitNet:
                   cont_assign:
                     Rvalue: null
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   is_scalared: false
                   is_vectored: false
                   ldelay:
@@ -296,18 +296,18 @@ Source:
                     Strength: null
                   type:
                     ImplicitType:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 8
                       signing: NONE
               direction: INPUT
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 8
               name: clk
           - WireNet:
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               is_scalared: false
               is_vectored: false
               ldelay:
@@ -320,17 +320,17 @@ Source:
                 Strength: null
               type:
                 ImplicitType:
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 10
                   packed_dims:
                   - RangeDim:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       left:
                         Times:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           left:
                             Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 10
@@ -338,10 +338,10 @@ Source:
                           line: 10
                           right:
                             Minus:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               left:
                                 Identifier:
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   hier:
                                     HierName: null
                                   line: 10
@@ -350,7 +350,7 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   line: 10
                                   sign: false
                                   size: -1
@@ -359,7 +359,7 @@ Source:
                       right:
                         IntConstN:
                           base: 10
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 10
                           sign: false
                           size: -1
@@ -368,7 +368,7 @@ Source:
           - WireNet:
               cont_assign:
                 Rvalue: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               is_scalared: false
               is_vectored: false
               ldelay:
@@ -381,17 +381,17 @@ Source:
                 Strength: null
               type:
                 ImplicitType:
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 11
                   packed_dims:
                   - RangeDim:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       left:
                         Times:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           left:
                             Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 11
@@ -399,14 +399,14 @@ Source:
                           line: 11
                           right:
                             Minus:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               left:
                                 Times:
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   left:
                                     IntConstN:
                                       base: 10
-                                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                       line: 11
                                       sign: false
                                       size: -1
@@ -414,7 +414,7 @@ Source:
                                   line: 11
                                   right:
                                     Identifier:
-                                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                       hier:
                                         HierName: null
                                       line: 11
@@ -423,7 +423,7 @@ Source:
                               right:
                                 IntConstN:
                                   base: 10
-                                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                                   line: 11
                                   sign: false
                                   size: -1
@@ -432,23 +432,23 @@ Source:
                       right:
                         IntConstN:
                           base: 10
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 11
                           sign: false
                           size: -1
                           value: 1
                   signing: NONE
           - Instancelist:
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               instances:
               - Instance:
                   array:
                     RangeDim:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       left:
                         IntConstN:
                           base: 10
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 18
                           sign: false
                           size: -1
@@ -456,23 +456,23 @@ Source:
                       line: 18
                       right:
                         Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           hier:
                             HierName: null
                           line: 18
                           name: N
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 18
                   module: dffn
                   name: p0
                   parameterlist:
                   - ParamArg:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 18
                       name: ''
                       value:
                         Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           hier:
                             HierName: null
                           line: 18
@@ -484,17 +484,17 @@ Source:
                       name: ''
                       value:
                         Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 18
                           list:
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 18
                               name: out0
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 18
@@ -505,17 +505,17 @@ Source:
                       name: ''
                       value:
                         Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 18
                           list:
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 18
                               name: t0
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 18
@@ -526,7 +526,7 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           hier:
                             HierName: null
                           line: 18
@@ -534,11 +534,11 @@ Source:
               - Instance:
                   array:
                     RangeDim:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       left:
                         IntConstN:
                           base: 10
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 19
                           sign: false
                           size: -1
@@ -546,11 +546,11 @@ Source:
                       line: 19
                       right:
                         Times:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           left:
                             IntConstN:
                               base: 10
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               line: 19
                               sign: false
                               size: -1
@@ -558,23 +558,23 @@ Source:
                           line: 19
                           right:
                             Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 19
                               name: N
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 19
                   module: dffn
                   name: p1
                   parameterlist:
                   - ParamArg:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       line: 18
                       name: ''
                       value:
                         Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           hier:
                             HierName: null
                           line: 18
@@ -586,17 +586,17 @@ Source:
                       name: ''
                       value:
                         Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 19
                           list:
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 19
                               name: out1
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 19
@@ -607,17 +607,17 @@ Source:
                       name: ''
                       value:
                         Concat:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           line: 19
                           list:
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 19
                               name: t1
                           - Identifier:
-                              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                              filename: ../../test/parser/testcases/vpp_default_nettype8.v
                               hier:
                                 HierName: null
                               line: 19
@@ -628,7 +628,7 @@ Source:
                       name: ''
                       value:
                         Identifier:
-                          filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                          filename: ../../test/parser/testcases/vpp_default_nettype8.v
                           hier:
                             HierName: null
                           line: 19
@@ -637,12 +637,12 @@ Source:
               module: dffn
               parameterlist:
               - ParamArg:
-                  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                  filename: ../../test/parser/testcases/vpp_default_nettype8.v
                   line: 18
                   name: ''
                   value:
                     Identifier:
-                      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+                      filename: ../../test/parser/testcases/vpp_default_nettype8.v
                       hier:
                         HierName: null
                       line: 18
@@ -656,7 +656,7 @@ Source:
                 Declaration: null
               direction: NONE
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 3
               name: in0
           - Port:
@@ -664,7 +664,7 @@ Source:
                 Declaration: null
               direction: NONE
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 3
               name: in1
           - Port:
@@ -672,7 +672,7 @@ Source:
                 Declaration: null
               direction: NONE
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 3
               name: out0
           - Port:
@@ -680,7 +680,7 @@ Source:
                 Declaration: null
               direction: NONE
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 3
               name: out1
           - Port:
@@ -688,10 +688,10 @@ Source:
                 Declaration: null
               direction: NONE
               expr: null
-              filename: ../../test/parser/testcases/vpp_default_nettype5.v
+              filename: ../../test/parser/testcases/vpp_default_nettype8.v
               line: 3
               name: clk
-      filename: ../../test/parser/testcases/vpp_default_nettype5.v
+      filename: ../../test/parser/testcases/vpp_default_nettype8.v
       line: 3
-  filename: ../../test/parser/testcases/vpp_default_nettype5.v
+  filename: ../../test/parser/testcases/vpp_default_nettype8.v
   line: 3
