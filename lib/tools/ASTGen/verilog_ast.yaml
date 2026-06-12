@@ -264,13 +264,8 @@ EnumItem:
 
 # SV type() operator, node per form (consistent with the Cast split):
 #   type(expr)      -> TypeOpExpr{ expr }
-#   type(data_type) -> TypeOpType{ arg_type }
+#   type(data_type) -> TypeOpType{ type }
 # Distinct from NamedType. Not parsed yet; the model provides for it.
-# NOTE: the ADR-0001 §3.6 spelling is `type`, but `type` is reserved by the
-# ASTGen templates (the per-field C++-type loop variable, `{% for name, type in
-# properties_dict_full.items() %}` in node_header.hpp.j2 / node_impl.cpp.j2), so
-# the child is named `arg_type` here. (Same class as `Arg.default_value`, which
-# avoids the C++ keyword `default`.)
 TypeOpExpr:
   inherit: DataType
   children:
@@ -279,7 +274,7 @@ TypeOpExpr:
 TypeOpType:
   inherit: DataType
   children:
-    arg_type: DataType
+    type: DataType
 
 #####################################################################
 # Dimensions (node per form) — ADR-0001 §3.8. Replaces Width / Length.

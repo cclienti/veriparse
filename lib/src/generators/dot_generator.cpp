@@ -2160,13 +2160,13 @@ std::string DotGenerator::render_typeoptype(const AST::TypeOpType::Ptr node) con
             ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">signing: UNSIGNED</TD></TR>\n";
         }
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">arg_type</FONT></TD></TR>\n";
+           << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">packed_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_arg_type().get()) {
-            ss << render(node->get_arg_type());
+        if(node->get_type().get()) {
+            ss << render(node->get_type());
         }
         if(node->get_packed_dims()) {
             for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
@@ -2176,7 +2176,7 @@ std::string DotGenerator::render_typeoptype(const AST::TypeOpType::Ptr node) con
             }
         }
         uint64_t childID;
-        childID = reinterpret_cast<uint64_t>(node->get_arg_type().get());
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
         if(childID) {
             ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
         }

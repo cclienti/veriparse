@@ -38,7 +38,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::TypeOpType.
      */
-    TypeOpType(const DataType::Ptr arg_type, const Dimension::ListPtr packed_dims,
+    TypeOpType(const DataType::Ptr type, const Dimension::ListPtr packed_dims,
                const DataType::SigningEnum &signing, const std::string &filename = "",
                uint32_t line = 0);
 
@@ -88,14 +88,14 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child arg_type.
+     * Return the child type.
      */
-    virtual DataType::Ptr get_arg_type(void) const { return m_arg_type; }
+    virtual DataType::Ptr get_type(void) const { return m_type; }
 
     /**
-     * Change the child arg_type.
+     * Change the child type.
      */
-    virtual void set_arg_type(DataType::Ptr arg_type) { m_arg_type = arg_type; }
+    virtual void set_type(DataType::Ptr type) { m_type = type; }
 
     /**
      * Return the children list using the private children member
@@ -121,7 +121,7 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    DataType::Ptr m_arg_type{};
+    DataType::Ptr m_type{};
 };
 
 std::ostream &operator<<(std::ostream &os, const TypeOpType &p);

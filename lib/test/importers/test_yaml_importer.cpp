@@ -970,7 +970,7 @@ TEST(YAMLImporter, TypeOpType)
     std::string str("TypeOpType:\n"
                     "  filename: typeoptype.v\n"
                     "  line: 10\n"
-                    "  arg_type:\n"
+                    "  type:\n"
                     "  packed_dims:\n"
                     "  signing: SIGNED\n");
 
@@ -980,7 +980,7 @@ TEST(YAMLImporter, TypeOpType)
     ASSERT_TRUE(yaml["TypeOpType"]);
     ASSERT_TRUE(yaml["TypeOpType"]["filename"].as<std::string>() == "typeoptype.v");
     ASSERT_TRUE(yaml["TypeOpType"]["line"].as<int>() == 10);
-    ASSERT_TRUE(yaml["TypeOpType"]["arg_type"]);
+    ASSERT_TRUE(yaml["TypeOpType"]["type"]);
     ASSERT_TRUE(yaml["TypeOpType"]["packed_dims"]);
     ASSERT_TRUE(yaml["TypeOpType"]["signing"].as<AST::DataType::SigningEnum>() ==
                 AST::DataType::SigningEnum::SIGNED);
