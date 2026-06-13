@@ -231,6 +231,7 @@ TEST(VerilogParserTest, vpp_default_nettype1) { TEST_CORE; }
 TEST(VerilogParserTest, vpp_default_nettype2) { TEST_CORE; }
 TEST(VerilogParserTest, vpp_default_nettype3) { TEST_CORE; }
 TEST(VerilogParserTest, vpp_default_nettype4) { TEST_CORE; }
+TEST(VerilogParserTest, vpp_default_nettype10) { TEST_CORE; }
 TEST(VerilogParserTest, vpp_default_nettype8) { TEST_CORE; } // trireg
 TEST(VerilogParserTest, vpp_default_nettype9) { TEST_CORE; } // wand
 
