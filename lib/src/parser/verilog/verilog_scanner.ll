@@ -174,6 +174,11 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"void"        {
+                  if(m_sv_mode) return token::TK_VOID;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 "typedef"     {
                   if(m_sv_mode) return token::TK_TYPEDEF;
                   yylval->build<std::string>(yytext);

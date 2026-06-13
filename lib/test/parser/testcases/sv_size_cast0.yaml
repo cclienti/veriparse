@@ -1,0 +1,124 @@
+Source:
+  filename: ../../test/parser/testcases/sv_size_cast0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_size_cast0.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_size_cast0.sv
+          line: 1
+          name: sv_size_cast0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_size_cast0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: a
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_size_cast0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_size_cast0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_size_cast0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_size_cast0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../../test/parser/testcases/sv_size_cast0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: b
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_size_cast0.sv
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_size_cast0.sv
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_size_cast0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 15
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_size_cast0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ../../test/parser/testcases/sv_size_cast0.sv
+              line: 5
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_size_cast0.sv
+                  line: 5
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_size_cast0.sv
+                      line: 5
+                      name: b
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_size_cast0.sv
+                  line: 5
+                  var:
+                    SizeCast:
+                      filename: ../../test/parser/testcases/sv_size_cast0.sv
+                      line: 5
+                      size:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_size_cast0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 16
+                      expr:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_size_cast0.sv
+                          line: 5
+                          name: a
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

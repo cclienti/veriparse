@@ -1,0 +1,114 @@
+Source:
+  filename: ../../test/parser/testcases/sv_enum_range0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_enum_range0.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_enum_range0.sv
+          line: 1
+          name: sv_enum_range0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_enum_range0.sv
+              line: 4
+              fwd_kind: NONE
+              name: e_t
+              type:
+                EnumType:
+                  filename: ../../test/parser/testcases/sv_enum_range0.sv
+                  line: 4
+                  signing: NONE
+                  base:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_enum_range0.sv
+                      line: 4
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_enum_range0.sv
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_enum_range0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_enum_range0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                  items:
+                  - EnumItem:
+                      filename: ../../test/parser/testcases/sv_enum_range0.sv
+                      line: 4
+                      name: A
+                      value: null
+                      range:
+                        Dimension: null
+                  - EnumItem:
+                      filename: ../../test/parser/testcases/sv_enum_range0.sv
+                      line: 4
+                      name: B
+                      value:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_enum_range0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 5
+                      range:
+                        Dimension: null
+                  - EnumItem:
+                      filename: ../../test/parser/testcases/sv_enum_range0.sv
+                      line: 4
+                      name: C
+                      value: null
+                      range:
+                        SizeDim:
+                          filename: ../../test/parser/testcases/sv_enum_range0.sv
+                          line: 4
+                          size:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_enum_range0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 4
+                  - EnumItem:
+                      filename: ../../test/parser/testcases/sv_enum_range0.sv
+                      line: 4
+                      name: D
+                      value: null
+                      range:
+                        RangeDim:
+                          filename: ../../test/parser/testcases/sv_enum_range0.sv
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_enum_range0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_enum_range0.sv
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
