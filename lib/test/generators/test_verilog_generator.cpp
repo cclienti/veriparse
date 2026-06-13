@@ -270,3 +270,7 @@ TEST(VerilogGeneratorTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_typed_port0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_user_types0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_func_void0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_enum_range0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_size_cast0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_type_op0) { TEST_CORE_SV; }
