@@ -414,6 +414,8 @@ using token = Veriparse::Parser::VerilogParser::token;
 
 `default_nettype                    {BEGIN(VPP_DEFAULT_NETTYPE); m_vpp_queue.clear();}
 
+<VPP_DEFAULT_NETTYPE>"//"[^\r\n]*    /* trailing line comment: ignore, not a value */
+
 <VPP_DEFAULT_NETTYPE>[^ \t\r\n]+    {std::string nt(yytext);
                                      m_vpp_queue.push_back(nt);
                                      if (m_vpp_queue.size() > 1) {
@@ -444,11 +446,6 @@ using token = Veriparse::Parser::VerilogParser::token;
                                      }}
 
 <VPP_DEFAULT_NETTYPE>\n             {BEGIN(INITIAL);
-                                     if (m_vpp_queue.size() >= 2) {
-                                         int line = atoi(m_vpp_queue[0].c_str());
-                                         loc->initialize(nullptr, line, 0);
-                                         m_filename = m_vpp_queue[1];
-                                     }
                                      loc->lines();}
 
 <VPP_DEFAULT_NETTYPE>.

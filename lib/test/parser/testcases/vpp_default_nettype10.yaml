@@ -1,0 +1,97 @@
+Source:
+  filename: ../../test/parser/testcases/vpp_default_nettype10.v
+  line: 3
+  description:
+    Description:
+      filename: ../../test/parser/testcases/vpp_default_nettype10.v
+      line: 3
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/vpp_default_nettype10.v
+          line: 3
+          name: vpp_default_nettype10
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype10.v
+              line: 3
+              name: a
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                      line: 3
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/vpp_default_nettype10.v
+              line: 3
+              name: b
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                      line: 3
+                      signing: NONE
+              expr: null
+          items:
+          - Assign:
+              filename: ../../test/parser/testcases/vpp_default_nettype10.v
+              line: 4
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                  line: 4
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                      line: 4
+                      name: b
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                  line: 4
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/vpp_default_nettype10.v
+                      line: 4
+                      name: a
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
