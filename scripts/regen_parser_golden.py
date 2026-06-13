@@ -25,19 +25,16 @@ import yaml
 
 PARSED_GLOB = "VerilogParserTest.{name}_parsed.yaml"
 GOLDEN_DIR = "lib/test/parser/testcases"
-# Match the `lib/test/` marker so both a relative path (test run from the repo
-# root) and an absolute one (`make dev-test` sets VERIPARSE_SOURCE_ROOT to the
-# absolute repo root) normalize to the committed-golden form `../../test/...`.
-PATH_MARKER = "lib/test/"
-PATH_REPLACEMENT = "../../test/"
+SRC_PREFIX = "lib/test/parser/testcases/"
+GOLDEN_PREFIX = "../../test/parser/testcases/"
 
 
 def normalize_paths(obj):
     """Rewrite testcase filenames to the committed-golden form, in place."""
     if isinstance(obj, dict):
         for k, v in obj.items():
-            if k == "filename" and isinstance(v, str) and PATH_MARKER in v:
-                obj[k] = PATH_REPLACEMENT + v.split(PATH_MARKER, 1)[1]
+            if k == "filename" and isinstance(v, str) and v.startswith(SRC_PREFIX):
+                obj[k] = GOLDEN_PREFIX + v[len(SRC_PREFIX):]
             else:
                 normalize_paths(v)
     elif isinstance(obj, list):
