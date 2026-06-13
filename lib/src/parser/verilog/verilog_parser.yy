@@ -52,7 +52,8 @@ enum class net_type_t {
 // types are folded into the same `data_type` rule in later steps.
 enum class data_type_kind_t {
 	 BIT, LOGIC, REG, BYTE, SHORTINT, INT, LONGINT, INTEGER,
-	 REAL, SHORTREAL, REALTIME, STRUCT, UNION, ENUM, NAMED
+	 REAL, SHORTREAL, REALTIME, STRUCT, UNION, ENUM, NAMED,
+	 TYPEOP  // type(expr) / type(data_type): the prebuilt node lives in inline_def
 };
 
 // Explicit signing of a data_type (`signed`/`unsigned`/absent). Kept tri-state
@@ -372,6 +373,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_UNIQUE       "'unique'"
 %token                  TK_PRIORITY     "'priority'"
 %token                  TK_TYPEDEF      "'typedef'"
+%token                  TK_TYPE         "'type'"
 %token                  TK_VOID         "'void'"
 %token                  TK_ENUM         "'enum'"
 %token                  TK_STRUCT       "'struct'"
@@ -1904,6 +1906,24 @@ data_type:      integer_vector_type signing packed_dimensions
         |       enum_def packed_dimensions
                 {
                     $$ = data_type_t{data_type_kind_t::ENUM, signing_t::NONE, $2, nullptr, $1};
+                }
+
+        |       TK_TYPE TK_LPARENTHESIS expression TK_RPARENTHESIS
+                {
+                    // type(expr): the type of an expression (SV §6.23). A bare
+                    // `type(my_t)` reads as an expression too -> TypeOpExpr (the
+                    // named-type case is resolved later, like Call/NamedType).
+                    auto t = std::make_shared<AST::TypeOpExpr>(scanner.get_filename(), @1.begin.line);
+                    t->set_expr($3);
+                    $$ = data_type_t{data_type_kind_t::TYPEOP, signing_t::NONE, nullptr, nullptr, t};
+                }
+
+        |       TK_TYPE TK_LPARENTHESIS data_type TK_RPARENTHESIS
+                {
+                    // type(data_type): a keyword-led data type (logic/int/struct/...).
+                    auto t = std::make_shared<AST::TypeOpType>(scanner.get_filename(), @1.begin.line);
+                    t->set_type(ParserHelpers::make_data_type($3, scanner.get_filename(), @1.begin.line));
+                    $$ = data_type_t{data_type_kind_t::TYPEOP, signing_t::NONE, nullptr, nullptr, t};
                 }
         ;
 
@@ -5587,6 +5607,7 @@ namespace Veriparse {
                 case data_type_kind_t::STRUCT:
                 case data_type_kind_t::UNION:
                 case data_type_kind_t::ENUM:
+                case data_type_kind_t::TYPEOP:
                     type = dt.inline_def ? AST::cast_to<AST::DataType>(dt.inline_def->clone()) : nullptr;
                     break;
                 }
