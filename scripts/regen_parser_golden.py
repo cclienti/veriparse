@@ -25,16 +25,16 @@ import yaml
 
 PARSED_GLOB = "VerilogParserTest.{name}_parsed.yaml"
 GOLDEN_DIR = "lib/test/parser/testcases"
-SRC_PREFIX = "lib/test/parser/testcases/"
-GOLDEN_PREFIX = "../../test/parser/testcases/"
+PATH_MARKER = "lib/test/"
+PATH_REPLACEMENT = "../../test/"
 
 
 def normalize_paths(obj):
     """Rewrite testcase filenames to the committed-golden form, in place."""
     if isinstance(obj, dict):
         for k, v in obj.items():
-            if k == "filename" and isinstance(v, str) and v.startswith(SRC_PREFIX):
-                obj[k] = GOLDEN_PREFIX + v[len(SRC_PREFIX):]
+            if k == "filename" and isinstance(v, str) and PATH_MARKER in v:
+                obj[k] = PATH_REPLACEMENT + v.split(PATH_MARKER, 1)[1]
             else:
                 normalize_paths(v)
     elif isinstance(obj, list):
