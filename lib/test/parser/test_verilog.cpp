@@ -367,4 +367,7 @@ TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typed_port0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_port_signing0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_func_void0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_enum_range0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_size_cast0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_user_types0) { TEST_CORE_SV; }

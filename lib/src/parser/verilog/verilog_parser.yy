@@ -372,6 +372,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_UNIQUE       "'unique'"
 %token                  TK_PRIORITY     "'priority'"
 %token                  TK_TYPEDEF      "'typedef'"
+%token                  TK_VOID         "'void'"
 %token                  TK_ENUM         "'enum'"
 %token                  TK_STRUCT       "'struct'"
 %token                  TK_UNION        "'union'"
@@ -1657,6 +1658,28 @@ enum_item:
                     $$ = std::make_shared<AST::EnumItem>();
                     $$->set_name($1);
                     $$->set_value(AST::to_node($3));
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_IDENTIFIER length
+                {
+                    // member-range form `enum { A[N] }` / `enum { A[N:M] }`
+                    // (enum_name_declaration). `length`: `[N]`->SizeDim, `[N:M]`->RangeDim.
+                    $$ = std::make_shared<AST::EnumItem>();
+                    $$->set_name($1);
+                    $$->set_range($2);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_IDENTIFIER length TK_EQUALS expression
+                {
+                    // `enum { A[N] = value }`
+                    $$ = std::make_shared<AST::EnumItem>();
+                    $$->set_name($1);
+                    $$->set_range($2);
+                    $$->set_value(AST::to_node($4));
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
@@ -3066,6 +3089,16 @@ casting_type:   integer_vector_type
                     // named type cast: `my_t'(x)`
                     auto c = std::make_shared<AST::TypeCast>(scanner.get_filename(), @1.begin.line);
                     c->set_target(ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line));
+                    $$ = c;
+                }
+
+        |       intnumber
+                {
+                    // size cast: `8'(x)` — a constant size before the tick.
+                    // (`WIDTH'(x)` with an identifier is indistinguishable from a
+                    // named-type cast and stays a TypeCast, resolved later.)
+                    auto c = std::make_shared<AST::SizeCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_size($1);
                     $$ = c;
                 }
         ;
@@ -4705,6 +4738,14 @@ function_rettype_name:
                     $$ = std::make_shared<AST::Function>();
                     $$->set_return_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
                     $$->set_name($1);
+                }
+
+        |       TK_VOID TK_IDENTIFIER
+                {
+                    // `function void f(...)` — no return value (SV)
+                    $$ = std::make_shared<AST::Function>();
+                    $$->set_return_type(std::make_shared<AST::VoidType>(scanner.get_filename(), @1.begin.line));
+                    $$->set_name($2);
                 }
 
         |       TK_IDENTIFIER TK_IDENTIFIER

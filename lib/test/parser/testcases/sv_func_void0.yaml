@@ -1,0 +1,61 @@
+Source:
+  filename: ../../test/parser/testcases/sv_func_void0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_func_void0.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_func_void0.sv
+          line: 1
+          name: sv_func_void0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Function:
+              filename: ../../test/parser/testcases/sv_func_void0.sv
+              line: 3
+              name: print_it
+              lifetime: NONE
+              return_type:
+                VoidType:
+                  filename: ../../test/parser/testcases/sv_func_void0.sv
+                  line: 3
+                  signing: NONE
+              args:
+              - Arg:
+                  filename: ../../test/parser/testcases/sv_func_void0.sv
+                  line: 3
+                  is_var: false
+                  direction: INPUT
+                  name: a
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../../test/parser/testcases/sv_func_void0.sv
+                      line: 3
+                      signing: NONE
+              statements:
+              - SingleStatement:
+                  filename: ../../test/parser/testcases/sv_func_void0.sv
+                  line: 4
+                  scope: ''
+                  statement:
+                    SystemCall:
+                      filename: ../../test/parser/testcases/sv_func_void0.sv
+                      line: 4
+                      syscall: display
+                      args:
+                      - StringConst:
+                          filename: ../../test/parser/testcases/sv_func_void0.sv
+                          line: 4
+                          value: a=%0d
+                      - Identifier:
+                          filename: ../../test/parser/testcases/sv_func_void0.sv
+                          line: 4
+                          name: a
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
