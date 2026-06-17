@@ -829,3 +829,29 @@ an existing node**, never a redesign. Inventory of where each lives.
 > program) → module-like nodes**; **qualifiers (rand, local, virtual…) →
 > properties**. Every addition is additive. The split big-bang is done **once**;
 > after that, the types/declarations AST is never redone again.
+
+---
+
+## 11. Implementation order across the SV-support ADRs
+
+ADR **numbers are chronological identifiers, not a build order** — they are never
+renumbered. This section is the single authoritative **dependency / implementation
+order** for the SV-support program; each ADR back-references it from its header.
+Build top to bottom — each step is independently shippable and lands green.
+
+| # | Step | ADR | Status | Depends on |
+|---|---|---|---|---|
+| 1 | **Type / Declaration split** — the `DataType`/`Declaration` node model everything else consumes | this ADR (0001) | **done** (PR #15) | — |
+| 2 | **Package / import resolution** — `PackageInliner`, narrow; introduces the reusable `ScopeTable` (scope-build + name lookup) | [ADR-0004](adr-0004-package-import-resolution.md) | grammar done; pass TODO | 1 |
+| 3 | **Interface grammar** — `interface`/`modport`/interface ports/`virtual`; decisive cases emit `InterfaceType`, bare ports ride the `NamedType` path | [ADR-0002](adr-0002-systemverilog-interfaces.md) | design done; grammar TODO | 1 |
+| 4 | **Broad name-resolution pass** — generalizes `ScopeTable` (step 2) to all scope kinds; resolves the deferrals catalogued in [ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md): `Call`→`Function/TaskCall`, `NamedType`→`InterfaceType`, `TypeCast`→`SizeCast`, `TypeOpExpr`→`TypeOpType`, scoped/imported names | [ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md) + [ADR-0004 §6](adr-0004-package-import-resolution.md) | TODO | 2 (seam), 3 (for interface-resolution) |
+
+Notes:
+- **[ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md)** is a *living
+  catalogue*, not a single step: it records every parser deferral, and steps 2–4
+  resolve those entries. Feature ADRs append to it (interfaces added §3.4/§4.4;
+  package/import added §4.5).
+- **Steps 2 and 3 are independent** (different subsystems) and may land in either
+  order; both only need step 1.
+- The **statement-call gap** (ADR-0003 §6 — grammar emits `TaskCall`, never the
+  neutral `Call`) is folded into step 4 (or fixed standalone earlier — it is local).
