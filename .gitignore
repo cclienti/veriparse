@@ -27,5 +27,7 @@ __pycache__/
 ### Generated files
 conda/environment.yml
 docs/*.md
+# ADRs are hand-written design records, not generated — keep them tracked.
+!docs/adr-*.md
 pkg-build/
 conda/build/
