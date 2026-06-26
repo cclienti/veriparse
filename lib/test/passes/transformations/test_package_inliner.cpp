@@ -41,4 +41,24 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Check */                                                                                    \
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
+/* Error cases: the pass must report a non-zero status (undefined package /
+ * symbol, multi-wildcard ambiguity) rather than silently mis-resolving. */
+#define TEST_ERROR_SV                                                                              \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(true);                                                                     \
+    verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    ASSERT_NE(Passes::Transformations::PackageInliner().run(source), 0)
+
 TEST(PassesTransformation_PackageInliner, package_inliner0) { TEST_CORE_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner1) { TEST_CORE_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner2) { TEST_CORE_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner3) { TEST_CORE_SV; }
+
+TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner_ambiguous) { TEST_ERROR_SV; }
