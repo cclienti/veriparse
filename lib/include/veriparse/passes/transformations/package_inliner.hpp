@@ -33,12 +33,22 @@ namespace Transformations
  * Scope, per ADR-0004:
  *   - resolves explicit (`import pkg::x;`) and wildcard (`import pkg::*;`)
  *     imports, and qualified references (`pkg::X`);
- *   - compilation-unit imports (`import pkg::x;` at the top level, before a
- *     module) are visible to every module, and `$unit::x` resolves against them;
  *   - covers the synthesizable subset (`parameter`, `localparam`, `typedef`,
  *     `enum`, constant `function`, `task`);
  *   - wildcard imports are eager (decision 1) — unused copies are removed by the
  *     existing DeadcodeElimination pass.
+ *
+ * Compilation units. A `package` name is global across the whole design (§26.2),
+ * but `import` directives, `$unit` declarations and macros are scoped to a single
+ * compilation unit (one source file). So collection is global and resolution is
+ * per-unit:
+ *   - `collect(source)` indexes that source's packages into the shared registry;
+ *     call it for EVERY source first, so a module in one file can reference a
+ *     package defined in another (B refers to X across files);
+ *   - `resolve(source)` then resolves that source's modules against the shared
+ *     packages plus *that source's own* top-level imports / `$unit` — a top-level
+ *     import in another file is not visible here.
+ *   - `run(source)` is the single-source convenience: collect then resolve it.
  *
  * A qualified reference that would collide with a *different* declaration already
  * in scope is a hard error (rather than a silent rebind). Multi-segment `::`
@@ -54,6 +64,15 @@ class PackageInliner : public TransformationBase
 {
 public:
     PackageInliner() = default;
+
+    /// Index every `package` in `source` into the shared registry (accumulates;
+    /// does not clear). Call once per source before resolving any of them.
+    int collect(const AST::Node::Ptr &source);
+
+    /// Resolve one compilation unit: its modules' imports and qualified
+    /// references resolve against the shared packages plus this source's own
+    /// top-level imports / `$unit`; package and import nodes are stripped.
+    int resolve(const AST::Node::Ptr &source);
 
 private:
     /// One collected package: its node plus a name -> declaration index.
@@ -74,9 +93,9 @@ private:
 
     virtual int process(AST::Node::Ptr node, AST::Node::Ptr parent) override;
 
-    /// Index every top-level `package` into m_packages, and build the `$unit`
-    /// pseudo-package from the compilation-unit (top-level) imports.
-    int collect_packages(const AST::Node::Ptr &root);
+    /// Build the `$unit` pseudo-package for one source from its top-level imports
+    /// (overwrites any previous source's `$unit`; resolution is sequential).
+    void build_unit_scope(const AST::Node::Ptr &source);
 
     /// Resolve one importing scope: build its ScopeTable from the scope's own
     /// imports plus `extra_imports` (the compilation-unit imports), rewrite
