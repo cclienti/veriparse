@@ -54,8 +54,15 @@ symbol}` (`symbol == "*"` ⇒ wildcard), and every scoped reference left
 3. **Synthesizable subset only.** Resolvable package items: `parameter`,
    `localparam`, `typedef`, `enum`, constant `function`, `task`. Out of scope:
    `class`, `covergroup`, `sequence`, `property`, virtual interfaces.
-4. **No re-exports.** `export pkg::*;` is rejected at parse time with a clear
-   diagnostic (already done); chained imports through packages are unsupported.
+4. **Re-export — planned (a future session), not yet wired.** `export pkg::*;` /
+   `export pkg::sym;` is currently rejected at parse time with a clear diagnostic.
+   It is **no longer considered out of scope** (this reverses the original
+   decision): the parser already parses the syntax (it only `error()`s on the
+   reduction), and resolution is a **symbol-table fold** — the exporter's
+   *interface* set gains the re-exported package's symbols, in dependency order,
+   with cycles still forbidden (§26). The real work is the *interface-vs-contents*
+   split that §9 introduces for package-body resolution anyway; once that lands,
+   re-export is a small rider on it. Tracked for a dedicated session.
 5. **Output is stripped.** Flattened output contains no `package`/`endpackage` and
    no `import` — the same way modules are flattened today.
 
@@ -163,11 +170,68 @@ when its grammar/pass lands.
 
 ---
 
-## 8. Out of scope (future ADRs)
+## 8. Out of scope (future ADRs / sessions)
 
+- **Re-export** (`export pkg::*;`) — **planned for a dedicated session** (§2.4); the
+  interface-vs-contents split (§9.4) is the enabling work.
 - The **broad name-resolution engine** that generalizes `ScopeTable` (§6) and drives
   the remaining ADR-0003 deferrals.
-- `export` / re-export, chained package imports.
 - Non-synthesizable package members (`class`, `covergroup`, …).
 - Hierarchical (`.`) path resolution (`hier` axis) — elaboration concern, unrelated
   to `::`.
+
+---
+
+## 9. Compilation units, package-body resolution, and dependencies (implemented)
+
+Refinements made while implementing the pass; they supersede the single-global-sweep
+sketch in §5 where they differ.
+
+### 9.1 Per-unit collect/resolve in compilation order
+A `package` name is **global** across the design (§26.2), but `import`, `$unit` and
+macros are scoped to **one compilation unit** (one source file). So the pass splits:
+- `collect(source)` indexes a source's packages into the shared registry
+  (accumulates across sources);
+- `resolve(source)` resolves that source's scopes against the shared packages plus
+  *that source's own* top-level imports / `$unit`.
+
+`run_units(sources)` drives them **in command-line order**, collect-then-resolve per
+unit before the next — so a unit may reference a package from an **earlier** unit but
+not a **later** one (§26.3). A qualified reference to an unknown package (undeclared,
+or whose unit is compiled later) is a **hard error**. The veriflat app preprocesses
+and parses **each file in isolation** (one file = one unit; macros do not flow across
+files), then calls `run_units`.
+
+### 9.2 Package bodies are resolved as scopes
+A package body is structurally a scope like a module body (items + its own imports),
+so the **same** scope-resolution machinery runs on packages too — *before* modules,
+in dependency order. This makes a package that **imports and uses** another
+self-contained:
+
+```
+package P1; localparam A = 5; endpackage
+package P2; import P1::*; localparam B = A * 2; endpackage
+//  P2 after resolution:  localparam A = 5; localparam B = A * 2;   (A pulled in)
+```
+
+Without this, a module that copies `P2::B` would inherit a dangling `A` — resolving
+only module scopes is **not** sufficient (the `A`→`P1::A` context lives in P2's
+import, which module resolution never sees).
+
+### 9.3 Transitive intra-package dependency copy
+Copying a single package symbol must also copy the same-package symbols it
+**transitively depends on**. A qualified `P::data_t` where `typedef logic[W-1:0]
+data_t` must pull `W` too, or `[W-1:0]` dangles. (Wildcard import already pulls
+everything via the eager copy; this closes the explicit/qualified single-symbol
+case.)
+
+### 9.4 Interface vs contents
+Once §9.2/§9.3 pull dependencies **into** a package, two sets diverge and must be
+kept distinct:
+- **interface** — what `import P::*` / `P::x` exposes = P's own declarations
+  (**plus re-exports**, §2.4 when wired);
+- **contents** — everything physically in P, including dependencies pulled in for
+  P's own internal use.
+
+`export` writes to the *interface*; the transitive copy reads the *contents*. Without
+the split, P would over-export every dependency it imported.
