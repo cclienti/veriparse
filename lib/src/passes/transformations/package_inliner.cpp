@@ -122,6 +122,22 @@ int PackageInliner::process(AST::Node::Ptr node, AST::Node::Ptr /*parent*/)
     return resolve(node);
 }
 
+int PackageInliner::run_units(const std::vector<AST::Node::Ptr> &sources)
+{
+    // Compilation order matters (§26.3): collect-then-resolve each unit before
+    // the next, so a unit sees packages from earlier units but not later ones.
+    m_packages.clear();
+    for(const AST::Node::Ptr &source : sources) {
+        if(collect(source) != 0) {
+            return 1;
+        }
+        if(resolve(source) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int PackageInliner::collect(const AST::Node::Ptr &source)
 {
     // A package name is global across the design, so collection accumulates into

@@ -6,12 +6,38 @@
 #include <veriparse/importers/yaml_importer.hpp>
 #include <veriparse/parser/verilog.hpp>
 #include <veriparse/AST/nodes.hpp>
+#include <veriparse/AST/node_cast.hpp>
 
 #include <gtest/gtest.h>
 
 using namespace Veriparse;
 
 static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
+
+// Count value/type references that still carry an unresolved `::` scope.
+static int count_scoped_refs(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return 0;
+    }
+    int n = 0;
+    if(node->is_node_category(AST::NodeType::Identifier)) {
+        const auto scope = AST::cast_to<AST::Identifier>(node)->get_scope();
+        if(scope && !scope->empty()) {
+            n++;
+        }
+    } else if(node->is_node_type(AST::NodeType::NamedType)) {
+        const auto scope = AST::cast_to<AST::NamedType>(node)->get_scope();
+        if(scope && !scope->empty()) {
+            n++;
+        }
+    }
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        n += count_scoped_refs(child);
+    }
+    return n;
+}
 
 #define TEST_CORE_SV                                                                               \
     ENABLE_LOGGER;                                                                                 \
@@ -84,12 +110,10 @@ TEST(PassesTransformation_PackageInliner, package_inliner_multi)
     AST::Node::Ptr src_b = vb.get_source();
     ASSERT_TRUE(src_b != nullptr);
 
-    // Global collect across both units, then resolve each unit on its own.
+    // Units in compilation order: file A (defines xpkg) before file B (uses it).
+    // run_units collects-then-resolves each in turn, so B sees xpkg from A.
     Passes::Transformations::PackageInliner inliner;
-    ASSERT_EQ(inliner.collect(src_a), 0);
-    ASSERT_EQ(inliner.collect(src_b), 0);
-    ASSERT_EQ(inliner.resolve(src_a), 0);
-    ASSERT_EQ(inliner.resolve(src_b), 0);
+    ASSERT_EQ(inliner.run_units({src_a, src_b}), 0);
     ASSERT_AST_IS_TREE(src_a);
     ASSERT_AST_IS_TREE(src_b);
 
@@ -102,4 +126,46 @@ TEST(PassesTransformation_PackageInliner, package_inliner_multi)
         Importers::YAMLImporter().import(test_helpers.get_yaml_filename(ref_filename).c_str());
     ASSERT_TRUE(ref != nullptr);
     ASSERT_TRUE(ref->is_equal(*src_b, false));
+}
+
+// Compilation order (§26.3): a unit may use a package from an EARLIER unit, not
+// a later one. Same two files, opposite order — the reference resolves only when
+// the package's unit precedes the module's unit.
+TEST(PassesTransformation_PackageInliner, package_inliner_order)
+{
+    ENABLE_LOGGER;
+
+    // Correct order: the package unit (order_b) before the user unit (order_a).
+    {
+        Parser::Verilog vb;
+        vb.set_sv_mode(true);
+        vb.parse(test_helpers.get_sv_filename("package_inliner_order_b"));
+        AST::Node::Ptr src_b = vb.get_source();
+        Parser::Verilog va;
+        va.set_sv_mode(true);
+        va.parse(test_helpers.get_sv_filename("package_inliner_order_a"));
+        AST::Node::Ptr src_a = va.get_source();
+        ASSERT_TRUE(src_a != nullptr && src_b != nullptr);
+
+        Passes::Transformations::PackageInliner inliner;
+        ASSERT_EQ(inliner.run_units({src_b, src_a}), 0);
+        EXPECT_EQ(count_scoped_refs(src_a), 0); // latepkg::LW resolved
+    }
+
+    // Wrong order: the user unit before the package unit — left unresolved.
+    {
+        Parser::Verilog va;
+        va.set_sv_mode(true);
+        va.parse(test_helpers.get_sv_filename("package_inliner_order_a"));
+        AST::Node::Ptr src_a = va.get_source();
+        Parser::Verilog vb;
+        vb.set_sv_mode(true);
+        vb.parse(test_helpers.get_sv_filename("package_inliner_order_b"));
+        AST::Node::Ptr src_b = vb.get_source();
+        ASSERT_TRUE(src_a != nullptr && src_b != nullptr);
+
+        Passes::Transformations::PackageInliner inliner;
+        ASSERT_EQ(inliner.run_units({src_a, src_b}), 0);
+        EXPECT_EQ(count_scoped_refs(src_a), 1); // latepkg::LW NOT resolved
+    }
 }

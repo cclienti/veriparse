@@ -10,6 +10,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <vector>
 
 namespace Veriparse
 {
@@ -73,6 +74,13 @@ public:
     /// references resolve against the shared packages plus this source's own
     /// top-level imports / `$unit`; package and import nodes are stripped.
     int resolve(const AST::Node::Ptr &source);
+
+    /// Resolve a list of compilation units **in order**: each is collected then
+    /// resolved before the next (clears the registry first). So a unit may
+    /// reference a package from an *earlier* unit but not a *later* one
+    /// (§26.3 declared-before-use). `sources` must be in compilation order — for
+    /// veriflat, the command-line file order. Returns 0 on success.
+    int run_units(const std::vector<AST::Node::Ptr> &sources);
 
 private:
     /// One collected package: its node plus a name -> declaration index.
