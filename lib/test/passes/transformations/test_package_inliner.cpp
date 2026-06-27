@@ -152,7 +152,8 @@ TEST(PassesTransformation_PackageInliner, package_inliner_order)
         EXPECT_EQ(count_scoped_refs(src_a), 0); // latepkg::LW resolved
     }
 
-    // Wrong order: the user unit before the package unit — left unresolved.
+    // Wrong order: the user unit before the package unit — a hard error, since
+    // the reference is to a package not yet (and, in order, not legally) visible.
     {
         Parser::Verilog va;
         va.set_sv_mode(true);
@@ -165,7 +166,6 @@ TEST(PassesTransformation_PackageInliner, package_inliner_order)
         ASSERT_TRUE(src_a != nullptr && src_b != nullptr);
 
         Passes::Transformations::PackageInliner inliner;
-        ASSERT_EQ(inliner.run_units({src_a, src_b}), 0);
-        EXPECT_EQ(count_scoped_refs(src_a), 1); // latepkg::LW NOT resolved
+        ASSERT_NE(inliner.run_units({src_a, src_b}), 0); // latepkg::LW unknown here
     }
 }
