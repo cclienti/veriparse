@@ -1,0 +1,134 @@
+Source:
+  filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+          line: 1
+          name: package_inliner_multi_b
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+              line: 2
+              name: dout
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: dout
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                      line: 2
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                          line: 2
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                              line: 2
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 4
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                              line: 2
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner_multi_a.sv
+              line: 3
+              is_local: true
+              name: XW
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_multi_a.sv
+                  line: 3
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/package_inliner_multi_a.sv
+                      line: 3
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 5
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_multi_a.sv
+                  line: 3
+                  signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+              line: 4
+              is_local: true
+              name: B
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                  line: 4
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                      line: 4
+                      name: XW
+                      hier:
+                        HierName: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                  line: 4
+                  signing: NONE
+          - Assign:
+              filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+              line: 6
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                      line: 6
+                      name: dout
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_multi_b.sv
+                      line: 6
+                      name: B
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

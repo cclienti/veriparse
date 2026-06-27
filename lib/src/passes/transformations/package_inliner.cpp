@@ -111,52 +111,23 @@ AST::Node::ListPtr top_level_definitions(const AST::Node::Ptr &root)
 
 int PackageInliner::process(AST::Node::Ptr node, AST::Node::Ptr /*parent*/)
 {
+    // Single-source convenience (run()): collect then resolve this one source.
     if(!node) {
         return 0;
     }
-
     m_packages.clear();
-    if(collect_packages(node) != 0) {
+    if(collect(node) != 0) {
         return 1;
     }
-
-    // Compilation-unit (top-level) imports are visible to every module.
-    std::list<AST::Node::Ptr> unit_imports;
-    const AST::Node::ListPtr defs = top_level_definitions(node);
-    if(defs) {
-        for(const AST::Node::Ptr &item : *defs) {
-            if(item->is_node_type(AST::NodeType::Import)) {
-                unit_imports.push_back(item);
-            }
-        }
-    }
-
-    // Each module body is an importing scope; resolve them independently, with
-    // the compilation-unit imports folded in.
-    std::list<AST::Node::Ptr> modules;
-    find_nodes(node, AST::NodeType::Module, modules);
-    for(const AST::Node::Ptr &m : modules) {
-        if(process_scope(AST::cast_to<AST::Module>(m)->get_items(), m, unit_imports) != 0) {
-            return 1;
-        }
-    }
-
-    // Strip the now-resolved compilation-unit imports and package definitions.
-    if(defs) {
-        for(auto it = defs->begin(); it != defs->end();) {
-            const bool drop = (*it)->is_node_type(AST::NodeType::Import) ||
-                              (*it)->is_node_type(AST::NodeType::Package);
-            it = drop ? defs->erase(it) : std::next(it);
-        }
-    }
-
-    return 0;
+    return resolve(node);
 }
 
-int PackageInliner::collect_packages(const AST::Node::Ptr &root)
+int PackageInliner::collect(const AST::Node::Ptr &source)
 {
+    // A package name is global across the design, so collection accumulates into
+    // the shared registry across sources (no clear here).
     std::list<AST::Node::Ptr> packages;
-    find_nodes(root, AST::NodeType::Package, packages);
+    find_nodes(source, AST::NodeType::Package, packages);
 
     for(const AST::Node::Ptr &p : packages) {
         const auto &pkg = AST::cast_to<AST::Package>(p);
@@ -175,14 +146,19 @@ int PackageInliner::collect_packages(const AST::Node::Ptr &root)
         }
         m_packages[pkg->get_name()] = entry;
     }
+    return 0;
+}
 
-    // Build the `$unit` (compilation-unit) pseudo-package from the top-level
-    // imports, so `$unit::x` resolves through the same single-segment path. Note
-    // top-level value declarations are not part of the grammar, so the unit scope
-    // holds only names brought in by compilation-unit imports.
-    const AST::Node::ListPtr defs = top_level_definitions(root);
+void PackageInliner::build_unit_scope(const AST::Node::Ptr &source)
+{
+    // The `$unit` (compilation-unit) pseudo-package holds the names this source's
+    // top-level imports bring in, so `$unit::x` resolves through the same
+    // single-segment path. (Top-level value declarations are not in the grammar,
+    // so the unit scope holds only imported names.) It is per-source: overwrite
+    // any previous source's `$unit`.
+    PackageEntry unit; // entry.package stays null: there is no Package node
+    const AST::Node::ListPtr defs = top_level_definitions(source);
     if(defs) {
-        PackageEntry unit; // entry.package stays null: there is no Package node
         for(const AST::Node::Ptr &item : *defs) {
             if(!item->is_node_type(AST::NodeType::Import)) {
                 continue;
@@ -203,8 +179,49 @@ int PackageInliner::collect_packages(const AST::Node::Ptr &root)
                 }
             }
         }
-        m_packages[UNIT_SCOPE] = unit;
     }
+    m_packages[UNIT_SCOPE] = unit;
+}
+
+int PackageInliner::resolve(const AST::Node::Ptr &source)
+{
+    if(!source) {
+        return 0;
+    }
+
+    build_unit_scope(source);
+
+    // This source's own top-level imports are visible to its modules only (an
+    // import in another file belongs to another compilation unit).
+    std::list<AST::Node::Ptr> unit_imports;
+    const AST::Node::ListPtr defs = top_level_definitions(source);
+    if(defs) {
+        for(const AST::Node::Ptr &item : *defs) {
+            if(item->is_node_type(AST::NodeType::Import)) {
+                unit_imports.push_back(item);
+            }
+        }
+    }
+
+    // Each module body is an importing scope; resolve them independently, with
+    // this source's compilation-unit imports folded in.
+    std::list<AST::Node::Ptr> modules;
+    find_nodes(source, AST::NodeType::Module, modules);
+    for(const AST::Node::Ptr &m : modules) {
+        if(process_scope(AST::cast_to<AST::Module>(m)->get_items(), m, unit_imports) != 0) {
+            return 1;
+        }
+    }
+
+    // Strip the now-resolved compilation-unit imports and package definitions.
+    if(defs) {
+        for(auto it = defs->begin(); it != defs->end();) {
+            const bool drop = (*it)->is_node_type(AST::NodeType::Import) ||
+                              (*it)->is_node_type(AST::NodeType::Package);
+            it = drop ? defs->erase(it) : std::next(it);
+        }
+    }
+
     return 0;
 }
 
