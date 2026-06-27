@@ -17,6 +17,9 @@ namespace Transformations
 namespace
 {
 
+/// The compilation-unit scope name (`$unit::`), modelled as a pseudo-package.
+const char *const UNIT_SCOPE = "$unit";
+
 /// A module/package opens a separate name scope; a scope is resolved on its own
 /// traversal, so reference rewriting stops at these boundaries.
 bool is_scope_boundary(const AST::Node::Ptr &node)
@@ -117,24 +120,33 @@ int PackageInliner::process(AST::Node::Ptr node, AST::Node::Ptr /*parent*/)
         return 1;
     }
 
-    // Each module body is an importing scope; resolve them independently.
+    // Compilation-unit (top-level) imports are visible to every module.
+    std::list<AST::Node::Ptr> unit_imports;
+    const AST::Node::ListPtr defs = top_level_definitions(node);
+    if(defs) {
+        for(const AST::Node::Ptr &item : *defs) {
+            if(item->is_node_type(AST::NodeType::Import)) {
+                unit_imports.push_back(item);
+            }
+        }
+    }
+
+    // Each module body is an importing scope; resolve them independently, with
+    // the compilation-unit imports folded in.
     std::list<AST::Node::Ptr> modules;
     find_nodes(node, AST::NodeType::Module, modules);
     for(const AST::Node::Ptr &m : modules) {
-        if(process_scope(AST::cast_to<AST::Module>(m)->get_items(), m) != 0) {
+        if(process_scope(AST::cast_to<AST::Module>(m)->get_items(), m, unit_imports) != 0) {
             return 1;
         }
     }
 
-    // The compilation unit itself is a scope (top-level imports / references).
-    const AST::Node::ListPtr defs = top_level_definitions(node);
+    // Strip the now-resolved compilation-unit imports and package definitions.
     if(defs) {
-        if(process_scope(defs, node) != 0) {
-            return 1;
-        }
-        // Strip the now-resolved package definitions from the output.
         for(auto it = defs->begin(); it != defs->end();) {
-            it = (*it)->is_node_type(AST::NodeType::Package) ? defs->erase(it) : std::next(it);
+            const bool drop = (*it)->is_node_type(AST::NodeType::Import) ||
+                              (*it)->is_node_type(AST::NodeType::Package);
+            it = drop ? defs->erase(it) : std::next(it);
         }
     }
 
@@ -163,10 +175,41 @@ int PackageInliner::collect_packages(const AST::Node::Ptr &root)
         }
         m_packages[pkg->get_name()] = entry;
     }
+
+    // Build the `$unit` (compilation-unit) pseudo-package from the top-level
+    // imports, so `$unit::x` resolves through the same single-segment path. Note
+    // top-level value declarations are not part of the grammar, so the unit scope
+    // holds only names brought in by compilation-unit imports.
+    const AST::Node::ListPtr defs = top_level_definitions(root);
+    if(defs) {
+        PackageEntry unit; // entry.package stays null: there is no Package node
+        for(const AST::Node::Ptr &item : *defs) {
+            if(!item->is_node_type(AST::NodeType::Import)) {
+                continue;
+            }
+            const auto &imp = AST::cast_to<AST::Import>(item);
+            auto pit = m_packages.find(imp->get_package());
+            if(pit == m_packages.end()) {
+                continue; // diagnosed when a scope consumes the import
+            }
+            if(imp->get_symbol() == "*") {
+                for(const auto &kv : pit->second.symbols) {
+                    unit.symbols[kv.first] = kv.second;
+                }
+            } else {
+                auto sit = pit->second.symbols.find(imp->get_symbol());
+                if(sit != pit->second.symbols.end()) {
+                    unit.symbols[imp->get_symbol()] = sit->second;
+                }
+            }
+        }
+        m_packages[UNIT_SCOPE] = unit;
+    }
     return 0;
 }
 
-int PackageInliner::process_scope(const AST::Node::ListPtr &items, const AST::Node::Ptr &subtree)
+int PackageInliner::process_scope(const AST::Node::ListPtr &items, const AST::Node::Ptr &subtree,
+                                  const std::list<AST::Node::Ptr> &extra_imports)
 {
     if(!items) {
         return 0;
@@ -181,15 +224,21 @@ int PackageInliner::process_scope(const AST::Node::ListPtr &items, const AST::No
         std::string name;
         if(node_decl_name(item, name)) {
             table.add_local(name, item);
-            copies.names.insert(name);
+            copies.bound[name] = item;
         }
     }
 
-    // Imports visible in this scope feed the table.
+    // Imports visible in this scope: the scope's own, plus the compilation-unit
+    // imports applied to every module.
+    std::list<AST::Node::Ptr> imports;
     for(const AST::Node::Ptr &item : *items) {
-        if(!item->is_node_type(AST::NodeType::Import)) {
-            continue;
+        if(item->is_node_type(AST::NodeType::Import)) {
+            imports.push_back(item);
         }
+    }
+    imports.insert(imports.end(), extra_imports.begin(), extra_imports.end());
+
+    for(const AST::Node::Ptr &item : imports) {
         const auto &imp = AST::cast_to<AST::Import>(item);
         const std::string &pkgname = imp->get_package();
         const std::string &sym = imp->get_symbol();
@@ -218,12 +267,12 @@ int PackageInliner::process_scope(const AST::Node::ListPtr &items, const AST::No
     if(rewrite_refs(subtree, subtree, table, copies) != 0) {
         return 1;
     }
-    if(materialize_imports(items, table, copies) != 0) {
+    if(materialize_imports(imports, table, copies) != 0) {
         return 1;
     }
 
-    // Strip the imports (now resolved) and splice the copied declarations at the
-    // front of the scope, in discovery order.
+    // Strip the scope's own imports (the compilation-unit ones are stripped by
+    // the caller) and splice the copied declarations at the front, in order.
     for(auto it = items->begin(); it != items->end();) {
         it = (*it)->is_node_type(AST::NodeType::Import) ? items->erase(it) : std::next(it);
     }
@@ -249,28 +298,48 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
 
         if(scope && !scope->empty()) {
             if(scope->size() == 1) {
+                // Single segment: a package, or `$unit` (the compilation-unit
+                // pseudo-package). Both resolve through m_packages.
                 const std::string pkgname = scope->front()->get_name();
                 auto pit = m_packages.find(pkgname);
                 if(pit != m_packages.end()) {
                     auto sit = pit->second.symbols.find(name);
                     if(sit == pit->second.symbols.end()) {
-                        LOG_ERROR_N(node) << "package '" << pkgname
-                                          << "' has no synthesizable symbol '" << name << "'";
+                        LOG_ERROR_N(node)
+                            << "'" << pkgname << "' has no synthesizable symbol '" << name << "'";
                         return 1;
                     }
-                    if(ensure_copied(name, sit->second, copies) != 0) {
-                        return 1;
+                    // A qualified reference must bind to the package's declaration.
+                    // If the name is already bound to a *different* declaration (a
+                    // local, or another import), localizing it would silently
+                    // rebind — reject instead (ADR-0004 §A item 3).
+                    auto bit = copies.bound.find(name);
+                    if(bit != copies.bound.end()) {
+                        if(bit->second != sit->second) {
+                            LOG_ERROR_N(node)
+                                << "qualified reference '" << pkgname << "::" << name
+                                << "' collides with a different declaration named '" << name
+                                << "' already in scope (rename to disambiguate)";
+                            return 1;
+                        }
+                    } else {
+                        copies.bound[name] = sit->second;
+                        copies.copies->push_back(sit->second->clone());
                     }
                     ref_clear_scope(node); // now a local reference
                 } else {
-                    // Not a known package: $unit or a class scope — outside the
-                    // PackageInliner remit (ADR-0004 §8). Leave untouched.
+                    // Not a package nor `$unit`: a class scope (IEEE 1800-2017
+                    // §8.18) — outside the PackageInliner remit (ADR-0004 §8).
                     LOG_WARNING_N(node) << "scoped reference '" << pkgname << "::" << name
-                                        << "' left unresolved (not a known package)";
+                                        << "' left unresolved (not a package or $unit)";
                 }
             } else {
-                LOG_WARNING_N(node) << "multi-segment scoped reference to '" << name
-                                    << "' left unresolved (out of PackageInliner scope)";
+                // Multi-segment `A::B::T` is a class-scope chain (§8.18), not
+                // nested packages — out of scope and not produced by the current
+                // grammar. Defensive: report rather than mis-resolve.
+                LOG_ERROR_N(node) << "multi-segment scoped reference to '" << name
+                                  << "' is unsupported (class scope)";
+                return 1;
             }
         } else {
             // Unqualified: a multi-wildcard collision is an error only here, on use.
@@ -293,13 +362,10 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
     return 0;
 }
 
-int PackageInliner::materialize_imports(const AST::Node::ListPtr &items, const ScopeTable &table,
-                                        ScopeCopies &copies)
+int PackageInliner::materialize_imports(const std::list<AST::Node::Ptr> &imports,
+                                        const ScopeTable &table, ScopeCopies &copies)
 {
-    for(const AST::Node::Ptr &item : *items) {
-        if(!item->is_node_type(AST::NodeType::Import)) {
-            continue;
-        }
+    for(const AST::Node::Ptr &item : imports) {
         const auto &imp = AST::cast_to<AST::Import>(item);
         auto pit = m_packages.find(imp->get_package());
         if(pit == m_packages.end()) {
@@ -335,10 +401,10 @@ int PackageInliner::materialize_imports(const AST::Node::ListPtr &items, const S
 int PackageInliner::ensure_copied(const std::string &name, const AST::Node::Ptr &decl,
                                   ScopeCopies &copies)
 {
-    if(copies.names.count(name)) {
-        return 0; // a local, or already copied for this scope
+    if(copies.bound.count(name)) {
+        return 0; // a local shadow, or already copied for this scope
     }
-    copies.names.insert(name);
+    copies.bound[name] = decl;
     copies.copies->push_back(decl->clone());
     return 0;
 }
