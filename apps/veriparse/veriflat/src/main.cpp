@@ -11,6 +11,7 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
+#include <veriparse/passes/transformations/package_inliner.hpp>
 #include <veriparse/passes/transformations/wire_split.hpp>
 #include <veriparse/version.hpp>
 
@@ -138,39 +139,60 @@ static int veriflat(int argc, char *argv[])
     LOG_INFO << "Command line: " << config;
 
     //---------------------------------------------------------
-    // Preprocess all inputs into a single in-memory stream.
-    // Backward-compatible: input that has already been processed
-    // by another preprocessor (e.g. iverilog -E) round-trips
-    // through veripp untouched.
+    // Per-file compilation units: preprocess + parse each input file on its own
+    // (macros do not flow across files), so each file is one compilation unit.
+    // Input already processed by another preprocessor (e.g. iverilog -E) still
+    // round-trips through veripp untouched.
     //---------------------------------------------------------
 
-    std::stringstream preprocessed;
-    {
-        Veriparse::Parser::PreprocessorOptions opts;
-        opts.sv_mode = config.sv_mode;
-        opts.include_dirs = config.include_dirs;
-        opts.defines = config.defines;
-        opts.undefs = config.undefs;
+    Veriparse::Parser::PreprocessorOptions opts;
+    opts.sv_mode = config.sv_mode;
+    opts.include_dirs = config.include_dirs;
+    opts.defines = config.defines;
+    opts.undefs = config.undefs;
+
+    std::vector<Veriparse::AST::Node::Ptr> sources;
+    for(const auto &input : config.inputs) {
+        std::stringstream preprocessed;
         Veriparse::Parser::Preprocessor pp;
         pp.apply(opts);
-        if(pp.preprocess(config.inputs, preprocessed) != 0) {
-            LOG_ERROR << "preprocessing failed";
+        if(pp.preprocess(input, preprocessed) != 0) {
+            LOG_ERROR << "preprocessing failed for " << input;
             return 1;
         }
-    }
-
-    //---------------------------------------------------------
-    // Create a map of all modules
-    //---------------------------------------------------------
-
-    Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
-
-    {
         Veriparse::Parser::Verilog verilog;
         verilog.set_sv_mode(config.sv_mode);
         verilog.parse(preprocessed);
         auto source = verilog.get_source();
-        Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map);
+        if(!source) {
+            LOG_ERROR << "parsing failed for " << input;
+            return 1;
+        }
+        sources.push_back(source);
+    }
+
+    //---------------------------------------------------------
+    // Resolve SystemVerilog packages/imports across the units (collect then
+    // resolve each unit in command-line order, §26.3), making every module
+    // self-contained before flattening. Packages are global across files; a
+    // top-level import is visible only within its own file.
+    //---------------------------------------------------------
+
+    if(Veriparse::Passes::Transformations::PackageInliner().run_units(sources) != 0) {
+        LOG_ERROR << "package/import resolution failed";
+        return 1;
+    }
+
+    //---------------------------------------------------------
+    // Create a map of all modules, merged across every unit.
+    //---------------------------------------------------------
+
+    Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
+
+    for(const auto &source : sources) {
+        if(Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map) != 0) {
+            return 1;
+        }
     }
 
     if(modules_map.count(config.top_module) == 0) {
