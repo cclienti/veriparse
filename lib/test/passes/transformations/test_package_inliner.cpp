@@ -58,7 +58,9 @@ TEST(PassesTransformation_PackageInliner, package_inliner0) { TEST_CORE_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner1) { TEST_CORE_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner2) { TEST_CORE_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner3) { TEST_CORE_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner4) { TEST_CORE_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_ambiguous) { TEST_ERROR_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner_collision) { TEST_ERROR_SV; }
