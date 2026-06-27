@@ -1,0 +1,167 @@
+Source:
+  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+          line: 14
+          name: package_inliner_pkgdep
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+              line: 15
+              name: dout
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 15
+                  is_vectored: false
+                  is_scalared: false
+                  name: dout
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                      line: 15
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                          line: 15
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                              line: 15
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                              line: 15
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+              line: 3
+              is_local: true
+              name: A
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 3
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                      line: 3
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 5
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 3
+                  signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+              line: 10
+              is_local: true
+              name: B
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 10
+                  var:
+                    Times:
+                      filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                      line: 10
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                          line: 10
+                          name: A
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                          line: 10
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 2
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 10
+                  signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+              line: 17
+              is_local: true
+              name: C
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 17
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                      line: 17
+                      name: B
+                      hier:
+                        HierName: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 17
+                  signing: NONE
+          - Assign:
+              filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+              line: 19
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 19
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                      line: 19
+                      name: dout
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                  line: 19
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_pkgdep.sv
+                      line: 19
+                      name: C
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

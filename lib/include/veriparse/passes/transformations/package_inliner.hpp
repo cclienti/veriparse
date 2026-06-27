@@ -83,11 +83,17 @@ public:
     int run_units(const std::vector<AST::Node::Ptr> &sources);
 
 private:
-    /// One collected package: its node plus a name -> declaration index.
+    /// One collected package (ADR-0004 §9.4). `symbols` is the package's
+    /// *interface* — the names it exposes to `import`/`pkg::x` (its own
+    /// declarations, plus re-exports once those land). `contents` is everything
+    /// physically in the package after its body is resolved, including the
+    /// same-package dependencies pulled in for its own internal use — used to
+    /// copy a symbol together with what it transitively depends on.
     struct PackageEntry
     {
         AST::Package::Ptr package;
-        std::map<std::string, AST::Node::Ptr> symbols;
+        std::map<std::string, AST::Node::Ptr> symbols;  ///< interface (import-visible)
+        std::map<std::string, AST::Node::Ptr> contents; ///< all items, for dependency copy
     };
 
     /// Per-scope accumulator while a single scope is being resolved. `bound` maps
@@ -104,6 +110,11 @@ private:
     /// Build the `$unit` pseudo-package for one source from its top-level imports
     /// (overwrites any previous source's `$unit`; resolution is sequential).
     void build_unit_scope(const AST::Node::Ptr &source);
+
+    /// Resolve every package body in `source` as a scope (ADR-0004 §9.2), in
+    /// declaration order, then re-index its `contents`. Makes a package that
+    /// imports and uses another self-contained before any module copies from it.
+    int resolve_packages(const AST::Node::Ptr &source);
 
     /// Resolve one importing scope: build its ScopeTable from the scope's own
     /// imports plus `extra_imports` (the compilation-unit imports), rewrite
@@ -122,9 +133,10 @@ private:
     int materialize_imports(const std::list<AST::Node::Ptr> &imports, const ScopeTable &table,
                             ScopeCopies &copies);
 
-    /// Clone `decl` into the scope's copy list unless its name is already
-    /// present (a local or an earlier copy). Returns 0 on success.
-    int ensure_copied(const std::string &name, const AST::Node::Ptr &decl, ScopeCopies &copies);
+    /// Copy symbol `name` from package `pkgname` into the scope, together with the
+    /// same-package symbols it transitively depends on (ADR-0004 §9.3). Looks the
+    /// declaration and its dependencies up in the package's `contents`.
+    int copy_symbol(const std::string &pkgname, const std::string &name, ScopeCopies &copies);
 
     std::map<std::string, PackageEntry> m_packages;
 };
