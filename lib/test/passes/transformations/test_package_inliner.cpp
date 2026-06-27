@@ -85,6 +85,11 @@ TEST(PassesTransformation_PackageInliner, package_inliner1) { TEST_CORE_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner2) { TEST_CORE_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner3) { TEST_CORE_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner4) { TEST_CORE_SV; }
+// Dependency copy: P::data_t pulls in the W it depends on (ADR-0004 §9.3).
+TEST(PassesTransformation_PackageInliner, package_inliner_dep) { TEST_CORE_SV; }
+// Package imports package: P2 uses P1::A in B; resolving P2 as a scope makes it
+// self-contained, and the module copying P2::B pulls A too (§9.2 + §9.3).
+TEST(PassesTransformation_PackageInliner, package_inliner_pkgdep) { TEST_CORE_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }

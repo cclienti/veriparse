@@ -6,6 +6,7 @@
 #include <veriparse/logger/logger.hpp>
 
 #include <list>
+#include <set>
 
 namespace Veriparse
 {
@@ -94,6 +95,31 @@ void find_nodes(const AST::Node::Ptr &root, AST::NodeType type, std::list<AST::N
     }
 }
 
+/// Collect the unqualified value/type reference names inside `node` (skipping
+/// `::`-scoped refs, which name another package). Used to find a declaration's
+/// same-package dependencies.
+void collect_unqualified_names(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    if(node->is_node_category(AST::NodeType::Identifier)) {
+        const auto scope = AST::cast_to<AST::Identifier>(node)->get_scope();
+        if(!scope || scope->empty()) {
+            names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
+        }
+    } else if(node->is_node_type(AST::NodeType::NamedType)) {
+        const auto scope = AST::cast_to<AST::NamedType>(node)->get_scope();
+        if(!scope || scope->empty()) {
+            names.insert(AST::cast_to<AST::NamedType>(node)->get_name());
+        }
+    }
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        collect_unqualified_names(child, names);
+    }
+}
+
 /// The compilation-unit definitions list (top-level scope), or null.
 AST::Node::ListPtr top_level_definitions(const AST::Node::Ptr &root)
 {
@@ -157,6 +183,9 @@ int PackageInliner::collect(const AST::Node::Ptr &source)
                 }
             }
         }
+        // Before its body is resolved, a package's contents are just its own
+        // declarations; resolve_packages() re-indexes after pulling deps in.
+        entry.contents = entry.symbols;
         if(m_packages.count(pkg->get_name())) {
             LOG_WARNING_N(pkg) << "package '" << pkg->get_name() << "' redefined; using the latest";
         }
@@ -207,6 +236,12 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
 
     build_unit_scope(source);
 
+    // Resolve package bodies first, in declaration order, so a package that
+    // imports and uses another is self-contained before any module copies it.
+    if(resolve_packages(source) != 0) {
+        return 1;
+    }
+
     // This source's own top-level imports are visible to its modules only (an
     // import in another file belongs to another compilation unit).
     std::list<AST::Node::Ptr> unit_imports;
@@ -238,6 +273,39 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
         }
     }
 
+    return 0;
+}
+
+int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
+{
+    // Packages appear in declaration order, which §26.3 guarantees is dependency
+    // order (a package precedes the ones that import it). A package body is a
+    // scope like a module body; resolve it with its OWN imports only (a
+    // compilation-unit import does not eagerly flood every package). Then
+    // re-index its contents to include any pulled-in dependencies.
+    std::list<AST::Node::Ptr> packages;
+    find_nodes(source, AST::NodeType::Package, packages);
+
+    const std::list<AST::Node::Ptr> no_extra_imports;
+    for(const AST::Node::Ptr &p : packages) {
+        const auto &pkg = AST::cast_to<AST::Package>(p);
+        if(process_scope(pkg->get_items(), p, no_extra_imports) != 0) {
+            return 1;
+        }
+        // Re-index contents from the resolved body (own decls + pulled-in deps).
+        // The interface (`symbols`) is left untouched — internal dependencies are
+        // not exported (ADR-0004 §9.4).
+        auto pit = m_packages.find(pkg->get_name());
+        if(pit != m_packages.end() && pkg->get_items()) {
+            pit->second.contents.clear();
+            for(const AST::Node::Ptr &item : *pkg->get_items()) {
+                std::string name;
+                if(node_decl_name(item, name)) {
+                    pit->second.contents[name] = item;
+                }
+            }
+        }
+    }
     return 0;
 }
 
@@ -355,9 +423,8 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
                                 << "' already in scope (rename to disambiguate)";
                             return 1;
                         }
-                    } else {
-                        copies.bound[name] = sit->second;
-                        copies.copies->push_back(sit->second->clone());
+                    } else if(copy_symbol(pkgname, name, copies) != 0) {
+                        return 1;
                     }
                     ref_clear_scope(node); // now a local reference
                 } else {
@@ -409,40 +476,62 @@ int PackageInliner::materialize_imports(const std::list<AST::Node::Ptr> &imports
             continue; // already diagnosed in process_scope
         }
 
+        const std::string &pkgname = imp->get_package();
         if(imp->get_symbol() == "*") {
-            // Eager wildcard copy (decision 1): bring in every symbol, skipping a
-            // local shadow or a name blocked by a multi-wildcard collision (the
-            // latter errors only if actually referenced).
+            // Eager wildcard copy (decision 1): bring in every interface symbol,
+            // skipping a local shadow or a name blocked by a multi-wildcard
+            // collision (the latter errors only if actually referenced).
             for(const auto &kv : pit->second.symbols) {
                 bool ambiguous = false;
                 const ScopeTable::Binding *b = table.lookup(kv.first, &ambiguous);
                 if(ambiguous || (b && b->origin == ScopeTable::Origin::Local)) {
                     continue;
                 }
-                if(ensure_copied(kv.first, kv.second, copies) != 0) {
+                if(copy_symbol(pkgname, kv.first, copies) != 0) {
                     return 1;
                 }
             }
-        } else {
-            auto sit = pit->second.symbols.find(imp->get_symbol());
-            if(sit != pit->second.symbols.end()) {
-                if(ensure_copied(imp->get_symbol(), sit->second, copies) != 0) {
-                    return 1;
-                }
+        } else if(pit->second.symbols.count(imp->get_symbol())) {
+            if(copy_symbol(pkgname, imp->get_symbol(), copies) != 0) {
+                return 1;
             }
         }
     }
     return 0;
 }
 
-int PackageInliner::ensure_copied(const std::string &name, const AST::Node::Ptr &decl,
-                                  ScopeCopies &copies)
+int PackageInliner::copy_symbol(const std::string &pkgname, const std::string &name,
+                                ScopeCopies &copies)
 {
     if(copies.bound.count(name)) {
         return 0; // a local shadow, or already copied for this scope
     }
-    copies.bound[name] = decl;
-    copies.copies->push_back(decl->clone());
+    auto pit = m_packages.find(pkgname);
+    if(pit == m_packages.end()) {
+        return 0; // package validated by the caller; defensive
+    }
+    auto cit = pit->second.contents.find(name);
+    if(cit == pit->second.contents.end()) {
+        return 0; // symbol validated by the caller; defensive
+    }
+
+    // Clone the declaration and bind the name first (dedup / cycle guard), then
+    // copy the same-package symbols it transitively depends on (ADR-0004 §9.3),
+    // and splice the dependencies BEFORE this declaration so the output reads
+    // declared-before-use.
+    const AST::Node::Ptr clone = cit->second->clone();
+    copies.bound[name] = cit->second;
+
+    std::set<std::string> refs;
+    collect_unqualified_names(clone, refs);
+    for(const std::string &ref : refs) {
+        if(ref != name && pit->second.contents.count(ref) && !copies.bound.count(ref)) {
+            if(copy_symbol(pkgname, ref, copies) != 0) {
+                return 1;
+            }
+        }
+    }
+    copies.copies->push_back(clone);
     return 0;
 }
 
