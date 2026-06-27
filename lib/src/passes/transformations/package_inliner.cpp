@@ -413,7 +413,7 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
                     // A qualified reference must bind to the package's declaration.
                     // If the name is already bound to a *different* declaration (a
                     // local, or another import), localizing it would silently
-                    // rebind — reject instead (ADR-0004 §A item 3).
+                    // rebind it to the wrong one — reject instead.
                     auto bit = copies.bound.find(name);
                     if(bit != copies.bound.end()) {
                         if(bit->second != sit->second) {
@@ -469,32 +469,37 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
 int PackageInliner::materialize_imports(const std::list<AST::Node::Ptr> &imports,
                                         const ScopeTable &table, ScopeCopies &copies)
 {
+    // Gather the candidate names: every explicitly-imported name and every
+    // interface symbol of every wildcard-imported package.
+    std::set<std::string> candidates;
     for(const AST::Node::Ptr &item : imports) {
         const auto &imp = AST::cast_to<AST::Import>(item);
         auto pit = m_packages.find(imp->get_package());
         if(pit == m_packages.end()) {
             continue; // already diagnosed in process_scope
         }
-
-        const std::string &pkgname = imp->get_package();
         if(imp->get_symbol() == "*") {
-            // Eager wildcard copy (decision 1): bring in every interface symbol,
-            // skipping a local shadow or a name blocked by a multi-wildcard
-            // collision (the latter errors only if actually referenced).
             for(const auto &kv : pit->second.symbols) {
-                bool ambiguous = false;
-                const ScopeTable::Binding *b = table.lookup(kv.first, &ambiguous);
-                if(ambiguous || (b && b->origin == ScopeTable::Origin::Local)) {
-                    continue;
-                }
-                if(copy_symbol(pkgname, kv.first, copies) != 0) {
-                    return 1;
-                }
+                candidates.insert(kv.first);
             }
-        } else if(pit->second.symbols.count(imp->get_symbol())) {
-            if(copy_symbol(pkgname, imp->get_symbol(), copies) != 0) {
-                return 1;
-            }
+        } else {
+            candidates.insert(imp->get_symbol());
+        }
+    }
+
+    // Eager copy: bring each candidate in, but copy the binding the ScopeTable
+    // resolves it to, so the IEEE 1800-2017 §26.5 precedence holds — a local
+    // shadows (already present, skip), an explicit import shadows a wildcard one,
+    // and a name blocked by a multi-wildcard collision is skipped (it errors only
+    // if actually referenced).
+    for(const std::string &name : candidates) {
+        bool ambiguous = false;
+        const ScopeTable::Binding *b = table.lookup(name, &ambiguous);
+        if(ambiguous || !b || b->origin == ScopeTable::Origin::Local) {
+            continue;
+        }
+        if(copy_symbol(b->package, name, copies) != 0) {
+            return 1;
         }
     }
     return 0;

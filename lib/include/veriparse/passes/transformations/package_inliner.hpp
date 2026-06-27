@@ -36,8 +36,8 @@ namespace Transformations
  *     imports, and qualified references (`pkg::X`);
  *   - covers the synthesizable subset (`parameter`, `localparam`, `typedef`,
  *     `enum`, constant `function`, `task`);
- *   - wildcard imports are eager (decision 1) — unused copies are removed by the
- *     existing DeadcodeElimination pass.
+ *   - wildcard imports are eager — every candidate name is copied in, and the
+ *     existing DeadcodeElimination pass removes the unused ones.
  *
  * Compilation units. A `package` name is global across the whole design (§26.2),
  * but `import` directives, `$unit` declarations and macros are scoped to a single
@@ -129,7 +129,9 @@ private:
                      const ScopeTable &table, ScopeCopies &copies);
 
     /// Eagerly copy every explicitly/wildcard-imported declaration into the
-    /// scope (decision 1), skipping local shadows and multi-wildcard conflicts.
+    /// scope, copying the binding name resolution selects so that an explicit
+    /// import shadows a wildcard one; local shadows and multi-wildcard conflicts
+    /// are skipped.
     int materialize_imports(const std::list<AST::Node::Ptr> &imports, const ScopeTable &table,
                             ScopeCopies &copies);
 

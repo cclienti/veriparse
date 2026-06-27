@@ -90,6 +90,9 @@ TEST(PassesTransformation_PackageInliner, package_inliner_dep) { TEST_CORE_SV; }
 // Package imports package: P2 uses P1::A in B; resolving P2 as a scope makes it
 // self-contained, and the module copying P2::B pulls A too (§9.2 + §9.3).
 TEST(PassesTransformation_PackageInliner, package_inliner_pkgdep) { TEST_CORE_SV; }
+// Precedence: an explicit `import p2::X` shadows the wildcard `import p1::*`, so
+// X resolves to p2's X, not p1's (IEEE 1800-2017 §26.5).
+TEST(PassesTransformation_PackageInliner, package_inliner_shadow) { TEST_CORE_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
