@@ -361,10 +361,14 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
                     }
                     ref_clear_scope(node); // now a local reference
                 } else {
-                    // Not a package nor `$unit`: a class scope (IEEE 1800-2017
-                    // §8.18) — outside the PackageInliner remit (ADR-0004 §8).
-                    LOG_WARNING_N(node) << "scoped reference '" << pkgname << "::" << name
-                                        << "' left unresolved (not a package or $unit)";
+                    // Not a known package nor `$unit`. In the synthesizable subset
+                    // this is a missing package, or one whose unit is compiled
+                    // later (§26.3) — a class scope (§8.18) is out of scope. Hard
+                    // error rather than a silent unresolved reference.
+                    LOG_ERROR_N(node) << "scoped reference '" << pkgname << "::" << name
+                                      << "' to an unknown package (undeclared, or its unit is "
+                                      << "compiled later — §26.3)";
+                    return 1;
                 }
             } else {
                 // Multi-segment `A::B::T` is a class-scope chain (§8.18), not
