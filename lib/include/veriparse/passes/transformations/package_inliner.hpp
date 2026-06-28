@@ -9,6 +9,7 @@
 
 #include <list>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -118,8 +119,11 @@ private:
 
     /// Fold a package's re-exports (`export pkg::*;`, …) into its interface
     /// `symbols`, from what it actually imported into `contents` (IEEE 1800-2017
-    /// §26.6). Errors on an explicit export of a name that was not imported.
-    int fold_exports(const AST::Node::Ptr &package, PackageEntry &entry);
+    /// §26.6). An explicit `export pkg::name` of a wildcard-imported-but-unused
+    /// name (pkg ∈ `wildcard_pkgs`) forces its import; a name that is not a
+    /// candidate for import (pkg not wildcard-imported) is an error.
+    int fold_exports(const AST::Node::Ptr &package, PackageEntry &entry,
+                     const std::set<std::string> &wildcard_pkgs);
 
     /// Resolve one importing scope: build its ScopeTable from the scope's own
     /// imports plus `extra_imports` (the compilation-unit imports), rewrite

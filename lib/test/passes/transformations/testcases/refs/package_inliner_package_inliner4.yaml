@@ -62,28 +62,6 @@ Source:
           items:
           - Param:
               filename: ../test/passes/transformations/testcases/package_inliner4.sv
-              line: 4
-              is_local: true
-              name: UDEPTH
-              value:
-                Rvalue:
-                  filename: ../test/passes/transformations/testcases/package_inliner4.sv
-                  line: 4
-                  var:
-                    IntConstN:
-                      filename: ../test/passes/transformations/testcases/package_inliner4.sv
-                      line: 4
-                      base: 10
-                      size: -1
-                      sign: false
-                      value: 7
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/package_inliner4.sv
-                  line: 4
-                  signing: NONE
-          - Param:
-              filename: ../test/passes/transformations/testcases/package_inliner4.sv
               line: 3
               is_local: true
               name: UWIDTH
@@ -103,6 +81,28 @@ Source:
                 ImplicitType:
                   filename: ../test/passes/transformations/testcases/package_inliner4.sv
                   line: 3
+                  signing: NONE
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner4.sv
+              line: 4
+              is_local: true
+              name: UDEPTH
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner4.sv
+                  line: 4
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/package_inliner4.sv
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 7
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner4.sv
+                  line: 4
                   signing: NONE
           - Param:
               filename: ../test/passes/transformations/testcases/package_inliner4.sv

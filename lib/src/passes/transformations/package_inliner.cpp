@@ -225,6 +225,9 @@ void PackageInliner::build_unit_scope(const AST::Node::Ptr &source)
             }
         }
     }
+    // `$unit` is never resolved as a body, so mirror its interface into contents
+    // (the source `copy_symbol` reads when a `$unit::x` reference pulls it in).
+    unit.contents = unit.symbols;
     m_packages[UNIT_SCOPE] = unit;
 }
 
@@ -289,6 +292,19 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
     const std::list<AST::Node::Ptr> no_extra_imports;
     for(const AST::Node::Ptr &p : packages) {
         const auto &pkg = AST::cast_to<AST::Package>(p);
+
+        // Capture the wildcard-imported packages before process_scope strips the
+        // imports — an explicit `export pkg::name` may force-import from one.
+        std::set<std::string> wildcard_pkgs;
+        if(pkg->get_items()) {
+            for(const AST::Node::Ptr &item : *pkg->get_items()) {
+                if(item->is_node_type(AST::NodeType::Import) &&
+                   AST::cast_to<AST::Import>(item)->get_symbol() == "*") {
+                    wildcard_pkgs.insert(AST::cast_to<AST::Import>(item)->get_package());
+                }
+            }
+        }
+
         if(process_scope(pkg->get_items(), p, no_extra_imports) != 0) {
             return 1;
         }
@@ -308,7 +324,7 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
         }
 
         // Fold re-exports into the interface, then strip the export nodes.
-        if(fold_exports(p, pit->second) != 0) {
+        if(fold_exports(p, pit->second, wildcard_pkgs) != 0) {
             return 1;
         }
         const AST::Node::ListPtr items = pkg->get_items();
@@ -319,7 +335,8 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
     return 0;
 }
 
-int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &entry)
+int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &entry,
+                                 const std::set<std::string> &wildcard_pkgs)
 {
     // A re-export makes names the package imported visible to its importers, by
     // adding them to the interface (`symbols`). The names are taken from the
@@ -355,14 +372,40 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
                 }
             }
         } else {
-            // `export pkg::name;` — error if it was not actually imported (§26.6).
+            // `export pkg::name;`. If already imported, just expose it. Otherwise
+            // the explicit export *forces* the import from pkg (§26.6: "the export
+            // shall be considered to be a reference and shall import the
+            // declaration"); error only if pkg has no such symbol.
             auto cit = entry.contents.find(sym);
-            if(cit == entry.contents.end()) {
-                LOG_ERROR_N(exp) << "export of '" << pkgname << "::" << sym
-                                 << "' which the package did not import (§26.6)";
-                return 1;
+            if(cit != entry.contents.end()) {
+                entry.symbols[sym] = cit->second;
+            } else {
+                // Not yet imported: legal only if pkg is wildcard-imported (so sym
+                // is a candidate) and pkg actually has it — then the export forces
+                // the import. Otherwise it is an error (§26.6).
+                auto qit = m_packages.find(pkgname);
+                if(!wildcard_pkgs.count(pkgname) || qit == m_packages.end() ||
+                   !qit->second.contents.count(sym)) {
+                    LOG_ERROR_N(exp) << "export of '" << pkgname << "::" << sym
+                                     << "' which is not a candidate for import (§26.6)";
+                    return 1;
+                }
+                // Force-import sym (and its same-package deps) into the package.
+                ScopeCopies forced;
+                forced.copies = std::make_shared<AST::Node::List>();
+                forced.bound = entry.contents; // dedup against what is already in
+                if(copy_symbol(pkgname, sym, forced) != 0) {
+                    return 1;
+                }
+                items->insert(items->begin(), forced.copies->begin(), forced.copies->end());
+                for(const AST::Node::Ptr &copied : *forced.copies) {
+                    std::string name;
+                    if(node_decl_name(copied, name)) {
+                        entry.contents[name] = copied;
+                    }
+                }
+                entry.symbols[sym] = entry.contents[sym];
             }
-            entry.symbols[sym] = cit->second;
         }
     }
     return 0;
@@ -505,13 +548,22 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
                 return 1;
             }
         } else {
-            // Unqualified: a multi-wildcard collision is an error only here, on use.
+            // Unqualified: resolve against the scope's imports. A multi-wildcard
+            // collision is an error only here, on use (§26.5).
             bool ambiguous = false;
-            table.lookup(name, &ambiguous);
+            const ScopeTable::Binding *b = table.lookup(name, &ambiguous);
             if(ambiguous) {
                 LOG_ERROR_N(node) << "ambiguous reference to '" << name
                                   << "' (imported by several packages via wildcard)";
                 return 1;
+            }
+            // A wildcard import is lazy: a name is "actually imported" only when
+            // referenced (§26.5/§26.6), so copy it here, on use. (Local and
+            // explicit-import names are already present in the scope.)
+            if(b && b->origin == ScopeTable::Origin::WildcardImport) {
+                if(copy_symbol(b->package, name, copies) != 0) {
+                    return 1;
+                }
             }
         }
     }
@@ -528,36 +580,22 @@ int PackageInliner::rewrite_refs(const AST::Node::Ptr &node, const AST::Node::Pt
 int PackageInliner::materialize_imports(const std::list<AST::Node::Ptr> &imports,
                                         const ScopeTable &table, ScopeCopies &copies)
 {
-    // Gather the candidate names: every explicitly-imported name and every
-    // interface symbol of every wildcard-imported package.
-    std::set<std::string> candidates;
+    // Only explicit imports (`import pkg::x;`) are materialized here: an explicit
+    // import is "actually imported" regardless of use (§26.6). Wildcard imports
+    // are lazy — a wildcard name is copied on use, in rewrite_refs (§26.5).
     for(const AST::Node::Ptr &item : imports) {
         const auto &imp = AST::cast_to<AST::Import>(item);
-        auto pit = m_packages.find(imp->get_package());
-        if(pit == m_packages.end()) {
-            continue; // already diagnosed in process_scope
-        }
         if(imp->get_symbol() == "*") {
-            for(const auto &kv : pit->second.symbols) {
-                candidates.insert(kv.first);
-            }
-        } else {
-            candidates.insert(imp->get_symbol());
+            continue; // wildcard: lazy
         }
-    }
-
-    // Eager copy: bring each candidate in, but copy the binding the ScopeTable
-    // resolves it to, so the IEEE 1800-2017 §26.5 precedence holds — a local
-    // shadows (already present, skip), an explicit import shadows a wildcard one,
-    // and a name blocked by a multi-wildcard collision is skipped (it errors only
-    // if actually referenced).
-    for(const std::string &name : candidates) {
+        // Copy the binding the ScopeTable resolves the name to, so a local
+        // declaration of the same name still shadows the explicit import.
         bool ambiguous = false;
-        const ScopeTable::Binding *b = table.lookup(name, &ambiguous);
+        const ScopeTable::Binding *b = table.lookup(imp->get_symbol(), &ambiguous);
         if(ambiguous || !b || b->origin == ScopeTable::Origin::Local) {
             continue;
         }
-        if(copy_symbol(b->package, name, copies) != 0) {
+        if(copy_symbol(b->package, imp->get_symbol(), copies) != 0) {
             return 1;
         }
     }

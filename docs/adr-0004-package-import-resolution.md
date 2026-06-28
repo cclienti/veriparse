@@ -44,10 +44,17 @@ symbol}` (`symbol == "*"` ⇒ wildcard), and every scoped reference left
 
 ## 2. Decisions (carried from the design notes, re-affirmed)
 
-1. **Wildcard imports are eager.** `import pkg::*;` copies every visible
-   synthesizable item from the package into the importing scope; the existing
-   `DeadcodeElimination` removes what goes unused. Trades a little output bloat for
-   a much simpler implementation than lazy on-demand resolution.
+1. **Wildcard imports are lazy; explicit imports are eager** (revised — the
+   original "wildcard is eager" decision was reversed). Per §26.5/§26.6 a wildcard
+   name is *actually imported* only when **referenced**, whereas an explicit
+   `import pkg::x;` is actually imported regardless of use. So `import pkg::*;`
+   copies only the names the scope references (on use, in `rewrite_refs`), while
+   `import pkg::x;` is materialized unconditionally. The original eager-wildcard
+   choice (justified as "simpler") proved both *less* correct (it over-imported,
+   over-exported, and broke §26.5 precedence — fixed) and not simpler: lazy is the
+   standard's own model and `rewrite_refs` already resolves references, so it falls
+   out naturally. Bonus: no reliance on `DeadcodeElimination` to remove unused
+   imports, and far less output bloat.
 2. **Packages share the input list.** Package files are passed on the command line
    alongside module files — no `--package` flag. Cross-file resolution happens in
    the pass.
@@ -245,6 +252,8 @@ imports both a package and its re-exporter (e.g. `import P1::*; import P2::*;`
 where P2 re-exports P1's `x`) currently treats `x` as offered by two wildcards and
 **false-flags it ambiguous on use**. Full conformance needs **origin-dedup**:
 tag each interface symbol with its original `pkg::name` and treat same-origin
-multi-path bindings as one. Bookkeeping, not a redesign — deferred (§8). (The
-eager-wildcard model also re-exports the full wildcard set rather than only the
-referenced names, consistent with the eager decision in §2.1.)
+multi-path bindings as one. Bookkeeping, not a redesign — deferred (§8).
+
+(A second deviation — re-exporting the *full* wildcard set rather than only the
+referenced names — was **fixed** by making wildcard imports lazy (§2.1): a
+package now imports, and therefore re-exports, only the names it references.)
