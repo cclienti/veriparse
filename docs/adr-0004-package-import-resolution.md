@@ -54,15 +54,16 @@ symbol}` (`symbol == "*"` ⇒ wildcard), and every scoped reference left
 3. **Synthesizable subset only.** Resolvable package items: `parameter`,
    `localparam`, `typedef`, `enum`, constant `function`, `task`. Out of scope:
    `class`, `covergroup`, `sequence`, `property`, virtual interfaces.
-4. **Re-export — planned (a future session), not yet wired.** `export pkg::*;` /
-   `export pkg::sym;` is currently rejected at parse time with a clear diagnostic.
-   It is **no longer considered out of scope** (this reverses the original
-   decision): the parser already parses the syntax (it only `error()`s on the
-   reduction), and resolution is a **symbol-table fold** — the exporter's
-   *interface* set gains the re-exported package's symbols, in dependency order,
-   with cycles still forbidden (§26). The real work is the *interface-vs-contents*
-   split that §9 introduces for package-body resolution anyway; once that lands,
-   re-export is a small rider on it. Tracked for a dedicated session.
+4. **Re-export — implemented** (reverses the original "rejected" decision).
+   `export pkg::sym;` / `export pkg::*;` / `export *::*;` (§26.6) parse to a new
+   `Export` AST node; `fold_exports()` adds the re-exported names — taken from the
+   package's `contents` (what it actually imported) — into its interface
+   `symbols`, in declaration order so chained re-exports see the full interface;
+   the export nodes are then stripped. An explicit `export pkg::name` of a name
+   the package never imported is a hard error. **Known deviation** (§9.5):
+   importing both a package and its re-exporter (the same original declaration)
+   currently false-flags ambiguity, where §26.6 says it should not — origin-dedup
+   is a follow-up. Cycles remain forbidden (§26).
 5. **Output is stripped.** Flattened output contains no `package`/`endpackage` and
    no `import` — the same way modules are flattened today.
 
@@ -172,8 +173,8 @@ when its grammar/pass lands.
 
 ## 8. Out of scope (future ADRs / sessions)
 
-- **Re-export** (`export pkg::*;`) — **planned for a dedicated session** (§2.4); the
-  interface-vs-contents split (§9.4) is the enabling work.
+- **Re-export same-declaration origin-dedup** (§9.5) — the only remaining §26.6
+  gap now that re-export itself is implemented (§2.4).
 - The **broad name-resolution engine** that generalizes `ScopeTable` (§6) and drives
   the remaining ADR-0003 deferrals.
 - Non-synthesizable package members (`class`, `covergroup`, …).
@@ -229,9 +230,21 @@ case.)
 Once §9.2/§9.3 pull dependencies **into** a package, two sets diverge and must be
 kept distinct:
 - **interface** — what `import P::*` / `P::x` exposes = P's own declarations
-  (**plus re-exports**, §2.4 when wired);
+  **plus re-exports** (§2.4);
 - **contents** — everything physically in P, including dependencies pulled in for
   P's own internal use.
 
 `export` writes to the *interface*; the transitive copy reads the *contents*. Without
 the split, P would over-export every dependency it imported.
+
+### 9.5 Re-export deviation — same-declaration origin
+§26.6: *"import of a declaration by way of multiple exported paths does not cause
+conflicts"* — the same original declaration reached via two paths is not a
+conflict. `ScopeTable` keys ambiguity by *source-package name*, so a scope that
+imports both a package and its re-exporter (e.g. `import P1::*; import P2::*;`
+where P2 re-exports P1's `x`) currently treats `x` as offered by two wildcards and
+**false-flags it ambiguous on use**. Full conformance needs **origin-dedup**:
+tag each interface symbol with its original `pkg::name` and treat same-origin
+multi-path bindings as one. Bookkeeping, not a redesign — deferred (§8). (The
+eager-wildcard model also re-exports the full wildcard set rather than only the
+referenced names, consistent with the eager decision in §2.1.)
