@@ -20,6 +20,7 @@ enum class NodeType
     Port,
     Package,
     Import,
+    Export,
     Identifier,
     Call,
     Constant,

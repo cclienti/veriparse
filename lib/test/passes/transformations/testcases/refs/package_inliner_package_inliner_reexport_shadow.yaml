@@ -1,0 +1,113 @@
+Source:
+  filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+          line: 14
+          name: package_inliner_reexport_shadow
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+              line: 15
+              name: dout
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                  line: 15
+                  is_vectored: false
+                  is_scalared: false
+                  name: dout
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                      line: 15
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                          line: 15
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                              line: 15
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                              line: 15
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+              line: 19
+              is_local: true
+              name: A
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                  line: 19
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                      line: 19
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                  line: 19
+                  signing: NONE
+          - Assign:
+              filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+              line: 21
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                  line: 21
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                      line: 21
+                      name: dout
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                  line: 21
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_reexport_shadow.sv
+                      line: 21
+                      name: A
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

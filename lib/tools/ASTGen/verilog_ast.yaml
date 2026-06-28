@@ -100,6 +100,17 @@ Import:
     symbol: "std::string"  # imported item; "*" for a wildcard import
   children:
 
+# Package re-export (`export pkg::sym;`, `export pkg::*;`, `export *::*;`, IEEE
+# 1800-2017 §26.6). Same shape as Import; `package`/`symbol` are "*" for the
+# wildcard forms. A re-export makes the names a package imported visible to
+# subsequent imports of that package; PackageInliner folds them into the
+# package's export interface and strips the node.
+Export:
+  properties:
+    package: "std::string" # package name, left of :: ("*" for export *::*)
+    symbol: "std::string"  # exported item; "*" for a wildcard export
+  children:
+
 #####################################################################
 # Identifiers and constants
 #####################################################################

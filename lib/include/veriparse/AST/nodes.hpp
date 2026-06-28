@@ -12,6 +12,7 @@
 #include <veriparse/AST/port.hpp>
 #include <veriparse/AST/package.hpp>
 #include <veriparse/AST/import.hpp>
+#include <veriparse/AST/export.hpp>
 #include <veriparse/AST/identifier.hpp>
 #include <veriparse/AST/call.hpp>
 #include <veriparse/AST/constant.hpp>

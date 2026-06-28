@@ -35,6 +35,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Import:
         os << static_cast<const AST::Import &>(p);
         break;
+    case NodeType::Export:
+        os << static_cast<const AST::Export &>(p);
+        break;
     case NodeType::Identifier:
         os << static_cast<const AST::Identifier &>(p);
         break;

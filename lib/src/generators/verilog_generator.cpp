@@ -189,6 +189,23 @@ std::string VerilogGenerator::render_import(const AST::Import::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_export(const AST::Export::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        const std::string package = node->get_package();
+        const std::string symbol = node->get_symbol();
+        // "*" is the wildcard token for either side (`export *::*;`); every other
+        // package/symbol is an identifier.
+        result = "export ";
+        result += (package == "*") ? package : StringUtils::escape(package);
+        result += "::";
+        result += (symbol == "*") ? symbol : StringUtils::escape(symbol);
+        result += ";";
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_port(const AST::Port::Ptr node) const
 {
     std::string result;

@@ -21,6 +21,7 @@ class VerilogGenerator : public GeneratorBase<std::string>
     virtual std::string render_module(const AST::Module::Ptr node) const;
     virtual std::string render_package(const AST::Package::Ptr node) const;
     virtual std::string render_import(const AST::Import::Ptr node) const;
+    virtual std::string render_export(const AST::Export::Ptr node) const;
     virtual std::string render_port(const AST::Port::Ptr node) const;
 
     // Value name references and the `::` / `.` axes.

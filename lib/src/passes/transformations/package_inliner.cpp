@@ -296,14 +296,73 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
         // The interface (`symbols`) is left untouched — internal dependencies are
         // not exported (ADR-0004 §9.4).
         auto pit = m_packages.find(pkg->get_name());
-        if(pit != m_packages.end() && pkg->get_items()) {
-            pit->second.contents.clear();
-            for(const AST::Node::Ptr &item : *pkg->get_items()) {
-                std::string name;
-                if(node_decl_name(item, name)) {
-                    pit->second.contents[name] = item;
+        if(pit == m_packages.end() || !pkg->get_items()) {
+            continue;
+        }
+        pit->second.contents.clear();
+        for(const AST::Node::Ptr &item : *pkg->get_items()) {
+            std::string name;
+            if(node_decl_name(item, name)) {
+                pit->second.contents[name] = item;
+            }
+        }
+
+        // Fold re-exports into the interface, then strip the export nodes.
+        if(fold_exports(p, pit->second) != 0) {
+            return 1;
+        }
+        const AST::Node::ListPtr items = pkg->get_items();
+        for(auto it = items->begin(); it != items->end();) {
+            it = (*it)->is_node_type(AST::NodeType::Export) ? items->erase(it) : std::next(it);
+        }
+    }
+    return 0;
+}
+
+int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &entry)
+{
+    // A re-export makes names the package imported visible to its importers, by
+    // adding them to the interface (`symbols`). The names are taken from the
+    // package's `contents` — what it actually imported (§26.6). Process in
+    // declaration order so a re-export of an already-re-exporting package sees
+    // its full interface (chained re-exports).
+    const AST::Node::ListPtr items = AST::cast_to<AST::Package>(package)->get_items();
+    if(!items) {
+        return 0;
+    }
+    for(const AST::Node::Ptr &item : *items) {
+        if(!item->is_node_type(AST::NodeType::Export)) {
+            continue;
+        }
+        const auto &exp = AST::cast_to<AST::Export>(item);
+        const std::string &pkgname = exp->get_package();
+        const std::string &sym = exp->get_symbol();
+
+        if(pkgname == "*") {
+            // `export *::*;` — re-export everything the package imported.
+            for(const auto &kv : entry.contents) {
+                entry.symbols[kv.first] = kv.second;
+            }
+        } else if(sym == "*") {
+            // `export pkg::*;` — re-export the names actually imported from pkg.
+            auto qit = m_packages.find(pkgname);
+            if(qit != m_packages.end()) {
+                for(const auto &kv : qit->second.symbols) {
+                    auto cit = entry.contents.find(kv.first);
+                    if(cit != entry.contents.end()) {
+                        entry.symbols[kv.first] = cit->second;
+                    }
                 }
             }
+        } else {
+            // `export pkg::name;` — error if it was not actually imported (§26.6).
+            auto cit = entry.contents.find(sym);
+            if(cit == entry.contents.end()) {
+                LOG_ERROR_N(exp) << "export of '" << pkgname << "::" << sym
+                                 << "' which the package did not import (§26.6)";
+                return 1;
+            }
+            entry.symbols[sym] = cit->second;
         }
     }
     return 0;

@@ -66,6 +66,9 @@ public:
             case AST::NodeType::Import:
                 return render_import(AST::cast_to<AST::Import>(node));
 
+            case AST::NodeType::Export:
+                return render_export(AST::cast_to<AST::Export>(node));
+
             case AST::NodeType::Identifier:
                 return render_identifier(AST::cast_to<AST::Identifier>(node));
 
@@ -628,6 +631,14 @@ public:
      * @see GeneratorBase::render_import(const AST::Import::Ptr &node)
      */
     T render(const AST::Import::Ptr node) const { return render_import(node); }
+
+    /**
+     * Main rendering method for the Export node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_export(const AST::Export::Ptr &node)
+     */
+    T render(const AST::Export::Ptr node) const { return render_export(node); }
 
     /**
      * Main rendering method for the Identifier node, we
@@ -2016,6 +2027,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_import(const AST::Import::Ptr node) const { return T(); }
+
+    /**
+     * Render the Export node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_export(const AST::Export::Ptr node) const { return T(); }
 
     /**
      * Render the Identifier node. This method must be
