@@ -1,0 +1,196 @@
+Source:
+  filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+          line: 10
+          name: package_inliner_task
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+              line: 11
+              name: dout
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                  line: 11
+                  is_vectored: false
+                  is_scalared: false
+                  name: dout
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                      line: 11
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                          line: 11
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                              line: 11
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                              line: 11
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Task:
+              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+              line: 3
+              name: clearit
+              lifetime: AUTOMATIC
+              statements:
+              - Port:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                  line: 4
+                  name: y
+                  direction: OUTPUT
+                  decl:
+                    ImplicitNet:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                      line: 4
+                      is_vectored: false
+                      is_scalared: false
+                      name: y
+                      cont_assign:
+                        Rvalue: null
+                      strength:
+                        Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                      type:
+                        IntegerType:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                          line: 4
+                          signing: NONE
+                  expr: null
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                  line: 5
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                      line: 5
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                          line: 5
+                          name: y
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                      line: 5
+                      var:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Var:
+              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+              line: 15
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: v
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                  line: 15
+                  signing: NONE
+          - Initial:
+              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+              line: 17
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                  line: 17
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                      line: 18
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                          line: 18
+                          name: clearit
+                          args:
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                              line: 18
+                              name: v
+                              hier:
+                                HierName: null
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                      line: 19
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                          line: 19
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                              line: 19
+                              name: dout
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                          line: 19
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task.sv
+                              line: 19
+                              name: v
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
