@@ -96,6 +96,11 @@ TEST(PassesTransformation_PackageInliner, package_inliner_shadow) { TEST_CORE_SV
 // Lazy wildcard: only the referenced name (USED) is imported; UNUSED is not
 // copied in (§26.5 — a wildcard name is imported only when referenced).
 TEST(PassesTransformation_PackageInliner, package_inliner_lazy) { TEST_CORE_SV; }
+// The synthesizable subset beyond params: an enum typedef, and a function
+// (called via a wildcard import, pulling its localparam dependency).
+TEST(PassesTransformation_PackageInliner, package_inliner_func) { TEST_CORE_SV; }
+// A package task, copied in and its call resolved.
+TEST(PassesTransformation_PackageInliner, package_inliner_task) { TEST_CORE_SV; }
 // Re-export: P2 re-exports P1, a module imports P2 and uses P1's A (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport) { TEST_CORE_SV; }
 // A module-local declaration shadows a re-exported name (§26.5 + §26.6).
