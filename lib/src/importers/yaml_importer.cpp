@@ -79,6 +79,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["Import"]) {
             return convert_import(node["Import"]);
         }
+        if(node["Export"]) {
+            return convert_export(node["Export"]);
+        }
         if(node["Identifier"]) {
             return convert_identifier(node["Identifier"]);
         }
@@ -1131,6 +1134,52 @@ AST::Node::Ptr YAMLImporter::convert_import(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::Import>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_export(const YAML::Node node) const
+{
+    AST::Export::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Export>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Export>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property package
+        if(node["package"]) {
+            if(node["package"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Export>();
+                }
+                result->set_package(node["package"].as<std::string>());
+            }
+        }
+        // Manage property symbol
+        if(node["symbol"]) {
+            if(node["symbol"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Export>();
+                }
+                result->set_symbol(node["symbol"].as<std::string>());
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Export>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_identifier(const YAML::Node node) const

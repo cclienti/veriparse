@@ -29,6 +29,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "Package";
     case NodeType::Import:
         return "Import";
+    case NodeType::Export:
+        return "Export";
     case NodeType::Identifier:
         return "Identifier";
     case NodeType::Call:

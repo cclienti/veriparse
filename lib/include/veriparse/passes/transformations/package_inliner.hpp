@@ -116,6 +116,11 @@ private:
     /// imports and uses another self-contained before any module copies from it.
     int resolve_packages(const AST::Node::Ptr &source);
 
+    /// Fold a package's re-exports (`export pkg::*;`, …) into its interface
+    /// `symbols`, from what it actually imported into `contents` (IEEE 1800-2017
+    /// §26.6). Errors on an explicit export of a name that was not imported.
+    int fold_exports(const AST::Node::Ptr &package, PackageEntry &entry);
+
     /// Resolve one importing scope: build its ScopeTable from the scope's own
     /// imports plus `extra_imports` (the compilation-unit imports), rewrite
     /// references, materialize imported declarations, strip imports, splice in.

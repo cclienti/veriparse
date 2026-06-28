@@ -245,6 +245,27 @@ TEST(YAMLImporter, Import)
     ASSERT_TRUE(yaml["Import"]["symbol"].as<std::string>() == "plsgqejeyd");
 }
 
+TEST(YAMLImporter, Export)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Export.log");
+    Logger::add_stderr_sink();
+    std::string str("Export:\n"
+                    "  filename: export.v\n"
+                    "  line: 6\n"
+                    "  package: mynbiqpmzj\n"
+                    "  symbol: plsgqejeyd\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Export"]);
+    ASSERT_TRUE(yaml["Export"]["filename"].as<std::string>() == "export.v");
+    ASSERT_TRUE(yaml["Export"]["line"].as<int>() == 6);
+    ASSERT_TRUE(yaml["Export"]["package"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Export"]["symbol"].as<std::string>() == "plsgqejeyd");
+}
+
 TEST(YAMLImporter, Identifier)
 {
     Logger::remove_all_sinks();

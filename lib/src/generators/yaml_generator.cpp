@@ -300,6 +300,26 @@ YAML::Node YAMLGenerator::render_import(const AST::Import::Ptr node) const
     return node_import;
 }
 
+YAML::Node YAMLGenerator::render_export(const AST::Export::Ptr node) const
+{
+    YAML::Node node_export;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Export) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["package"] = node->get_package();
+        content["symbol"] = node->get_symbol();
+    }
+
+    node_export["Export"] = content;
+    return node_export;
+}
+
 YAML::Node YAMLGenerator::render_identifier(const AST::Identifier::Ptr node) const
 {
     YAML::Node node_identifier;

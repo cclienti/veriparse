@@ -773,18 +773,29 @@ import_decl:    TK_IMPORT import_list TK_SEMICOLON
         ;
 
 
-// Package re-export is intentionally rejected with a clear message (see the
-// import/package design notes); we parse the syntax only to diagnose it.
+// Package re-export (IEEE 1800-2017 §26.6). Reuse import_list's parsing and
+// convert each Import into an Export carrying the same package/symbol.
 export_decl:    TK_EXPORT import_list TK_SEMICOLON
                 {
-                    error(@1, "package export ('export pkg::...;') is not supported");
-                    $$ = std::make_shared<AST::Node::List>();
+                    auto list = std::make_shared<AST::Node::List>();
+                    for(const auto &n : *$2) {
+                        auto imp = AST::cast_to<AST::Import>(n);
+                        auto exp = std::make_shared<AST::Export>(scanner.get_filename(),
+                                                                 @1.begin.line);
+                        exp->set_package(imp->get_package());
+                        exp->set_symbol(imp->get_symbol());
+                        list->push_back(AST::to_node(exp));
+                    }
+                    $$ = list;
                 }
 
         |       TK_EXPORT TK_TIMES TK_COLONCOLON TK_TIMES TK_SEMICOLON
                 {
-                    error(@1, "package export ('export *::*;') is not supported");
+                    auto exp = std::make_shared<AST::Export>(scanner.get_filename(), @1.begin.line);
+                    exp->set_package("*");
+                    exp->set_symbol("*");
                     $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node(exp));
                 }
         ;
 

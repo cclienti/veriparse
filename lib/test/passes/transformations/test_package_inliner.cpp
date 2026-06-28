@@ -93,11 +93,17 @@ TEST(PassesTransformation_PackageInliner, package_inliner_pkgdep) { TEST_CORE_SV
 // Precedence: an explicit `import p2::X` shadows the wildcard `import p1::*`, so
 // X resolves to p2's X, not p1's (IEEE 1800-2017 §26.5).
 TEST(PassesTransformation_PackageInliner, package_inliner_shadow) { TEST_CORE_SV; }
+// Re-export: P2 re-exports P1, a module imports P2 and uses P1's A (§26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport) { TEST_CORE_SV; }
+// A module-local declaration shadows a re-exported name (§26.5 + §26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_shadow) { TEST_CORE_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_ambiguous) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_collision) { TEST_ERROR_SV; }
+// Re-export of a name the package never imported is an error (§26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_err) { TEST_ERROR_SV; }
 
 // Multi-source: a package defined in one file, referenced from a module in
 // another (the veriflat model — global collect, per-unit resolve). Proves a
