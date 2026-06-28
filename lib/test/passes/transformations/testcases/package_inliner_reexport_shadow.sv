@@ -6,7 +6,7 @@ endpackage
 
 package P2;
 
-  import P1::*;
+  import P1::A;
   export P1::*;
 
 endpackage

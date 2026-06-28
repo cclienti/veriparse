@@ -60,28 +60,6 @@ Source:
                               value: 0
               expr: null
           items:
-          - Param:
-              filename: ../test/passes/transformations/testcases/package_inliner3.sv
-              line: 3
-              is_local: true
-              name: AVAL
-              value:
-                Rvalue:
-                  filename: ../test/passes/transformations/testcases/package_inliner3.sv
-                  line: 3
-                  var:
-                    IntConstN:
-                      filename: ../test/passes/transformations/testcases/package_inliner3.sv
-                      line: 3
-                      base: 10
-                      size: -1
-                      sign: false
-                      value: 1
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/package_inliner3.sv
-                  line: 3
-                  signing: NONE
           - Typedef:
               filename: ../test/passes/transformations/testcases/package_inliner3.sv
               line: 9
@@ -112,6 +90,28 @@ Source:
                           size: -1
                           sign: false
                           value: 0
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner3.sv
+              line: 3
+              is_local: true
+              name: AVAL
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner3.sv
+                  line: 3
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/package_inliner3.sv
+                      line: 3
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 1
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner3.sv
+                  line: 3
+                  signing: NONE
           - Var:
               filename: ../test/passes/transformations/testcases/package_inliner3.sv
               line: 19

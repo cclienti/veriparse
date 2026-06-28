@@ -93,10 +93,16 @@ TEST(PassesTransformation_PackageInliner, package_inliner_pkgdep) { TEST_CORE_SV
 // Precedence: an explicit `import p2::X` shadows the wildcard `import p1::*`, so
 // X resolves to p2's X, not p1's (IEEE 1800-2017 §26.5).
 TEST(PassesTransformation_PackageInliner, package_inliner_shadow) { TEST_CORE_SV; }
+// Lazy wildcard: only the referenced name (USED) is imported; UNUSED is not
+// copied in (§26.5 — a wildcard name is imported only when referenced).
+TEST(PassesTransformation_PackageInliner, package_inliner_lazy) { TEST_CORE_SV; }
 // Re-export: P2 re-exports P1, a module imports P2 and uses P1's A (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport) { TEST_CORE_SV; }
 // A module-local declaration shadows a re-exported name (§26.5 + §26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_shadow) { TEST_CORE_SV; }
+// Explicit `export P1::A` of a wildcard-imported-but-unused name forces its
+// import, so a module importing P2 still sees A (§26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_force) { TEST_CORE_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }

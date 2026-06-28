@@ -86,28 +86,6 @@ Source:
                               value: 0
               expr: null
           items:
-          - Param:
-              filename: ../test/passes/transformations/testcases/package_inliner0.sv
-              line: 3
-              is_local: true
-              name: WIDTH
-              value:
-                Rvalue:
-                  filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                  line: 3
-                  var:
-                    IntConstN:
-                      filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                      line: 3
-                      base: 10
-                      size: -1
-                      sign: false
-                      value: 8
-              type:
-                ImplicitType:
-                  filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                  line: 3
-                  signing: NONE
           - Typedef:
               filename: ../test/passes/transformations/testcases/package_inliner0.sv
               line: 5
@@ -138,93 +116,28 @@ Source:
                           size: -1
                           sign: false
                           value: 0
-          - Function:
+          - Param:
               filename: ../test/passes/transformations/testcases/package_inliner0.sv
-              line: 7
-              name: make
-              lifetime: NONE
-              return_type:
-                NamedType:
+              line: 3
+              is_local: true
+              name: WIDTH
+              value:
+                Rvalue:
                   filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                  line: 7
-                  name: data_t
+                  line: 3
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/package_inliner0.sv
+                      line: 3
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 8
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner0.sv
+                  line: 3
                   signing: NONE
-              statements:
-              - Port:
-                  filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                  line: 8
-                  name: v
-                  direction: INPUT
-                  decl:
-                    ImplicitNet:
-                      filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                      line: 8
-                      is_vectored: false
-                      is_scalared: false
-                      name: v
-                      cont_assign:
-                        Rvalue: null
-                      strength:
-                        Strength: null
-                      ldelay:
-                        DelayStatement: null
-                      rdelay:
-                        DelayStatement: null
-                      type:
-                        ImplicitType:
-                          filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                          line: 8
-                          signing: NONE
-                          packed_dims:
-                          - RangeDim:
-                              filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                              line: 8
-                              left:
-                                IntConstN:
-                                  filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                                  line: 8
-                                  base: 10
-                                  size: -1
-                                  sign: false
-                                  value: 7
-                              right:
-                                IntConstN:
-                                  filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                                  line: 8
-                                  base: 10
-                                  size: -1
-                                  sign: false
-                                  value: 0
-                  expr: null
-              - BlockingSubstitution:
-                  filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                  line: 9
-                  left:
-                    Lvalue:
-                      filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                      line: 9
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                          line: 9
-                          name: make
-                          hier:
-                            HierName: null
-                  right:
-                    Rvalue:
-                      filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                      line: 9
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/package_inliner0.sv
-                          line: 9
-                          name: v
-                          hier:
-                            HierName: null
-                  ldelay:
-                    DelayStatement: null
-                  rdelay:
-                    DelayStatement: null
           - Var:
               filename: ../test/passes/transformations/testcases/package_inliner0.sv
               line: 20
