@@ -95,6 +95,11 @@ private:
         AST::Package::Ptr package;
         std::map<std::string, AST::Node::Ptr> symbols;  ///< interface (import-visible)
         std::map<std::string, AST::Node::Ptr> contents; ///< all items, for dependency copy
+        /// For each interface symbol, the package it ORIGINATES in (itself for an
+        /// own declaration; the original package for a re-exported one). Used so
+        /// that the same declaration reached via multiple wildcard paths is not a
+        /// conflict (IEEE 1800-2017 §26.6).
+        std::map<std::string, std::string> origin;
     };
 
     /// Per-scope accumulator while a single scope is being resolved. `bound` maps
@@ -116,6 +121,10 @@ private:
     /// declaration order, then re-index its `contents`. Makes a package that
     /// imports and uses another self-contained before any module copies from it.
     int resolve_packages(const AST::Node::Ptr &source);
+
+    /// The package a symbol ORIGINATES in: `pkg`'s recorded origin for `name`, or
+    /// `pkg` itself if unrecorded (it is then `pkg`'s own declaration).
+    std::string defining_package_of(const std::string &pkg, const std::string &name) const;
 
     /// Fold a package's re-exports (`export pkg::*;`, …) into its interface
     /// `symbols`, from what it actually imported into `contents` (IEEE 1800-2017

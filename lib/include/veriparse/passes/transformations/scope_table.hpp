@@ -46,9 +46,13 @@ public:
 
     struct Binding
     {
-        AST::Node::Ptr decl; ///< the bound declaration (Param/Var/Typedef/Function/…)
-        std::string package; ///< source package ("" for a local binding)
-        Origin origin;
+        AST::Node::Ptr decl;          ///< the bound declaration (Param/Var/Typedef/…)
+        std::string package;          ///< source package ("" for a local binding)
+        Origin origin;                ///< how the name became visible
+        std::string defining_package; ///< package the declaration ORIGINATES in — the
+                                      ///< same for a symbol reached via a re-export, so
+                                      ///< two same-origin wildcard paths do not conflict
+                                      ///< (IEEE 1800-2017 §26.6)
     };
 
     /**
@@ -66,10 +70,11 @@ public:
 
     /**
      * @brief Register a wildcard-imported name (`import pkg::*;`). Several
-     * wildcards may offer the same name; the conflict surfaces only in lookup().
+     * wildcards may offer the same name; the conflict surfaces only in lookup(),
+     * and only when their `defining_package` differs (§26.6).
      */
     void add_wildcard_import(const std::string &name, const std::string &package,
-                             AST::Node::Ptr decl);
+                             AST::Node::Ptr decl, const std::string &defining_package);
 
     /**
      * @brief Resolve an unqualified name to its binding, applying precedence.

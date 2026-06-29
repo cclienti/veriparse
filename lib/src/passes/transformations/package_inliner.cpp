@@ -180,6 +180,7 @@ int PackageInliner::collect(const AST::Node::Ptr &source)
                 std::string name;
                 if(node_decl_name(item, name)) {
                     entry.symbols[name] = item;
+                    entry.origin[name] = pkg->get_name(); // an own decl originates here
                 }
             }
         }
@@ -335,6 +336,19 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
     return 0;
 }
 
+std::string PackageInliner::defining_package_of(const std::string &pkg,
+                                                const std::string &name) const
+{
+    auto pit = m_packages.find(pkg);
+    if(pit != m_packages.end()) {
+        auto oit = pit->second.origin.find(name);
+        if(oit != pit->second.origin.end()) {
+            return oit->second;
+        }
+    }
+    return pkg; // unrecorded: the symbol is pkg's own declaration
+}
+
 int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &entry,
                                  const std::set<std::string> &wildcard_pkgs)
 {
@@ -356,18 +370,31 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
         const std::string &sym = exp->get_symbol();
 
         if(pkgname == "*") {
-            // `export *::*;` — re-export everything the package imported.
+            // `export *::*;` — re-export everything the package imported. Keep the
+            // original origin: own decls already have it; for an imported name,
+            // recover it from whichever wildcard-imported package provides it.
             for(const auto &kv : entry.contents) {
                 entry.symbols[kv.first] = kv.second;
+                if(!entry.origin.count(kv.first)) {
+                    for(const std::string &q : wildcard_pkgs) {
+                        auto qit = m_packages.find(q);
+                        if(qit != m_packages.end() && qit->second.symbols.count(kv.first)) {
+                            entry.origin[kv.first] = defining_package_of(q, kv.first);
+                            break;
+                        }
+                    }
+                }
             }
         } else if(sym == "*") {
-            // `export pkg::*;` — re-export the names actually imported from pkg.
+            // `export pkg::*;` — re-export the names actually imported from pkg,
+            // carrying their original defining package.
             auto qit = m_packages.find(pkgname);
             if(qit != m_packages.end()) {
                 for(const auto &kv : qit->second.symbols) {
                     auto cit = entry.contents.find(kv.first);
                     if(cit != entry.contents.end()) {
                         entry.symbols[kv.first] = cit->second;
+                        entry.origin[kv.first] = defining_package_of(pkgname, kv.first);
                     }
                 }
             }
@@ -379,6 +406,7 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
             auto cit = entry.contents.find(sym);
             if(cit != entry.contents.end()) {
                 entry.symbols[sym] = cit->second;
+                entry.origin[sym] = defining_package_of(pkgname, sym);
             } else {
                 // Not yet imported: legal only if pkg is wildcard-imported (so sym
                 // is a candidate) and pkg actually has it — then the export forces
@@ -405,6 +433,7 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
                     }
                 }
                 entry.symbols[sym] = entry.contents[sym];
+                entry.origin[sym] = defining_package_of(pkgname, sym);
             }
         }
     }
@@ -454,7 +483,8 @@ int PackageInliner::process_scope(const AST::Node::ListPtr &items, const AST::No
 
         if(sym == "*") {
             for(const auto &kv : pit->second.symbols) {
-                table.add_wildcard_import(kv.first, pkgname, kv.second);
+                table.add_wildcard_import(kv.first, pkgname, kv.second,
+                                          defining_package_of(pkgname, kv.first));
             }
         } else {
             auto sit = pit->second.symbols.find(sym);
