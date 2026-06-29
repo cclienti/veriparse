@@ -180,8 +180,6 @@ when its grammar/pass lands.
 
 ## 8. Out of scope (future ADRs / sessions)
 
-- **Re-export same-declaration origin-dedup** (§9.5) — the only remaining §26.6
-  gap now that re-export itself is implemented (§2.4).
 - The **broad name-resolution engine** that generalizes `ScopeTable` (§6) and drives
   the remaining ADR-0003 deferrals.
 - Non-synthesizable package members (`class`, `covergroup`, …).
@@ -244,16 +242,17 @@ kept distinct:
 `export` writes to the *interface*; the transitive copy reads the *contents*. Without
 the split, P would over-export every dependency it imported.
 
-### 9.5 Re-export deviation — same-declaration origin
+### 9.5 Re-export same-declaration origin (origin-dedup — implemented)
 §26.6: *"import of a declaration by way of multiple exported paths does not cause
 conflicts"* — the same original declaration reached via two paths is not a
-conflict. `ScopeTable` keys ambiguity by *source-package name*, so a scope that
-imports both a package and its re-exporter (e.g. `import P1::*; import P2::*;`
-where P2 re-exports P1's `x`) currently treats `x` as offered by two wildcards and
-**false-flags it ambiguous on use**. Full conformance needs **origin-dedup**:
-tag each interface symbol with its original `pkg::name` and treat same-origin
-multi-path bindings as one. Bookkeeping, not a redesign — deferred (§8).
+conflict. Keying ambiguity by *source-package name* would wrongly reject a scope
+that imports both a package and its re-exporter (e.g. `import P1::*; import P2::*;`
+where P2 re-exports P1's `x`). So each interface symbol records its **defining
+package** (`PackageEntry.origin`; carried across a re-export fold, transitively for
+chained re-exports), and `ScopeTable::lookup` treats multiple wildcard paths as a
+conflict only when their defining packages differ. Same origin → resolves; truly
+different declarations (`Pa::x` vs `Pb::x`) → still ambiguous on use.
 
-(A second deviation — re-exporting the *full* wildcard set rather than only the
-referenced names — was **fixed** by making wildcard imports lazy (§2.1): a
-package now imports, and therefore re-exports, only the names it references.)
+(A related deviation — re-exporting the *full* wildcard set rather than only the
+referenced names — was fixed by making wildcard imports lazy (§2.1): a package now
+imports, and therefore re-exports, only the names it references.)

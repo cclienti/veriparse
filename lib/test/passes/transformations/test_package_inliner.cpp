@@ -108,6 +108,9 @@ TEST(PassesTransformation_PackageInliner, package_inliner_reexport_shadow) { TES
 // Explicit `export P1::A` of a wildcard-imported-but-unused name forces its
 // import, so a module importing P2 still sees A (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_force) { TEST_CORE_SV; }
+// Same declaration via two wildcard paths (import P1::* and P2::* where P2
+// re-exports P1::X) is NOT a conflict — origin-dedup resolves it (§26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_multipath) { TEST_CORE_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
