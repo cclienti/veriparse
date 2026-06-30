@@ -120,6 +120,25 @@ void collect_unqualified_names(const AST::Node::Ptr &node, std::set<std::string>
     }
 }
 
+/// Collect the names DECLARED inside `node` — its own name plus subroutine args,
+/// local variables, genvars (anything `node_decl_name` recognises). A reference to
+/// such a name is bound within the declaration, so it is NOT a same-package
+/// dependency (a function arg may legitimately share a package symbol's name).
+void collect_bound_names(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    std::string name;
+    if(node_decl_name(node, name)) {
+        names.insert(name);
+    }
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        collect_bound_names(child, names);
+    }
+}
+
 /// The compilation-unit definitions list (top-level scope), or null.
 AST::Node::ListPtr top_level_definitions(const AST::Node::Ptr &root)
 {
@@ -654,10 +673,16 @@ int PackageInliner::copy_symbol(const std::string &pkgname, const std::string &n
     const AST::Node::Ptr clone = cit->second->clone();
     copies.bound[name] = cit->second;
 
+    // Dependencies are the FREE same-package names: referenced, but not declared
+    // within the clone (a subroutine arg/local shadows a same-named package symbol
+    // and must not pull it in).
     std::set<std::string> refs;
+    std::set<std::string> bound;
     collect_unqualified_names(clone, refs);
+    collect_bound_names(clone, bound);
     for(const std::string &ref : refs) {
-        if(ref != name && pit->second.contents.count(ref) && !copies.bound.count(ref)) {
+        if(ref != name && !bound.count(ref) && pit->second.contents.count(ref) &&
+           !copies.bound.count(ref)) {
             if(copy_symbol(pkgname, ref, copies) != 0) {
                 return 1;
             }
