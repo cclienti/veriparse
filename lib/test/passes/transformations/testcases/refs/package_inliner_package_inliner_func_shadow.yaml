@@ -1,0 +1,198 @@
+Source:
+  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+          line: 11
+          name: package_inliner_func_shadow
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+              line: 12
+              name: dout
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 12
+                  is_vectored: false
+                  is_scalared: false
+                  name: dout
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                      line: 12
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                          line: 12
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Function:
+              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+              line: 4
+              name: f
+              lifetime: NONE
+              return_type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 4
+                  signing: NONE
+              statements:
+              - Port:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 5
+                  name: x
+                  direction: INPUT
+                  decl:
+                    ImplicitNet:
+                      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                      line: 5
+                      is_vectored: false
+                      is_scalared: false
+                      name: x
+                      cont_assign:
+                        Rvalue: null
+                      strength:
+                        Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                      type:
+                        IntegerType:
+                          filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                          line: 5
+                          signing: NONE
+                  expr: null
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 6
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                      line: 6
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                          line: 6
+                          name: f
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                      line: 6
+                      var:
+                        Plus:
+                          filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                          line: 6
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                              line: 6
+                              name: x
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Param:
+              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+              line: 16
+              is_local: true
+              name: R
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 16
+                  var:
+                    FunctionCall:
+                      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                      line: 16
+                      name: f
+                      args:
+                      - IntConstN:
+                          filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                          line: 16
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      hier:
+                        HierName: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 16
+                  signing: NONE
+          - Assign:
+              filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+              line: 18
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 18
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                      line: 18
+                      name: dout
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                  line: 18
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
+                      line: 18
+                      name: R
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
