@@ -1,0 +1,196 @@
+Source:
+  filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+          line: 11
+          name: package_inliner_task_shadow
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+              line: 12
+              name: dout
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                  line: 12
+                  is_vectored: false
+                  is_scalared: false
+                  name: dout
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    RegType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                      line: 12
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                          line: 12
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Task:
+              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+              line: 4
+              name: t
+              lifetime: AUTOMATIC
+              statements:
+              - Port:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                  line: 5
+                  name: y
+                  direction: OUTPUT
+                  decl:
+                    ImplicitNet:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                      line: 5
+                      is_vectored: false
+                      is_scalared: false
+                      name: y
+                      cont_assign:
+                        Rvalue: null
+                      strength:
+                        Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                      type:
+                        IntegerType:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                          line: 5
+                          signing: NONE
+                  expr: null
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                  line: 6
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                      line: 6
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                          line: 6
+                          name: y
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                      line: 6
+                      var:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                          line: 6
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Var:
+              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+              line: 16
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: v
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                  line: 16
+                  signing: NONE
+          - Initial:
+              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+              line: 18
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                  line: 18
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                      line: 19
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                          line: 19
+                          name: t
+                          args:
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                              line: 19
+                              name: v
+                              hier:
+                                HierName: null
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                      line: 20
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                          line: 20
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                              line: 20
+                              name: dout
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                          line: 20
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
+                              line: 20
+                              name: v
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
