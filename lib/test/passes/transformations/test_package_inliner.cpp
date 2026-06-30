@@ -104,6 +104,8 @@ TEST(PassesTransformation_PackageInliner, package_inliner_task) { TEST_CORE_SV; 
 // A function arg shadows a same-named package symbol: copying the function must
 // NOT pull that package symbol in as a (false) dependency.
 TEST(PassesTransformation_PackageInliner, package_inliner_func_shadow) { TEST_CORE_SV; }
+// Same, for a task arg — the free-name dependency analysis covers Task too.
+TEST(PassesTransformation_PackageInliner, package_inliner_task_shadow) { TEST_CORE_SV; }
 // Re-export: P2 re-exports P1, a module imports P2 and uses P1's A (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport) { TEST_CORE_SV; }
 // A module-local declaration shadows a re-exported name (§26.5 + §26.6).
