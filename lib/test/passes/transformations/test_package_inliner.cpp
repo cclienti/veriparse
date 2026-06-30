@@ -111,6 +111,11 @@ TEST(PassesTransformation_PackageInliner, package_inliner_reexport_force) { TEST
 // Same declaration via two wildcard paths (import P1::* and P2::* where P2
 // re-exports P1::X) is NOT a conflict — origin-dedup resolves it (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_multipath) { TEST_CORE_SV; }
+// `export *::*` re-exports everything the package imported (§26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_star) { TEST_CORE_SV; }
+// Chained re-export P3 <- P2 <- P1: X reaches the module through two re-exports,
+// its origin carried transitively (§26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_chain) { TEST_CORE_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
