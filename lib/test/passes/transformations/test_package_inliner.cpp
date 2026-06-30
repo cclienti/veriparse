@@ -118,6 +118,10 @@ TEST(PassesTransformation_PackageInliner, package_inliner_reexport_force) { TEST
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_multipath) { TEST_CORE_SV; }
 // `export *::*` re-exports everything the package imported (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_star) { TEST_CORE_SV; }
+// origin-dedup across an EXPLICIT import re-exported via `export *::*`: a module
+// importing both P1 and P2 (which explicitly imports + `*::*`-re-exports P1::X)
+// resolves X — its origin is recovered for explicit imports, not just wildcards.
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_star_explicit) { TEST_CORE_SV; }
 // Chained re-export P3 <- P2 <- P1: X reaches the module through two re-exports,
 // its origin carried transitively (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_chain) { TEST_CORE_SV; }

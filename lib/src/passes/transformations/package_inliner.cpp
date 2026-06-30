@@ -6,6 +6,7 @@
 #include <veriparse/logger/logger.hpp>
 
 #include <list>
+#include <map>
 #include <set>
 
 namespace Veriparse
@@ -313,14 +314,21 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
     for(const AST::Node::Ptr &p : packages) {
         const auto &pkg = AST::cast_to<AST::Package>(p);
 
-        // Capture the wildcard-imported packages before process_scope strips the
-        // imports — an explicit `export pkg::name` may force-import from one.
+        // Capture this package's imports before process_scope strips them: the
+        // wildcard ones (an explicit `export pkg::name` may force-import from one)
+        // and the explicit ones (name -> source package, for origin recovery).
         std::set<std::string> wildcard_pkgs;
+        std::map<std::string, std::string> explicit_imports;
         if(pkg->get_items()) {
             for(const AST::Node::Ptr &item : *pkg->get_items()) {
-                if(item->is_node_type(AST::NodeType::Import) &&
-                   AST::cast_to<AST::Import>(item)->get_symbol() == "*") {
-                    wildcard_pkgs.insert(AST::cast_to<AST::Import>(item)->get_package());
+                if(!item->is_node_type(AST::NodeType::Import)) {
+                    continue;
+                }
+                const auto &imp = AST::cast_to<AST::Import>(item);
+                if(imp->get_symbol() == "*") {
+                    wildcard_pkgs.insert(imp->get_package());
+                } else {
+                    explicit_imports[imp->get_symbol()] = imp->get_package();
                 }
             }
         }
@@ -340,6 +348,27 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
             std::string name;
             if(node_decl_name(item, name)) {
                 pit->second.contents[name] = item;
+            }
+        }
+
+        // Record the defining package of each IMPORTED content name (own decls
+        // already have it from collect()), so a re-export — and a downstream
+        // multi-path import — sees the original origin (ADR-0004 §9.5).
+        for(const auto &kv : pit->second.contents) {
+            if(pit->second.origin.count(kv.first)) {
+                continue;
+            }
+            auto eit = explicit_imports.find(kv.first);
+            if(eit != explicit_imports.end()) {
+                pit->second.origin[kv.first] = defining_package_of(eit->second, kv.first);
+                continue;
+            }
+            for(const std::string &q : wildcard_pkgs) {
+                auto qit = m_packages.find(q);
+                if(qit != m_packages.end() && qit->second.symbols.count(kv.first)) {
+                    pit->second.origin[kv.first] = defining_package_of(q, kv.first);
+                    break;
+                }
             }
         }
 
@@ -388,32 +417,23 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
         const std::string &pkgname = exp->get_package();
         const std::string &sym = exp->get_symbol();
 
+        // The defining package of each content name is already recorded (own
+        // decls in collect(), imported names in resolve_packages()), so these
+        // branches only expose names to the interface; the force-import case below
+        // adds a new symbol and records its origin itself.
         if(pkgname == "*") {
-            // `export *::*;` — re-export everything the package imported. Keep the
-            // original origin: own decls already have it; for an imported name,
-            // recover it from whichever wildcard-imported package provides it.
+            // `export *::*;` — re-export everything the package imported.
             for(const auto &kv : entry.contents) {
                 entry.symbols[kv.first] = kv.second;
-                if(!entry.origin.count(kv.first)) {
-                    for(const std::string &q : wildcard_pkgs) {
-                        auto qit = m_packages.find(q);
-                        if(qit != m_packages.end() && qit->second.symbols.count(kv.first)) {
-                            entry.origin[kv.first] = defining_package_of(q, kv.first);
-                            break;
-                        }
-                    }
-                }
             }
         } else if(sym == "*") {
-            // `export pkg::*;` — re-export the names actually imported from pkg,
-            // carrying their original defining package.
+            // `export pkg::*;` — re-export the names actually imported from pkg.
             auto qit = m_packages.find(pkgname);
             if(qit != m_packages.end()) {
                 for(const auto &kv : qit->second.symbols) {
                     auto cit = entry.contents.find(kv.first);
                     if(cit != entry.contents.end()) {
                         entry.symbols[kv.first] = cit->second;
-                        entry.origin[kv.first] = defining_package_of(pkgname, kv.first);
                     }
                 }
             }
@@ -425,7 +445,6 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
             auto cit = entry.contents.find(sym);
             if(cit != entry.contents.end()) {
                 entry.symbols[sym] = cit->second;
-                entry.origin[sym] = defining_package_of(pkgname, sym);
             } else {
                 // Not yet imported: legal only if pkg is wildcard-imported (so sym
                 // is a candidate) and pkg actually has it — then the export forces
