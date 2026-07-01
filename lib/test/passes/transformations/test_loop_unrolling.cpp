@@ -72,3 +72,7 @@ TEST(PassesTransformation_LoopUnrolling, loop_unrolling_break0) { TEST_CORE_SV; 
 // `continue` lowered structurally: each iteration independently guards its own
 // remainder with `if (!cond)` (later iterations are unaffected).
 TEST(PassesTransformation_LoopUnrolling, loop_unrolling_continue0) { TEST_CORE_SV; }
+// Same lowering in an `initial` block — the context that exposed the X-propagation
+// question: the remainder sits in the `else` of the jump condition, so it runs when
+// the condition is not true (including X), matching the source.
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling_break_init0) { TEST_CORE_SV; }
