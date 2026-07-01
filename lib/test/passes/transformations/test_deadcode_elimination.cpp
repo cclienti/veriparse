@@ -85,3 +85,6 @@ TEST(PassesTransformation_Deadcode, deadcode5) { TEST_CORE; }
 TEST(PassesTransformation_Deadcode, deadcode6) { TEST_CORE; }
 TEST(PassesTransformation_Deadcode, deadcode7) { TEST_CORE; }
 TEST(PassesTransformation_Deadcode, sv_deadcode0) { TEST_CORE_SV; }
+// §12.8: statements after an unconditional break/continue/return are removed; a
+// conditional jump (`if (c) continue;`) leaves its siblings alone.
+TEST(PassesTransformation_Deadcode, sv_deadcode_jump0) { TEST_CORE_SV; }
