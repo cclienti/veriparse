@@ -172,6 +172,9 @@ AST::Node::Ptr FunctionEvaluation::evaluate(const AST::FunctionCall::Ptr &functi
     // Start the processing.
     ScopeElevator().run(initial);
     VariableFolding variable_folding(function_map);
+    // A `return expr;` in the body assigns the result to the function-name
+    // variable, which is what get_state() reads back below (§13.4).
+    variable_folding.set_return_target(function_name);
     variable_folding.run(initial);
 
     // Check for result.

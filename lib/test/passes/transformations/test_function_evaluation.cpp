@@ -15,11 +15,12 @@ using namespace Veriparse;
 
 static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 
-#define TEST_CORE                                                                                  \
+#define TEST_CORE_BODY(SVMODE)                                                                     \
     ENABLE_LOGGER;                                                                                 \
                                                                                                    \
     /* Parse the file to transform */                                                              \
     Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(SVMODE);                                                                   \
     verilog.parse(test_helpers.get_verilog_filename(test_name));                                   \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
@@ -59,6 +60,16 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     ASSERT_TRUE(node_ref != nullptr);                                                              \
     ASSERT_TRUE(node_ref->is_equal(*node_result, false))
 
+#define TEST_CORE TEST_CORE_BODY(false)
+#define TEST_CORE_SV TEST_CORE_BODY(true)
+
 TEST(PassesTransformation_FunctionEvaluation, function2) { TEST_CORE; }
 TEST(PassesTransformation_FunctionEvaluation, function3) { TEST_CORE; }
 TEST(PassesTransformation_FunctionEvaluation, function4) { TEST_CORE; }
+// A constant function that returns via `return expr;` (§12.8) — the interpreter
+// treats it as the result and early-exits.
+TEST(PassesTransformation_FunctionEvaluation, function_return0) { TEST_CORE_SV; }
+// Early `return` unwinds: g(-3) takes `return 0;` and must NOT fall through to the
+// later `return x*2;` (which would give -6). Verifies statements after a jump are
+// not executed.
+TEST(PassesTransformation_FunctionEvaluation, function_return1) { TEST_CORE_SV; }

@@ -1,0 +1,7 @@
+IntConstN:
+  filename: ../test/passes/transformations/testcases/function_return1.v
+  line: 4
+  base: 10
+  size: -1
+  sign: false
+  value: 0

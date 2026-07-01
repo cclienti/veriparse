@@ -17,6 +17,8 @@ namespace Transformations
 
 VariableFolding::VariableFolding(const FunctionMap &function_map) : m_function_map(function_map) {}
 
+void VariableFolding::set_return_target(const std::string &name) { m_return_target = name; }
+
 AST::Node::Ptr VariableFolding::get_state(const std::string &var_name, bool &matched)
 {
     const auto &it = m_state_map.find(var_name);
@@ -33,6 +35,7 @@ int VariableFolding::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
     if(node && node->is_node_type(AST::NodeType::Initial)) {
         m_state_map.clear();
+        m_flow = Flow::Normal;
 
         auto initial = AST::cast_to<AST::Initial>(node);
         auto ret = execute(initial->get_statement(), node);
@@ -79,6 +82,19 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
         case AST::NodeType::IfStatement:
             return execute_if(AST::cast_to<AST::IfStatement>(node), parent);
 
+        // Jump statements (§12.8): raise the matching control-flow signal, which
+        // the enclosing block / loop then acts on.
+        case AST::NodeType::Return:
+            return execute_return(AST::cast_to<AST::Return>(node), parent);
+
+        case AST::NodeType::Break:
+            m_flow = Flow::Broke;
+            return 0;
+
+        case AST::NodeType::Continue:
+            m_flow = Flow::Continued;
+            return 0;
+
         case AST::NodeType::ForStatement:
             return execute_for(AST::cast_to<AST::ForStatement>(node), parent);
 
@@ -108,6 +124,10 @@ int VariableFolding::execute_in_childs(AST::Node::Ptr node)
     AST::Node::ListPtr children = node->get_children();
     for(AST::Node::Ptr &child : *children) {
         ret += execute(child, node);
+        // A jump (§12.8) makes the rest of this block/statement unreachable.
+        if(m_flow != Flow::Normal) {
+            break;
+        }
     }
     return ret;
 }
@@ -176,6 +196,32 @@ int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr par
     }
 
     return ret;
+}
+
+int VariableFolding::execute_return(AST::Return::Ptr node, AST::Node::Ptr parent)
+{
+    // `return expr;` sets the function result (the function-name variable, §13.4);
+    // `return;` (task / void function) only signals the exit.
+    if(node->get_value() && !m_return_target.empty()) {
+        const auto &id = std::make_shared<AST::Identifier>(node->get_filename(), node->get_line());
+        id->set_name(m_return_target);
+
+        const auto &lvalue = std::make_shared<AST::Lvalue>(node->get_filename(), node->get_line());
+        lvalue->set_var(id);
+
+        const auto &rvalue = std::make_shared<AST::Rvalue>(node->get_filename(), node->get_line());
+        rvalue->set_var(node->get_value()->clone());
+
+        const auto &subst =
+            std::make_shared<AST::BlockingSubstitution>(node->get_filename(), node->get_line());
+        subst->set_left(lvalue);
+        subst->set_right(rvalue);
+
+        execute_blocking_substitution(subst, parent);
+    }
+
+    m_flow = Flow::Returned;
+    return 0;
 }
 
 int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)
