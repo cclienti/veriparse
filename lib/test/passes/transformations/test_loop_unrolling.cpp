@@ -12,10 +12,11 @@ using namespace Veriparse;
 
 static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 
-#define TEST_CORE                                                                                  \
+#define TEST_CORE_BODY(SVMODE)                                                                     \
     ENABLE_LOGGER;                                                                                 \
                                                                                                    \
     Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(SVMODE);                                                                   \
     verilog.parse(test_helpers.get_verilog_filename(test_name));                                   \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
@@ -49,6 +50,9 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Check parsed against reference */                                                           \
     ASSERT_TRUE(module_ref->is_equal(*module, false))
 
+#define TEST_CORE TEST_CORE_BODY(false)
+#define TEST_CORE_SV TEST_CORE_BODY(true)
+
 TEST(PassesTransformation_LoopUnrolling, loop_unrolling0) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, loop_unrolling1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, loop_unrolling2) { TEST_CORE; }
@@ -61,3 +65,6 @@ TEST(PassesTransformation_LoopUnrolling, scope1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, scope2) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, defparam1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, defparam2) { TEST_CORE; }
+// A for loop whose body uses `break` (§12.8) is left intact: unrolling would emit
+// the jump outside any loop. Guard/flag lowering is pending (ADR-0005 §3.2).
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling_break0) { TEST_CORE_SV; }
