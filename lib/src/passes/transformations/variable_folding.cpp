@@ -2,6 +2,7 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/variable_folding.hpp>
 #include <veriparse/passes/transformations/ast_replace.hpp>
+#include <veriparse/passes/transformations/jump_helpers.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/transformations/constant_folding.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
@@ -25,18 +26,6 @@ namespace
 /// jumps): stop unrolling past this many iterations and leave the loop intact
 /// rather than growing the unrolled block without bound.
 constexpr unsigned long kMaxUnrollIterations = 100000ul;
-
-/// A jump statement (§12.8), bare or wrapped in a SingleStatement.
-bool is_jump_statement(const AST::Node::Ptr &node)
-{
-    AST::Node::Ptr inner = node;
-    if(inner && inner->is_node_type(AST::NodeType::SingleStatement)) {
-        inner = AST::cast_to<AST::SingleStatement>(inner)->get_statement();
-    }
-    return inner && (inner->is_node_type(AST::NodeType::Break) ||
-                     inner->is_node_type(AST::NodeType::Continue) ||
-                     inner->is_node_type(AST::NodeType::Return));
-}
 
 /// Drop the jumps the interpreter actually reached: after constant-condition
 /// folding a consumed break/continue/return sits unconditionally in a Block. Its
@@ -371,6 +360,19 @@ bool VariableFolding::finalize_unrolled_loop(AST::Node::Ptr node, AST::Node::Ptr
     return false;
 }
 
+bool VariableFolding::stop_after_iteration()
+{
+    if(m_flow == Flow::Returned) {
+        return true; // propagate the return outward
+    }
+    if(m_flow == Flow::Broke) {
+        m_flow = Flow::Normal; // the loop consumes the break
+        return true;
+    }
+    m_flow = Flow::Normal; // clears a Continued signal
+    return false;
+}
+
 void VariableFolding::invalidate_loop_state(const AST::Node::Ptr &node)
 {
     // A loop left un-unrolled has already run some body statements during the
@@ -422,14 +424,9 @@ int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr par
 
         // A jump ends this iteration; `break`/`return` also end the loop, while
         // `continue` still runs the post-update and re-tests the condition.
-        if(m_flow == Flow::Returned) {
+        if(stop_after_iteration()) {
             break;
         }
-        if(m_flow == Flow::Broke) {
-            m_flow = Flow::Normal;
-            break;
-        }
-        m_flow = Flow::Normal; // clears a Continued signal
 
         // Post update.
         auto post = cloned->get_post();
@@ -493,14 +490,9 @@ int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr
             ret += execute_loop_body(current, block);
 
             // `break`/`return` end the loop; `continue` just re-tests the condition.
-            if(m_flow == Flow::Returned) {
+            if(stop_after_iteration()) {
                 break;
             }
-            if(m_flow == Flow::Broke) {
-                m_flow = Flow::Normal;
-                break;
-            }
-            m_flow = Flow::Normal; // clears a Continued signal
 
             // We clone the condition and we evaluate it.
             expr = analyze_expression(node->get_cond()->clone());
@@ -542,14 +534,9 @@ int VariableFolding::execute_repeat(AST::RepeatStatement::Ptr node, AST::Node::P
             ret += execute_loop_body(current, block);
 
             // `break`/`return` end the loop; `continue` moves to the next count.
-            if(m_flow == Flow::Returned) {
+            if(stop_after_iteration()) {
                 break;
             }
-            if(m_flow == Flow::Broke) {
-                m_flow = Flow::Normal;
-                break;
-            }
-            m_flow = Flow::Normal; // clears a Continued signal
         }
 
         // Commit the unrolled block, unless an unresolved break/continue forces us

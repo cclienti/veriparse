@@ -8,6 +8,7 @@
 #include <veriparse/passes/analysis/function.hpp>
 #include <veriparse/passes/analysis/lvalue.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
+#include <veriparse/passes/transformations/jump_helpers.hpp>
 #include <veriparse/logger/logger.hpp>
 
 #include <cstddef>
@@ -16,20 +17,6 @@
 
 namespace
 {
-
-// A statement that unconditionally transfers control (§12.8), bare or wrapped in a
-// SingleStatement. Statements following it in the same block are unreachable.
-bool is_unconditional_jump(const Veriparse::AST::Node::Ptr &s)
-{
-    using namespace Veriparse;
-    AST::Node::Ptr inner = s;
-    if(inner && inner->is_node_type(AST::NodeType::SingleStatement)) {
-        inner = AST::cast_to<AST::SingleStatement>(inner)->get_statement();
-    }
-    return inner && (inner->is_node_type(AST::NodeType::Return) ||
-                     inner->is_node_type(AST::NodeType::Break) ||
-                     inner->is_node_type(AST::NodeType::Continue));
-}
 
 // Workaround
 template <class T> std::string print_set(const std::set<T> &set)
@@ -77,23 +64,19 @@ namespace Transformations
 // 	return os;
 // }
 
-int DeadcodeElimination::remove_after_jump(AST::Node::Ptr node)
+void DeadcodeElimination::remove_after_jump(AST::Node::Ptr node)
 {
     if(!node) {
-        return 0;
+        return;
     }
-
-    int removed = 0;
 
     // Within a block, everything after the first unconditional jump is unreachable.
     if(node->is_node_type(AST::NodeType::Block)) {
         const AST::Node::ListPtr stmts = AST::cast_to<AST::Block>(node)->get_statements();
         if(stmts) {
             for(auto it = stmts->begin(); it != stmts->end(); ++it) {
-                if(is_unconditional_jump(*it)) {
-                    const auto after = std::next(it);
-                    removed += static_cast<int>(std::distance(after, stmts->end()));
-                    stmts->erase(after, stmts->end());
+                if(is_jump_statement(*it)) {
+                    stmts->erase(std::next(it), stmts->end());
                     break;
                 }
             }
@@ -103,10 +86,8 @@ int DeadcodeElimination::remove_after_jump(AST::Node::Ptr node)
     // Recurse into what remains (nested blocks, if/case branches, …).
     const AST::Node::ListPtr children = node->get_children();
     for(AST::Node::Ptr &child : *children) {
-        removed += remove_after_jump(child);
+        remove_after_jump(child);
     }
-
-    return removed;
 }
 
 int DeadcodeElimination::process(AST::Node::Ptr node, AST::Node::Ptr parent)

@@ -54,6 +54,21 @@ private:
     int unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state);
 
     /**
+     * @brief Prepare a loop body that uses break/continue for unrolling (§3.2),
+     * shared by the for and repeat branches.
+     *
+     * @param body   the loop's statement.
+     * @param loop   the loop node, for diagnostics.
+     * @param lower_break_after  set true when a `break` must be lowered across the
+     *                           flat unrolled sequence afterwards.
+     * @param new_body  set to a rewritten (continue-lowered) body the caller should
+     *                  install, or null when the body is unchanged.
+     * @return 0 to proceed with unrolling, 1 to leave the loop intact.
+     */
+    int analyze_loop_jumps(const AST::Node::Ptr &body, const AST::Node::Ptr &loop,
+                           bool &lower_break_after, AST::Node::Ptr &new_body);
+
+    /**
      * @brief Rename scoped identifier with mapping gathered during
      * unrolling.
      *
