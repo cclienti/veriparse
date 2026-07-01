@@ -24,6 +24,15 @@ class DeadcodeElimination : public TransformationBase
 
     int analyze_identifiers(AST::Node::Ptr node, DSet &identifiers);
 
+    /**
+     * @brief Drop statements that follow an unconditional jump
+     * (return/break/continue, §12.8) within the same block — they are unreachable.
+     * A conditional jump (under an `if`/`case`) does not make its siblings dead.
+     *
+     * @return the number of statements removed
+     */
+    int remove_after_jump(AST::Node::Ptr node);
+
     DSet remove_deadcode_step(AST::Node::Ptr node, AST::Node::Ptr parent);
 
     int remove_deadstmt(const DSet &deadset, DeadcodeElimination::DSet &removedset,

@@ -216,7 +216,9 @@ first implementation.
    single top-level `if (cond) jump;` / bare jump, for `for` and `repeat` (§3.2).
    Mixed break+continue and deeper-nested jumps are **deferred** (flag lowering,
    §3.2.1) — left intact for now.
-4. **DeadcodeElimination** — unreachable-after-jump (§3.3). Optional, **not built**.
+4. **DeadcodeElimination** ✅ — unreachable-after-jump (§3.3): within a block,
+   statements after an unconditional break/continue/return are dropped; a
+   conditional jump leaves its siblings. Runs before the existing deadcode steps.
 
 Each phase lands green on its own; phase 1 is independently useful (parse + emit).
 
