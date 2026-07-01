@@ -2291,6 +2291,29 @@ std::string VerilogGenerator::render_disable(const AST::Disable::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_return(const AST::Return::Ptr node) const
+{
+    // The trailing `;` is added by the SingleStatement wrapper.
+    std::string result;
+    if(node) {
+        result = "return";
+        if(node->get_value()) {
+            result += " " + render(node->get_value());
+        }
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_break(const AST::Break::Ptr node) const
+{
+    return node ? "break" : "";
+}
+
+std::string VerilogGenerator::render_continue(const AST::Continue::Ptr node) const
+{
+    return node ? "continue" : "";
+}
+
 std::string VerilogGenerator::render_parallelblock(const AST::ParallelBlock::Ptr node) const
 {
     std::string result;

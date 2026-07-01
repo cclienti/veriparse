@@ -1,0 +1,372 @@
+Source:
+  filename: ../../test/parser/testcases/sv_jump0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_jump0.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_jump0.sv
+          line: 1
+          name: sv_jump0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_jump0.sv
+              line: 2
+              name: o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 2
+                      signing: NONE
+              expr: null
+          items:
+          - Function:
+              filename: ../../test/parser/testcases/sv_jump0.sv
+              line: 4
+              name: f
+              lifetime: NONE
+              return_type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 4
+                  signing: NONE
+              statements:
+              - Port:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 5
+                  name: x
+                  direction: INPUT
+                  decl:
+                    ImplicitNet:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 5
+                      is_vectored: false
+                      is_scalared: false
+                      name: x
+                      cont_assign:
+                        Rvalue: null
+                      strength:
+                        Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                      type:
+                        IntegerType:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 5
+                          signing: NONE
+                  expr: null
+              - IfStatement:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 6
+                  cond:
+                    LessThan:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 6
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 6
+                          name: x
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 6
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  true_statement:
+                    SingleStatement:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 6
+                      scope: ''
+                      statement:
+                        Return:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 6
+                          value:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      delay:
+                        DelayStatement: null
+                  false_statement: null
+              - SingleStatement:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 7
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 7
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 7
+                          name: x
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
+          - Task:
+              filename: ../../test/parser/testcases/sv_jump0.sv
+              line: 10
+              name: t
+              lifetime: NONE
+              statements:
+              - SingleStatement:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 11
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 11
+                      value: null
+                  delay:
+                    DelayStatement: null
+          - Var:
+              filename: ../../test/parser/testcases/sv_jump0.sv
+              line: 14
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 14
+                  signing: NONE
+          - Initial:
+              filename: ../../test/parser/testcases/sv_jump0.sv
+              line: 16
+              statement:
+                ForStatement:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 17
+                  pre:
+                    BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 17
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 17
+                              name: i
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 17
+                          var:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 17
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  cond:
+                    LessThan:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 17
+                      left:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 17
+                          name: i
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 17
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 4
+                  post:
+                    BlockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 17
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 17
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 17
+                              name: i
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 17
+                          var:
+                            Plus:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 17
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 17
+                                  name: i
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 17
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  statement:
+                    Block:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 17
+                      scope: ''
+                      statements:
+                      - IfStatement:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 18
+                          cond:
+                            Eq:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 18
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 18
+                                  name: i
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 18
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 2
+                          true_statement:
+                            SingleStatement:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 18
+                              scope: ''
+                              statement:
+                                Continue:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 18
+                              delay:
+                                DelayStatement: null
+                          false_statement: null
+                      - IfStatement:
+                          filename: ../../test/parser/testcases/sv_jump0.sv
+                          line: 19
+                          cond:
+                            Eq:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 19
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 19
+                                  name: i
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 19
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 3
+                          true_statement:
+                            SingleStatement:
+                              filename: ../../test/parser/testcases/sv_jump0.sv
+                              line: 19
+                              scope: ''
+                              statement:
+                                Break:
+                                  filename: ../../test/parser/testcases/sv_jump0.sv
+                                  line: 19
+                              delay:
+                                DelayStatement: null
+                          false_statement: null
+          - Assign:
+              filename: ../../test/parser/testcases/sv_jump0.sv
+              line: 22
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 22
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 22
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_jump0.sv
+                  line: 22
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_jump0.sv
+                      line: 22
+                      base: 2
+                      size: 1
+                      sign: false
+                      value: 0
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

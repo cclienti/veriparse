@@ -353,6 +353,12 @@ const char *NodeTypeToString(NodeType node_type)
         return "HierName";
     case NodeType::Disable:
         return "Disable";
+    case NodeType::Return:
+        return "Return";
+    case NodeType::Break:
+        return "Break";
+    case NodeType::Continue:
+        return "Continue";
     case NodeType::ParallelBlock:
         return "ParallelBlock";
     case NodeType::SingleStatement:

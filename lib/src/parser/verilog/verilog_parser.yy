@@ -375,6 +375,9 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_TYPEDEF      "'typedef'"
 %token                  TK_TYPE         "'type'"
 %token                  TK_VOID         "'void'"
+%token                  TK_RETURN       "'return'"
+%token                  TK_BREAK        "'break'"
+%token                  TK_CONTINUE     "'continue'"
 %token                  TK_ENUM         "'enum'"
 %token                  TK_STRUCT       "'struct'"
 %token                  TK_UNION        "'union'"
@@ -637,6 +640,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 taskvar_decl task_calc
 
 %type   <AST::Disable::Ptr>                  disable
+%type   <AST::Node::Ptr>                     jump_statement
 %type   <bool>                               automatic
 %type   <AST::Typedef::Ptr>                  typedef_decl
 %type   <AST::EnumType::Ptr>                  enum_def
@@ -5449,6 +5453,35 @@ disable:        TK_DISABLE TK_IDENTIFIER
         ;
 
 
+// Jump statements (IEEE 1800-2017 §12.8). The trailing `;` is added by the
+// single_statement wrapper, like the other statement forms.
+jump_statement: TK_RETURN expression
+                {
+                    auto r = std::make_shared<AST::Return>(scanner.get_filename(), @1.begin.line);
+                    r->set_value($2);
+                    $$ = AST::to_node(r);
+                }
+
+        |       TK_RETURN
+                {
+                    $$ = AST::to_node(std::make_shared<AST::Return>(scanner.get_filename(),
+                                                                    @1.begin.line));
+                }
+
+        |       TK_BREAK
+                {
+                    $$ = AST::to_node(std::make_shared<AST::Break>(scanner.get_filename(),
+                                                                   @1.begin.line));
+                }
+
+        |       TK_CONTINUE
+                {
+                    $$ = AST::to_node(std::make_shared<AST::Continue>(scanner.get_filename(),
+                                                                      @1.begin.line));
+                }
+        ;
+
+
 single_statement:
                 delays TK_SEMICOLON
                 {
@@ -5483,6 +5516,12 @@ single_statement:
                 }
 
         |       disable TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::SingleStatement>(scanner.get_filename(), @1.begin.line);
+                    $$->set_statement($1);
+                }
+
+        |       jump_statement TK_SEMICOLON
                 {
                     $$ = std::make_shared<AST::SingleStatement>(scanner.get_filename(), @1.begin.line);
                     $$->set_statement($1);

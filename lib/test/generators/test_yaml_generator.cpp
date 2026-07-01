@@ -3467,6 +3467,48 @@ TEST(YAMLGenerator, Disable)
     ASSERT_TRUE(yaml["Disable"]["dest"]);
 }
 
+TEST(YAMLGenerator, Return)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Return.log");
+    Logger::add_stderr_sink();
+
+    AST::Node::Ptr c_value(new AST::Node);
+
+    AST::Return::Ptr m_return(new AST::Return(c_value, "filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_return);
+
+    ASSERT_TRUE(yaml["Return"]);
+    ASSERT_TRUE(yaml["Return"]["value"]);
+}
+
+TEST(YAMLGenerator, Break)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Break.log");
+    Logger::add_stderr_sink();
+
+    AST::Break::Ptr m_break(new AST::Break("filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_break);
+
+    ASSERT_TRUE(yaml["Break"]);
+}
+
+TEST(YAMLGenerator, Continue)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLGenerator.Continue.log");
+    Logger::add_stderr_sink();
+
+    AST::Continue::Ptr m_continue(new AST::Continue("filename", 0));
+
+    YAML::Node yaml = Generators::YAMLGenerator().render(m_continue);
+
+    ASSERT_TRUE(yaml["Continue"]);
+}
+
 TEST(YAMLGenerator, ParallelBlock)
 {
     Logger::remove_all_sinks();

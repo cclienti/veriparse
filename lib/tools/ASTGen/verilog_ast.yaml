@@ -851,6 +851,22 @@ Disable:
   children:
     dest: Identifier
 
+# Jump statements (IEEE 1800-2017 §12.8) — SystemVerilog-only (in Verilog-1364
+# `return`/`break`/`continue` are ordinary identifiers). Node per form (ADR-0001).
+# `Return.value` is null for a bare `return;` (a task or void function).
+Return:
+  properties:
+  children:
+    value: Node
+
+Break:
+  properties:
+  children:
+
+Continue:
+  properties:
+  children:
+
 ParallelBlock:
   properties:
     scope: "std::string"

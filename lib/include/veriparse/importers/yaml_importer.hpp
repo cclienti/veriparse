@@ -194,6 +194,9 @@ private:
     AST::Node::Ptr convert_hierlabel(const YAML::Node node) const;
     AST::Node::Ptr convert_hiername(const YAML::Node node) const;
     AST::Node::Ptr convert_disable(const YAML::Node node) const;
+    AST::Node::Ptr convert_return(const YAML::Node node) const;
+    AST::Node::Ptr convert_break(const YAML::Node node) const;
+    AST::Node::Ptr convert_continue(const YAML::Node node) const;
     AST::Node::Ptr convert_parallelblock(const YAML::Node node) const;
     AST::Node::Ptr convert_singlestatement(const YAML::Node node) const;
 };

@@ -4745,6 +4745,62 @@ YAML::Node YAMLGenerator::render_disable(const AST::Disable::Ptr node) const
     return node_disable;
 }
 
+YAML::Node YAMLGenerator::render_return(const AST::Return::Ptr node) const
+{
+    YAML::Node node_return;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Return) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+
+        content["value"] = render(node->get_value());
+    }
+
+    node_return["Return"] = content;
+    return node_return;
+}
+
+YAML::Node YAMLGenerator::render_break(const AST::Break::Ptr node) const
+{
+    YAML::Node node_break;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Break) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+    }
+
+    node_break["Break"] = content;
+    return node_break;
+}
+
+YAML::Node YAMLGenerator::render_continue(const AST::Continue::Ptr node) const
+{
+    YAML::Node node_continue;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Continue) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+    }
+
+    node_continue["Continue"] = content;
+    return node_continue;
+}
+
 YAML::Node YAMLGenerator::render_parallelblock(const AST::ParallelBlock::Ptr node) const
 {
     YAML::Node node_parallelblock;

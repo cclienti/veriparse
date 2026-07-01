@@ -554,6 +554,15 @@ public:
             case AST::NodeType::Disable:
                 return render_disable(AST::cast_to<AST::Disable>(node));
 
+            case AST::NodeType::Return:
+                return render_return(AST::cast_to<AST::Return>(node));
+
+            case AST::NodeType::Break:
+                return render_break(AST::cast_to<AST::Break>(node));
+
+            case AST::NodeType::Continue:
+                return render_continue(AST::cast_to<AST::Continue>(node));
+
             case AST::NodeType::ParallelBlock:
                 return render_parallelblock(AST::cast_to<AST::ParallelBlock>(node));
 
@@ -1958,6 +1967,30 @@ public:
     T render(const AST::Disable::Ptr node) const { return render_disable(node); }
 
     /**
+     * Main rendering method for the Return node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_return(const AST::Return::Ptr &node)
+     */
+    T render(const AST::Return::Ptr node) const { return render_return(node); }
+
+    /**
+     * Main rendering method for the Break node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_break(const AST::Break::Ptr &node)
+     */
+    T render(const AST::Break::Ptr node) const { return render_break(node); }
+
+    /**
+     * Main rendering method for the Continue node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_continue(const AST::Continue::Ptr &node)
+     */
+    T render(const AST::Continue::Ptr node) const { return render_continue(node); }
+
+    /**
      * Main rendering method for the ParallelBlock node, we
      * dispatch directly to the right rendering method.
      *
@@ -3017,6 +3050,24 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_disable(const AST::Disable::Ptr node) const { return T(); }
+
+    /**
+     * Render the Return node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_return(const AST::Return::Ptr node) const { return T(); }
+
+    /**
+     * Render the Break node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_break(const AST::Break::Ptr node) const { return T(); }
+
+    /**
+     * Render the Continue node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_continue(const AST::Continue::Ptr node) const { return T(); }
 
     /**
      * Render the ParallelBlock node. This method must be
