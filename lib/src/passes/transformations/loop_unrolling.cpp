@@ -7,6 +7,8 @@
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/logger/logger.hpp>
 
+#include <iterator>
+
 namespace Veriparse
 {
 namespace Passes
@@ -68,6 +70,113 @@ bool body_owns_jump(const AST::Node::Ptr &node)
     }
     return false;
 }
+
+/// Is @p n (or the statement it wraps) a jump of node type @p jt (Break/Continue)?
+bool is_jump_of(const AST::Node::Ptr &n, AST::NodeType jt)
+{
+    AST::Node::Ptr inner = n;
+    if(inner && inner->is_node_type(AST::NodeType::SingleStatement)) {
+        inner = AST::cast_to<AST::SingleStatement>(inner)->get_statement();
+    }
+    return inner && inner->is_node_type(jt);
+}
+
+/// True if @p node contains a jump of type @p jt owned by this loop (not one in a
+/// nested loop).
+bool owns_jump_of(const AST::Node::Ptr &node, AST::NodeType jt)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(jt)) {
+        return true;
+    }
+    if(node->is_node_type(AST::NodeType::ForStatement) ||
+       node->is_node_type(AST::NodeType::WhileStatement) ||
+       node->is_node_type(AST::NodeType::RepeatStatement) ||
+       node->is_node_type(AST::NodeType::ForeverStatement)) {
+        return false;
+    }
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        if(owns_jump_of(child, jt)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// If @p s is exactly `if (cond) <jump jt>;` (no else, the then-branch is just the
+/// jump), return its condition; otherwise null. This is the shape the structural
+/// lowering can turn into a guard.
+AST::Node::Ptr conditional_jump_cond(const AST::Node::Ptr &s, AST::NodeType jt)
+{
+    if(!s->is_node_type(AST::NodeType::IfStatement)) {
+        return nullptr;
+    }
+    const auto &ifs = AST::cast_to<AST::IfStatement>(s);
+    if(ifs->get_false_statement()) {
+        return nullptr;
+    }
+    if(is_jump_of(ifs->get_true_statement(), jt)) {
+        return ifs->get_cond();
+    }
+    return nullptr;
+}
+
+/// Build `if (cond) begin end else begin <stmts> end` — the jump's condition kept
+/// as-is, the remainder moved to the else branch. This preserves the source's
+/// X-propagation: like `if (cond) jump;`, the remainder runs whenever the jump is
+/// not taken, including when `cond` is X (a negated guard `if (!cond)` would wrongly
+/// skip the remainder on X). Stays synthesizable (no `!==`).
+AST::Node::Ptr make_guard_if(const AST::Node::Ptr &cond, AST::Node::ListPtr stmts)
+{
+    const std::string fn = cond->get_filename();
+    const int ln = cond->get_line();
+    const auto &ifs = std::make_shared<AST::IfStatement>(fn, ln);
+    ifs->set_cond(cond->clone());
+    ifs->set_true_statement(std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), ""));
+    ifs->set_false_statement(std::make_shared<AST::Block>(stmts, ""));
+    return ifs;
+}
+
+/// Lower one jump kind (@p jt) in a statement sequence to structural guards, with
+/// no flag variable: `if (c) jump; rest` becomes `if (!c) begin rest end`, and a
+/// bare `jump;` drops the rest. @p ok is cleared if a jump appears in a shape too
+/// complex to lower this way (nested in a block or a deeper `if`), so the caller
+/// can leave the loop intact instead.
+AST::Node::ListPtr lower_jump_seq(AST::Node::ListPtr stmts, AST::NodeType jt, bool &ok)
+{
+    const auto &result = std::make_shared<AST::Node::List>();
+    for(auto it = stmts->begin(); it != stmts->end(); ++it) {
+        const AST::Node::Ptr &s = *it;
+
+        const AST::Node::Ptr cond = conditional_jump_cond(s, jt);
+        if(cond) {
+            const auto &rest = std::make_shared<AST::Node::List>(std::next(it), stmts->end());
+            const auto &lowered_rest = lower_jump_seq(rest, jt, ok);
+            if(!ok) {
+                return result;
+            }
+            if(!lowered_rest->empty()) {
+                result->push_back(make_guard_if(cond, lowered_rest));
+            }
+            return result; // the remainder now lives inside the guard
+        }
+
+        if(is_jump_of(s, jt)) {
+            return result; // unconditional jump: the rest is unreachable
+        }
+
+        if(owns_jump_of(s, jt)) {
+            ok = false; // a jump too deeply nested for the flag-free form
+            return result;
+        }
+
+        result->push_back(s);
+    }
+    return result;
+}
 } // namespace
 
 LoopUnrolling::LoopUnrolling(const FunctionMap &function_map) : m_function_map(function_map) {}
@@ -110,13 +219,44 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
             return 1;
         }
 
-        // Unrolling a loop that uses break/continue would emit the jump outside any
-        // loop (invalid). Lowering it to guards/flags (§3.2) is not yet done, so the
-        // loop is left intact for the synthesis/simulation tool.
+        // Jump lowering (ADR-0005 §3.2). A break/continue cannot simply be cloned —
+        // it would land outside any loop. `continue` is lowered into the body now
+        // (each iteration guards its own remainder); `break` is lowered across the
+        // flat unrolled list afterwards (it also skips later iterations). Mixed
+        // break+continue, or a jump nested too deeply for the flag-free guard form,
+        // is left intact for the downstream tool.
+        bool lower_break_after = false;
         if(body_owns_jump(for_node->get_statement())) {
-            LOG_WARNING_N(for_node)
-                << "for loop uses break/continue; leaving it un-unrolled (jump lowering pending)";
-            return 0;
+            const bool has_break = owns_jump_of(for_node->get_statement(), AST::NodeType::Break);
+            const bool has_continue =
+                owns_jump_of(for_node->get_statement(), AST::NodeType::Continue);
+
+            AST::Node::ListPtr body_stmts;
+            std::string body_scope;
+            if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
+                const auto &b = AST::cast_to<AST::Block>(for_node->get_statement());
+                body_stmts = b->get_statements();
+                body_scope = b->get_scope();
+            } else {
+                body_stmts = std::make_shared<AST::Node::List>();
+                body_stmts->push_back(for_node->get_statement());
+            }
+
+            bool ok = !(has_break && has_continue); // mixed break+continue: not handled
+            if(ok) {
+                const AST::NodeType jt = has_break ? AST::NodeType::Break : AST::NodeType::Continue;
+                const auto &lowered = lower_jump_seq(body_stmts, jt, ok);
+                if(ok && has_continue) {
+                    // Replace the body with its continue-free form and unroll normally.
+                    for_node->set_statement(std::make_shared<AST::Block>(lowered, body_scope));
+                }
+            }
+            if(!ok) {
+                LOG_WARNING_N(for_node) << "for loop uses break/continue in a form that cannot be "
+                                           "unrolled; leaving it intact";
+                return 0;
+            }
+            lower_break_after = has_break;
         }
 
         // Get the loop scope
@@ -189,6 +329,13 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 
                 // We accumulate all results
                 unrolled_stmts->splice(unrolled_stmts->end(), *block_tmp->get_statements());
+            }
+
+            // Lower `break` across the whole unrolled sequence: it skips the rest of
+            // its own iteration and every later one (ADR-0005 §3.2).
+            if(lower_break_after) {
+                bool ok = true;
+                unrolled_stmts = lower_jump_seq(unrolled_stmts, AST::NodeType::Break, ok);
             }
 
             // Replace the all unrolled statements in the true parent
