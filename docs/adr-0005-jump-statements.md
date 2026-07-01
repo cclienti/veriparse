@@ -109,6 +109,21 @@ compound statement checks the child's status and stops/propagates accordingly.
 the end is an implicit `return name`. This is the single most important pass
 change: without it a const function that uses `return` cannot be folded.
 
+**Known limitation — data-dependent conditional `return`.** When a function's
+result depends on a `return` under a *non-constant* condition — e.g. a function
+whose guard reads a signal that is not one of its arguments — the interpreter
+cannot resolve that exit and the fall-through `return` supplies the result, so the
+call folds to a value that ignores the conditional exit. In a **loop** body this
+is handled (`has_unresolved_loop_jump` treats a residual `Return` as unresolved and
+leaves the loop). Outside a loop it is *not* guarded: a general scan for a residual
+conditional return over-triggers, because the folder does not fully fold relational
+guards (`if (x < 0)` with `x` constant is left intact even though it is dead), so a
+residual-`if`-with-`return` does not reliably indicate a genuinely runtime exit. A
+precise fix belongs in expression folding (fold constant relational guards so the
+dead conditional return is removed), not in a syntactic scan. Scope: a proper
+constant function (guards derived from its arguments) folds correctly; only a
+function reading a non-argument signal in a return guard is affected.
+
 ### 3.2 LoopUnrolling — lower `break` / `continue`
 Static unrolling of a constant-bound loop must preserve jump semantics. A cloned
 `break`/`continue` would land outside any loop, so the unroller lowers `if (cond)
