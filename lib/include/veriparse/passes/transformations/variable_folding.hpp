@@ -132,6 +132,15 @@ private:
     void invalidate_loop_state(const AST::Node::Ptr &node);
 
     /**
+     * @brief Act on the control-flow signal left by an unrolled iteration and say
+     * whether the loop stops: Returned stops it and propagates outward; Broke stops
+     * it and is consumed; Continued/Normal continue (Continued is consumed).
+     *
+     * @return true if the enclosing loop must stop iterating
+     */
+    bool stop_after_iteration();
+
+    /**
      * @brief Walk through a for statement.
      *
      * @return zero on success
