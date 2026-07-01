@@ -220,6 +220,9 @@ template <> constexpr NodeType get_node_type<SystemCall>() { return NodeType::Sy
 template <> constexpr NodeType get_node_type<HierLabel>() { return NodeType::HierLabel; }
 template <> constexpr NodeType get_node_type<HierName>() { return NodeType::HierName; }
 template <> constexpr NodeType get_node_type<Disable>() { return NodeType::Disable; }
+template <> constexpr NodeType get_node_type<Return>() { return NodeType::Return; }
+template <> constexpr NodeType get_node_type<Break>() { return NodeType::Break; }
+template <> constexpr NodeType get_node_type<Continue>() { return NodeType::Continue; }
 template <> constexpr NodeType get_node_type<ParallelBlock>() { return NodeType::ParallelBlock; }
 template <> constexpr NodeType get_node_type<SingleStatement>()
 {

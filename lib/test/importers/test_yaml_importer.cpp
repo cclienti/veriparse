@@ -3952,6 +3952,59 @@ TEST(YAMLImporter, Disable)
     ASSERT_TRUE(yaml["Disable"]["dest"]);
 }
 
+TEST(YAMLImporter, Return)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Return.log");
+    Logger::add_stderr_sink();
+    std::string str("Return:\n"
+                    "  filename: return.v\n"
+                    "  line: 6\n"
+                    "  value:\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Return"]);
+    ASSERT_TRUE(yaml["Return"]["filename"].as<std::string>() == "return.v");
+    ASSERT_TRUE(yaml["Return"]["line"].as<int>() == 6);
+    ASSERT_TRUE(yaml["Return"]["value"]);
+}
+
+TEST(YAMLImporter, Break)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Break.log");
+    Logger::add_stderr_sink();
+    std::string str("Break:\n"
+                    "  filename: break.v\n"
+                    "  line: 5\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Break"]);
+    ASSERT_TRUE(yaml["Break"]["filename"].as<std::string>() == "break.v");
+    ASSERT_TRUE(yaml["Break"]["line"].as<int>() == 5);
+}
+
+TEST(YAMLImporter, Continue)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Continue.log");
+    Logger::add_stderr_sink();
+    std::string str("Continue:\n"
+                    "  filename: continue.v\n"
+                    "  line: 8\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Continue"]);
+    ASSERT_TRUE(yaml["Continue"]["filename"].as<std::string>() == "continue.v");
+    ASSERT_TRUE(yaml["Continue"]["line"].as<int>() == 8);
+}
+
 TEST(YAMLImporter, ParallelBlock)
 {
     Logger::remove_all_sinks();

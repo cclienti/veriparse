@@ -192,6 +192,9 @@ private:
     virtual std::string render_hierlabel(const AST::HierLabel::Ptr node) const;
     virtual std::string render_hiername(const AST::HierName::Ptr node) const;
     virtual std::string render_disable(const AST::Disable::Ptr node) const;
+    virtual std::string render_return(const AST::Return::Ptr node) const;
+    virtual std::string render_break(const AST::Break::Ptr node) const;
+    virtual std::string render_continue(const AST::Continue::Ptr node) const;
     virtual std::string render_parallelblock(const AST::ParallelBlock::Ptr node) const;
     virtual std::string render_singlestatement(const AST::SingleStatement::Ptr node) const;
 };

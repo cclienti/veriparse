@@ -174,6 +174,9 @@
 #include <veriparse/AST/hierlabel.hpp>
 #include <veriparse/AST/hiername.hpp>
 #include <veriparse/AST/disable.hpp>
+#include <veriparse/AST/return.hpp>
+#include <veriparse/AST/break.hpp>
+#include <veriparse/AST/continue.hpp>
 #include <veriparse/AST/parallelblock.hpp>
 #include <veriparse/AST/singlestatement.hpp>
 #include <veriparse/AST/node_operators.hpp>

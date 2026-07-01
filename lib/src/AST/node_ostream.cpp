@@ -521,6 +521,15 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Disable:
         os << static_cast<const AST::Disable &>(p);
         break;
+    case NodeType::Return:
+        os << static_cast<const AST::Return &>(p);
+        break;
+    case NodeType::Break:
+        os << static_cast<const AST::Break &>(p);
+        break;
+    case NodeType::Continue:
+        os << static_cast<const AST::Continue &>(p);
+        break;
     case NodeType::ParallelBlock:
         os << static_cast<const AST::ParallelBlock &>(p);
         break;
