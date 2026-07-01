@@ -76,3 +76,6 @@ TEST(PassesTransformation_LoopUnrolling, loop_unrolling_continue0) { TEST_CORE_S
 // question: the remainder sits in the `else` of the jump condition, so it runs when
 // the condition is not true (including X), matching the source.
 TEST(PassesTransformation_LoopUnrolling, loop_unrolling_break_init0) { TEST_CORE_SV; }
+// The same break/continue lowering applies to `repeat` loops (§12.8).
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling_repeat_break0) { TEST_CORE_SV; }
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling_repeat_continue0) { TEST_CORE_SV; }
