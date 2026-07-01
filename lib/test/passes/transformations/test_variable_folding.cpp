@@ -75,6 +75,9 @@ TEST(PassesTransformation_VariableFolding, while0) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, while1) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, while2) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, for0) { TEST_CORE; }
+// A loop whose bound is non-constant is left intact; a later read of a
+// loop-assigned variable must NOT fold to a stale partial-iteration value.
+TEST(PassesTransformation_VariableFolding, vf_loop_stale0) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, for1) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, for2) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, gray2bin) { TEST_CORE; }

@@ -125,6 +125,13 @@ private:
                                         AST::Block::Ptr block);
 
     /**
+     * @brief Drop from the state map the variables a loop assigns, when the loop is
+     * left un-unrolled after a partial attempt — their post-loop values are unknown,
+     * so nothing downstream must fold to a stale partial-iteration value.
+     */
+    void invalidate_loop_state(const AST::Node::Ptr &node);
+
+    /**
      * @brief Walk through a for statement.
      *
      * @return zero on success

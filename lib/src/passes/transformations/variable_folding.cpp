@@ -20,6 +20,12 @@ namespace Transformations
 namespace
 {
 
+/// Safety net for a loop with no compile-time-constant termination (e.g.
+/// `while (1)` whose only exit is a runtime `break`, now writable with §12.8
+/// jumps): stop unrolling past this many iterations and leave the loop intact
+/// rather than growing the unrolled block without bound.
+constexpr unsigned long kMaxUnrollIterations = 100000ul;
+
 /// A jump statement (§12.8), bare or wrapped in a SingleStatement.
 bool is_jump_statement(const AST::Node::Ptr &node)
 {
@@ -55,15 +61,16 @@ void strip_consumed_jumps(const AST::Node::Ptr &node)
     }
 }
 
-/// True if @p node still contains a Break or Continue that constant control-flow
-/// folding did not consume (i.e. one still guarded by an IfStatement) — unrolling
-/// would then emit a jump outside any loop.
+/// True if @p node still contains a jump (Break/Continue/Return) that constant
+/// control-flow folding did not consume (i.e. one still guarded by an IfStatement)
+/// — committing the unrolled block would then ignore that exit.
 bool has_unresolved_loop_jump(const AST::Node::Ptr &node)
 {
     if(!node) {
         return false;
     }
-    if(node->is_node_type(AST::NodeType::Break) || node->is_node_type(AST::NodeType::Continue)) {
+    if(node->is_node_type(AST::NodeType::Break) || node->is_node_type(AST::NodeType::Continue) ||
+       node->is_node_type(AST::NodeType::Return)) {
         return true;
     }
     AST::Node::ListPtr children = node->get_children();
@@ -75,7 +82,9 @@ bool has_unresolved_loop_jump(const AST::Node::Ptr &node)
     return false;
 }
 
-/// Collect the simple identifier names assigned (blocking) anywhere in @p node.
+/// Collect the names a loop body may seed into the state map: identifiers written
+/// by a blocking substitution, plus variables declared with an initializer (which
+/// execute_variable_decl also folds into the state).
 void collect_assigned_names(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
     if(!node) {
@@ -86,6 +95,11 @@ void collect_assigned_names(const AST::Node::Ptr &node, std::set<std::string> &n
         if(lvalue && lvalue->get_var() &&
            lvalue->get_var()->is_node_category(AST::NodeType::Identifier)) {
             names.insert(AST::cast_to<AST::Identifier>(lvalue->get_var())->get_name());
+        }
+    } else if(node->is_node_type(AST::NodeType::Var)) {
+        const auto &var = AST::cast_to<AST::Var>(node);
+        if(var->get_init()) {
+            names.insert(var->get_name());
         }
     }
     AST::Node::ListPtr children = node->get_children();
@@ -349,19 +363,25 @@ bool VariableFolding::finalize_unrolled_loop(AST::Node::Ptr node, AST::Node::Ptr
     if(has_unresolved_loop_jump(block)) {
         LOG_WARNING_N(node) << "loop body has a break/continue that did not fold to a constant; "
                                "leaving the loop for later lowering";
-        // Drop the loop-assigned variables: their post-loop values are unknown, so
-        // nothing downstream must fold to a stale constant.
-        std::set<std::string> assigned;
-        collect_assigned_names(node, assigned);
-        for(const std::string &name : assigned) {
-            m_state_map.erase(name);
-        }
-        m_flow = Flow::Normal;
+        invalidate_loop_state(node);
         return true;
     }
 
     pickup_statements(parent, node, block);
     return false;
+}
+
+void VariableFolding::invalidate_loop_state(const AST::Node::Ptr &node)
+{
+    // A loop left un-unrolled has already run some body statements during the
+    // aborted attempt; drop the variables it assigns so nothing downstream folds
+    // to a stale partial-iteration value.
+    std::set<std::string> assigned;
+    collect_assigned_names(node, assigned);
+    for(const std::string &name : assigned) {
+        m_state_map.erase(name);
+    }
+    m_flow = Flow::Normal;
 }
 
 int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)
@@ -387,7 +407,14 @@ int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr par
         ret += execute(pre, node);
     }
 
-    while(1) {
+    for(unsigned long iteration = 0;; ++iteration) {
+        if(iteration >= kMaxUnrollIterations) {
+            LOG_WARNING_N(node) << "for loop exceeded the unroll limit (non-terminating?); "
+                                   "leaving it intact";
+            invalidate_loop_state(node);
+            return ret;
+        }
+
         auto cloned = AST::cast_to<AST::ForStatement>(node->clone());
 
         // Statements within for.
@@ -418,6 +445,7 @@ int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr par
             }
         } else {
             LOG_WARNING_N(node) << "condition cannot be evaluated during for loop unrolling";
+            invalidate_loop_state(node);
             return 0;
         }
     }
@@ -451,7 +479,15 @@ int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr
         // called.
         auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
 
+        unsigned long iteration = 0;
         while(cond->get_value() != 0) {
+            if(iteration++ >= kMaxUnrollIterations) {
+                LOG_WARNING_N(node) << "while loop exceeded the unroll limit (only a runtime "
+                                       "break exits?); leaving it intact";
+                invalidate_loop_state(node);
+                return ret;
+            }
+
             // We clone the statement to analyze
             auto current = node->get_statement()->clone();
             ret += execute_loop_body(current, block);
@@ -472,6 +508,7 @@ int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr
                 cond = AST::cast_to<AST::IntConstN>(expr);
             } else {
                 LOG_WARNING_N(node) << "condition cannot be evaluated during while loop unrolling";
+                invalidate_loop_state(node);
                 return 0;
             }
         }
