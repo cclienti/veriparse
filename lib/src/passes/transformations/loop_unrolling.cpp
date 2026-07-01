@@ -42,6 +42,32 @@ std::string print_for_range(const Range &for_range)
 
     return ss.str();
 }
+
+/// True if @p node contains a Break/Continue (§12.8) that belongs to THIS loop —
+/// i.e. not one nested inside another loop, which owns its own jumps.
+bool body_owns_jump(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::Break) || node->is_node_type(AST::NodeType::Continue)) {
+        return true;
+    }
+    // A nested loop scopes its own break/continue; do not look inside it.
+    if(node->is_node_type(AST::NodeType::ForStatement) ||
+       node->is_node_type(AST::NodeType::WhileStatement) ||
+       node->is_node_type(AST::NodeType::RepeatStatement) ||
+       node->is_node_type(AST::NodeType::ForeverStatement)) {
+        return false;
+    }
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        if(body_owns_jump(child)) {
+            return true;
+        }
+    }
+    return false;
+}
 } // namespace
 
 LoopUnrolling::LoopUnrolling(const FunctionMap &function_map) : m_function_map(function_map) {}
@@ -82,6 +108,15 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
         if(!parent) {
             LOG_ERROR_N(for_node) << "could not unroll loop, no parent";
             return 1;
+        }
+
+        // Unrolling a loop that uses break/continue would emit the jump outside any
+        // loop (invalid). Lowering it to guards/flags (§3.2) is not yet done, so the
+        // loop is left intact for the synthesis/simulation tool.
+        if(body_owns_jump(for_node->get_statement())) {
+            LOG_WARNING_N(for_node)
+                << "for loop uses break/continue; leaving it un-unrolled (jump lowering pending)";
+            return 0;
         }
 
         // Get the loop scope
@@ -170,6 +205,13 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
         if(!parent) {
             LOG_ERROR_N(repeat_node) << "could not unroll loop, no parent";
             return 1;
+        }
+
+        // See the for-loop note above: a break/continue can't be unrolled yet.
+        if(body_owns_jump(repeat_node->get_statement())) {
+            LOG_WARNING_N(repeat_node) << "repeat loop uses break/continue; leaving it un-unrolled "
+                                          "(jump lowering pending)";
+            return 0;
         }
 
         // Get the loop scope
