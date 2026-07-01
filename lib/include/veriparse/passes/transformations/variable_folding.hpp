@@ -104,6 +104,27 @@ private:
     virtual int execute_return(AST::Return::Ptr node, AST::Node::Ptr parent);
 
     /**
+     * @brief Execute one unrolled loop iteration's body into @p block, appending
+     * each executed statement. Stops at the first statement that raises a jump
+     * (§12.8) — the rest of the iteration is unreachable.
+     *
+     * @return zero on success
+     */
+    virtual int execute_loop_body(AST::Node::Ptr body, AST::Block::Ptr block);
+
+    /**
+     * @brief Commit an unrolled loop, or leave it intact. If the unrolled @p block
+     * still holds a break/continue that did not fold to a constant, the loop cannot
+     * be safely unrolled (the jump would land outside any loop); the original loop
+     * is kept for LoopUnrolling (ADR-0005 §3.2) and the variables it assigns are
+     * dropped from the state so nothing folds to a stale value.
+     *
+     * @return true if the loop was left intact (not unrolled)
+     */
+    virtual bool finalize_unrolled_loop(AST::Node::Ptr node, AST::Node::Ptr parent,
+                                        AST::Block::Ptr block);
+
+    /**
      * @brief Walk through a for statement.
      *
      * @return zero on success
