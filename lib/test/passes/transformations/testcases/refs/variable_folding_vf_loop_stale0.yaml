@@ -1,0 +1,275 @@
+Source:
+  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+          line: 1
+          name: vf_loop_stale0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: n
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: x
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: y
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                  line: 3
+                  signing: NONE
+          - Initial:
+              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+              line: 5
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                      line: 6
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 6
+                              name: x
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 6
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 5
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - ForStatement:
+                      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                      line: 7
+                      pre:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 7
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 7
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                  line: 7
+                                  name: i
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 7
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                  line: 7
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      cond:
+                        LessThan:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 7
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 7
+                              name: i
+                              hier:
+                                HierName: null
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 7
+                              name: n
+                              hier:
+                                HierName: null
+                      post:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 7
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 7
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                  line: 7
+                                  name: i
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 7
+                              var:
+                                Plus:
+                                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                  line: 7
+                                  left:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                      line: 7
+                                      name: i
+                                      hier:
+                                        HierName: null
+                                  right:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                      line: 7
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      statement:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 8
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 8
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                  line: 8
+                                  name: x
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 8
+                              var:
+                                Plus:
+                                  filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                  line: 8
+                                  left:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                      line: 8
+                                      name: x
+                                      hier:
+                                        HierName: null
+                                  right:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                                      line: 8
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 9
+                              name: y
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_loop_stale0.v
+                              line: 9
+                              name: x
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
