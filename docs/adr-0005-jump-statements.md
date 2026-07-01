@@ -110,23 +110,39 @@ the end is an implicit `return name`. This is the single most important pass
 change: without it a const function that uses `return` cannot be folded.
 
 ### 3.2 LoopUnrolling — lower `break` / `continue`
-Static unrolling of a constant-bound loop must preserve jump semantics. Per the
-loop body:
+Static unrolling of a constant-bound loop must preserve jump semantics. A cloned
+`break`/`continue` would land outside any loop, so the unroller lowers `if (cond)
+jump;` to a **structural guard — no flag variable** (which avoids inventing a
+declaration and keeps the output purely combinational):
 
-- **No jumps** → unchanged (today's behaviour).
+The remainder after a jump is moved into the **`else` branch of the jump's own
+condition** — `if (c) jump; rest` becomes `if (c) begin end else begin rest end`.
+This keeps the source's **X-propagation**: the remainder runs whenever the jump is
+not taken, *including when `c` is X* (`if (x)` falls to the else). A negated guard
+`if (!c) begin rest end` would instead skip the remainder on X and so diverge from
+the source in simulation; the `!==` that would fix that is not synthesizable.
+
+- **No jumps** → unchanged.
 - **`continue`** → the statements *after* the continue in that iteration are
-  skipped. Lower to a guard over the remainder of the iteration body
-  (`if (!taken_i) begin <rest> end`); when the continue condition is
-  **compile-time constant**, drop the rest statically with no residual guard.
-- **`break`** → all *subsequent* iterations are skipped. Lower to an **"active"
-  guard** threaded across the unrolled iterations (a `broke` flag; each unrolled
-  iteration becomes `if (!broke) begin <iter> end`, and `break` sets it); when the
-  break condition is **compile-time constant**, stop emitting iterations statically.
+  skipped. Lowered into the body *before* unrolling. Each unrolled iteration then
+  guards only its own remainder; later iterations are unaffected.
+- **`break`** → the rest of this iteration *and* every later one is skipped.
+  Lowered *after* unrolling, across the flat iteration sequence: at each
+  `if (c) break;`, everything after it (this iteration's remainder plus all later
+  iterations) moves into the `else`, so the unrolled body is a chain of nested
+  guards that stops at the first taken break. A bare (unconditional) jump drops the
+  unreachable remainder.
 
-Constant-condition jumps resolve to static cut-offs (clean output, no flags);
-runtime-condition jumps need the guard/flag lowering. **Phase-1 fallback**: only
-unroll loops whose jump conditions are statically determinable, and emit a clear
-diagnostic for the rest, deferring the general flag lowering.
+Downstream constant folding collapses guards whose condition is compile-time
+constant, so the constant case needs no special path.
+
+**Chosen over a flag** (`broke`/`taken` regs): the flag form needs a declared
+variable placed in a valid scope and reset per iteration; the structural form is
+declaration-free and folds cleanly. **Scope**: handled for jumps written as
+`if (cond) jump;` or a bare `jump;` at the loop-body statement level (the
+synthesizable norm). A jump nested deeper (inside a block or a compound `if`), or
+a loop mixing `break` **and** `continue`, is not lowered — the loop is left intact
+with a diagnostic for the downstream tool (still valid, just not unrolled).
 
 ### 3.3 DeadcodeElimination — unreachable after a jump
 Statements that follow an **unconditional** `return`/`break`/`continue` within the

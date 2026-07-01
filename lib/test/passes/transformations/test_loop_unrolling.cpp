@@ -65,6 +65,10 @@ TEST(PassesTransformation_LoopUnrolling, scope1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, scope2) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, defparam1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, defparam2) { TEST_CORE; }
-// A for loop whose body uses `break` (§12.8) is left intact: unrolling would emit
-// the jump outside any loop. Guard/flag lowering is pending (ADR-0005 §3.2).
+// `break` (§12.8) lowered structurally: each iteration's remainder and all later
+// iterations nest inside `if (!cond)`, so it stops at the first taken break
+// (ADR-0005 §3.2).
 TEST(PassesTransformation_LoopUnrolling, loop_unrolling_break0) { TEST_CORE_SV; }
+// `continue` lowered structurally: each iteration independently guards its own
+// remainder with `if (!cond)` (later iterations are unaffected).
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling_continue0) { TEST_CORE_SV; }

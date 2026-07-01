@@ -161,140 +161,40 @@ Module:
                 DelayStatement: null
               rdelay:
                 DelayStatement: null
-          - ForStatement:
+          - IfStatement:
               filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-              line: 8
-              pre:
-                BlockingSubstitution:
-                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                  line: 8
-                  left:
-                    Lvalue:
-                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                      line: 8
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                          line: 8
-                          name: i
-                          hier:
-                            HierName: null
-                  right:
-                    Rvalue:
-                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                      line: 8
-                      var:
-                        IntConstN:
-                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                          line: 8
-                          base: 10
-                          size: -1
-                          sign: false
-                          value: 0
-                  ldelay:
-                    DelayStatement: null
-                  rdelay:
-                    DelayStatement: null
+              line: 9
               cond:
-                LessThan:
+                Eq:
                   filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                  line: 8
+                  line: 9
                   left:
-                    Identifier:
-                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                      line: 8
-                      name: i
-                      hier:
-                        HierName: null
-                  right:
                     IntConstN:
                       filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
                       line: 8
                       base: 10
                       size: -1
                       sign: false
-                      value: 4
-              post:
-                BlockingSubstitution:
-                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                  line: 8
-                  left:
-                    Lvalue:
-                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                      line: 8
-                      var:
-                        Identifier:
-                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                          line: 8
-                          name: i
-                          hier:
-                            HierName: null
+                      value: 0
                   right:
-                    Rvalue:
-                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                      line: 8
-                      var:
-                        Plus:
-                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                          line: 8
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                              line: 8
-                              name: i
-                              hier:
-                                HierName: null
-                          right:
-                            IntConstN:
-                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                              line: 8
-                              base: 10
-                              size: -1
-                              sign: false
-                              value: 1
-                  ldelay:
-                    DelayStatement: null
-                  rdelay:
-                    DelayStatement: null
-              statement:
-                Block:
-                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                  line: 8
-                  scope: lp
-                  statements:
-                  - IfStatement:
+                    Identifier:
                       filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
                       line: 9
-                      cond:
-                        Eq:
-                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                          line: 9
-                          left:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                              line: 9
-                              name: i
-                              hier:
-                                HierName: null
-                          right:
-                            Identifier:
-                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                              line: 9
-                              name: sel
-                              hier:
-                                HierName: null
-                      true_statement:
-                        SingleStatement:
-                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                          line: 9
-                          scope: ''
-                          statement:
-                            Break:
-                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
-                              line: 9
-                          delay:
-                            DelayStatement: null
-                      false_statement: null
+                      name: sel
+                      hier:
+                        HierName: null
+              true_statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements: []
+              false_statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
                   - BlockingSubstitution:
                       filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
                       line: 10
@@ -336,3 +236,228 @@ Module:
                         DelayStatement: null
                       rdelay:
                         DelayStatement: null
+                  - IfStatement:
+                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                      line: 9
+                      cond:
+                        Eq:
+                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ''
+                              line: 0
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                              line: 9
+                              name: sel
+                              hier:
+                                HierName: null
+                      true_statement:
+                        Block:
+                          filename: ''
+                          line: 0
+                          scope: ''
+                          statements: []
+                      false_statement:
+                        Block:
+                          filename: ''
+                          line: 0
+                          scope: ''
+                          statements:
+                          - BlockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                              line: 10
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                  line: 10
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                      line: 10
+                                      name: o
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                  line: 10
+                                  var:
+                                    Plus:
+                                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                      line: 10
+                                      left:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                          line: 10
+                                          name: o
+                                          hier:
+                                            HierName: null
+                                      right:
+                                        IntConstN:
+                                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                          line: 10
+                                          base: 10
+                                          size: -1
+                                          sign: false
+                                          value: 1
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          - IfStatement:
+                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                              line: 9
+                              cond:
+                                Eq:
+                                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                  line: 9
+                                  left:
+                                    IntConstN:
+                                      filename: ''
+                                      line: 0
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 2
+                                  right:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                      line: 9
+                                      name: sel
+                                      hier:
+                                        HierName: null
+                              true_statement:
+                                Block:
+                                  filename: ''
+                                  line: 0
+                                  scope: ''
+                                  statements: []
+                              false_statement:
+                                Block:
+                                  filename: ''
+                                  line: 0
+                                  scope: ''
+                                  statements:
+                                  - BlockingSubstitution:
+                                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                      line: 10
+                                      left:
+                                        Lvalue:
+                                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                          line: 10
+                                          var:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                              line: 10
+                                              name: o
+                                              hier:
+                                                HierName: null
+                                      right:
+                                        Rvalue:
+                                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                          line: 10
+                                          var:
+                                            Plus:
+                                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                              line: 10
+                                              left:
+                                                Identifier:
+                                                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                  line: 10
+                                                  name: o
+                                                  hier:
+                                                    HierName: null
+                                              right:
+                                                IntConstN:
+                                                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                  line: 10
+                                                  base: 10
+                                                  size: -1
+                                                  sign: false
+                                                  value: 1
+                                      ldelay:
+                                        DelayStatement: null
+                                      rdelay:
+                                        DelayStatement: null
+                                  - IfStatement:
+                                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                      line: 9
+                                      cond:
+                                        Eq:
+                                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                          line: 9
+                                          left:
+                                            IntConstN:
+                                              filename: ''
+                                              line: 0
+                                              base: 10
+                                              size: -1
+                                              sign: false
+                                              value: 3
+                                          right:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                              line: 9
+                                              name: sel
+                                              hier:
+                                                HierName: null
+                                      true_statement:
+                                        Block:
+                                          filename: ''
+                                          line: 0
+                                          scope: ''
+                                          statements: []
+                                      false_statement:
+                                        Block:
+                                          filename: ''
+                                          line: 0
+                                          scope: ''
+                                          statements:
+                                          - BlockingSubstitution:
+                                              filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                              line: 10
+                                              left:
+                                                Lvalue:
+                                                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                  line: 10
+                                                  var:
+                                                    Identifier:
+                                                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                      line: 10
+                                                      name: o
+                                                      hier:
+                                                        HierName: null
+                                              right:
+                                                Rvalue:
+                                                  filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                  line: 10
+                                                  var:
+                                                    Plus:
+                                                      filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                      line: 10
+                                                      left:
+                                                        Identifier:
+                                                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                          line: 10
+                                                          name: o
+                                                          hier:
+                                                            HierName: null
+                                                      right:
+                                                        IntConstN:
+                                                          filename: ../test/passes/transformations/testcases/loop_unrolling_break0.v
+                                                          line: 10
+                                                          base: 10
+                                                          size: -1
+                                                          sign: false
+                                                          value: 1
+                                              ldelay:
+                                                DelayStatement: null
+                                              rdelay:
+                                                DelayStatement: null
