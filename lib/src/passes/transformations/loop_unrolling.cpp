@@ -354,11 +354,38 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
             return 1;
         }
 
-        // See the for-loop note above: a break/continue can't be unrolled yet.
+        // Jump lowering, exactly as for the for-loop above (ADR-0005 §3.2).
+        bool lower_break_after = false;
         if(body_owns_jump(repeat_node->get_statement())) {
-            LOG_WARNING_N(repeat_node) << "repeat loop uses break/continue; leaving it un-unrolled "
-                                          "(jump lowering pending)";
-            return 0;
+            const bool has_break = owns_jump_of(repeat_node->get_statement(), AST::NodeType::Break);
+            const bool has_continue =
+                owns_jump_of(repeat_node->get_statement(), AST::NodeType::Continue);
+
+            AST::Node::ListPtr body_stmts;
+            std::string body_scope;
+            if(repeat_node->get_statement()->is_node_type(AST::NodeType::Block)) {
+                const auto &b = AST::cast_to<AST::Block>(repeat_node->get_statement());
+                body_stmts = b->get_statements();
+                body_scope = b->get_scope();
+            } else {
+                body_stmts = std::make_shared<AST::Node::List>();
+                body_stmts->push_back(repeat_node->get_statement());
+            }
+
+            bool ok = !(has_break && has_continue);
+            if(ok) {
+                const AST::NodeType jt = has_break ? AST::NodeType::Break : AST::NodeType::Continue;
+                const auto &lowered = lower_jump_seq(body_stmts, jt, ok);
+                if(ok && has_continue) {
+                    repeat_node->set_statement(std::make_shared<AST::Block>(lowered, body_scope));
+                }
+            }
+            if(!ok) {
+                LOG_WARNING_N(repeat_node) << "repeat loop uses break/continue in a form that "
+                                              "cannot be unrolled; leaving it intact";
+                return 0;
+            }
+            lower_break_after = has_break;
         }
 
         // Get the loop scope
@@ -418,6 +445,12 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
                 }
 
                 unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
+            }
+
+            // Lower `break` across the whole unrolled sequence (ADR-0005 §3.2).
+            if(lower_break_after) {
+                bool ok = true;
+                unrolled_stmts = lower_jump_seq(unrolled_stmts, AST::NodeType::Break, ok);
             }
 
             // Replace the unrolled statements in the parent block.
