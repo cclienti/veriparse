@@ -136,13 +136,48 @@ the source in simulation; the `!==` that would fix that is not synthesizable.
 Downstream constant folding collapses guards whose condition is compile-time
 constant, so the constant case needs no special path.
 
-**Chosen over a flag** (`broke`/`taken` regs): the flag form needs a declared
-variable placed in a valid scope and reset per iteration; the structural form is
-declaration-free and folds cleanly. **Scope**: handled for jumps written as
-`if (cond) jump;` or a bare `jump;` at the loop-body statement level (the
-synthesizable norm). A jump nested deeper (inside a block or a compound `if`), or
-a loop mixing `break` **and** `continue`, is not lowered — the loop is left intact
-with a diagnostic for the downstream tool (still valid, just not unrolled).
+**Implemented scope** (for and repeat loops): a single jump kind written as
+`if (cond) jump;` or a bare `jump;` at the loop-body statement level — the
+synthesizable norm. Anything else is left intact with a diagnostic (valid, just
+not unrolled):
+
+- a loop mixing `break` **and** `continue`;
+- a jump nested deeper — inside a block or a compound `if`.
+
+#### 3.2.1 Mixed / nested jumps — why they are deferred (flag lowering)
+
+The declaration-free `else`-branch form does **not** extend to the two deferred
+cases, and the reason is structural, not incidental:
+
+- **Mixed break+continue is exponential without a flag.** `continue` turns a
+  statement sequence into a branch (`if (c) begin end else begin rest end`);
+  a later `break` then has to nest *everything after it — including all remaining
+  unrolled iterations — into both sides of every preceding continue-branch. Each
+  continue roughly doubles the continuation, so N iterations with a continue blow
+  up as O(2^N). The nested case has the same continuation-duplication problem.
+
+- **A flag makes it linear** — and stays X-faithful. Introduce `_brk` (persists
+  across iterations) and `_cont` (reset each iteration); lower `break`→`_brk = 1`,
+  `continue`→`_cont = 1`, guard the remainder with `if (_brk==0 && _cont==0) …`,
+  and wrap each unrolled iteration in `if (_brk==0) begin _cont = 0; … end`.
+  Because the guard tests a *variable* (not the path condition), the remainder
+  appears once — linear, including for nested jumps. It is X-faithful because
+  `if (c) _brk = 1;` leaves the flag `0` when `c` is X (break not taken → the
+  remainder runs, matching the source), and the flag is never X so `_brk==0` is
+  clean. Verified by simulation: the flag form matches the source loop for every
+  input, including partial-X.
+
+- **Blocker — where the flag is declared.** The flags need an integer
+  declaration. A block-local decl does *not* work: `ScopeElevator` hoists it to a
+  mid-`always` position (after existing statements), which **Verilator rejects**
+  (declarations must precede statements). The declaration must therefore be placed
+  at **module level** (Verilator-clean, confirmed by lint). That means the flag
+  path must thread module-level decl injection through `LoopUnrolling::process`.
+
+**Status: deferred.** The simple single-jump lowering above is implemented; the
+flag-based path for mixed/nested jumps is designed and validated but **not built**
+— those loops are currently left intact (valid, just not unrolled). Revisit if a
+design needs jump-containing loops of this shape actually unrolled.
 
 ### 3.3 DeadcodeElimination — unreachable after a jump
 Statements that follow an **unconditional** `return`/`break`/`continue` within the
@@ -172,14 +207,16 @@ first implementation.
 
 ## 4. Phasing
 
-1. **Front end** — scanner keywords (SV-gated) + grammar + `Return`/`Break`/
+1. **Front end** ✅ — scanner keywords (SV-gated) + grammar + `Return`/`Break`/
    `Continue` AST nodes + generator. Round-trips `return [expr];`/`break;`/
    `continue;`. Parser/generator golden tests.
-2. **FunctionEvaluation** — return/break/continue control flow in the interpreter
+2. **FunctionEvaluation** ✅ — return/break/continue control flow in the interpreter
    (§3.1). Unblocks constant functions written with `return`.
-3. **LoopUnrolling** — break/continue lowering (§3.2), constant-condition first,
-   then the general guard/flag form.
-4. **DeadcodeElimination** — unreachable-after-jump (§3.3). Optional.
+3. **LoopUnrolling** ✅ (simple case) — structural `else`-branch lowering of a
+   single top-level `if (cond) jump;` / bare jump, for `for` and `repeat` (§3.2).
+   Mixed break+continue and deeper-nested jumps are **deferred** (flag lowering,
+   §3.2.1) — left intact for now.
+4. **DeadcodeElimination** — unreachable-after-jump (§3.3). Optional, **not built**.
 
 Each phase lands green on its own; phase 1 is independently useful (parse + emit).
 
