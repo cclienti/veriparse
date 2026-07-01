@@ -309,25 +309,30 @@ int VariableFolding::execute_loop_body(AST::Node::Ptr body, AST::Block::Ptr bloc
 {
     int ret = 0;
 
-    // Folding an inner `if` down to nothing can leave `block` with a null list
-    // (pickup_statements removed its last statement); recreate one so appends are
-    // safe. Otherwise this mirrors the historical body walk exactly.
-    AST::Node::ListPtr block_stmts = block->get_statements();
-    if(!block_stmts) {
-        block_stmts = std::make_shared<AST::Node::List>();
-        block->set_statements(block_stmts);
-    }
+    // Block::replace allocates a fresh statement list on every call, so an
+    // execute() that unrolls a nested loop (or folds an inner `if`) orphans any
+    // list pointer held across it — dropping statements appended afterwards. So
+    // re-fetch the current list (recreating one if a fold nulled it) before each
+    // append.
+    auto append = [&](const AST::Node::Ptr &stmt) {
+        AST::Node::ListPtr stmts = block->get_statements();
+        if(!stmts) {
+            stmts = std::make_shared<AST::Node::List>();
+            block->set_statements(stmts);
+        }
+        stmts->push_back(stmt);
+    };
 
     if(body->is_node_type(AST::NodeType::Block)) {
         for(const auto &stmt : *AST::cast_to<AST::Block>(body)->get_statements()) {
-            block_stmts->push_back(stmt);
+            append(stmt);
             ret += execute(stmt, block);
             if(m_flow != Flow::Normal) {
                 break; // the rest of this iteration is unreachable (§12.8)
             }
         }
     } else {
-        block_stmts->push_back(body);
+        append(body);
         ret += execute(body, block);
     }
 
