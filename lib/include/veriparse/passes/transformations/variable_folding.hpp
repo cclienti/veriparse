@@ -28,7 +28,28 @@ public:
 
     AST::Node::Ptr get_state(const std::string &var_name, bool &matched);
 
+    /**
+     * @brief Name of the variable a `return expr;` assigns to (the function-name
+     * variable, IEEE 1800-2017 §13.4). Empty means `return` carries no value here
+     * (a task / void function) — it only signals the early exit.
+     */
+    void set_return_target(const std::string &name);
+
 private:
+    /**
+     * @brief Non-local control-flow state produced by a jump statement (§12.8),
+     * threaded through statement evaluation. A compound statement stops evaluating
+     * its remaining children once this leaves Normal; a loop consumes Broke /
+     * Continued, and Returned propagates out to the top.
+     */
+    enum class Flow
+    {
+        Normal,
+        Returned,
+        Broke,
+        Continued
+    };
+
     /**
      * @return zero on success
      */
@@ -72,6 +93,15 @@ private:
      * @return zero on success
      */
     virtual int execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr parent);
+
+    /**
+     * @brief Evaluate a `return [expr];` (§12.8): assign `expr` to the return
+     * target (when both are present), then raise the Returned flow so the enclosing
+     * statements stop executing.
+     *
+     * @return zero on success
+     */
+    virtual int execute_return(AST::Return::Ptr node, AST::Node::Ptr parent);
 
     /**
      * @brief Walk through a for statement.
@@ -129,6 +159,8 @@ private:
 private:
     StateMap m_state_map;
     FunctionMap m_function_map;
+    Flow m_flow = Flow::Normal;
+    std::string m_return_target;
 };
 
 } // namespace Transformations
