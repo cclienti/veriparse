@@ -73,3 +73,8 @@ TEST(PassesTransformation_FunctionEvaluation, function_return0) { TEST_CORE_SV; 
 // later `return x*2;` (which would give -6). Verifies statements after a jump are
 // not executed.
 TEST(PassesTransformation_FunctionEvaluation, function_return1) { TEST_CORE_SV; }
+// `break` at a statically-resolved condition ends the interpreted loop: f(3) sums
+// 0+1+2+3 = 6 then breaks (§12.8).
+TEST(PassesTransformation_FunctionEvaluation, function_break0) { TEST_CORE_SV; }
+// `continue` skips the rest of one iteration: f(5) counts 0,1,3,4 = 4 (skips i==2).
+TEST(PassesTransformation_FunctionEvaluation, function_continue0) { TEST_CORE_SV; }

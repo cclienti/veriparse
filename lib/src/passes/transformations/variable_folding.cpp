@@ -8,12 +8,93 @@
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/AST/nodes.hpp>
 
+#include <set>
+
 namespace Veriparse
 {
 namespace Passes
 {
 namespace Transformations
 {
+
+namespace
+{
+
+/// A jump statement (§12.8), bare or wrapped in a SingleStatement.
+bool is_jump_statement(const AST::Node::Ptr &node)
+{
+    AST::Node::Ptr inner = node;
+    if(inner && inner->is_node_type(AST::NodeType::SingleStatement)) {
+        inner = AST::cast_to<AST::SingleStatement>(inner)->get_statement();
+    }
+    return inner && (inner->is_node_type(AST::NodeType::Break) ||
+                     inner->is_node_type(AST::NodeType::Continue) ||
+                     inner->is_node_type(AST::NodeType::Return));
+}
+
+/// Drop the jumps the interpreter actually reached: after constant-condition
+/// folding a consumed break/continue/return sits unconditionally in a Block. Its
+/// effect is already accounted for by the unrolling, so it must not be emitted.
+/// Conditional jumps (still under an IfStatement) are left for the caller to check.
+void strip_consumed_jumps(const AST::Node::Ptr &node)
+{
+    if(!node || !node->is_node_type(AST::NodeType::Block)) {
+        return;
+    }
+    AST::Node::ListPtr stmts = AST::cast_to<AST::Block>(node)->get_statements();
+    if(!stmts) {
+        return;
+    }
+    for(auto it = stmts->begin(); it != stmts->end();) {
+        if(is_jump_statement(*it)) {
+            it = stmts->erase(it);
+        } else {
+            strip_consumed_jumps(*it); // descend only through unconditional blocks
+            ++it;
+        }
+    }
+}
+
+/// True if @p node still contains a Break or Continue that constant control-flow
+/// folding did not consume (i.e. one still guarded by an IfStatement) — unrolling
+/// would then emit a jump outside any loop.
+bool has_unresolved_loop_jump(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::Break) || node->is_node_type(AST::NodeType::Continue)) {
+        return true;
+    }
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        if(has_unresolved_loop_jump(child)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Collect the simple identifier names assigned (blocking) anywhere in @p node.
+void collect_assigned_names(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    if(node->is_node_type(AST::NodeType::BlockingSubstitution)) {
+        const auto &lvalue = AST::cast_to<AST::BlockingSubstitution>(node)->get_left();
+        if(lvalue && lvalue->get_var() &&
+           lvalue->get_var()->is_node_category(AST::NodeType::Identifier)) {
+            names.insert(AST::cast_to<AST::Identifier>(lvalue->get_var())->get_name());
+        }
+    }
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        collect_assigned_names(child, names);
+    }
+}
+
+} // namespace
 
 VariableFolding::VariableFolding(const FunctionMap &function_map) : m_function_map(function_map) {}
 
@@ -224,6 +305,60 @@ int VariableFolding::execute_return(AST::Return::Ptr node, AST::Node::Ptr parent
     return 0;
 }
 
+int VariableFolding::execute_loop_body(AST::Node::Ptr body, AST::Block::Ptr block)
+{
+    int ret = 0;
+
+    // Folding an inner `if` down to nothing can leave `block` with a null list
+    // (pickup_statements removed its last statement); recreate one so appends are
+    // safe. Otherwise this mirrors the historical body walk exactly.
+    AST::Node::ListPtr block_stmts = block->get_statements();
+    if(!block_stmts) {
+        block_stmts = std::make_shared<AST::Node::List>();
+        block->set_statements(block_stmts);
+    }
+
+    if(body->is_node_type(AST::NodeType::Block)) {
+        for(const auto &stmt : *AST::cast_to<AST::Block>(body)->get_statements()) {
+            block_stmts->push_back(stmt);
+            ret += execute(stmt, block);
+            if(m_flow != Flow::Normal) {
+                break; // the rest of this iteration is unreachable (§12.8)
+            }
+        }
+    } else {
+        block_stmts->push_back(body);
+        ret += execute(body, block);
+    }
+
+    return ret;
+}
+
+bool VariableFolding::finalize_unrolled_loop(AST::Node::Ptr node, AST::Node::Ptr parent,
+                                             AST::Block::Ptr block)
+{
+    // Remove the jumps the unrolling already accounted for; only a jump still
+    // guarded by a non-constant condition should block unrolling.
+    strip_consumed_jumps(block);
+
+    if(has_unresolved_loop_jump(block)) {
+        LOG_WARNING_N(node) << "loop body has a break/continue that did not fold to a constant; "
+                               "leaving the loop for later lowering";
+        // Drop the loop-assigned variables: their post-loop values are unknown, so
+        // nothing downstream must fold to a stale constant.
+        std::set<std::string> assigned;
+        collect_assigned_names(node, assigned);
+        for(const std::string &name : assigned) {
+            m_state_map.erase(name);
+        }
+        m_flow = Flow::Normal;
+        return true;
+    }
+
+    pickup_statements(parent, node, block);
+    return false;
+}
+
 int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)
 {
     int ret = 0;
@@ -251,19 +386,18 @@ int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr par
         auto cloned = AST::cast_to<AST::ForStatement>(node->clone());
 
         // Statements within for.
-        auto block_stmts = block->get_statements();
-        auto current = cloned->get_statement();
+        ret += execute_loop_body(cloned->get_statement(), block);
 
-        if(current->is_node_type(AST::NodeType::Block)) {
-            auto current_block = AST::cast_to<AST::Block>(current);
-            for(auto stmt : *current_block->get_statements()) {
-                block_stmts->push_back(stmt);
-                ret += execute(stmt, block);
-            }
-        } else {
-            block_stmts->push_back(current);
-            ret += execute(current, block);
+        // A jump ends this iteration; `break`/`return` also end the loop, while
+        // `continue` still runs the post-update and re-tests the condition.
+        if(m_flow == Flow::Returned) {
+            break;
         }
+        if(m_flow == Flow::Broke) {
+            m_flow = Flow::Normal;
+            break;
+        }
+        m_flow = Flow::Normal; // clears a Continued signal
 
         // Post update.
         auto post = cloned->get_post();
@@ -283,9 +417,9 @@ int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr par
         }
     }
 
-    // At this point everything is unrolled and we can
-    // replace the block in the parent.
-    pickup_statements(parent, node, block);
+    // Commit the unrolled block, unless an unresolved break/continue forces us to
+    // leave the loop for later lowering (ADR-0005 §3.2).
+    finalize_unrolled_loop(node, parent, block);
 
     return ret;
 }
@@ -313,22 +447,19 @@ int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr
         auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
 
         while(cond->get_value() != 0) {
-            // We must get the new list updated by pickup_parents.
-            auto block_stmts = block->get_statements();
-
             // We clone the statement to analyze
             auto current = node->get_statement()->clone();
+            ret += execute_loop_body(current, block);
 
-            if(current->is_node_type(AST::NodeType::Block)) {
-                auto current_block = AST::cast_to<AST::Block>(current);
-                for(auto stmt : *current_block->get_statements()) {
-                    block_stmts->push_back(stmt);
-                    ret += execute(stmt, block);
-                }
-            } else {
-                block_stmts->push_back(current);
-                ret += execute(current, block);
+            // `break`/`return` end the loop; `continue` just re-tests the condition.
+            if(m_flow == Flow::Returned) {
+                break;
             }
+            if(m_flow == Flow::Broke) {
+                m_flow = Flow::Normal;
+                break;
+            }
+            m_flow = Flow::Normal; // clears a Continued signal
 
             // We clone the condition and we evaluate it.
             expr = analyze_expression(node->get_cond()->clone());
@@ -340,9 +471,9 @@ int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr
             }
         }
 
-        // At this point everything is unrolled and we can
-        // replace the block in the parent.
-        pickup_statements(parent, node, block);
+        // Commit the unrolled block, unless an unresolved break/continue forces us
+        // to leave the loop for later lowering (ADR-0005 §3.2).
+        finalize_unrolled_loop(node, parent, block);
     }
 
     return ret;
@@ -365,24 +496,23 @@ int VariableFolding::execute_repeat(AST::RepeatStatement::Ptr node, AST::Node::P
 
         auto times = AST::cast_to<AST::IntConstN>(expr);
         for(mpz_class i = 0; i < times->get_value(); i++) {
-            auto block_stmts = block->get_statements();
             auto current = node->get_statement()->clone();
+            ret += execute_loop_body(current, block);
 
-            if(current->is_node_type(AST::NodeType::Block)) {
-                auto current_block = AST::cast_to<AST::Block>(current);
-                for(auto stmt : *current_block->get_statements()) {
-                    block_stmts->push_back(stmt);
-                    ret += execute(stmt, block);
-                }
-            } else {
-                block_stmts->push_back(current);
-                ret += execute(current, block);
+            // `break`/`return` end the loop; `continue` moves to the next count.
+            if(m_flow == Flow::Returned) {
+                break;
             }
+            if(m_flow == Flow::Broke) {
+                m_flow = Flow::Normal;
+                break;
+            }
+            m_flow = Flow::Normal; // clears a Continued signal
         }
 
-        // At this point everything is unrolled and we can
-        // replace the block in the parent.
-        pickup_statements(parent, node, block);
+        // Commit the unrolled block, unless an unresolved break/continue forces us
+        // to leave the loop for later lowering (ADR-0005 §3.2).
+        finalize_unrolled_loop(node, parent, block);
     }
 
     return ret;
