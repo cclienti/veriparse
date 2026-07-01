@@ -109,20 +109,19 @@ compound statement checks the child's status and stops/propagates accordingly.
 the end is an implicit `return name`. This is the single most important pass
 change: without it a const function that uses `return` cannot be folded.
 
-**Known limitation — data-dependent conditional `return`.** When a function's
-result depends on a `return` under a *non-constant* condition — e.g. a function
-whose guard reads a signal that is not one of its arguments — the interpreter
-cannot resolve that exit and the fall-through `return` supplies the result, so the
-call folds to a value that ignores the conditional exit. In a **loop** body this
-is handled (`has_unresolved_loop_jump` treats a residual `Return` as unresolved and
-leaves the loop). Outside a loop it is *not* guarded: a general scan for a residual
-conditional return over-triggers, because the folder does not fully fold relational
-guards (`if (x < 0)` with `x` constant is left intact even though it is dead), so a
-residual-`if`-with-`return` does not reliably indicate a genuinely runtime exit. A
-precise fix belongs in expression folding (fold constant relational guards so the
-dead conditional return is removed), not in a syntactic scan. Scope: a proper
-constant function (guards derived from its arguments) folds correctly; only a
-function reading a non-argument signal in a return guard is affected.
+**Data-dependent conditional `return` — refused, never mis-folded.** If a
+function's result depends on a `return` under a condition the interpreter cannot
+resolve to a constant — e.g. a guard reading a signal that is not one of the
+function's arguments — folding to the fall-through value would silently ignore that
+exit. FunctionEvaluation therefore scans the interpreted body and, if a `Return`
+remains reachable under a **non-constant** `if`/`case`, **leaves the call
+un-evaluated** (returns null) instead of producing a wrong constant. Precision
+comes from two rules: a `return` under a *folded-constant* guard (`if (1'b0)
+return …`, which `execute_if` folds the condition of but does not prune) is dead
+and ignored; and the scan does **not** descend into loops, whose jumps are handled
+when the loop is unrolled (`has_unresolved_loop_jump` + state invalidation). So a
+proper constant function still folds; only a genuinely data-dependent return is
+declined — correct code either way.
 
 ### 3.2 LoopUnrolling — lower `break` / `continue`
 Static unrolling of a constant-bound loop must preserve jump semantics. A cloned

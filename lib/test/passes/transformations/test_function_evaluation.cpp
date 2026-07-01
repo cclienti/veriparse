@@ -63,6 +63,27 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 #define TEST_CORE TEST_CORE_BODY(false)
 #define TEST_CORE_SV TEST_CORE_BODY(true)
 
+/* A call the evaluator must refuse to fold (returns nullptr) — e.g. a function
+ * whose result depends on a data-dependent return the interpreter cannot resolve. */
+#define TEST_NOFOLD_SV                                                                             \
+    ENABLE_LOGGER;                                                                                 \
+    Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(true);                                                                     \
+    verilog.parse(test_helpers.get_verilog_filename(test_name));                                   \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+    Passes::Analysis::Module::ModulesMap modules_map;                                              \
+    Passes::Analysis::Module::get_module_dictionary(source, modules_map);                          \
+    AST::FunctionCall::ListPtr functioncalls =                                                     \
+        Passes::Analysis::Module::get_functioncall_nodes(modules_map[test_name]);                  \
+    ASSERT_TRUE(functioncalls->size() == 1);                                                       \
+    Passes::Analysis::Module::FunctionMap function_map;                                            \
+    Passes::Analysis::Module::get_function_dictionary(modules_map[test_name], function_map);       \
+    Passes::Transformations::FunctionEvaluation::set_max_recurse(16);                              \
+    Passes::Transformations::FunctionEvaluation::reset_force_automatic();                          \
+    Passes::Transformations::FunctionEvaluation function_eval;                                     \
+    ASSERT_TRUE(function_eval.evaluate(functioncalls->front(), function_map) == nullptr)
+
 TEST(PassesTransformation_FunctionEvaluation, function2) { TEST_CORE; }
 TEST(PassesTransformation_FunctionEvaluation, function3) { TEST_CORE; }
 TEST(PassesTransformation_FunctionEvaluation, function4) { TEST_CORE; }
@@ -78,3 +99,6 @@ TEST(PassesTransformation_FunctionEvaluation, function_return1) { TEST_CORE_SV; 
 TEST(PassesTransformation_FunctionEvaluation, function_break0) { TEST_CORE_SV; }
 // `continue` skips the rest of one iteration: f(5) counts 0,1,3,4 = 4 (skips i==2).
 TEST(PassesTransformation_FunctionEvaluation, function_continue0) { TEST_CORE_SV; }
+// A data-dependent `return` (guard reads a non-argument signal) cannot be resolved,
+// so the call must NOT be folded to a constant that ignores that exit (§12.8).
+TEST(PassesTransformation_FunctionEvaluation, function_condret0) { TEST_NOFOLD_SV; }
