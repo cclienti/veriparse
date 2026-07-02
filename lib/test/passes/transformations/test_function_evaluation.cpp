@@ -102,3 +102,6 @@ TEST(PassesTransformation_FunctionEvaluation, function_continue0) { TEST_CORE_SV
 // A data-dependent `return` (guard reads a non-argument signal) cannot be resolved,
 // so the call must NOT be folded to a constant that ignores that exit (§12.8).
 TEST(PassesTransformation_FunctionEvaluation, function_condret0) { TEST_NOFOLD_SV; }
+// Same, with the data-dependent return *inside a loop*: the exit must not be
+// missed just because the loop body is where it hides (ADR-0005 §3.1.1).
+TEST(PassesTransformation_FunctionEvaluation, function_condret1) { TEST_NOFOLD_SV; }

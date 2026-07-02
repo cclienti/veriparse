@@ -1,0 +1,126 @@
+Source:
+  filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+          line: 1
+          name: vf_for_zero0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: i
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: f
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: y
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                  line: 3
+                  signing: NONE
+          - Initial:
+              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+              line: 5
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                  line: 5
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                      line: 6
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                          line: 6
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                              line: 6
+                              name: f
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                          line: 6
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                              line: 9
+                              name: y
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/vf_for_zero0.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
