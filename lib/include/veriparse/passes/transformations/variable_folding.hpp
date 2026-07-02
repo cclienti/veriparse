@@ -197,9 +197,10 @@ private:
     virtual int execute_repeat(AST::RepeatStatement::Ptr repeatstmt, AST::Node::Ptr parent);
 
     /**
-     * @brief Walk through a call statement: fold its arguments, and give up
-     * (§3.1.1) on a task or parse-time-unresolved call, whose side effects are not
-     * modeled.
+     * @brief Walk through a call statement. A function/system call has its
+     * arguments folded; a task or parse-time-unresolved call makes the
+     * interpreter give up (§3.1.1) with its arguments left untouched — an actual
+     * may be an output writeback target.
      *
      * @return zero on success
      */

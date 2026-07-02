@@ -92,6 +92,9 @@ TEST(PassesTransformation_VariableFolding, vf_if_nonconst0) { TEST_CORE; }
 // A partial-value write (bit-select lvalue) makes the whole variable unknown:
 // a later whole-variable read must not fold to the pre-write value.
 TEST(PassesTransformation_VariableFolding, vf_partial_write0) { TEST_CORE; }
+// A task-call actual may be an output writeback target: it must not be folded
+// to a constant, and reads after the call must not fold to pre-call values.
+TEST(PassesTransformation_VariableFolding, vf_task_arg0) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, for1) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, for2) { TEST_CORE; }
 TEST(PassesTransformation_VariableFolding, gray2bin) { TEST_CORE; }
