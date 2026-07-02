@@ -1,0 +1,180 @@
+Source:
+  filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+          line: 1
+          name: vf_if_nonconst0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+              line: 2
+              name: g
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                  line: 2
+                  is_vectored: false
+                  is_scalared: false
+                  name: g
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                      line: 2
+                      signing: NONE
+              expr: null
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: x
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                  line: 4
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: y
+              init:
+                Rvalue: null
+              type:
+                IntegerType:
+                  filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                  line: 4
+                  signing: NONE
+          - Initial:
+              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+              line: 6
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                  line: 6
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                      line: 7
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                          line: 7
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                              line: 7
+                              name: x
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                          line: 7
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - IfStatement:
+                      filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                      line: 8
+                      cond:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                          line: 8
+                          name: g
+                          hier:
+                            HierName: null
+                      true_statement:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                          line: 8
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                              line: 8
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                                  line: 8
+                                  name: x
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                              line: 8
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                                  line: 8
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      false_statement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                              line: 9
+                              name: y
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_if_nonconst0.v
+                              line: 9
+                              name: x
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

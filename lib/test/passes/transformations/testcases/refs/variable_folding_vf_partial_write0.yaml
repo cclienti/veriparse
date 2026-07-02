@@ -1,0 +1,193 @@
+Source:
+  filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+          line: 1
+          name: vf_partial_write0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: f
+              init:
+                Rvalue: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: y
+              init:
+                Rvalue: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Initial:
+              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+              line: 6
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                  line: 6
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                      line: 7
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 7
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                              line: 7
+                              name: f
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 7
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                              line: 7
+                              base: 10
+                              size: 8
+                              sign: false
+                              value: 5
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 8
+                          var:
+                            Pointer:
+                              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                              line: 8
+                              ptr:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                                  line: 8
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                                  line: 8
+                                  name: f
+                                  hier:
+                                    HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 8
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                              line: 8
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                              line: 9
+                              name: y
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/vf_partial_write0.v
+                              line: 9
+                              name: f
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null

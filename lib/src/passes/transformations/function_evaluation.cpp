@@ -24,48 +24,6 @@ namespace Transformations
 
 namespace
 {
-// True if @p node holds a function-level `return` (§12.8) the interpreter could not
-// resolve — one still reachable under a *non-constant* condition, so the result
-// read from the state map would ignore that exit. A return under a folded-constant
-// `if` (its condition is an IntConstN, so the branch is dead or statically decided)
-// is not counted. Loops are not descended into: a return inside a loop is handled
-// when that loop is unrolled (VariableFolding bails and invalidates its state), and
-// break/continue are loop-scoped, not function control flow. VariableFolding does
-// not fold case statements, so a return under any case is counted.
-bool has_unresolved_conditional_return(const AST::Node::Ptr &node, bool under_conditional)
-{
-    if(!node) {
-        return false;
-    }
-    if(under_conditional && node->is_node_type(AST::NodeType::Return)) {
-        return true;
-    }
-    if(node->is_node_type(AST::NodeType::ForStatement) ||
-       node->is_node_type(AST::NodeType::WhileStatement) ||
-       node->is_node_type(AST::NodeType::RepeatStatement) ||
-       node->is_node_type(AST::NodeType::ForeverStatement)) {
-        return false;
-    }
-
-    bool inner = under_conditional;
-    if(node->is_node_type(AST::NodeType::IfStatement)) {
-        const auto &cond = AST::cast_to<AST::IfStatement>(node)->get_cond();
-        inner = inner || !(cond && cond->is_node_type(AST::NodeType::IntConstN));
-    } else if(node->is_node_type(AST::NodeType::CaseStatement) ||
-              node->is_node_type(AST::NodeType::CasexStatement) ||
-              node->is_node_type(AST::NodeType::CasezStatement)) {
-        inner = true;
-    }
-
-    AST::Node::ListPtr children = node->get_children();
-    for(const AST::Node::Ptr &child : *children) {
-        if(has_unresolved_conditional_return(child, inner)) {
-            return true;
-        }
-    }
-    return false;
-}
-
 // Effective name of a port: its own name or that of its inner declaration.
 std::string port_name(const AST::Port::Ptr &p)
 {
@@ -219,12 +177,13 @@ AST::Node::Ptr FunctionEvaluation::evaluate(const AST::FunctionCall::Ptr &functi
     variable_folding.set_return_target(function_name);
     variable_folding.run(initial);
 
-    // A `return` the folder could not resolve — still under a *non-constant*
-    // condition — means the result read below would ignore that exit. Leave the
-    // call un-evaluated rather than fold it to a wrong constant (§12.8).
-    if(has_unresolved_conditional_return(main_block, false)) {
-        LOG_WARNING_N(function) << "function has a data-dependent return the interpreter could not "
-                                   "resolve; leaving call line "
+    // A fold is certified only when the interpreter fully modeled the body
+    // (ADR-0005 §3.1.1): any construct it gave up on — a data-dependent branch or
+    // return, an unresolved loop, an unmodeled statement — could change the
+    // result, so the constant read below would be a guess. Leave the call
+    // un-evaluated rather than fold it to a wrong constant (§12.8).
+    if(!variable_folding.is_fully_interpreted()) {
+        LOG_WARNING_N(function) << "function body was not fully interpreted; leaving call line "
                                 << function_call->get_line() << " un-evaluated";
         return nullptr;
     }

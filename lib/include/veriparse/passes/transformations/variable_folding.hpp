@@ -35,6 +35,23 @@ public:
      */
     void set_return_target(const std::string &name);
 
+    /**
+     * @brief True if every statement the interpreter walked was completely
+     * modeled. A construct it could not resolve to concrete control flow and
+     * concrete values makes the run not fully interpreted — its results can be
+     * *used* conservatively but must not certify a constant fold (ADR-0005
+     * §3.1.1).
+     */
+    bool is_fully_interpreted() const { return m_fully_interpreted; }
+
+    /**
+     * @brief Cap on unrolled loop iterations. A loop with no compile-time-constant
+     * termination (e.g. `while (1)` whose only exit is a runtime `break`, §12.8)
+     * would otherwise unroll without bound; past the cap the loop is left intact
+     * and the interpreter gives up (§3.1.1).
+     */
+    static void set_max_unroll_iterations(unsigned long max_iterations);
+
 private:
     /**
      * @brief Non-local control-flow state produced by a jump statement (§12.8),
@@ -106,7 +123,8 @@ private:
     /**
      * @brief Execute one unrolled loop iteration's body into @p block, appending
      * each executed statement. Stops at the first statement that raises a jump
-     * (§12.8) — the rest of the iteration is unreachable.
+     * (§12.8) and truncates the consumed jump together with the statements it made
+     * unreachable — they must not survive in the unrolled output.
      *
      * @return zero on success
      */
@@ -114,10 +132,10 @@ private:
 
     /**
      * @brief Commit an unrolled loop, or leave it intact. If the unrolled @p block
-     * still holds a break/continue that did not fold to a constant, the loop cannot
-     * be safely unrolled (the jump would land outside any loop); the original loop
-     * is kept for LoopUnrolling (ADR-0005 §3.2) and the variables it assigns are
-     * dropped from the state so nothing folds to a stale value.
+     * still holds a jump that did not fold to a constant, the loop cannot be
+     * safely unrolled (the jump would land outside any loop); the original loop is
+     * kept for LoopUnrolling (ADR-0005 §3.2) and the interpreter gives up
+     * (§3.1.1).
      *
      * @return true if the loop was left intact (not unrolled)
      */
@@ -125,11 +143,11 @@ private:
                                         AST::Block::Ptr block);
 
     /**
-     * @brief Drop from the state map the variables a loop assigns, when the loop is
-     * left un-unrolled after a partial attempt — their post-loop values are unknown,
-     * so nothing downstream must fold to a stale partial-iteration value.
+     * @brief React to a construct the interpreter could not fully resolve: drop
+     * the whole state map (its unknown effects may have touched anything) and mark
+     * the run not fully interpreted (ADR-0005 §3.1.1).
      */
-    void invalidate_loop_state(const AST::Node::Ptr &node);
+    void give_up();
 
     /**
      * @brief Act on the control-flow signal left by an unrolled iteration and say
@@ -198,6 +216,9 @@ private:
     FunctionMap m_function_map;
     Flow m_flow = Flow::Normal;
     std::string m_return_target;
+    bool m_fully_interpreted = true;
+
+    static inline unsigned long s_max_unroll_iterations = 100000ul;
 };
 
 } // namespace Transformations
