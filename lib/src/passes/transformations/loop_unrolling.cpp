@@ -57,10 +57,7 @@ bool owns_jump_of(const AST::Node::Ptr &node, AST::NodeType jt)
         return true;
     }
     // A nested loop scopes its own break/continue; do not look inside it.
-    if(node->is_node_type(AST::NodeType::ForStatement) ||
-       node->is_node_type(AST::NodeType::WhileStatement) ||
-       node->is_node_type(AST::NodeType::RepeatStatement) ||
-       node->is_node_type(AST::NodeType::ForeverStatement)) {
+    if(is_loop_statement(node)) {
         return false;
     }
     AST::Node::ListPtr children = node->get_children();
@@ -70,12 +67,6 @@ bool owns_jump_of(const AST::Node::Ptr &node, AST::NodeType jt)
         }
     }
     return false;
-}
-
-/// True if @p node contains a Break or Continue that belongs to THIS loop.
-bool body_owns_jump(const AST::Node::Ptr &node)
-{
-    return owns_jump_of(node, AST::NodeType::Break) || owns_jump_of(node, AST::NodeType::Continue);
 }
 
 /// If @p s is exactly `if (cond) <jump jt>;` (no else, the then-branch is just the
@@ -113,10 +104,10 @@ AST::Node::Ptr make_guard_if(const AST::Node::Ptr &cond, AST::Node::ListPtr stmt
 }
 
 /// Lower one jump kind (@p jt) in a statement sequence to structural guards, with
-/// no flag variable: `if (c) jump; rest` becomes `if (!c) begin rest end`, and a
-/// bare `jump;` drops the rest. @p ok is cleared if a jump appears in a shape too
-/// complex to lower this way (nested in a block or a deeper `if`), so the caller
-/// can leave the loop intact instead.
+/// no flag variable: `if (c) jump; rest` becomes `if (c) begin end else begin rest
+/// end`, and a bare `jump;` drops the rest. @p ok is cleared if a jump appears in a
+/// shape too complex to lower this way (nested in a block or a deeper `if`), so the
+/// caller can leave the loop intact instead.
 AST::Node::ListPtr lower_jump_seq(AST::Node::List::const_iterator it,
                                   AST::Node::List::const_iterator end, AST::NodeType jt, bool &ok)
 {
@@ -190,12 +181,11 @@ int LoopUnrolling::analyze_loop_jumps(const AST::Node::Ptr &body, const AST::Nod
     lower_break_after = false;
     new_body = nullptr;
 
-    if(!body_owns_jump(body)) {
-        return 0;
-    }
-
     const bool has_break = owns_jump_of(body, AST::NodeType::Break);
     const bool has_continue = owns_jump_of(body, AST::NodeType::Continue);
+    if(!has_break && !has_continue) {
+        return 0;
+    }
 
     AST::Node::ListPtr body_stmts;
     std::string body_scope;
@@ -331,6 +321,12 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
             if(lower_break_after) {
                 bool ok = true;
                 unrolled_stmts = lower_jump_seq(unrolled_stmts, AST::NodeType::Break, ok);
+                if(!ok) {
+                    // On failure the helper returns a truncated sequence; installing
+                    // it would silently drop statements.
+                    LOG_ERROR_N(node) << "break lowering failed on the unrolled sequence";
+                    return 1;
+                }
             }
 
             // Replace the all unrolled statements in the true parent
@@ -423,6 +419,12 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
             if(lower_break_after) {
                 bool ok = true;
                 unrolled_stmts = lower_jump_seq(unrolled_stmts, AST::NodeType::Break, ok);
+                if(!ok) {
+                    // On failure the helper returns a truncated sequence; installing
+                    // it would silently drop statements.
+                    LOG_ERROR_N(node) << "break lowering failed on the unrolled sequence";
+                    return 1;
+                }
             }
 
             // Replace the unrolled statements in the parent block.
