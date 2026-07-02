@@ -40,6 +40,16 @@ inline bool is_jump_statement(const AST::Node::Ptr &node, AST::NodeType type)
     return inner && inner->is_node_type(type);
 }
 
+/// True if @p node is a loop statement — the constructs that scope a
+/// break/continue (§12.8).
+inline bool is_loop_statement(const AST::Node::Ptr &node)
+{
+    return node && (node->is_node_type(AST::NodeType::ForStatement) ||
+                    node->is_node_type(AST::NodeType::WhileStatement) ||
+                    node->is_node_type(AST::NodeType::RepeatStatement) ||
+                    node->is_node_type(AST::NodeType::ForeverStatement));
+}
+
 } // namespace Transformations
 } // namespace Passes
 } // namespace Veriparse
