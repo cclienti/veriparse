@@ -11,7 +11,6 @@
 #include <veriparse/passes/transformations/jump_helpers.hpp>
 #include <veriparse/logger/logger.hpp>
 
-#include <cstddef>
 #include <iterator>
 #include <sstream>
 
