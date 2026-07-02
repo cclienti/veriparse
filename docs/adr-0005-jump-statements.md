@@ -1,7 +1,8 @@
 # ADR-0005 — SystemVerilog jump statements (`return` / `break` / `continue`)
 
-- **Status**: Proposed — design only; not yet implemented.
-- **Date**: 2026-06-28
+- **Status**: Accepted — implemented (front end + passes, incl. the conservative-
+  interpretation pivot of §3.1.1); only the §3.2.1 flag lowering remains deferred.
+- **Date**: 2026-06-28 (amended 2026-07-02: §3.1.1 conservative interpretation)
 - **Scope**: Add the SystemVerilog jump statements (IEEE 1800-2017 §12.8) —
   `return [ expression ] ;`, `break ;`, `continue ;` — end to end: scanner,
   grammar, AST, generator, **and** the transformation passes whose control-flow
@@ -109,19 +110,56 @@ compound statement checks the child's status and stops/propagates accordingly.
 the end is an implicit `return name`. This is the single most important pass
 change: without it a const function that uses `return` cannot be folded.
 
-**Data-dependent conditional `return` — refused, never mis-folded.** If a
-function's result depends on a `return` under a condition the interpreter cannot
-resolve to a constant — e.g. a guard reading a signal that is not one of the
-function's arguments — folding to the fall-through value would silently ignore that
-exit. FunctionEvaluation therefore scans the interpreted body and, if a `Return`
-remains reachable under a **non-constant** `if`/`case`, **leaves the call
-un-evaluated** (returns null) instead of producing a wrong constant. Precision
-comes from two rules: a `return` under a *folded-constant* guard (`if (1'b0)
-return …`, which `execute_if` folds the condition of but does not prune) is dead
-and ignored; and the scan does **not** descend into loops, whose jumps are handled
-when the loop is unrolled (`has_unresolved_loop_jump` + state invalidation). So a
-proper constant function still folds; only a genuinely data-dependent return is
-declined — correct code either way.
+#### 3.1.1 Conservative interpretation — commit only what is fully interpreted
+
+The first implementation tried to keep *partial* results when the interpreter hit
+something it could not resolve: fold what executed, then *invalidate* the state
+the skipped construct might have touched (erase the variables its body assigns),
+plus a reachability scan for a `return` left under a non-constant condition.
+That soundness model is a **blacklist that must be exhaustive**: a `Return`
+assigns no variable so the return target survived invalidation; a bit-select
+lvalue (`f[0] = …`) is a `Pointer`, not an `Identifier`, so the base variable
+survived; a loop whose *initial* condition was non-constant never reached the
+invalidation call at all. Each hole is silent wrong code — a folded constant that
+disagrees with simulation. Three generations of such holes were patched before
+the model itself was rejected.
+
+The pivot inverts it. `VariableFolding` tracks a single **fully-interpreted**
+flag, and any construct it cannot resolve to concrete control flow and concrete
+values triggers one uniform reaction — *give up*:
+
+- **all interpreter state is dropped** (the whole value map, not a computed
+  subset — there is no per-construct erase list to keep exhaustive), so nothing
+  downstream can fold to a stale value; and
+- the run is marked **not fully interpreted**.
+
+Give-up triggers: an `if` whose condition does not fold to a constant; a loop
+whose condition/bound does not fold at any point (or that exceeds the
+configurable unroll cap); an unrolled loop whose body still holds an unresolved
+jump (left intact for §3.2); a task or unresolved call statement (unknown side
+effects); a write through an lvalue whose base variable cannot be identified;
+and **any statement kind the interpreter does not model** (case, delays, event
+controls, `forever`, …) — unknown-by-default, not known-by-default. Two precise
+(non-give-up) rules complete the model: an rvalue that does not fold *erases its
+target* from the state (never keeps the stale value), and a partial-value write
+(`f[0] = …`) erases the whole base variable.
+
+`FunctionEvaluation` then folds a call **only when the run stayed fully
+interpreted**; otherwise it leaves the call un-evaluated (nullptr). This
+replaces the data-dependent-conditional-return scan this section previously
+described (deleted): instead of proving after the fact that no unresolved
+`return` escaped, the interpreter refuses to certify anything it did not fully
+execute. The precision loss is nil for the intended use — a function worth
+folding is a constant function, and a constant function is fully interpretable
+by definition.
+
+Two interpreter-fidelity rules land with the pivot: the `for` interpreter tests
+the condition **before** the first iteration (a zero-trip loop executes
+nothing — the previous do-while shape ran the body once), and an iteration that
+consumes a jump **truncates at execution time** the statements the jump made
+unreachable (a spliced branch's tail is dropped with the jump that precedes it,
+so `begin break; y = 1; end` never leaks `y = 1` into the unrolled output while
+later iterations of a consumed `continue` are preserved).
 
 ### 3.2 LoopUnrolling — lower `break` / `continue`
 Static unrolling of a constant-bound loop must preserve jump semantics. A cloned
@@ -233,6 +271,10 @@ first implementation.
 4. **DeadcodeElimination** ✅ — unreachable-after-jump (§3.3): within a block,
    statements after an unconditional break/continue/return are dropped; a
    conditional jump leaves its siblings. Runs before the existing deadcode steps.
+5. **Conservative-interpretation pivot** ✅ — §3.1.1: VariableFolding gives up
+   (drops all state, marks the run not fully interpreted) on anything it cannot
+   resolve; FunctionEvaluation folds only fully-interpreted runs. Replaces the
+   per-construct state-invalidation approach and its reachability heuristics.
 
 Each phase lands green on its own; phase 1 is independently useful (parse + emit).
 
