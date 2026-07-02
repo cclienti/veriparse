@@ -312,11 +312,25 @@ You can also run ctest directly from the build directory:
     ctest -L cosim                  # cosim tests
     ctest                           # everything
 
-### 6. Clean Up
+### 6. Test Coverage
+
+    make dev-coverage
+
+Configures and builds a separate `build-coverage/` tree (`CMAKE_BUILD_TYPE=Coverage`:
+`-O0 --coverage`, GCC/gcov only — not available on the Windows/ClangCL build), runs
+the `unittest` suite, and generates a [gcovr](https://gcovr.com/) report: a summary
+printed to the terminal plus an HTML report at `build-coverage/coverage/index.html`.
+Test sources themselves (`lib/test/`, `apps/*/test/`) are excluded from the report.
+
+Run against the cosim suite instead with:
+
+    make dev-coverage COVERAGE_CTEST_LABELS=cosim
+
+### 7. Clean Up
 
     make dev-clean
 
-This removes the build directory and the conda environment.
+This removes the build directories (`build/`, `build-coverage/`) and the conda environment.
 
 ### On Windows
 

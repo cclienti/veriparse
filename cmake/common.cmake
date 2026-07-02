@@ -37,13 +37,20 @@ if(NOT DEFINED VERIPARSE_COMMON_CMAKE)
     set(CMAKE_CXX_FLAGS_FULLDEBUG      "-g3 -DDEBUG -DFULL_DEBUG")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Werror -g3 -O3 -DDEBUG")
     set(CMAKE_CXX_FLAGS_RELEASE        "-Werror -s -O3")
-    set(CMAKE_CXX_FLAGS_COVERAGE       "-g3 -DDEBUG -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_FLAGS_COVERAGE       "-g3 -O0 -DDEBUG --coverage")
+    set(CMAKE_C_FLAGS_COVERAGE         "-g3 -O0 -DDEBUG --coverage")
+    # --coverage is also needed at link time to pull in libgcov.
+    set(CMAKE_EXE_LINKER_FLAGS_COVERAGE    "--coverage")
+    set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "--coverage")
   endif()
+
+  set(COVERAGE_CTEST_LABELS "unittest" CACHE STRING
+    "ctest -L filter used by the 'coverage' target")
 
   if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     include(CodeCoverage)
-    message(STATUS "Coverage: excluding ${CMAKE_PREFIX_PATH}")
-    setup_target_for_coverage(coverage "make run_tests" coverage)
+    message(STATUS "Coverage: running ctest -L ${COVERAGE_CTEST_LABELS}, excluding test sources from the report")
+    setup_target_for_coverage_gcovr(coverage coverage "${COVERAGE_CTEST_LABELS}")
   endif()
 
   find_package(GTest CONFIG REQUIRED)
