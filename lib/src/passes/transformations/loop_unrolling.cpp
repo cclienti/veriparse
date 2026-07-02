@@ -147,6 +147,38 @@ AST::Node::ListPtr lower_jump_seq(const AST::Node::ListPtr &stmts, AST::NodeType
 {
     return lower_jump_seq(stmts->cbegin(), stmts->cend(), jt, ok);
 }
+
+/// True if every jump of kind @p jt in the sequence has a shape lower_jump_seq
+/// can lower — a bare `jump;` or a top-level `if (cond) jump;`. Statements past a
+/// bare jump are unreachable and dropped by the lowering, so they are not checked.
+/// Validation only: nothing is built, unlike a discarded lower_jump_seq run.
+bool can_lower_jump_seq(const AST::Node::ListPtr &stmts, AST::NodeType jt)
+{
+    for(const AST::Node::Ptr &s : *stmts) {
+        if(is_jump_statement(s, jt)) {
+            return true;
+        }
+        if(conditional_jump_cond(s, jt)) {
+            continue; // the remainder goes into the guard's else branch
+        }
+        if(owns_jump_of(s, jt)) {
+            return false; // nested deeper than the flag-free form handles
+        }
+    }
+    return true;
+}
+
+/// A loop body's statements as a list: the block's own list, or a single-item
+/// list wrapping a bare statement body.
+AST::Node::ListPtr body_statement_list(const AST::Node::Ptr &body)
+{
+    if(body->is_node_type(AST::NodeType::Block)) {
+        return AST::cast_to<AST::Block>(body)->get_statements();
+    }
+    const auto &stmts = std::make_shared<AST::Node::List>();
+    stmts->push_back(body);
+    return stmts;
+}
 } // namespace
 
 LoopUnrolling::LoopUnrolling(const FunctionMap &function_map) : m_function_map(function_map) {}
@@ -187,26 +219,23 @@ int LoopUnrolling::analyze_loop_jumps(const AST::Node::Ptr &body, const AST::Nod
         return 0;
     }
 
-    AST::Node::ListPtr body_stmts;
-    std::string body_scope;
-    if(body->is_node_type(AST::NodeType::Block)) {
-        const auto &b = AST::cast_to<AST::Block>(body);
-        body_stmts = b->get_statements();
-        body_scope = b->get_scope();
-    } else {
-        body_stmts = std::make_shared<AST::Node::List>();
-        body_stmts->push_back(body);
-    }
+    const AST::Node::ListPtr body_stmts = body_statement_list(body);
 
     bool ok = !(has_break && has_continue); // mixed break+continue: not handled
-    if(ok) {
-        const AST::NodeType jt = has_break ? AST::NodeType::Break : AST::NodeType::Continue;
-        // `continue` is lowered into the body now (each iteration guards its own
-        // remainder); `break` is lowered across the flat unrolled list afterwards.
-        const auto &lowered = lower_jump_seq(body_stmts, jt, ok);
-        if(ok && has_continue) {
+    if(ok && has_continue) {
+        // `continue` is lowered into the body now: each iteration guards its own
+        // remainder, so the lowered body replaces the original.
+        const auto &lowered = lower_jump_seq(body_stmts, AST::NodeType::Continue, ok);
+        if(ok) {
+            const std::string body_scope = body->is_node_type(AST::NodeType::Block)
+                                               ? AST::cast_to<AST::Block>(body)->get_scope()
+                                               : std::string();
             new_body = std::make_shared<AST::Block>(lowered, body_scope);
         }
+    } else if(ok) {
+        // `break` is lowered across the flat unrolled list afterwards; only the
+        // shape is validated here.
+        ok = can_lower_jump_seq(body_stmts, AST::NodeType::Break);
     }
     if(!ok) {
         LOG_WARNING_N(loop) << "loop uses break/continue in a form that cannot be unrolled; "
@@ -215,6 +244,66 @@ int LoopUnrolling::analyze_loop_jumps(const AST::Node::Ptr &body, const AST::Nod
     }
 
     lower_break_after = has_break;
+    return 0;
+}
+
+std::string LoopUnrolling::loop_scope(const AST::Node::Ptr &body, const AST::Node::Ptr &loop)
+{
+    std::string scope;
+    if(body->is_node_type(AST::NodeType::Block)) {
+        scope = AST::cast_to<AST::Block>(body)->get_scope();
+        LOG_TRACE_N(loop) << "loop scope: " << scope;
+    }
+    if(scope.empty()) {
+        LOG_WARNING_N(loop) << "loop without named scope";
+        scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
+    }
+    return scope;
+}
+
+int LoopUnrolling::unroll_iteration(const AST::Node::Ptr &loop, const AST::Node::ListPtr &stmts,
+                                    const std::string &src_scope, const std::string &scope_state,
+                                    const std::string &dest_scope,
+                                    const AST::Node::ListPtr &unrolled_stmts)
+{
+    const std::string new_scope_state = scope_state + src_scope + ".";
+    if(map_scope(new_scope_state, scope_state, dest_scope)) {
+        LOG_ERROR_N(loop) << "error during scope mapping";
+        return 1;
+    }
+
+    // The block holds the recursion results: a nested unroll replaces its inner
+    // list, so the block — not the pre-recursion @p stmts pointer — is what gets
+    // spliced.
+    const auto &block_tmp = std::make_shared<AST::Block>(stmts, src_scope);
+    auto recurse_fct = [this, &new_scope_state](AST::Node::Ptr n, AST::Node::Ptr p) {
+        return unroll(n, p, new_scope_state);
+    };
+    if(recurse(block_tmp, stmts, recurse_fct)) {
+        return 1;
+    }
+
+    unrolled_stmts->splice(unrolled_stmts->end(), *block_tmp->get_statements());
+    return 0;
+}
+
+int LoopUnrolling::install_unrolled(const AST::Node::Ptr &parent, const AST::Node::Ptr &loop,
+                                    AST::Node::ListPtr unrolled_stmts, bool lower_break_after)
+{
+    // Lower `break` across the whole unrolled sequence: it skips the rest of its
+    // own iteration and every later one (ADR-0005 §3.2).
+    if(lower_break_after) {
+        bool ok = true;
+        unrolled_stmts = lower_jump_seq(unrolled_stmts, AST::NodeType::Break, ok);
+        if(!ok) {
+            // A truncated sequence must not be installed; analyze_loop_jumps
+            // validated the body shape, so this is an internal inconsistency.
+            LOG_ERROR_N(loop) << "break lowering failed on the unrolled sequence";
+            return 1;
+        }
+    }
+
+    pickup_statements(parent, loop, unrolled_stmts);
     return 0;
 }
 
@@ -244,34 +333,14 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
             for_node->set_statement(new_body);
         }
 
-        // Get the loop scope
-        std::string scope;
-        if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
-            const auto &block = AST::cast_to<AST::Block>(for_node->get_statement());
-            scope = block->get_scope();
-            LOG_TRACE_N(for_node) << "loop scope: " << scope;
-        } else {
-            LOG_WARNING_N(node) << "for loop without named scope";
-        }
-
-        if(scope.empty()) {
-            LOG_WARNING_N(node) << "for loop without named scope";
-            scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
-        }
+        const std::string scope = loop_scope(for_node->get_statement(), for_node);
 
         // Look for the current for loop range
         LoopUnrolling::RangePtr for_range = LoopUnrolling::get_for_range(for_node);
         if(for_range) {
             LOG_TRACE_N(for_node) << print_for_range(*for_range);
 
-            // Unroll the statements
-            AST::Node::ListPtr stmts;
-            if(for_node->get_statement()->is_node_type(AST::NodeType::Block)) {
-                stmts = AST::cast_to<AST::Block>(for_node->get_statement())->get_statements();
-            } else {
-                stmts = std::make_shared<AST::Node::List>();
-                stmts->push_back(for_node->get_statement());
-            }
+            const AST::Node::ListPtr stmts = body_statement_list(for_node->get_statement());
 
             // Replace the loop identifier in unrolled statements and annotate declarations
             AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
@@ -282,16 +351,9 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
 
                 ASTReplace::replace_identifier(stmts_copy, for_range->first, p);
 
-                // Manage the scope mapping
                 const std::string loop_value = Generators::VerilogGenerator().render(p);
                 const std::string src_scope = scope + "[" + loop_value + "]";
                 const std::string dest_scope = for_range->first + "_" + loop_value;
-                const std::string new_scope_state = scope_state + src_scope + ".";
-
-                if(map_scope(new_scope_state, scope_state, dest_scope)) {
-                    LOG_ERROR_N(node) << "error during scope mapping";
-                    return 1;
-                }
 
                 // We put the stmts vector in a AST::Block in order to
                 // annotate all stmts at a time.
@@ -300,40 +362,13 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
                 AST::Block::Ptr block = std::make_shared<AST::Block>(stmts_copy, "");
                 annotate.run(block);
 
-                // We pushed the new copied stmts into a block
-                auto block_tmp = std::make_shared<AST::Block>(stmts_copy, src_scope);
-
-                // We recurse using the block_tmp as parent. This block is
-                // used to hold recurse results.
-                auto recurse_fct = [this, &new_scope_state](AST::Node::Ptr n, AST::Node::Ptr p) {
-                    return unroll(n, p, new_scope_state);
-                };
-                if(recurse(block_tmp, stmts_copy, recurse_fct)) {
-                    return 1;
-                }
-
-                // We accumulate all results
-                unrolled_stmts->splice(unrolled_stmts->end(), *block_tmp->get_statements());
-            }
-
-            // Lower `break` across the whole unrolled sequence: it skips the rest of
-            // its own iteration and every later one (ADR-0005 §3.2).
-            if(lower_break_after) {
-                bool ok = true;
-                unrolled_stmts = lower_jump_seq(unrolled_stmts, AST::NodeType::Break, ok);
-                if(!ok) {
-                    // On failure the helper returns a truncated sequence; installing
-                    // it would silently drop statements.
-                    LOG_ERROR_N(node) << "break lowering failed on the unrolled sequence";
+                if(unroll_iteration(node, stmts_copy, src_scope, scope_state, dest_scope,
+                                    unrolled_stmts)) {
                     return 1;
                 }
             }
 
-            // Replace the all unrolled statements in the true parent
-            // block.
-            pickup_statements(parent, node, unrolled_stmts);
-
-            return 0;
+            return install_unrolled(parent, node, unrolled_stmts, lower_break_after);
         }
     }
 
@@ -356,81 +391,29 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
             repeat_node->set_statement(new_body);
         }
 
-        // Get the loop scope
-        std::string scope;
-        if(repeat_node->get_statement()->is_node_type(AST::NodeType::Block)) {
-            const auto &block = AST::cast_to<AST::Block>(repeat_node->get_statement());
-            scope = block->get_scope();
-            LOG_TRACE_N(repeat_node) << "loop scope: " << scope;
-        } else {
-            LOG_WARNING_N(node) << "for loop without named scope";
-        }
-
-        if(scope.empty()) {
-            LOG_WARNING_N(node) << "for loop without named scope";
-            scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
-        }
+        const std::string scope = loop_scope(repeat_node->get_statement(), repeat_node);
 
         AST::Node::Ptr times_node =
             ExpressionEvaluation(m_function_map).evaluate_node(repeat_node->get_times());
         if(times_node && times_node->is_node_type(AST::NodeType::IntConstN)) {
             AST::IntConstN::Ptr times = AST::cast_to<AST::IntConstN>(times_node);
 
-            // Unroll the statements
-            AST::Node::ListPtr stmts;
-            if(repeat_node->get_statement()->is_node_type(AST::NodeType::Block)) {
-                stmts = AST::cast_to<AST::Block>(repeat_node->get_statement())->get_statements();
-            } else {
-                stmts = std::make_shared<AST::Node::List>();
-                stmts->push_back(repeat_node->get_statement());
-            }
+            const AST::Node::ListPtr stmts = body_statement_list(repeat_node->get_statement());
 
             AST::Node::ListPtr unrolled_stmts = std::make_shared<AST::Node::List>();
             for(uint64_t x = 0; x < times->get_value().convert_to<unsigned long>(); x++) {
                 AST::Node::ListPtr stmts_copy = AST::Node::clone_list(stmts);
 
-                // Manage the scope mapping
                 const std::string loop_value = std::to_string(x);
                 const std::string src_scope = scope + "[" + loop_value + "]";
-                const std::string dest_scope = loop_value;
-                const std::string new_scope_state = scope_state + src_scope + ".";
 
-                if(map_scope(new_scope_state, scope_state, dest_scope)) {
-                    LOG_ERROR_N(node) << "error during scope mapping";
-                    return 1;
-                }
-
-                // We pushed the new copied stmts into a block
-                auto block_tmp = std::make_shared<AST::Block>(stmts_copy, src_scope);
-
-                // We recurse using the block_tmp as parent. this block is used to hold recurse
-                // results.
-                auto recurse_fct = [this, &new_scope_state](AST::Node::Ptr n, AST::Node::Ptr p) {
-                    return unroll(n, p, new_scope_state);
-                };
-                if(recurse(block_tmp, stmts_copy, recurse_fct)) {
-                    return 1;
-                }
-
-                unrolled_stmts->splice(unrolled_stmts->end(), *stmts_copy);
-            }
-
-            // Lower `break` across the whole unrolled sequence (ADR-0005 §3.2).
-            if(lower_break_after) {
-                bool ok = true;
-                unrolled_stmts = lower_jump_seq(unrolled_stmts, AST::NodeType::Break, ok);
-                if(!ok) {
-                    // On failure the helper returns a truncated sequence; installing
-                    // it would silently drop statements.
-                    LOG_ERROR_N(node) << "break lowering failed on the unrolled sequence";
+                if(unroll_iteration(node, stmts_copy, src_scope, scope_state, loop_value,
+                                    unrolled_stmts)) {
                     return 1;
                 }
             }
 
-            // Replace the unrolled statements in the parent block.
-            pickup_statements(parent, node, unrolled_stmts);
-
-            return 0;
+            return install_unrolled(parent, node, unrolled_stmts, lower_break_after);
         } else {
             LOG_WARNING_N(node) << "non integer repeat";
         }

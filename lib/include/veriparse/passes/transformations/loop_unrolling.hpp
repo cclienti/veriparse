@@ -69,6 +69,33 @@ private:
                            bool &lower_break_after, AST::Node::Ptr &new_body);
 
     /**
+     * @brief Scope name of a loop body: the body block's own scope, or a generated
+     * unique one when the body is not a named block.
+     */
+    std::string loop_scope(const AST::Node::Ptr &body, const AST::Node::Ptr &loop);
+
+    /**
+     * @brief Unroll one loop iteration, shared by the for and repeat branches: map
+     * @p src_scope to @p dest_scope, recurse into @p stmts (nested loops unroll
+     * here), and append the results to @p unrolled_stmts.
+     *
+     * @return zero on success.
+     */
+    int unroll_iteration(const AST::Node::Ptr &loop, const AST::Node::ListPtr &stmts,
+                         const std::string &src_scope, const std::string &scope_state,
+                         const std::string &dest_scope, const AST::Node::ListPtr &unrolled_stmts);
+
+    /**
+     * @brief Install the unrolled statements in place of @p loop, lowering any
+     * pending `break` across the flat sequence first (ADR-0005 §3.2). Fails — and
+     * installs nothing — if the lowering cannot complete.
+     *
+     * @return zero on success.
+     */
+    int install_unrolled(const AST::Node::Ptr &parent, const AST::Node::Ptr &loop,
+                         AST::Node::ListPtr unrolled_stmts, bool lower_break_after);
+
+    /**
      * @brief Rename scoped identifier with mapping gathered during
      * unrolling.
      *
