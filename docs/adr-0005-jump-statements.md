@@ -1,7 +1,9 @@
 # ADR-0005 — SystemVerilog jump statements (`return` / `break` / `continue`)
 
 - **Status**: Accepted — implemented (front end + passes, incl. the conservative-
-  interpretation pivot of §3.1.1); only the §3.2.1 flag lowering remains deferred.
+  interpretation pivot of §3.1.1), **except** the §3.2.1 flag lowering for
+  mixed/nested loop jumps, which is designed but **not implemented**: those loops
+  are left intact with a diagnostic.
 - **Date**: 2026-06-28 (amended 2026-07-02: §3.1.1 conservative interpretation)
 - **Scope**: Add the SystemVerilog jump statements (IEEE 1800-2017 §12.8) —
   `return [ expression ] ;`, `break ;`, `continue ;` — end to end: scanner,
@@ -137,9 +139,12 @@ Give-up triggers: an `if` whose condition does not fold to a constant; a loop
 whose condition/bound does not fold at any point (or that exceeds the
 configurable unroll cap); an unrolled loop whose body still holds an unresolved
 jump (left intact for §3.2); a task or unresolved call statement (unknown side
-effects); a write through an lvalue whose base variable cannot be identified;
-and **any statement kind the interpreter does not model** (case, delays, event
-controls, `forever`, …) — unknown-by-default, not known-by-default. Two precise
+effects — its arguments are also left **untouched**, since without the callee's
+declaration an actual may be an output writeback target that folding to a
+constant would destroy); a write through an lvalue whose base variable cannot be
+identified; and **any statement kind the interpreter does not model** (case,
+delays, event controls, `forever`, …) — unknown-by-default, not
+known-by-default. Two precise
 (non-give-up) rules complete the model: an rvalue that does not fold *erases its
 target* from the state (never keeps the stale value), and a partial-value write
 (`f[0] = …`) erases the whole base variable.
@@ -226,10 +231,13 @@ cases, and the reason is structural, not incidental:
   at **module level** (Verilator-clean, confirmed by lint). That means the flag
   path must thread module-level decl injection through `LoopUnrolling::process`.
 
-**Status: deferred.** The simple single-jump lowering above is implemented; the
-flag-based path for mixed/nested jumps is designed and validated but **not built**
-— those loops are currently left intact (valid, just not unrolled). Revisit if a
-design needs jump-containing loops of this shape actually unrolled.
+**Status: deferred — not implemented.** The simple single-jump lowering above is
+implemented; the flag-based path for mixed/nested jumps is a design only — the
+flag form was validated by simulation, but **no code for it exists** and such
+loops are left intact (valid, just not unrolled) with a diagnostic. Revisit if a
+design needs jump-containing loops of this shape actually unrolled; the work is
+the flag lowering itself plus module-level declaration injection through
+`LoopUnrolling::process`.
 
 ### 3.3 DeadcodeElimination — unreachable after a jump
 Statements that follow an **unconditional** `return`/`break`/`continue` within the
@@ -275,6 +283,9 @@ first implementation.
    (drops all state, marks the run not fully interpreted) on anything it cannot
    resolve; FunctionEvaluation folds only fully-interpreted runs. Replaces the
    per-construct state-invalidation approach and its reachability heuristics.
+6. **Flag-based lowering for mixed/nested loop jumps** ✗ **not implemented** —
+   §3.2.1: the flag form is designed and simulation-validated, but no code was
+   written; such loops are left intact with a diagnostic.
 
 Each phase lands green on its own; phase 1 is independently useful (parse + emit).
 
