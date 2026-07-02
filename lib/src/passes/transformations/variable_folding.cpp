@@ -565,10 +565,21 @@ int VariableFolding::execute_repeat(AST::RepeatStatement::Ptr node, AST::Node::P
 
 int VariableFolding::execute_call(AST::Node::Ptr node)
 {
+    // A task (or a call unresolved at parse time, which may be one) can write its
+    // output arguments and any variable in scope (ADR-0005 §3.1.1). Its arguments
+    // are left untouched: without the callee's declaration, an actual may be an
+    // output writeback target that folding to a constant would destroy.
+    if(node->is_node_type(AST::NodeType::TaskCall) || node->is_node_type(AST::NodeType::Call)) {
+        LOG_DEBUG_N(node) << "task call side effects are not modeled; "
+                             "giving up constant folding from here";
+        give_up();
+        return 0;
+    }
+
     AST::Node::ListPtr args;
 
-    // Call (neutral), FunctionCall and TaskCall all derive from Call and share
-    // get_args(); SystemCall is separate.
+    // FunctionCall derives from Call and shares get_args(); SystemCall is
+    // separate.
     if(node->is_node_category(AST::NodeType::Call)) {
         args = AST::cast_to<AST::Call>(node)->get_args();
     } else if(node->is_node_type(AST::NodeType::SystemCall)) {
@@ -586,14 +597,6 @@ int VariableFolding::execute_call(AST::Node::Ptr node)
                 node->replace(arg, expr);
             }
         }
-    }
-
-    // A task (or a call unresolved at parse time, which may be one) can write its
-    // output arguments and any variable in scope (ADR-0005 §3.1.1).
-    if(node->is_node_type(AST::NodeType::TaskCall) || node->is_node_type(AST::NodeType::Call)) {
-        LOG_DEBUG_N(node) << "task call side effects are not modeled; "
-                             "giving up constant folding from here";
-        give_up();
     }
 
     return 0;
